@@ -33,9 +33,31 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+ # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flexify: ^2.1.1
+  amplify_flutter: ^2.6.1
+  amplify_auth_cognito: ^2.6.1
+  amplify_api: ^2.6.1
+  amplify_authenticator: ^2.3.3
   get: ^4.7.2
+  path_provider: ^2.1.5
+  validatorless: ^1.2.4
+  rounded_loading_button_plus: ^3.0.1
+  salomon_bottom_bar: ^3.3.2
+  icons_plus: ^5.0.0
+  google_fonts: ^6.2.1
+  flutter_animate: ^4.5.2
+  get_storage: ^2.1.1
+  font_awesome_flutter: ^10.4.0
 
+  permission_handler: ^12.0.0+1
+  flutter_compass: ^0.8.1
+  geolocator: ^14.0.0
+  carousel_slider: ^5.1.1
+
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -59,10 +81,26 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-
+  assets:
+    - assets/png/logo.png
+    - assets/png/battery.png
+    - assets/png/cards/load.png
+    - assets/png/cards/panels.png
+    - assets/png/cards/battery.png
+    - assets/png/cards/inverter.png
+    - assets/png/cards/wiring.png
+    - assets/png/cards/solar-power.png
+    - assets/png/cards/housing.png
+    - assets/png/cards/compass.png
+    - assets/png/cards/direction.png
+    - assets/png/cards/pump.png
+    - assets/png/cards/social-media.png
+    - assets/png/cards/system.jpg
+    - assets/slider1.png
+    - assets/slider2.png
+    - assets/slider3.png
+    - assets/bundle1.png
+    - assets/bundle2.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
