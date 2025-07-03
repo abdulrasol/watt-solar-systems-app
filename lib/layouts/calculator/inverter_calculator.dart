@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/calculations/home_solar_system_calculator.dart';
 //import 'package:solar_hub/controllers/data_controller.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -74,32 +75,24 @@ class _InverterCalculatorState extends State<InverterCalculator> {
     final load = current * systemVoltage;
 
     final battVolt = num.tryParse(batteryVoltage.text) ?? 0;
-    final capacity = num.tryParse(batteryCapacity.text) ?? 0;
+    final capacityAh = num.tryParse(batteryCapacity.text) ?? 0;
     final count = num.tryParse(batteryCount.text) ?? 0;
     final userChargeCurrent = num.tryParse(chargeCurrent.text) ?? 0;
 
-    final totalCapacity = capacity * count;
-
-    if (current > 0 && battVolt > 0 && capacity > 0 && count > 0) {
-      inverterSize = load * 1.25;
-
-      if (batteryType == 'Lithium') {
-        recommendedChargeCurrent = totalCapacity / 3;
-      } else if (batteryType == 'Lead-Acid') {
-        recommendedChargeCurrent = totalCapacity * 0.1;
-      }
-
-      final usedChargeCurrent = userChargeCurrent > 0
-          ? userChargeCurrent
-          : recommendedChargeCurrent;
-
-      chargingTime = usedChargeCurrent > 0
-          ? totalCapacity / usedChargeCurrent
-          : 0;
-
-      final energy = battVolt * totalCapacity;
-      dischargingTime =
-          energy * (depthOfDischarge / 100) / load; // DoD used here
+    if (current > 0 && battVolt > 0 && capacityAh > 0 && count > 0) {
+      Map data = HomeSolarSystemCalculator.calculateInverterSize(
+        peakLoadWatt: load.toDouble(),
+        batteryAh: capacityAh.toDouble(),
+        batteryVoltage: battVolt.toDouble(),
+        batteryCount: count.toDouble(),
+        batteryUserChargeCurrent: userChargeCurrent.toDouble(),
+        batteryType: batteryType,
+        dod: depthOfDischarge.toDouble(),
+      );
+      inverterSize = data['inverterSize'];
+      chargingTime = data['chargingTime'];
+      dischargingTime = data['dischargingTime'];
+      recommendedChargeCurrent = data['recommendedChargeCurrent'];
     } else {
       inverterSize = 0;
       chargingTime = 0;
@@ -334,7 +327,7 @@ class _InverterCalculatorState extends State<InverterCalculator> {
       children: [
         Text(
           inverterSize > 0
-              ? 'Estimated Inverter Size: ${(inverterSize / 1000).toStringAsFixed(1)} KW (${(inverterSize / 1000).ceil()}KW)'
+              ? 'Estimated Inverter Size: ${(inverterSize).toStringAsFixed(1)} KW (${(inverterSize.ceil())}KW)'
               : 'Fill inputs to calculate inverter size.',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).colorScheme.primary,

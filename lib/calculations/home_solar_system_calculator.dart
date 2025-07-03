@@ -93,8 +93,41 @@ class HomeSolarSystemCalculator {
   // surgeFactor: factor for surge (e.g., 1.25 for 25% surge)
   static Map<String, dynamic> calculateInverterSize({
     required double peakLoadWatt,
+    required double batteryAh,
+    required double batteryVoltage,
+    required double batteryCount,
+    required double batteryUserChargeCurrent,
+    required String batteryType,
+    required double dod,
     double surgeFactor = 1.25,
   }) {
-    return {};
+    double inverterSize = (peakLoadWatt * surgeFactor) / 1000;
+    final totalCapacity = batteryAh * batteryCount;
+    double recommendedChargeCurrent = 0.1 * batteryAh;
+    double chargingTime = totalCapacity / recommendedChargeCurrent;
+
+    if (batteryType == 'Lithium') {
+      recommendedChargeCurrent = totalCapacity / 3;
+    } else if (batteryType == 'Lead-Acid') {
+      recommendedChargeCurrent = totalCapacity * 0.1;
+    }
+
+    final usedChargeCurrent = batteryUserChargeCurrent > 0
+        ? batteryUserChargeCurrent
+        : recommendedChargeCurrent;
+
+    chargingTime = usedChargeCurrent > 0
+        ? totalCapacity / usedChargeCurrent
+        : 0;
+
+    final energy = batteryVoltage * totalCapacity;
+    double dischargingTime = energy * (dod / 100) / peakLoadWatt;
+
+    return {
+      'inverterSize': inverterSize,
+      'recommendedChargeCurrent': recommendedChargeCurrent,
+      'chargingTime': chargingTime,
+      'dischargingTime': dischargingTime,
+    };
   }
 }
