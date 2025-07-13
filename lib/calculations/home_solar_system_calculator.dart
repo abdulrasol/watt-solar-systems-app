@@ -63,6 +63,7 @@ class HomeSolarSystemCalculator {
     if (dod == 0) {
       return {'totalAhNeeded': 0, 'batteryCount': 0};
     }
+    print('from time page');
     double totalWhNeeded = dailyUsageKWh * 100 / dod;
     double totalAhNeeded = totalWhNeeded / batteryVoltage;
     int batteryCount = (totalAhNeeded / batteryCapacityAh).ceil();
@@ -76,11 +77,12 @@ class HomeSolarSystemCalculator {
     required int batteryCount,
     double dod = 0.5,
   }) {
+    print('from count page');
     if (dod == 0) {
       return 0.0;
     }
 
-    print('$dailyUsageKWh, $batteryVoltage, $batteryCapacityAh');
+    // print('$dailyUsageKWh, $batteryVoltage, $batteryCapacityAh');
     double time =
         (batteryVoltage * batteryCapacityAh * batteryCount * dod / 100) /
         (dailyUsageKWh);

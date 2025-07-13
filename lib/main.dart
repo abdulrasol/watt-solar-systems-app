@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:solar_hub/utils/app_theme.dart';
 import 'package:solar_hub/utils/routes.dart';
 
 void main() {
@@ -17,6 +18,10 @@ class MyApp extends StatelessWidget {
       title: 'Solar Hub',
       //home: const Home(),
       initialRoute: '/home',
+      theme: AppTheme.lightTheme, // Apply the light theme
+      darkTheme: AppTheme.darkTheme, // Apply the dark theme
+      themeMode:
+          ThemeMode.system, // Use system preference for theme (light/dark)
     );
   }
 }

@@ -168,7 +168,7 @@ class _CountCalculatorState extends State<CountCalculator> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Ah Capacity ${batteryAh.ceil()}, $batteryCount Batteries',
+                        '$batteryCount Batteries',
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(
                               // fontWeight: FontWeight.bold,
