@@ -22,9 +22,8 @@ class HomeSolarSystemCalculator {
     num remainBatteryToChargeFromPv = batteryCapacityInput - gridChargePower;
 
     if (!remainBatteryToChargeFromPv.isNegative && batteryCharge) {
-      panels +=
-          (remainBatteryToChargeFromPv / activeHours) / effativepanelWatts;
-      // print('$batteryChargePanels  add remain battery to charge');
+      panels += (remainBatteryToChargeFromPv / activeHours) / effativepanelWatts;
+      // ('$batteryChargePanels  add remain battery to charge');
     }
 
     if (gridFeed) {
@@ -63,7 +62,7 @@ class HomeSolarSystemCalculator {
     if (dod == 0) {
       return {'totalAhNeeded': 0, 'batteryCount': 0};
     }
-    print('from time page');
+    ('from time page');
     double totalWhNeeded = dailyUsageKWh * 100 / dod;
     double totalAhNeeded = totalWhNeeded / batteryVoltage;
     int batteryCount = (totalAhNeeded / batteryCapacityAh).ceil();
@@ -77,15 +76,13 @@ class HomeSolarSystemCalculator {
     required int batteryCount,
     double dod = 0.5,
   }) {
-    print('from count page');
+    ('from count page');
     if (dod == 0) {
       return 0.0;
     }
 
-    // print('$dailyUsageKWh, $batteryVoltage, $batteryCapacityAh');
-    double time =
-        (batteryVoltage * batteryCapacityAh * batteryCount * dod / 100) /
-        (dailyUsageKWh);
+    // ('$dailyUsageKWh, $batteryVoltage, $batteryCapacityAh');
+    double time = (batteryVoltage * batteryCapacityAh * batteryCount * dod / 100) / (dailyUsageKWh);
 
     return time;
   }
@@ -114,13 +111,9 @@ class HomeSolarSystemCalculator {
       recommendedChargeCurrent = totalCapacity * 0.1;
     }
 
-    final usedChargeCurrent = batteryUserChargeCurrent > 0
-        ? batteryUserChargeCurrent
-        : recommendedChargeCurrent;
+    final usedChargeCurrent = batteryUserChargeCurrent > 0 ? batteryUserChargeCurrent : recommendedChargeCurrent;
 
-    chargingTime = usedChargeCurrent > 0
-        ? totalCapacity / usedChargeCurrent
-        : 0;
+    chargingTime = usedChargeCurrent > 0 ? totalCapacity / usedChargeCurrent : 0;
 
     final energy = batteryVoltage * totalCapacity;
     double dischargingTime = energy * (dod / 100) / peakLoadWatt;
