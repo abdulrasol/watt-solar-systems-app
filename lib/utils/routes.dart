@@ -5,7 +5,7 @@ import 'package:solar_hub/features/community/screens/notifications_page.dart';
 import 'package:solar_hub/features/community/screens/post_details_page.dart';
 import 'package:solar_hub/features/company_dashboard/screens/main_dashboard_page.dart';
 import 'package:solar_hub/features/store/screens/cart_page.dart';
-import 'package:solar_hub/layouts/shared/auth/auth_page.dart';
+import 'package:solar_hub/features/auth/layouts/auth/auth_page.dart';
 import 'package:solar_hub/features/calculations/layouts/calculator_landing_page.dart';
 import 'package:solar_hub/features/calculations/old/wires_calculator.dart';
 import 'package:solar_hub/features/calculations/layouts/tools/direction_calculator.dart';

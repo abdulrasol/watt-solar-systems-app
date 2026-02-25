@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/controllers/company_controller.dart';
 import 'package:solar_hub/features/company_dashboard/screens/main_dashboard_page.dart';
 

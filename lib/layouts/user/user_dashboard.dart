@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
-import 'package:solar_hub/features/profile/controllers/profile_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/controllers/home_controller.dart';
 import 'package:solar_hub/utils/app_theme.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -12,7 +11,6 @@ class UserDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
-    final profileController = Get.isRegistered<ProfileController>() ? Get.find<ProfileController>() : Get.put(ProfileController());
 
     // Mock stats for now (could be real fetches)
     return SingleChildScrollView(
@@ -42,7 +40,7 @@ class UserDashboard extends StatelessWidget {
                         Text('good_morning'.tr, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
                         const SizedBox(height: 8),
                         Obx(() {
-                          final name = profileController.currentProfile.value?.fullName;
+                          final name = authController.user.value?.fullName;
                           final emailName = authController.user.value?.email?.split('@')[0];
                           return Text(
                             (name != null && name.isNotEmpty) ? name : (emailName ?? 'User'),

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:solar_hub/features/systems/controllers/systems_controller.dart';
 import 'package:solar_hub/features/systems/models/system_model.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/utils/app_theme.dart';
 import 'package:solar_hub/utils/toast_service.dart';
 
@@ -309,7 +309,7 @@ class _SystemFormPageState extends State<SystemFormPage> {
     }
 
     // If Company Adding, use selected user
-    String? userIdToSave = widget.isUserView ? Get.find<AuthController>().user.value?.id : _selectedUserId;
+    String? userIdToSave = widget.isUserView ? Get.find<AuthController>().user.value?.id.toString() : _selectedUserId;
     String? userPhoneToSave;
 
     if (widget.isUserView) {
@@ -345,8 +345,7 @@ class _SystemFormPageState extends State<SystemFormPage> {
     bool result = false;
     if (newSystem.id == null) {
       if (widget.isUserView && userIdToSave != null) {
-        final profileExists = await Get.find<AuthController>().checkProfileExists(userIdToSave);
-        if (!profileExists) {
+        if (Get.find<AuthController>().isSigned.value == false) {
           ToastService.warning("Profile Incomplete", "Please complete your profile details first to add a system.");
           return;
         }

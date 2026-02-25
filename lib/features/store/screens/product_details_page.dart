@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solar_hub/features/store/controllers/cart_controller.dart';
 import 'package:solar_hub/features/store/models/product_model.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:solar_hub/features/store/widgets/store_image.dart';
 import 'package:solar_hub/utils/toast_service.dart';
@@ -135,7 +135,7 @@ class _ProductPageState extends State<ProductPage> {
 
                   // Pricing Tiers
                   Obx(() {
-                    bool isCompanyMember = authController.role.value == 'company_member' || authController.user.value?.appMetadata['company_id'] != null;
+                    bool isCompanyMember = authController.role.value == 'company_member';
                     if (isCompanyMember && product.pricingTiers.isNotEmpty) {
                       return _buildWholesalePricing(theme, product);
                     }

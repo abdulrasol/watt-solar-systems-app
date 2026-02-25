@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/core/di/get_it.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/controllers/company_controller.dart';
 import 'package:solar_hub/features/admin/controllers/app_config_controller.dart';
+import 'package:solar_hub/features/auth/services/auth_services.dart';
 import 'package:solar_hub/features/company_dashboard/screens/main_dashboard_page.dart';
 import 'package:solar_hub/services/theme_service.dart';
 import 'package:solar_hub/utils/app_theme.dart';
@@ -47,7 +49,7 @@ class AppDrawer extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
                       Obx(() {
-                        if (authController.isSignedIn) {
+                        if (authController.isSigned.value) {
                           return Column(
                             children: [
                               _buildDrawerItem(
@@ -138,7 +140,7 @@ class AppDrawer extends StatelessWidget {
       ),
       child: Obx(() {
         final user = authController.user.value;
-        final email = user?.email ?? "Guest User";
+        final name = user?.firstName ?? "Guest User";
         final isGuest = user == null;
 
         return Row(
@@ -152,7 +154,7 @@ class AppDrawer extends StatelessWidget {
                 child: isGuest
                     ? const Icon(Iconsax.user_bold, size: 28, color: Colors.grey)
                     : Text(
-                        email[0].toUpperCase(),
+                        name[0].toUpperCase(),
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
                       ),
               ),
@@ -165,7 +167,7 @@ class AppDrawer extends StatelessWidget {
                   Text(isGuest ? "Welcome, Guest" : "Hello,", style: const TextStyle(color: Colors.white70, fontSize: 13)),
                   const SizedBox(height: 4),
                   Text(
-                    email,
+                    name,
                     style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -224,17 +226,17 @@ class AppDrawer extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  if (authController.isSignedIn) {
-                    await authController.logOut();
+                  if (authController.isSigned.value) {
+                    await getIt<AuthServices>().logout();
                   } else {
                     Get.toNamed('/auth');
                   }
                 },
-                icon: Icon(authController.isSignedIn ? Iconsax.logout_bold : Iconsax.login_bold, size: 20),
-                label: Text(authController.isSignedIn ? "Sign Out" : "Sign In"),
+                icon: Icon(authController.isSigned.value ? Iconsax.logout_bold : Iconsax.login_bold, size: 20),
+                label: Text(authController.isSigned.value ? "Sign Out" : "Sign In"),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: authController.isSignedIn ? Colors.red.withValues(alpha: 0.1) : AppTheme.primaryColor,
-                  foregroundColor: authController.isSignedIn ? Colors.red : Colors.white,
+                  backgroundColor: authController.isSigned.value ? Colors.red.withValues(alpha: 0.1) : AppTheme.primaryColor,
+                  foregroundColor: authController.isSigned.value ? Colors.red : Colors.white,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

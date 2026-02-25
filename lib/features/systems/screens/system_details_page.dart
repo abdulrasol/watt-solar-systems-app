@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:solar_hub/features/systems/controllers/systems_controller.dart';
 import 'package:solar_hub/features/systems/models/system_model.dart';
 import 'package:solar_hub/features/systems/screens/system_form_page.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/utils/app_theme.dart';
 import 'package:solar_hub/features/store/screens/company_store_page.dart';
 import 'package:solar_hub/layouts/shared/widgets/system_page_info_card_widget.dart';

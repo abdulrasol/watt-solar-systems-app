@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:solar_hub/controllers/company_controller.dart';
-import 'package:solar_hub/features/profile/controllers/company_profile_controller.dart';
 import 'package:solar_hub/controllers/currency_controller.dart';
+import 'package:solar_hub/core/cashe/cashe_interface.dart';
+import 'package:solar_hub/core/di/get_it.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/models/company.dart';
+import 'package:solar_hub/features/auth/services/auth_services.dart';
 import 'package:solar_hub/models/currency_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -19,7 +23,8 @@ class EditCompanyProfilePage extends StatefulWidget {
 }
 
 class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
-  final controller = Get.find<CompanyProfileController>();
+  final authServices = getIt<AuthServices>();
+  final AuthController authController = Get.find();
   final currencyController = Get.put(CurrencyController()); // Ensure it's available
   final _formKey = GlobalKey<FormState>();
 
@@ -34,23 +39,29 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
   File? _selectedImage;
   String? _uploadedLogoUrl;
   String? _selectedCurrencyId;
+  late final Company company;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: controller.currentCompany.value?.name ?? '');
-    _descriptionController = TextEditingController(text: controller.currentCompany.value?.description ?? '');
-    _addressController = TextEditingController(text: controller.currentCompany.value?.address ?? '');
-    _phoneController = TextEditingController(text: controller.currentCompany.value?.contactPhone ?? '');
+    if (authController.company.value == null) {
+      Get.back();
+      Get.snackbar('Error', 'Company not found', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+    company = authController.company.value!;
+    _nameController = TextEditingController(text: company.name);
+    _descriptionController = TextEditingController(text: company.description);
+    _addressController = TextEditingController(text: company.address);
 
-    _allowsB2B = controller.currentCompany.value?.allowsB2B ?? true;
-    _allowsB2C = controller.currentCompany.value?.allowsB2C ?? true;
+    _allowsB2B = company.allowsB2B;
+    _allowsB2C = company.allowsB2C;
 
-    _uploadedLogoUrl = controller.currentCompany.value?.logoUrl;
-    _selectedCurrencyId = controller.currentCompany.value?.currencyId;
+    _uploadedLogoUrl = company.logo;
+    //    _selectedCurrencyId = authController.company.currencyId;
 
     // Check permissions
-    if (!controller.canEdit()) {
+    if (!authController.canEdit) {
       Future.delayed(Duration.zero, () {
         Get.back();
         Get.snackbar('Permission Denied', 'Only owners and managers can edit company profile', snackPosition: SnackPosition.BOTTOM);
@@ -85,31 +96,36 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
 
     String? logoUrl = _uploadedLogoUrl;
 
-    // Upload new logo if selected
-    if (_selectedImage != null) {
-      logoUrl = await controller.uploadLogo(_selectedImage!);
-      if (logoUrl == null) {
-        Get.snackbar('Error', controller.errorMessage.value, snackPosition: SnackPosition.BOTTOM);
-        return;
-      }
-    }
+    // // Upload new logo if selected
+    // if (_selectedImage != null) {
+    //   logoUrl = await authServices.uploadLogo(_selectedImage!);
+    //   if (logoUrl == null) {
+    //     Get.snackbar('Error', authServices.errorMessage.value, snackPosition: SnackPosition.BOTTOM);
+    //     return;
+    //   }
+    // }
 
-    final success = await controller.updateCompany(
+    final newCompany = Company(
+      id: company.id,
       name: _nameController.text.trim(),
+      companyType: company.companyType,
       description: _descriptionController.text.trim(),
-      logoUrl: logoUrl,
       address: _addressController.text.trim(),
-      contactPhone: _phoneController.text.trim(),
       allowsB2B: _allowsB2B,
       allowsB2C: _allowsB2C,
+      status: company.status,
+      tier: company.tier,
+      logo: logoUrl,
+      city: company.city,
+      expireDate: company.expireDate,
+      createdAt: company.createdAt,
+      updatedAt: company.updatedAt,
     );
 
-    if (success) {
-      // Update currency if changed
-      if (_selectedCurrencyId != null && _selectedCurrencyId != controller.currentCompany.value?.currencyId) {
-        final companyController = Get.find<CompanyController>();
-        await companyController.updateCompanyCurrency(_selectedCurrencyId!);
-      }
+    Company? updatedCompany = await authServices.updateCompany(newCompany);
+
+    if (updatedCompany != null) {
+      getIt<CasheInterface>().save('company', updatedCompany.toJson());
 
       // Navigate back using Navigator instead of Get to avoid snackbar conflicts
       if (mounted) {
@@ -121,9 +137,8 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
     } else {
       // Show error snackbar using ScaffoldMessenger to avoid GetX overlay issues
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(controller.errorMessage.value), backgroundColor: Colors.red, behavior: SnackBarBehavior.floating));
+        // TODO: translate error message
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('get error'.tr), backgroundColor: Colors.red, behavior: SnackBarBehavior.floating));
       }
     }
   }
@@ -136,8 +151,8 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
         actions: [
           Obx(
             () => TextButton(
-              onPressed: controller.isLoading.value ? null : _saveCompany,
-              child: controller.isLoading.value ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('Save'),
+              onPressed: authServices.isLoading ? null : _saveCompany,
+              child: authServices.isLoading ? SizedBox(width: 20.w, height: 20.h, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('Save'),
             ),
           ),
         ],
@@ -294,9 +309,9 @@ class _EditCompanyProfilePageState extends State<EditCompanyProfilePage> {
                 width: double.infinity,
                 child: Obx(
                   () => ElevatedButton.icon(
-                    onPressed: controller.isLoading.value ? null : _saveCompany,
+                    onPressed: authServices.isLoading ? null : _saveCompany,
                     icon: const Icon(Iconsax.tick_circle_bold),
-                    label: controller.isLoading.value ? const Text('Saving...') : const Text('Save Changes'),
+                    label: authServices.isLoading ? const Text('Saving...') : const Text('Save Changes'),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

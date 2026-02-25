@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/controllers/company_controller.dart';
 import 'package:solar_hub/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/core/di/get_it.dart';

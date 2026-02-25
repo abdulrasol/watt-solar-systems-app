@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solar_hub/features/systems/controllers/systems_controller.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/features/systems/widgets/system_card.dart';
 import 'package:solar_hub/features/systems/screens/system_form_page.dart';
 import 'package:solar_hub/features/systems/screens/system_details_page.dart';

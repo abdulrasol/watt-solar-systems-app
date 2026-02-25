@@ -8,7 +8,7 @@ import 'package:solar_hub/models/company_model.dart';
 import 'package:solar_hub/features/systems/screens/system_details_page.dart';
 import 'package:solar_hub/features/systems/widgets/system_card.dart'; // Added SystemCard import
 import 'package:solar_hub/features/store/widgets/store_image.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 
 class ShopPage extends StatefulWidget {
   final CompanyModel company;

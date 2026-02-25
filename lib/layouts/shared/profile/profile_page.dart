@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:solar_hub/controllers/data_controller.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
-import 'package:solar_hub/features/profile/controllers/profile_controller.dart';
+import 'package:solar_hub/core/di/get_it.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/services/auth_services.dart';
 import 'package:solar_hub/utils/app_theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -14,7 +15,6 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
     final dataController = Get.put(DataController());
-    final profileController = Get.put(ProfileController());
     final user = authController.user.value;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -22,7 +22,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
         actions: [
-          if (authController.isSignedIn)
+          if (authController.isSigned.value)
             IconButton(
               icon: const Icon(Iconsax.edit_2_bold),
               onPressed: () async {
@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                     const SnackBar(content: Text('Profile updated successfully'), backgroundColor: Colors.green, behavior: SnackBarBehavior.floating),
                   );
                   // Refresh profile data
-                  profileController.fetchProfile(user?.id ?? '');
+                  //  profileController.fetchProfile(user?.id ?? '');
                 }
               },
               tooltip: 'Edit Profile',
@@ -47,7 +47,7 @@ class ProfilePage extends StatelessWidget {
             // Avatar
             Center(
               child: Obx(() {
-                final profile = profileController.currentProfile.value;
+                final profile = authController.user.value;
                 return Stack(
                   children: [
                     Container(
@@ -58,15 +58,15 @@ class ProfilePage extends StatelessWidget {
                       ),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: (profile?.avatarUrl != null && profile!.avatarUrl!.isNotEmpty) ? CachedNetworkImageProvider(profile.avatarUrl!) : null,
+                        backgroundImage: (profile?.image != null && profile!.image!.isNotEmpty) ? CachedNetworkImageProvider(profile.image!) : null,
                         backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
-                        child: (profile?.avatarUrl == null || profile!.avatarUrl!.isEmpty)
+                        child: (profile?.image == null || profile!.image!.isEmpty)
                             ? Text(
-                                (profile?.fullName?.isNotEmpty == true)
-                                    ? profile!.fullName![0].toUpperCase()
-                                    : (user?.email?.isNotEmpty == true)
-                                    ? user!.email![0].toUpperCase()
-                                    : 'G',
+                                (profile?.firstName != null && profile!.firstName!.isNotEmpty)
+                                    ? profile.firstName![0].toUpperCase()
+                                    : (user?.email != null && user!.email!.isNotEmpty)
+                                    ? user.email![0].toUpperCase()
+                                    : 'S',
                                 style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                               )
                             : null,
@@ -79,12 +79,12 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(height: 16),
             // Name and Phone
             Obx(() {
-              final profile = profileController.currentProfile.value;
+              final profile = authController.user.value;
               return Column(
                 children: [
-                  Text(profile?.fullName ?? user?.email ?? 'Guest User', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  if (profile?.phoneNumber != null && profile!.phoneNumber!.isNotEmpty) Text(profile.phoneNumber!, style: TextStyle(color: Colors.grey[600])),
-                  if (user?.id != null) Text('ID: ${user?.id.substring(0, 8)}...', style: TextStyle(color: Colors.grey[600])),
+                  Text(profile?.firstName ?? user?.email ?? 'Guest User', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  if (profile?.phone != null && profile!.phone!.isNotEmpty) Text(profile.phone!, style: TextStyle(color: Colors.grey[600])),
+                  if (user?.id != null) Text('ID: ${user?.id}...', style: TextStyle(color: Colors.grey[600])),
                 ],
               );
             }),
@@ -131,13 +131,13 @@ class ProfilePage extends StatelessWidget {
               );
             }),
             const SizedBox(height: 24),
-            if (authController.isSignedIn) ...[
+            if (authController.isSigned.value) ...[
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    await authController.logOut();
+                    await getIt<AuthServices>().logout();
                     Get.offAllNamed('/home');
                   },
                   icon: const Icon(Iconsax.logout_bold),

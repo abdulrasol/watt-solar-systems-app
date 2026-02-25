@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/features/company_dashboard/screens/company_dashboard_page.dart';
 import 'package:solar_hub/layouts/company/analytics_page.dart';
 import 'package:solar_hub/layouts/company/inventory_page.dart';
@@ -16,7 +17,6 @@ import 'package:solar_hub/features/orders/screens/purchases_company.dart';
 import 'package:solar_hub/layouts/company/subscription/subscription_page.dart';
 import 'package:solar_hub/features/pos/screens/pos_page.dart';
 import 'package:solar_hub/features/profile/screens/company_profile_page.dart';
-import 'package:solar_hub/features/profile/controllers/company_profile_controller.dart';
 import 'package:solar_hub/controllers/company_controller.dart';
 import 'package:solar_hub/features/store/screens/merchant/delivery_options_page.dart';
 import 'package:solar_hub/controllers/subscription_controller.dart';
@@ -61,31 +61,29 @@ class MainDashboardController extends GetxController {
       Obx(() {
         // Find the profile controller which should be put by the page or we find it here
         // Ideally the page puts it, but we need to ensure it's available.
-        if (Get.isRegistered<CompanyProfileController>()) {
-          final controller = Get.find<CompanyProfileController>();
-          if (controller.canEdit()) {
-            return IconButton(
-              icon: const Icon(Iconsax.edit_2_bold),
-              onPressed: () async {
-                final companyId = Get.find<CompanyController>().company.value?.id;
-                if (companyId != null) {
-                  final result = await Get.toNamed('/company/\$companyId/edit');
-                  if (result == true) {
-                    Get.snackbar(
-                      'success'.tr,
-                      'profile_updated_success'.tr,
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.green,
-                      colorText: Colors.white,
-                    );
-                    controller.fetchCompanyProfile(companyId);
-                  }
+        if (Get.find<AuthController>().role.value == 'company') {
+          return IconButton(
+            icon: const Icon(Iconsax.edit_2_bold),
+            onPressed: () async {
+              final companyId = Get.find<CompanyController>().company.value?.id;
+              if (companyId != null) {
+                final result = await Get.toNamed('/company/\$companyId/edit');
+                if (result == true) {
+                  Get.snackbar(
+                    'success'.tr,
+                    'profile_updated_success'.tr,
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.green,
+                    colorText: Colors.white,
+                  );
+                  //   controller.fetchCompanyProfile(companyId);
                 }
-              },
-              tooltip: 'edit_company'.tr,
-            );
-          }
+              }
+            },
+            tooltip: 'edit_company'.tr,
+          );
         }
+
         return const SizedBox.shrink();
       }),
     );

@@ -1,10 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:solar_hub/features/profile/controllers/profile_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:solar_hub/core/cashe/cashe_interface.dart';
+import 'package:solar_hub/core/di/get_it.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/services/auth_services.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -14,10 +18,12 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  final profileController = Get.put(ProfileController());
+  final authController = Get.put(AuthController());
+  final _authServices = getIt<AuthServices>();
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _nameController;
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
   late TextEditingController _phoneController;
   File? _selectedImage;
   String? _uploadedAvatarUrl;
@@ -25,14 +31,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: profileController.currentProfile.value?.fullName ?? '');
-    _phoneController = TextEditingController(text: profileController.currentProfile.value?.phoneNumber ?? '');
-    _uploadedAvatarUrl = profileController.currentProfile.value?.avatarUrl;
+    _firstNameController = TextEditingController(text: authController.user.value?.firstName ?? '');
+    _lastNameController = TextEditingController(text: authController.user.value?.lastName ?? '');
+    _phoneController = TextEditingController(text: authController.user.value?.phone ?? '');
+    _uploadedAvatarUrl = authController.user.value?.image;
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
@@ -93,30 +101,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
     String? avatarUrl = _uploadedAvatarUrl;
 
     // Upload new image if selected
-    if (_selectedImage != null) {
-      avatarUrl = await profileController.uploadAvatar(_selectedImage!);
-      if (avatarUrl == null) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(profileController.errorMessage.value), backgroundColor: Colors.red));
-        }
-        return;
-      }
-    }
 
-    final success = await profileController.updateProfile(
-      fullName: _nameController.text.trim(),
+    final newUser = await _authServices.updateProfile(
+      fullName: _firstNameController.text.trim(),
       phoneNumber: _phoneController.text.trim(),
       avatarUrl: avatarUrl,
     );
 
-    if (success) {
+    if (newUser != null) {
+      getIt<CasheInterface>().saveUser(newUser);
       if (mounted) Navigator.of(context).pop(true);
     } else {
       // Show error snackbar using ScaffoldMessenger to avoid GetX overlay issues
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(profileController.errorMessage.value), backgroundColor: Colors.red, behavior: SnackBarBehavior.floating));
+        ).showSnackBar(SnackBar(content: Text('error save masege '.tr), backgroundColor: Colors.red, behavior: SnackBarBehavior.floating));
       }
     }
   }
@@ -129,10 +129,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         actions: [
           Obx(
             () => TextButton(
-              onPressed: profileController.isLoading.value ? null : _saveProfile,
-              child: profileController.isLoading.value
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                  : const Text('Save'),
+              onPressed: _authServices.isLoading ? null : _saveProfile,
+              child: _authServices.isLoading ? SizedBox(width: 20.w, height: 20.h, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('Save'),
             ),
           ),
         ],
@@ -188,7 +186,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
               // Full Name Field
               TextFormField(
-                controller: _nameController,
+                controller: _firstNameController,
                 decoration: InputDecoration(
                   labelText: 'Full Name',
                   prefixIcon: const Icon(Iconsax.user_outline),
@@ -217,7 +215,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Please enter your phone number';
                   }
-                  if (!profileController.validatePhoneNumber(value.trim())) {
+                  if (!GetUtils.isPhoneNumber(value.trim())) {
                     return 'Please enter a valid phone number with country code (e.g., +1234567890)';
                   }
                   return null;
@@ -230,11 +228,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 width: double.infinity,
                 child: Obx(
                   () => ElevatedButton.icon(
-                    onPressed: profileController.isLoading.value ? null : _saveProfile,
+                    onPressed: _authServices.isLoading ? null : _saveProfile,
                     icon: const Icon(Iconsax.tick_circle_bold),
-                    label: profileController.isLoading.value ? const Text('Saving...') : const Text('Save Changes'),
+                    label: _authServices.isLoading ? const Text('Saving...') : const Text('Save Changes'),
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16.r),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                   ),

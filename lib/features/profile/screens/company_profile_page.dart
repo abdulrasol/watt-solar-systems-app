@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/features/profile/controllers/company_profile_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/utils/app_theme.dart';
 import 'package:solar_hub/layouts/company/systems/company_systems_page.dart';
 import 'package:solar_hub/features/company_dashboard/controllers/main_dashboard_controller.dart';
@@ -17,25 +17,21 @@ class CompanyProfilePage extends StatefulWidget {
 }
 
 class _CompanyProfilePageState extends State<CompanyProfilePage> {
-  final controller = Get.put(CompanyProfileController());
+  final controller = Get.find<AuthController>();
 
   @override
   void initState() {
     super.initState();
-    controller.fetchCompanyProfile(widget.companyId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isLoading.value && controller.currentCompany.value == null) {
+      if (controller.user.value?.company == null) {
         return const Center(child: CircularProgressIndicator());
       }
 
-      final company = controller.currentCompany.value;
-      if (company == null) {
-        return Center(child: Text(controller.errorMessage.value.isNotEmpty ? controller.errorMessage.value : 'Company not found'));
-      }
+      final company = controller.user.value!.company!;
 
       return Scaffold(
         backgroundColor: Colors.transparent,
@@ -54,9 +50,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                 ),
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundImage: (company.logoUrl != null && company.logoUrl!.isNotEmpty) ? CachedNetworkImageProvider(company.logoUrl!) : null,
+                  backgroundImage: (company.logo != null && company.logo!.isNotEmpty) ? CachedNetworkImageProvider(company.logo!) : null,
                   backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[200],
-                  child: (company.logoUrl == null || company.logoUrl!.isEmpty) ? Icon(Iconsax.building_bold, size: 50, color: Colors.grey[600]) : null,
+                  child: (company.logo == null || company.logo!.isEmpty) ? Icon(Iconsax.building_bold, size: 50, color: Colors.grey[600]) : null,
                 ),
               ),
               const SizedBox(height: 16),
@@ -64,11 +60,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
               Text(company.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               // Description
-              if (company.description != null && company.description!.isNotEmpty)
+              if (company.description.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Text(
-                    company.description!,
+                    company.description,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey[600]),
                   ),
@@ -85,37 +81,37 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                     _buildStatCard(
                       icon: Iconsax.people_bold,
                       label: 'members'.tr,
-                      value: controller.memberCount.value.toString(),
+                      value: '10', // TODO need to get value from api
                       onTap: () => _navigateTo(10, 'members'),
                     ),
                     _buildStatCard(
                       icon: Iconsax.setting_2_bold,
                       label: 'systems'.tr,
-                      value: controller.systemsCount.value.toString(),
+                      value: '12', // TODO need to get value from api
                       onTap: () => Get.to(() => CompanySystemsPage(companyId: widget.companyId)),
                     ),
                     _buildStatCard(
                       icon: Iconsax.box_bold,
                       label: 'products'.tr,
-                      value: controller.productsCount.value.toString(),
+                      value: '12', // TODO need to get value from api
                       onTap: _hasPermission(['owner', 'manager', 'inventory_manager', 'installer']) ? () => _navigateTo(4, 'inventory') : null,
                     ),
                     _buildStatCard(
                       icon: Iconsax.shopping_cart_bold,
                       label: 'orders'.tr,
-                      value: controller.ordersCount.value.toString(),
+                      value: '12', // TODO need to get value from api
                       onTap: _hasPermission(['owner', 'manager', 'sales', 'accountant']) ? () => _navigateTo(6, 'orders') : null,
                     ),
                     _buildStatCard(
                       icon: Iconsax.profile_2user_bold,
                       label: 'customers'.tr,
-                      value: controller.customersCount.value.toString(),
+                      value: '12', // TODO need to get value from api
                       onTap: _hasPermission(['owner', 'manager', 'sales', 'accountant']) ? () => _navigateTo(12, 'customers') : null,
                     ),
                     _buildStatCard(
                       icon: Icons.local_shipping,
                       label: 'Delivery Rules',
-                      value: '',
+                      value: '', // TODO need to get value from api
                       onTap: _hasPermission(['owner', 'manager']) ? () => _navigateTo(15, 'delivery') : null,
                     ),
                   ],
@@ -124,7 +120,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
               const SizedBox(height: 32),
 
               // Contact Info
-              if ((company.address != null && company.address!.isNotEmpty) || (company.contactPhone != null && company.contactPhone!.isNotEmpty)) ...[
+              // if ((company.address != null && company.address!.isNotEmpty) || (company != null && company.contactPhone!.isNotEmpty)) ...[ TODO
+              if ((company.address != null && company.address!.isNotEmpty)) ...[
                 _buildSectionHeader('contact_info'.tr),
                 const SizedBox(height: 12),
                 Container(
@@ -147,19 +144,19 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                           title: Text('address'.tr, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
                           subtitle: Text(company.address!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                         ),
-                      if (company.address != null && company.address!.isNotEmpty && company.contactPhone != null && company.contactPhone!.isNotEmpty)
-                        Divider(height: 24, color: Colors.grey.withValues(alpha: 0.1)),
-                      if (company.contactPhone != null && company.contactPhone!.isNotEmpty)
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
-                            child: const Icon(Iconsax.call_bold, color: AppTheme.primaryColor, size: 20),
-                          ),
-                          title: Text('phone_label'.tr, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-                          subtitle: Text(company.contactPhone!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      //    if (company.address != null && company.address!.isNotEmpty && company.contactPhone != null && company.contactPhone!.isNotEmpty)
+                      //     Divider(height: 24, color: Colors.grey.withValues(alpha: 0.1)),
+                      //     if (company.contactPhone != null && company.contactPhone!.isNotEmpty) // TODO
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+                          child: const Icon(Iconsax.call_bold, color: AppTheme.primaryColor, size: 20),
                         ),
+                        title: Text('phone_label'.tr, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                        //       subtitle: Text(company.contactPhone!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      ),
                     ],
                   ),
                 ),
@@ -212,9 +209,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
 
   bool _hasPermission(List<String> allowedRoles) {
     // If no role (public viewer), no permission
-    if (controller.userRole.value == null) return false;
+    if (controller.user.value == null) return false;
     // Check if role is in allowed list
-    return allowedRoles.contains(controller.userRole.value);
+    return allowedRoles.contains(controller.role.value);
   }
 
   Widget _buildSectionHeader(String title) {

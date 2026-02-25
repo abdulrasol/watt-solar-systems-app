@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/services/auth_services.dart';
 import 'package:solar_hub/services/localization_service.dart';
 import 'package:solar_hub/services/theme_service.dart';
 import 'package:solar_hub/utils/app_theme.dart';
@@ -61,7 +62,7 @@ class AdminSettingsPage extends StatelessWidget {
                 _buildListTile(
                   icon: Iconsax.profile_circle_bold,
                   title: 'Admin ID',
-                  trailing: Text(authController.user.value?.id.substring(0, 8) ?? "N/A", style: const TextStyle(color: Colors.grey)),
+                  trailing: Text(authController.user.value?.firstName ?? "N/A", style: const TextStyle(color: Colors.grey)),
                 ),
                 const Divider(height: 1, indent: 56),
                 _buildListTile(
@@ -77,7 +78,7 @@ class AdminSettingsPage extends StatelessWidget {
                   titleColor: Colors.red,
                   iconColor: Colors.red,
                   onTap: () {
-                    authController.logOut();
+                    Get.find<AuthServices>().logout();
                     Get.offAllNamed('/auth');
                   },
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),

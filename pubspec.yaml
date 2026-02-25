@@ -68,6 +68,7 @@ dependencies:
   sqflite_common_ffi: ^2.3.7+1
   get_it: ^9.2.0
   dio: ^5.9.1
+  flutter_screenutil: ^5.9.3
 
   
 dev_dependencies:

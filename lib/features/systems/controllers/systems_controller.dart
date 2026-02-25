@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solar_hub/features/systems/models/system_model.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/services/supabase_service.dart';
 import 'package:solar_hub/models/company_model.dart';
 import 'package:solar_hub/utils/toast_service.dart';
@@ -25,9 +25,8 @@ class SystemsController extends GetxController {
     fetchPublicSystems();
 
     // Check if user has company and fetch
-    final user = _auth.user.value;
-    final companyId = user?.appMetadata['company_id'] as String?;
-    if (companyId != null) {
+    String? companyId = _auth.company.value?.id.toString();
+    if (companyId != null && companyId.isNotEmpty) {
       fetchCompanySystems(companyId);
     }
   }
@@ -91,12 +90,12 @@ class SystemsController extends GetxController {
       if (user == null) return;
       // print(user.phone);
       final phone = user.phone;
-      if (phone == null) {
+      if (phone == null || phone.isEmpty) {
         debugPrint("User phone is null, cannot fetch systems");
         return;
       }
 
-      final systems = await fetchSystemsUnified(type: SystemFilterType.user, id: user.id);
+      final systems = await fetchSystemsUnified(type: SystemFilterType.user, id: phone);
       mySystems.assignAll(systems);
     } finally {
       isLoading.value = false;

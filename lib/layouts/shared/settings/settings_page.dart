@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/controllers/auth_controller.dart';
+import 'package:solar_hub/features/auth/controllers/auth_controller.dart';
 import 'package:solar_hub/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/core/di/get_it.dart';
+import 'package:solar_hub/features/auth/services/auth_services.dart';
 import 'package:solar_hub/services/localization_service.dart';
 import 'package:solar_hub/services/theme_service.dart';
 import 'package:solar_hub/utils/app_theme.dart';
@@ -92,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   titleColor: Colors.red,
                   iconColor: Colors.red,
                   onTap: () {
-                    _authController.logOut();
+                    getIt<AuthServices>().logout();
                     Get.offAllNamed('/auth');
                   },
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
