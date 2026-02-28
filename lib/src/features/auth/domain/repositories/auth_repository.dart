@@ -1,0 +1,25 @@
+import 'package:solar_hub/src/features/auth/domain/entities/auth_response.dart';
+import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
+import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
+import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
+import 'package:solar_hub/src/features/auth/domain/entities/company_register_model.dart';
+import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
+import 'package:solar_hub/src/features/auth/domain/entities/user_register_model.dart';
+
+abstract class AuthRepository {
+  Future<AuthResponse> login(String username, String password);
+
+  Future<AuthResponse> register(UserRegisterModel userRegisterModel);
+
+  Future<User> updateProfile(UserRegisterModel userRegisterModel);
+
+  Future<User> fetchProfile();
+
+  Future<void> logout();
+
+  Future<List<Country>> getCountries();
+
+  Future<List<City>> getCities({int? countryId});
+
+  Future<Company> registerCompany(CompanyRegistrationModel companyRegistrationModel);
+}

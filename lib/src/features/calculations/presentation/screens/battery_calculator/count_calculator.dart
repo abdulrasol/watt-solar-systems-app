@@ -1,0 +1,307 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
+import 'package:solar_hub/src/features/calculations/presentation/widgets/input_text.dart';
+import 'package:solar_hub/src/features/calculations/presentation/widgets/save_to_system_dialog.dart';
+import 'package:solar_hub/src/features/calculations/presentation/widgets/text_helper_card.dart';
+import 'package:solar_hub/src/utils/app_constants.dart';
+import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
+import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
+import 'package:validatorless/validatorless.dart';
+
+class CountCalculator extends ConsumerStatefulWidget {
+  const CountCalculator({super.key});
+
+  @override
+  ConsumerState<CountCalculator> createState() => _CountCalculatorState();
+}
+
+class _CountCalculatorState extends ConsumerState<CountCalculator> {
+  final current = TextEditingController(text: '0');
+  final batteryVoltage = TextEditingController(text: '0');
+  final batteryCurrent = TextEditingController(text: '0');
+
+  final time = TextEditingController(text: '0');
+
+  //  Default value for Depth of Discharge (DoD)
+  num depthOfDischarge = 80;
+
+  num systemVoltage = 230;
+
+  num batteryCount = 0;
+  num batteryAh = 0;
+
+  Widget divider = verSpace(space: 18.h);
+
+  // String? _updateBatteryCount(String? v) {
+
+  //   final ampereInput = num.tryParse(current.text) ?? 0;
+  //   final voltageInput = num.tryParse(batteryVoltage.text) ?? 0;
+  //   final currentInput = num.tryParse(batteryCurrent.text) ?? 0;
+  //   final timeInput = num.tryParse(time.text) ?? 0;
+  //   final dod = depthOfDischarge;
+  //   final userPower = ampereInput * systemVoltage;
+  //   if (userPower > 0 &&
+  //       voltageInput > 0 &&
+  //       currentInput > 0 &&
+  //       timeInput > 0) {
+  //     // update data controller
+  //     // dataContrller.batteryCalculatedData['user-current'] = ampereInput;
+  //     // dataContrller.batteryCalculatedData['ac-voltage-system'] =
+  //     //     systemVoltage;
+  //     // dataContrller.batteryCalculatedData['user-battery-voltage'] =
+  //     //     voltageInput;
+  //     // dataContrller.batteryCalculatedData['user-battery-ampere'] =
+  //     //     currentInput;
+  //     // dataContrller.batteryCalculatedData['user-battery-runtime'] =
+  //     //     timeInput;
+  //     // dataContrller.batteryCalculatedData['user-battery-depht'] = dod;
+
+  //     final requiredEnergy = userPower * timeInput;
+  //     final batteryCapacity = voltageInput * currentInput * (dod / 100);
+
+  //     final result = requiredEnergy / batteryCapacity;
+
+  //     setState(() {
+  //       batteryCount = result.ceil(); // تقريب للأعلى
+  //     });
+  //   } else {
+  //     setState(() {
+  //       batteryCount = 0;
+  //     });
+  //   }
+  //   return null;
+  // }
+
+  String? _updateBatteryCount(String? v) {
+    final ampereInput = num.tryParse(current.text) ?? 0;
+    final voltageInput = num.tryParse(batteryVoltage.text) ?? 0;
+    final currentInput = num.tryParse(batteryCurrent.text) ?? 0;
+    final timeInput = num.tryParse(time.text) ?? 0;
+    final dod = depthOfDischarge;
+    num dailyUsageKWh = ampereInput * systemVoltage * timeInput;
+    if (dailyUsageKWh > 0 && voltageInput > 0 && currentInput > 0 && timeInput > 0) {
+      Map batterybank = HomeSolarSystemCalculator.calculateBatteryBank(
+        dailyUsageKWh: dailyUsageKWh.toDouble(),
+        batteryVoltage: voltageInput.toDouble(),
+        batteryCapacityAh: currentInput.toDouble(),
+        dod: dod.toDouble(),
+      );
+      setState(() {
+        batteryAh = batterybank['totalAhNeeded'];
+        batteryCount = batterybank['batteryCount'];
+      });
+    } else {
+      setState(() {
+        batteryCount = 0;
+      });
+    }
+    return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _updateBatteryCount(null);
+  }
+
+  Future<void> _saveSystem() async {
+    final controller = ref.read(systemsProvider.notifier);
+    final dialogResult = await showDialog(context: context, builder: (context) => const SaveToSystemDialog());
+
+    if (dialogResult != null && dialogResult is Map) {
+      final isNew = dialogResult['isNew'] as bool;
+      final existingSystem = dialogResult['system'] as SystemModel?;
+      final newName = dialogResult['name'] as String?;
+      final companyId = dialogResult['companyId'] as String?;
+
+      controller.saveSystemPart(
+        existingSystem: isNew ? null : existingSystem,
+        newSystemName: newName,
+        companyId: companyId,
+        partName: 'batteries',
+        data: {
+          'count': batteryCount,
+          'capacity_ah': double.tryParse(batteryCurrent.text) ?? 0,
+          'voltage': double.tryParse(batteryVoltage.text) ?? 0,
+          'type': depthOfDischarge >= 50 ? "Gel/AGM" : "Lithium/Tubular", // Simple heuristic based on helper text
+          'brand': 'Unknown',
+          'notes': 'DoD: ${depthOfDischarge.toInt()}%, System Voltage: $systemVoltage V',
+        },
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Hero(tag: '/battery', child: Image.asset('assets/png/cards/battery.png', height: 180)),
+                  verSpace(),
+                  ..._buildFormFields().animate(interval: 100.ms).fadeIn().slideY(),
+                  verSpace(space: 65),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 10,
+            right: 10,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '$batteryCount Batteries',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          // fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    if (batteryCount > 0) IconButton(onPressed: () => _saveSystem(), icon: const Icon(Iconsax.save_2_bold), tooltip: "Save to System"),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildFormFields() {
+    return [
+      // Hero(
+      //     tag: '/battery',
+      //     child: Image.asset('assets/png/cards/battery.png', height: 180)),
+      inputField(
+        null,
+        context: context,
+        label: 'your-load-ampere', // TODO: translate
+        hintText: 'e.g., 10', // TODO: translate
+        icon: FontAwesome.bolt_solid,
+        controller: current,
+        validator: Validatorless.multiple([
+          Validatorless.required('required'), // TODO: translate
+          Validatorless.number('numbers'), // TODO: translate
+        ]),
+        onChanged: _updateBatteryCount,
+      ),
+      _buildSystemVoltageSelector(context),
+      divider,
+      textHelperCard(
+        context,
+        text: 'Enter your load in Ampere and select AC Voltage System. Usually load calculate by: Voltage × Current. For example, 10A × 230V = 2300W.',
+      ),
+      divider,
+      inputField(
+        context: context,
+        null,
+        label: 'battery-amperes', // TODO: translate
+        hintText: 'e.g., 100 or 200',
+        icon: FontAwesome.i_solid,
+        controller: batteryCurrent,
+        validator: Validatorless.multiple([
+          Validatorless.required('required'), // TODO: translate
+          Validatorless.number('numbers'), // TODO: translate
+        ]),
+        onChanged: _updateBatteryCount,
+      ),
+      inputField(
+        context: context,
+        null,
+        label: 'battrey-voltage', // TODO: translate
+        hintText: 'e.g., 12, 24, 48 or 51.2',
+        icon: FontAwesome.v_solid,
+        controller: batteryVoltage,
+        validator: Validatorless.multiple([
+          Validatorless.required('required'), // TODO: translate
+          Validatorless.number('numbers'), // TODO: translate
+        ]),
+        onChanged: _updateBatteryCount,
+      ),
+      // divider,
+      inputField(
+        context: context,
+        'How many hours do you need your system to run on batteries?', // TODO: translate
+        label: 'Required Runtime (hours)', // TODO: translate
+        hintText: 'e.g., 5 or 8', // TODO: translate
+        icon: IonIcons.timer,
+        controller: time,
+        validator: Validatorless.multiple([
+          Validatorless.required('required'), // TODO: translate
+          Validatorless.number('numbers'), // TODO: translate
+        ]),
+        onChanged: _updateBatteryCount,
+      ),
+      verSpace(),
+      textHelperCard(
+        context,
+        text:
+            'The number of batteries needed is calculated as:\n\n'
+            '(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\n'
+            'Example: (2300W × 5h) ÷ (12V × 100Ah × 0.2) = ~8 batteries\n\n'
+            'This helps determine how many batteries you need to meet a specific load and runtime.', // TODO: translate
+      ),
+      divider,
+      Text('Depth of Discharge of Battery ($depthOfDischarge%)', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.start), // TODO: translate
+      verSpace(space: 8),
+      Slider(
+        value: depthOfDischarge.toDouble(),
+        min: 0,
+        max: 100,
+        divisions: 100,
+        label: '${depthOfDischarge.toStringAsFixed(0)}%',
+        onChanged: (value) {
+          setState(() {
+            depthOfDischarge = value;
+            _updateBatteryCount('value');
+          });
+        },
+      ),
+      verSpace(space: 4),
+      textHelperCard(
+        context,
+        text:
+            'Set the Depth of Discharge (DoD) percentage.\n\nTypical values range from 20% to 80% depending on battery type.\n\n• 20% for Lithium/Tubular\n• 50% for AGM/Gel\nCheck your battery\'s datasheet for best accuracy.', // TODO: translate
+      ),
+    ];
+  }
+
+  Widget _buildSystemVoltageSelector(BuildContext context) {
+    return DropdownButtonFormField<num>(
+      initialValue: systemVoltage,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        labelText: 'System Voltage (AC)',
+        prefixIcon: const Icon(Icons.electrical_services_rounded),
+      ),
+      items: const [
+        DropdownMenuItem(value: 110, child: Text('110 V')), // TODO: translate
+        DropdownMenuItem(value: 230, child: Text('230 V')), // TODO: translate
+        DropdownMenuItem(value: 380, child: Text('380 V (Three-phase)')), // TODO: translate
+      ],
+      onChanged: (value) {
+        setState(() {
+          systemVoltage = value ?? 230;
+          _updateBatteryCount(null);
+        });
+      },
+    );
+  }
+}
