@@ -8,9 +8,17 @@ class SystemsState {
   final List<SystemModel> installedSystems;
   final bool isLoading;
 
-  SystemsState({this.savedSystems = const [], this.installedSystems = const [], this.isLoading = false});
+  SystemsState({
+    this.savedSystems = const [],
+    this.installedSystems = const [],
+    this.isLoading = false,
+  });
 
-  SystemsState copyWith({List<SystemModel>? savedSystems, List<SystemModel>? installedSystems, bool? isLoading}) {
+  SystemsState copyWith({
+    List<SystemModel>? savedSystems,
+    List<SystemModel>? installedSystems,
+    bool? isLoading,
+  }) {
     return SystemsState(
       savedSystems: savedSystems ?? this.savedSystems,
       installedSystems: installedSystems ?? this.installedSystems,
@@ -40,7 +48,12 @@ class SystemsProvider extends Notifier<SystemsState> {
       // Mocking fetch for now since Supabase was removed
       final fetched = <SystemModel>[];
 
-      state = state.copyWith(savedSystems: fetched, installedSystems: fetched.where((s) => s.installedByCompanyId != null).toList());
+      state = state.copyWith(
+        savedSystems: fetched,
+        installedSystems: fetched
+            .where((s) => s.installedByCompanyId != null)
+            .toList(),
+      );
     } catch (e) {
       debugPrint('Error fetching systems: $e');
     } finally {
@@ -59,13 +72,17 @@ class SystemsProvider extends Notifier<SystemsState> {
       final authState = ref.read(authProvider);
       if (authState.user == null) return;
 
-      Map<String, dynamic> newSpecs = existingSystem?.specs != null ? Map<String, dynamic>.from(existingSystem!.specs) : {};
+      Map<String, dynamic> newSpecs = existingSystem?.specs != null
+          ? Map<String, dynamic>.from(existingSystem!.specs)
+          : {};
 
       newSpecs[partName] = data;
 
       if (existingSystem != null) {
         // TODO: Implement API Update Call
-        debugPrint('TODO: Update system part "$partName" with new data for system ID ${existingSystem.id}');
+        debugPrint(
+          'TODO: Update system part "$partName" with new data for system ID ${existingSystem.id}',
+        );
       } else {
         // TODO: Implement API Create Call
         debugPrint('TODO: Create new system with part "$partName"');

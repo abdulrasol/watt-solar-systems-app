@@ -6,12 +6,14 @@ import 'package:solar_hub/src/features/calculations/presentation/widgets/calcula
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class WiresCalculatorPage extends ConsumerStatefulWidget {
   const WiresCalculatorPage({super.key});
 
   @override
-  ConsumerState<WiresCalculatorPage> createState() => _WiresCalculatorPageState();
+  ConsumerState<WiresCalculatorPage> createState() =>
+      _WiresCalculatorPageState();
 }
 
 class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
@@ -32,11 +34,17 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('wires_calc'), // TODO: translate
-        actions: [IconButton(onPressed: _showHelpDialog, icon: const Icon(Icons.help_outline))],
+        title: Text(l10n.wires_calc),
+        actions: [
+          IconButton(
+            onPressed: _showHelpDialog,
+            icon: const Icon(Icons.help_outline),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -48,7 +56,7 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              "Select your application type to get recommended wire gauge.",
+              l10n.wires_calc_intro,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ), // TODO: translate
@@ -58,16 +66,24 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
             DropdownButtonFormField<String>(
               initialValue: controller.wireCalcType,
               decoration: InputDecoration(
-                labelText: "Application Type", // TODO: translate
+                labelText: l10n.application_type,
                 border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 15,
+                ),
               ),
-              items: [
-                "DC Solar",
-                "DC Battery",
-                "AC Single Phase",
-                "AC Three Phase",
-              ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(), // TODO: translate
+              items:
+                  [
+                        ("DC Solar", l10n.dc_solar),
+                        ("DC Battery", l10n.dc_battery),
+                        ("AC Single Phase", l10n.ac_single_phase),
+                        ("AC Three Phase", l10n.ac_three_phase),
+                      ]
+                      .map(
+                        (e) => DropdownMenuItem(value: e.$1, child: Text(e.$2)),
+                      )
+                      .toList(),
               onChanged: (v) {
                 if (v == null) return;
                 controller.wireCalcType = v;
@@ -79,7 +95,9 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
                   controller.wireCalcVoltage = 12.0;
                   controller.wireCalcVoltageDrop = 1.0; // Critical for battery
                 } else if (v.startsWith("AC")) {
-                  controller.wireCalcVoltage = v == "AC Single Phase" ? 220.0 : 380.0;
+                  controller.wireCalcVoltage = v == "AC Single Phase"
+                      ? 220.0
+                      : 380.0;
                   controller.wireCalcVoltageDrop = 3.0;
                 }
               },
@@ -88,24 +106,27 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
 
             // Inputs
             CalcInputRow(
-              label: "System Voltage", // TODO: translate
-              suffix: "Volts", // TODO: translate
+              label: l10n.system_voltage,
+              suffix: l10n.volts,
               initialValue: controller.wireCalcVoltage,
-              onChanged: (v) => controller.wireCalcVoltage = double.tryParse(v) ?? 0,
+              onChanged: (v) =>
+                  controller.wireCalcVoltage = double.tryParse(v) ?? 0,
             ),
 
             CalcInputRow(
-              label: "Current",
-              suffix: "Amps",
-              hint: "e.g. 10",
-              onChanged: (v) => controller.wireCalcCurrent = double.tryParse(v) ?? 0,
+              label: l10n.current,
+              suffix: l10n.amps,
+              hint: l10n.example_10,
+              onChanged: (v) =>
+                  controller.wireCalcCurrent = double.tryParse(v) ?? 0,
             ), // TODO: translate
 
             CalcInputRow(
-              label: "Distance (One Way)", // TODO: translate
-              suffix: "Metres", // TODO: translate
+              label: l10n.distance_one_way,
+              suffix: l10n.metres,
               hint: "e.g. 15", // TODO: translate
-              onChanged: (v) => controller.wireCalcLength = double.tryParse(v) ?? 0,
+              onChanged: (v) =>
+                  controller.wireCalcLength = double.tryParse(v) ?? 0,
             ),
 
             // Voltage Drop Slider
@@ -116,8 +137,13 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Allowable Voltage Drop", style: TextStyle(fontWeight: FontWeight.bold)), // TODO: translate
-                    Text("${controller.wireCalcVoltageDrop.toStringAsFixed(1)}%"),
+                    Text(
+                      l10n.allowable_voltage_drop,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "${controller.wireCalcVoltageDrop.toStringAsFixed(1)}%",
+                    ),
 
                     Slider(
                       value: controller.wireCalcVoltageDrop,
@@ -133,13 +159,19 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: controller.calculateWire,
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, minimumSize: Size(double.infinity, 50)),
-                  child: Text('calculate', style: TextStyle(color: Colors.white, fontSize: 16)), // TODO: translate
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text(
+                    l10n.calculate,
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                 ),
                 const SizedBox(height: 30),
 
                 ResultCard(
-                  title: "Recommended Wire Size",
+                  title: l10n.recommended_wire_size,
                   value: controller.wireCalcResult,
                   icon: Iconsax.mask_1_bold,
                   color: Colors.blueGrey,
@@ -151,20 +183,23 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
                   decoration: BoxDecoration(
                     color: isDark ? Colors.grey[800] : Colors.grey[100],
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+                    border: Border.all(
+                      color: Colors.grey.withValues(alpha: 0.3),
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Did you know?", // TODO: translate
-                        style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                        l10n.did_you_know,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.primaryColor,
+                        ),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        "• Keeping voltage drop low is critical for efficiency.\n" // TODO: translate
-                        "• For Battery cables, aim for < 1% drop to prevent inverter cut-offs.\n" // TODO: translate
-                        "• For Solar PV, 3% is generally acceptable.", // TODO: translate
+                        l10n.wires_calc_tip_text,
                         style: TextStyle(fontSize: 12),
                       ),
                     ],
@@ -191,7 +226,13 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
           height: 600,
           child: Column(
             children: [
-              Text('guide', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO: translate
+              Text(
+                AppLocalizations.of(context)!.guide,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 16),
               Expanded(
                 child: ListView.separated(
@@ -204,10 +245,19 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
                       children: [
                         Text(
                           item.title,
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.primaryColor,
+                          ),
                         ),
                         const SizedBox(height: 4),
-                        Text(item.description, style: TextStyle(fontSize: 13, color: Colors.grey[700])),
+                        Text(
+                          item.description,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[700],
+                          ),
+                        ),
                       ],
                     );
                   },
@@ -216,8 +266,12 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Checkbox(value: dontShowAgain, onChanged: (val) => dontShowAgain = val ?? false, activeColor: AppTheme.primaryColor),
-                  Text('dont_show_again'), // TODO: translate
+                  Checkbox(
+                    value: dontShowAgain,
+                    onChanged: (val) => dontShowAgain = val ?? false,
+                    activeColor: AppTheme.primaryColor,
+                  ),
+                  Text(AppLocalizations.of(context)!.dont_show_again),
                 ],
               ),
               const SizedBox(height: 8),
@@ -233,9 +287,11 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: Text('close'), // TODO: translate
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ),
             ],

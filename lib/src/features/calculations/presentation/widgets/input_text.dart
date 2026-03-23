@@ -30,7 +30,10 @@ Widget inputField(
         onChanged: onChanged,
         enabled: enabled,
       ),
-      if (helpText != null) ...[verSpace(space: 10), textHelperCard(context, text: helpText)],
+      if (helpText != null) ...[
+        verSpace(space: 10),
+        textHelperCard(context, text: helpText),
+      ],
       verSpace(),
     ],
   );

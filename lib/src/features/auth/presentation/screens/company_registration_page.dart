@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/company_register_model.dart';
@@ -63,7 +64,7 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Register Company"), centerTitle: true), // TODO: translate
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.register_company), centerTitle: true),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(24.0.r),
         child: Form(
@@ -72,13 +73,13 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                "Start Your Solar Business", // TODO: translate
+                AppLocalizations.of(context)!.start_your_solar_business,
                 style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 8.h),
               Text(
-                "Fill in the details below to register your company. Your application will be reviewed by our admin team.", // TODO: translate
+                AppLocalizations.of(context)!.register_company_details,
                 style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
@@ -119,11 +120,11 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
               TextFormField(
                 controller: nameController,
                 decoration: InputDecoration(
-                  labelText: "Company Name", // TODO: translate
+                  labelText: AppLocalizations.of(context)!.company_name,
                   prefixIcon: const Icon(Iconsax.building_bold),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                validator: Validatorless.required("Company Name is required"), // TODO: translate
+                validator: Validatorless.required(AppLocalizations.of(context)!.company_name_is_required),
               ),
               SizedBox(height: 16.h),
 
@@ -131,16 +132,16 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                 controller: descriptionController,
                 maxLines: 3,
                 decoration: InputDecoration(
-                  labelText: "Description", // TODO: translate
+                  labelText: AppLocalizations.of(context)!.description,
                   prefixIcon: const Icon(Iconsax.document_text_bold),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                validator: (value) => value!.isEmpty ? "Description is required" : null, // TODO: translate
+                validator: (value) => value!.isEmpty ? AppLocalizations.of(context)!.description_is_required : null,
               ),
               SizedBox(height: 16.h),
 
               SwitchListTile(
-                title: const Text("B2B"), // TODO: translate
+                title: Text(AppLocalizations.of(context)!.b2b),
                 value: _isB2B,
                 onChanged: (value) {
                   setState(() {
@@ -150,7 +151,7 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
               ),
               SizedBox(height: 16.h),
               SwitchListTile(
-                title: const Text("B2C"), // TODO: translate
+                title: Text(AppLocalizations.of(context)!.b2c),
                 value: _isB2C,
                 onChanged: (value) {
                   setState(() {
@@ -168,7 +169,7 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                     child: DropdownButtonFormField<Country>(
                       initialValue: _selectedCountry,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCountries ? 'Loading...' : 'Country', // TODO: add translation
+                        labelText: _isLoadingCountries ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.country,
                         prefixIcon: _selectedCountry != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                         filled: true,
@@ -189,7 +190,7 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                     child: DropdownButtonFormField<City>(
                       initialValue: _selectedCity,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCities ? 'Loading...' : 'City', // TODO: add translation
+                        labelText: _isLoadingCities ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.city,
                         prefixIcon: _selectedCity != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                         filled: true,
@@ -203,7 +204,7 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                       },
                       validator: (value) {
                         if (value == null) {
-                          return 'City is required'; // TODO: add translation
+                          return AppLocalizations.of(context)!.city_is_required;
                         }
                         return null;
                       },
@@ -215,11 +216,11 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
               TextFormField(
                 controller: addressController,
                 decoration: InputDecoration(
-                  labelText: "Address", // TODO: translate
+                  labelText: AppLocalizations.of(context)!.address,
                   prefixIcon: const Icon(Iconsax.location_bold),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                validator: Validatorless.required("Address is required"), // TODO: translate
+                validator: Validatorless.required(AppLocalizations.of(context)!.address_is_required),
               ),
               SizedBox(height: 16.h),
               TextFormField(

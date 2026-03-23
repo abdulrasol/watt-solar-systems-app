@@ -11,6 +11,7 @@ import 'package:solar_hub/src/features/calculations/presentation/widgets/input_t
 import 'package:solar_hub/src/features/calculations/presentation/widgets/text_helper_card.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 //final DataController dataContrller = Get.find();
 
@@ -44,7 +45,10 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
     final numbersInput = num.tryParse(numbers.text) ?? 0;
     final dod = depthOfDischarge;
 
-    if (ampereInput > 0 && voltageInput > 0 && currentInput > 0 && numbersInput > 0) {
+    if (ampereInput > 0 &&
+        voltageInput > 0 &&
+        currentInput > 0 &&
+        numbersInput > 0) {
       num dailyUsageKWh = 0;
       setState(() {
         if (systemVoltage == 380) {
@@ -103,7 +107,10 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
                   //   ),
                   // ),
                   verSpace(),
-                  ..._buildFormFields().animate(interval: 100.ms).fadeIn().slideY(),
+                  ..._buildFormFields()
+                      .animate(interval: 100.ms)
+                      .fadeIn()
+                      .slideY(),
 
                   // Display calculated result
                   //  verSpace(space: 20),
@@ -123,11 +130,14 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
                   children: [
                     Expanded(
                       child: Text(
-                        '${runningTime.toStringAsFixed(2)} hours',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          // fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
+                        AppLocalizations.of(context)!.runtime_hours_precise(
+                          runningTime.toStringAsFixed(2),
                         ),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              // fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -149,13 +159,13 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
       inputField(
         null,
         context: context,
-        label: 'your-load-ampere', // TODO: translate
-        hintText: 'e.g., 10', // TODO: translate
+        label: AppLocalizations.of(context)!.your_load_ampere,
+        hintText: AppLocalizations.of(context)!.example_10,
         icon: FontAwesome.bolt_solid,
         controller: userCurrent,
         validator: Validatorless.multiple([
-          Validatorless.required('required'), // TODO: translate
-          Validatorless.number('numbers'), // TODO: translate
+          Validatorless.required(AppLocalizations.of(context)!.required_field),
+          Validatorless.number(AppLocalizations.of(context)!.numbers_only),
         ]),
         onChanged: _updateRunningTime,
       ),
@@ -163,8 +173,7 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
       divider,
       textHelperCard(
         context,
-        text:
-            'Enter your load in Ampere and select AC Voltage System. Usually load calculate by: Voltage × Current. For example, 10A × 230V = 2300W.', // TODO: translate
+        text: AppLocalizations.of(context)!.load_ampere_helper,
       ),
       divider,
       Column(
@@ -172,13 +181,15 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
           inputField(
             context: context,
             null,
-            label: 'battery-amperes', // TODO: translate
-            hintText: 'e.g., 100 or 200',
+            label: AppLocalizations.of(context)!.battery_amperes,
+            hintText: AppLocalizations.of(context)!.example_100_or_200,
             icon: FontAwesome.i_solid,
             controller: current,
             validator: Validatorless.multiple([
-              Validatorless.required('required'), // TODO: translate
-              Validatorless.number('numbers'), // TODO: translate
+              Validatorless.required(
+                AppLocalizations.of(context)!.required_field,
+              ),
+              Validatorless.number(AppLocalizations.of(context)!.numbers_only),
             ]),
             onChanged: _updateRunningTime,
           ),
@@ -186,13 +197,15 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
           inputField(
             context: context,
             null,
-            label: 'battrey-voltage', // TODO: translate
-            hintText: 'e.g., 12, 24, 48 or 51.2 for lithum',
+            label: AppLocalizations.of(context)!.battery_voltage_label,
+            hintText: AppLocalizations.of(context)!.example_12_24_48_512,
             icon: FontAwesome.v_solid,
             controller: voltage,
             validator: Validatorless.multiple([
-              Validatorless.required('required'), // TODO: translate
-              Validatorless.number('numbers'), // TODO: translate
+              Validatorless.required(
+                AppLocalizations.of(context)!.required_field,
+              ),
+              Validatorless.number(AppLocalizations.of(context)!.numbers_only),
             ]),
             onChanged: _updateRunningTime,
           ),
@@ -200,13 +213,15 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
           inputField(
             context: context,
             null,
-            label: 'battrey-count', // TODO: translate
-            hintText: 'one or more',
+            label: AppLocalizations.of(context)!.battery_count_label,
+            hintText: AppLocalizations.of(context)!.battery_count_hint,
             icon: FontAwesome.n_solid,
             controller: numbers,
             validator: Validatorless.multiple([
-              Validatorless.required('required'), // TODO: translate
-              Validatorless.number('numbers'), // TODO: translate
+              Validatorless.required(
+                AppLocalizations.of(context)!.required_field,
+              ),
+              Validatorless.number(AppLocalizations.of(context)!.numbers_only),
             ]),
             onChanged: _updateRunningTime,
           ),
@@ -215,15 +230,16 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
       verSpace(),
       textHelperCard(
         context,
-        text:
-            'Enter the battery\'s capacity (Ah), voltage (V), and the number of batteries you have.\n'
-            'The system\'s total energy is calculated as:\n'
-            'Voltage × Capacity × Number of Batteries × Depth of Discharge.\n\n'
-            '• Example: 4 batteries × 12V × 100Ah × 0.2 (for 20% DoD) = 960Wh\n'
-            'This value is used to estimate how long the battery system can power your load.', // TODO: translate
+        text: AppLocalizations.of(context)!.battery_runtime_explanation,
       ),
       divider,
-      Text('Depth of Discharge of Battery ($depthOfDischarge%)', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.start), // TODO: translate
+      Text(
+        AppLocalizations.of(
+          context,
+        )!.depth_of_discharge_with_value(depthOfDischarge.toStringAsFixed(0)),
+        style: Theme.of(context).textTheme.titleMedium,
+        textAlign: TextAlign.start,
+      ),
       verSpace(space: 8),
       Slider(
         value: depthOfDischarge.toDouble(),
@@ -241,8 +257,7 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
       verSpace(space: 4),
       textHelperCard(
         context,
-        text:
-            'Set the Depth of Discharge (DoD) percentage for the battery.\n\nTypical values range between 50%–80% depending on battery type, temperature, and manufacturer details.\n\n• Use 20% for Lithium or Tubular batteries.\n• Use 50% for AGM/Gel batteries.\nRefer to the datasheet or label if unsure.', // TODO: translate
+        text: AppLocalizations.of(context)!.dod_guidance_runtime,
       ),
       verSpace(),
       verSpace(space: 25),
@@ -254,14 +269,26 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
       initialValue: systemVoltage,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        labelText: 'System Voltage (AC)',
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
+        labelText: AppLocalizations.of(context)!.ac_system_voltage,
         prefixIcon: const Icon(Icons.electrical_services_rounded),
       ),
-      items: const [
-        DropdownMenuItem(value: 110, child: Text('110 V')), // TODO: translate
-        DropdownMenuItem(value: 230, child: Text('230 V')), // TODO: translate
-        DropdownMenuItem(value: 380, child: Text('380 V (Three-phase)')), // TODO: translate
+      items: [
+        DropdownMenuItem(
+          value: 110,
+          child: Text(AppLocalizations.of(context)!.voltage_110),
+        ),
+        DropdownMenuItem(
+          value: 230,
+          child: Text(AppLocalizations.of(context)!.voltage_230),
+        ),
+        DropdownMenuItem(
+          value: 380,
+          child: Text(AppLocalizations.of(context)!.voltage_380_three_phase),
+        ),
       ],
       onChanged: (value) {
         setState(() {
@@ -272,24 +299,24 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
     );
   }
 }
- // Controllers for input fields
-  // final userCurrent = TextEditingController(
-  //     text:
-  //         dataContrller.batteryCalculatedData['user-current'].toString());
-  // final voltage = TextEditingController(
-  //     text: dataContrller.batteryCalculatedData['user-battery-voltage']
-  //         .toString());
-  // final current = TextEditingController(
-  //     text: dataContrller.batteryCalculatedData['user-battery-ampere']
-  //         .toString());
-  // final numbers = TextEditingController(
-  //     text: dataContrller.batteryCalculatedData['user-battery-count']
-  //         .toString());
+// Controllers for input fields
+// final userCurrent = TextEditingController(
+//     text:
+//         dataContrller.batteryCalculatedData['user-current'].toString());
+// final voltage = TextEditingController(
+//     text: dataContrller.batteryCalculatedData['user-battery-voltage']
+//         .toString());
+// final current = TextEditingController(
+//     text: dataContrller.batteryCalculatedData['user-battery-ampere']
+//         .toString());
+// final numbers = TextEditingController(
+//     text: dataContrller.batteryCalculatedData['user-battery-count']
+//         .toString());
 
-  // // Default value for Depth of Discharge (DoD)
-  // num depthOfDischarge =
-  //     dataContrller.batteryCalculatedData['user-battery-depht'];
-  // num systemVoltage =
-  //     dataContrller.batteryCalculatedData['ac-voltage-system'];
-  // // Result value: running time in hours
-  // num runningTime = 0;
+// // Default value for Depth of Discharge (DoD)
+// num depthOfDischarge =
+//     dataContrller.batteryCalculatedData['user-battery-depht'];
+// num systemVoltage =
+//     dataContrller.batteryCalculatedData['ac-voltage-system'];
+// // Result value: running time in hours
+// num runningTime = 0;

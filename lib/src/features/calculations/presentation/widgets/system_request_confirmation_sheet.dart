@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class SystemRequestConfirmationSheet extends ConsumerWidget {
   const SystemRequestConfirmationSheet({super.key});
@@ -9,6 +10,7 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(calculatorProvider);
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -23,24 +25,41 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
             child: Container(
               width: 40,
               height: 4,
-              decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
               margin: const EdgeInsets.only(bottom: 24),
             ),
           ),
-          Text('confirm request details', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO: Add localization
+          Text(
+            l10n.confirm_request_details,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 16),
 
-          _buildSummaryRow("Panels", "${controller.panelCount}x ${controller.selectedPanelWattage.toDouble()}W"),
-          _buildSummaryRow("Inverter", "${controller.inverterCount}x ${controller.selectedInverterKva}kW"),
-          _buildSummaryRow("Batteries", "${controller.batteryCount}x ${controller.selectedBatteryAmp}Ah"),
+          _buildSummaryRow(
+            l10n.panels_calc,
+            "${controller.panelCount}x ${controller.selectedPanelWattage.toDouble()}W",
+          ),
+          _buildSummaryRow(
+            l10n.inverter_calc,
+            "${controller.inverterCount}x ${controller.selectedInverterKva}kW",
+          ),
+          _buildSummaryRow(
+            l10n.battery_calc,
+            "${controller.batteryCount}x ${controller.selectedBatteryAmp}Ah",
+          ),
 
           const SizedBox(height: 16),
           TextField(
             onChanged: (val) => controller.requestNotes = val,
             maxLines: 3,
             decoration: InputDecoration(
-              hintText: "Add any notes or specific constraints...", // TODO: Add localization
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              hintText: l10n.add_notes_constraints,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               filled: true,
               fillColor: Theme.of(context).cardColor,
             ),
@@ -58,9 +77,11 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
                 backgroundColor: AppTheme.primaryColor,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
-              child: Text('confirm submit'), // TODO: Add localization
+              child: Text(l10n.confirm_submit),
             ),
           ),
         ],

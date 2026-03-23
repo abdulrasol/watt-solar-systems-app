@@ -7,15 +7,18 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class InverterCalculatorPage extends ConsumerStatefulWidget {
   const InverterCalculatorPage({super.key});
 
   @override
-  ConsumerState<InverterCalculatorPage> createState() => _InverterCalculatorPageState();
+  ConsumerState<InverterCalculatorPage> createState() =>
+      _InverterCalculatorPageState();
 }
 
-class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage> {
+class _InverterCalculatorPageState
+    extends ConsumerState<InverterCalculatorPage> {
   late final CalculatorNotifier controller;
 
   @override
@@ -33,11 +36,17 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('inverter_calc'), // TODO: translate
-        actions: [IconButton(onPressed: _showHelpDialog, icon: const Icon(Icons.help_outline))],
+        title: Text(l10n.inverter_calc),
+        actions: [
+          IconButton(
+            onPressed: _showHelpDialog,
+            icon: const Icon(Icons.help_outline),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -45,11 +54,15 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
           children: [
             Hero(
               tag: 'inverter_hero',
-              child: Icon(Iconsax.flash_bold, size: 80, color: Colors.blueAccent),
+              child: Icon(
+                Iconsax.flash_bold,
+                size: 80,
+                color: Colors.blueAccent,
+              ),
             ),
             const SizedBox(height: 20),
             Text(
-              "Size your inverter to handle peak loads safely.",
+              l10n.inverter_calc_intro,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ), // TODO: translate
@@ -58,11 +71,12 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
             // Inputs
             // Inputs
             CalcInputRow(
-              label: "Total Load Amps", // TODO: translate
-              suffix: "Amps", // TODO: translate
-              hint: "e.g. 10", // TODO: translate
+              label: l10n.total_load_amps,
+              suffix: l10n.amps,
+              hint: l10n.example_10,
               initialValue: controller.inverterCalcAmps,
-              onChanged: (v) => controller.inverterCalcAmps = double.tryParse(v) ?? 0,
+              onChanged: (v) =>
+                  controller.inverterCalcAmps = double.tryParse(v) ?? 0,
             ),
 
             // AC System Voltage Selection
@@ -71,11 +85,21 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
               child: Row(
                 children: [
                   Expanded(
-                    child: Text("AC System Voltage", style: TextStyle(fontWeight: FontWeight.bold)), // TODO: translate
+                    child: Text(
+                      l10n.ac_system_voltage,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   DropdownButton<double>(
                     value: controller.acSystemVoltage,
-                    items: controller.acVoltageOptions.map((e) => DropdownMenuItem(value: e, child: Text("${e.toStringAsFixed(0)} V"))).toList(),
+                    items: controller.acVoltageOptions
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text("${e.toStringAsFixed(0)} V"),
+                          ),
+                        )
+                        .toList(),
                     onChanged: (v) => controller.acSystemVoltage = v ?? 230.0,
                   ),
                 ],
@@ -89,8 +113,13 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Safety Factor (Over-sizing)", style: TextStyle(fontWeight: FontWeight.bold)), // TODO: translate
-                    Text("x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}"),
+                    Text(
+                      l10n.safety_factor_oversizing,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
+                    ),
                   ],
                 ),
                 Slider(
@@ -98,7 +127,8 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
                   min: 1.0,
                   max: 2.0,
                   divisions: 20,
-                  label: "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
+                  label:
+                      "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
                   onChanged: (v) => controller.inverterCalcSafetyFactor = v,
                 ),
               ],
@@ -107,16 +137,24 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: controller.calculateInverter,
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, minimumSize: Size(double.infinity, 50)),
-              child: Text('calculate', style: TextStyle(color: Colors.white, fontSize: 16)), // TODO: translate
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                minimumSize: Size(double.infinity, 50),
+              ),
+              child: Text(
+                l10n.calculate,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
             const SizedBox(height: 30),
 
             // Result
             ResultCard(
-              title: "Recommended Inverter Size", // TODO: translate
+              title: l10n.recommended_inverter_size,
               value: "${controller.inverterCalcResult.toStringAsFixed(1)} kVA",
-              subtitle: "(Approx. ${(controller.inverterCalcResult * 1000).toStringAsFixed(0)} Watts)", // TODO: translate
+              subtitle: l10n.approx_watts(
+                (controller.inverterCalcResult * 1000).toStringAsFixed(0),
+              ),
               icon: Iconsax.flash_1_bold,
               color: Colors.redAccent,
             ),
@@ -134,13 +172,15 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Did you know?",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                    l10n.did_you_know,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "• Inverters should be sized 20-30% larger than your continuously running load.\n"
-                    "• This 'Safety Factor' prevents overheating and handles startup surges from motors (like fridges or pumps).",
+                    l10n.inverter_calc_tip_text,
                     style: TextStyle(fontSize: 12),
                   ),
                 ],
@@ -165,7 +205,13 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
           height: 600,
           child: Column(
             children: [
-              Text('guide', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO: translate
+              Text(
+                AppLocalizations.of(context)!.guide,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 16),
               Expanded(
                 child: ListView.separated(
@@ -178,10 +224,19 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
                       children: [
                         Text(
                           item.title,
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.primaryColor,
+                          ),
                         ),
                         const SizedBox(height: 4),
-                        Text(item.description, style: TextStyle(fontSize: 13, color: Colors.grey[700])),
+                        Text(
+                          item.description,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[700],
+                          ),
+                        ),
                       ],
                     );
                   },
@@ -190,8 +245,12 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Checkbox(value: dontShowAgain, onChanged: (val) => dontShowAgain = val ?? false, activeColor: AppTheme.primaryColor),
-                  Text('dont_show_again'), // TODO: translate
+                  Checkbox(
+                    value: dontShowAgain,
+                    onChanged: (val) => dontShowAgain = val ?? false,
+                    activeColor: AppTheme.primaryColor,
+                  ),
+                  Text(AppLocalizations.of(context)!.dont_show_again),
                 ],
               ),
               const SizedBox(height: 8),
@@ -207,9 +266,11 @@ class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: Text('close'), // TODO: translate
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ),
             ],

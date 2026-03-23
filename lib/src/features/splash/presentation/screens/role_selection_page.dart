@@ -9,6 +9,7 @@ import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class RoleSelectionPage extends ConsumerStatefulWidget {
   const RoleSelectionPage({super.key});
@@ -31,7 +32,8 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final userName = authState.user?.firstName ?? 'User';
+    final l10n = AppLocalizations.of(context)!;
+    final userName = authState.user?.firstName ?? l10n.default_user;
     final isAdmin = authState.user?.isSuperUser;
 
     return Scaffold(
@@ -42,14 +44,17 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 40),
-              const Text(
-                "Welcome Back!",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              Text(
+                l10n.welcome_back,
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
-                "Choose how you want to continue",
+                l10n.choose_how_to_continue,
                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
@@ -58,8 +63,8 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               // Option 1: Solar Hub (User View)
               _buildRoleCard(
                 context,
-                title: "Solar Hub",
-                subtitle: "Continue as $userName",
+                title: l10n.solar_hub,
+                subtitle: l10n.continue_as(userName),
                 icon: Icons.person_outline,
                 color: Colors.blue,
                 routeName: '/home',
@@ -72,19 +77,19 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               // Option 2: Company Dashboard
               _buildRoleCard(
                 context,
-                title: authState.user?.company?.name ?? 'Company',
-                subtitle: "Company Dashboard",
+                title: authState.user?.company?.name ?? l10n.company_dashboard,
+                subtitle: l10n.company_dashboard,
                 icon: Iconsax.building_bold,
                 color: Colors.orange,
-                routeName: '/company_dashboard',
+                routeName: '/company/dashboard',
                 image: authState.user?.company?.logo,
               ),
               if (isAdmin ?? false) ...[
                 const SizedBox(height: 20),
                 _buildRoleCard(
                   context,
-                  title: "Admin Dashboard",
-                  subtitle: "Platform Management",
+                  title: l10n.admin_dashboard,
+                  subtitle: l10n.platform_management,
                   icon: Iconsax.security_safe_bold,
                   color: Colors.redAccent,
                   routeName: '/admin_dashboard',
@@ -92,11 +97,13 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               ],
               const SizedBox(height: 40),
               ListTile(
-                title: Text('Save role page selection'), // TODO: add translation
+                title: Text(l10n.save_role_page_selection),
                 trailing: Switch(
                   value: ref.watch(settingsProvider).saveRolePageSelection,
                   onChanged: (val) {
-                    ref.read(settingsProvider.notifier).toggleSaveRolePageSelection();
+                    ref
+                        .read(settingsProvider.notifier)
+                        .toggleSaveRolePageSelection();
                     setState(() {
                       saveMyChoies = val;
                     });
@@ -123,7 +130,9 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
     return GestureDetector(
       onTap: () {
         if (saveMyChoies) {
-          ref.read(settingsProvider.notifier).setSaveRolePageSelectionRoute(routeName);
+          ref
+              .read(settingsProvider.notifier)
+              .setSaveRolePageSelectionRoute(routeName);
         }
         context.go(routeName);
       },
@@ -133,10 +142,20 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         // constraints: const BoxConstraints(minHeight: 200),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ref.watch(settingsProvider).isDark
+              ? Colors.black87
+              : Colors.white,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
-          boxShadow: [BoxShadow(color: color.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, 8))],
+          border: Border.all(color: Theme.of(context).dividerColor),
+          boxShadow: [
+            BoxShadow(
+              color: ref.watch(settingsProvider).isDark
+                  ? Colors.black87
+                  : color.withValues(alpha: 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -144,8 +163,17 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
           children: [
             Container(
               padding: EdgeInsets.all(image != null ? 5.r : 20.r),
-              decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
-              child: image != null ? WdImagePreview(imageUrl: image, size: 60, shape: BoxShape.circle) : Icon(icon, size: 40, color: color),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: image != null
+                  ? WdImagePreview(
+                      imageUrl: image,
+                      size: 60,
+                      shape: BoxShape.circle,
+                    )
+                  : Icon(icon, size: 40, color: color),
             ),
             const SizedBox(width: 20),
             Expanded(
@@ -158,12 +186,19 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                       Flexible(
                         child: Text(
                           title,
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: Colors.grey[400],
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),

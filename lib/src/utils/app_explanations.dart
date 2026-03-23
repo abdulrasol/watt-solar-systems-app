@@ -12,54 +12,66 @@ class AppExplanations {
       return [
         ExplanationItem(
           title: "إضافة الأجهزة",
-          description: "قم بإضافة جميع الأجهزة التي ترغب في تشغيلها على النظام الشمسي. لكل جهاز، حدد قدرته بالواط وعدد ساعات التشغيل اليومية.",
+          description:
+              "أضف جميع الأجهزة التي تريد تشغيلها على النظام الشمسي. لكل جهاز اكتب الاسم، القدرة بالواط، العدد، وعدد ساعات التشغيل يومياً حتى يتم حساب الاستهلاك الكلي بشكل صحيح.",
         ),
         ExplanationItem(
-          title: "ساعات الاستقلالية (Autonomy Hours)",
-          description: "هي المدة التي يجب أن تعمل فيها البطاريات لتشغيل الأجهزة دون وجود شمس (ليلاً أو في الأيام الغائمة).",
+          title: "ساعات الاستقلالية",
+          description:
+              "هي عدد الساعات التي يجب أن تغطيها البطاريات عند غياب الشمس، مثل الليل أو أثناء الغيوم. كلما زادت هذه القيمة زادت سعة البطاريات المطلوبة.",
         ),
         ExplanationItem(
-          title: "ساعات ذروة الشمس (Sun Peak Hours)",
-          description: "متوسط عدد الساعات التي تكون فيها الشمس قوية بما يكفي لتوليد الطاقة القصوى من الألواح. عادة ما تكون بين 4 إلى 6 ساعات.",
+          title: "ساعات ذروة الشمس",
+          description:
+              "هي متوسط عدد الساعات اليومية التي تكون فيها أشعة الشمس قوية بما يكفي ليعمل اللوح قريباً من قدرته القصوى. في كثير من المناطق تكون تقريباً بين 4 و6 ساعات.",
         ),
         ExplanationItem(
-          title: "قدرة اللوح (Panel Wattage)",
-          description: "اختر قدرة اللوح الشمسي الذي تنوي استخدامه (مثلاً 400 واط أو 550 واط) لحساب عدد الألواح المطلوبة بدقة.",
+          title: "قدرة اللوح",
+          description:
+              "أدخل قدرة اللوح الشمسي الواحد الذي ستعتمد عليه في التصميم، مثل 400 واط أو 570 واط. هذا الرقم يؤثر مباشرة على عدد الألواح المقترحة.",
         ),
         ExplanationItem(
           title: "جهد البطارية الواحدة",
-          description: "الجهد الكهربائي للبطارية التي ستستخدمها في النظام (مثلاً 12 فولت للبطاريات التقليدية أو 48 فولت لبطاريات الليثيوم).",
+          description:
+              "اختر جهد البطارية الواحدة التي ستستخدمها داخل النظام، مثل 12V أو 12.8V أو 25.6V أو 51.2V. هذا يساعد التطبيق على تحديد طريقة توصيل البطاريات على التوالي بشكل صحيح.",
         ),
         ExplanationItem(
-          title: "جهد النظام (System Voltage)",
-          description: "الجهد الكلي لنظام البطاريات. الأنظمة الأكبر تحتاج لجهد أعلى (24 أو 48 فولت) لتقليل الفاقد في الأسلاك.",
+          title: "جهد النظام",
+          description:
+              "هو الجهد الكلي لبنك البطاريات الذي سيعمل عليه النظام، مثل 12V أو 24V أو 48V. عادةً الأنظمة الأكبر تستخدم جهداً أعلى لتقليل التيار والفاقد في الأسلاك.",
         ),
       ];
     } else {
       return [
         ExplanationItem(
           title: "Adding Appliances",
-          description: "Add all appliances you want to run on the solar system. For each appliance, specify its power in Watts and daily running hours.",
+          description:
+              "Add every appliance you want the solar system to run. For each item, enter the name, wattage, quantity, and daily operating hours so the total energy use is calculated correctly.",
         ),
         ExplanationItem(
           title: "Autonomy Hours",
-          description: "The duration your batteries need to power your appliances without sunlight (at night or on cloudy days).",
+          description:
+              "This is the number of hours the batteries should keep your loads running without sunlight, such as at night or during cloudy weather. Higher autonomy means a larger battery bank.",
         ),
         ExplanationItem(
-          title: "Sun Peak Hours",
-          description: "The average hours per day the sun is strong enough to generate maximum power. Usually between 4 to 6 hours.",
+          title: "Peak Sun Hours",
+          description:
+              "The average number of hours per day when sunlight is strong enough for the panels to operate near full output. In many locations, this is roughly 4 to 6 hours.",
         ),
         ExplanationItem(
           title: "Panel Wattage",
-          description: "Select the wattage of the solar panel you intend to use (e.g., 400W or 550W) to calculate the required panel count accurately.",
+          description:
+              "Enter the wattage of one solar panel, such as 400W or 570W. This value is used to estimate how many panels your system will need.",
         ),
         ExplanationItem(
           title: "Single Battery Voltage",
-          description: "The voltage of a single battery you will use (e.g., 12V for traditional batteries or 48V for lithium).",
+          description:
+              "Choose the voltage of one battery unit in your system, such as 12V, 12.8V, 25.6V, or 51.2V. This helps determine how the batteries should be connected in series.",
         ),
         ExplanationItem(
           title: "System Voltage",
-          description: "The total voltage of the battery bank. Larger systems require higher voltage (24V or 48V) to reduce power loss.",
+          description:
+              "This is the overall battery-bank voltage the system will run on, such as 12V, 24V, or 48V. Larger systems usually use higher voltage to reduce current and wiring losses.",
         ),
       ];
     }
@@ -68,44 +80,68 @@ class AppExplanations {
   List<ExplanationItem> getOfferRequestExplanations() {
     if (isAr) {
       return [
-        ExplanationItem(title: "الألواح الشمسية", description: "قم بتحديد قدرة اللوح الواحد (بالواط) والعدد الإجمالي للألواح التي تحتاجها."),
-        ExplanationItem(title: "قدرة العاكس (Inverter)", description: "اختر حجم العاكس بالكيلوواط (kW). هذا يحدد الحد الأقصى للحمل الذي يمكن تشغيله."),
         ExplanationItem(
-          title: "نوع نظام العاكس",
-          description: "جهد منخفض (Low Voltage) للأنظمة المنزلية المعتادة (48 فولت)، أو جهد عالي (High Voltage) للأنظمة التجارية الكبيرة.",
+          title: "الألواح الشمسية",
+          description:
+              "حدد قدرة اللوح الواحد بالواط، ثم أدخل العدد المطلوب من الألواح. هذان الرقمان يحددان القدرة الإجمالية للمصفوفة الشمسية.",
+        ),
+        ExplanationItem(
+          title: "قدرة العاكس",
+          description:
+              "اختر قدرة العاكس بالكيلوواط أو الكيلو فولت أمبير حسب طريقة العرض في التطبيق. هذه القيمة تحدد الحد الأقصى للأحمال التي يمكن تشغيلها في نفس الوقت.",
+        ),
+        ExplanationItem(
+          title: "فئة جهد العاكس",
+          description:
+              "اختر جهد منخفض للأنظمة المنزلية الشائعة، أو جهد عالٍ للأنظمة الأكبر والأكثر تطلباً. هذا الخيار يؤثر على نوع البطاريات والمعدات المتوافقة.",
         ),
         ExplanationItem(
           title: "نوع العاكس والفازات",
-          description: "اختر ما إذا كنت تحتاج نظام هجين (Hybrid)، متصل بالشبكة (On-Grid)، أو منفصل (Off-Grid). وحدد ما إذا كان سنجل فاز أو 3 فاز.",
+          description:
+              "حدد هل النظام هجين، متصل بالشبكة، أو منفصل عنها. ثم اختر إن كان المطلوب سنكل فاز أو ثلاثي الفاز حسب طبيعة الموقع والأحمال.",
         ),
         ExplanationItem(
           title: "نوع البطارية",
-          description: "بطاريات الليثيوم توفر عمرًا أطول وأداءً أفضل، بينما بطاريات الجل/الرصاص هي الخيار الاقتصادي التقليدي.",
+          description:
+              "بطاريات الليثيوم تتميز بعمر أطول وكفاءة أعلى وعمق تفريغ أفضل، بينما بطاريات الجل أو الرصاص تبقى خياراً اقتصادياً شائعاً في كثير من المشاريع.",
         ),
         ExplanationItem(
           title: "سعة البطارية",
-          description: "تُقاس بالأمبير (Ah) للأنظمة التقليدية، أو بالكيلوواط (kWh) لأنظمة الجهد العالي والليثيوم. حدد السعة والعدد المطلوب.",
+          description:
+              "أدخل سعة البطارية الواحدة والعدد المطلوب. قد تُقاس السعة بالأمبير-ساعة (Ah) في الأنظمة التقليدية، أو بالكيلوواط-ساعة (kWh) في بعض أنظمة الليثيوم والجهد العالي.",
         ),
       ];
     } else {
       return [
-        ExplanationItem(title: "Solar Panels", description: "Specify the single panel wattage (W) and the total count of panels you require."),
-        ExplanationItem(title: "Inverter Capacity", description: "Select the inverter size in Kilowatts (kW). This determines the maximum load you can run."),
         ExplanationItem(
-          title: "Inverter System Type",
-          description: "Low Voltage (LV) for typical home systems (48V), or High Voltage (HV) for larger commercial systems.",
+          title: "Solar Panels",
+          description:
+              "Enter the wattage of one panel and the total number of panels required. Together, these define the total PV array size.",
+        ),
+        ExplanationItem(
+          title: "Inverter Capacity",
+          description:
+              "Choose the inverter size in kW or kVA, depending on how the app presents it. This determines the maximum load the system can supply at one time.",
+        ),
+        ExplanationItem(
+          title: "Inverter Voltage Class",
+          description:
+              "Choose Low Voltage for typical residential systems, or High Voltage for larger and more demanding installations. This affects battery and equipment compatibility.",
         ),
         ExplanationItem(
           title: "Inverter Type & Phase",
-          description: "Choose Hybrid, On-Grid, or Off-Grid. Also specify if you need Single Phase or Three Phase.",
+          description:
+              "Select whether the system is Hybrid, On-Grid, or Off-Grid, then choose Single Phase or Three Phase based on the site and load requirements.",
         ),
         ExplanationItem(
           title: "Battery Type",
-          description: "Lithium batteries offer longer life and better performance, while Gel/Lead-Acid are the traditional economic choice.",
+          description:
+              "Lithium batteries usually offer longer life, better efficiency, and deeper usable capacity. Gel or lead-acid batteries remain the more traditional budget option.",
         ),
         ExplanationItem(
           title: "Battery Capacity",
-          description: "Measured in Ampere-hours (Ah) for traditional systems, or Kilowatt-hours (kWh) for HV/Lithium systems. Specify capacity and count.",
+          description:
+              "Enter the capacity of one battery and the number required. Capacity may be shown in Ah for conventional systems, or in kWh for some lithium and high-voltage systems.",
         ),
       ];
     }
@@ -115,18 +151,47 @@ class AppExplanations {
   List<ExplanationItem> getPanelExplanations() {
     return isAr
         ? [
-            ExplanationItem(title: "الاستهلاك اليومي", description: "إجمالي الطاقة التي تستهلكها يومياً بالأمبير-ساعة (Ah)."),
-            ExplanationItem(title: "جهد النظام", description: "جهد البطاريات الذي صممت النظام ليعمل عليه (مثلاً 12 فولت أو 24 فولت)."),
-            ExplanationItem(title: "قدرة اللوح", description: "قدرة اللوح الشمسي الواحد بالواط (W) الذي تنوي استخدامه."),
-            ExplanationItem(title: "كفاءة النظام", description: "نسبة الفاقد في النظام. عادة نستخدم 0.8 (80%) لحساب الفاقد في الأسلاك والشحن."),
+            ExplanationItem(
+              title: "الاستهلاك اليومي",
+              description:
+                  "أدخل إجمالي استهلاك الطاقة اليومي الذي تريد تغطيته من الألواح. كلما زاد الاستهلاك زاد عدد الألواح المطلوبة.",
+            ),
+            ExplanationItem(
+              title: "جهد النظام",
+              description:
+                  "هو الجهد الذي يعمل عليه بنك البطاريات أو النظام المستمر، مثل 12V أو 24V أو 48V.",
+            ),
+            ExplanationItem(
+              title: "قدرة اللوح",
+              description:
+                  "قدرة اللوح الشمسي الواحد بالواط. يستخدم هذا الرقم لتحويل احتياج الطاقة إلى عدد ألواح فعلي.",
+            ),
+            ExplanationItem(
+              title: "كفاءة النظام",
+              description:
+                  "تعبر عن الفاقد الناتج من الأسلاك، منظم الشحن، الحرارة، وعوامل التشغيل. استخدام قيمة مثل 0.8 يعني احتساب فاقد تقريبي بنسبة 20%.",
+            ),
           ]
         : [
-            ExplanationItem(title: "Total Daily Usage", description: "Total energy consumed daily in Amp-hours (Ah)."),
-            ExplanationItem(title: "System Voltage", description: "The DC voltage of your battery bank (e.g., 12V, 24V)."),
-            ExplanationItem(title: "Panel Wattage", description: "The power rating of a single solar panel in Watts (W)."),
+            ExplanationItem(
+              title: "Total Daily Usage",
+              description:
+                  "Enter the total daily energy consumption that the solar panels need to cover. Higher daily usage means more panels are required.",
+            ),
+            ExplanationItem(
+              title: "System Voltage",
+              description:
+                  "The DC operating voltage of the battery bank or solar system, such as 12V, 24V, or 48V.",
+            ),
+            ExplanationItem(
+              title: "Panel Wattage",
+              description:
+                  "The rated power of one solar panel in watts. This value is used to convert energy demand into an estimated panel count.",
+            ),
             ExplanationItem(
               title: "System Efficiency",
-              description: "Accounts for energy losses. Typically 0.8 (80%) allows for wiring and charge inefficiencies.",
+              description:
+                  "This accounts for real-world losses such as wiring, controller losses, temperature, and charging inefficiencies. A value of 0.8 means the calculation assumes about 20% losses.",
             ),
           ];
   }
@@ -135,14 +200,38 @@ class AppExplanations {
   List<ExplanationItem> getInverterExplanations() {
     return isAr
         ? [
-            ExplanationItem(title: "تيار الحمل الكلي", description: "مجموع التيارات للأجهزة التي ستعمل في نفس الوقت بالأمبير."),
-            ExplanationItem(title: "جهد النظام المتناوب", description: "الجهد الكهربائي للمنزل (مثلاً 220 فولت أو 110 فولت)."),
-            ExplanationItem(title: "معامل الأمان", description: "زيادة حجم العاكس بنسبة معينة (مثلاً 1.25) لتحمل أحمال البدء ولتجنب ارتفاع الحرارة."),
+            ExplanationItem(
+              title: "تيار الحمل الكلي",
+              description:
+                  "هو مجموع التيار أو الحمل المتوقع للأجهزة التي قد تعمل في الوقت نفسه. هذا الرقم أساسي لاختيار عاكس مناسب.",
+            ),
+            ExplanationItem(
+              title: "جهد النظام المتناوب",
+              description:
+                  "هو جهد الكهرباء المتناوبة في الموقع، مثل 230V أو 110V أو 380V حسب الدولة ونوع التغذية.",
+            ),
+            ExplanationItem(
+              title: "معامل الأمان",
+              description:
+                  "يتم استخدامه لزيادة قدرة العاكس فوق الحمل المحسوب، حتى يتحمل تيارات الإقلاع وتذبذب الأحمال ويعمل براحة أكبر.",
+            ),
           ]
         : [
-            ExplanationItem(title: "Total Load Amps", description: "The sum of amps for all appliances running simultaneously."),
-            ExplanationItem(title: "AC System Voltage", description: "Your home's voltage standard (e.g., 220V or 110V)."),
-            ExplanationItem(title: "Safety Factor", description: "Oversizing the inverter (e.g., x1.25) to handle startup surges and prevent overheating."),
+            ExplanationItem(
+              title: "Total Load Amps",
+              description:
+                  "This is the combined current or load of all appliances expected to run at the same time. It is a key input for choosing the right inverter size.",
+            ),
+            ExplanationItem(
+              title: "AC System Voltage",
+              description:
+                  "The AC voltage used at the site, such as 230V, 110V, or 380V depending on the country and electrical setup.",
+            ),
+            ExplanationItem(
+              title: "Safety Factor",
+              description:
+                  "This adds extra capacity above the calculated load so the inverter can handle startup surges, fluctuating demand, and cooler operation.",
+            ),
           ];
   }
 
@@ -150,16 +239,37 @@ class AppExplanations {
   List<ExplanationItem> getBatteryExplanations() {
     return isAr
         ? [
-            ExplanationItem(title: "تيار الحمل الكلي", description: "معدل استهلاك التيار المستمر من البطاريات بالأمبير."),
-            ExplanationItem(title: "وقت التشغيل المطلوب", description: "عدد الساعات التي تحتاج أن تعمل فيها الأجهزة اعتماداً على البطارية."),
-            ExplanationItem(title: "عمق التفريغ (DoD)", description: "نسبة تفريغ البطارية المسموح بها للحفاظ على عمرها (مثلاً 50% للجل و 80% لليثيوم)."),
+            ExplanationItem(
+              title: "تيار الحمل الكلي",
+              description:
+                  "هو مقدار التيار المستمر الذي تسحبه الأحمال من البطاريات أثناء التشغيل.",
+            ),
+            ExplanationItem(
+              title: "وقت التشغيل المطلوب",
+              description:
+                  "عدد الساعات التي تريد أن تستمر فيها البطاريات بتشغيل الأحمال عند غياب مصدر الشحن.",
+            ),
+            ExplanationItem(
+              title: "عمق التفريغ",
+              description:
+                  "هو النسبة المسموح باستخدامها من سعة البطارية دون التأثير الكبير على عمرها. مثال شائع: 50% لبطاريات الجل و80% أو أكثر لبعض بطاريات الليثيوم.",
+            ),
           ]
         : [
-            ExplanationItem(title: "Total Load Amps", description: "The continuous DC current drawn from the batteries in Amps."),
-            ExplanationItem(title: "Backup Time", description: "Total hours you need your appliances to run on battery power."),
+            ExplanationItem(
+              title: "Total Load Amps",
+              description:
+                  "The continuous DC current drawn from the battery bank while the loads are operating.",
+            ),
+            ExplanationItem(
+              title: "Backup Time",
+              description:
+                  "The number of hours you want the batteries to keep the loads running when no charging source is available.",
+            ),
             ExplanationItem(
               title: "Depth of Discharge (DoD)",
-              description: "Percentage of battery capacity usable without damage (e.g., 50% for Gel, 80% for Lithium).",
+              description:
+                  "The percentage of battery capacity you plan to use without significantly shortening battery life. A common assumption is about 50% for gel batteries and 80% or more for some lithium batteries.",
             ),
           ];
   }
@@ -168,16 +278,48 @@ class AppExplanations {
   List<ExplanationItem> getWiresExplanations() {
     return isAr
         ? [
-            ExplanationItem(title: "نوع التطبيق", description: "حدد ما إذا كان السلك لألواح شمسية، بطاريات، أو كهرباء منزلية (AC)."),
-            ExplanationItem(title: "التيار", description: "التيار المار في السلك بالأمبير. كلما زاد التيار زاد سمك السلك المطلوب."),
-            ExplanationItem(title: "المسافة", description: "طول السلك من المصدر إلى الحمل (اتجاه واحد)."),
-            ExplanationItem(title: "هبوط الجهد المسموح", description: "النسبة المئوية المقبولة لنقصان الجهد في نهاية السلك. (1-3% للأنظمة الشمسية)."),
+            ExplanationItem(
+              title: "نوع التطبيق",
+              description:
+                  "حدد هل السلك مخصص للألواح، البطاريات، أو الأحمال المتناوبة AC لأن طريقة الحساب قد تختلف حسب الاستخدام.",
+            ),
+            ExplanationItem(
+              title: "التيار",
+              description:
+                  "هو التيار المتوقع مروره داخل السلك بالأمبير. كلما ارتفع التيار احتجت إلى مقطع سلك أكبر.",
+            ),
+            ExplanationItem(
+              title: "المسافة",
+              description:
+                  "أدخل طول مسار السلك من المصدر إلى الحمل باتجاه واحد، لأن المسافة تؤثر مباشرة على هبوط الجهد.",
+            ),
+            ExplanationItem(
+              title: "هبوط الجهد المسموح",
+              description:
+                  "هو مقدار الانخفاض المقبول في الجهد بين بداية السلك ونهايته. في الأنظمة الشمسية يفضّل عادة إبقاؤه منخفضاً، مثل 1% إلى 3%.",
+            ),
           ]
         : [
-            ExplanationItem(title: "Application Type", description: "Select if wire is for DC Solar, Batteries, or AC Household."),
-            ExplanationItem(title: "Current", description: "The current flowing through the wire in Amps. Higher current requires thicker wires."),
-            ExplanationItem(title: "Distance", description: "One-way length of the wire run from source to load."),
-            ExplanationItem(title: "Voltage Drop", description: "Acceptable percentage of voltage loss. Keep low (1-3%) for solar efficiency."),
+            ExplanationItem(
+              title: "Application Type",
+              description:
+                  "Choose whether the cable is for solar panels, batteries, or AC loads, because the sizing approach can vary by application.",
+            ),
+            ExplanationItem(
+              title: "Current",
+              description:
+                  "This is the expected current flowing through the cable in amps. Higher current requires a thicker cable.",
+            ),
+            ExplanationItem(
+              title: "Distance",
+              description:
+                  "Enter the one-way cable run length from the source to the load, since distance directly affects voltage drop.",
+            ),
+            ExplanationItem(
+              title: "Voltage Drop",
+              description:
+                  "This is the amount of voltage loss you are willing to accept between the start and end of the cable. In solar systems, it is usually best to keep it low, such as 1% to 3%.",
+            ),
           ];
   }
 
@@ -185,19 +327,48 @@ class AppExplanations {
   List<ExplanationItem> getPumpExplanations() {
     return isAr
         ? [
-            ExplanationItem(title: "حجم المياه اليومي", description: "كمية المياه المطلوبة يومياً بالمتر المكعب (m³)."),
             ExplanationItem(
-              title: "الارتفاع الديناميكي الكلي (TDH)",
-              description: "مجموع الارتفاع العمودي + فواق الاحتكاك في الأنابيب + الضغط المطلوب عند المخرج.",
+              title: "حجم المياه اليومي",
+              description:
+                  "أدخل كمية المياه التي تريد ضخها يومياً بالمتر المكعب. هذه القيمة تحدد احتياج النظام من الطاقة.",
             ),
-            ExplanationItem(title: "ساعات الضخ", description: "عدد الساعات التي ستعمل فيها المضخة يومياً."),
-            ExplanationItem(title: "ساعات ذروة الشمس", description: "متوسط عدد ساعات الشمس القوية في موقعك."),
+            ExplanationItem(
+              title: "الارتفاع الديناميكي الكلي",
+              description:
+                  "يمثل مجموع الرفع العمودي، وفواقد الاحتكاك داخل الأنابيب، والضغط المطلوب عند نقطة الخروج. كلما ارتفعت هذه القيمة احتجت إلى مضخة أقوى.",
+            ),
+            ExplanationItem(
+              title: "ساعات الضخ",
+              description:
+                  "عدد الساعات اليومية المتاحة لتشغيل المضخة. تقليل عدد الساعات يعني الحاجة إلى قدرة أعلى خلال وقت أقصر.",
+            ),
+            ExplanationItem(
+              title: "ساعات ذروة الشمس",
+              description:
+                  "متوسط عدد ساعات الشمس الفعلية القوية في موقع المشروع، وهي قيمة مهمة لتحديد حجم الألواح المطلوبة.",
+            ),
           ]
         : [
-            ExplanationItem(title: "Daily Water Volume", description: "Target water quantity per day in cubic meters (m³)."),
-            ExplanationItem(title: "Total Dynamic Head (TDH)", description: "Vertical lift + Pipe friction losses + Required output pressure."),
-            ExplanationItem(title: "Pumping Hours", description: "Number of hours the pump will operate per day."),
-            ExplanationItem(title: "Peak Sun Hours", description: "Average hours of full solar intensity at your location."),
+            ExplanationItem(
+              title: "Daily Water Volume",
+              description:
+                  "Enter the amount of water you need to pump each day in cubic meters. This is a core input for estimating the energy requirement.",
+            ),
+            ExplanationItem(
+              title: "Total Dynamic Head (TDH)",
+              description:
+                  "This includes the vertical lift, pipe friction losses, and the required pressure at the outlet. Higher TDH means a stronger pump and more power are needed.",
+            ),
+            ExplanationItem(
+              title: "Pumping Hours",
+              description:
+                  "The number of hours per day available to run the pump. Fewer hours usually mean a higher required pumping power.",
+            ),
+            ExplanationItem(
+              title: "Peak Sun Hours",
+              description:
+                  "The average number of effective strong-sun hours at the project location, used to size the solar array for the pump.",
+            ),
           ];
   }
 
@@ -205,17 +376,77 @@ class AppExplanations {
   List<ExplanationItem> getDirectionExplanations() {
     return isAr
         ? [
-            ExplanationItem(title: "خط العرض", description: "موقعك الجغرافي شمال أو جنوب خط الاستواء. يحدد زاوية ميل الألواح المثالية."),
-            ExplanationItem(title: "التوجيه (Azimuth)", description: "الاتجاه الذي يجب أن تواجهه الألواح (الجنوب في نصف الكرة الشمالي والعكس)."),
-            ExplanationItem(title: "زاوية الميل", description: "الزاوية بين اللوح والأرض. أفضل زاوية سنوية تساوي عادةً خط العرض."),
+            ExplanationItem(
+              title: "خط العرض",
+              description:
+                  "هو موقعك الجغرافي شمالاً أو جنوباً بالنسبة لخط الاستواء، ويستخدم لتقدير أفضل زاوية ميل للألواح.",
+            ),
+            ExplanationItem(
+              title: "الاتجاه",
+              description:
+                  "هو الاتجاه الذي يجب أن تواجهه الألواح لتحقيق أفضل استقبال للشمس. غالباً يكون الجنوب في النصف الشمالي من الكرة الأرضية، والشمال في النصف الجنوبي.",
+            ),
+            ExplanationItem(
+              title: "زاوية الميل",
+              description:
+                  "هي الزاوية بين اللوح وسطح الأرض. في كثير من الحالات تكون الزاوية السنوية المناسبة قريبة من قيمة خط العرض.",
+            ),
           ]
         : [
-            ExplanationItem(title: "Latitude", description: "Your geographic location. Determines the optimal tilt angle for panels."),
             ExplanationItem(
-              title: "Azimuth (Direction)",
-              description: "The compass direction panels should face (South in Northern Hemisphere, North in Southern).",
+              title: "Latitude",
+              description:
+                  "Your position north or south of the equator. It is used to estimate a suitable panel tilt angle.",
             ),
-            ExplanationItem(title: "Tilt Angle", description: "Angle between the panel and the ground. Optimal yearly angle usually equals latitude."),
+            ExplanationItem(
+              title: "Direction",
+              description:
+                  "The compass direction the panels should face for the best solar exposure. This is usually south in the Northern Hemisphere and north in the Southern Hemisphere.",
+            ),
+            ExplanationItem(
+              title: "Tilt Angle",
+              description:
+                  "The angle between the panel and the ground. For year-round performance, the tilt is often close to the site latitude.",
+            ),
+          ];
+  }
+
+  // --- General Hints ---
+  List<ExplanationItem> getGeneralHints() {
+    return isAr
+        ? [
+            ExplanationItem(
+              title: "لماذا تختار الطاقة الشمسية؟",
+              description:
+                  "تساعدك أنظمة الطاقة الشمسية على توفير فواتير الكهرباء وتأمين طاقة مستدامة وصديقة للبيئة في منزلك أو عملك.",
+            ),
+            ExplanationItem(
+              title: "نصيحة للمبتدئين",
+              description:
+                  "قبل البدء بشراء المعدات، استخدم قسم (أدوات الحساب) لتحديد عدد الألواح والبطاريات المناسبة لاستهلاكك الفعلي.",
+            ),
+            ExplanationItem(
+              title: "أهمية الاستهلاك اليومي",
+              description:
+                  "حساب استهلاكك اليومي (بالواط) بدقة يجنبك شراء نظام أكبر من حاجتك أو أضعف مما تتوقع.",
+            ),
+          ]
+        : [
+            ExplanationItem(
+              title: "Why go solar?",
+              description:
+                  "Solar energy systems help you save on electricity bills and secure sustainable, eco-friendly energy for your home or business.",
+            ),
+            ExplanationItem(
+              title: "Beginner's Tip",
+              description:
+                  "Before buying equipment, use the 'Calculator Tools' section to determine exactly how many panels and batteries fit your actual usage.",
+            ),
+            ExplanationItem(
+              title: "The Importance of Daily Usage",
+              description:
+                  "Accurately calculating your daily energy usage (in Watts) prevents you from buying a system that's too big or too weak for your needs.",
+            ),
           ];
   }
 }

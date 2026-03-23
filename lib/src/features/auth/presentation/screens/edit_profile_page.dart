@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/utils/toast_service.dart';
@@ -319,7 +320,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                     child: DropdownButtonFormField<Country>(
                       initialValue: _selectedCountry,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCountries ? 'Loading...' : 'Country', // TODO: add translation
+                        labelText: _isLoadingCountries ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.country,
                         prefixIcon: _selectedCountry != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                         filled: true,
@@ -340,7 +341,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                     child: DropdownButtonFormField<City>(
                       initialValue: _selectedCity,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCities ? 'Loading...' : 'City', // TODO: add translation
+                        labelText: _isLoadingCities ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.city,
                         prefixIcon: _selectedCity != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                         filled: true,
@@ -354,7 +355,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       },
                       validator: (value) {
                         if (value == null) {
-                          return 'City is required'; // TODO: add translation
+                          return AppLocalizations.of(context)!.city_is_required;
                         }
                         return null;
                       },

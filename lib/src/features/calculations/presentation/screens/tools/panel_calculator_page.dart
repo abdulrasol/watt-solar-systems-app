@@ -7,12 +7,14 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class PanelCalculatorPage extends ConsumerStatefulWidget {
   const PanelCalculatorPage({super.key});
 
   @override
-  ConsumerState<PanelCalculatorPage> createState() => _PanelCalculatorPageState();
+  ConsumerState<PanelCalculatorPage> createState() =>
+      _PanelCalculatorPageState();
 }
 
 class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
@@ -33,11 +35,17 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('panels_calc'), // TODO: translate
-        actions: [IconButton(onPressed: _showHelpDialog, icon: const Icon(Icons.help_outline))],
+        title: Text(l10n.panels_calc),
+        actions: [
+          IconButton(
+            onPressed: _showHelpDialog,
+            icon: const Icon(Icons.help_outline),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -49,7 +57,7 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              "Calculate required solar panels based on your daily energy usage.", // TODO: translate
+              l10n.panel_calc_intro,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -57,10 +65,11 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
 
             // Inputs
             CalcInputRow(
-              label: "Total Daily Usage", // TODO: translate
+              label: l10n.total_daily_usage,
               suffix: "Ah", // TODO: translate
-              hint: "e.g. 100", // TODO: translate
-              onChanged: (v) => controller.panelCalcDailyUsage = double.tryParse(v) ?? 0,
+              hint: l10n.example_100_or_200,
+              onChanged: (v) =>
+                  controller.panelCalcDailyUsage = double.tryParse(v) ?? 0,
             ),
 
             // Voltage Selection
@@ -69,26 +78,34 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text("System Voltage", style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      l10n.system_voltage,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   DropdownButton<double>(
                     value: controller.panelCalcVoltage,
-                    items: [
-                      12.0,
-                      24.0,
-                      48.0,
-                      110.0,
-                      220.0,
-                      230.0,
-                      380.0,
-                    ].map((e) => DropdownMenuItem(value: e, child: Text("${e.toStringAsFixed(0)} V"))).toList(),
+                    items: [12.0, 24.0, 48.0, 110.0, 220.0, 230.0, 380.0]
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text("${e.toStringAsFixed(0)} V"),
+                          ),
+                        )
+                        .toList(),
                     onChanged: (v) => controller.panelCalcVoltage = v ?? 12.0,
                   ),
                 ],
               ),
             ),
 
-            CalcInputRow(label: "Panel Wattage", suffix: "W", initialValue: 450, onChanged: (v) => controller.panelCalcWattage = double.tryParse(v) ?? 0),
+            CalcInputRow(
+              label: l10n.panel_wattage,
+              suffix: "W",
+              initialValue: 450,
+              onChanged: (v) =>
+                  controller.panelCalcWattage = double.tryParse(v) ?? 0,
+            ),
 
             // Efficiency Slider
             const SizedBox(height: 10),
@@ -98,7 +115,10 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("System Efficiency / Loss Factor", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      l10n.system_efficiency_loss_factor,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text("${(controller.panelCalcEfficiency * 100.toInt())}%"),
                   ],
                 ),
@@ -113,17 +133,28 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
 
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: controller.calculatePanels, // Logic updated in Controller
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, minimumSize: Size(double.infinity, 50)),
-                  child: Text('calculate', style: TextStyle(color: Colors.white, fontSize: 16)), // TODO: translate
+                  onPressed:
+                      controller.calculatePanels, // Logic updated in Controller
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text(
+                    l10n.calculate,
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                 ),
                 const SizedBox(height: 30),
 
                 // Result
                 ResultCard(
-                  title: "Required Panels", // TODO: translate
+                  title: l10n.required_panels,
                   value: "${controller.panelCalcResult}",
-                  subtitle: "Total Array: ${(controller.panelCalcTotalWattage / 1000).toStringAsFixed(2)} kW",
+                  subtitle: l10n.total_array_kw(
+                    (controller.panelCalcTotalWattage / 1000).toStringAsFixed(
+                      2,
+                    ),
+                  ),
                   icon: Iconsax.sun_1_bold,
                   color: Colors.amber,
                 ),
@@ -135,20 +166,23 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
                   decoration: BoxDecoration(
                     color: isDark ? Colors.grey[800] : Colors.grey[100],
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+                    border: Border.all(
+                      color: Colors.grey.withValues(alpha: 0.3),
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Did you know?",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                        l10n.did_you_know,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.primaryColor,
+                        ),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        "• Ah (Amp-hours) = Watts ÷ Voltage.\n"
-                        "• E.g., 1000Wh daily load on a 12V system = 83.3 Ah.\n"
-                        "• We factor in efficiency (losses) to ensure your system performs well even on cloudy days.",
+                        l10n.panel_calc_tip_text,
                         style: TextStyle(fontSize: 12),
                       ),
                     ],
@@ -175,7 +209,13 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
           height: 600,
           child: Column(
             children: [
-              Text('guide', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO: translate
+              Text(
+                AppLocalizations.of(context)!.guide,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 16),
               Expanded(
                 child: ListView.separated(
@@ -188,10 +228,19 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
                       children: [
                         Text(
                           item.title,
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.primaryColor,
+                          ),
                         ),
                         const SizedBox(height: 4),
-                        Text(item.description, style: TextStyle(fontSize: 13, color: Colors.grey[700])),
+                        Text(
+                          item.description,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[700],
+                          ),
+                        ),
                       ],
                     );
                   },
@@ -200,8 +249,12 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Checkbox(value: dontShowAgain, onChanged: (val) => dontShowAgain = val ?? false, activeColor: AppTheme.primaryColor),
-                  Text('dont_show_again'), // TODO: translate
+                  Checkbox(
+                    value: dontShowAgain,
+                    onChanged: (val) => dontShowAgain = val ?? false,
+                    activeColor: AppTheme.primaryColor,
+                  ),
+                  Text(AppLocalizations.of(context)!.dont_show_again),
                 ],
               ),
               const SizedBox(height: 8),
@@ -217,9 +270,11 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: Text('close'), // TODO: translate
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ),
             ],

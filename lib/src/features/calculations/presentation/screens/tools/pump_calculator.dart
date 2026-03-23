@@ -6,6 +6,7 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class PumpCalculator extends ConsumerStatefulWidget {
   const PumpCalculator({super.key});
@@ -32,11 +33,17 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('pump_calc'), // TODO: translate
-        actions: [IconButton(onPressed: _showHelpDialog, icon: const Icon(Icons.help_outline))],
+        title: Text(l10n.pump_calc),
+        actions: [
+          IconButton(
+            onPressed: _showHelpDialog,
+            icon: const Icon(Icons.help_outline),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -47,44 +54,52 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
               child: Icon(Icons.water_drop, size: 80, color: Colors.blueAccent),
             ),
             const SizedBox(height: 20),
-            Text("Calculate solar power for your water pump system.", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
+            Text(
+              l10n.pump_calc_intro,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             const SizedBox(height: 30),
 
             // Inputs
             CalcInputRow(
-              label: "Daily Water Volume",
+              label: l10n.daily_water_volume,
               suffix: "m³",
               hint: "e.g. 10 (10000 L)",
               initialValue: controller.pumpDailyWater,
-              onChanged: (v) => controller.pumpDailyWater = double.tryParse(v) ?? 0,
+              onChanged: (v) =>
+                  controller.pumpDailyWater = double.tryParse(v) ?? 0,
             ),
             CalcInputRow(
-              label: "Total Dynamic Head (TDH)",
+              label: l10n.total_dynamic_head,
               suffix: "m",
               hint: "e.g. 50 (Vertical + Friction)",
               initialValue: controller.pumpTDH,
               onChanged: (v) => controller.pumpTDH = double.tryParse(v) ?? 0,
             ),
             CalcInputRow(
-              label: "Pumping Hours",
+              label: l10n.pumping_hours,
               suffix: "h",
               hint: "e.g. 6",
               initialValue: controller.pumpDailyHours,
-              onChanged: (v) => controller.pumpDailyHours = double.tryParse(v) ?? 0,
+              onChanged: (v) =>
+                  controller.pumpDailyHours = double.tryParse(v) ?? 0,
             ),
             CalcInputRow(
-              label: "Location Peak Sun Hours (PSH)",
+              label: l10n.location_peak_sun_hours,
               suffix: "h",
               hint: "e.g. 5",
               initialValue: controller.pumpPeakSunHours,
-              onChanged: (v) => controller.pumpPeakSunHours = double.tryParse(v) ?? 0,
+              onChanged: (v) =>
+                  controller.pumpPeakSunHours = double.tryParse(v) ?? 0,
             ),
             CalcInputRow(
-              label: "Solar Panel Wattage",
+              label: l10n.solar_panel_wattage,
               suffix: "W",
               hint: "e.g. 550",
               initialValue: controller.pumpPanelWattage,
-              onChanged: (v) => controller.pumpPanelWattage = double.tryParse(v) ?? 0,
+              onChanged: (v) =>
+                  controller.pumpPanelWattage = double.tryParse(v) ?? 0,
             ),
 
             // Pump Efficiency Slider
@@ -95,7 +110,10 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Pump Efficiency", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      l10n.pump_efficiency,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text("${(controller.pumpEfficiency * 100.toInt())}%"),
                   ],
                 ),
@@ -113,25 +131,35 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: controller.calculatePump,
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, minimumSize: const Size(double.infinity, 50)),
-              child: Text('calculate', style: const TextStyle(color: Colors.white, fontSize: 16)), // TODO: translate
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                minimumSize: const Size(double.infinity, 50),
+              ),
+              child: Text(
+                l10n.calculate,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
             const SizedBox(height: 30),
 
             // Results
             ResultCard(
-              title: "Required Solar Panels",
+              title: l10n.required_solar_panels,
               value: "${controller.pumpRequiredPanelCount}",
-              subtitle: "Total Array: ${controller.pumpRequiredPanelKw.toStringAsFixed(2)} kWp",
+              subtitle:
+                  "Total Array: ${controller.pumpRequiredPanelKw.toStringAsFixed(2)} kWp",
               icon: Icons.solar_power,
               color: Colors.orange,
             ),
 
             const SizedBox(height: 16),
             ResultCard(
-              title: "Hydraulic Power Est.",
-              value: "${(controller.pumpHydraulicPowerW / 1000).toStringAsFixed(2)} kW", // Display kW
-              subtitle: "(~${(controller.pumpHydraulicPowerW / 745.7).toStringAsFixed(1)} HP) Motor",
+              title: l10n.hydraulic_power_est,
+              value:
+                  "${(controller.pumpHydraulicPowerW / 1000).toStringAsFixed(2)} kW", // Display kW
+              subtitle: l10n.motor_hp_estimate(
+                (controller.pumpHydraulicPowerW / 745.7).toStringAsFixed(1),
+              ),
               icon: Icons.settings,
               color: Colors.blueGrey,
             ),
@@ -149,20 +177,26 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Definitions / تعريفات",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                    l10n.definitions,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   _buildDefinitionRow(
-                    "Total Dynamic Head (TDH)",
-                    "Vertical Lift + Friction Losses + Pressure.\nالارتفاع الكلي + فاقد الاحتكاك + الضغط المطلوب.",
+                    l10n.total_dynamic_head,
+                    l10n.definition_tdh,
                   ),
-                  _buildDefinitionRow("Flow Rate", "Volume of water per day (e.g., m³ or 1000 Liters).\nكمية المياه المطلوبة يومياً (بالمتر المكعب)."),
                   _buildDefinitionRow(
-                    "Peak Sun Hours (PSH)",
-                    "Equivalent hours of full sun intensity (usually 4-6h).\nساعات ذروة الشمس في منطقتك (عادة ٤-٦ ساعات).",
+                    l10n.flow_rate,
+                    l10n.definition_flow_rate,
                   ),
-                  _buildDefinitionRow("Hydraulic Power", "Power required to lift water (before motor efficiency).\nالقدرة الهيدروليكية اللازمة لرفع الماء."),
+                  _buildDefinitionRow(l10n.peak_sun_hours, l10n.definition_psh),
+                  _buildDefinitionRow(
+                    l10n.hydraulic_power,
+                    l10n.definition_hydraulic_power,
+                  ),
                 ],
               ),
             ),
@@ -178,10 +212,20 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("• $title:", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          Text(
+            "• $title:",
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
-            child: Text(desc, style: const TextStyle(fontSize: 12, height: 1.4, color: Colors.grey)),
+            child: Text(
+              desc,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 1.4,
+                color: Colors.grey,
+              ),
+            ),
           ),
         ],
       ),
@@ -201,7 +245,13 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
           height: 600,
           child: Column(
             children: [
-              Text('guide', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO: translate
+              Text(
+                AppLocalizations.of(context)!.guide,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 16),
               Expanded(
                 child: ListView.separated(
@@ -214,10 +264,19 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
                       children: [
                         Text(
                           item.title,
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.primaryColor,
+                          ),
                         ),
                         const SizedBox(height: 4),
-                        Text(item.description, style: TextStyle(fontSize: 13, color: Colors.grey[700])),
+                        Text(
+                          item.description,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[700],
+                          ),
+                        ),
                       ],
                     );
                   },
@@ -226,8 +285,12 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Checkbox(value: dontShowAgain, onChanged: (val) => dontShowAgain = val ?? false, activeColor: AppTheme.primaryColor),
-                  Text('dont_show_again'), // TODO: translate
+                  Checkbox(
+                    value: dontShowAgain,
+                    onChanged: (val) => dontShowAgain = val ?? false,
+                    activeColor: AppTheme.primaryColor,
+                  ),
+                  Text(AppLocalizations.of(context)!.dont_show_again),
                 ],
               ),
               const SizedBox(height: 8),
@@ -243,9 +306,11 @@ class _PumpCalculatorState extends ConsumerState<PumpCalculator> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: Text('close'), // TODO: translate
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ),
             ],

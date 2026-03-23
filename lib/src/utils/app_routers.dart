@@ -10,6 +10,10 @@ import 'package:solar_hub/src/features/home/presentation/screen/home.dart';
 import 'package:solar_hub/src/features/settings/presentation/screens/settings_page.dart';
 import 'package:solar_hub/src/features/splash/presentation/screens/role_selection_page.dart';
 import 'package:solar_hub/src/features/splash/presentation/screens/splash_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_layout.dart';
+import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
+import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
+import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
 
 // Create a globally accessible provider for the GoRouter
 final routerProvider = Provider<GoRouter>((ref) {
@@ -87,6 +91,32 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/settings',
         builder: (BuildContext context, GoRouterState state) {
           return const SettingsPage();
+        },
+      ),
+      GoRoute(
+        path: '/company/dashboard',
+        builder: (BuildContext context, GoRouterState state) {
+          return const CompanyDashboardLayout();
+        },
+      ),
+      GoRoute(
+        path: '/company-dashboard/inventory/add',
+        builder: (BuildContext context, GoRouterState state) {
+          return const AddProductPage();
+        },
+      ),
+      GoRoute(
+        path: '/company-dashboard/inventory/product/:id',
+        builder: (BuildContext context, GoRouterState state) {
+          final product = state.extra as Product;
+          return ProductDetailsPage(product: product);
+        },
+      ),
+      GoRoute(
+        path: '/company-dashboard/inventory/edit/:id',
+        builder: (BuildContext context, GoRouterState state) {
+          final product = state.extra as Product;
+          return AddProductPage(product: product);
         },
       ),
     ],

@@ -9,21 +9,27 @@ Container textHelperCard(BuildContext context, {String? text, String? title}) {
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
       borderRadius: BorderRadius.circular(8),
-      border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2)),
+      border: Border.all(
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+      ),
     ),
     child: Column(
       children: [
         if (title != null)
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             textAlign: TextAlign.center,
           ),
         verSpace(space: 5),
         if (text != null)
           Text(
             text,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             textAlign: TextAlign.justify,
           ),
       ],

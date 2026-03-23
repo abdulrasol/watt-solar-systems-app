@@ -11,6 +11,7 @@ import 'package:solar_hub/src/utils/app_constants.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
 import 'package:validatorless/validatorless.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class CountCalculator extends ConsumerStatefulWidget {
   const CountCalculator({super.key});
@@ -83,7 +84,10 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
     final timeInput = num.tryParse(time.text) ?? 0;
     final dod = depthOfDischarge;
     num dailyUsageKWh = ampereInput * systemVoltage * timeInput;
-    if (dailyUsageKWh > 0 && voltageInput > 0 && currentInput > 0 && timeInput > 0) {
+    if (dailyUsageKWh > 0 &&
+        voltageInput > 0 &&
+        currentInput > 0 &&
+        timeInput > 0) {
       Map batterybank = HomeSolarSystemCalculator.calculateBatteryBank(
         dailyUsageKWh: dailyUsageKWh.toDouble(),
         batteryVoltage: voltageInput.toDouble(),
@@ -110,7 +114,10 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
 
   Future<void> _saveSystem() async {
     final controller = ref.read(systemsProvider.notifier);
-    final dialogResult = await showDialog(context: context, builder: (context) => const SaveToSystemDialog());
+    final dialogResult = await showDialog(
+      context: context,
+      builder: (context) => const SaveToSystemDialog(),
+    );
 
     if (dialogResult != null && dialogResult is Map) {
       final isNew = dialogResult['isNew'] as bool;
@@ -127,9 +134,12 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
           'count': batteryCount,
           'capacity_ah': double.tryParse(batteryCurrent.text) ?? 0,
           'voltage': double.tryParse(batteryVoltage.text) ?? 0,
-          'type': depthOfDischarge >= 50 ? "Gel/AGM" : "Lithium/Tubular", // Simple heuristic based on helper text
+          'type': depthOfDischarge >= 50
+              ? "Gel/AGM"
+              : "Lithium/Tubular", // Simple heuristic based on helper text
           'brand': 'Unknown',
-          'notes': 'DoD: ${depthOfDischarge.toInt()}%, System Voltage: $systemVoltage V',
+          'notes':
+              'DoD: ${depthOfDischarge.toInt()}%, System Voltage: $systemVoltage V',
         },
       );
     }
@@ -147,7 +157,10 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
                 children: [
                   // Hero(tag: '/battery', child: Image.asset('assets/png/cards/battery.png', height: 180)),
                   verSpace(),
-                  ..._buildFormFields().animate(interval: 100.ms).fadeIn().slideY(),
+                  ..._buildFormFields()
+                      .animate(interval: 100.ms)
+                      .fadeIn()
+                      .slideY(),
                   verSpace(space: 65),
                 ],
               ),
@@ -164,15 +177,23 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
                   children: [
                     Expanded(
                       child: Text(
-                        '$batteryCount Batteries',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          // fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        AppLocalizations.of(
+                          context,
+                        )!.batteries_count_value(batteryCount),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              // fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    if (batteryCount > 0) IconButton(onPressed: () => _saveSystem(), icon: const Icon(Iconsax.save_2_bold), tooltip: "Save to System"),
+                    if (batteryCount > 0)
+                      IconButton(
+                        onPressed: () => _saveSystem(),
+                        icon: const Icon(Iconsax.save_2_bold),
+                        tooltip: AppLocalizations.of(context)!.save_to_system,
+                      ),
                   ],
                 ),
               ),
@@ -191,13 +212,13 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
       inputField(
         null,
         context: context,
-        label: 'your-load-ampere', // TODO: translate
-        hintText: 'e.g., 10', // TODO: translate
+        label: AppLocalizations.of(context)!.your_load_ampere,
+        hintText: AppLocalizations.of(context)!.example_10,
         icon: FontAwesome.bolt_solid,
         controller: current,
         validator: Validatorless.multiple([
-          Validatorless.required('required'), // TODO: translate
-          Validatorless.number('numbers'), // TODO: translate
+          Validatorless.required(AppLocalizations.of(context)!.required_field),
+          Validatorless.number(AppLocalizations.of(context)!.numbers_only),
         ]),
         onChanged: _updateBatteryCount,
       ),
@@ -205,60 +226,62 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
       divider,
       textHelperCard(
         context,
-        text: 'Enter your load in Ampere and select AC Voltage System. Usually load calculate by: Voltage × Current. For example, 10A × 230V = 2300W.',
+        text: AppLocalizations.of(context)!.load_ampere_helper,
       ),
       divider,
       inputField(
         context: context,
         null,
-        label: 'battery-amperes', // TODO: translate
-        hintText: 'e.g., 100 or 200',
+        label: AppLocalizations.of(context)!.battery_amperes,
+        hintText: AppLocalizations.of(context)!.example_100_or_200,
         icon: FontAwesome.i_solid,
         controller: batteryCurrent,
         validator: Validatorless.multiple([
-          Validatorless.required('required'), // TODO: translate
-          Validatorless.number('numbers'), // TODO: translate
+          Validatorless.required(AppLocalizations.of(context)!.required_field),
+          Validatorless.number(AppLocalizations.of(context)!.numbers_only),
         ]),
         onChanged: _updateBatteryCount,
       ),
       inputField(
         context: context,
         null,
-        label: 'battrey-voltage', // TODO: translate
-        hintText: 'e.g., 12, 24, 48 or 51.2',
+        label: AppLocalizations.of(context)!.battery_voltage_label,
+        hintText: AppLocalizations.of(context)!.example_12_24_48_512,
         icon: FontAwesome.v_solid,
         controller: batteryVoltage,
         validator: Validatorless.multiple([
-          Validatorless.required('required'), // TODO: translate
-          Validatorless.number('numbers'), // TODO: translate
+          Validatorless.required(AppLocalizations.of(context)!.required_field),
+          Validatorless.number(AppLocalizations.of(context)!.numbers_only),
         ]),
         onChanged: _updateBatteryCount,
       ),
       // divider,
       inputField(
         context: context,
-        'How many hours do you need your system to run on batteries?', // TODO: translate
-        label: 'Required Runtime (hours)', // TODO: translate
-        hintText: 'e.g., 5 or 8', // TODO: translate
+        AppLocalizations.of(context)!.runtime_question,
+        label: AppLocalizations.of(context)!.required_runtime_hours,
+        hintText: AppLocalizations.of(context)!.example_5_or_8,
         icon: IonIcons.timer,
         controller: time,
         validator: Validatorless.multiple([
-          Validatorless.required('required'), // TODO: translate
-          Validatorless.number('numbers'), // TODO: translate
+          Validatorless.required(AppLocalizations.of(context)!.required_field),
+          Validatorless.number(AppLocalizations.of(context)!.numbers_only),
         ]),
         onChanged: _updateBatteryCount,
       ),
       verSpace(),
       textHelperCard(
         context,
-        text:
-            'The number of batteries needed is calculated as:\n\n'
-            '(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\n'
-            'Example: (2300W × 5h) ÷ (12V × 100Ah × 0.2) = ~8 batteries\n\n'
-            'This helps determine how many batteries you need to meet a specific load and runtime.', // TODO: translate
+        text: AppLocalizations.of(context)!.battery_count_explanation,
       ),
       divider,
-      Text('Depth of Discharge of Battery ($depthOfDischarge%)', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.start), // TODO: translate
+      Text(
+        AppLocalizations.of(
+          context,
+        )!.depth_of_discharge_with_value(depthOfDischarge.toStringAsFixed(0)),
+        style: Theme.of(context).textTheme.titleMedium,
+        textAlign: TextAlign.start,
+      ),
       verSpace(space: 8),
       Slider(
         value: depthOfDischarge.toDouble(),
@@ -274,11 +297,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         },
       ),
       verSpace(space: 4),
-      textHelperCard(
-        context,
-        text:
-            'Set the Depth of Discharge (DoD) percentage.\n\nTypical values range from 20% to 80% depending on battery type.\n\n• 20% for Lithium/Tubular\n• 50% for AGM/Gel\nCheck your battery\'s datasheet for best accuracy.', // TODO: translate
-      ),
+      textHelperCard(context, text: AppLocalizations.of(context)!.dod_guidance),
     ];
   }
 
@@ -287,14 +306,26 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
       initialValue: systemVoltage,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        labelText: 'System Voltage (AC)',
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
+        labelText: AppLocalizations.of(context)!.ac_system_voltage,
         prefixIcon: const Icon(Icons.electrical_services_rounded),
       ),
-      items: const [
-        DropdownMenuItem(value: 110, child: Text('110 V')), // TODO: translate
-        DropdownMenuItem(value: 230, child: Text('230 V')), // TODO: translate
-        DropdownMenuItem(value: 380, child: Text('380 V (Three-phase)')), // TODO: translate
+      items: [
+        DropdownMenuItem(
+          value: 110,
+          child: Text(AppLocalizations.of(context)!.voltage_110),
+        ),
+        DropdownMenuItem(
+          value: 230,
+          child: Text(AppLocalizations.of(context)!.voltage_230),
+        ),
+        DropdownMenuItem(
+          value: 380,
+          child: Text(AppLocalizations.of(context)!.voltage_380_three_phase),
+        ),
       ],
       onChanged: (value) {
         setState(() {

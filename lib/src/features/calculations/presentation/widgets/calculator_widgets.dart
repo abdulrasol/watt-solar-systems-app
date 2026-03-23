@@ -8,7 +8,14 @@ class CalcInputRow extends ConsumerStatefulWidget {
   final Function(String) onChanged;
   final double? initialValue;
 
-  const CalcInputRow({super.key, required this.label, required this.suffix, required this.onChanged, this.initialValue, this.hint});
+  const CalcInputRow({
+    super.key,
+    required this.label,
+    required this.suffix,
+    required this.onChanged,
+    this.initialValue,
+    this.hint,
+  });
 
   @override
   ConsumerState<CalcInputRow> createState() => _CalcInputRowState();
@@ -20,7 +27,9 @@ class _CalcInputRowState extends ConsumerState<CalcInputRow> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialValue?.toString() ?? '');
+    _controller = TextEditingController(
+      text: widget.initialValue?.toString() ?? '',
+    );
   }
 
   @override
@@ -82,7 +91,14 @@ class ResultCard extends ConsumerWidget {
   final String? subtitle;
   final IconData icon;
   final Color color;
-  const ResultCard({super.key, required this.title, required this.value, required this.icon, required this.color, this.subtitle});
+  const ResultCard({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.icon,
+    required this.color,
+    this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -92,7 +108,13 @@ class ResultCard extends ConsumerWidget {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: color.withValues(alpha: 0.4), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: color.withValues(alpha: 0.4),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -100,12 +122,19 @@ class ResultCard extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             value,
-            style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           if (subtitle != null)
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(subtitle!, style: const TextStyle(color: Colors.white70, fontSize: 16)),
+              child: Text(
+                subtitle!,
+                style: const TextStyle(color: Colors.white70, fontSize: 16),
+              ),
             ),
           Text(title, style: const TextStyle(color: Colors.white70)),
         ],

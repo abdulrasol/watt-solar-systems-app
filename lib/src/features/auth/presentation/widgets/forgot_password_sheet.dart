@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:solar_hub/src/utils/toast_service.dart';
 
@@ -22,24 +23,24 @@ class ForgotPasswordSheet extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Reset Password', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)), // TODO: add translation
+              Text(AppLocalizations.of(context)!.reset_password, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
               IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.close)),
             ],
           ),
           const SizedBox(height: 10),
-          Text(
-            'Enter your email address and we will send you a link to reset your password.', // TODO: add translation
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-          ),
+          Text(AppLocalizations.of(context)!.reset_password_instructions, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey)),
           const SizedBox(height: 20),
           Form(
             key: _formKey,
             child: TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              validator: Validatorless.multiple([Validatorless.required('Email is required'), Validatorless.email('Invalid email')]), // TODO: add translation
+              validator: Validatorless.multiple([
+                Validatorless.required(AppLocalizations.of(context)!.email_is_required),
+                Validatorless.email(AppLocalizations.of(context)!.invalid_email),
+              ]),
               decoration: InputDecoration(
-                labelText: 'Email', // TODO: add translation
+                labelText: AppLocalizations.of(context)!.email,
                 prefixIcon: const Icon(Icons.email_outlined),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -56,13 +57,13 @@ class ForgotPasswordSheet extends StatelessWidget {
                     //  await _authController.sendPasswordResetEmail(_emailController.text);
                     _btnController.success();
                     context.pop();
-                    ToastService.success(context, 'Success', 'Password reset email sent!'); // TODO: add translation
+                    ToastService.success(context, AppLocalizations.of(context)!.success, AppLocalizations.of(context)!.password_reset_email_sent);
                   } catch (e) {
                     _btnController.error();
                     await Future.delayed(const Duration(seconds: 1));
                     _btnController.reset();
                     if (context.mounted) {
-                      ToastService.error(context, 'Error', e.toString()); // TODO: add translation
+                      ToastService.error(context, AppLocalizations.of(context)!.error, e.toString());
                     }
                   }
                 } else {
@@ -72,7 +73,7 @@ class ForgotPasswordSheet extends StatelessWidget {
                 }
               },
               color: Theme.of(context).primaryColor,
-              child: const Text('Send Reset Link', style: TextStyle(color: Colors.white)), // TODO: add translation
+              child: Text(AppLocalizations.of(context)!.send_reset_link, style: const TextStyle(color: Colors.white)),
             ),
           ),
           const SizedBox(height: 40),

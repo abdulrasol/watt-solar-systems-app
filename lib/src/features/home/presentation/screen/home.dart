@@ -2,6 +2,8 @@ import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/calculator_landing_page.dart';
 import 'package:solar_hub/src/features/home/presentation/providers/home_page_provider.dart';
 import 'package:solar_hub/src/features/home/presentation/screen/user_dashboard.dart';
@@ -19,7 +21,7 @@ class Home extends ConsumerWidget {
 
     return Scaffold(
       extendBody: true,
-      appBar: PreferredSize(preferredSize: const Size.fromHeight(kToolbarHeight), child: _appBar(ref)),
+      appBar: PreferredSize(preferredSize: const Size.fromHeight(kToolbarHeight), child: _appBar(context, ref)),
       // But user wanted AppBar in Dashboard too now. Step 254 request: "use appabr ... in user_dashboard.dart as in home".
       // Step 262 implemented: appBar: _appBar() (always show).
       // So I will stick to ALWAYS showing _appBar(), but maybe title changes.
@@ -65,22 +67,22 @@ class Home extends ConsumerWidget {
     );
   }
 
-  AppBar _appBar(WidgetRef ref) {
+  AppBar _appBar(BuildContext context, WidgetRef ref) {
     int index = ref.watch(homePageIndexProvider);
 
     return AppBar(
-      title: Text('data'), // TODO: implement title
+      title: Text(AppLocalizations.of(context)!.home),
       actions: [
-        IconButton(
-          icon: Icon(Icons.search, color: AppTheme.primaryColor),
-          onPressed: () {
-            // hubController.isSearching.toggle();
-            // if (!hubController.isSearching.value) {
-            //   hubController.searchController.clear();
-            //   hubController.searchPosts('');
-            // }
-          },
-        ),
+        // IconButton(
+        //   icon: Icon(Icons.search, color: AppTheme.primaryColor),
+        //   onPressed: () {
+        //     // hubController.isSearching.toggle();
+        //     // if (!hubController.isSearching.value) {
+        //     //   hubController.searchController.clear();
+        //     //   hubController.searchPosts('');
+        //     // }
+        //   },
+        // ),
         Row(
           children: [
             // Cart Icon (Only in Store)
@@ -105,27 +107,28 @@ class Home extends ConsumerWidget {
               ),
 
             // Notification Icon with Badge
-            Stack(
-              children: [
-                IconButton(
-                  onPressed: () => {}, // TODO: implement Get.to(() => const NotificationsPage()),
-                  icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
-                ),
+            if (ref.watch(authProvider).isSigned)
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () => {},
+                    icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
+                  ),
 
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                    child: Text(
-                      '+9', // TODO: implement unread count
-                      style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                      child: const Text(
+                        '+9',
+                        style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             const SizedBox(width: 8),
           ],
         ),

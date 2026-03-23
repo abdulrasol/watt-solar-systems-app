@@ -8,6 +8,7 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:toastification/toastification.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class OfferRequestWizard extends ConsumerStatefulWidget {
   const OfferRequestWizard({super.key});
@@ -31,22 +32,36 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(calculatorProvider);
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text('request_offer_wizard'),
+        title: Text(l10n.request_offer_wizard),
         elevation: 0,
-        actions: [IconButton(onPressed: _showHelpDialog, icon: const Icon(Icons.help_outline))],
+        actions: [
+          IconButton(
+            onPressed: _showHelpDialog,
+            icon: const Icon(Icons.help_outline),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('request_offer_desc', style: TextStyle(color: Colors.grey[600])),
+            Text(
+              l10n.request_offer_desc,
+              style: TextStyle(color: Colors.grey[600]),
+            ),
             const SizedBox(height: 24),
 
             // Panels
-            _buildSectionHeader(context, 'panels_calc', Iconsax.sun_1_bold, Colors.amber),
+            _buildSectionHeader(
+              context,
+              l10n.panels_calc,
+              Iconsax.sun_1_bold,
+              Colors.amber,
+            ),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: _cardDecoration(context),
@@ -54,20 +69,35 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                 children: [
                   _buildIntInputRow(
                     context,
-                    label: 'panel_wattage',
+                    label: l10n.panel_wattage,
                     value: controller.selectedPanelWattage.toDouble(),
                     suffix: "W",
-                    onChanged: (val) => controller.updateField(() => controller.selectedPanelWattage = int.tryParse(val) ?? 0),
+                    onChanged: (val) => controller.updateField(
+                      () => controller.selectedPanelWattage =
+                          int.tryParse(val) ?? 0,
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  _buildNoteField(context, controller.panelNote, "Notes (optional)", (val) => controller.updateField(() => controller.panelNote = val)),
+                  _buildNoteField(
+                    context,
+                    controller.panelNote,
+                    l10n.notes_optional,
+                    (val) => controller.updateField(
+                      () => controller.panelNote = val,
+                    ),
+                  ),
                   const Divider(),
                   _buildCounterRow(
                     context,
-                    label: 'count',
+                    label: l10n.count,
                     value: controller.panelCount,
-                    onDecrement: () => controller.updateField(() => controller.panelCount > 0 ? controller.panelCount-- : null),
-                    onIncrement: () => controller.updateField(() => controller.panelCount++),
+                    onDecrement: () => controller.updateField(
+                      () => controller.panelCount > 0
+                          ? controller.panelCount--
+                          : null,
+                    ),
+                    onIncrement: () =>
+                        controller.updateField(() => controller.panelCount++),
                   ),
                 ],
               ),
@@ -75,7 +105,12 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
             const SizedBox(height: 20),
 
             // Inverter
-            _buildSectionHeader(context, 'inverter_calc', Iconsax.flash_bold, Colors.red),
+            _buildSectionHeader(
+              context,
+              l10n.inverter_calc,
+              Iconsax.flash_bold,
+              Colors.red,
+            ),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: _cardDecoration(context),
@@ -85,51 +120,101 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                     builder: (context) {
                       return _buildInputRow(
                         context,
-                        label: 'capacity_kw',
+                        label: l10n.capacity_kw,
                         value: controller.selectedInverterKva,
                         suffix: "kW",
-                        onChanged: (val) => controller.updateField(() => controller.selectedInverterKva = double.tryParse(val) ?? 0.0),
+                        onChanged: (val) => controller.updateField(
+                          () => controller.selectedInverterKva =
+                              double.tryParse(val) ?? 0.0,
+                        ),
                       );
                     },
                   ),
                   const SizedBox(height: 12),
                   _buildStringDropdownRow(
                     context,
-                    label: 'voltage_type',
+                    label: l10n.voltage_type,
                     value: controller.selectedInverterVoltType,
-                    items: ['Low Voltage', 'High Voltage'],
-                    onChanged: (val) => controller.updateField(() => controller.selectedInverterVoltType = val ?? 'Low Voltage'),
+                    items: [
+                      const _DropdownOption(
+                        value: 'Low Voltage',
+                        localizationKey: _Loc.lowVoltage,
+                      ),
+                      const _DropdownOption(
+                        value: 'High Voltage',
+                        localizationKey: _Loc.highVoltage,
+                      ),
+                    ],
+                    onChanged: (val) => controller.updateField(
+                      () => controller.selectedInverterVoltType =
+                          val ?? 'Low Voltage',
+                    ),
                   ),
                   const SizedBox(height: 12),
                   _buildStringDropdownRow(
                     context,
-                    label: 'phase',
+                    label: l10n.phase,
                     value: controller.selectedInverterPhase,
-                    items: ['Single Phase', 'three_phase'],
-                    onChanged: (val) => controller.updateField(() => controller.selectedInverterPhase = val ?? 'Single Phase'),
+                    items: [
+                      const _DropdownOption(
+                        value: 'Single Phase',
+                        localizationKey: _Loc.singlePhase,
+                      ),
+                      const _DropdownOption(
+                        value: 'Three Phase',
+                        localizationKey: _Loc.threePhase,
+                      ),
+                    ],
+                    onChanged: (val) => controller.updateField(
+                      () => controller.selectedInverterPhase =
+                          val ?? 'Single Phase',
+                    ),
                   ),
                   const SizedBox(height: 12),
                   _buildStringDropdownRow(
                     context,
-                    label: "Type",
+                    label: l10n.type,
                     value: controller.selectedInverterType,
-                    items: ['Hybrid', 'On-Grid', 'Off-Grid'],
-                    onChanged: (val) => controller.updateField(() => controller.selectedInverterType = val ?? 'Hybrid'),
+                    items: [
+                      const _DropdownOption(
+                        value: 'Hybrid',
+                        localizationKey: _Loc.hybrid,
+                      ),
+                      const _DropdownOption(
+                        value: 'On-Grid',
+                        localizationKey: _Loc.onGrid,
+                      ),
+                      const _DropdownOption(
+                        value: 'Off-Grid',
+                        localizationKey: _Loc.offGrid,
+                      ),
+                    ],
+                    onChanged: (val) => controller.updateField(
+                      () => controller.selectedInverterType = val ?? 'Hybrid',
+                    ),
                   ),
                   const SizedBox(height: 12),
                   _buildNoteField(
                     context,
                     controller.inverterNote,
-                    "Notes (Brand, specific models...)",
-                    (val) => controller.updateField(() => controller.inverterNote = val),
+                    l10n.notes_brand,
+                    (val) => controller.updateField(
+                      () => controller.inverterNote = val,
+                    ),
                   ),
                   const Divider(),
                   _buildCounterRow(
                     context,
-                    label: 'count',
+                    label: l10n.count,
                     value: controller.inverterCount,
-                    onDecrement: () => controller.updateField(() => controller.inverterCount > 0 ? controller.inverterCount-- : null),
-                    onIncrement: () => controller.updateField(() => controller.inverterCount++),
+                    onDecrement: () => controller.updateField(
+                      () => controller.inverterCount > 0
+                          ? controller.inverterCount--
+                          : null,
+                    ),
+                    onIncrement: () => controller.updateField(
+                      () => controller.inverterCount++,
+                    ),
                   ),
                 ],
               ),
@@ -137,7 +222,12 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
             const SizedBox(height: 20),
 
             // Batteries
-            _buildSectionHeader(context, 'battery_calc', Iconsax.battery_charging_bold, Colors.green),
+            _buildSectionHeader(
+              context,
+              l10n.battery_calc,
+              Iconsax.battery_charging_bold,
+              Colors.green,
+            ),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: _cardDecoration(context),
@@ -146,36 +236,61 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                 children: [
                   _buildStringDropdownRow(
                     context,
-                    label: "Type",
+                    label: l10n.type,
                     value: controller.selectedBatteryType,
-                    items: ['Lithium', 'Gel / Lead-Acid / Tubular'],
-                    onChanged: (val) => controller.updateField(() => controller.selectedBatteryType = val ?? 'Lithium'),
+                    items: [
+                      const _DropdownOption(
+                        value: 'Lithium',
+                        localizationKey: _Loc.lithium,
+                      ),
+                      const _DropdownOption(
+                        value: 'Gel / Lead-Acid / Tubular',
+                        localizationKey: _Loc.gelLeadAcidTubular,
+                      ),
+                    ],
+                    onChanged: (val) => controller.updateField(
+                      () => controller.selectedBatteryType = val ?? 'Lithium',
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Builder(
                     builder: (context) {
-                      bool isHVInverter = controller.selectedInverterVoltType == 'High Voltage';
+                      bool isHVInverter =
+                          controller.selectedInverterVoltType == 'High Voltage';
                       if (isHVInverter) {
                         return const SizedBox.shrink(); // Hide voltage selection if HV Inverter
                       }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('battery_voltage'),
+                          Text(l10n.battery_voltage),
                           const SizedBox(height: 4),
                           Builder(
                             builder: (context) {
                               String type = controller.selectedBatteryType;
-                              List<double> voltages = type == 'Lithium' ? [12.8, 25.6, 51.2] : [2.0, 6.0, 12.0];
+                              List<double> voltages = type == 'Lithium'
+                                  ? [12.8, 25.6, 51.2]
+                                  : [2.0, 6.0, 12.0];
                               return Wrap(
                                 spacing: 8,
                                 children: voltages
                                     .map(
                                       (v) => ChoiceChip(
-                                        label: Text("${v.toString().replaceAll('.0', '')}V"),
-                                        selected: controller.selectedBatteryVoltage == v,
+                                        label: Text(
+                                          "${v.toString().replaceAll('.0', '')}V",
+                                        ),
+                                        selected:
+                                            controller.selectedBatteryVoltage ==
+                                            v,
                                         onSelected: (s) {
-                                          if (s) controller.updateField(() => controller.selectedBatteryVoltage = v);
+                                          if (s) {
+                                            controller.updateField(
+                                              () =>
+                                                  controller
+                                                          .selectedBatteryVoltage =
+                                                      v,
+                                            );
+                                          }
                                         },
                                       ),
                                     )
@@ -188,17 +303,26 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                       );
                     },
                   ),
-                  Text('battery_type_hint', style: TextStyle(fontSize: 10, color: Colors.grey[500])),
+                  Text(
+                    l10n.battery_type_hint,
+                    style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+                  ),
                   const SizedBox(height: 12),
                   Builder(
                     builder: (context) {
-                      bool isHVInverter = controller.selectedInverterVoltType == 'High Voltage';
+                      bool isHVInverter =
+                          controller.selectedInverterVoltType == 'High Voltage';
                       return _buildInputRow(
                         context,
-                        label: isHVInverter ? 'capacity_kw' : 'battery_amp',
+                        label: isHVInverter
+                            ? l10n.capacity_kw
+                            : l10n.battery_amp,
                         value: controller.selectedBatteryAmp,
                         suffix: isHVInverter ? "kW" : "Ah",
-                        onChanged: (val) => controller.updateField(() => controller.selectedBatteryAmp = double.tryParse(val) ?? 0.0),
+                        onChanged: (val) => controller.updateField(
+                          () => controller.selectedBatteryAmp =
+                              double.tryParse(val) ?? 0.0,
+                        ),
                       );
                     },
                   ),
@@ -206,19 +330,28 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                   _buildNoteField(
                     context,
                     controller.batteryNote,
-                    "Notes (Brand, Specific type...)",
-                    (val) => controller.updateField(() => controller.batteryNote = val),
+                    l10n.notes_brand,
+                    (val) => controller.updateField(
+                      () => controller.batteryNote = val,
+                    ),
                   ),
                   const Divider(),
                   Builder(
                     builder: (context) {
-                      bool isHVInverter = controller.selectedInverterVoltType == 'High Voltage';
+                      bool isHVInverter =
+                          controller.selectedInverterVoltType == 'High Voltage';
                       return _buildCounterRow(
                         context,
-                        label: isHVInverter ? 'bank' : 'count',
+                        label: isHVInverter ? l10n.bank : l10n.count,
                         value: controller.batteryCount,
-                        onDecrement: () => controller.updateField(() => controller.batteryCount > 0 ? controller.batteryCount-- : null),
-                        onIncrement: () => controller.updateField(() => controller.batteryCount++),
+                        onDecrement: () => controller.updateField(
+                          () => controller.batteryCount > 0
+                              ? controller.batteryCount--
+                              : null,
+                        ),
+                        onIncrement: () => controller.updateField(
+                          () => controller.batteryCount++,
+                        ),
                       );
                     },
                   ),
@@ -228,14 +361,20 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
             const SizedBox(height: 20),
 
             // Details
-            Text('notes_details', style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              l10n.notes_details,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             TextField(
-              onChanged: (val) => controller.updateField(() => controller.requestNotes = val),
+              onChanged: (val) =>
+                  controller.updateField(() => controller.requestNotes = val),
               maxLines: 3,
               decoration: InputDecoration(
-                hintText: "Specific installation constraints, location notes, or other requests...",
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                hintText: l10n.request_notes_hint,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 filled: true,
                 fillColor: Theme.of(context).cardColor,
               ),
@@ -247,10 +386,12 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  if (controller.panelCount == 0 && controller.inverterCount == 0 && controller.batteryCount == 0) {
+                  if (controller.panelCount == 0 &&
+                      controller.inverterCount == 0 &&
+                      controller.batteryCount == 0) {
                     toastification.show(
-                      title: const Text("Error"),
-                      description: const Text("Please add at least one component (Panel, Inverter, or Battery)"),
+                      title: Text(l10n.error),
+                      description: Text(l10n.error_no_components),
                       type: ToastificationType.error,
                       style: ToastificationStyle.flat,
                       autoCloseDuration: const Duration(seconds: 3),
@@ -260,16 +401,25 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
 
                   final system = SystemModel(
                     id: '',
-                    systemName: "System Request: ${controller.selectedInverterKva}kW",
+                    systemName:
+                        "System Request: ${controller.selectedInverterKva}kW",
                     totalCapacityKw: controller.selectedInverterKva,
                     notes: controller.requestNotes,
                     specs: {
-                      'panels': {'count': controller.panelCount, 'capacity': controller.selectedPanelWattage, 'note': controller.panelNote},
+                      'panels': {
+                        'count': controller.panelCount,
+                        'capacity': controller.selectedPanelWattage,
+                        'note': controller.panelNote,
+                      },
                       'battery': {
                         'count': controller.batteryCount,
                         'capacity': controller.selectedBatteryAmp,
                         'type': controller.selectedBatteryType,
-                        'voltageType': controller.selectedInverterVoltType == 'High Voltage' ? 'HV' : 'LV',
+                        'voltageType':
+                            controller.selectedInverterVoltType ==
+                                'High Voltage'
+                            ? 'HV'
+                            : 'LV',
                         'note': controller.batteryNote,
                         'voltage': controller.systemVoltage,
                       },
@@ -277,7 +427,11 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                         'count': controller.inverterCount,
                         'power': controller.selectedInverterKva,
                         'note': controller.inverterNote,
-                        'voltageType': controller.selectedInverterVoltType == 'High Voltage' ? 'HV' : 'LV',
+                        'voltageType':
+                            controller.selectedInverterVoltType ==
+                                'High Voltage'
+                            ? 'HV'
+                            : 'LV',
                         'type': controller.selectedInverterType,
                         'phase': controller.selectedInverterPhase,
                       },
@@ -290,9 +444,17 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                child: Text('submit_request', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: Text(
+                  l10n.submit_request,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],
@@ -301,14 +463,22 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title, IconData icon, Color color) {
+  Widget _buildSectionHeader(
+    BuildContext context,
+    String title,
+    IconData icon,
+    Color color,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
           Icon(icon, color: color, size: 20),
           const SizedBox(width: 8),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
         ],
       ),
     );
@@ -318,7 +488,9 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
     return BoxDecoration(
       color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(16),
-      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5)],
+      boxShadow: [
+        BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5),
+      ],
     );
   }
 
@@ -326,7 +498,7 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
     BuildContext context, {
     required String label,
     required String value,
-    required List<String> items,
+    required List<_DropdownOption> items,
     required ValueChanged<String?> onChanged,
   }) {
     return Row(
@@ -339,8 +511,11 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
           items: items
               .map(
                 (e) => DropdownMenuItem(
-                  value: e,
-                  child: Text(e, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  value: e.value,
+                  child: Text(
+                    e.resolve(AppLocalizations.of(context)!),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               )
               .toList(),
@@ -368,8 +543,13 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
             textAlign: TextAlign.end,
             decoration: InputDecoration(
               suffixText: suffix,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
               isDense: true,
             ),
             onChanged: onChanged,
@@ -379,21 +559,34 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
     );
   }
 
-  Widget _buildInputRow(BuildContext context, {required String label, required double value, required String suffix, required ValueChanged<String> onChanged}) {
+  Widget _buildInputRow(
+    BuildContext context, {
+    required String label,
+    required double value,
+    required String suffix,
+    required ValueChanged<String> onChanged,
+  }) {
     return Row(
       children: [
         Expanded(child: Text(label, style: const TextStyle(fontSize: 14))),
         SizedBox(
           width: 120,
           child: TextFormField(
-            key: ValueKey(label + suffix), // Ensure field updates when label/suffix changes
+            key: ValueKey(
+              label + suffix,
+            ), // Ensure field updates when label/suffix changes
             initialValue: value.toString(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             textAlign: TextAlign.start,
             decoration: InputDecoration(
               suffixText: suffix,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
               isDense: true,
             ),
             onChanged: onChanged,
@@ -403,7 +596,12 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
     );
   }
 
-  Widget _buildNoteField(BuildContext context, String value, String hint, ValueChanged<String> onChanged) {
+  Widget _buildNoteField(
+    BuildContext context,
+    String value,
+    String hint,
+    ValueChanged<String> onChanged,
+  ) {
     return TextFormField(
       initialValue: value,
       onChanged: onChanged,
@@ -430,12 +628,24 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
       children: [
         Text(label),
         Container(
-          decoration: BoxDecoration(color: Colors.grey.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(
+            color: Colors.grey.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: Row(
             children: [
-              IconButton(onPressed: onDecrement, icon: const Icon(Icons.remove, size: 16)),
-              Text("${value}", style: const TextStyle(fontWeight: FontWeight.bold)),
-              IconButton(onPressed: onIncrement, icon: const Icon(Icons.add, size: 16)),
+              IconButton(
+                onPressed: onDecrement,
+                icon: const Icon(Icons.remove, size: 16),
+              ),
+              Text(
+                "$value",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              IconButton(
+                onPressed: onIncrement,
+                icon: const Icon(Icons.add, size: 16),
+              ),
             ],
           ),
         ),
@@ -456,12 +666,18 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
           height: 600,
           child: Column(
             children: [
-              Text('guide', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Text(
+                AppLocalizations.of(context)!.guide,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 16),
               Expanded(
                 child: ListView.separated(
                   itemCount: explanations.length,
-                  separatorBuilder: (_, __) => const Divider(),
+                  separatorBuilder: (_, index) => const Divider(),
                   itemBuilder: (context, index) {
                     final item = explanations[index];
                     return Column(
@@ -469,10 +685,19 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                       children: [
                         Text(
                           item.title,
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.primaryColor,
+                          ),
                         ),
                         const SizedBox(height: 4),
-                        Text(item.description, style: TextStyle(fontSize: 13, color: Colors.grey[700])),
+                        Text(
+                          item.description,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[700],
+                          ),
+                        ),
                       ],
                     );
                   },
@@ -494,7 +719,7 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                       );
                     },
                   ),
-                  Text('dont_show_again'),
+                  Text(AppLocalizations.of(context)!.dont_show_again),
                 ],
               ),
               const SizedBox(height: 8),
@@ -503,16 +728,21 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (dontShowAgain) {
-                      GetStorage().write('offer_request_wizard_help_viewed', true);
+                      GetStorage().write(
+                        'offer_request_wizard_help_viewed',
+                        true,
+                      );
                     }
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: Text('close'),
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ),
             ],
@@ -520,5 +750,47 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
         ),
       ),
     );
+  }
+}
+
+enum _Loc {
+  lowVoltage,
+  highVoltage,
+  singlePhase,
+  threePhase,
+  hybrid,
+  onGrid,
+  offGrid,
+  lithium,
+  gelLeadAcidTubular,
+}
+
+class _DropdownOption {
+  const _DropdownOption({required this.value, required this.localizationKey});
+
+  final String value;
+  final _Loc localizationKey;
+
+  String resolve(AppLocalizations l10n) {
+    switch (localizationKey) {
+      case _Loc.lowVoltage:
+        return l10n.low_voltage;
+      case _Loc.highVoltage:
+        return l10n.high_voltage;
+      case _Loc.singlePhase:
+        return l10n.single_phase;
+      case _Loc.threePhase:
+        return l10n.three_phase;
+      case _Loc.hybrid:
+        return l10n.hybrid;
+      case _Loc.onGrid:
+        return l10n.on_grid;
+      case _Loc.offGrid:
+        return l10n.off_grid;
+      case _Loc.lithium:
+        return l10n.lithium;
+      case _Loc.gelLeadAcidTubular:
+        return l10n.gel_lead_acid_tubular;
+    }
   }
 }

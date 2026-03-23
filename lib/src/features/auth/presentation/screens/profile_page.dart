@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
@@ -19,7 +20,7 @@ class ProfilePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'), // TODO: translate
+        title: Text(AppLocalizations.of(context)!.profile),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -86,7 +87,10 @@ class ProfilePage extends ConsumerWidget {
             // Name and Phone
             Column(
               children: [
-                Text(user?.firstName ?? user?.email ?? 'Guest User', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Text(
+                  user?.firstName ?? user?.email ?? AppLocalizations.of(context)!.guest_user,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 if (user?.phone != null && user!.phone!.isNotEmpty) Text(user.phone!, style: TextStyle(color: Colors.grey[600])),
                 if (user?.id != null) Text('ID: ${user?.id}...', style: TextStyle(color: Colors.grey[600])),
               ],
@@ -145,7 +149,7 @@ class ProfilePage extends ConsumerWidget {
                     if (context.mounted) context.go('/home');
                   },
                   icon: const Icon(Iconsax.logout_bold),
-                  label: const Text('Sign Out'),
+                  label: Text(AppLocalizations.of(context)!.sign_out),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red.withValues(alpha: 0.1),
                     foregroundColor: Colors.red,
@@ -163,7 +167,7 @@ class ProfilePage extends ConsumerWidget {
                     //  Get.toNamed('/auth');
                   },
                   icon: const Icon(Iconsax.login_bold),
-                  label: const Text('Sign In'),
+                  label: Text(AppLocalizations.of(context)!.sign_in),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

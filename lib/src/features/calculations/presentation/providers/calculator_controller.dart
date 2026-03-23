@@ -16,14 +16,19 @@ class CalculatorNotifier extends ChangeNotifier {
     ApplianceEntity(name: 'Refrigerator', power: 230, quantity: 1, hours: 24),
     ApplianceEntity(name: 'Lamps & Fans', power: 240, quantity: 1, hours: 24),
     ApplianceEntity(name: 'Washing Machine', power: 240, quantity: 1, hours: 2),
-    ApplianceEntity(name: 'TV / Laptop / Mobile', power: 200, quantity: 1, hours: 5),
+    ApplianceEntity(
+      name: 'TV / Laptop / Mobile',
+      power: 200,
+      quantity: 1,
+      hours: 5,
+    ),
   ];
 
-  double autonomyHours = 12.0;
+  double autonomyHours = 4.0;
   double sunPeakHours = 5.0;
-  double systemVoltage = 24.0;
+  double systemVoltage = 12.0;
   int recommendedPanels = 570;
-  double recommendedInverterSize = 0.0;
+  double recommendedInverterSize = 5.0;
   int recommendedBatteries = 0;
   int recommendedControllerSize = 0;
   double systemCalcSingleBatteryVoltage = 12.0;
@@ -125,7 +130,9 @@ class CalculatorNotifier extends ChangeNotifier {
   }
 
   void addAppliance() {
-    appliances.add(ApplianceEntity(name: 'New Appliance', power: 100, quantity: 1, hours: 5));
+    appliances.add(
+      ApplianceEntity(name: 'New Appliance', power: 100, quantity: 1, hours: 5),
+    );
     notifyListeners();
   }
 
@@ -150,7 +157,9 @@ class CalculatorNotifier extends ChangeNotifier {
 
     dailyUsageKWh = totalEnergyWh / 1000;
 
-    double panelWattage = selectedPanelWattage > 0 ? selectedPanelWattage.toDouble() : 570.0;
+    double panelWattage = selectedPanelWattage > 0
+        ? selectedPanelWattage.toDouble()
+        : 570.0;
     double panelsNeeded = totalEnergyWh / (sunPeakHours * panelWattage * 0.75);
     recommendedPanels = panelsNeeded.ceil();
     totalPanelCapacityKw = (recommendedPanels * panelWattage) / 1000;
@@ -173,7 +182,7 @@ class CalculatorNotifier extends ChangeNotifier {
     if (parallelCount == 0) parallelCount = 1;
 
     totalBatteryCapacityAh =
-        "\${(parallelCount * batteryCapacityAh).toStringAsFixed(0)}Ah @ \${systemVoltage.toStringAsFixed(0)}V (\${seriesCount}S\${parallelCount}P)";
+        "${(parallelCount * batteryCapacityAh).toStringAsFixed(0)}Ah @ ${systemVoltage.toStringAsFixed(0)}V (${seriesCount}S${parallelCount}P)";
 
     final invResult = HomeSolarSystemCalculator.calculateInverterSize(
       peakLoadWatt: maxPowerW,
@@ -197,7 +206,8 @@ class CalculatorNotifier extends ChangeNotifier {
       if (size < 4.0) size = 4.0;
     }
     recommendedInverterSize = size;
-    recommendedControllerSize = ((recommendedPanels * selectedPanelWattage) / systemVoltage).ceil();
+    recommendedControllerSize =
+        ((recommendedPanels * selectedPanelWattage) / systemVoltage).ceil();
 
     notifyListeners();
   }
@@ -276,7 +286,8 @@ class CalculatorNotifier extends ChangeNotifier {
   }
 
   void calculateBatteryRuntime() {
-    double totalWh = batteryCalcCountCount * batteryCalcAmp * batteryCalcVoltage;
+    double totalWh =
+        batteryCalcCountCount * batteryCalcAmp * batteryCalcVoltage;
     double availableWh = totalWh * (batteryCalcDoD / 100.0);
 
     if (batteryCalcTotalLoad > 0) {
@@ -290,7 +301,8 @@ class CalculatorNotifier extends ChangeNotifier {
   void calculateWire() {
     double voltage = wireCalcVoltage;
     double allowedDrop = voltage * wireCalcVoltageDrop / 100;
-    double area = (2 * wireCalcLength * wireCalcCurrent * 0.01724) / allowedDrop;
+    double area =
+        (2 * wireCalcLength * wireCalcCurrent * 0.01724) / allowedDrop;
     if (area < 1.5) {
       wireCalcResult = "1.5 mm²";
     } else if (area < 2.5) {

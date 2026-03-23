@@ -6,12 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart' show isEnabled;
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -34,7 +36,7 @@ class AppDrawer extends ConsumerWidget {
             ),
             child: Column(
               children: [
-                _buildHeader(authState),
+                _buildHeader(context, authState),
                 const SizedBox(height: 20),
                 Expanded(
                   child: ListView(
@@ -46,16 +48,33 @@ class AppDrawer extends ConsumerWidget {
                             _buildDrawerItem(
                               context: context,
                               icon: Iconsax.user_bold,
-                              title: "Profile", // TODO: translate
+                              title: AppLocalizations.of(context)!.profile,
                               route: '/auth/profile',
                               delay: 100,
                             ),
                           ],
                         ),
-
-                        _buildDrawerItem(context: context, icon: Iconsax.home_2_bold, title: "My Systems", route: '/my_systems', delay: 100),
-                        _buildDrawerItem(context: context, icon: Iconsax.clipboard_bold, title: "My Requests", route: '/my_requests', delay: 100),
-                        _buildDrawerItem(context: context, icon: Iconsax.shopping_cart_bold, title: "My Orders", route: '/my_orders', delay: 100),
+                        _buildDrawerItem(
+                          context: context,
+                          icon: Iconsax.home_2_bold,
+                          title: AppLocalizations.of(context)!.my_systems,
+                          route: '/my_systems',
+                          delay: 100,
+                        ),
+                        _buildDrawerItem(
+                          context: context,
+                          icon: Iconsax.clipboard_bold,
+                          title: AppLocalizations.of(context)!.my_requests,
+                          route: '/my_requests',
+                          delay: 100,
+                        ),
+                        _buildDrawerItem(
+                          context: context,
+                          icon: Iconsax.shopping_cart_bold,
+                          title: AppLocalizations.of(context)!.my_orders,
+                          route: '/my_orders',
+                          delay: 100,
+                        ),
                       ],
 
                       if (authState.isCompanyMember)
@@ -64,7 +83,7 @@ class AppDrawer extends ConsumerWidget {
                             _buildDrawerItem(
                               context: context,
                               icon: Iconsax.building_bold,
-                              title: authState.company?.name ?? "Company Dashboard",
+                              title: authState.company?.name ?? AppLocalizations.of(context)!.company_dashboard,
                               route: '/company/dashboard',
                               delay: 100,
                             ),
@@ -72,13 +91,21 @@ class AppDrawer extends ConsumerWidget {
                         )
                       else if (authState.isSuperUser)
                         Column(
-                          children: [_buildDrawerItem(context: context, icon: EvaIcons.code, title: "Admin Dashboard", route: '/admin', delay: 100)],
+                          children: [
+                            _buildDrawerItem(
+                              context: context,
+                              icon: EvaIcons.code,
+                              title: AppLocalizations.of(context)!.admin_dashboard,
+                              route: '/admin',
+                              delay: 100,
+                            ),
+                          ],
                         )
-                      else
+                      else if (isEnabled(ref, 'auth', skipFalseIfDebug: true) && isEnabled(ref, 'company_registration', skipFalseIfDebug: true))
                         _buildDrawerItem(
                           context: context,
                           icon: Iconsax.building_3_bold,
-                          title: "Register Company",
+                          title: AppLocalizations.of(context)!.register_company,
                           route: '/auth/company_registration',
                           delay: 170,
                         ),
@@ -86,10 +113,10 @@ class AppDrawer extends ConsumerWidget {
                       _buildDrawerItem(
                         context: context,
                         icon: Iconsax.setting_2_bold,
-                        title: "Settings",
+                        title: AppLocalizations.of(context)!.settings,
                         route: '/settings',
                         delay: 300,
-                      ), // TODO: implement settings TODO translate
+                      ),
 
                       _buildFooter(context, authState, ref),
                     ],
@@ -103,9 +130,9 @@ class AppDrawer extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader(AuthState authState) {
+  Widget _buildHeader(BuildContext context, AuthState authState) {
     final user = authState.user;
-    final name = user?.firstName ?? "Guest User";
+    final name = user?.firstName ?? AppLocalizations.of(context)!.guest_user;
     final isGuest = user == null;
 
     return Container(
@@ -135,7 +162,10 @@ class AppDrawer extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(isGuest ? "Welcome, Guest" : "Hello,", style: const TextStyle(color: Colors.white70, fontSize: 13)), // TODO: translate
+                Text(
+                  isGuest ? AppLocalizations.of(context)!.welcome_guest : AppLocalizations.of(context)!.hello,
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   name,
@@ -192,39 +222,35 @@ class AppDrawer extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Dark Mode", style: TextStyle(fontWeight: FontWeight.w600)), // TODO: translate
-              Switch(
-                value: isDark,
-                activeTrackColor: AppTheme.primaryColor,
-                onChanged: (val) => ref.read(settingsProvider.notifier).toggleDark(),
-              ), // TODO  implement theme service
+              Text(AppLocalizations.of(context)!.dark_mode, style: const TextStyle(fontWeight: FontWeight.w600)),
+              Switch(value: isDark, activeTrackColor: AppTheme.primaryColor, onChanged: (val) => ref.read(settingsProvider.notifier).toggleDark()),
             ],
           ),
           SizedBox(height: 20.h),
-
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                if (authState.isSigned) {
-                  await getIt<AuthRepository>().logout();
-                  ref.read(authProvider.notifier).logout();
-                } else {
-                  context.go('/auth');
-                }
-              },
-              icon: Icon(authState.isSigned ? Iconsax.logout_bold : Iconsax.login_bold, size: 20),
-              label: Text(authState.isSigned ? "Sign Out" : "Sign In"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: authState.isSigned ? Colors.red.withValues(alpha: 0.1) : AppTheme.primaryColor,
-                foregroundColor: authState.isSigned ? Colors.red : Colors.white,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          if (isEnabled(ref, 'auth', skipFalseIfDebug: true))
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  if (authState.isSigned) {
+                    await getIt<AuthRepository>().logout();
+                    ref.read(authProvider.notifier).logout();
+                  } else {
+                    context.go('/auth');
+                  }
+                },
+                icon: Icon(authState.isSigned ? Iconsax.logout_bold : Iconsax.login_bold, size: 20),
+                label: Text(authState.isSigned ? AppLocalizations.of(context)!.sign_out : AppLocalizations.of(context)!.sign_in),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: authState.isSigned ? Colors.red.withValues(alpha: 0.1) : AppTheme.primaryColor,
+                  foregroundColor: authState.isSigned ? Colors.red : Colors.white,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
               ),
             ),
-          ),
         ],
       ),
     ).animate().fadeIn(duration: 100.ms).slideY(begin: 0.1);

@@ -58,6 +58,7 @@ class AppTheme {
         onSecondary: Colors.white,
         onSurface: Colors.black87,
       ),
+      dividerColor: Colors.grey.withValues(alpha: 0.2),
       appBarTheme: const AppBarTheme(
         backgroundColor: lightSurface,
         foregroundColor: Colors.black87,
@@ -118,6 +119,7 @@ class AppTheme {
         onSecondary: Colors.black87,
         onSurface: Colors.white,
       ),
+      dividerColor: Colors.white12,
       appBarTheme: const AppBarTheme(
         backgroundColor: darkSurface,
         foregroundColor: Colors.white,

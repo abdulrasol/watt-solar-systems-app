@@ -20,4 +20,9 @@ class AppUrls {
   // companies
   static const String companiesBaseUrl = '$baseUrl/company';
   static const String registerCompany = '$companiesBaseUrl/register';
+  static String company(int id) => '$companiesBaseUrl/$id';
+
+  // dashboard
+  /// products
+  static String products(int companyId) => '$companiesBaseUrl/$companyId/products';
 }

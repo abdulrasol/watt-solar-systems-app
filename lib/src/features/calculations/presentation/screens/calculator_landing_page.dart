@@ -8,6 +8,7 @@ import 'package:solar_hub/src/features/calculations/presentation/screens/tools/i
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/panel_calculator_page.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/wires_calculator_page.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/pump_calculator.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class CalculatorLandingPage extends ConsumerWidget {
   const CalculatorLandingPage({super.key});
@@ -22,36 +23,50 @@ class CalculatorLandingPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'calculator_tools',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
-              ), // AppLocalizations.of(context)?.calculatorTools ??
+                AppLocalizations.of(context)!.calculator_tools,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 20),
 
               // Main Wizards
               _buildWizardCard(
                 context,
-                title: 'system_wizard', //  TODO : add translation
-                description: 'system_wizard_desc', //  TODO : add translation
+                title: AppLocalizations.of(context)!.system_wizard,
+                description: AppLocalizations.of(context)!.system_wizard_desc,
                 icon: Iconsax.calculator_bold,
                 color: Colors.orange,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SystemCalculatorWizard())),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SystemCalculatorWizard(),
+                  ),
+                ),
               ),
 
               const SizedBox(height: 16),
               _buildWizardCard(
                 context,
-                title: 'request_offer_wizard', //  TODO : add translation
-                description: 'request_offer_desc', //  TODO : add translation
+                title: AppLocalizations.of(context)!.request_offer_wizard,
+                description: AppLocalizations.of(context)!.request_offer_desc,
                 icon: Iconsax.document_text_bold,
                 color: Colors.blue,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const OfferRequestWizard())),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OfferRequestWizard(),
+                  ),
+                ),
               ),
 
               const SizedBox(height: 32),
               Text(
-                'quick_tools',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-              ), // AppLocalizations.of(context)?.quickTools ??
+                AppLocalizations.of(context)!.quick_tools,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 16),
 
               // Quick Tools Grid
@@ -65,39 +80,62 @@ class CalculatorLandingPage extends ConsumerWidget {
                 children: [
                   _buildToolCard(
                     context,
-                    'panels_calc',
+                    AppLocalizations.of(context)!.panels_calc,
                     Iconsax.sun_1_bold,
                     Colors.amber,
-                    () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PanelCalculatorPage())),
-                  ), // TODO add translation
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PanelCalculatorPage(),
+                      ),
+                    ),
+                  ),
                   _buildToolCard(
                     context,
-                    'inverter_calc',
+                    AppLocalizations.of(context)!.inverter_calc,
                     Iconsax.flash_bold,
                     Colors.red,
-                    () => Navigator.push(context, MaterialPageRoute(builder: (context) => const InverterCalculatorPage())),
-                  ), // TODO add translation
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const InverterCalculatorPage(),
+                      ),
+                    ),
+                  ),
                   _buildToolCard(
                     context,
-                    'battery_calc',
+                    AppLocalizations.of(context)!.battery_calc,
                     Iconsax.battery_charging_bold,
                     Colors.green,
-                    () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BatteryCalculatorPage())),
-                  ), // TODO add translation
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BatteryCalculatorPage(),
+                      ),
+                    ),
+                  ),
                   _buildToolCard(
                     context,
-                    'wires_calc',
+                    AppLocalizations.of(context)!.wires_calc,
                     Icons.cable,
                     Colors.grey,
-                    () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WiresCalculatorPage())),
-                  ), // TODO add translation
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const WiresCalculatorPage(),
+                      ),
+                    ),
+                  ),
                   _buildToolCard(
                     context,
-                    'pump_calc',
+                    AppLocalizations.of(context)!.pump_calc,
                     Icons.water_drop,
                     Colors.blueAccent,
-                    () => Navigator.push(context, MaterialPageRoute(builder: (context) => PumpCalculator())),
-                  ), // TODO add translation
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PumpCalculator()),
+                    ),
+                  ),
                   // _buildToolCard(
                   //   context,
                   //   'orientation_calc',
@@ -129,14 +167,23 @@ class CalculatorLandingPage extends ConsumerWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
           border: Border.all(color: color.withValues(alpha: 0.2), width: 1.5),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
               child: Icon(icon, color: color, size: 32),
             ),
             const SizedBox(width: 16),
@@ -144,20 +191,39 @@ class CalculatorLandingPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(description, style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                  Text(
+                    description,
+                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  ),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios_rounded, color: Colors.grey[400], size: 16),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.grey[400],
+              size: 16,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildToolCard(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildToolCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -165,7 +231,12 @@ class CalculatorLandingPage extends ConsumerWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5)],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 5,
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

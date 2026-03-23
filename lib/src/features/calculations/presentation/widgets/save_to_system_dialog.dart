@@ -6,6 +6,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 
 class SaveToSystemDialog extends ConsumerStatefulWidget {
   const SaveToSystemDialog({super.key});
@@ -22,14 +23,16 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
   String? _selectedCompanyName;
   List<Map<String, dynamic>> _companyResults = [];
   bool _isSearchingCompany = false;
-  late final controller;
+  late final SystemsState _systemsState;
+  late final SystemsProvider _systemsNotifier;
 
   @override
   void initState() {
     super.initState();
-    controller = ref.read(systemsProvider);
-    if (controller.savedSystems.isNotEmpty) {
-      _selectedSystem = controller.savedSystems.first;
+    _systemsState = ref.read(systemsProvider);
+    _systemsNotifier = ref.read(systemsProvider.notifier);
+    if (_systemsState.savedSystems.isNotEmpty) {
+      _selectedSystem = _systemsState.savedSystems.first;
       _isCreatingNew = false;
     } else {
       _isCreatingNew = true;
@@ -44,21 +47,29 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final systemsState = ref.watch(systemsProvider);
     return AlertDialog(
-      title: Text(_isCreatingNew ? 'New System' : 'Select System'),
+      title: Text(_isCreatingNew ? l10n.new_system : l10n.select_system),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (!_isCreatingNew) ...[
-              const Text('Add calculation to existing system:', style: TextStyle(color: Colors.grey)),
+              Text(
+                l10n.add_calculation_to_existing_system,
+                style: const TextStyle(color: Colors.grey),
+              ),
               const SizedBox(height: 10),
-              if (controller.savedSystems.isNotEmpty)
+              if (systemsState.savedSystems.isNotEmpty)
                 Column(
-                  children: controller.savedSystems.map((system) {
+                  children: systemsState.savedSystems.map((system) {
                     return RadioListTile<SystemModel>(
-                      title: Text(system.systemName ?? 'Msg_Unknown', style: const TextStyle(fontWeight: FontWeight.w500)),
+                      title: Text(
+                        system.systemName ?? 'Msg_Unknown',
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
                       subtitle: Text(system.createdAt.toString().split(' ')[0]),
                       value: system,
                       groupValue: _selectedSystem,
@@ -70,9 +81,12 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
                   }).toList(),
                 )
               else
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Text("No saved systems found.", style: TextStyle(fontStyle: FontStyle.italic)), // TODO: translate
+                  child: Text(
+                    l10n.no_saved_systems_found,
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               const Divider(),
               Center(
@@ -82,28 +96,36 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
                     _selectedSystem = null;
                   }),
                   icon: const Icon(Iconsax.add_square_bold),
-                  label: const Text("Create New System"), // TODO: translate
+                  label: Text(l10n.create_new_system),
                 ),
               ),
             ] else ...[
-              const Text('Enter a name for your new system:'), // TODO: translate
+              Text(l10n.enter_system_name),
               const SizedBox(height: 16),
               TextField(
                 controller: _nameController,
                 autofocus: true,
                 decoration: InputDecoration(
-                  labelText: 'System Name', // TODO: translate
-                  hintText: 'e.g., My Dream Home', // TODO: translate
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  labelText: l10n.system_name,
+                  hintText: l10n.system_name_hint,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   prefixIcon: const Icon(Iconsax.edit_2_bold),
                 ),
               ),
               const SizedBox(height: 16),
-              const Text('Select Installer (Optional):', style: TextStyle(fontWeight: FontWeight.bold)), // TODO: translate
+              Text(
+                l10n.select_installer_optional,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               if (_selectedCompanyName != null)
                 ListTile(
-                  leading: const Icon(Iconsax.house_2_bold, color: AppTheme.primaryColor),
+                  leading: const Icon(
+                    Iconsax.house_2_bold,
+                    color: AppTheme.primaryColor,
+                  ),
                   title: Text(_selectedCompanyName!),
                   trailing: IconButton(
                     icon: const Icon(Icons.close),
@@ -116,20 +138,23 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
               else
                 TextField(
                   decoration: InputDecoration(
-                    hintText: 'Search Company...', // TODO: translate
+                    hintText: l10n.search_company_hint,
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: _isSearchingCompany
                         ? const SizedBox(
                             width: 20,
                             height: 20,
-                            child: Padding(padding: EdgeInsets.all(12), child: CircularProgressIndicator(strokeWidth: 2)),
+                            child: Padding(
+                              padding: EdgeInsets.all(12),
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
                           )
                         : null,
                   ),
                   onChanged: (v) async {
                     if (v.length >= 3) {
                       setState(() => _isSearchingCompany = true);
-                      final results = await controller.searchCompanies(v);
+                      final results = await _systemsNotifier.searchCompanies(v);
                       setState(() {
                         _companyResults = results;
                         _isSearchingCompany = false;
@@ -163,16 +188,16 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
                     },
                   ),
                 ),
-              if (controller.savedSystems.isNotEmpty)
+              if (systemsState.savedSystems.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: TextButton.icon(
                     onPressed: () => setState(() {
                       _isCreatingNew = false;
-                      _selectedSystem = controller.savedSystems.first;
+                      _selectedSystem = systemsState.savedSystems.first;
                     }),
                     icon: const Icon(Icons.arrow_back),
-                    label: const Text("Back to List"),
+                    label: Text(l10n.back_to_list),
                   ),
                 ),
             ],
@@ -180,14 +205,19 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel),
+        ),
         ElevatedButton(
           onPressed: _onSave,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
-          child: const Text('Save'),
+          child: Text(l10n.save),
         ),
       ],
     );
@@ -197,20 +227,35 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
     if (_isCreatingNew) {
       final name = _nameController.text.trim();
       if (name.isEmpty) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Required: Please enter a system name'), behavior: SnackBarBehavior.floating)); // TODO: translate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.error_enter_system_name,
+            ),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
         return;
       }
-      Navigator.of(context).pop({'isNew': true, 'name': name, 'system': null, 'companyId': _selectedCompanyId}); // TODO: translate
+      Navigator.of(context).pop({
+        'isNew': true,
+        'name': name,
+        'system': null,
+        'companyId': _selectedCompanyId,
+      }); // TODO: translate
     } else {
       if (_selectedSystem == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Required: Please select a system'), behavior: SnackBarBehavior.floating)); // TODO: translate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.error_select_system),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
         return;
       }
-      Navigator.of(context).pop({'isNew': false, 'system': _selectedSystem, 'name': null}); 
+      Navigator.of(
+        context,
+      ).pop({'isNew': false, 'system': _selectedSystem, 'name': null});
     }
   }
 }

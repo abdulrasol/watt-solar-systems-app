@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
@@ -188,17 +189,17 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
           const SizedBox(height: 20),
           _buildTextField(
             controller: _loginUsernameController,
-            label: 'Username', // TODO: add translation
+            label: AppLocalizations.of(context)!.username,
             icon: Iconsax.user_cirlce_add_bold,
-            validator: Validatorless.multiple([Validatorless.required('Username is required')]), // TODO: add translation
+            validator: Validatorless.multiple([Validatorless.required(AppLocalizations.of(context)!.username_is_required)]),
           ),
           const SizedBox(height: 16),
           _buildTextField(
             controller: _loginPasswordController,
-            label: 'Password', // TODO: add translation
+            label: AppLocalizations.of(context)!.password,
             icon: Iconsax.lock_bold,
             isPassword: true,
-            validator: Validatorless.multiple([Validatorless.required('Password is required')]), // TODO: add translation
+            validator: Validatorless.multiple([Validatorless.required(AppLocalizations.of(context)!.password_is_required)]),
           ),
           const SizedBox(height: 10),
           Align(
@@ -213,7 +214,7 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
                 );
               },
               child: Text(
-                'Forgot Password?', // TODO: add translation
+                AppLocalizations.of(context)!.forgot_password,
                 style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
@@ -226,9 +227,9 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
             color: theme.primaryColor,
             elevation: 0,
             borderRadius: 12,
-            child: const Text(
-              'LOGIN', // TODO: add translation
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+            child: Text(
+              AppLocalizations.of(context)!.login,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
         ],
@@ -243,23 +244,23 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
         child: Column(
           children: [
             const SizedBox(height: 10),
-            _buildTextField(controller: _signUpFirstNameController, label: 'First Name', icon: Iconsax.user_bold), // TODO: add translation
+            _buildTextField(controller: _signUpFirstNameController, label: AppLocalizations.of(context)!.first_name, icon: Iconsax.user_bold),
             const SizedBox(height: 16),
-            _buildTextField(controller: _signUpLastNameController, label: 'Last Name', icon: Iconsax.user_bold), // TODO: add translation
+            _buildTextField(controller: _signUpLastNameController, label: AppLocalizations.of(context)!.last_name, icon: Iconsax.user_bold),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpUsernameController,
-              label: 'Username', // TODO: add translation
+              label: AppLocalizations.of(context)!.username,
               icon: Iconsax.user_cirlce_add_bold,
-              validator: Validatorless.required('Username is required'), // TODO: add translation
+              validator: Validatorless.required(AppLocalizations.of(context)!.username_is_required),
             ),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpEmailController,
-              label: 'Email',
+              label: AppLocalizations.of(context)!.email,
               icon: Iconsax.sms_bold,
-              validator: Validatorless.email('Invalid email'),
-            ), // TODO: add translation
+              validator: Validatorless.email(AppLocalizations.of(context)!.invalid_email),
+            ),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpPhoneController,
@@ -278,7 +279,7 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
                   child: DropdownButtonFormField<Country>(
                     initialValue: _selectedCountry,
                     decoration: InputDecoration(
-                      labelText: _isLoadingCountries ? 'Loading...' : 'Country', // TODO: add translation
+                      labelText: _isLoadingCountries ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.country,
                       prefixIcon: _selectedCountry != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                       filled: true,
@@ -299,7 +300,7 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
                   child: DropdownButtonFormField<City>(
                     initialValue: _selectedCity,
                     decoration: InputDecoration(
-                      labelText: _isLoadingCities ? 'Loading...' : 'City', // TODO: add translation
+                      labelText: _isLoadingCities ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.city,
                       prefixIcon: _selectedCity != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                       filled: true,
@@ -313,7 +314,7 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
                     },
                     validator: (value) {
                       if (value == null) {
-                        return 'City is required'; // TODO: add translation
+                        return AppLocalizations.of(context)!.city_is_required;
                       }
                       return null;
                     },
@@ -324,23 +325,23 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpPasswordController,
-              label: 'Password', // TODO: add translation
+              label: AppLocalizations.of(context)!.password,
               icon: Iconsax.lock_bold,
               isPassword: true,
               validator: Validatorless.multiple([
-                Validatorless.required('Password is required'),
+                Validatorless.required(AppLocalizations.of(context)!.password_is_required),
                 Validatorless.min(6, 'Min 6 characters'),
-              ]), // TODO: add translation
+              ]),
             ),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpConfirmPasswordController,
-              label: 'Confirm Password', // TODO: add translation
+              label: AppLocalizations.of(context)!.confirm_password,
               icon: Iconsax.lock_bold,
               isPassword: true,
               validator: Validatorless.multiple([
-                Validatorless.required('Confirm password is required'), // TODO: add translation
-                (val) => val != _signUpPasswordController.text ? 'Passwords do not match' : null, // TODO: add translation
+                Validatorless.required(AppLocalizations.of(context)!.confirm_password_is_required),
+                (val) => val != _signUpPasswordController.text ? AppLocalizations.of(context)!.passwords_do_not_match : null,
               ]),
             ),
             const SizedBox(height: 30),
@@ -432,13 +433,15 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
     if (_loginFormKey.currentState!.validate()) {
       try {
         final response = await getIt.get<AuthRepository>().login(_loginUsernameController.text.trim(), _loginPasswordController.text);
+        if (!mounted) return;
         ref.read(authProvider.notifier).login(response);
         _loginBtnController.success();
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) context.go('/home');
       } catch (e) {
+        if (!mounted) return;
         _loginBtnController.error();
-        _showMessage('Login Failed', e.toString(), isError: true);
+        _showMessage(AppLocalizations.of(context)!.error, e.toString(), isError: true);
         await Future.delayed(const Duration(seconds: 1));
         _loginBtnController.reset();
       }
@@ -463,14 +466,16 @@ class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderSt
             city: _selectedCity?.id,
           ),
         );
+        if (!mounted) return;
         ref.read(authProvider.notifier).register(response);
         _signUpBtnController.success();
-        _showMessage('Account Created', 'Please verify your email address.'); // TODO: add translation
+        _showMessage(AppLocalizations.of(context)!.account_created, AppLocalizations.of(context)!.please_verify_email);
         await Future.delayed(const Duration(seconds: 2));
         if (mounted) context.go('/home');
       } catch (e) {
+        if (!mounted) return;
         _signUpBtnController.error();
-        _showMessage('Sign Up Failed', e.toString(), isError: true); // TODO: add translation
+        _showMessage(AppLocalizations.of(context)!.sign_up_failed, e.toString(), isError: true);
         await Future.delayed(const Duration(seconds: 1));
         _signUpBtnController.reset();
       }
