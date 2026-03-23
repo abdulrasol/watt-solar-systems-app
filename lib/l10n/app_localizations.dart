@@ -62,7 +62,8 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,18 +84,31 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
-    Locale('en')
+    Locale('en'),
   ];
+
+  /// No description provided for @app_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Watt'**
+  String get app_name;
+
+  /// No description provided for @app_slug.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate Your Solar System'**
+  String get app_slug;
 
   /// No description provided for @profile.
   ///
@@ -350,8 +365,20 @@ abstract class AppLocalizations {
   /// No description provided for @login.
   ///
   /// In en, this message translates to:
-  /// **'LOGIN'**
+  /// **'Sign In'**
   String get login;
+
+  /// No description provided for @sign_up.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get sign_up;
+
+  /// No description provided for @or_text.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get or_text;
 
   /// No description provided for @first_name.
   ///
@@ -370,6 +397,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Phone Number'**
   String get phone_number;
+
+  /// No description provided for @phone_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get phone_required;
+
+  /// No description provided for @invalid_phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number'**
+  String get invalid_phone_number;
 
   /// No description provided for @loading.
   ///
@@ -434,13 +473,13 @@ abstract class AppLocalizations {
   /// No description provided for @start_your_solar_business.
   ///
   /// In en, this message translates to:
-  /// **'Start Your Solar Business'**
+  /// **'Start your solar business'**
   String get start_your_solar_business;
 
   /// No description provided for @register_company_details.
   ///
   /// In en, this message translates to:
-  /// **'Fill in the details below to register your company. Your application will be reviewed by our admin team.'**
+  /// **'Fill in the details below to register your company. Our team will review your application before approval.'**
   String get register_company_details;
 
   /// No description provided for @company_name.
@@ -490,6 +529,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address is required'**
   String get address_is_required;
+
+  /// No description provided for @upload_logo.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Logo'**
+  String get upload_logo;
+
+  /// No description provided for @business_phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Phone'**
+  String get business_phone;
+
+  /// No description provided for @submit_application.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Application'**
+  String get submit_application;
+
+  /// No description provided for @company_registered_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Company registered successfully'**
+  String get company_registered_success;
+
+  /// No description provided for @min_6_characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum 6 characters'**
+  String get min_6_characters;
+
+  /// No description provided for @edit_profile_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get edit_profile_title;
+
+  /// No description provided for @edit_profile_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get edit_profile_tooltip;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @failed_to_pick_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick image: {error}'**
+  String failed_to_pick_image(Object error);
+
+  /// No description provided for @tap_to_change_avatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change avatar'**
+  String get tap_to_change_avatar;
+
+  /// No description provided for @security_question.
+  ///
+  /// In en, this message translates to:
+  /// **'Security Question'**
+  String get security_question;
+
+  /// No description provided for @security_answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Security Answer'**
+  String get security_answer;
+
+  /// No description provided for @save_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get save_changes;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// No description provided for @my_posts.
+  ///
+  /// In en, this message translates to:
+  /// **'My Posts'**
+  String get my_posts;
+
+  /// No description provided for @profile_id_short.
+  ///
+  /// In en, this message translates to:
+  /// **'ID: {id}...'**
+  String profile_id_short(Object id);
 
   /// No description provided for @welcome_back.
   ///
@@ -1096,6 +1237,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get notifications;
+
+  /// No description provided for @app_preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'App Preferences'**
+  String get app_preferences;
+
+  /// No description provided for @push_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notifications'**
+  String get push_notifications;
+
+  /// No description provided for @localization.
+  ///
+  /// In en, this message translates to:
+  /// **'Localization'**
+  String get localization;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get arabic;
+
+  /// No description provided for @startup_roles.
+  ///
+  /// In en, this message translates to:
+  /// **'Startup & Roles'**
+  String get startup_roles;
+
+  /// No description provided for @startup_role_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically open your preferred dashboard when the app starts'**
+  String get startup_role_subtitle;
 
   /// No description provided for @edit_company.
   ///
@@ -1818,7 +2007,8 @@ abstract class AppLocalizations {
   String get save_to_system;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -1827,25 +2017,26 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar': return AppLocalizationsAr();
-    case 'en': return AppLocalizationsEn();
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'en':
+      return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

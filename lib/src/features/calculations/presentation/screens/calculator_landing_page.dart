@@ -67,6 +67,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     Iconsax.sun_1_bold,
                     Colors.amber,
                     () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PanelCalculatorPage())),
+                    'panel_hero',
                   ),
                   _buildToolCard(
                     context,
@@ -74,6 +75,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     Iconsax.flash_bold,
                     Colors.red,
                     () => Navigator.push(context, MaterialPageRoute(builder: (context) => const InverterCalculatorPage())),
+                    'inverter_hero',
                   ),
                   _buildToolCard(
                     context,
@@ -81,6 +83,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     Iconsax.battery_charging_bold,
                     Colors.green,
                     () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BatteryCalculatorPage())),
+                    'battery_hero',
                   ),
                   _buildToolCard(
                     context,
@@ -88,6 +91,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     Icons.cable,
                     Colors.grey,
                     () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WiresCalculatorPage())),
+                    'wires_hero',
                   ),
                   _buildToolCard(
                     context,
@@ -95,6 +99,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     Icons.water_drop,
                     Colors.blueAccent,
                     () => Navigator.push(context, MaterialPageRoute(builder: (context) => PumpCalculator())),
+                    'pump_hero',
                   ),
                   // _buildToolCard(
                   //   context,
@@ -155,7 +160,7 @@ class CalculatorLandingPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildToolCard(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildToolCard(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap, [String? heroTag]) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -168,7 +173,10 @@ class CalculatorLandingPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: color, size: 32),
+            if (heroTag != null)
+              Hero(tag: heroTag, child: Icon(icon, color: color, size: 32))
+            else
+              Icon(icon, color: color, size: 32),
             const SizedBox(height: 12),
             Text(
               title,

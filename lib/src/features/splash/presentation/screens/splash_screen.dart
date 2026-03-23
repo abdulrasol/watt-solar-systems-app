@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/splash/domain/usecases/get_configs_usecase.dart';
 import 'package:solar_hub/src/features/splash/presentation/providers/config_provider.dart';
@@ -83,22 +85,37 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Logo (Replace with your actual asset if available, or icon for now)
-            Icon(Icons.solar_power, size: 80, color: Colors.orange.shade700),
-            const SizedBox(height: 24),
-            Text(AppLocalizations.of(context)!.solar_hub, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-            const SizedBox(height: 8),
-            Text(AppLocalizations.of(context)!.use_the_power_of_the_sun, style: const TextStyle(color: Colors.grey, fontSize: 14)),
-            const SizedBox(height: 48),
-            const CircularProgressIndicator(),
-            const SizedBox(height: 16),
-            Text(AppLocalizations.of(context)!.loading, style: const TextStyle(color: Colors.grey)),
+            Icon(Icons.solar_power, size: 80.sp, color: Colors.orange.shade700),
+            SizedBox(height: 24.h),
+            Text(
+              AppLocalizations.of(context)!.app_name,
+              style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              AppLocalizations.of(context)!.app_slug,
+              style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600], fontSize: 18.sp),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.h),
+            const LoadingWidgets(size: 30),
+            // const CircularProgressIndicator(),
+            SizedBox(height: 16.h),
+            Text(AppLocalizations.of(context)!.loading, style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
+            SizedBox(height: 8.h),
+            Text(
+              AppLocalizations.of(context)!.use_the_power_of_the_sun,
+              style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600], fontSize: 18.sp),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

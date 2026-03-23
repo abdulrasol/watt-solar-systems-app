@@ -10,13 +10,14 @@ import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/app_routers.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    debugPrint('Initializing SQL FFI for Desktop');
+    dPrint('Initializing SQL FFI for Desktop', tag: 'main');
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
@@ -39,7 +40,7 @@ class SolarHub extends ConsumerWidget {
       builder: (_, child) {
         return ToastificationWrapper(
           child: MaterialApp.router(
-            title: 'Solar Hub', // TODO: Add a title
+            onGenerateTitle: (context) => AppLocalizations.of(context)!.app_name,
             debugShowCheckedModeBanner: false,
             // Translations
             localizationsDelegates: const [

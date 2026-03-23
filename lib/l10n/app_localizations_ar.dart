@@ -9,6 +9,12 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get app_name => 'تطبيق واط';
+
+  @override
+  String get app_slug => 'احسب منظومة الطاقة الشمسية الخاصة بك';
+
+  @override
   String get profile => 'الملف الشخصي';
 
   @override
@@ -27,7 +33,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get admin_dashboard => 'مساحة الإدارة';
 
   @override
-  String get register_company => 'تسجيل ش  ركة';
+  String get register_company => 'تسجيل شركة';
 
   @override
   String get settings => 'الإعدادات';
@@ -96,7 +102,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reset_password => 'إعادة تعيين كلمة المرور';
 
   @override
-  String get reset_password_instructions => 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.';
+  String get reset_password_instructions =>
+      'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.';
 
   @override
   String get email_is_required => 'البريد الإلكتروني مطلوب';
@@ -111,7 +118,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get success => 'نجاح';
 
   @override
-  String get password_reset_email_sent => 'تم إرسال بريد إعادة تعيين كلمة المرور!';
+  String get password_reset_email_sent =>
+      'تم إرسال بريد إعادة تعيين كلمة المرور!';
 
   @override
   String get error => 'خطأ';
@@ -138,6 +146,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get login => 'تسجيل الدخول';
 
   @override
+  String get sign_up => 'إنشاء حساب';
+
+  @override
+  String get or_text => 'أو';
+
+  @override
   String get first_name => 'الاسم الأول';
 
   @override
@@ -145,6 +159,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get phone_number => 'رقم الهاتف';
+
+  @override
+  String get phone_required => 'رقم الهاتف مطلوب';
+
+  @override
+  String get invalid_phone_number => 'أدخل رقم هاتف صحيح';
 
   @override
   String get loading => 'جاري التحميل...';
@@ -177,10 +197,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sign_up_failed => 'فشل التسجيل';
 
   @override
-  String get start_your_solar_business => 'ابدأ عملك في مجال الطاقة الشمسية';
+  String get start_your_solar_business => 'ابدأ نشاطك في مجال الطاقة الشمسية';
 
   @override
-  String get register_company_details => 'املأ التفاصيل أدناه لتسجيل شركتك. ستتم مراجعة طلبك من قبل فريق الإدارة لدينا.';
+  String get register_company_details =>
+      'أدخل البيانات التالية لتسجيل شركتك. سيتم مراجعة طلبك من فريقنا قبل اعتماده.';
 
   @override
   String get company_name => 'اسم الشركة';
@@ -205,6 +226,61 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get address_is_required => 'العنوان مطلوب';
+
+  @override
+  String get upload_logo => 'رفع الشعار';
+
+  @override
+  String get business_phone => 'هاتف الشركة';
+
+  @override
+  String get submit_application => 'إرسال الطلب';
+
+  @override
+  String get company_registered_success => 'تم تسجيل الشركة بنجاح';
+
+  @override
+  String get min_6_characters => '6 أحرف على الأقل';
+
+  @override
+  String get edit_profile_title => 'تعديل الملف الشخصي';
+
+  @override
+  String get edit_profile_tooltip => 'تعديل الملف الشخصي';
+
+  @override
+  String get gallery => 'المعرض';
+
+  @override
+  String get camera => 'الكاميرا';
+
+  @override
+  String failed_to_pick_image(Object error) {
+    return 'تعذر اختيار الصورة: $error';
+  }
+
+  @override
+  String get tap_to_change_avatar => 'اضغط لتغيير الصورة الشخصية';
+
+  @override
+  String get security_question => 'سؤال الأمان';
+
+  @override
+  String get security_answer => 'إجابة سؤال الأمان';
+
+  @override
+  String get save_changes => 'حفظ التغييرات';
+
+  @override
+  String get saving => 'جارٍ الحفظ...';
+
+  @override
+  String get my_posts => 'منشوراتي';
+
+  @override
+  String profile_id_short(Object id) {
+    return 'المعرف: $id...';
+  }
 
   @override
   String get welcome_back => 'مرحباً بعودتك';
@@ -239,7 +315,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get system_wizard => 'حساب النظام الشمسي';
 
   @override
-  String get system_wizard_desc => 'أجب عن بعض الأسئلة لتحصل على توصية لنظام شمسي متكامل';
+  String get system_wizard_desc =>
+      'أجب عن بعض الأسئلة لتحصل على توصية لنظام شمسي متكامل';
 
   @override
   String get request_offer_wizard => 'طلب عرض سعر مخصص';
@@ -302,7 +379,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get single_battery_voltage => 'جهد البطارية الواحدة';
 
   @override
-  String get battery_type_hint => 'الليثيوم عادة 12.8 فولت، 25.6 فولت، 51.2 فولت | الرصاص الحمضي عادة 12 فولت';
+  String get battery_type_hint =>
+      'الليثيوم عادة 12.8 فولت، 25.6 فولت، 51.2 فولت | الرصاص الحمضي عادة 12 فولت';
 
   @override
   String get system_voltage => 'جهد النظام';
@@ -323,7 +401,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get request_this_system => 'طلب هذا النظام';
 
   @override
-  String get request_description => 'أرسل تكوين هذا النظام للشركات المحلية للحصول على عروض';
+  String get request_description =>
+      'أرسل تكوين هذا النظام للشركات المحلية للحصول على عروض';
 
   @override
   String get guide => 'دليل';
@@ -404,7 +483,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get error_select_system => 'مطلوب: يرجى تحديد نظام';
 
   @override
-  String get error_no_components => 'يرجى إضافة مكون واحد على الأقل (لوح، عاكس، أو بطارية)';
+  String get error_no_components =>
+      'يرجى إضافة مكون واحد على الأقل (لوح، عاكس، أو بطارية)';
 
   @override
   String get appliance_name => 'اسم الجهاز';
@@ -428,7 +508,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verification_pending => 'التحقق قيد الانتظار';
 
   @override
-  String get verification_pending_msg => 'تسجيل شركتك قيد المراجعة. يرجى التحقق لاحقاً.';
+  String get verification_pending_msg =>
+      'تسجيل شركتك قيد المراجعة. يرجى التحقق لاحقاً.';
 
   @override
   String get go_back => 'رجوع';
@@ -512,6 +593,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notifications => 'الإشعارات';
 
   @override
+  String get app_preferences => 'تفضيلات التطبيق';
+
+  @override
+  String get push_notifications => 'الإشعارات الفورية';
+
+  @override
+  String get localization => 'اللغة والمنطقة';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get arabic => 'العربية';
+
+  @override
+  String get startup_roles => 'بدء التشغيل والأدوار';
+
+  @override
+  String get startup_role_subtitle =>
+      'افتح لوحة التحكم المفضلة لديك تلقائياً عند تشغيل التطبيق';
+
+  @override
   String get edit_company => 'تعديل الشركة';
 
   @override
@@ -521,7 +627,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_required => 'الاشتراك مطلوب';
 
   @override
-  String get subscription_required_msg => 'تحتاج إلى اشتراك نشط للوصول إلى هذه الميزة.';
+  String get subscription_required_msg =>
+      'تحتاج إلى اشتراك نشط للوصول إلى هذه الميزة.';
 
   @override
   String get view_plans => 'مشاهدة الخطط';
@@ -561,7 +668,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get autonomy => 'الاستقلالية';
 
   @override
-  String get request_notes_hint => 'قيود التركيب، ملاحظات الموقع، أو أي طلبات إضافية...';
+  String get request_notes_hint =>
+      'قيود التركيب، ملاحظات الموقع، أو أي طلبات إضافية...';
 
   @override
   String get new_system => 'نظام جديد';
@@ -570,7 +678,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get select_system => 'اختر نظاماً';
 
   @override
-  String get add_calculation_to_existing_system => 'أضف هذه الحسبة إلى نظام موجود:';
+  String get add_calculation_to_existing_system =>
+      'أضف هذه الحسبة إلى نظام موجود:';
 
   @override
   String get no_saved_systems_found => 'لم يتم العثور على أنظمة محفوظة.';
@@ -618,7 +727,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get gel_lead_acid_tubular => 'جل / رصاص-حامضي / تيوبولر';
 
   @override
-  String get panel_calc_intro => 'احسب عدد الألواح الشمسية المطلوبة بناءً على استهلاكك اليومي للطاقة.';
+  String get panel_calc_intro =>
+      'احسب عدد الألواح الشمسية المطلوبة بناءً على استهلاكك اليومي للطاقة.';
 
   @override
   String get total_daily_usage => 'الاستهلاك اليومي الكلي';
@@ -638,10 +748,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get did_you_know => 'هل تعلم؟';
 
   @override
-  String get panel_calc_tip_text => '• الأمبير-ساعة = الواط ÷ الفولت.\n• مثال: حمل يومي 1000 واط-ساعة على نظام 12 فولت يساوي تقريباً 83.3 أمبير-ساعة.\n• نحتسب الفواقد حتى يبقى أداء النظام جيداً في الظروف الواقعية.';
+  String get panel_calc_tip_text =>
+      '• الأمبير-ساعة = الواط ÷ الفولت.\n• مثال: حمل يومي 1000 واط-ساعة على نظام 12 فولت يساوي تقريباً 83.3 أمبير-ساعة.\n• نحتسب الفواقد حتى يبقى أداء النظام جيداً في الظروف الواقعية.';
 
   @override
-  String get inverter_calc_intro => 'احسب حجم العاكس المناسب لتحمل أحمال الذروة بأمان.';
+  String get inverter_calc_intro =>
+      'احسب حجم العاكس المناسب لتحمل أحمال الذروة بأمان.';
 
   @override
   String get total_load_amps => 'إجمالي تيار الحمل';
@@ -664,7 +776,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get inverter_calc_tip_text => '• عادةً يتم اختيار العاكس بقدرة أعلى من الحمل المستمر بنسبة 20% إلى 30%.\n• معامل الأمان يساعد على تحمل تيارات الإقلاع للأحمال مثل الثلاجات أو المضخات.';
+  String get inverter_calc_tip_text =>
+      '• عادةً يتم اختيار العاكس بقدرة أعلى من الحمل المستمر بنسبة 20% إلى 30%.\n• معامل الأمان يساعد على تحمل تيارات الإقلاع للأحمال مثل الثلاجات أو المضخات.';
 
   @override
   String get wires_calc_intro => 'اختر نوع التطبيق للحصول على مقاس سلك مقترح.';
@@ -703,10 +816,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recommended_wire_size => 'مقاس السلك الموصى به';
 
   @override
-  String get wires_calc_tip_text => '• الحفاظ على هبوط الجهد منخفضاً مهم جداً لكفاءة النظام.\n• في كابلات البطاريات يفضّل أن يكون الهبوط أقل من 1% لتجنب فصل العاكس.\n• في خطوط الألواح الشمسية يكون 3% مقبولاً عادةً.';
+  String get wires_calc_tip_text =>
+      '• الحفاظ على هبوط الجهد منخفضاً مهم جداً لكفاءة النظام.\n• في كابلات البطاريات يفضّل أن يكون الهبوط أقل من 1% لتجنب فصل العاكس.\n• في خطوط الألواح الشمسية يكون 3% مقبولاً عادةً.';
 
   @override
-  String get pump_calc_intro => 'احسب القدرة الشمسية اللازمة لنظام مضخة المياه.';
+  String get pump_calc_intro =>
+      'احسب القدرة الشمسية اللازمة لنظام مضخة المياه.';
 
   @override
   String get daily_water_volume => 'حجم المياه اليومي';
@@ -750,13 +865,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get definition_tdh => 'الرفع العمودي + فاقد الاحتكاك + الضغط المطلوب.';
 
   @override
-  String get definition_flow_rate => 'كمية المياه المطلوبة يومياً، مثل المتر المكعب.';
+  String get definition_flow_rate =>
+      'كمية المياه المطلوبة يومياً، مثل المتر المكعب.';
 
   @override
-  String get definition_psh => 'عدد الساعات المكافئة لشدة شمس كاملة في موقعك، وغالباً تكون بين 4 و6 ساعات.';
+  String get definition_psh =>
+      'عدد الساعات المكافئة لشدة شمس كاملة في موقعك، وغالباً تكون بين 4 و6 ساعات.';
 
   @override
-  String get definition_hydraulic_power => 'القدرة المطلوبة لرفع الماء قبل احتساب فاقد كفاءة المحرك.';
+  String get definition_hydraulic_power =>
+      'القدرة المطلوبة لرفع الماء قبل احتساب فاقد كفاءة المحرك.';
 
   @override
   String get find_battery_count => 'حساب عدد البطاريات';
@@ -807,13 +925,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get depth_of_discharge_dod => 'عمق التفريغ (DoD)';
 
   @override
-  String get typical_dod_hint => 'شائع: 50% لبطاريات الجل/AGM، و80% لليثيوم، و20-30% للرصاص الحمضي';
+  String get typical_dod_hint =>
+      'شائع: 50% لبطاريات الجل/AGM، و80% لليثيوم، و20-30% للرصاص الحمضي';
 
   @override
-  String get battery_count_formula_hint => 'المعادلة: (الحمل × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)';
+  String get battery_count_formula_hint =>
+      'المعادلة: (الحمل × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)';
 
   @override
-  String get battery_runtime_formula_hint => 'تحسب هذه العملية مدة تشغيل بنك البطاريات مع الحمل قبل الوصول إلى عمق التفريغ المحدد.';
+  String get battery_runtime_formula_hint =>
+      'تحسب هذه العملية مدة تشغيل بنك البطاريات مع الحمل قبل الوصول إلى عمق التفريغ المحدد.';
 
   @override
   String get battery_calculator_title => 'حاسبة البطاريات';
@@ -837,7 +958,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get numbers_only => 'أدخل أرقاماً فقط';
 
   @override
-  String get load_ampere_helper => 'أدخل الحمل بالأمبير ثم اختر جهد النظام المتناوب. عادةً يتم حساب الحمل من: الجهد × التيار. مثال: 10 أمبير × 230 فولت = 2300 واط.';
+  String get load_ampere_helper =>
+      'أدخل الحمل بالأمبير ثم اختر جهد النظام المتناوب. عادةً يتم حساب الحمل من: الجهد × التيار. مثال: 10 أمبير × 230 فولت = 2300 واط.';
 
   @override
   String get battery_amperes => 'سعة البطارية';
@@ -852,7 +974,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get battery_count_hint => 'واحدة أو أكثر';
 
   @override
-  String get runtime_question => 'كم ساعة تريد أن يعمل النظام فيها على البطاريات؟';
+  String get runtime_question =>
+      'كم ساعة تريد أن يعمل النظام فيها على البطاريات؟';
 
   @override
   String get required_runtime_hours => 'مدة التشغيل المطلوبة (بالساعات)';
@@ -867,7 +990,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get example_5_or_8 => 'مثال: 5 أو 8';
 
   @override
-  String get battery_count_explanation => 'يتم حساب عدد البطاريات المطلوبة وفق المعادلة التالية:\n\n(القدرة × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)\n\nمثال: (2300 واط × 5 ساعات) ÷ (12 فولت × 100Ah × 0.2) = حوالي 8 بطاريات.\n\nهذا يساعدك على تقدير عدد البطاريات اللازمة لحمل ومدة تشغيل محددين.';
+  String get battery_count_explanation =>
+      'يتم حساب عدد البطاريات المطلوبة وفق المعادلة التالية:\n\n(القدرة × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)\n\nمثال: (2300 واط × 5 ساعات) ÷ (12 فولت × 100Ah × 0.2) = حوالي 8 بطاريات.\n\nهذا يساعدك على تقدير عدد البطاريات اللازمة لحمل ومدة تشغيل محددين.';
 
   @override
   String depth_of_discharge_with_value(Object value) {
@@ -875,13 +999,16 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get dod_guidance => 'حدد نسبة عمق التفريغ (DoD).\n\nالقيم الشائعة تتراوح بين 20% و80% حسب نوع البطارية.\n\n• 20% لبطاريات الليثيوم أو التيوبولر\n• 50% لبطاريات AGM أو الجل\nراجع ورقة المواصفات للحصول على أفضل دقة.';
+  String get dod_guidance =>
+      'حدد نسبة عمق التفريغ (DoD).\n\nالقيم الشائعة تتراوح بين 20% و80% حسب نوع البطارية.\n\n• 20% لبطاريات الليثيوم أو التيوبولر\n• 50% لبطاريات AGM أو الجل\nراجع ورقة المواصفات للحصول على أفضل دقة.';
 
   @override
-  String get battery_runtime_explanation => 'أدخل سعة البطارية (Ah)، الجهد (V)، وعدد البطاريات.\nيتم حساب إجمالي الطاقة المخزنة كما يلي:\nالجهد × السعة × عدد البطاريات × عمق التفريغ.\n\n• مثال: 4 بطاريات × 12 فولت × 100Ah × 0.2 = 960 واط-ساعة\nوهذا يساعد على تقدير مدة تشغيل الحمل على البطاريات.';
+  String get battery_runtime_explanation =>
+      'أدخل سعة البطارية (Ah)، الجهد (V)، وعدد البطاريات.\nيتم حساب إجمالي الطاقة المخزنة كما يلي:\nالجهد × السعة × عدد البطاريات × عمق التفريغ.\n\n• مثال: 4 بطاريات × 12 فولت × 100Ah × 0.2 = 960 واط-ساعة\nوهذا يساعد على تقدير مدة تشغيل الحمل على البطاريات.';
 
   @override
-  String get dod_guidance_runtime => 'حدد نسبة عمق التفريغ (DoD) للبطارية.\n\nغالباً تتراوح القيم المناسبة بين 50% و80% حسب نوع البطارية ودرجة الحرارة وتعليمات الشركة المصنعة.\n\n• استخدم 20% لبطاريات الليثيوم أو التيوبولر.\n• استخدم 50% لبطاريات AGM أو الجل.\nارجع إلى ورقة المواصفات إذا لم تكن متأكداً.';
+  String get dod_guidance_runtime =>
+      'حدد نسبة عمق التفريغ (DoD) للبطارية.\n\nغالباً تتراوح القيم المناسبة بين 50% و80% حسب نوع البطارية ودرجة الحرارة وتعليمات الشركة المصنعة.\n\n• استخدم 20% لبطاريات الليثيوم أو التيوبولر.\n• استخدم 50% لبطاريات AGM أو الجل.\nارجع إلى ورقة المواصفات إذا لم تكن متأكداً.';
 
   @override
   String runtime_hours_precise(Object value) {

@@ -28,23 +28,14 @@ class Home extends ConsumerWidget {
     if (navIndex == -1) navIndex = 0; // fallback if state is out of sync
 
     // List pages = [const UserDashboard(), const CalculatorLandingPage(), const CommunityFeedPage(), const Store()];
-    List<Widget> pages = [
-      const UserDashboard(),
-      const CalculatorLandingPage(),
-      const UserDashboard(),
-      const UserDashboard(),
-    ];
+    List<Widget> pages = [const UserDashboard(), const CalculatorLandingPage(), const UserDashboard(), const UserDashboard()];
 
     List<CrystalNavigationBarItem> navItems = [
       /// Dashboard
       CrystalNavigationBarItem(icon: Iconsax.home_bold, unselectedIcon: Iconsax.home_outline, selectedColor: Theme.of(context).primaryColor),
 
       /// Calculator
-      CrystalNavigationBarItem(
-        icon: FontAwesome.calculator_solid,
-        unselectedIcon: FontAwesome.calculator_solid,
-        selectedColor: Theme.of(context).primaryColor,
-      ),
+      CrystalNavigationBarItem(icon: FontAwesome.calculator_solid, unselectedIcon: FontAwesome.calculator_solid, selectedColor: Theme.of(context).primaryColor),
     ];
 
     if (hasCommunity) {
@@ -72,11 +63,7 @@ class Home extends ConsumerWidget {
 
       bottomNavigationBar: Padding(
         padding: navItems.length <= 2
-            ? EdgeInsets.only(
-                left: MediaQuery.sizeOf(context).width * 0.22,
-                right: MediaQuery.sizeOf(context).width * 0.22,
-                bottom: 10,
-              )
+            ? EdgeInsets.only(left: MediaQuery.sizeOf(context).width * 0.22, right: MediaQuery.sizeOf(context).width * 0.22, bottom: 10)
             : EdgeInsets.zero,
         child: CrystalNavigationBar(
           currentIndex: navIndex,
@@ -98,7 +85,7 @@ class Home extends ConsumerWidget {
     int index = ref.watch(homePageIndexProvider);
 
     return AppBar(
-      title: Text(AppLocalizations.of(context)!.home),
+      title: Text(index == 0 ? AppLocalizations.of(context)!.home : AppLocalizations.of(context)!.calculator),
       actions: [
         // IconButton(
         //   icon: Icon(Icons.search, color: AppTheme.primaryColor),

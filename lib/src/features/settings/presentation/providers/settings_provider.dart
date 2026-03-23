@@ -3,7 +3,9 @@ import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
-final settingsProvider = NotifierProvider<SettingsProvider, Settings>(SettingsProvider.new);
+final settingsProvider = NotifierProvider<SettingsProvider, Settings>(
+  SettingsProvider.new,
+);
 
 class SettingsProvider extends Notifier<Settings> {
   final CasheInterface casheService = getIt<CasheInterface>();

@@ -14,13 +14,14 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final authController = ref.watch(authProvider);
     final user = authController.user;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.profile),
+        title: Text(l10n.profile),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -39,13 +40,17 @@ class ProfilePage extends ConsumerWidget {
                 final result = await context.push('/auth/edit_profile');
                 if (result == true && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Profile updated successfully'), backgroundColor: Colors.green, behavior: SnackBarBehavior.floating),
+                    SnackBar(
+                      content: Text(l10n.profile_updated_success),
+                      backgroundColor: Colors.green,
+                      behavior: SnackBarBehavior.floating,
+                    ),
                   );
                   // Refresh profile data
                   //  profileController.fetchProfile(user?.id ?? '');
                 }
               },
-              tooltip: 'Edit Profile',
+              tooltip: l10n.edit_profile_tooltip,
             ),
         ],
       ),
@@ -62,19 +67,29 @@ class ProfilePage extends ConsumerWidget {
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppTheme.primaryColor, width: 2),
+                      border: Border.all(
+                        color: AppTheme.primaryColor,
+                        width: 2,
+                      ),
                     ),
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
+                      backgroundColor: isDark
+                          ? Colors.grey[800]
+                          : Colors.grey[200],
                       child: (user?.image == null || user!.image!.isEmpty)
                           ? Text(
-                              (user?.firstName != null && user!.firstName!.isNotEmpty)
+                              (user?.firstName != null &&
+                                      user!.firstName!.isNotEmpty)
                                   ? user.firstName![0].toUpperCase()
-                                  : (user?.email != null && user!.email!.isNotEmpty)
+                                  : (user?.email != null &&
+                                        user!.email!.isNotEmpty)
                                   ? user.email![0].toUpperCase()
                                   : 'S',
-                              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
                             )
                           : WdImagePreview(imageUrl: user.image!),
                     ),
@@ -88,11 +103,19 @@ class ProfilePage extends ConsumerWidget {
             Column(
               children: [
                 Text(
-                  user?.firstName ?? user?.email ?? AppLocalizations.of(context)!.guest_user,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  user?.firstName ?? user?.email ?? l10n.guest_user,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                if (user?.phone != null && user!.phone!.isNotEmpty) Text(user.phone!, style: TextStyle(color: Colors.grey[600])),
-                if (user?.id != null) Text('ID: ${user?.id}...', style: TextStyle(color: Colors.grey[600])),
+                if (user?.phone != null && user!.phone!.isNotEmpty)
+                  Text(user.phone!, style: TextStyle(color: Colors.grey[600])),
+                if (user?.id != null)
+                  Text(
+                    l10n.profile_id_short(user!.id),
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
               ],
             ),
             const SizedBox(height: 32),
@@ -103,7 +126,10 @@ class ProfilePage extends ConsumerWidget {
             const SizedBox(height: 24),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("My Posts", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(
+                l10n.my_posts,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 12),
 
@@ -154,7 +180,9 @@ class ProfilePage extends ConsumerWidget {
                     backgroundColor: Colors.red.withValues(alpha: 0.1),
                     foregroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -170,32 +198,15 @@ class ProfilePage extends ConsumerWidget {
                   label: Text(AppLocalizations.of(context)!.sign_in),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ),
             ],
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildProfileItem({required IconData icon, required String title, required VoidCallback onTap, String? subtitle}) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        // color: Get.isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: AppTheme.primaryColor),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: subtitle != null ? Text(subtitle) : null,
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
-        onTap: onTap,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/calculator_widgets.dart';
+import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
 
 class InverterCalculatorPage extends ConsumerStatefulWidget {
   const InverterCalculatorPage({super.key});
@@ -35,6 +37,7 @@ class _InverterCalculatorPageState
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(calculatorProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
 
@@ -42,9 +45,9 @@ class _InverterCalculatorPageState
       appBar: AppBar(
         title: Text(l10n.inverter_calc),
         actions: [
-          IconButton(
-            onPressed: _showHelpDialog,
-            icon: const Icon(Icons.help_outline),
+          ExplanationButton(
+            explanations: AppExplanations(context).getInverterExplanations(),
+            storageKey: 'inverter_calc_help_viewed',
           ),
         ],
       ),
@@ -70,13 +73,24 @@ class _InverterCalculatorPageState
 
             // Inputs
             // Inputs
-            CalcInputRow(
-              label: l10n.total_load_amps,
-              suffix: l10n.amps,
-              hint: l10n.example_10,
-              initialValue: controller.inverterCalcAmps,
-              onChanged: (v) =>
-                  controller.inverterCalcAmps = double.tryParse(v) ?? 0,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: CalcInputRow(
+                    label: l10n.total_load_amps,
+                    suffix: l10n.amps,
+                    hint: l10n.example_10,
+                    initialValue: controller.inverterCalcAmps,
+                    onChanged: (v) {
+                      controller.inverterCalcAmps = double.tryParse(v) ?? 0;
+                      controller.calculateInverter();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ExplanationButton(explanations: [AppExplanations(context).getInverterExplanations()[0]]),
+              ],
             ),
 
             // AC System Voltage Selection
@@ -100,52 +114,57 @@ class _InverterCalculatorPageState
                           ),
                         )
                         .toList(),
-                    onChanged: (v) => controller.acSystemVoltage = v ?? 230.0,
+                    onChanged: (v) {
+                      controller.acSystemVoltage = v ?? 230.0;
+                      controller.calculateInverter();
+                    },
                   ),
+                  const SizedBox(width: 8),
+                  ExplanationButton(explanations: [AppExplanations(context).getInverterExplanations()[1]]),
                 ],
               ),
             ),
 
             const SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      l10n.safety_factor_oversizing,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            l10n.safety_factor_oversizing,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
+                          ),
+                        ],
+                      ),
+                      Slider(
+                        value: controller.inverterCalcSafetyFactor,
+                        min: 1.0,
+                        max: 2.0,
+                        divisions: 20,
+                        label:
+                            "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
+                        onChanged: (v) {
+                          controller.inverterCalcSafetyFactor = v;
+                          controller.calculateInverter();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                Slider(
-                  value: controller.inverterCalcSafetyFactor,
-                  min: 1.0,
-                  max: 2.0,
-                  divisions: 20,
-                  label:
-                      "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
-                  onChanged: (v) => controller.inverterCalcSafetyFactor = v,
-                ),
+                const SizedBox(width: 8),
+                ExplanationButton(explanations: [AppExplanations(context).getInverterExplanations()[2]]),
               ],
             ),
 
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: controller.calculateInverter,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
-                minimumSize: Size(double.infinity, 50),
-              ),
-              child: Text(
-                l10n.calculate,
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
             const SizedBox(height: 30),
 
             // Result
@@ -194,89 +213,11 @@ class _InverterCalculatorPageState
 
   void _showHelpDialog() {
     final explanations = AppExplanations(context).getInverterExplanations();
-    bool dontShowAgain = true;
-
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          height: 600,
-          child: Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.guide,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: explanations.length,
-                  separatorBuilder: (_, _) => const Divider(),
-                  itemBuilder: (context, index) {
-                    final item = explanations[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          item.description,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Checkbox(
-                    value: dontShowAgain,
-                    onChanged: (val) => dontShowAgain = val ?? false,
-                    activeColor: AppTheme.primaryColor,
-                  ),
-                  Text(AppLocalizations.of(context)!.dont_show_again),
-                ],
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (dontShowAgain) {
-                      GetStorage().write('inverter_calc_help_viewed', true);
-                    }
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(AppLocalizations.of(context)!.close),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    ExplanationDialog.show(
+      context,
+      explanations: explanations,
+      showDontShowAgain: true,
+      storageKey: 'inverter_calc_help_viewed',
     );
   }
 }

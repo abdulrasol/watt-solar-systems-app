@@ -1,4 +1,4 @@
-package com.example.solar_hub
+package io.github.abdulrasol.watt_pv_app
 
 import io.flutter.embedding.android.FlutterActivity
 

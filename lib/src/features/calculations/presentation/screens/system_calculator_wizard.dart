@@ -166,7 +166,12 @@ class _SystemCalculatorWizardState extends ConsumerState<SystemCalculatorWizard>
   // ── Help Dialog ──────────────────────────────────────────────────────────
   void _showHelpDialog() {
     final explanations = AppExplanations(context).getExplanations();
-    ExplanationDialog.show(context, explanations: explanations, showDontShowAgain: true);
+    ExplanationDialog.show(
+      context, 
+      explanations: explanations, 
+      showDontShowAgain: true,
+      storageKey: 'system_calculator_wizard_help_viewed',
+    );
   }
 }
 

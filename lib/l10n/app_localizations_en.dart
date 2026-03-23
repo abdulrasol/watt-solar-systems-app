@@ -9,6 +9,12 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get app_name => 'Watt';
+
+  @override
+  String get app_slug => 'Calculate Your Solar System';
+
+  @override
   String get profile => 'Profile';
 
   @override
@@ -96,7 +102,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reset_password => 'Reset Password';
 
   @override
-  String get reset_password_instructions => 'Enter your email address and we will send you a link to reset your password.';
+  String get reset_password_instructions =>
+      'Enter your email address and we will send you a link to reset your password.';
 
   @override
   String get email_is_required => 'Email is required';
@@ -135,7 +142,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgot_password => 'Forgot Password?';
 
   @override
-  String get login => 'LOGIN';
+  String get login => 'Sign In';
+
+  @override
+  String get sign_up => 'Sign Up';
+
+  @override
+  String get or_text => 'OR';
 
   @override
   String get first_name => 'First Name';
@@ -145,6 +158,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get phone_number => 'Phone Number';
+
+  @override
+  String get phone_required => 'Phone number is required';
+
+  @override
+  String get invalid_phone_number => 'Enter a valid phone number';
 
   @override
   String get loading => 'Loading...';
@@ -177,10 +196,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sign_up_failed => 'Sign Up Failed';
 
   @override
-  String get start_your_solar_business => 'Start Your Solar Business';
+  String get start_your_solar_business => 'Start your solar business';
 
   @override
-  String get register_company_details => 'Fill in the details below to register your company. Your application will be reviewed by our admin team.';
+  String get register_company_details =>
+      'Fill in the details below to register your company. Our team will review your application before approval.';
 
   @override
   String get company_name => 'Company Name';
@@ -205,6 +225,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get address_is_required => 'Address is required';
+
+  @override
+  String get upload_logo => 'Upload Logo';
+
+  @override
+  String get business_phone => 'Business Phone';
+
+  @override
+  String get submit_application => 'Submit Application';
+
+  @override
+  String get company_registered_success => 'Company registered successfully';
+
+  @override
+  String get min_6_characters => 'Minimum 6 characters';
+
+  @override
+  String get edit_profile_title => 'Edit Profile';
+
+  @override
+  String get edit_profile_tooltip => 'Edit Profile';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String failed_to_pick_image(Object error) {
+    return 'Failed to pick image: $error';
+  }
+
+  @override
+  String get tap_to_change_avatar => 'Tap to change avatar';
+
+  @override
+  String get security_question => 'Security Question';
+
+  @override
+  String get security_answer => 'Security Answer';
+
+  @override
+  String get save_changes => 'Save Changes';
+
+  @override
+  String get saving => 'Saving...';
+
+  @override
+  String get my_posts => 'My Posts';
+
+  @override
+  String profile_id_short(Object id) {
+    return 'ID: $id...';
+  }
 
   @override
   String get welcome_back => 'Welcome back';
@@ -239,13 +314,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get system_wizard => 'System Calculator Wizard';
 
   @override
-  String get system_wizard_desc => 'Answer a few questions to get a complete system recommendation';
+  String get system_wizard_desc =>
+      'Answer a few questions to get a complete system recommendation';
 
   @override
   String get request_offer_wizard => 'Request Custom Offer';
 
   @override
-  String get request_offer_desc => 'Submit your specific requirements to get offers from companies';
+  String get request_offer_desc =>
+      'Submit your specific requirements to get offers from companies';
 
   @override
   String get quick_tools => 'Quick Tools';
@@ -302,7 +379,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get single_battery_voltage => 'Single Battery Voltage';
 
   @override
-  String get battery_type_hint => 'Lithium usually 12.8V, 25.6V, 51.2V | Lead-Acid usually 12V';
+  String get battery_type_hint =>
+      'Lithium usually 12.8V, 25.6V, 51.2V | Lead-Acid usually 12V';
 
   @override
   String get system_voltage => 'System Voltage';
@@ -323,7 +401,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get request_this_system => 'Request This System';
 
   @override
-  String get request_description => 'Send this system configuration to local companies to get offers';
+  String get request_description =>
+      'Send this system configuration to local companies to get offers';
 
   @override
   String get guide => 'Guide';
@@ -404,7 +483,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error_select_system => 'Required: Please select a system';
 
   @override
-  String get error_no_components => 'Please add at least one component (Panel, Inverter, or Battery)';
+  String get error_no_components =>
+      'Please add at least one component (Panel, Inverter, or Battery)';
 
   @override
   String get appliance_name => 'Appliance Name';
@@ -428,7 +508,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verification_pending => 'Verification Pending';
 
   @override
-  String get verification_pending_msg => 'Your company registration is under review. Please check back later.';
+  String get verification_pending_msg =>
+      'Your company registration is under review. Please check back later.';
 
   @override
   String get go_back => 'Go Back';
@@ -512,6 +593,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifications => 'Notifications';
 
   @override
+  String get app_preferences => 'App Preferences';
+
+  @override
+  String get push_notifications => 'Push Notifications';
+
+  @override
+  String get localization => 'Localization';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get arabic => 'Arabic';
+
+  @override
+  String get startup_roles => 'Startup & Roles';
+
+  @override
+  String get startup_role_subtitle =>
+      'Automatically open your preferred dashboard when the app starts';
+
+  @override
   String get edit_company => 'Edit Company';
 
   @override
@@ -521,7 +627,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_required => 'Subscription Required';
 
   @override
-  String get subscription_required_msg => 'You need an active subscription to access this feature.';
+  String get subscription_required_msg =>
+      'You need an active subscription to access this feature.';
 
   @override
   String get view_plans => 'View Plans';
@@ -561,7 +668,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autonomy => 'Autonomy';
 
   @override
-  String get request_notes_hint => 'Specific installation constraints, location notes, or other requests...';
+  String get request_notes_hint =>
+      'Specific installation constraints, location notes, or other requests...';
 
   @override
   String get new_system => 'New System';
@@ -570,7 +678,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_system => 'Select System';
 
   @override
-  String get add_calculation_to_existing_system => 'Add calculation to existing system:';
+  String get add_calculation_to_existing_system =>
+      'Add calculation to existing system:';
 
   @override
   String get no_saved_systems_found => 'No saved systems found.';
@@ -591,7 +700,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_request_details => 'Confirm request details';
 
   @override
-  String get add_notes_constraints => 'Add any notes or specific constraints...';
+  String get add_notes_constraints =>
+      'Add any notes or specific constraints...';
 
   @override
   String get low_voltage => 'Low Voltage';
@@ -618,7 +728,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gel_lead_acid_tubular => 'Gel / Lead-Acid / Tubular';
 
   @override
-  String get panel_calc_intro => 'Calculate the number of solar panels required based on your daily energy usage.';
+  String get panel_calc_intro =>
+      'Calculate the number of solar panels required based on your daily energy usage.';
 
   @override
   String get total_daily_usage => 'Total Daily Usage';
@@ -638,10 +749,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get did_you_know => 'Did you know?';
 
   @override
-  String get panel_calc_tip_text => '• Ah (amp-hours) = watts ÷ voltage.\n• Example: a 1000 Wh daily load on a 12 V system equals about 83.3 Ah.\n• We include efficiency losses so the system still performs well in real conditions.';
+  String get panel_calc_tip_text =>
+      '• Ah (amp-hours) = watts ÷ voltage.\n• Example: a 1000 Wh daily load on a 12 V system equals about 83.3 Ah.\n• We include efficiency losses so the system still performs well in real conditions.';
 
   @override
-  String get inverter_calc_intro => 'Size your inverter to handle peak loads safely.';
+  String get inverter_calc_intro =>
+      'Size your inverter to handle peak loads safely.';
 
   @override
   String get total_load_amps => 'Total Load Amps';
@@ -664,10 +777,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get inverter_calc_tip_text => '• Inverters are usually sized 20% to 30% above the continuous load.\n• The safety factor helps cover startup surges from motors such as refrigerators or pumps.';
+  String get inverter_calc_tip_text =>
+      '• Inverters are usually sized 20% to 30% above the continuous load.\n• The safety factor helps cover startup surges from motors such as refrigerators or pumps.';
 
   @override
-  String get wires_calc_intro => 'Select the application type to get a recommended wire size.';
+  String get wires_calc_intro =>
+      'Select the application type to get a recommended wire size.';
 
   @override
   String get application_type => 'Application Type';
@@ -703,10 +818,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recommended_wire_size => 'Recommended Wire Size';
 
   @override
-  String get wires_calc_tip_text => '• Keeping voltage drop low is critical for system efficiency.\n• For battery cables, aim for less than 1% drop to avoid inverter cut-offs.\n• For solar PV runs, 3% is generally acceptable.';
+  String get wires_calc_tip_text =>
+      '• Keeping voltage drop low is critical for system efficiency.\n• For battery cables, aim for less than 1% drop to avoid inverter cut-offs.\n• For solar PV runs, 3% is generally acceptable.';
 
   @override
-  String get pump_calc_intro => 'Calculate the solar power needed for your water pump system.';
+  String get pump_calc_intro =>
+      'Calculate the solar power needed for your water pump system.';
 
   @override
   String get daily_water_volume => 'Daily Water Volume';
@@ -747,16 +864,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hydraulic_power => 'Hydraulic Power';
 
   @override
-  String get definition_tdh => 'Vertical lift + friction losses + required pressure.';
+  String get definition_tdh =>
+      'Vertical lift + friction losses + required pressure.';
 
   @override
-  String get definition_flow_rate => 'The amount of water needed each day, for example in cubic meters.';
+  String get definition_flow_rate =>
+      'The amount of water needed each day, for example in cubic meters.';
 
   @override
-  String get definition_psh => 'Equivalent hours of full solar intensity at your location, usually around 4 to 6 hours.';
+  String get definition_psh =>
+      'Equivalent hours of full solar intensity at your location, usually around 4 to 6 hours.';
 
   @override
-  String get definition_hydraulic_power => 'The power required to lift the water before motor efficiency losses are applied.';
+  String get definition_hydraulic_power =>
+      'The power required to lift the water before motor efficiency losses are applied.';
 
   @override
   String get find_battery_count => 'Find Battery Count';
@@ -807,13 +928,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get depth_of_discharge_dod => 'Depth of Discharge (DoD)';
 
   @override
-  String get typical_dod_hint => 'Typical: 50% for Gel/AGM, 80% for Lithium, 20-30% for Lead-Acid';
+  String get typical_dod_hint =>
+      'Typical: 50% for Gel/AGM, 80% for Lithium, 20-30% for Lead-Acid';
 
   @override
-  String get battery_count_formula_hint => 'Formula: (Load × Time) ÷ (Battery Voltage × Capacity × DoD)';
+  String get battery_count_formula_hint =>
+      'Formula: (Load × Time) ÷ (Battery Voltage × Capacity × DoD)';
 
   @override
-  String get battery_runtime_formula_hint => 'Calculates how long the battery bank can sustain the load before reaching the selected depth of discharge.';
+  String get battery_runtime_formula_hint =>
+      'Calculates how long the battery bank can sustain the load before reaching the selected depth of discharge.';
 
   @override
   String get battery_calculator_title => 'Battery Calculator';
@@ -837,7 +961,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numbers_only => 'Numbers only';
 
   @override
-  String get load_ampere_helper => 'Enter the load in amperes and select the AC system voltage. Load is usually calculated as voltage × current. Example: 10 A × 230 V = 2300 W.';
+  String get load_ampere_helper =>
+      'Enter the load in amperes and select the AC system voltage. Load is usually calculated as voltage × current. Example: 10 A × 230 V = 2300 W.';
 
   @override
   String get battery_amperes => 'Battery Capacity';
@@ -852,7 +977,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get battery_count_hint => 'One or more';
 
   @override
-  String get runtime_question => 'How many hours do you need the system to run on batteries?';
+  String get runtime_question =>
+      'How many hours do you need the system to run on batteries?';
 
   @override
   String get required_runtime_hours => 'Required Runtime (hours)';
@@ -867,7 +993,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get example_5_or_8 => 'e.g., 5 or 8';
 
   @override
-  String get battery_count_explanation => 'The number of batteries needed is calculated as:\n\n(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\nExample: (2300 W × 5 h) ÷ (12 V × 100 Ah × 0.2) = about 8 batteries.\n\nThis helps estimate how many batteries are needed for a specific load and runtime.';
+  String get battery_count_explanation =>
+      'The number of batteries needed is calculated as:\n\n(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\nExample: (2300 W × 5 h) ÷ (12 V × 100 Ah × 0.2) = about 8 batteries.\n\nThis helps estimate how many batteries are needed for a specific load and runtime.';
 
   @override
   String depth_of_discharge_with_value(Object value) {
@@ -875,13 +1002,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get dod_guidance => 'Set the depth of discharge (DoD).\n\nTypical values range from 20% to 80% depending on battery type.\n\n• 20% for Lithium or Tubular\n• 50% for AGM or Gel\nCheck the battery datasheet for the best accuracy.';
+  String get dod_guidance =>
+      'Set the depth of discharge (DoD).\n\nTypical values range from 20% to 80% depending on battery type.\n\n• 20% for Lithium or Tubular\n• 50% for AGM or Gel\nCheck the battery datasheet for the best accuracy.';
 
   @override
-  String get battery_runtime_explanation => 'Enter the battery capacity (Ah), voltage (V), and number of batteries.\nThe total stored energy is calculated as:\nVoltage × Capacity × Number of Batteries × Depth of Discharge.\n\n• Example: 4 batteries × 12 V × 100 Ah × 0.2 = 960 Wh\nThis helps estimate how long the battery system can power your load.';
+  String get battery_runtime_explanation =>
+      'Enter the battery capacity (Ah), voltage (V), and number of batteries.\nThe total stored energy is calculated as:\nVoltage × Capacity × Number of Batteries × Depth of Discharge.\n\n• Example: 4 batteries × 12 V × 100 Ah × 0.2 = 960 Wh\nThis helps estimate how long the battery system can power your load.';
 
   @override
-  String get dod_guidance_runtime => 'Set the battery depth of discharge (DoD).\n\nTypical values usually range between 50% and 80% depending on battery type, temperature, and manufacturer guidance.\n\n• Use 20% for Lithium or Tubular batteries.\n• Use 50% for AGM or Gel batteries.\nRefer to the datasheet if you are unsure.';
+  String get dod_guidance_runtime =>
+      'Set the battery depth of discharge (DoD).\n\nTypical values usually range between 50% and 80% depending on battery type, temperature, and manufacturer guidance.\n\n• Use 20% for Lithium or Tubular batteries.\n• Use 50% for AGM or Gel batteries.\nRefer to the datasheet if you are unsure.';
 
   @override
   String runtime_hours_precise(Object value) {

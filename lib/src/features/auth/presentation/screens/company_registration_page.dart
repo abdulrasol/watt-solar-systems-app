@@ -21,10 +21,12 @@ class CompanyRegistrationPage extends ConsumerStatefulWidget {
   const CompanyRegistrationPage({super.key});
 
   @override
-  ConsumerState<CompanyRegistrationPage> createState() => _CompanyRegistrationPageState();
+  ConsumerState<CompanyRegistrationPage> createState() =>
+      _CompanyRegistrationPageState();
 }
 
-class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPage> {
+class _CompanyRegistrationPageState
+    extends ConsumerState<CompanyRegistrationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -63,8 +65,9 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.register_company), centerTitle: true),
+      appBar: AppBar(title: Text(l10n.register_company), centerTitle: true),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(24.0.r),
         child: Form(
@@ -95,18 +98,32 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
-                      image: logoFile.value != null ? DecorationImage(image: FileImage(logoFile.value!), fit: BoxFit.cover) : null,
+                      border: Border.all(
+                        color: Colors.grey.withValues(alpha: 0.3),
+                      ),
+                      image: logoFile.value != null
+                          ? DecorationImage(
+                              image: FileImage(logoFile.value!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
                     ),
                     child: logoFile.value == null
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Iconsax.camera_bold, size: 32.r, color: Colors.grey[600]),
+                              Icon(
+                                Iconsax.camera_bold,
+                                size: 32.r,
+                                color: Colors.grey[600],
+                              ),
                               SizedBox(height: 4.h),
                               Text(
-                                "Upload Logo",
-                                style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
+                                l10n.upload_logo,
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                             ],
                           )
@@ -122,9 +139,13 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.company_name,
                   prefixIcon: const Icon(Iconsax.building_bold),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                validator: Validatorless.required(AppLocalizations.of(context)!.company_name_is_required),
+                validator: Validatorless.required(
+                  AppLocalizations.of(context)!.company_name_is_required,
+                ),
               ),
               SizedBox(height: 16.h),
 
@@ -134,9 +155,13 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.description,
                   prefixIcon: const Icon(Iconsax.document_text_bold),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                validator: (value) => value!.isEmpty ? AppLocalizations.of(context)!.description_is_required : null,
+                validator: (value) => value!.isEmpty
+                    ? AppLocalizations.of(context)!.description_is_required
+                    : null,
               ),
               SizedBox(height: 16.h),
 
@@ -169,17 +194,35 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                     child: DropdownButtonFormField<Country>(
                       initialValue: _selectedCountry,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCountries ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.country,
-                        prefixIcon: _selectedCountry != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
+                        labelText: _isLoadingCountries
+                            ? AppLocalizations.of(context)!.loading
+                            : AppLocalizations.of(context)!.country,
+                        prefixIcon: _selectedCountry != null
+                            ? Icon(Iconsax.location_bold, size: 20.r)
+                            : null,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
                         filled: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 16.h,
+                        ),
                       ),
-                      items: _countries.map((country) => DropdownMenuItem(value: country, child: Text(country.name))).toList(), // Now empty list
+                      items: _countries
+                          .map(
+                            (country) => DropdownMenuItem(
+                              value: country,
+                              child: Text(country.name),
+                            ),
+                          )
+                          .toList(), // Now empty list
                       onChanged: (value) {
                         setState(() {
                           _selectedCountry = value;
-                          _selectedCity = null; // Reset city to resolve assertion error
+                          _selectedCity =
+                              null; // Reset city to resolve assertion error
                           _fetchCities();
                         });
                       },
@@ -190,13 +233,30 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                     child: DropdownButtonFormField<City>(
                       initialValue: _selectedCity,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCities ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.city,
-                        prefixIcon: _selectedCity != null ? Icon(Iconsax.location_bold, size: 20.r) : null,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
+                        labelText: _isLoadingCities
+                            ? AppLocalizations.of(context)!.loading
+                            : AppLocalizations.of(context)!.city,
+                        prefixIcon: _selectedCity != null
+                            ? Icon(Iconsax.location_bold, size: 20.r)
+                            : null,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
                         filled: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 16.h,
+                        ),
                       ),
-                      items: _cities.map((city) => DropdownMenuItem(value: city, child: Text(city.name))).toList(), // Now empty list
+                      items: _cities
+                          .map(
+                            (city) => DropdownMenuItem(
+                              value: city,
+                              child: Text(city.name),
+                            ),
+                          )
+                          .toList(), // Now empty list
                       onChanged: (value) {
                         setState(() {
                           _selectedCity = value;
@@ -218,24 +278,30 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.address,
                   prefixIcon: const Icon(Iconsax.location_bold),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                validator: Validatorless.required(AppLocalizations.of(context)!.address_is_required),
+                validator: Validatorless.required(
+                  AppLocalizations.of(context)!.address_is_required,
+                ),
               ),
               SizedBox(height: 16.h),
               TextFormField(
                 controller: phoneController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  labelText: "Business Phone",
+                  labelText: l10n.business_phone,
                   prefixIcon: const Icon(Iconsax.call_bold),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: Validatorless.multiple([
-                  Validatorless.required("Phone number is required"),
-                  Validatorless.number('Invalid phone number'),
-                ]), // TODO: translate
+                  Validatorless.required(l10n.phone_required),
+                  Validatorless.number(l10n.invalid_phone_number),
+                ]),
               ),
 
               SizedBox(height: 40.h),
@@ -247,13 +313,21 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                   padding: EdgeInsets.symmetric(vertical: 16.r),
                   backgroundColor: AppTheme.primaryColor,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 child: isLoading
-                    ? CircularProgressIndicator(color: Colors.white, strokeWidth: 2.r)
+                    ? CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2.r,
+                      )
                     : Text(
-                        "Submit Application",
-                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                        l10n.submit_application,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ), // TODO: translate
               ),
             ],
@@ -264,6 +338,7 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
   }
 
   void sumbit() async {
+    final l10n = AppLocalizations.of(context)!;
     if (isLoading) return;
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -285,19 +360,28 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
             setState(() {
               isLoading = false;
             });
-            if (mounted) ToastService.success(context, 'Success', 'Company registered successfully');
+            if (mounted) {
+              ToastService.success(
+                context,
+                l10n.success,
+                l10n.company_registered_success,
+              );
+            }
             if (mounted) context.pop();
           })
           .catchError((error) {
             setState(() {
               isLoading = false;
             });
-            if (mounted) ToastService.error(context, 'Error', error.toString());
+            if (mounted) {
+              ToastService.error(context, l10n.error, error.toString());
+            }
           });
     }
   }
 
   Future<void> _fetchCountries() async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoadingCountries = true;
     });
@@ -307,10 +391,12 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
         _countries = response;
       });
     } catch (e) {
-      if (mounted) ToastService.error(context, 'Error', e.toString());
+      if (mounted) ToastService.error(context, l10n.error, e.toString());
     }
     if (_selectedCity != null) {
-      _selectedCountry = _countries.firstWhere((element) => element.id == _selectedCity!.country.id);
+      _selectedCountry = _countries.firstWhere(
+        (element) => element.id == _selectedCity!.country.id,
+      );
     }
     setState(() {
       _isLoadingCountries = false;
@@ -318,17 +404,20 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
   }
 
   Future<void> _fetchCities({int? countryId}) async {
+    final l10n = AppLocalizations.of(context)!;
     if (_selectedCountry == null && countryId == null) return;
     setState(() {
       _isLoadingCities = true;
     });
     try {
-      final response = await getIt.get<AuthRepository>().getCities(countryId: countryId ?? _selectedCountry!.id);
+      final response = await getIt.get<AuthRepository>().getCities(
+        countryId: countryId ?? _selectedCountry!.id,
+      );
       setState(() {
         _cities = response;
       });
     } catch (e) {
-      if (mounted) ToastService.error(context, 'Error', e.toString());
+      if (mounted) ToastService.error(context, l10n.error, e.toString());
     }
     setState(() {
       _isLoadingCities = false;

@@ -33,6 +33,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final userName = authState.user?.firstName ?? l10n.default_user;
     final isAdmin = authState.user?.isSuperUser;
 
@@ -55,7 +56,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               const SizedBox(height: 8),
               Text(
                 l10n.choose_how_to_continue,
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 16, color: isDark ? Colors.grey[400] : Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
@@ -63,6 +64,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               // Option 1: Solar Hub (User View)
               _buildRoleCard(
                 context,
+                isDark,
                 title: l10n.solar_hub,
                 subtitle: l10n.continue_as(userName),
                 icon: Icons.person_outline,
@@ -77,6 +79,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               // Option 2: Company Dashboard
               _buildRoleCard(
                 context,
+                isDark,
                 title: authState.user?.company?.name ?? l10n.company_dashboard,
                 subtitle: l10n.company_dashboard,
                 icon: Iconsax.building_bold,
@@ -88,6 +91,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                 const SizedBox(height: 20),
                 _buildRoleCard(
                   context,
+                  isDark,
                   title: l10n.admin_dashboard,
                   subtitle: l10n.platform_management,
                   icon: Iconsax.security_safe_bold,
@@ -119,7 +123,8 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
   }
 
   Widget _buildRoleCard(
-    BuildContext context, {
+    BuildContext context,
+    bool isDark, {
     required String title,
     required String subtitle,
     required IconData icon,
@@ -142,16 +147,12 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         // constraints: const BoxConstraints(minHeight: 200),
         decoration: BoxDecoration(
-          color: ref.watch(settingsProvider).isDark
-              ? Colors.black87
-              : Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Theme.of(context).dividerColor),
+          border: Border.all(color: isDark ? Colors.white10 : Theme.of(context).dividerColor),
           boxShadow: [
             BoxShadow(
-              color: ref.watch(settingsProvider).isDark
-                  ? Colors.black87
-                  : color.withValues(alpha: 0.1),
+              color: isDark ? Colors.black.withValues(alpha: 0.2) : color.withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -204,7 +205,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                   const SizedBox(height: 8),
                   Text(
                     subtitle,
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
                     overflow: TextOverflow.visible,
                     maxLines: 2,
                   ),

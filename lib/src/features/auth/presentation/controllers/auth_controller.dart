@@ -12,7 +12,10 @@ class AuthState {
   AuthState({this.user, this.isSigned = false});
 
   AuthState copyWith({User? user, bool? isSigned}) {
-    return AuthState(user: user ?? this.user, isSigned: isSigned ?? this.isSigned);
+    return AuthState(
+      user: user ?? this.user,
+      isSigned: isSigned ?? this.isSigned,
+    );
   }
 
   bool get isCompanyMember => user?.isCompanyMember == true;
@@ -32,7 +35,9 @@ class AuthController extends Notifier<AuthState> {
 
     cashe.box.listenKey('user', (value) {
       if (value != null) {
-        state = state.copyWith(user: User.fromJson(Map<String, dynamic>.from(value)));
+        state = state.copyWith(
+          user: User.fromJson(Map<String, dynamic>.from(value)),
+        );
       } else {
         state = AuthState(user: null, isSigned: state.isSigned);
       }
@@ -70,7 +75,9 @@ class AuthController extends Notifier<AuthState> {
   }
 
   Future<void> registerCompany(Company company) async {
-    state = state.copyWith(user: state.user?.copyWith(company: company, isCompanyMember: true));
+    state = state.copyWith(
+      user: state.user?.copyWith(company: company, isCompanyMember: true),
+    );
     cashe.saveUser(state.user!);
   }
 }

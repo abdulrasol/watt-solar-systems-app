@@ -1,5 +1,4 @@
 class AppStrings {
-  static const String appName = 'Solar Hub';
   static const String appVersion = '1.0.0';
   static const String appDescription = 'Solar Hub is a platform for solar energy professionals';
   static const String appAuthor = 'Rasol';

@@ -159,7 +159,7 @@ class AppExplanations {
             ExplanationItem(
               title: "جهد النظام",
               description:
-                  "هو الجهد الذي يعمل عليه بنك البطاريات أو النظام المستمر، مثل 12V أو 24V أو 48V.",
+                  "هو جهد الكهرباء المتناوبة في الموقع، مثل 230V أو 110V أو 380V حسب الدولة ونوع التغذية.",
             ),
             ExplanationItem(
               title: "قدرة اللوح",
@@ -181,7 +181,7 @@ class AppExplanations {
             ExplanationItem(
               title: "System Voltage",
               description:
-                  "The DC operating voltage of the battery bank or solar system, such as 12V, 24V, or 48V.",
+                  "The AC voltage used at the site, such as 230V, 110V, or 380V depending on the country and electrical setup.",
             ),
             ExplanationItem(
               title: "Panel Wattage",

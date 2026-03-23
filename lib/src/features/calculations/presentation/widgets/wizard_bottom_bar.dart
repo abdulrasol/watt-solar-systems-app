@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart' show isEnabled;
 
-class WizardBottomBar extends StatelessWidget {
+class WizardBottomBar extends ConsumerWidget {
   const WizardBottomBar({
     super.key,
     required this.tabIndex,
@@ -23,25 +26,14 @@ class WizardBottomBar extends StatelessWidget {
   final AppLocalizations l10n;
   final ThemeData theme;
 
-  static const _btnShape = RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(12)),
-  );
-  static const _btnStyle = TextStyle(
-    fontFamily: AppTheme.fontFamily,
-    fontWeight: FontWeight.w600,
-    fontSize: 15,
-  );
+  static const _btnShape = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12)));
+  static const _btnStyle = TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w600, fontSize: 15);
   static const _btnPadding = EdgeInsets.symmetric(vertical: 14);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: EdgeInsets.fromLTRB(
-        20,
-        12,
-        20,
-        12 + MediaQuery.of(context).padding.bottom,
-      ),
+      padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 12.h + MediaQuery.of(context).padding.bottom),
       decoration: BoxDecoration(
         color: theme.cardColor,
         boxShadow: [
@@ -60,9 +52,7 @@ class WizardBottomBar extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
               shape: _btnShape,
-              side: BorderSide(
-                color: theme.colorScheme.outline.withValues(alpha: 0.4),
-              ),
+              side: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.4)),
             ),
             child: Text(tabIndex == 0 ? l10n.close : l10n.back),
           ),
@@ -75,10 +65,7 @@ class WizardBottomBar extends StatelessWidget {
               transitionBuilder: (child, anim) => FadeTransition(
                 opacity: anim,
                 child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0.05, 0),
-                    end: Offset.zero,
-                  ).animate(anim),
+                  position: Tween<Offset>(begin: const Offset(0.05, 0), end: Offset.zero).animate(anim),
                   child: child,
                 ),
               ),
@@ -88,12 +75,7 @@ class WizardBottomBar extends StatelessWidget {
                       width: double.infinity,
                       child: FilledButton.icon(
                         onPressed: onNext,
-                        icon: Icon(
-                          tabIndex == 1
-                              ? Iconsax.calculator_bold
-                              : Icons.arrow_forward_rounded,
-                          size: 18,
-                        ),
+                        icon: Icon(tabIndex == 1 ? Iconsax.calculator_bold : Icons.arrow_forward_rounded, size: 18),
                         label: Text(tabIndex == 1 ? l10n.calculate : l10n.next),
                         style: FilledButton.styleFrom(
                           backgroundColor: AppTheme.primaryColor,
@@ -104,7 +86,8 @@ class WizardBottomBar extends StatelessWidget {
                         ),
                       ),
                     )
-                  : isEnabled(ref, 'offers') ? SizedBox(
+                  : isEnabled(ref, 'offers')
+                  ? SizedBox(
                       key: const ValueKey('nav_request'),
                       width: double.infinity,
                       child: FilledButton.icon(
@@ -119,7 +102,8 @@ class WizardBottomBar extends StatelessWidget {
                           textStyle: _btnStyle,
                         ),
                       ),
-                    ),
+                    )
+                  : const SizedBox.shrink(),
             ),
           ),
         ],
