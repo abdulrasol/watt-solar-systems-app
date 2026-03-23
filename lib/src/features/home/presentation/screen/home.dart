@@ -9,6 +9,7 @@ import 'package:solar_hub/src/features/home/presentation/providers/home_page_pro
 import 'package:solar_hub/src/features/home/presentation/screen/user_dashboard.dart';
 import 'package:solar_hub/src/features/home/presentation/widgets/drawer.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -16,51 +17,77 @@ class Home extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(homePageIndexProvider);
+    final bool hasCommunity = isEnabled(ref, 'community');
+    final bool hasStore = isEnabled(ref, 'store', defaultValue: false);
+
+    final availableIndices = [0, 1];
+    if (hasCommunity) availableIndices.add(2);
+    if (hasStore) availableIndices.add(3);
+
+    int navIndex = availableIndices.indexOf(index);
+    if (navIndex == -1) navIndex = 0; // fallback if state is out of sync
+
     // List pages = [const UserDashboard(), const CalculatorLandingPage(), const CommunityFeedPage(), const Store()];
-    List pages = [const UserDashboard(), const CalculatorLandingPage(), const UserDashboard(), const UserDashboard()];
+    List<Widget> pages = [
+      const UserDashboard(),
+      const CalculatorLandingPage(),
+      const UserDashboard(),
+      const UserDashboard(),
+    ];
+
+    List<CrystalNavigationBarItem> navItems = [
+      /// Dashboard
+      CrystalNavigationBarItem(icon: Iconsax.home_bold, unselectedIcon: Iconsax.home_outline, selectedColor: Theme.of(context).primaryColor),
+
+      /// Calculator
+      CrystalNavigationBarItem(
+        icon: FontAwesome.calculator_solid,
+        unselectedIcon: FontAwesome.calculator_solid,
+        selectedColor: Theme.of(context).primaryColor,
+      ),
+    ];
+
+    if (hasCommunity) {
+      navItems.add(
+        /// Hub
+        CrystalNavigationBarItem(icon: Icons.hub_outlined, unselectedIcon: Icons.hub_outlined, selectedColor: Theme.of(context).primaryColor),
+      );
+    }
+
+    if (hasStore) {
+      navItems.add(
+        /// Store
+        CrystalNavigationBarItem(
+          icon: FontAwesome.store_slash_solid,
+          unselectedIcon: FontAwesome.store_slash_solid,
+          selectedColor: Theme.of(context).primaryColor,
+        ),
+      );
+    }
 
     return Scaffold(
       extendBody: true,
       appBar: PreferredSize(preferredSize: const Size.fromHeight(kToolbarHeight), child: _appBar(context, ref)),
-      // But user wanted AppBar in Dashboard too now. Step 254 request: "use appabr ... in user_dashboard.dart as in home".
-      // Step 262 implemented: appBar: _appBar() (always show).
-      // So I will stick to ALWAYS showing _appBar(), but maybe title changes.
-      // Wait, in Step 262 I changed it to `appBar: _appBar()`.
-      // Let's verify what the previous code was.
-      // Previous code in Step 258: `appBar: currentIndex == 0 ? null : _appBar(),`
-      // Step 262 change: `appBar: _appBar(),`
-      // So it is always shown.
-      body: IndexedStack(index: index, children: pages.cast<Widget>()),
+      body: IndexedStack(index: index, children: pages),
 
-      bottomNavigationBar: CrystalNavigationBar(
-        currentIndex: index,
-        height: 10,
-        unselectedItemColor: Colors.white70,
-        backgroundColor: Colors.black.withValues(alpha: 0.1),
-        onTap: (int index) {
-          ref.read(homePageIndexProvider.notifier).state = index;
-        },
-        items: [
-          /// Dashboard
-          CrystalNavigationBarItem(icon: Iconsax.home_bold, unselectedIcon: Iconsax.home_outline, selectedColor: Theme.of(context).primaryColor),
-
-          /// Calculator
-          CrystalNavigationBarItem(
-            icon: FontAwesome.calculator_solid,
-            unselectedIcon: FontAwesome.calculator_solid,
-            selectedColor: Theme.of(context).primaryColor,
-          ),
-
-          /// Hub
-          CrystalNavigationBarItem(icon: Icons.hub_outlined, unselectedIcon: Icons.hub_outlined, selectedColor: Theme.of(context).primaryColor),
-
-          /// Store
-          CrystalNavigationBarItem(
-            icon: FontAwesome.store_slash_solid,
-            unselectedIcon: FontAwesome.store_slash_solid,
-            selectedColor: Theme.of(context).primaryColor,
-          ),
-        ],
+      bottomNavigationBar: Padding(
+        padding: navItems.length <= 2
+            ? EdgeInsets.only(
+                left: MediaQuery.sizeOf(context).width * 0.22,
+                right: MediaQuery.sizeOf(context).width * 0.22,
+                bottom: 10,
+              )
+            : EdgeInsets.zero,
+        child: CrystalNavigationBar(
+          currentIndex: navIndex,
+          height: 10,
+          unselectedItemColor: Colors.white70,
+          backgroundColor: Colors.black.withValues(alpha: 0.1),
+          onTap: (int index) {
+            ref.read(homePageIndexProvider.notifier).state = availableIndices[index];
+          },
+          items: navItems,
+        ),
       ),
 
       drawer: const AppDrawer(),

@@ -6,7 +6,7 @@ void dPrint(dynamic message, {String tag = 'debbuging', StackTrace? stackTrace})
   debugPrint('[$tag]: $message');
   if (stackTrace != null) debugPrintStack(stackTrace: stackTrace);
 }
-
+/// a
 bool isEnabled(WidgetRef ref, String key, {bool skipFalseIfDebug = false, bool defaultValue = false}) {
   ref.watch(configProvider);
   return ref.read(configProvider.notifier).isEnabled(key, skipFalseIfDebug: skipFalseIfDebug, defaultValue: defaultValue);
