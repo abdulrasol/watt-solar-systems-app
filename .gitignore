@@ -1,0 +1,56 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.gradle/
+.idea/
+.settings/
+.vscode/
+.svn/
+.metadata
+names.md
+
+# Flutter/Dart specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+*.lock
+
+# iOS/Android
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/**/GeneratedPluginRegistrant.kt
+
+# Coverage
+coverage/
+
+# PDF
+*.pdf
+
+# Environment variables
+.env
+.env.*
+
+# Firebase
+firebase_options.dart
+
+# Old files directory (if not needed in repo)
+old files/
