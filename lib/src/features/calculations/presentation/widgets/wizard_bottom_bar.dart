@@ -104,7 +104,7 @@ class WizardBottomBar extends StatelessWidget {
                         ),
                       ),
                     )
-                  : SizedBox(
+                  : isEnabled(ref, 'offers') ? SizedBox(
                       key: const ValueKey('nav_request'),
                       width: double.infinity,
                       child: FilledButton.icon(
