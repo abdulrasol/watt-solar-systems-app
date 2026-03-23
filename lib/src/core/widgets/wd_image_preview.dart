@@ -12,7 +12,7 @@ class WdImagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageUrl.isEmpty || imageUrl == 'null') return const Icon(Iconsax.image_bold, size: 28, color: Colors.grey);
+    if (imageUrl.isEmpty || imageUrl == 'null') return Icon(Iconsax.image_bold, size: 28.sp, color: Colors.grey);
     return Container(
       width: size?.w,
       height: size?.w,

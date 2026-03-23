@@ -1,0 +1,201 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:icons_plus/icons_plus.dart';
+
+import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/company_dashboard_provider.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
+
+class _SideItem {
+  final String title;
+  final IconData icon;
+  final int targetIndex;
+  final String targetRouteName;
+  final bool isHeader;
+
+  _SideItem({
+    required this.title,
+    this.icon = Icons.error,
+    this.targetIndex = -1,
+    this.targetRouteName = '',
+    this.isHeader = false,
+  });
+
+  factory _SideItem.header(String title) {
+    return _SideItem(title: title, isHeader: true);
+  }
+}
+
+class DashboardSidebar extends ConsumerWidget {
+  const DashboardSidebar({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(companyDashboardIndexProvider);
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final items = <_SideItem>[
+      _SideItem(title: l10n.dashboard, icon: Iconsax.category_bold, targetIndex: 0, targetRouteName: 'dashboard'),
+
+      _SideItem.header(l10n.manage_business),
+      if (isEnabled(ref, 'company_orders', defaultValue: true))
+        _SideItem(title: l10n.orders, icon: Iconsax.box_bold, targetIndex: 6, targetRouteName: 'orders'),
+      if (isEnabled(ref, 'company_pos', defaultValue: true))
+        _SideItem(title: l10n.pos, icon: FontAwesomeIcons.cashRegister, targetIndex: 5, targetRouteName: 'pos'),
+      if (isEnabled(ref, 'company_invoices', defaultValue: true))
+        _SideItem(title: l10n.invoices, icon: FontAwesomeIcons.fileInvoiceDollar, targetIndex: 7, targetRouteName: 'invoices'),
+      if (isEnabled(ref, 'company_accounting', defaultValue: true))
+        _SideItem(title: l10n.accounting, icon: FontAwesomeIcons.calculator, targetIndex: 8, targetRouteName: 'accounting'),
+      if (isEnabled(ref, 'company_inventory', defaultValue: true))
+        _SideItem(title: l10n.inventory, icon: FontAwesomeIcons.boxesStacked, targetIndex: 4, targetRouteName: 'inventory'),
+      if (isEnabled(ref, 'company_offers', defaultValue: true))
+        _SideItem(title: l10n.offers, icon: FontAwesomeIcons.bullhorn, targetIndex: 3, targetRouteName: 'offers'),
+
+      _SideItem.header(l10n.people),
+      if (isEnabled(ref, 'company_members', defaultValue: true))
+        _SideItem(title: l10n.members, icon: Iconsax.people_bold, targetIndex: 10, targetRouteName: 'members'),
+      if (isEnabled(ref, 'company_customers', defaultValue: true))
+        _SideItem(title: l10n.customers, icon: Iconsax.user_tag_bold, targetIndex: 12, targetRouteName: 'customers'),
+      if (isEnabled(ref, 'company_suppliers', defaultValue: true))
+        _SideItem(title: l10n.suppliers, icon: Iconsax.shop_bold, targetIndex: 13, targetRouteName: 'suppliers'),
+      if (isEnabled(ref, 'company_my_purchases', defaultValue: true))
+        _SideItem(title: l10n.my_purchases, icon: FontAwesomeIcons.bagShopping, targetIndex: 14, targetRouteName: 'my_purchases'),
+
+      _SideItem.header(l10n.tools),
+      if (isEnabled(ref, 'company_analytics', defaultValue: true))
+        _SideItem(title: l10n.analytics, icon: Iconsax.chart_2_bold, targetIndex: 9, targetRouteName: 'analytics'),
+      if (isEnabled(ref, 'company_systems', defaultValue: true))
+        _SideItem(title: l10n.systems, icon: Iconsax.sun_1_bold, targetIndex: 11, targetRouteName: 'systems'),
+      if (isEnabled(ref, 'company_delivery', defaultValue: true))
+        _SideItem(title: l10n.delivery, icon: Icons.local_shipping_outlined, targetIndex: 15, targetRouteName: 'delivery'),
+
+      _SideItem.header(l10n.settings),
+      _SideItem(title: l10n.company_profile, icon: Iconsax.building_bold, targetIndex: 1, targetRouteName: 'profile'),
+      _SideItem(title: l10n.subscription, icon: FontAwesomeIcons.star, targetIndex: 2, targetRouteName: 'subscription'),
+    ];
+
+    return Container(
+      width: 280.w, // Dynamic sizing
+      color: Theme.of(context).cardColor,
+      child: Column(
+        children: [
+          SizedBox(height: 32.h),
+          // Logo Area
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+            child: Row(
+              children: [
+                Icon(Icons.solar_power, color: Theme.of(context).colorScheme.primary, size: 32.sp),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    l10n.solar_hub,
+                    style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
+          SizedBox(height: 8.h),
+
+          // Menu Items
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+
+                if (item.isHeader) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 12.w, top: 24.h, bottom: 8.h),
+                    child: Text(
+                      item.title.toUpperCase(),
+                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.grey, letterSpacing: 1.2),
+                    ),
+                  );
+                }
+
+                // Normal Item
+                final isSelected = currentIndex == item.targetIndex;
+                final theme = Theme.of(context);
+                final colorScheme = theme.colorScheme;
+                final color = isSelected ? colorScheme.primary : (isDark ? Colors.grey[400] : theme.iconTheme.color?.withValues(alpha: 0.7));
+
+                return Container(
+                  margin: EdgeInsets.only(bottom: 4.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.r),
+                    color: isSelected ? colorScheme.primary.withValues(alpha: 0.1) : Colors.transparent,
+                  ),
+                  child: ListTile(
+                    leading: Icon(item.icon, color: color, size: 22.sp),
+                    title: Text(
+                      item.title,
+                      style: TextStyle(
+                        color: isSelected ? colorScheme.primary : (isDark ? Colors.grey[300] : theme.textTheme.bodyMedium?.color),
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    onTap: () {
+                      ref.read(companyDashboardControllerProvider.notifier).changePage(item.targetIndex, item.targetRouteName, isSubscriptionActive: true);
+                      if (Scaffold.maybeOf(context)?.isDrawerOpen ?? false) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    dense: true,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                    hoverColor: colorScheme.primary.withValues(alpha: 0.05),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          // Bottom Fixed Action Buttons
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            child: Column(
+              children: [
+                Divider(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
+                _buildActionButton(context, l10n.switch_to_user_view, Iconsax.user_square_bold, () => context.go('/home'), isDark),
+                _buildActionButton(context, l10n.settings, Iconsax.setting_2_bold, () => context.push('/settings'), isDark),
+                SizedBox(height: 12.h),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton(BuildContext context, String title, IconData icon, VoidCallback onTap, bool isDark) {
+    final theme = Theme.of(context);
+    final color = isDark ? Colors.grey[400] : theme.iconTheme.color?.withValues(alpha: 0.7);
+
+    return Container(
+      margin: EdgeInsets.only(bottom: 4.h),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.r)),
+      child: ListTile(
+        leading: Icon(icon, color: color, size: 22.sp),
+        title: Text(
+          title,
+          style: TextStyle(color: isDark ? Colors.grey[300] : theme.textTheme.bodyMedium?.color, fontWeight: FontWeight.w500, fontSize: 14.sp),
+        ),
+        onTap: onTap,
+        dense: true,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        hoverColor: theme.colorScheme.primary.withValues(alpha: 0.05),
+      ),
+    );
+  }
+}

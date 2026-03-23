@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+// Provider for tracking the selected page index in the company dashboard
 final companyDashboardIndexProvider = StateProvider<int>((ref) => 0);
+
+// Provider for tracking navigation history to allow 'goBack' functionality
 final companyDashboardHistoryProvider = StateProvider<List<String>>((ref) => ['dashboard']);
 
 class CompanyDashboardNotifier extends StateNotifier<void> {
@@ -9,12 +12,14 @@ class CompanyDashboardNotifier extends StateNotifier<void> {
 
   CompanyDashboardNotifier(this.ref) : super(null);
 
+  // Restricted pages for inactive subscriptions
   final List<int> _restrictedIndices = [3, 5, 6, 7, 9, 11, 12, 13, 14, 15];
 
   void changePage(int index, String routeName, {bool isSubscriptionActive = false, Function? onSubscriptionRequired}) {
     final currentIndex = ref.read(companyDashboardIndexProvider);
     if (currentIndex == index) return;
 
+    // Check subscription status
     if (!isSubscriptionActive && _restrictedIndices.contains(index)) {
       if (onSubscriptionRequired != null) {
         onSubscriptionRequired();
@@ -39,7 +44,9 @@ class CompanyDashboardNotifier extends StateNotifier<void> {
       final previousRoute = newHistory.last;
       final newIndex = _getPageIndex(previousRoute);
 
+      // Ensure we don't go back to a restricted page if subscription expired in meantime
       if (!isSubscriptionActive && _restrictedIndices.contains(newIndex)) {
+        // Skip restricted page in history or go to dashboard
         changePage(0, 'dashboard', isSubscriptionActive: isSubscriptionActive);
         return;
       }
@@ -48,7 +55,9 @@ class CompanyDashboardNotifier extends StateNotifier<void> {
     }
   }
 
-  bool get canGoBack => ref.read(companyDashboardHistoryProvider).length > 1;
+  bool get canGoBack {
+    return ref.read(companyDashboardHistoryProvider).length > 1;
+  }
 
   int _getPageIndex(String route) {
     switch (route) {

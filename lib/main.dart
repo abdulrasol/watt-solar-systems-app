@@ -33,8 +33,12 @@ class SolarHub extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
+    final view = View.of(context);
+    final size = view.physicalSize / view.devicePixelRatio;
+    final isDesktop = size.width > 800;
+    
     return ScreenUtilInit(
-      designSize: const Size(360, 690),
+      designSize: isDesktop ? size : const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {

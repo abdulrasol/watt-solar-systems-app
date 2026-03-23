@@ -8,7 +8,6 @@ import 'package:solar_hub/src/features/company_dashboard/presentation/providers/
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/dashboard_sidebar.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/inventory_page.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyDashboardLayout extends ConsumerWidget {
   const CompanyDashboardLayout({super.key});
@@ -23,12 +22,8 @@ class CompanyDashboardLayout extends ConsumerWidget {
         final title = _getTitle(context, currentIndex);
         final canGoBack = ref.read(companyDashboardControllerProvider.notifier).canGoBack;
 
-        final theme = Theme.of(context);
-        final isDark = theme.brightness == Brightness.dark;
-
         return Scaffold(
-          backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-          appBar: _buildAppBar(context, ref, showLeading: !isDesktop, title: title, canGoBack: canGoBack, isDesktop: isDesktop, isDark: isDark),
+          appBar: _buildAppBar(context, ref, showLeading: !isDesktop, title: title, canGoBack: canGoBack, isDesktop: isDesktop),
           drawer: isDesktop ? null : _buildDrawer(context),
           body: Row(
             children: [
@@ -36,18 +31,6 @@ class CompanyDashboardLayout extends ConsumerWidget {
               Expanded(
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0.02, 0),
-                          end: Offset.zero,
-                        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
-                        child: child,
-                      ),
-                    );
-                  },
                   child: KeyedSubtree(key: ValueKey(currentIndex), child: _getBody(currentIndex)),
                 ),
               ),
@@ -59,7 +42,7 @@ class CompanyDashboardLayout extends ConsumerWidget {
   }
 
   Drawer _buildDrawer(BuildContext context) {
-    return Drawer(child: DashboardSidebar(isDesktop: false));
+    return Drawer(child: SafeArea(child: DashboardSidebar(isDesktop: false)));
   }
 
   PreferredSizeWidget _buildAppBar(
@@ -69,88 +52,57 @@ class CompanyDashboardLayout extends ConsumerWidget {
     required String title,
     required bool canGoBack,
     required bool isDesktop,
-    required bool isDark,
   }) {
-    final bgColor = isDark ? AppTheme.darkSurface : AppTheme.lightSurface;
-    final textColor = isDark ? Colors.white : Colors.black87;
-
     return AppBar(
       title: Text(
         title,
-        style: TextStyle(
-          fontFamily: AppTheme.fontFamily,
-          fontWeight: FontWeight.w700,
-          fontSize: isDesktop ? 20.sp : 18.sp,
-          color: textColor,
-          letterSpacing: 0.5,
-        ),
+        style: TextStyle(fontWeight: FontWeight.w600, fontSize: isDesktop ? 20.sp : 18.sp),
       ),
       centerTitle: !isDesktop,
       elevation: 0,
-      backgroundColor: bgColor,
-      surfaceTintColor: Colors.transparent,
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
-        child: Container(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05), height: 1.0),
-      ),
+      backgroundColor: Theme.of(context).cardColor,
+      foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
       leading: canGoBack
           ? IconButton(
-              icon: Icon(Icons.arrow_back_ios_new, size: 20.sp, color: textColor),
+              icon: Icon(Icons.arrow_back, size: 22.sp),
               onPressed: () => ref.read(companyDashboardControllerProvider.notifier).goBack(isSubscriptionActive: true),
             )
-          : (showLeading
-                ? Builder(
-                    builder: (context) => IconButton(
-                      icon: Icon(Iconsax.menu_1_bold, size: 24.sp, color: textColor),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                    ),
-                  )
-                : null),
-      automaticallyImplyLeading: false,
+          : (showLeading ? null : null),
+      automaticallyImplyLeading: !canGoBack && showLeading,
       actions: [
-        _buildNotificationBadge(context, ref, isDark),
+        _buildNotificationBadge(context, ref),
         SizedBox(width: 16.w),
       ],
     );
   }
 
-  Widget _buildNotificationBadge(BuildContext context, WidgetRef ref, bool isDark) {
-    final int count = 2; // For demo layout
-    final iconColor = isDark ? Colors.grey[400] : Colors.grey[600];
+  Widget _buildNotificationBadge(BuildContext context, WidgetRef ref) {
+    final count = 0;
+    final iconColor = Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.6);
 
-    return Center(
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            decoration: BoxDecoration(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.03), shape: BoxShape.circle),
-            child: IconButton(
-              onPressed: () {
-                // context.push('/notifications');
-              },
-              icon: Icon(Iconsax.notification_bing_bold, color: iconColor, size: 22.sp),
-              tooltip: AppLocalizations.of(context)!.notifications,
-            ),
-          ),
-          if (count > 0)
-            Positioned(
-              right: 2.w,
-              top: 2.h,
-              child: Container(
-                padding: EdgeInsets.all(4.r),
-                decoration: BoxDecoration(
-                  color: AppTheme.errorColor,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface, width: 2),
-                ),
-                child: Text(
-                  count > 9 ? '9+' : '$count',
-                  style: TextStyle(color: Colors.white, fontSize: 9.sp, fontWeight: FontWeight.bold, height: 1),
-                ),
+    return Stack(
+      children: [
+        IconButton(
+          onPressed: () {
+            // context.push('/notifications');
+          },
+          icon: Icon(Iconsax.notification_bing_bold, color: iconColor, size: 24.sp),
+          tooltip: AppLocalizations.of(context)!.notifications,
+        ),
+        if (count > 0)
+          Positioned(
+            right: 8.w,
+            top: 8.h,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 5.r, vertical: 2.r),
+              decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+              child: Text(
+                count > 9 ? '+9' : '$count',
+                style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold),
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 

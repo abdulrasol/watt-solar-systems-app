@@ -1,147 +1,190 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
 
-// Assuming these path imports are necessary for role checking and subscription status
-// We might need to adjust them based on where these providers actually live in the clean architecture
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/providers/company_dashboard_provider.dart';
+import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
+
+class _SideItem {
+  final String title;
+  final IconData icon;
+  final int targetIndex;
+  final String targetRouteName;
+  final bool isHeader;
+
+  const _SideItem({
+    required this.title,
+    this.icon = Icons.error,
+    this.targetIndex = -1,
+    this.targetRouteName = '',
+    this.isHeader = false,
+  });
+
+  factory _SideItem.header(String title) {
+    return _SideItem(title: title, isHeader: true);
+  }
+}
 
 class DashboardSidebar extends ConsumerWidget {
-  const DashboardSidebar({super.key});
+  final bool isDesktop;
+
+  const DashboardSidebar({super.key, required this.isDesktop});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // In a real app, these values would come from properly defined providers for user role and subscription
-    final bool hasOwnerRole = true;
-    final bool hasManagerRole = true;
-    final bool hasSalesRole = true;
-    final bool hasAccountantRole = true;
-    final bool hasInventoryRole = true;
-    final bool hasInstallerRole = true;
-    final bool hasDriverRole = true;
-
-    final bool isSubActive = true;
-
     final currentIndex = ref.watch(companyDashboardIndexProvider);
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
-    // Helper to check roles
-    bool hasAnyRole(List<bool> roles) => roles.any((element) => element);
+    final hasManageBusiness = isEnabled(ref, 'company_orders', defaultValue: false) ||
+        isEnabled(ref, 'company_pos', defaultValue: false) ||
+        isEnabled(ref, 'company_invoices', defaultValue: false) ||
+        isEnabled(ref, 'company_accounting', defaultValue: false) ||
+        isEnabled(ref, 'company_inventory', defaultValue: false) ||
+        isEnabled(ref, 'company_offers', defaultValue: false);
+
+    final hasPeople = isEnabled(ref, 'company_members', defaultValue: false) ||
+        isEnabled(ref, 'company_customers', defaultValue: false) ||
+        isEnabled(ref, 'company_suppliers', defaultValue: false) ||
+        isEnabled(ref, 'company_my_purchases', defaultValue: false);
+
+    final hasTools = isEnabled(ref, 'company_analytics', defaultValue: false) ||
+        isEnabled(ref, 'company_systems', defaultValue: false) ||
+        isEnabled(ref, 'company_delivery', defaultValue: false);
+
+    final items = <_SideItem>[
+      _SideItem(title: l10n.dashboard, icon: Iconsax.category_bold, targetIndex: 0, targetRouteName: 'dashboard'),
+
+      if (hasManageBusiness) _SideItem.header(l10n.manage_business),
+      if (isEnabled(ref, 'company_orders', defaultValue: false))
+        _SideItem(title: l10n.orders, icon: Iconsax.box_bold, targetIndex: 6, targetRouteName: 'orders'),
+      if (isEnabled(ref, 'company_pos', defaultValue: false))
+        _SideItem(title: l10n.pos, icon: FontAwesomeIcons.cashRegister, targetIndex: 5, targetRouteName: 'pos'),
+      if (isEnabled(ref, 'company_invoices', defaultValue: false))
+        _SideItem(title: l10n.invoices, icon: FontAwesomeIcons.fileInvoiceDollar, targetIndex: 7, targetRouteName: 'invoices'),
+      if (isEnabled(ref, 'company_accounting', defaultValue: false))
+        _SideItem(title: l10n.accounting, icon: FontAwesomeIcons.calculator, targetIndex: 8, targetRouteName: 'accounting'),
+      if (isEnabled(ref, 'company_inventory', defaultValue: false))
+        _SideItem(title: l10n.inventory, icon: FontAwesomeIcons.boxesStacked, targetIndex: 4, targetRouteName: 'inventory'),
+      if (isEnabled(ref, 'company_offers', defaultValue: false))
+        _SideItem(title: l10n.offers, icon: FontAwesomeIcons.bullhorn, targetIndex: 3, targetRouteName: 'offers'),
+
+      if (hasPeople) _SideItem.header(l10n.people),
+      if (isEnabled(ref, 'company_members', defaultValue: false))
+        _SideItem(title: l10n.members, icon: Iconsax.people_bold, targetIndex: 10, targetRouteName: 'members'),
+      if (isEnabled(ref, 'company_customers', defaultValue: false))
+        _SideItem(title: l10n.customers, icon: Iconsax.user_tag_bold, targetIndex: 12, targetRouteName: 'customers'),
+      if (isEnabled(ref, 'company_suppliers', defaultValue: false))
+        _SideItem(title: l10n.suppliers, icon: Iconsax.shop_bold, targetIndex: 13, targetRouteName: 'suppliers'),
+      if (isEnabled(ref, 'company_my_purchases', defaultValue: false))
+        _SideItem(title: l10n.my_purchases, icon: FontAwesomeIcons.bagShopping, targetIndex: 14, targetRouteName: 'my_purchases'),
+
+      if (hasTools) _SideItem.header(l10n.tools),
+      if (isEnabled(ref, 'company_analytics', defaultValue: false))
+        _SideItem(title: l10n.analytics, icon: Iconsax.chart_2_bold, targetIndex: 9, targetRouteName: 'analytics'),
+      if (isEnabled(ref, 'company_systems', defaultValue: false))
+        _SideItem(title: l10n.systems, icon: Iconsax.sun_1_bold, targetIndex: 11, targetRouteName: 'systems'),
+      if (isEnabled(ref, 'company_delivery', defaultValue: false))
+        _SideItem(title: l10n.delivery, icon: Icons.local_shipping_outlined, targetIndex: 15, targetRouteName: 'delivery'),
+
+      _SideItem.header(l10n.settings),
+      _SideItem(title: l10n.company_profile, icon: Iconsax.building_bold, targetIndex: 1, targetRouteName: 'profile'),
+      _SideItem(title: l10n.subscription, icon: FontAwesomeIcons.star, targetIndex: 2, targetRouteName: 'subscription'),
+    ];
+
+    final bgColor = isDark ? AppTheme.darkSurface : AppTheme.lightSurface;
+    final dividerColor = isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05);
 
     return Container(
-      width: 280,
-      color: Theme.of(context).cardColor,
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          // Logo Area
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            child: Row(
-              children: [
-                Icon(Icons.solar_power, color: Theme.of(context).colorScheme.primary, size: 32),
-                const SizedBox(width: 12),
-                Text(l10n.solar_hub, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-              ],
+      width: isDesktop ? 280.w : double.infinity,
+      decoration: BoxDecoration(
+        color: bgColor,
+        border: Border(
+           right: BorderSide(color: dividerColor, width: 1.w),
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 24.h),
+            _buildLogoArea(context, l10n, isDark),
+            SizedBox(height: 16.h),
+            Divider(color: dividerColor, height: 1.h),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  final item = items[index];
+                  if (item.isHeader) {
+                    return _buildHeader(item.title, isDark);
+                  }
+                  return _buildNavItem(
+                    context,
+                    ref,
+                    item.title,
+                    item.icon,
+                    item.targetIndex,
+                    item.targetRouteName,
+                    currentIndex == item.targetIndex,
+                    colorScheme,
+                    isDark,
+                  );
+                },
+              ),
             ),
+            Divider(color: dividerColor, height: 1.h),
+            _buildBottomActions(context, l10n, colorScheme, isDark),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogoArea(BuildContext context, AppLocalizations l10n, bool isDark) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.r),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppTheme.primaryColor, AppTheme.primaryLightColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                )
+              ]
+            ),
+            child: Icon(Icons.solar_power, color: Colors.white, size: 24.sp),
           ),
-          const Divider(),
-          const SizedBox(height: 16),
-
-          // Menu Items
+          SizedBox(width: 16.w),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                _buildNavItem(context, ref, l10n.dashboard, Iconsax.category_bold, 0, 'dashboard', isSelected: currentIndex == 0),
-
-                _buildSectionHeader(l10n.manage_business),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasSalesRole, hasAccountantRole]))
-                  _buildNavItem(context, ref, l10n.orders, Iconsax.box_bold, 6, 'orders', isSelected: currentIndex == 6, isLocked: !isSubActive),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasSalesRole]))
-                  _buildNavItem(context, ref, l10n.pos, FontAwesomeIcons.cashRegister, 5, 'pos', isSelected: currentIndex == 5, isLocked: !isSubActive),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasAccountantRole]))
-                  _buildNavItem(
-                    context,
-                    ref,
-                    l10n.invoices,
-                    FontAwesomeIcons.fileInvoiceDollar,
-                    7,
-                    'invoices',
-                    isSelected: currentIndex == 7,
-                    isLocked: !isSubActive,
-                  ),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasAccountantRole]))
-                  _buildNavItem(context, ref, l10n.accounting, FontAwesomeIcons.calculator, 8, 'accounting', isSelected: currentIndex == 8),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasInventoryRole, hasInstallerRole]))
-                  _buildNavItem(context, ref, l10n.inventory, FontAwesomeIcons.boxesStacked, 4, 'inventory', isSelected: currentIndex == 4),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasSalesRole]))
-                  _buildNavItem(context, ref, l10n.offers, FontAwesomeIcons.bullhorn, 3, 'offers', isSelected: currentIndex == 3, isLocked: !isSubActive),
-
-                _buildSectionHeader(l10n.people),
-
-                _buildNavItem(context, ref, l10n.members, Iconsax.people_bold, 10, 'members', isSelected: currentIndex == 10),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasSalesRole, hasAccountantRole]))
-                  _buildNavItem(context, ref, l10n.customers, Iconsax.user_tag_bold, 12, 'customers', isSelected: currentIndex == 12, isLocked: !isSubActive),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasSalesRole, hasInstallerRole]))
-                  _buildNavItem(context, ref, l10n.suppliers, Iconsax.shop_bold, 13, 'suppliers', isSelected: currentIndex == 13, isLocked: !isSubActive),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasInventoryRole, hasSalesRole, hasInstallerRole]))
-                  _buildNavItem(
-                    context,
-                    ref,
-                    l10n.my_purchases,
-                    FontAwesomeIcons.bagShopping,
-                    14,
-                    'my_purchases',
-                    isSelected: currentIndex == 14,
-                    isLocked: !isSubActive,
-                  ),
-
-                _buildSectionHeader(l10n.tools),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole]))
-                  _buildNavItem(context, ref, l10n.analytics, Iconsax.chart_2_bold, 9, 'analytics', isSelected: currentIndex == 9, isLocked: !isSubActive),
-
-                _buildNavItem(context, ref, l10n.systems, Iconsax.sun_1_bold, 11, 'systems', isSelected: currentIndex == 11, isLocked: !isSubActive),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole, hasInventoryRole, hasDriverRole]))
-                  _buildNavItem(
-                    context,
-                    ref,
-                    l10n.delivery,
-                    Icons.local_shipping_outlined,
-                    15,
-                    'delivery',
-                    isSelected: currentIndex == 15,
-                    isLocked: !isSubActive,
-                  ),
-
-                _buildSectionHeader(l10n.settings),
-                _buildNavItem(context, ref, l10n.company_profile, Iconsax.building_bold, 1, 'profile', isSelected: currentIndex == 1),
-
-                if (hasAnyRole([hasOwnerRole, hasManagerRole]))
-                  _buildNavItem(context, ref, l10n.subscription, FontAwesomeIcons.star, 2, 'subscription', isSelected: currentIndex == 2),
-
-                const Divider(height: 32),
-
-                _buildActionButton(context, ref, l10n.switch_to_user_view, Iconsax.user_square_bold, () => context.go('/home')),
-
-                _buildActionButton(context, ref, l10n.settings, Iconsax.setting_2_bold, () => context.push('/settings')),
-
-                const SizedBox(height: 20),
-              ],
+            child: Text(
+              l10n.solar_hub,
+              style: TextStyle(
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w800,
+                fontFamily: AppTheme.fontFamily,
+                color: isDark ? Colors.white : Colors.black87,
+                letterSpacing: 0.5,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -149,12 +192,18 @@ class DashboardSidebar extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildHeader(String title, bool isDark) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12, top: 24, bottom: 8),
+      padding: EdgeInsets.only(left: 12.w, top: 28.h, bottom: 12.h),
       child: Text(
         title.toUpperCase(),
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey, letterSpacing: 1.2),
+        style: TextStyle(
+          fontSize: 11.sp,
+          fontWeight: FontWeight.w700,
+          fontFamily: AppTheme.fontFamily,
+          color: isDark ? Colors.grey[500] : Colors.grey[600],
+          letterSpacing: 1.5,
+        ),
       ),
     );
   }
@@ -165,59 +214,100 @@ class DashboardSidebar extends ConsumerWidget {
     String title,
     IconData icon,
     int targetIndex,
-    String targetRouteName, {
-    bool isSelected = false,
-    bool isLocked = false,
-  }) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final color = isLocked ? Colors.grey : (isSelected ? colorScheme.primary : theme.iconTheme.color?.withValues(alpha: 0.7));
-
+    String targetRouteName,
+    bool isSelected,
+    ColorScheme colorScheme,
+    bool isDark,
+  ) {
+    final activeColor = colorScheme.primary;
+    final inactiveColor = isDark ? Colors.grey[400] : Colors.grey[600];
+    final textColor = isSelected ? activeColor : inactiveColor;
+    
     return Container(
-      margin: const EdgeInsets.only(bottom: 4),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: isSelected ? colorScheme.primary.withValues(alpha: 0.1) : Colors.transparent),
-      child: ListTile(
-        leading: Icon(icon, color: color, size: 22),
-        title: Text(
-          title,
-          style: TextStyle(
-            color: isSelected ? colorScheme.primary : (isLocked ? Colors.grey : theme.textTheme.bodyMedium?.color),
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-            fontSize: 14,
-          ),
-        ),
-        trailing: isLocked ? const Icon(Icons.lock_outline, size: 16, color: Colors.grey) : null,
+      margin: EdgeInsets.only(bottom: 6.h),
+      child: InkWell(
         onTap: () {
-          ref
-              .read(companyDashboardControllerProvider.notifier)
-              .changePage(targetIndex, targetRouteName, isSubscriptionActive: true /* replace with real sub status */);
+          ref.read(companyDashboardControllerProvider.notifier).changePage(targetIndex, targetRouteName, isSubscriptionActive: true);
           if (Scaffold.maybeOf(context)?.isDrawerOpen ?? false) {
             Navigator.of(context).pop();
           }
         },
-        dense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(14.r),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          decoration: BoxDecoration(
+            color: isSelected ? activeColor.withValues(alpha: 0.1) : Colors.transparent,
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(
+              color: isSelected ? activeColor.withValues(alpha: 0.15) : Colors.transparent,
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, color: textColor, size: 20.sp),
+              SizedBox(width: 14.w),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: isSelected ? activeColor : (isDark ? Colors.grey[300] : Colors.black87),
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    fontFamily: AppTheme.fontFamily,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ),
+              if (isSelected)
+                Container(
+                  width: 6.w,
+                  height: 6.h,
+                  decoration: BoxDecoration(color: activeColor, shape: BoxShape.circle),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildActionButton(BuildContext context, WidgetRef ref, String title, IconData icon, VoidCallback onTap) {
-    final theme = Theme.of(context);
+  Widget _buildBottomActions(BuildContext context, AppLocalizations l10n, ColorScheme colorScheme, bool isDark) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      child: Column(
+        children: [
+          _buildActionButton(context, l10n.switch_to_user_view, Iconsax.user_square_bold, () => context.go('/home'), isDark),
+          _buildActionButton(context, l10n.settings, Iconsax.setting_2_bold, () => context.push('/settings'), isDark),
+        ],
+      ),
+    );
+  }
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 4),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-      child: ListTile(
-        leading: Icon(icon, color: theme.iconTheme.color?.withValues(alpha: 0.7), size: 22),
-        title: Text(
-          title,
-          style: TextStyle(color: theme.textTheme.bodyMedium?.color, fontWeight: FontWeight.w500, fontSize: 14),
+  Widget _buildActionButton(BuildContext context, String title, IconData icon, VoidCallback onTap, bool isDark) {
+    final inactiveColor = isDark ? Colors.grey[400] : Colors.grey[700];
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14.r),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        child: Row(
+          children: [
+            Icon(icon, color: inactiveColor, size: 20.sp),
+            SizedBox(width: 14.w),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: isDark ? Colors.grey[300] : Colors.black87,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+          ],
         ),
-        onTap: onTap,
-        dense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
