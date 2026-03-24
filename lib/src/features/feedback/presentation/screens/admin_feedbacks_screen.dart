@@ -7,19 +7,19 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
+import 'package:solar_hub/src/features/admin/presentation/controllers/admin_controller.dart';
+import 'package:solar_hub/src/features/feedback/domain/entities/feedback_entity.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../controllers/admin_controller.dart';
-import '../../../feedback/domain/entities/feedback_entity.dart';
 
-class FeedbacksScreen extends ConsumerStatefulWidget {
-  const FeedbacksScreen({super.key});
+class AdminFeedbacksScreen extends ConsumerStatefulWidget {
+  const AdminFeedbacksScreen({super.key});
 
   @override
-  ConsumerState<FeedbacksScreen> createState() => _FeedbacksScreenState();
+  ConsumerState<AdminFeedbacksScreen> createState() => _AdminFeedbacksScreenState();
 }
 
-class _FeedbacksScreenState extends ConsumerState<FeedbacksScreen> with SingleTickerProviderStateMixin {
+class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   String _filterMode = 'all'; // all, unread, read
 

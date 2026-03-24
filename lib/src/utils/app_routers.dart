@@ -7,12 +7,12 @@ import 'package:solar_hub/src/features/auth/presentation/screens/company_registr
 import 'package:solar_hub/src/features/auth/presentation/screens/edit_profile_page.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/profile_page.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_layout.dart';
+import 'package:solar_hub/src/features/feedback/presentation/screens/admin_feedbacks_screen.dart';
 import 'package:solar_hub/src/features/home/presentation/screen/home.dart';
 import 'package:solar_hub/src/features/settings/presentation/screens/settings_page.dart';
 import 'package:solar_hub/src/features/splash/presentation/screens/role_selection_page.dart';
 import 'package:solar_hub/src/features/splash/presentation/screens/splash_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screen/admin_dashboard.dart';
-import 'package:solar_hub/src/features/admin/presentation/screen/feedbacks.dart';
 import 'package:solar_hub/src/features/admin/presentation/screen/app_configs_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
@@ -131,7 +131,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'feedbacks',
             builder: (BuildContext context, GoRouterState state) {
-              return const FeedbacksScreen();
+              return const AdminFeedbacksScreen();
             },
           ),
           GoRoute(
