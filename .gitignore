@@ -51,6 +51,9 @@ coverage/
 
 # Firebase
 firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+macos/Runner/GoogleService-Info.plist
 
 # Old files directory (if not needed in repo)
 old files/
