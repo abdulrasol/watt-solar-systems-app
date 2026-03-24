@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +21,6 @@ void main() async {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   setupDependencies();
   await getIt.allReady();
@@ -36,12 +33,10 @@ class SolarHub extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
-    final view = View.of(context);
-    final size = view.physicalSize / view.devicePixelRatio;
-    final isDesktop = size.width > 800;
+    final router = ref.watch(routerProvider);
 
     return ScreenUtilInit(
-      designSize: isDesktop ? size : const Size(360, 690),
+      designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
@@ -49,7 +44,6 @@ class SolarHub extends ConsumerWidget {
           child: MaterialApp.router(
             onGenerateTitle: (context) => AppLocalizations.of(context)!.app_name,
             debugShowCheckedModeBanner: false,
-            // Translations
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -58,12 +52,10 @@ class SolarHub extends ConsumerWidget {
             ],
             supportedLocales: const [Locale('en'), Locale('ar')],
             locale: Locale(settings.language),
-            // Theme
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: settings.isDark ? ThemeMode.dark : ThemeMode.light,
-            // Router
-            routerConfig: ref.watch(routerProvider),
+            routerConfig: router,
           ),
         );
       },

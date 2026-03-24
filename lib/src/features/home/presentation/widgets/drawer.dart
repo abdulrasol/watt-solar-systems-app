@@ -94,7 +94,15 @@ class AppDrawer extends ConsumerWidget {
                             ),
                           ],
                         )
-                      else if (authState.isSuperUser)
+                      else if (isEnabled(ref, 'auth', skipFalseIfDebug: true) && isEnabled(ref, 'company_registration', skipFalseIfDebug: true))
+                        _buildDrawerItem(
+                          context: context,
+                          icon: Iconsax.building_3_bold,
+                          title: AppLocalizations.of(context)!.register_company,
+                          route: '/auth/company_registration',
+                          delay: 170,
+                        ),
+                      if (authState.isSuperUser)
                         Column(
                           children: [
                             _buildDrawerItem(
@@ -108,16 +116,7 @@ class AppDrawer extends ConsumerWidget {
                               delay: 100,
                             ),
                           ],
-                        )
-                      else if (isEnabled(ref, 'auth', skipFalseIfDebug: true) && isEnabled(ref, 'company_registration', skipFalseIfDebug: true))
-                        _buildDrawerItem(
-                          context: context,
-                          icon: Iconsax.building_3_bold,
-                          title: AppLocalizations.of(context)!.register_company,
-                          route: '/auth/company_registration',
-                          delay: 170,
                         ),
-
                       _buildDrawerItem(
                         context: context,
                         icon: Iconsax.setting_2_bold,
