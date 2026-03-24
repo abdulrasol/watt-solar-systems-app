@@ -1,6 +1,6 @@
 class AppUrls {
-  // static const String baseUrl = 'https://abdulrasol.pythonanywhere.com/api/v1';
-  static const String baseUrl = 'http://127.0.0.1:8000/api/v1';
+  static const String baseUrl = 'https://abdulrasol.pythonanywhere.com/api/v1';
+  //static const String baseUrl = 'http://127.0.0.1:8000/api/v1';
 
   // Auth
   static const String authBaseUrl = '$baseUrl/users';
@@ -10,7 +10,7 @@ class AppUrls {
 
   // admin
   static const String adminBaseUrl = '$baseUrl/admin';
-  static const String configs = '$adminBaseUrl/config';
+  static const String appConfigs = '$adminBaseUrl/config';
   static const String currency = '$adminBaseUrl/currency';
 
   // cities & countries

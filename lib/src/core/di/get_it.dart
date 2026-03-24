@@ -3,12 +3,17 @@ import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/cashe/get_storage_cashe.dart';
 import 'package:solar_hub/src/core/services/dio.dart';
+import 'package:solar_hub/src/features/admin/data/datasources/app_config_remote_data_source_impl.dart';
+import 'package:solar_hub/src/features/admin/data/repositories/app_config_repository_impl.dart';
+import 'package:solar_hub/src/features/admin/domain/repositories/app_config_repository.dart';
 import 'package:solar_hub/src/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:solar_hub/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/company_dashboard/data/datasource/dashboard_remote_datastore.dart';
 import 'package:solar_hub/src/features/company_dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/repositories/dashboard_repository.dart';
+import 'package:solar_hub/src/features/feedback/data/repositories/feedback_repository_impl.dart';
+import 'package:solar_hub/src/features/feedback/domain/repositories/feedback_repository.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/utils/toast_service.dart';
 
@@ -65,14 +70,21 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<AppInitRepository>(() {
     dPrint('init app init repository', tag: 'getIt');
-    return AppInitRepositoryImpl(
-      remoteDataSource: getIt<AppInitRemoteDataSource>(),
-      localDataSource: getIt<AppInitLocalDataSource>(),
-    );
+    return AppInitRepositoryImpl(remoteDataSource: getIt<AppInitRemoteDataSource>(), localDataSource: getIt<AppInitLocalDataSource>());
   });
 
   getIt.registerLazySingleton<GetConfigsUseCase>(() {
     dPrint('init get configs usecase', tag: 'getIt');
     return GetConfigsUseCase(getIt<AppInitRepository>());
+  });
+
+  getIt.registerLazySingleton<FeedbackRepository>(() {
+    dPrint('init feedback repository', tag: 'getIt');
+    return FeedbackRepositoryImpl();
+  });
+
+  getIt.registerLazySingleton<AppConfigRepository>(() {
+    dPrint('init app config repository', tag: 'getIt');
+    return AppConfigRepositoryImpl(remoteDataSource: AppConfigRemoteDataSourceImpl(dioService: getIt<DioService>()));
   });
 }

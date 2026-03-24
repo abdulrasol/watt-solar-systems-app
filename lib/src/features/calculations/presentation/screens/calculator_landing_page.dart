@@ -11,6 +11,7 @@ import 'package:solar_hub/src/features/calculations/presentation/screens/tools/w
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/pump_calculator.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 
 class CalculatorLandingPage extends ConsumerWidget {
   const CalculatorLandingPage({super.key});
@@ -18,15 +19,15 @@ class CalculatorLandingPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.calculator_tools),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppLocalizations.of(context)!.calculator_tools, style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 20),
-
               // Main Wizards
               _buildWizardCard(
                 context,
@@ -34,7 +35,10 @@ class CalculatorLandingPage extends ConsumerWidget {
                 description: AppLocalizations.of(context)!.system_wizard_desc,
                 icon: Iconsax.calculator_bold,
                 color: Colors.orange,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SystemCalculatorWizard())),
+                onTap: () {
+                  ref.read(calculatorProvider).currentSystemId = null; 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SystemCalculatorWizard()));
+                },
               ),
               if (isEnabled(ref, 'offers')) ...[
                 const SizedBox(height: 16),
@@ -101,13 +105,6 @@ class CalculatorLandingPage extends ConsumerWidget {
                     () => Navigator.push(context, MaterialPageRoute(builder: (context) => PumpCalculator())),
                     'pump_hero',
                   ),
-                  // _buildToolCard(
-                  //   context,
-                  //   'orientation_calc',
-                  //   Icons.explore,
-                  //   Colors.teal,
-                  //   () => Navigator.push(context, MaterialPageRoute(builder: (context) => DirectionCalculator())),
-                  // ), // TODO add translation
                 ],
               ),
             ],
@@ -146,14 +143,14 @@ class CalculatorLandingPage extends ConsumerWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 4),
-                  Text(description, style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                  Text(description, style: TextStyle(color: Colors.grey[600], fontSize: 13), maxLines: 2, overflow: TextOverflow.ellipsis,),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios_rounded, color: Colors.grey[400], size: 16),
           ],
         ),
       ),

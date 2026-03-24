@@ -11,6 +11,9 @@ import 'package:solar_hub/src/features/home/presentation/screen/home.dart';
 import 'package:solar_hub/src/features/settings/presentation/screens/settings_page.dart';
 import 'package:solar_hub/src/features/splash/presentation/screens/role_selection_page.dart';
 import 'package:solar_hub/src/features/splash/presentation/screens/splash_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screen/admin_dashboard.dart';
+import 'package:solar_hub/src/features/admin/presentation/screen/feedbacks.dart';
+import 'package:solar_hub/src/features/admin/presentation/screen/app_configs_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
@@ -118,6 +121,26 @@ final routerProvider = Provider<GoRouter>((ref) {
           final product = state.extra as Product;
           return AddProductPage(product: product);
         },
+      ),
+      GoRoute(
+        path: '/admin',
+        builder: (BuildContext context, GoRouterState state) {
+          return const AdminDashboard();
+        },
+        routes: [
+          GoRoute(
+            path: 'feedbacks',
+            builder: (BuildContext context, GoRouterState state) {
+              return const FeedbacksScreen();
+            },
+          ),
+          GoRoute(
+            path: 'configs',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AppConfigsScreen();
+            },
+          ),
+        ],
       ),
     ],
   );

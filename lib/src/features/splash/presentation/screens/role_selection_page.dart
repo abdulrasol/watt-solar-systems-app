@@ -10,6 +10,7 @@ import 'package:solar_hub/src/features/auth/presentation/controllers/auth_contro
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/features/admin/presentation/screen/admin_dashboard.dart';
 
 class RoleSelectionPage extends ConsumerStatefulWidget {
   const RoleSelectionPage({super.key});
@@ -47,10 +48,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               const SizedBox(height: 40),
               Text(
                 l10n.welcome_back,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
@@ -65,7 +63,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
               _buildRoleCard(
                 context,
                 isDark,
-                title: l10n.solar_hub,
+                title: l10n.home,
                 subtitle: l10n.continue_as(userName),
                 icon: Icons.person_outline,
                 color: Colors.blue,
@@ -74,19 +72,21 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                 image: authState.user?.image,
               ),
 
-              const SizedBox(height: 20),
+              if (authState.user?.isCompanyMember ?? false) ...[
+                const SizedBox(height: 20),
 
-              // Option 2: Company Dashboard
-              _buildRoleCard(
-                context,
-                isDark,
-                title: authState.user?.company?.name ?? l10n.company_dashboard,
-                subtitle: l10n.company_dashboard,
-                icon: Iconsax.building_bold,
-                color: Colors.orange,
-                routeName: '/company/dashboard',
-                image: authState.user?.company?.logo,
-              ),
+                // Option 2: Company Dashboard
+                _buildRoleCard(
+                  context,
+                  isDark,
+                  title: authState.user?.company?.name ?? l10n.company_dashboard,
+                  subtitle: l10n.company_dashboard,
+                  icon: Iconsax.building_bold,
+                  color: Colors.orange,
+                  routeName: '/company/dashboard',
+                  image: authState.user?.company?.logo,
+                ),
+              ],
               if (isAdmin ?? false) ...[
                 const SizedBox(height: 20),
                 _buildRoleCard(
@@ -96,7 +96,9 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                   subtitle: l10n.platform_management,
                   icon: Iconsax.security_safe_bold,
                   color: Colors.redAccent,
-                  routeName: '/admin_dashboard',
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminDashboard()));
+                  },
                 ),
               ],
               const SizedBox(height: 40),
@@ -105,9 +107,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                 trailing: Switch(
                   value: ref.watch(settingsProvider).saveRolePageSelection,
                   onChanged: (val) {
-                    ref
-                        .read(settingsProvider.notifier)
-                        .toggleSaveRolePageSelection();
+                    ref.read(settingsProvider.notifier).toggleSaveRolePageSelection();
                     setState(() {
                       saveMyChoies = val;
                     });
@@ -130,16 +130,19 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
     required IconData icon,
     String? image,
     required Color color,
-    required String routeName,
+    String? routeName,
+    VoidCallback? onTap,
   }) {
     return GestureDetector(
       onTap: () {
-        if (saveMyChoies) {
-          ref
-              .read(settingsProvider.notifier)
-              .setSaveRolePageSelectionRoute(routeName);
+        if (onTap != null) {
+          onTap();
+          return;
         }
-        context.go(routeName);
+        if (saveMyChoies && routeName != null) {
+          ref.read(settingsProvider.notifier).setSaveRolePageSelectionRoute(routeName);
+        }
+        if (routeName != null) context.go(routeName);
       },
       child: Container(
         // Constrain height or let it be flexible.
@@ -151,11 +154,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: isDark ? Colors.white10 : Theme.of(context).dividerColor),
           boxShadow: [
-            BoxShadow(
-              color: isDark ? Colors.black.withValues(alpha: 0.2) : color.withValues(alpha: 0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
+            BoxShadow(color: isDark ? Colors.black.withValues(alpha: 0.2) : color.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, 8)),
           ],
         ),
         child: Row(
@@ -164,17 +163,8 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
           children: [
             Container(
               padding: EdgeInsets.all(image != null ? 5.r : 20.r),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: image != null
-                  ? WdImagePreview(
-                      imageUrl: image,
-                      size: 60,
-                      shape: BoxShape.circle,
-                    )
-                  : Icon(icon, size: 40, color: color),
+              decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
+              child: image != null ? WdImagePreview(imageUrl: image, size: 60, shape: BoxShape.circle) : Icon(icon, size: 40, color: color),
             ),
             const SizedBox(width: 20),
             Expanded(
@@ -187,19 +177,12 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                       Flexible(
                         child: Text(
                           title,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: Colors.grey[400],
-                      ),
+                      Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
                     ],
                   ),
                   const SizedBox(height: 8),

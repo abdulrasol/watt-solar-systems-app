@@ -1,7 +1,7 @@
 import 'package:solar_hub/src/core/enums/system_status.dart';
 
 class SystemModel {
-  final String id;
+  final String? id;
   final String? ownerId;
   final String? installedByCompanyId;
   final SystemStatus verificationStatus;

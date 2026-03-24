@@ -16,7 +16,7 @@ class AppInitRemoteDataSourceImpl implements AppInitRemoteDataSource {
 
   @override
   Future<List<Config>> getConfigs() async {
-    final response = await _dioService.get(AppUrls.configs, isList: true);
+    final response = await _dioService.get(AppUrls.appConfigs, isList: true);
     final List<Config> configs = (response.body as List).map((e) => Config.fromJson(e)).toList();
     return configs;
   }

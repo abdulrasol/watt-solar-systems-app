@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/core/widgets/app_logo.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/splash/domain/usecases/get_configs_usecase.dart';
@@ -46,7 +47,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     );
 
     // Artificial delay for better UX (so logo doesn't flash)
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 4));
 
     // Check if user is logged in
     if (authState.user == null) {
@@ -93,7 +94,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Logo (Replace with your actual asset if available, or icon for now)
-            Icon(Icons.solar_power, size: 80.sp, color: Colors.orange.shade700),
+            const AppLogo(size: 80, withBorder: true),
             SizedBox(height: 24.h),
             Text(
               AppLocalizations.of(context)!.app_name,

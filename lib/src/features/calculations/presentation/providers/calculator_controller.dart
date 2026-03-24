@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/appliance_entity.dart';
 import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
+import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
+import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/features/calculations/domain/entities/calculated_system.dart';
 
 // Given the high number of fields, using a ChangeNotifier for this specific controller
 // is more practical than creating a massive immutable state class.
@@ -12,6 +15,8 @@ final calculatorProvider = ChangeNotifierProvider<CalculatorNotifier>((ref) {
 
 class CalculatorNotifier extends ChangeNotifier {
   // System Wizard State
+  String? currentSystemId;
+
   List<ApplianceEntity> appliances = [
     ApplianceEntity(name: 'Refrigerator', power: 230, quantity: 1, hours: 24),
     ApplianceEntity(name: 'Lamps & Fans', power: 240, quantity: 1, hours: 24),
@@ -129,6 +134,11 @@ class CalculatorNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void loadCalculation(CalculatedSystem system) {
+    currentSystemId = system.id;
+    system.loadIntoCalculator(this);
+  }
+
   void addAppliance() {
     appliances.add(
       ApplianceEntity(name: 'New Appliance', power: 100, quantity: 1, hours: 5),
@@ -209,7 +219,50 @@ class CalculatorNotifier extends ChangeNotifier {
     recommendedControllerSize =
         ((recommendedPanels * selectedPanelWattage) / systemVoltage).ceil();
 
+    _saveToCache();
+
     notifyListeners();
+  }
+
+  void _saveToCache() {
+    try {
+      final cache = getIt<CasheInterface>();
+      final existingData = cache.get('saved_calculated_systems');
+      List<CalculatedSystem> systems = [];
+      if (existingData != null) {
+        systems = List<dynamic>.from(existingData)
+            .map((e) => CalculatedSystem.fromJson(e as Map<String, dynamic>))
+            .toList();
+      }
+
+      if (currentSystemId != null) {
+        final idx = systems.indexWhere((s) => s.id == currentSystemId);
+        if (idx >= 0) {
+          systems[idx] = CalculatedSystem.fromCalculator(
+            currentSystemId!,
+            systems[idx].title,
+            this,
+          );
+        } else {
+          systems.add(CalculatedSystem.fromCalculator(
+            currentSystemId!,
+            'System ${DateTime.now().toLocal().toString().substring(0, 16)}',
+            this,
+          ));
+        }
+      } else {
+        currentSystemId = DateTime.now().millisecondsSinceEpoch.toString();
+        systems.add(CalculatedSystem.fromCalculator(
+          currentSystemId!,
+          'System ${DateTime.now().toLocal().toString().substring(0, 16)}',
+          this,
+        ));
+      }
+
+      cache.save('saved_calculated_systems', systems.map((e) => e.toJson()).toList());
+    } catch (e) {
+      debugPrint('Error saving calculation to cache: $e');
+    }
   }
 
   void prepareRequestFromCalculation() {

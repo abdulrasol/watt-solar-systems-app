@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +23,7 @@ void main() async {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   setupDependencies();
   await getIt.allReady();
@@ -36,7 +39,7 @@ class SolarHub extends ConsumerWidget {
     final view = View.of(context);
     final size = view.physicalSize / view.devicePixelRatio;
     final isDesktop = size.width > 800;
-    
+
     return ScreenUtilInit(
       designSize: isDesktop ? size : const Size(360, 690),
       minTextAdapt: true,

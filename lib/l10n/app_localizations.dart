@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
-    Locale('en'),
+    Locale('en')
   ];
 
   /// No description provided for @app_name.
@@ -332,6 +329,144 @@ abstract class AppLocalizations {
   /// **'Send Reset Link'**
   String get send_reset_link;
 
+  /// No description provided for @send_feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Feedback'**
+  String get send_feedback;
+
+  /// No description provided for @feedback_info_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your feedback helps us improve'**
+  String get feedback_info_title;
+
+  /// No description provided for @feedback_info_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your feedback or suggestions so we can improve the app and make your experience better.'**
+  String get feedback_info_description;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @name_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get name_hint;
+
+  /// No description provided for @name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get name_required;
+
+  /// No description provided for @phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phone_number;
+
+  /// No description provided for @phone_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number (optional)'**
+  String get phone_hint;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
+
+  /// No description provided for @feedback_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your feedback or suggestions here'**
+  String get feedback_hint;
+
+  /// No description provided for @feedback_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a message'**
+  String get feedback_required;
+
+  /// No description provided for @feedback_submitted_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback submitted successfully!'**
+  String get feedback_submitted_successfully;
+
+  /// No description provided for @user_feedbacks.
+  ///
+  /// In en, this message translates to:
+  /// **'User Feedback'**
+  String get user_feedbacks;
+
+  /// No description provided for @no_feedbacks_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No feedback yet'**
+  String get no_feedbacks_yet;
+
+  /// No description provided for @mark_as_read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Read'**
+  String get mark_as_read;
+
+  /// No description provided for @mark_as_unread.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Unread'**
+  String get mark_as_unread;
+
+  /// No description provided for @call.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get call;
+
+  /// No description provided for @whatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get whatsapp;
+
+  /// No description provided for @delete_feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Feedback'**
+  String get delete_feedback;
+
+  /// No description provided for @delete_feedback_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this feedback? This action cannot be undone.'**
+  String get delete_feedback_confirm;
+
+  /// No description provided for @add_screenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Screenshot'**
+  String get add_screenshot;
+
+  /// No description provided for @tap_to_select_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select an image'**
+  String get tap_to_select_image;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
   /// No description provided for @username.
   ///
   /// In en, this message translates to:
@@ -391,12 +526,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last Name'**
   String get last_name;
-
-  /// No description provided for @phone_number.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone Number'**
-  String get phone_number;
 
   /// No description provided for @phone_required.
   ///
@@ -2007,8 +2136,7 @@ abstract class AppLocalizations {
   String get save_to_system;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -2017,26 +2145,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar':
-      return AppLocalizationsAr();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'ar': return AppLocalizationsAr();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }
