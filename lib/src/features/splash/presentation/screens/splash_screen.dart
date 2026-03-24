@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:solar_hub/firebase_options.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/app_logo.dart';
@@ -43,6 +45,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           ref.read(configProvider.notifier).setConfigs(configs);
         },
       );
+
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+      dPrint('Firebase initialized', tag: 'splash_screen');
 
       // Now access auth provider (after dependencies are ready)
       final authState = ref.read(authProvider);
