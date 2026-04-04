@@ -12,7 +12,7 @@ import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/feedback/presentation/screens/feedback_page.dart';
-import 'package:solar_hub/src/features/admin/presentation/screen/admin_dashboard.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_dashboard.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart' show isEnabled;
@@ -70,7 +70,7 @@ class AppDrawer extends ConsumerWidget {
                           context: context,
                           icon: Iconsax.clipboard_bold,
                           title: AppLocalizations.of(context)!.my_requests,
-                          route: '/my_requests',
+                          route: '/user-requests',
                           delay: 100,
                         ),
                         _buildDrawerItem(
@@ -89,12 +89,12 @@ class AppDrawer extends ConsumerWidget {
                               context: context,
                               icon: Iconsax.building_bold,
                               title: authState.company?.name ?? AppLocalizations.of(context)!.company_dashboard,
-                              route: '/company/dashboard',
+                              route: '/companies/dashboard',
                               delay: 100,
                             ),
                           ],
                         )
-                      else if (isEnabled(ref, 'auth', skipFalseIfDebug: true) && isEnabled(ref, 'company_registration', skipFalseIfDebug: true))
+                      else if (isEnabled(ref, 'auth', skipFalseIfDebug: true) && isEnabled(ref, 'companies', skipFalseIfDebug: true))
                         _buildDrawerItem(
                           context: context,
                           icon: Iconsax.building_3_bold,

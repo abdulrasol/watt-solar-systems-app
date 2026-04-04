@@ -93,6 +93,185 @@ class AppLocalizationsAr extends AppLocalizations {
   String get buy_components => 'شراء المكونات';
 
   @override
+  String get b2b_storefront => 'واجهة B2B';
+
+  @override
+  String get b2c_storefront => 'واجهة B2C';
+
+  @override
+  String get storefront_b2b_subtitle => 'كتالوج مخصص للأعضاء مع أسعار الجملة وإظهار مخزون الشركة.';
+
+  @override
+  String get storefront_b2c_subtitle => 'واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.';
+
+  @override
+  String storefront_products_available(Object count) {
+    return 'المنتجات المتاحة $count';
+  }
+
+  @override
+  String get search_products => 'ابحث عن المنتجات';
+
+  @override
+  String get search_b2b_products => 'ابحث في منتجات B2B';
+
+  @override
+  String get filters => 'الفلاتر';
+
+  @override
+  String get sort_by => 'الترتيب حسب';
+
+  @override
+  String get sort_newest => 'الأحدث';
+
+  @override
+  String get sort_oldest => 'الأقدم';
+
+  @override
+  String get sort_name_asc => 'الاسم أ-ي';
+
+  @override
+  String get sort_name_desc => 'الاسم ي-أ';
+
+  @override
+  String get sort_price_asc => 'السعر من الأقل للأعلى';
+
+  @override
+  String get sort_price_desc => 'السعر من الأعلى للأقل';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get all_categories => 'كل التصنيفات';
+
+  @override
+  String get all_companies => 'كل الشركات';
+
+  @override
+  String get availability => 'التوفر';
+
+  @override
+  String get available => 'متوفر';
+
+  @override
+  String get unavailable => 'غير متوفر';
+
+  @override
+  String get min_price => 'أقل سعر';
+
+  @override
+  String get max_price => 'أعلى سعر';
+
+  @override
+  String get clear_filters => 'مسح';
+
+  @override
+  String get apply_filters => 'تطبيق';
+
+  @override
+  String get store_filters => 'فلاتر المتجر';
+
+  @override
+  String get no_store_products_found => 'لا توجد منتجات مطابقة للفلاتر الحالية.';
+
+  @override
+  String get load_more => 'تحميل المزيد';
+
+  @override
+  String get global_category => 'عام';
+
+  @override
+  String get internal_category => 'داخلي';
+
+  @override
+  String get company_category => 'شركة';
+
+  @override
+  String iqd_price(Object amount) {
+    return '$amount د.ع';
+  }
+
+  @override
+  String retail_price_label(Object amount) {
+    return 'مفرد $amount';
+  }
+
+  @override
+  String wholesale_price_label(Object amount) {
+    return 'جملة $amount';
+  }
+
+  @override
+  String stock_count(Object count) {
+    return 'المخزون $count';
+  }
+
+  @override
+  String get product_details => 'تفاصيل المنتج';
+
+  @override
+  String get price_overview => 'ملخص الأسعار';
+
+  @override
+  String get display_price => 'السعر المعروض';
+
+  @override
+  String get retail_price => 'سعر المفرد';
+
+  @override
+  String get wholesale_price => 'سعر الجملة';
+
+  @override
+  String get sku => 'SKU';
+
+  @override
+  String get pricing_tiers => 'شرائح التسعير';
+
+  @override
+  String pricing_tier_line(Object quantity, Object amount) {
+    return '$quantity+ قطعة: $amount د.ع';
+  }
+
+  @override
+  String get add_to_cart => 'أضف إلى السلة';
+
+  @override
+  String get added_to_cart => 'تمت الإضافة إلى السلة';
+
+  @override
+  String get b2b_cart => 'سلة B2B';
+
+  @override
+  String get b2c_cart => 'سلة B2C';
+
+  @override
+  String get cart_empty => 'سلتك فارغة';
+
+  @override
+  String get cart_empty_subtitle => 'أضف منتجات من المتجر لإنشاء سلة محلية مستقلة لكل شركة.';
+
+  @override
+  String get cart_summary => 'ملخص السلة';
+
+  @override
+  String get total_items => 'إجمالي العناصر';
+
+  @override
+  String get total_amount => 'الإجمالي';
+
+  @override
+  String cart_items_count(Object count) {
+    return '$count عنصر';
+  }
+
+  @override
+  String get clear_cart => 'مسح السلة';
+
+  @override
+  String get subtotal => 'المجموع الفرعي';
+
+  @override
   String get join_community => 'انضم للمجتمع';
 
   @override
@@ -630,6 +809,402 @@ class AppLocalizationsAr extends AppLocalizations {
   String get analytics => 'التحليلات';
 
   @override
+  String get overview => 'نظرة عامة';
+
+  @override
+  String get services => 'الخدمات';
+
+  @override
+  String get contacts => 'جهات الاتصال';
+
+  @override
+  String get status_active => 'نشط';
+
+  @override
+  String get status_pending => 'قيد الانتظار';
+
+  @override
+  String get status_rejected => 'مرفوض';
+
+  @override
+  String get status_suspended => 'معلّق';
+
+  @override
+  String get status_cancelled => 'ملغي';
+
+  @override
+  String get status_accepted => 'مقبول';
+
+  @override
+  String get status_completed => 'مكتمل';
+
+  @override
+  String get status_unavailable => 'غير متاح';
+
+  @override
+  String get request_status_open => 'مفتوح';
+
+  @override
+  String get request_status_closed => 'مغلق';
+
+  @override
+  String get request_status_fulfilled => 'مكتمل التنفيذ';
+
+  @override
+  String get battery_type_gel => 'جل';
+
+  @override
+  String get battery_type_tubular => 'أنبوبي';
+
+  @override
+  String get battery_type_lithium => 'ليثيوم';
+
+  @override
+  String get inverter_type_off_grid => 'منفصل عن الشبكة';
+
+  @override
+  String get inverter_type_on_grid => 'مرتبط بالشبكة';
+
+  @override
+  String get inverter_type_hybrid => 'هجين';
+
+  @override
+  String get offers_marketplace => 'سوق العروض الشمسية';
+
+  @override
+  String get available_requests => 'الطلبات المتاحة';
+
+  @override
+  String get my_bids => 'عروضي المقدمة';
+
+  @override
+  String get no_requests_found => 'لا توجد طلبات';
+
+  @override
+  String get no_offers_found => 'لا توجد عروض';
+
+  @override
+  String get new_projects_will_appear_here => 'ستظهر هنا مشاريع الطاقة الشمسية الجديدة في منطقتك.';
+
+  @override
+  String get browse_requests_to_start_bidding => 'انتقل إلى تبويب الطلبات لبدء تقديم العروض على المشاريع.';
+
+  @override
+  String get admin_marketplace_oversight => 'لوحة متابعة سوق العروض';
+
+  @override
+  String get all_requests => 'جميع الطلبات';
+
+  @override
+  String get all_offers => 'جميع العروض';
+
+  @override
+  String get my_solar_project_inquiries => 'استفسارات مشاريعي الشمسية';
+
+  @override
+  String get add_new_request => 'إضافة طلب جديد';
+
+  @override
+  String received_offers_count(Object count) {
+    return 'العروض المستلمة ($count)';
+  }
+
+  @override
+  String get no_offers_received_yet => 'لم تصلك أي عروض بعد.';
+
+  @override
+  String get no_requests_posted => 'لا توجد طلبات منشورة';
+
+  @override
+  String get post_first_solar_request => 'ابدأ بتوفير الطاقة من خلال نشر أول طلب لنظام شمسي واستقبال عروض من الشركات.';
+
+  @override
+  String get create_solar_request => 'إنشاء طلب نظام شمسي';
+
+  @override
+  String get location_preferences => 'تفضيلات الموقع';
+
+  @override
+  String get broadcast_to_all_cities => 'إرسال الطلب إلى جميع المدن';
+
+  @override
+  String get broadcast_to_all_cities_desc => 'فعّل هذا الخيار للوصول إلى الشركات في مختلف المدن';
+
+  @override
+  String get solar_panel_needs => 'احتياجات الألواح الشمسية';
+
+  @override
+  String get expected_power_per_unit => 'القدرة المتوقعة للوحدة (واط)';
+
+  @override
+  String get quantity_needed => 'الكمية المطلوبة';
+
+  @override
+  String get estimated_pv_power_needed => 'إجمالي قدرة الألواح المطلوبة';
+
+  @override
+  String get storage_requirements => 'متطلبات التخزين';
+
+  @override
+  String get preferred_battery_type => 'نوع البطارية المفضل';
+
+  @override
+  String get battery_size_wh => 'سعة البطارية (واط-ساعة)';
+
+  @override
+  String get total_energy_capacity_needed => 'إجمالي سعة التخزين المطلوبة';
+
+  @override
+  String get inverter_configuration => 'إعدادات العاكس';
+
+  @override
+  String get desired_inverter_type => 'نوع العاكس المطلوب';
+
+  @override
+  String get total_inverter_power_peak => 'إجمالي قدرة العاكس المطلوبة';
+
+  @override
+  String get additional_specifications => 'مواصفات إضافية';
+
+  @override
+  String get project_description_notes => 'وصف المشروع / الملاحظات';
+
+  @override
+  String get required_field => 'هذا الحقل مطلوب';
+
+  @override
+  String get post_solar_request => 'نشر الطلب';
+
+  @override
+  String get new_offer_proposal => 'عرض سعر جديد';
+
+  @override
+  String get financial_information => 'البيانات المالية';
+
+  @override
+  String get solar_panels => 'الألواح الشمسية';
+
+  @override
+  String get power_per_unit => 'قدرة الوحدة (واط)';
+
+  @override
+  String get total_energy_capacity => 'إجمالي سعة التخزين';
+
+  @override
+  String get battery_type_label => 'نوع البطارية';
+
+  @override
+  String get inverter_type_label => 'نوع العاكس';
+
+  @override
+  String get storage_batteries => 'التخزين (البطاريات)';
+
+  @override
+  String get additional_notes => 'ملاحظات إضافية';
+
+  @override
+  String get notes_for_user => 'ملاحظات للمستخدم';
+
+  @override
+  String get enter_quotation_price => 'أدخل سعر العرض';
+
+  @override
+  String get price_required => 'السعر مطلوب';
+
+  @override
+  String get submit_quotation => 'إرسال العرض';
+
+  @override
+  String get offer_details => 'تفاصيل العرض';
+
+  @override
+  String get offering_price => 'سعر العرض';
+
+  @override
+  String get technical_specifications => 'المواصفات الفنية';
+
+  @override
+  String get included_services_items => 'الخدمات والعناصر المشمولة';
+
+  @override
+  String get notes_from_provider => 'ملاحظات الشركة';
+
+  @override
+  String submitted_on_date(Object date) {
+    return 'تم الإرسال في $date';
+  }
+
+  @override
+  String get quotation => 'عرض سعر';
+
+  @override
+  String get panels => 'الألواح';
+
+  @override
+  String get battery_storage => 'البطارية والتخزين';
+
+  @override
+  String get total_project_quote => 'إجمالي قيمة المشروع';
+
+  @override
+  String get chat => 'محادثة';
+
+  @override
+  String get accept_offer => 'قبول العرض';
+
+  @override
+  String get reject_offer => 'رفض العرض';
+
+  @override
+  String get solar_request_details => 'تفاصيل الطلب الشمسي';
+
+  @override
+  String get user_needs => 'احتياجات المستخدم';
+
+  @override
+  String get technical_notes => 'ملاحظات فنية';
+
+  @override
+  String get send_offer_for_request => 'إرسال عرض لهذا الطلب';
+
+  @override
+  String get panels_power => 'قدرة الألواح';
+
+  @override
+  String get battery_power => 'قدرة البطارية';
+
+  @override
+  String get battery_type_full => 'نوع البطارية';
+
+  @override
+  String get pv_power => 'قدرة الألواح';
+
+  @override
+  String get battery => 'البطارية';
+
+  @override
+  String city_label(Object city) {
+    return 'المدينة: $city';
+  }
+
+  @override
+  String get company_dashboard_subtitle => 'أدر عملياتك في مجال الطاقة الشمسية بكفاءة';
+
+  @override
+  String get error_loading_data => 'حدث خطأ أثناء تحميل البيانات';
+
+  @override
+  String section_label(Object name) {
+    return 'القسم: $name';
+  }
+
+  @override
+  String get quick_stats => 'إحصاءات سريعة';
+
+  @override
+  String get ready_to_scale_business => 'هل أنت مستعد لتوسيع أعمالك؟';
+
+  @override
+  String get monitor_growth_subscriptions => 'تابع نمو أعمالك واشتراكاتك من هنا.';
+
+  @override
+  String get solar_solutions_provider => 'مزود حلول الطاقة الشمسية';
+
+  @override
+  String get standard => 'قياسي';
+
+  @override
+  String get company => 'شركة';
+
+  @override
+  String get admin_user => 'مستخدم إداري';
+
+  @override
+  String get super_admin => 'مدير النظام';
+
+  @override
+  String get ready_to_scale_title => 'جاهز للتوسع؟';
+
+  @override
+  String service_not_requested(Object service) {
+    return 'لم تطلب الوصول إلى خدمة $service بعد.';
+  }
+
+  @override
+  String get service_unlock_description => 'فعّل هذه الخدمة لتطوير أعمالك في الطاقة الشمسية وأتمتة سير العمل.';
+
+  @override
+  String get access_requested_successfully => 'تم إرسال طلب الوصول بنجاح';
+
+  @override
+  String get request_access_now => 'اطلب الوصول الآن';
+
+  @override
+  String get awaiting_approval => 'بانتظار الموافقة';
+
+  @override
+  String service_under_review(Object service) {
+    return 'طلبك للحصول على خدمة $service قيد المراجعة حالياً.';
+  }
+
+  @override
+  String get service_pending_help => 'عادةً ما يستغرق فريقنا من 24 إلى 48 ساعة للموافقة على الخدمات الجديدة. يُرجى الانتظار أو التواصل مع الدعم عند الحاجة.';
+
+  @override
+  String get contact_support => 'التواصل مع الدعم';
+
+  @override
+  String get request_denied => 'تم رفض الطلب';
+
+  @override
+  String service_request_rejected(Object service) {
+    return 'تم رفض طلبك لخدمة $service.';
+  }
+
+  @override
+  String get service_rejected_help => 'قد يكون ذلك بسبب نقص في المعلومات أو عدم استيفاء الشروط. يُرجى التواصل مع فريقنا لتقديم اعتراض.';
+
+  @override
+  String get appeal_decision => 'الاعتراض على القرار';
+
+  @override
+  String get access_limited => 'الوصول محدود';
+
+  @override
+  String service_suspended_or_cancelled(Object service) {
+    return 'خدمة $service الخاصة بك معلّقة أو ملغاة حالياً.';
+  }
+
+  @override
+  String get service_accounts_help => 'يرجى التحقق من حالة اشتراكك أو التواصل مع فريق خدمة العملاء لحل المشكلة.';
+
+  @override
+  String get contact_accounts => 'التواصل مع الحسابات';
+
+  @override
+  String get service_maintenance => 'الخدمة تحت الصيانة';
+
+  @override
+  String service_being_updated(Object service) {
+    return 'يتم حالياً تحديث خدمة $service.';
+  }
+
+  @override
+  String get service_maintenance_help => 'نعمل على إضافة مزايا جديدة لتحسين تجربتك. يُرجى المحاولة مرة أخرى لاحقاً.';
+
+  @override
+  String get back_to_dashboard => 'العودة إلى لوحة التحكم';
+
+  @override
+  String get maybe_later => 'لاحقاً';
+
+  @override
+  String get email_support => 'الدعم عبر البريد';
+
+  @override
+  String get chat_on_whatsapp => 'المحادثة عبر واتساب';
+
+  @override
   String get systems => 'الأنظمة';
 
   @override
@@ -992,9 +1567,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get example_10 => 'مثال: 10';
-
-  @override
-  String get required_field => 'هذا الحقل مطلوب';
 
   @override
   String get numbers_only => 'أدخل أرقاماً فقط';

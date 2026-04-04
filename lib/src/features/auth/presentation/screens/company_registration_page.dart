@@ -13,6 +13,7 @@ import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/company_register_model.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/toast_service.dart';
 import 'package:validatorless/validatorless.dart';
@@ -356,7 +357,8 @@ class _CompanyRegistrationPageState
               b2c: _isB2C,
             ),
           )
-          .then((value) {
+          .then((value) async {
+            await ref.read(authProvider.notifier).registerCompany(value);
             setState(() {
               isLoading = false;
             });

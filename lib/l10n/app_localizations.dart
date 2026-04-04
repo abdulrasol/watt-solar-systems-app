@@ -263,6 +263,336 @@ abstract class AppLocalizations {
   /// **'Buy components'**
   String get buy_components;
 
+  /// No description provided for @b2b_storefront.
+  ///
+  /// In en, this message translates to:
+  /// **'B2B Storefront'**
+  String get b2b_storefront;
+
+  /// No description provided for @b2c_storefront.
+  ///
+  /// In en, this message translates to:
+  /// **'B2C Storefront'**
+  String get b2c_storefront;
+
+  /// No description provided for @storefront_b2b_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Member-only catalog with wholesale pricing and company inventory visibility.'**
+  String get storefront_b2b_subtitle;
+
+  /// No description provided for @storefront_b2c_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open storefront for all users with public product access.'**
+  String get storefront_b2c_subtitle;
+
+  /// No description provided for @storefront_products_available.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} products available'**
+  String storefront_products_available(Object count);
+
+  /// No description provided for @search_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Search products'**
+  String get search_products;
+
+  /// No description provided for @search_b2b_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Search B2B products'**
+  String get search_b2b_products;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @sort_by.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort By'**
+  String get sort_by;
+
+  /// No description provided for @sort_newest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get sort_newest;
+
+  /// No description provided for @sort_oldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest'**
+  String get sort_oldest;
+
+  /// No description provided for @sort_name_asc.
+  ///
+  /// In en, this message translates to:
+  /// **'Name A-Z'**
+  String get sort_name_asc;
+
+  /// No description provided for @sort_name_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Name Z-A'**
+  String get sort_name_desc;
+
+  /// No description provided for @sort_price_asc.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Low-High'**
+  String get sort_price_asc;
+
+  /// No description provided for @sort_price_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Price High-Low'**
+  String get sort_price_desc;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @all_categories.
+  ///
+  /// In en, this message translates to:
+  /// **'All Categories'**
+  String get all_categories;
+
+  /// No description provided for @all_companies.
+  ///
+  /// In en, this message translates to:
+  /// **'All companies'**
+  String get all_companies;
+
+  /// No description provided for @availability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get availability;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get unavailable;
+
+  /// No description provided for @min_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Min price'**
+  String get min_price;
+
+  /// No description provided for @max_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Max price'**
+  String get max_price;
+
+  /// No description provided for @clear_filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear_filters;
+
+  /// No description provided for @apply_filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply_filters;
+
+  /// No description provided for @store_filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Filters'**
+  String get store_filters;
+
+  /// No description provided for @no_store_products_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No products matched the current filters.'**
+  String get no_store_products_found;
+
+  /// No description provided for @load_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More'**
+  String get load_more;
+
+  /// No description provided for @global_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Global'**
+  String get global_category;
+
+  /// No description provided for @internal_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Internal'**
+  String get internal_category;
+
+  /// No description provided for @company_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get company_category;
+
+  /// No description provided for @iqd_price.
+  ///
+  /// In en, this message translates to:
+  /// **'IQD {amount}'**
+  String iqd_price(Object amount);
+
+  /// No description provided for @retail_price_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Retail {amount}'**
+  String retail_price_label(Object amount);
+
+  /// No description provided for @wholesale_price_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Wholesale {amount}'**
+  String wholesale_price_label(Object amount);
+
+  /// No description provided for @stock_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock {count}'**
+  String stock_count(Object count);
+
+  /// No description provided for @product_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Details'**
+  String get product_details;
+
+  /// No description provided for @price_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Overview'**
+  String get price_overview;
+
+  /// No description provided for @display_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Display Price'**
+  String get display_price;
+
+  /// No description provided for @retail_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Retail Price'**
+  String get retail_price;
+
+  /// No description provided for @wholesale_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Wholesale Price'**
+  String get wholesale_price;
+
+  /// No description provided for @sku.
+  ///
+  /// In en, this message translates to:
+  /// **'SKU'**
+  String get sku;
+
+  /// No description provided for @pricing_tiers.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing Tiers'**
+  String get pricing_tiers;
+
+  /// No description provided for @pricing_tier_line.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity}+ units: IQD {amount}'**
+  String pricing_tier_line(Object quantity, Object amount);
+
+  /// No description provided for @add_to_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Cart'**
+  String get add_to_cart;
+
+  /// No description provided for @added_to_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to cart'**
+  String get added_to_cart;
+
+  /// No description provided for @b2b_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'B2B Cart'**
+  String get b2b_cart;
+
+  /// No description provided for @b2c_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'B2C Cart'**
+  String get b2c_cart;
+
+  /// No description provided for @cart_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get cart_empty;
+
+  /// No description provided for @cart_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add products from the storefront to create a local cart for each company.'**
+  String get cart_empty_subtitle;
+
+  /// No description provided for @cart_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart Summary'**
+  String get cart_summary;
+
+  /// No description provided for @total_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Items'**
+  String get total_items;
+
+  /// No description provided for @total_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get total_amount;
+
+  /// No description provided for @cart_items_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String cart_items_count(Object count);
+
+  /// No description provided for @clear_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Cart'**
+  String get clear_cart;
+
+  /// No description provided for @subtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get subtotal;
+
   /// No description provided for @join_community.
   ///
   /// In en, this message translates to:
@@ -1325,6 +1655,762 @@ abstract class AppLocalizations {
   /// **'Analytics'**
   String get analytics;
 
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @services.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get services;
+
+  /// No description provided for @contacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts'**
+  String get contacts;
+
+  /// No description provided for @status_active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get status_active;
+
+  /// No description provided for @status_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get status_pending;
+
+  /// No description provided for @status_rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get status_rejected;
+
+  /// No description provided for @status_suspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get status_suspended;
+
+  /// No description provided for @status_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get status_cancelled;
+
+  /// No description provided for @status_accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get status_accepted;
+
+  /// No description provided for @status_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get status_completed;
+
+  /// No description provided for @status_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get status_unavailable;
+
+  /// No description provided for @request_status_open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get request_status_open;
+
+  /// No description provided for @request_status_closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get request_status_closed;
+
+  /// No description provided for @request_status_fulfilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Fulfilled'**
+  String get request_status_fulfilled;
+
+  /// No description provided for @battery_type_gel.
+  ///
+  /// In en, this message translates to:
+  /// **'Gel'**
+  String get battery_type_gel;
+
+  /// No description provided for @battery_type_tubular.
+  ///
+  /// In en, this message translates to:
+  /// **'Tubular'**
+  String get battery_type_tubular;
+
+  /// No description provided for @battery_type_lithium.
+  ///
+  /// In en, this message translates to:
+  /// **'Lithium'**
+  String get battery_type_lithium;
+
+  /// No description provided for @inverter_type_off_grid.
+  ///
+  /// In en, this message translates to:
+  /// **'Off Grid'**
+  String get inverter_type_off_grid;
+
+  /// No description provided for @inverter_type_on_grid.
+  ///
+  /// In en, this message translates to:
+  /// **'On Grid'**
+  String get inverter_type_on_grid;
+
+  /// No description provided for @inverter_type_hybrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Hybrid'**
+  String get inverter_type_hybrid;
+
+  /// No description provided for @offers_marketplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Marketplace'**
+  String get offers_marketplace;
+
+  /// No description provided for @available_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Requests'**
+  String get available_requests;
+
+  /// No description provided for @my_bids.
+  ///
+  /// In en, this message translates to:
+  /// **'My Bids'**
+  String get my_bids;
+
+  /// No description provided for @no_requests_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests found'**
+  String get no_requests_found;
+
+  /// No description provided for @no_offers_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers found'**
+  String get no_offers_found;
+
+  /// No description provided for @new_projects_will_appear_here.
+  ///
+  /// In en, this message translates to:
+  /// **'New solar projects in your area will appear here.'**
+  String get new_projects_will_appear_here;
+
+  /// No description provided for @browse_requests_to_start_bidding.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the requests tab to start bidding on projects.'**
+  String get browse_requests_to_start_bidding;
+
+  /// No description provided for @admin_marketplace_oversight.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin: Marketplace Oversight'**
+  String get admin_marketplace_oversight;
+
+  /// No description provided for @all_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'All Requests'**
+  String get all_requests;
+
+  /// No description provided for @all_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'All Offers'**
+  String get all_offers;
+
+  /// No description provided for @my_solar_project_inquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'My Solar Project Inquiries'**
+  String get my_solar_project_inquiries;
+
+  /// No description provided for @add_new_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Request'**
+  String get add_new_request;
+
+  /// No description provided for @received_offers_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Received Offers ({count})'**
+  String received_offers_count(Object count);
+
+  /// No description provided for @no_offers_received_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers received yet.'**
+  String get no_offers_received_yet;
+
+  /// No description provided for @no_requests_posted.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests posted'**
+  String get no_requests_posted;
+
+  /// No description provided for @post_first_solar_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to save on energy? Post your first solar request and get bids from solar companies.'**
+  String get post_first_solar_request;
+
+  /// No description provided for @create_solar_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Solar Request'**
+  String get create_solar_request;
+
+  /// No description provided for @location_preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Preferences'**
+  String get location_preferences;
+
+  /// No description provided for @broadcast_to_all_cities.
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcast to All Cities'**
+  String get broadcast_to_all_cities;
+
+  /// No description provided for @broadcast_to_all_cities_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable to reach companies nationwide'**
+  String get broadcast_to_all_cities_desc;
+
+  /// No description provided for @solar_panel_needs.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Panel Needs'**
+  String get solar_panel_needs;
+
+  /// No description provided for @expected_power_per_unit.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected Power/Unit (W)'**
+  String get expected_power_per_unit;
+
+  /// No description provided for @quantity_needed.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity Needed'**
+  String get quantity_needed;
+
+  /// No description provided for @estimated_pv_power_needed.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated PV Power Needed'**
+  String get estimated_pv_power_needed;
+
+  /// No description provided for @storage_requirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage Requirements'**
+  String get storage_requirements;
+
+  /// No description provided for @preferred_battery_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Battery Type'**
+  String get preferred_battery_type;
+
+  /// No description provided for @battery_size_wh.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Size (Wh)'**
+  String get battery_size_wh;
+
+  /// No description provided for @total_energy_capacity_needed.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Energy Capacity Needed'**
+  String get total_energy_capacity_needed;
+
+  /// No description provided for @inverter_configuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Configuration'**
+  String get inverter_configuration;
+
+  /// No description provided for @desired_inverter_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Desired Inverter Type'**
+  String get desired_inverter_type;
+
+  /// No description provided for @total_inverter_power_peak.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Inverter Power Peak'**
+  String get total_inverter_power_peak;
+
+  /// No description provided for @additional_specifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Specifications'**
+  String get additional_specifications;
+
+  /// No description provided for @project_description_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Description / Notes'**
+  String get project_description_notes;
+
+  /// No description provided for @required_field.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required_field;
+
+  /// No description provided for @post_solar_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Solar Request'**
+  String get post_solar_request;
+
+  /// No description provided for @new_offer_proposal.
+  ///
+  /// In en, this message translates to:
+  /// **'New Offer Proposal'**
+  String get new_offer_proposal;
+
+  /// No description provided for @financial_information.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Information'**
+  String get financial_information;
+
+  /// No description provided for @solar_panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Panels'**
+  String get solar_panels;
+
+  /// No description provided for @power_per_unit.
+  ///
+  /// In en, this message translates to:
+  /// **'Power/Unit (W)'**
+  String get power_per_unit;
+
+  /// No description provided for @total_energy_capacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Energy Capacity'**
+  String get total_energy_capacity;
+
+  /// No description provided for @battery_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Type'**
+  String get battery_type_label;
+
+  /// No description provided for @inverter_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Type'**
+  String get inverter_type_label;
+
+  /// No description provided for @storage_batteries.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage (Batteries)'**
+  String get storage_batteries;
+
+  /// No description provided for @additional_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Notes'**
+  String get additional_notes;
+
+  /// No description provided for @notes_for_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes for the User'**
+  String get notes_for_user;
+
+  /// No description provided for @enter_quotation_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter quotation price'**
+  String get enter_quotation_price;
+
+  /// No description provided for @price_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Price is required'**
+  String get price_required;
+
+  /// No description provided for @submit_quotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Quotation'**
+  String get submit_quotation;
+
+  /// No description provided for @offer_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer Details'**
+  String get offer_details;
+
+  /// No description provided for @offering_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Offering Price'**
+  String get offering_price;
+
+  /// No description provided for @technical_specifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical Specifications'**
+  String get technical_specifications;
+
+  /// No description provided for @included_services_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Included Services & Items'**
+  String get included_services_items;
+
+  /// No description provided for @notes_from_provider.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes from Provider'**
+  String get notes_from_provider;
+
+  /// No description provided for @submitted_on_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted on {date}'**
+  String submitted_on_date(Object date);
+
+  /// No description provided for @quotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Quotation'**
+  String get quotation;
+
+  /// No description provided for @panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels'**
+  String get panels;
+
+  /// No description provided for @battery_storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery & Storage'**
+  String get battery_storage;
+
+  /// No description provided for @total_project_quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Project Quote'**
+  String get total_project_quote;
+
+  /// No description provided for @chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chat;
+
+  /// No description provided for @accept_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Offer'**
+  String get accept_offer;
+
+  /// No description provided for @reject_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject Offer'**
+  String get reject_offer;
+
+  /// No description provided for @solar_request_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Request Details'**
+  String get solar_request_details;
+
+  /// No description provided for @user_needs.
+  ///
+  /// In en, this message translates to:
+  /// **'User Needs'**
+  String get user_needs;
+
+  /// No description provided for @technical_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical Notes'**
+  String get technical_notes;
+
+  /// No description provided for @send_offer_for_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Offer for this Request'**
+  String get send_offer_for_request;
+
+  /// No description provided for @panels_power.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels Power'**
+  String get panels_power;
+
+  /// No description provided for @battery_power.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Power'**
+  String get battery_power;
+
+  /// No description provided for @battery_type_full.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Type'**
+  String get battery_type_full;
+
+  /// No description provided for @pv_power.
+  ///
+  /// In en, this message translates to:
+  /// **'PV Power'**
+  String get pv_power;
+
+  /// No description provided for @battery.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery'**
+  String get battery;
+
+  /// No description provided for @city_label.
+  ///
+  /// In en, this message translates to:
+  /// **'City: {city}'**
+  String city_label(Object city);
+
+  /// No description provided for @company_dashboard_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your solar operations efficiently'**
+  String get company_dashboard_subtitle;
+
+  /// No description provided for @error_loading_data.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading data'**
+  String get error_loading_data;
+
+  /// No description provided for @section_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Section: {name}'**
+  String section_label(Object name);
+
+  /// No description provided for @quick_stats.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Stats'**
+  String get quick_stats;
+
+  /// No description provided for @ready_to_scale_business.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to scale your business?'**
+  String get ready_to_scale_business;
+
+  /// No description provided for @monitor_growth_subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor your growth and subscriptions here.'**
+  String get monitor_growth_subscriptions;
+
+  /// No description provided for @solar_solutions_provider.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Solutions Provider'**
+  String get solar_solutions_provider;
+
+  /// No description provided for @standard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get standard;
+
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get company;
+
+  /// No description provided for @admin_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin User'**
+  String get admin_user;
+
+  /// No description provided for @super_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Super Admin'**
+  String get super_admin;
+
+  /// No description provided for @ready_to_scale_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to Scale?'**
+  String get ready_to_scale_title;
+
+  /// No description provided for @service_not_requested.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not requested access to {service} yet.'**
+  String service_not_requested(Object service);
+
+  /// No description provided for @service_unlock_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock this service to enhance your solar business and automate your workflow.'**
+  String get service_unlock_description;
+
+  /// No description provided for @access_requested_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Access requested successfully!'**
+  String get access_requested_successfully;
+
+  /// No description provided for @request_access_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Access Now'**
+  String get request_access_now;
+
+  /// No description provided for @awaiting_approval.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting Approval'**
+  String get awaiting_approval;
+
+  /// No description provided for @service_under_review.
+  ///
+  /// In en, this message translates to:
+  /// **'Your application for {service} is currently under review.'**
+  String service_under_review(Object service);
+
+  /// No description provided for @service_pending_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team usually takes 24-48 hours to approve new services. Please wait or contact support for help.'**
+  String get service_pending_help;
+
+  /// No description provided for @contact_support.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get contact_support;
+
+  /// No description provided for @request_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Denied'**
+  String get request_denied;
+
+  /// No description provided for @service_request_rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request for {service} has been rejected.'**
+  String service_request_rejected(Object service);
+
+  /// No description provided for @service_rejected_help.
+  ///
+  /// In en, this message translates to:
+  /// **'This might be due to missing information or eligibility. Please reach out to our team to appeal.'**
+  String get service_rejected_help;
+
+  /// No description provided for @appeal_decision.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal Decision'**
+  String get appeal_decision;
+
+  /// No description provided for @access_limited.
+  ///
+  /// In en, this message translates to:
+  /// **'Access Limited'**
+  String get access_limited;
+
+  /// No description provided for @service_suspended_or_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {service} service is currently suspended or cancelled.'**
+  String service_suspended_or_cancelled(Object service);
+
+  /// No description provided for @service_accounts_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your subscription status or contact our customer team to resolve this issue.'**
+  String get service_accounts_help;
+
+  /// No description provided for @contact_accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Accounts'**
+  String get contact_accounts;
+
+  /// No description provided for @service_maintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Maintenance'**
+  String get service_maintenance;
+
+  /// No description provided for @service_being_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'{service} is currently being updated.'**
+  String service_being_updated(Object service);
+
+  /// No description provided for @service_maintenance_help.
+  ///
+  /// In en, this message translates to:
+  /// **'We are adding new features to improve your experience. Check back shortly!'**
+  String get service_maintenance_help;
+
+  /// No description provided for @back_to_dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Dashboard'**
+  String get back_to_dashboard;
+
+  /// No description provided for @maybe_later.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe Later'**
+  String get maybe_later;
+
+  /// No description provided for @email_support.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Support'**
+  String get email_support;
+
+  /// No description provided for @chat_on_whatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat on WhatsApp'**
+  String get chat_on_whatsapp;
+
   /// No description provided for @systems.
   ///
   /// In en, this message translates to:
@@ -2020,12 +3106,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g., 10'**
   String get example_10;
-
-  /// No description provided for @required_field.
-  ///
-  /// In en, this message translates to:
-  /// **'Required'**
-  String get required_field;
 
   /// No description provided for @numbers_only.
   ///

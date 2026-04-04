@@ -93,6 +93,185 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buy_components => 'Buy components';
 
   @override
+  String get b2b_storefront => 'B2B Storefront';
+
+  @override
+  String get b2c_storefront => 'B2C Storefront';
+
+  @override
+  String get storefront_b2b_subtitle => 'Member-only catalog with wholesale pricing and company inventory visibility.';
+
+  @override
+  String get storefront_b2c_subtitle => 'Open storefront for all users with public product access.';
+
+  @override
+  String storefront_products_available(Object count) {
+    return '$count products available';
+  }
+
+  @override
+  String get search_products => 'Search products';
+
+  @override
+  String get search_b2b_products => 'Search B2B products';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get sort_by => 'Sort By';
+
+  @override
+  String get sort_newest => 'Newest';
+
+  @override
+  String get sort_oldest => 'Oldest';
+
+  @override
+  String get sort_name_asc => 'Name A-Z';
+
+  @override
+  String get sort_name_desc => 'Name Z-A';
+
+  @override
+  String get sort_price_asc => 'Price Low-High';
+
+  @override
+  String get sort_price_desc => 'Price High-Low';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get all_categories => 'All Categories';
+
+  @override
+  String get all_companies => 'All companies';
+
+  @override
+  String get availability => 'Availability';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get unavailable => 'Unavailable';
+
+  @override
+  String get min_price => 'Min price';
+
+  @override
+  String get max_price => 'Max price';
+
+  @override
+  String get clear_filters => 'Clear';
+
+  @override
+  String get apply_filters => 'Apply';
+
+  @override
+  String get store_filters => 'Store Filters';
+
+  @override
+  String get no_store_products_found => 'No products matched the current filters.';
+
+  @override
+  String get load_more => 'Load More';
+
+  @override
+  String get global_category => 'Global';
+
+  @override
+  String get internal_category => 'Internal';
+
+  @override
+  String get company_category => 'Company';
+
+  @override
+  String iqd_price(Object amount) {
+    return 'IQD $amount';
+  }
+
+  @override
+  String retail_price_label(Object amount) {
+    return 'Retail $amount';
+  }
+
+  @override
+  String wholesale_price_label(Object amount) {
+    return 'Wholesale $amount';
+  }
+
+  @override
+  String stock_count(Object count) {
+    return 'Stock $count';
+  }
+
+  @override
+  String get product_details => 'Product Details';
+
+  @override
+  String get price_overview => 'Price Overview';
+
+  @override
+  String get display_price => 'Display Price';
+
+  @override
+  String get retail_price => 'Retail Price';
+
+  @override
+  String get wholesale_price => 'Wholesale Price';
+
+  @override
+  String get sku => 'SKU';
+
+  @override
+  String get pricing_tiers => 'Pricing Tiers';
+
+  @override
+  String pricing_tier_line(Object quantity, Object amount) {
+    return '$quantity+ units: IQD $amount';
+  }
+
+  @override
+  String get add_to_cart => 'Add to Cart';
+
+  @override
+  String get added_to_cart => 'Added to cart';
+
+  @override
+  String get b2b_cart => 'B2B Cart';
+
+  @override
+  String get b2c_cart => 'B2C Cart';
+
+  @override
+  String get cart_empty => 'Your cart is empty';
+
+  @override
+  String get cart_empty_subtitle => 'Add products from the storefront to create a local cart for each company.';
+
+  @override
+  String get cart_summary => 'Cart Summary';
+
+  @override
+  String get total_items => 'Total Items';
+
+  @override
+  String get total_amount => 'Total Amount';
+
+  @override
+  String cart_items_count(Object count) {
+    return '$count items';
+  }
+
+  @override
+  String get clear_cart => 'Clear Cart';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
   String get join_community => 'Join the Community';
 
   @override
@@ -630,6 +809,402 @@ class AppLocalizationsEn extends AppLocalizations {
   String get analytics => 'Analytics';
 
   @override
+  String get overview => 'Overview';
+
+  @override
+  String get services => 'Services';
+
+  @override
+  String get contacts => 'Contacts';
+
+  @override
+  String get status_active => 'Active';
+
+  @override
+  String get status_pending => 'Pending';
+
+  @override
+  String get status_rejected => 'Rejected';
+
+  @override
+  String get status_suspended => 'Suspended';
+
+  @override
+  String get status_cancelled => 'Cancelled';
+
+  @override
+  String get status_accepted => 'Accepted';
+
+  @override
+  String get status_completed => 'Completed';
+
+  @override
+  String get status_unavailable => 'Unavailable';
+
+  @override
+  String get request_status_open => 'Open';
+
+  @override
+  String get request_status_closed => 'Closed';
+
+  @override
+  String get request_status_fulfilled => 'Fulfilled';
+
+  @override
+  String get battery_type_gel => 'Gel';
+
+  @override
+  String get battery_type_tubular => 'Tubular';
+
+  @override
+  String get battery_type_lithium => 'Lithium';
+
+  @override
+  String get inverter_type_off_grid => 'Off Grid';
+
+  @override
+  String get inverter_type_on_grid => 'On Grid';
+
+  @override
+  String get inverter_type_hybrid => 'Hybrid';
+
+  @override
+  String get offers_marketplace => 'Solar Marketplace';
+
+  @override
+  String get available_requests => 'Available Requests';
+
+  @override
+  String get my_bids => 'My Bids';
+
+  @override
+  String get no_requests_found => 'No requests found';
+
+  @override
+  String get no_offers_found => 'No offers found';
+
+  @override
+  String get new_projects_will_appear_here => 'New solar projects in your area will appear here.';
+
+  @override
+  String get browse_requests_to_start_bidding => 'Browse the requests tab to start bidding on projects.';
+
+  @override
+  String get admin_marketplace_oversight => 'Admin: Marketplace Oversight';
+
+  @override
+  String get all_requests => 'All Requests';
+
+  @override
+  String get all_offers => 'All Offers';
+
+  @override
+  String get my_solar_project_inquiries => 'My Solar Project Inquiries';
+
+  @override
+  String get add_new_request => 'Add New Request';
+
+  @override
+  String received_offers_count(Object count) {
+    return 'Received Offers ($count)';
+  }
+
+  @override
+  String get no_offers_received_yet => 'No offers received yet.';
+
+  @override
+  String get no_requests_posted => 'No requests posted';
+
+  @override
+  String get post_first_solar_request => 'Ready to save on energy? Post your first solar request and get bids from solar companies.';
+
+  @override
+  String get create_solar_request => 'Create Solar Request';
+
+  @override
+  String get location_preferences => 'Location Preferences';
+
+  @override
+  String get broadcast_to_all_cities => 'Broadcast to All Cities';
+
+  @override
+  String get broadcast_to_all_cities_desc => 'Enable to reach companies nationwide';
+
+  @override
+  String get solar_panel_needs => 'Solar Panel Needs';
+
+  @override
+  String get expected_power_per_unit => 'Expected Power/Unit (W)';
+
+  @override
+  String get quantity_needed => 'Quantity Needed';
+
+  @override
+  String get estimated_pv_power_needed => 'Estimated PV Power Needed';
+
+  @override
+  String get storage_requirements => 'Storage Requirements';
+
+  @override
+  String get preferred_battery_type => 'Preferred Battery Type';
+
+  @override
+  String get battery_size_wh => 'Battery Size (Wh)';
+
+  @override
+  String get total_energy_capacity_needed => 'Total Energy Capacity Needed';
+
+  @override
+  String get inverter_configuration => 'Inverter Configuration';
+
+  @override
+  String get desired_inverter_type => 'Desired Inverter Type';
+
+  @override
+  String get total_inverter_power_peak => 'Total Inverter Power Peak';
+
+  @override
+  String get additional_specifications => 'Additional Specifications';
+
+  @override
+  String get project_description_notes => 'Project Description / Notes';
+
+  @override
+  String get required_field => 'Required';
+
+  @override
+  String get post_solar_request => 'Post Solar Request';
+
+  @override
+  String get new_offer_proposal => 'New Offer Proposal';
+
+  @override
+  String get financial_information => 'Financial Information';
+
+  @override
+  String get solar_panels => 'Solar Panels';
+
+  @override
+  String get power_per_unit => 'Power/Unit (W)';
+
+  @override
+  String get total_energy_capacity => 'Total Energy Capacity';
+
+  @override
+  String get battery_type_label => 'Battery Type';
+
+  @override
+  String get inverter_type_label => 'Inverter Type';
+
+  @override
+  String get storage_batteries => 'Storage (Batteries)';
+
+  @override
+  String get additional_notes => 'Additional Notes';
+
+  @override
+  String get notes_for_user => 'Notes for the User';
+
+  @override
+  String get enter_quotation_price => 'Enter quotation price';
+
+  @override
+  String get price_required => 'Price is required';
+
+  @override
+  String get submit_quotation => 'Submit Quotation';
+
+  @override
+  String get offer_details => 'Offer Details';
+
+  @override
+  String get offering_price => 'Offering Price';
+
+  @override
+  String get technical_specifications => 'Technical Specifications';
+
+  @override
+  String get included_services_items => 'Included Services & Items';
+
+  @override
+  String get notes_from_provider => 'Notes from Provider';
+
+  @override
+  String submitted_on_date(Object date) {
+    return 'Submitted on $date';
+  }
+
+  @override
+  String get quotation => 'Quotation';
+
+  @override
+  String get panels => 'Panels';
+
+  @override
+  String get battery_storage => 'Battery & Storage';
+
+  @override
+  String get total_project_quote => 'Total Project Quote';
+
+  @override
+  String get chat => 'Chat';
+
+  @override
+  String get accept_offer => 'Accept Offer';
+
+  @override
+  String get reject_offer => 'Reject Offer';
+
+  @override
+  String get solar_request_details => 'Solar Request Details';
+
+  @override
+  String get user_needs => 'User Needs';
+
+  @override
+  String get technical_notes => 'Technical Notes';
+
+  @override
+  String get send_offer_for_request => 'Send Offer for this Request';
+
+  @override
+  String get panels_power => 'Panels Power';
+
+  @override
+  String get battery_power => 'Battery Power';
+
+  @override
+  String get battery_type_full => 'Battery Type';
+
+  @override
+  String get pv_power => 'PV Power';
+
+  @override
+  String get battery => 'Battery';
+
+  @override
+  String city_label(Object city) {
+    return 'City: $city';
+  }
+
+  @override
+  String get company_dashboard_subtitle => 'Manage your solar operations efficiently';
+
+  @override
+  String get error_loading_data => 'Error loading data';
+
+  @override
+  String section_label(Object name) {
+    return 'Section: $name';
+  }
+
+  @override
+  String get quick_stats => 'Quick Stats';
+
+  @override
+  String get ready_to_scale_business => 'Ready to scale your business?';
+
+  @override
+  String get monitor_growth_subscriptions => 'Monitor your growth and subscriptions here.';
+
+  @override
+  String get solar_solutions_provider => 'Solar Solutions Provider';
+
+  @override
+  String get standard => 'Standard';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get admin_user => 'Admin User';
+
+  @override
+  String get super_admin => 'Super Admin';
+
+  @override
+  String get ready_to_scale_title => 'Ready to Scale?';
+
+  @override
+  String service_not_requested(Object service) {
+    return 'You have not requested access to $service yet.';
+  }
+
+  @override
+  String get service_unlock_description => 'Unlock this service to enhance your solar business and automate your workflow.';
+
+  @override
+  String get access_requested_successfully => 'Access requested successfully!';
+
+  @override
+  String get request_access_now => 'Request Access Now';
+
+  @override
+  String get awaiting_approval => 'Awaiting Approval';
+
+  @override
+  String service_under_review(Object service) {
+    return 'Your application for $service is currently under review.';
+  }
+
+  @override
+  String get service_pending_help => 'Our team usually takes 24-48 hours to approve new services. Please wait or contact support for help.';
+
+  @override
+  String get contact_support => 'Contact Support';
+
+  @override
+  String get request_denied => 'Request Denied';
+
+  @override
+  String service_request_rejected(Object service) {
+    return 'Your request for $service has been rejected.';
+  }
+
+  @override
+  String get service_rejected_help => 'This might be due to missing information or eligibility. Please reach out to our team to appeal.';
+
+  @override
+  String get appeal_decision => 'Appeal Decision';
+
+  @override
+  String get access_limited => 'Access Limited';
+
+  @override
+  String service_suspended_or_cancelled(Object service) {
+    return 'Your $service service is currently suspended or cancelled.';
+  }
+
+  @override
+  String get service_accounts_help => 'Please check your subscription status or contact our customer team to resolve this issue.';
+
+  @override
+  String get contact_accounts => 'Contact Accounts';
+
+  @override
+  String get service_maintenance => 'Service Maintenance';
+
+  @override
+  String service_being_updated(Object service) {
+    return '$service is currently being updated.';
+  }
+
+  @override
+  String get service_maintenance_help => 'We are adding new features to improve your experience. Check back shortly!';
+
+  @override
+  String get back_to_dashboard => 'Back to Dashboard';
+
+  @override
+  String get maybe_later => 'Maybe Later';
+
+  @override
+  String get email_support => 'Email Support';
+
+  @override
+  String get chat_on_whatsapp => 'Chat on WhatsApp';
+
+  @override
   String get systems => 'Systems';
 
   @override
@@ -992,9 +1567,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get example_10 => 'e.g., 10';
-
-  @override
-  String get required_field => 'Required';
 
   @override
   String get numbers_only => 'Numbers only';

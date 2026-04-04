@@ -52,26 +52,41 @@ class UserDashboard extends ConsumerWidget {
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(24.r),
-                border: Border.all(color: isDark ? Colors.white10 : AppTheme.primaryColor.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: isDark
+                      ? Colors.white10
+                      : AppTheme.primaryColor.withValues(alpha: 0.1),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _getGreeting(context),
-                    style: TextStyle(fontSize: 16.sp, color: isDark ? Colors.grey[400] : Colors.grey[600]),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    ),
                   ),
                   SizedBox(height: 8.h),
                   Text(
                     authController.isSigned
-                        ? (authController.user?.firstName ?? AppLocalizations.of(context)!.guest_user)
+                        ? (authController.user?.firstName ??
+                              AppLocalizations.of(context)!.guest_user)
                         : AppLocalizations.of(context)!.welcome_guest,
-                    style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                    style: TextStyle(
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     AppLocalizations.of(context)!.ready_to_manage_solar,
-                    style: TextStyle(fontSize: 14, color: isDark ? Colors.grey[400] : Colors.grey[500]),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: isDark ? Colors.grey[400] : Colors.grey[500],
+                    ),
                   ),
                   if (!authController.isSigned && isEnabled(ref, 'auth')) ...[
                     SizedBox(height: 16.h),
@@ -83,8 +98,13 @@ class UserDashboard extends ConsumerWidget {
                         backgroundColor: AppTheme.primaryColor,
                         foregroundColor: Colors.white,
                         elevation: 0,
-                        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 24.w,
+                          vertical: 12.h,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
                       ),
                     ),
                   ],
@@ -99,15 +119,36 @@ class UserDashboard extends ConsumerWidget {
                   padding: EdgeInsets.only(bottom: 24.h),
                   child: Row(
                     children: [
-                      Expanded(child: _buildStatCard(context, isDark, AppLocalizations.of(context)!.active_orders, "0", Iconsax.box_bold, Colors.blue)),
+                      Expanded(
+                        child: _buildStatCard(
+                          context,
+                          isDark,
+                          AppLocalizations.of(context)!.active_orders,
+                          "0",
+                          Iconsax.box_bold,
+                          Colors.blue,
+                        ),
+                      ),
                       SizedBox(width: 16.w),
-                      Expanded(child: _buildStatCard(context, isDark, AppLocalizations.of(context)!.my_systems, "0", Iconsax.sun_1_bold, Colors.orange)),
+                      Expanded(
+                        child: _buildStatCard(
+                          context,
+                          isDark,
+                          AppLocalizations.of(context)!.my_systems,
+                          "0",
+                          Iconsax.sun_1_bold,
+                          Colors.orange,
+                        ),
+                      ),
                     ],
                   ),
                 )
               : const SizedBox.shrink(),
 
-          Text(AppLocalizations.of(context)!.quick_actions, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(
+            AppLocalizations.of(context)!.quick_actions,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 16),
           GridView.count(
             shrinkWrap: true,
@@ -125,9 +166,10 @@ class UserDashboard extends ConsumerWidget {
                 AppLocalizations.of(context)!.plan_your_system,
                 Iconsax.calculator_bold,
                 Colors.purple,
-                () => ref.read(homePageIndexProvider.notifier).state = 1, // Switch to Calculator tab
+                () => ref.read(homePageIndexProvider.notifier).state =
+                    1, // Switch to Calculator tab
               ),
-              if (isEnabled(ref, 'store', defaultValue: false))
+              if (isEnabled(ref, 'store', defaultValue: true))
                 _buildActionCard(
                   context,
                   isDark,
@@ -135,7 +177,8 @@ class UserDashboard extends ConsumerWidget {
                   AppLocalizations.of(context)!.buy_components,
                   Iconsax.shop_bold,
                   Colors.pink,
-                  () => ref.read(homePageIndexProvider.notifier).state = 3, // Switch to Store tab
+                  () => ref.read(homePageIndexProvider.notifier).state =
+                      3, // Switch to Store tab
                 ),
             ],
           ),
@@ -144,13 +187,19 @@ class UserDashboard extends ConsumerWidget {
           if (isEnabled(ref, 'community'))
             GestureDetector(
               onTap: () {
-                ref.read(homePageIndexProvider.notifier).state = 2; // Switch to Hub tab
+                ref.read(homePageIndexProvider.notifier).state =
+                    2; // Switch to Hub tab
               },
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [AppTheme.primaryColor, AppTheme.primaryColor.withValues(alpha: 0.7)]),
+                  gradient: LinearGradient(
+                    colors: [
+                      AppTheme.primaryColor,
+                      AppTheme.primaryColor.withValues(alpha: 0.7),
+                    ],
+                  ),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Row(
@@ -161,17 +210,31 @@ class UserDashboard extends ConsumerWidget {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.join_community,
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                           const SizedBox(height: 8),
-                          Text(AppLocalizations.of(context)!.share_system_feedback, style: const TextStyle(color: Colors.white70)),
+                          Text(
+                            AppLocalizations.of(context)!.share_system_feedback,
+                            style: const TextStyle(color: Colors.white70),
+                          ),
                         ],
                       ),
                     ),
                     Container(
                       padding: EdgeInsets.all(12.w),
-                      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12)),
-                      child: Icon(Iconsax.people_bold, color: Colors.white, size: 32.sp),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Iconsax.people_bold,
+                        color: Colors.white,
+                        size: 32.sp,
+                      ),
                     ),
                   ],
                 ),
@@ -180,7 +243,10 @@ class UserDashboard extends ConsumerWidget {
 
           // Solar Tips
           const SizedBox(height: 32),
-          Text(AppLocalizations.of(context)!.solar_tips, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(
+            AppLocalizations.of(context)!.solar_tips,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 16),
           ListView.separated(
             shrinkWrap: true,
@@ -194,13 +260,27 @@ class UserDashboard extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(16.r),
-                  border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 5))],
+                  border: Border.all(
+                    color: isDark
+                        ? Colors.white10
+                        : Colors.grey.withValues(alpha: 0.1),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Iconsax.info_circle_bold, color: AppTheme.primaryColor, size: 24.sp),
+                    Icon(
+                      Iconsax.info_circle_bold,
+                      color: AppTheme.primaryColor,
+                      size: 24.sp,
+                    ),
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Column(
@@ -208,12 +288,21 @@ class UserDashboard extends ConsumerWidget {
                         children: [
                           Text(
                             hint.title,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                            ),
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             hint.description,
-                            style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600], fontSize: 13.sp, height: 1.4),
+                            style: TextStyle(
+                              color: isDark
+                                  ? Colors.grey[400]
+                                  : Colors.grey[600],
+                              fontSize: 13.sp,
+                              height: 1.4,
+                            ),
                           ),
                         ],
                       ),
@@ -228,33 +317,68 @@ class UserDashboard extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatCard(BuildContext context, bool isDark, String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    BuildContext context,
+    bool isDark,
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 10))],
+        border: Border.all(
+          color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
             child: Icon(icon, color: color, size: 24),
           ),
           const SizedBox(height: 16),
-          Text(value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 4),
-          Text(title, style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[500], fontSize: 12)),
+          Text(
+            title,
+            style: TextStyle(
+              color: isDark ? Colors.grey[400] : Colors.grey[500],
+              fontSize: 12,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildActionCard(BuildContext context, bool isDark, String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildActionCard(
+    BuildContext context,
+    bool isDark,
+    String title,
+    String subtitle,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -262,8 +386,16 @@ class UserDashboard extends ConsumerWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 5))],
+          border: Border.all(
+            color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,8 +403,17 @@ class UserDashboard extends ConsumerWidget {
           children: [
             Icon(icon, color: color, size: 28),
             const Spacer(),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            Text(subtitle, style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[500], fontSize: 12)),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            Text(
+              subtitle,
+              style: TextStyle(
+                color: isDark ? Colors.grey[400] : Colors.grey[500],
+                fontSize: 12,
+              ),
+            ),
           ],
         ),
       ),

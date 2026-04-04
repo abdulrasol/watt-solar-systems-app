@@ -27,6 +27,97 @@
   "solar_tips": "نصائح ومعلومات شمسية",
   "store": "المتجر",
   "buy_components": "شراء المكونات",
+  "b2b_storefront": "واجهة B2B",
+  "b2c_storefront": "واجهة B2C",
+  "storefront_b2b_subtitle": "كتالوج مخصص للأعضاء مع أسعار الجملة وإظهار مخزون الشركة.",
+  "storefront_b2c_subtitle": "واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.",
+  "storefront_products_available": "المنتجات المتاحة {count}",
+  "@storefront_products_available": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "search_products": "ابحث عن المنتجات",
+  "search_b2b_products": "ابحث في منتجات B2B",
+  "filters": "الفلاتر",
+  "sort_by": "الترتيب حسب",
+  "sort_newest": "الأحدث",
+  "sort_oldest": "الأقدم",
+  "sort_name_asc": "الاسم أ-ي",
+  "sort_name_desc": "الاسم ي-أ",
+  "sort_price_asc": "السعر من الأقل للأعلى",
+  "sort_price_desc": "السعر من الأعلى للأقل",
+  "all": "الكل",
+  "all_categories": "كل التصنيفات",
+  "all_companies": "كل الشركات",
+  "availability": "التوفر",
+  "available": "متوفر",
+  "unavailable": "غير متوفر",
+  "min_price": "أقل سعر",
+  "max_price": "أعلى سعر",
+  "clear_filters": "مسح",
+  "apply_filters": "تطبيق",
+  "store_filters": "فلاتر المتجر",
+  "no_store_products_found": "لا توجد منتجات مطابقة للفلاتر الحالية.",
+  "load_more": "تحميل المزيد",
+  "global_category": "عام",
+  "internal_category": "داخلي",
+  "company_category": "شركة",
+  "iqd_price": "{amount} د.ع",
+  "@iqd_price": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "retail_price_label": "مفرد {amount}",
+  "@retail_price_label": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "wholesale_price_label": "جملة {amount}",
+  "@wholesale_price_label": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "stock_count": "المخزون {count}",
+  "@stock_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "product_details": "تفاصيل المنتج",
+  "price_overview": "ملخص الأسعار",
+  "display_price": "السعر المعروض",
+  "retail_price": "سعر المفرد",
+  "wholesale_price": "سعر الجملة",
+  "sku": "SKU",
+  "pricing_tiers": "شرائح التسعير",
+  "pricing_tier_line": "{quantity}+ قطعة: {amount} د.ع",
+  "@pricing_tier_line": {
+    "placeholders": {
+      "quantity": {},
+      "amount": {}
+    }
+  },
+  "add_to_cart": "أضف إلى السلة",
+  "added_to_cart": "تمت الإضافة إلى السلة",
+  "b2b_cart": "سلة B2B",
+  "b2c_cart": "سلة B2C",
+  "cart_empty": "سلتك فارغة",
+  "cart_empty_subtitle": "أضف منتجات من المتجر لإنشاء سلة محلية مستقلة لكل شركة.",
+  "cart_summary": "ملخص السلة",
+  "total_items": "إجمالي العناصر",
+  "total_amount": "الإجمالي",
+  "cart_items_count": "{count} عنصر",
+  "@cart_items_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "clear_cart": "مسح السلة",
+  "subtotal": "المجموع الفرعي",
   "join_community": "انضم للمجتمع",
   "share_system_feedback": "شارك نظامك واحصل على تقييم",
   "reset_password": "إعادة تعيين كلمة المرور",
@@ -71,7 +162,6 @@
   "or_text": "أو",
   "first_name": "الاسم الأول",
   "last_name": "الاسم الأخير",
-  "phone_number": "رقم الهاتف",
   "phone_required": "رقم الهاتف مطلوب",
   "invalid_phone_number": "أدخل رقم هاتف صحيح",
   "loading": "جاري التحميل...",
@@ -215,6 +305,176 @@
   "my_purchases": "مشترياتي",
   "tools": "الأدوات",
   "analytics": "التحليلات",
+  "overview": "نظرة عامة",
+  "services": "الخدمات",
+  "contacts": "جهات الاتصال",
+  "status_active": "نشط",
+  "status_pending": "قيد الانتظار",
+  "status_rejected": "مرفوض",
+  "status_suspended": "معلّق",
+  "status_cancelled": "ملغي",
+  "status_accepted": "مقبول",
+  "status_completed": "مكتمل",
+  "status_unavailable": "غير متاح",
+  "request_status_open": "مفتوح",
+  "request_status_closed": "مغلق",
+  "request_status_fulfilled": "مكتمل التنفيذ",
+  "battery_type_gel": "جل",
+  "battery_type_tubular": "أنبوبي",
+  "battery_type_lithium": "ليثيوم",
+  "inverter_type_off_grid": "منفصل عن الشبكة",
+  "inverter_type_on_grid": "مرتبط بالشبكة",
+  "inverter_type_hybrid": "هجين",
+  "offers_marketplace": "سوق العروض الشمسية",
+  "available_requests": "الطلبات المتاحة",
+  "my_bids": "عروضي المقدمة",
+  "no_requests_found": "لا توجد طلبات",
+  "no_offers_found": "لا توجد عروض",
+  "new_projects_will_appear_here": "ستظهر هنا مشاريع الطاقة الشمسية الجديدة في منطقتك.",
+  "browse_requests_to_start_bidding": "انتقل إلى تبويب الطلبات لبدء تقديم العروض على المشاريع.",
+  "admin_marketplace_oversight": "لوحة متابعة سوق العروض",
+  "all_requests": "جميع الطلبات",
+  "all_offers": "جميع العروض",
+  "my_solar_project_inquiries": "استفسارات مشاريعي الشمسية",
+  "add_new_request": "إضافة طلب جديد",
+  "received_offers_count": "العروض المستلمة ({count})",
+  "@received_offers_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "no_offers_received_yet": "لم تصلك أي عروض بعد.",
+  "no_requests_posted": "لا توجد طلبات منشورة",
+  "post_first_solar_request": "ابدأ بتوفير الطاقة من خلال نشر أول طلب لنظام شمسي واستقبال عروض من الشركات.",
+  "create_solar_request": "إنشاء طلب نظام شمسي",
+  "location_preferences": "تفضيلات الموقع",
+  "broadcast_to_all_cities": "إرسال الطلب إلى جميع المدن",
+  "broadcast_to_all_cities_desc": "فعّل هذا الخيار للوصول إلى الشركات في مختلف المدن",
+  "solar_panel_needs": "احتياجات الألواح الشمسية",
+  "expected_power_per_unit": "القدرة المتوقعة للوحدة (واط)",
+  "quantity_needed": "الكمية المطلوبة",
+  "estimated_pv_power_needed": "إجمالي قدرة الألواح المطلوبة",
+  "storage_requirements": "متطلبات التخزين",
+  "preferred_battery_type": "نوع البطارية المفضل",
+  "battery_size_wh": "سعة البطارية (واط-ساعة)",
+  "total_energy_capacity_needed": "إجمالي سعة التخزين المطلوبة",
+  "inverter_configuration": "إعدادات العاكس",
+  "desired_inverter_type": "نوع العاكس المطلوب",
+  "total_inverter_power_peak": "إجمالي قدرة العاكس المطلوبة",
+  "additional_specifications": "مواصفات إضافية",
+  "project_description_notes": "وصف المشروع / الملاحظات",
+  "post_solar_request": "نشر الطلب",
+  "new_offer_proposal": "عرض سعر جديد",
+  "financial_information": "البيانات المالية",
+  "solar_panels": "الألواح الشمسية",
+  "power_per_unit": "قدرة الوحدة (واط)",
+  "total_energy_capacity": "إجمالي سعة التخزين",
+  "battery_type_label": "نوع البطارية",
+  "inverter_type_label": "نوع العاكس",
+  "storage_batteries": "التخزين (البطاريات)",
+  "additional_notes": "ملاحظات إضافية",
+  "notes_for_user": "ملاحظات للمستخدم",
+  "enter_quotation_price": "أدخل سعر العرض",
+  "price_required": "السعر مطلوب",
+  "submit_quotation": "إرسال العرض",
+  "offer_details": "تفاصيل العرض",
+  "offering_price": "سعر العرض",
+  "technical_specifications": "المواصفات الفنية",
+  "included_services_items": "الخدمات والعناصر المشمولة",
+  "notes_from_provider": "ملاحظات الشركة",
+  "submitted_on_date": "تم الإرسال في {date}",
+  "@submitted_on_date": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "quotation": "عرض سعر",
+  "panels": "الألواح",
+  "battery_storage": "البطارية والتخزين",
+  "total_project_quote": "إجمالي قيمة المشروع",
+  "chat": "محادثة",
+  "accept_offer": "قبول العرض",
+  "reject_offer": "رفض العرض",
+  "solar_request_details": "تفاصيل الطلب الشمسي",
+  "user_needs": "احتياجات المستخدم",
+  "technical_notes": "ملاحظات فنية",
+  "send_offer_for_request": "إرسال عرض لهذا الطلب",
+  "panels_power": "قدرة الألواح",
+  "battery_power": "قدرة البطارية",
+  "battery_type_full": "نوع البطارية",
+  "pv_power": "قدرة الألواح",
+  "battery": "البطارية",
+  "city_label": "المدينة: {city}",
+  "@city_label": {
+    "placeholders": {
+      "city": {}
+    }
+  },
+  "company_dashboard_subtitle": "أدر عملياتك في مجال الطاقة الشمسية بكفاءة",
+  "error_loading_data": "حدث خطأ أثناء تحميل البيانات",
+  "section_label": "القسم: {name}",
+  "@section_label": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "quick_stats": "إحصاءات سريعة",
+  "ready_to_scale_business": "هل أنت مستعد لتوسيع أعمالك؟",
+  "monitor_growth_subscriptions": "تابع نمو أعمالك واشتراكاتك من هنا.",
+  "solar_solutions_provider": "مزود حلول الطاقة الشمسية",
+  "standard": "قياسي",
+  "company": "شركة",
+  "admin_user": "مستخدم إداري",
+  "super_admin": "مدير النظام",
+  "ready_to_scale_title": "جاهز للتوسع؟",
+  "service_not_requested": "لم تطلب الوصول إلى خدمة {service} بعد.",
+  "@service_not_requested": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_unlock_description": "فعّل هذه الخدمة لتطوير أعمالك في الطاقة الشمسية وأتمتة سير العمل.",
+  "access_requested_successfully": "تم إرسال طلب الوصول بنجاح",
+  "request_access_now": "اطلب الوصول الآن",
+  "awaiting_approval": "بانتظار الموافقة",
+  "service_under_review": "طلبك للحصول على خدمة {service} قيد المراجعة حالياً.",
+  "@service_under_review": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_pending_help": "عادةً ما يستغرق فريقنا من 24 إلى 48 ساعة للموافقة على الخدمات الجديدة. يُرجى الانتظار أو التواصل مع الدعم عند الحاجة.",
+  "contact_support": "التواصل مع الدعم",
+  "request_denied": "تم رفض الطلب",
+  "service_request_rejected": "تم رفض طلبك لخدمة {service}.",
+  "@service_request_rejected": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_rejected_help": "قد يكون ذلك بسبب نقص في المعلومات أو عدم استيفاء الشروط. يُرجى التواصل مع فريقنا لتقديم اعتراض.",
+  "appeal_decision": "الاعتراض على القرار",
+  "access_limited": "الوصول محدود",
+  "service_suspended_or_cancelled": "خدمة {service} الخاصة بك معلّقة أو ملغاة حالياً.",
+  "@service_suspended_or_cancelled": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_accounts_help": "يرجى التحقق من حالة اشتراكك أو التواصل مع فريق خدمة العملاء لحل المشكلة.",
+  "contact_accounts": "التواصل مع الحسابات",
+  "service_maintenance": "الخدمة تحت الصيانة",
+  "service_being_updated": "يتم حالياً تحديث خدمة {service}.",
+  "@service_being_updated": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_maintenance_help": "نعمل على إضافة مزايا جديدة لتحسين تجربتك. يُرجى المحاولة مرة أخرى لاحقاً.",
+  "back_to_dashboard": "العودة إلى لوحة التحكم",
+  "maybe_later": "لاحقاً",
+  "email_support": "الدعم عبر البريد",
+  "chat_on_whatsapp": "المحادثة عبر واتساب",
   "systems": "الأنظمة",
   "delivery": "التوصيل",
   "company_profile": "ملف الشركة",

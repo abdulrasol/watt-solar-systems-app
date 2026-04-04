@@ -2,14 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/models/response.dart' as local;
+import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:solar_hub/src/utils/toast_service.dart';
 
 abstract class ApiServicesInterface {
   Future get(String url);
   Future post(String url, {Map<String, dynamic>? data});
   Future put(String url, {Map<String, dynamic>? data});
   Future delete(String url);
+  Future<Map<String, dynamic>> getRawMap(String url, {Map<String, dynamic>? queryParameters});
   Future multipartRequest(
     String url, {
     required FormData file,
@@ -38,8 +41,17 @@ class DioService implements ApiServicesInterface {
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
             dPrint('Authorized request', tag: options.method);
-            if (options.data != null) dPrint(options.data.toString(), tag: 'body');
-            if (options.queryParameters.isNotEmpty) dPrint(options.queryParameters, tag: 'query');
+            if (options.data != null) {
+              if (options.data is FormData) {
+                dPrint(options.data.files, tag: 'body');
+                dPrint(options.data.fields, tag: 'body');
+              } else {
+                dPrint(options.data.toString(), tag: 'body');
+              }
+            }
+            if (options.queryParameters.isNotEmpty) {
+              dPrint(options.queryParameters, tag: 'query');
+            }
           }
 
           return handler.next(options);
@@ -49,6 +61,45 @@ class DioService implements ApiServicesInterface {
         },
 
         onError: (error, handler) {
+          final context = rootNavigatorKey.currentContext;
+          if (context != null) {
+            String title = 'Server Error';
+            String message = 'An unexpected error occurred';
+            dynamic detail = error.response?.data ?? error.message;
+
+            if (error.type == DioExceptionType.connectionTimeout || error.type == DioExceptionType.receiveTimeout) {
+              title = 'Connection Timeout';
+              message = 'The server is taking too long to respond. Please check your internet connection.';
+            } else if (error.type == DioExceptionType.connectionError) {
+              title = 'Connection Error';
+              message = 'Could not connect to the server. Please check your internet connection.';
+            } else if (error.response?.statusCode == 401) {
+              title = 'Unauthorized';
+              message = 'Your session has expired. Please login again.';
+            } else if (error.response?.data != null) {
+              final data = error.response?.data;
+              if (data is Map) {
+                if (data.containsKey('message') && data['message'] != null) {
+                  message = data['message'].toString();
+                } else if (data.containsKey('detail') && data['detail'] != null) {
+                  final d = data['detail'];
+                  if (d is String) {
+                    message = d;
+                  } else if (d is List && d.isNotEmpty) {
+                    final first = d.first;
+                    if (first is Map && first.containsKey('msg')) {
+                      message = first['msg'].toString();
+                    } else if (first is Map && first.containsKey('type')) {
+                      message = 'Validation Error: ${first['type']}';
+                    }
+                  }
+                }
+              }
+            }
+
+            ToastService.showErrorWithDetail(context, title: title, message: message, detail: detail);
+          }
+
           dPrint(error.response?.data.toString(), tag: 'error', stackTrace: error.stackTrace);
           handler.next(error);
         },
@@ -87,6 +138,12 @@ class DioService implements ApiServicesInterface {
   }
 
   @override
+  Future<Map<String, dynamic>> getRawMap(String url, {Map<String, dynamic>? queryParameters}) async {
+    final response = await _dio.get(url, queryParameters: queryParameters);
+    return Map<String, dynamic>.from(response.data as Map);
+  }
+
+  @override
   Future<local.Response> multipartRequest(
     String url, {
     required FormData file,
@@ -104,3 +161,4 @@ class DioService implements ApiServicesInterface {
     return local.Response.fromJson(response.data);
   }
 }
+

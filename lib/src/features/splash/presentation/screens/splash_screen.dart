@@ -1,11 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/firebase_options.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/core/services/push_notification_service.dart';
 import 'package:solar_hub/src/core/widgets/app_logo.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
@@ -45,9 +44,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           ref.read(configProvider.notifier).setConfigs(configs);
         },
       );
-
-      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-      dPrint('Firebase initialized', tag: 'splash_screen');
+      await getIt<PushNotificationService>().initialize();
+      dPrint('Push notification service initialized', tag: 'splash_screen');
 
       // Now access auth provider (after dependencies are ready)
       final authState = ref.read(authProvider);
@@ -122,7 +120,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 24.h),
-                const LoadingWidgets(size: 30),
+                LoadingWidget.widget(context: context, size: 30),
                 // const CircularProgressIndicator(),
                 SizedBox(height: 16.h),
                 Text(

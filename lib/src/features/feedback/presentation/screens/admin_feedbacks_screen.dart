@@ -75,7 +75,7 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LoadingWidgets(size: 30),
+          LoadingWidget.widget(context: context, size: 30),
           SizedBox(height: 24.h),
           Text(
             'Loading Feedbacks...',

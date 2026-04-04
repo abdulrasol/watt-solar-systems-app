@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
 
 import 'package:solar_hub/src/utils/app_strings.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/dashboard_data_provider.dart';
 import '../../domain/entities/product.dart';
 import '../providers/inventory_provider.dart';
 
@@ -13,17 +13,10 @@ class ProductDetailsPage extends ConsumerWidget {
 
   const ProductDetailsPage({super.key, required this.product});
 
-  bool _canEdit(String role, Map<String, String> permissions) {
-    if (role == AppStrings.owner || role == 'admin') return true;
-    return permissions[AppStrings.inventoryPermission] == AppStrings.writePremeission;
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dashboardAsync = ref.watch(dashboardDataProvider);
-    final role = dashboardAsync.value?.role ?? '';
-    final permissions = dashboardAsync.value?.permissions ?? {};
-    final canEdit = _canEdit(role, permissions);
+    final companySummery = ref.watch(companySummeryProvider);
+    final permissions = companySummery.isPermisseon(AppStrings.inventoryPermission);
 
     return Scaffold(
       backgroundColor: Colors.grey[50], // sleek background
@@ -32,7 +25,7 @@ class ProductDetailsPage extends ConsumerWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         actions: [
-          if (canEdit)
+          if (permissions)
             IconButton(
               icon: const Icon(Icons.edit_outlined),
               tooltip: 'Edit Product',
@@ -40,7 +33,7 @@ class ProductDetailsPage extends ConsumerWidget {
                 context.push('/company-dashboard/inventory/edit/${product.id}', extra: product);
               },
             ),
-          if (canEdit)
+          if (permissions)
             IconButton(
               icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
               tooltip: 'Delete Product',

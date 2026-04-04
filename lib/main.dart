@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:solar_hub/firebase_options.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -16,6 +18,10 @@ import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     dPrint('Initializing SQL FFI for Desktop', tag: 'main');
     sqfliteFfiInit();

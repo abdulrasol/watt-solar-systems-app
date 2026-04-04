@@ -26,7 +26,7 @@ class AdminDrawer extends ConsumerWidget {
     return Drawer(
       backgroundColor: Colors.transparent,
       child: Container(
-        decoration: BoxDecoration(color: isDark ? const Color(0xFF1E1E2C).withValues(alpha: 0.95) : Colors.white.withValues(alpha: 0.95)),
+        decoration: BoxDecoration(color: isDark ? const Color(0xFF1E1E2C).withOpacity(0.95) : Colors.white.withOpacity(0.95)),
         child: Column(
           children: [
             _buildHeader(context, authState, isDark),
@@ -71,6 +71,54 @@ class AdminDrawer extends ConsumerWidget {
                     delay: 180,
                   ),
 
+                  // Marketplace Oversight
+                  _buildDrawerItem(
+                    context: context,
+                    icon: Iconsax.shop_bold,
+                    title: 'Marketplace Oversight',
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/admin-marketplace');
+                    },
+                    delay: 190,
+                  ),
+
+                  // Manage Companies
+                  _buildDrawerItem(
+                    context: context,
+                    icon: Iconsax.building_bold,
+                    title: 'Manage Companies',
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.go('/admin/companies');
+                    },
+                    delay: 200,
+                  ),
+
+                  // Service Catalog
+                  _buildDrawerItem(
+                    context: context,
+                    icon: Iconsax.category_2_bold,
+                    title: 'Service Catalog',
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.go('/admin/service-catalog');
+                    },
+                    delay: 210,
+                  ),
+
+                  // Service Requests
+                  _buildDrawerItem(
+                    context: context,
+                    icon: Iconsax.briefcase_bold,
+                    title: 'Service Requests',
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.go('/admin/service-requests');
+                    },
+                    delay: 220,
+                  ),
+
                   const SizedBox(height: 16),
 
                   // Switch to other dashboards
@@ -107,7 +155,7 @@ class AdminDrawer extends ConsumerWidget {
                       onTap: () {
                         // Pop all routes including drawer, then navigate to company dashboard
                         Navigator.of(context).popUntil((route) => route.isFirst);
-                        context.go('/company/dashboard');
+                        context.go('/companies/dashboard');
                       },
                       delay: 250,
                     ),
@@ -162,8 +210,8 @@ class AdminDrawer extends ConsumerWidget {
               padding: EdgeInsets.all(3.r),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.3),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.5), width: 2),
+                color: Colors.white.withOpacity(0.3),
+                border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
               ),
               child: CircleAvatar(
                 radius: 32.r,
@@ -180,9 +228,9 @@ class AdminDrawer extends ConsumerWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+                    border: Border.all(color: Colors.white.withOpacity(0.3)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -221,7 +269,7 @@ class AdminDrawer extends ConsumerWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isActive ? AppTheme.primaryColor.withValues(alpha: 0.2) : AppTheme.primaryColor.withValues(alpha: 0.1),
+            color: isActive ? AppTheme.primaryColor.withOpacity(0.2) : AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: isActive ? AppTheme.primaryColor : AppTheme.primaryColor, size: 20),
@@ -247,7 +295,7 @@ class AdminDrawer extends ConsumerWidget {
           if (onTap != null) onTap();
           if (route != null) context.push(route);
         },
-        splashColor: AppTheme.primaryColor.withValues(alpha: 0.15),
+        splashColor: AppTheme.primaryColor.withOpacity(0.15),
       ),
     ).animate().fadeIn(duration: 50.ms).slideX(begin: -0.1);
   }
@@ -256,7 +304,7 @@ class AdminDrawer extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.1))),
+        border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.1))),
       ),
       child: Column(
         children: [
@@ -289,7 +337,7 @@ class AdminDrawer extends ConsumerWidget {
                 style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: authState.isSigned ? Colors.red.withValues(alpha: 0.1) : AppTheme.primaryColor,
+                backgroundColor: authState.isSigned ? Colors.red.withOpacity(0.1) : AppTheme.primaryColor,
                 foregroundColor: authState.isSigned ? Colors.red : Colors.white,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(vertical: 12),

@@ -24,6 +24,36 @@ class AppTheme {
 
   static const String fontFamily = 'Cairo';
 
+  // Helper method to create InputDecoration with consistent styling
+  static InputDecoration inputDecoration(String label, String hint) {
+    return InputDecoration(
+      labelText: label,
+      hintText: hint,
+      labelStyle: const TextStyle(color: Colors.grey, fontFamily: fontFamily),
+      hintStyle: const TextStyle(color: Colors.grey, fontFamily: fontFamily),
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey.shade200),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: primaryColor),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red, width: 2),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+    );
+  }
+
   // Typography
   static TextTheme _buildTextTheme(ThemeData base, Color textColor) {
     // Apply Cairo font to all text styles

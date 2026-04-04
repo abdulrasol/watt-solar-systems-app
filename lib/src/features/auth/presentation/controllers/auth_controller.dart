@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/core/services/push_notification_service.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/auth_response.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
@@ -47,38 +48,44 @@ class AuthController extends Notifier<AuthState> {
   }
 
   Future<void> login(AuthResponse response) async {
-    cashe.saveUser(response.user);
-    cashe.saveToken(response.token!);
+    await cashe.saveUser(response.user);
+    await cashe.saveToken(response.token!);
     state = state.copyWith(user: response.user, isSigned: true);
+    await getIt<PushNotificationService>().onAuthenticated();
   }
 
   Future<void> logout() async {
-    cashe.delete('token');
-    cashe.delete('user');
+    await cashe.delete('token');
+    await cashe.delete('user');
     state = AuthState(user: null, isSigned: false);
+    await getIt<PushNotificationService>().onLoggedOut();
   }
 
   Future<void> updateProfile(User user) async {
-    cashe.saveUser(user);
+    await cashe.saveUser(user);
     state = state.copyWith(user: user);
   }
 
   Future<void> register(AuthResponse response) async {
-    cashe.saveUser(response.user);
-    cashe.saveToken(response.token!);
+    await cashe.saveUser(response.user);
+    await cashe.saveToken(response.token!);
     state = state.copyWith(user: response.user, isSigned: true);
+    await getIt<PushNotificationService>().onAuthenticated();
   }
 
   Future<void> fetchProfile(User user) async {
-    cashe.saveUser(user);
+    await cashe.saveUser(user);
     state = state.copyWith(user: user);
+    if (state.isSigned) {
+      await getIt<PushNotificationService>().onAuthenticated();
+    }
   }
 
   Future<void> registerCompany(Company company) async {
     state = state.copyWith(
       user: state.user?.copyWith(company: company, isCompanyMember: true),
     );
-    cashe.saveUser(state.user!);
+    await cashe.saveUser(state.user!);
   }
 }
 

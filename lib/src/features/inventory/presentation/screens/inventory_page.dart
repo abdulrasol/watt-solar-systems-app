@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
 import 'package:solar_hub/src/features/inventory/presentation/widgets/product_card.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -47,8 +49,23 @@ class _InventoryPageState extends ConsumerState<InventoryPage> {
     inventoryState = ref.watch(inventoryNotifierProvider);
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      body: Column(
+    return PreScaffold(
+      title: l10n.inventory,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {
+            context.push('/inventory/add');
+          },
+        ),
+      ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // context.push('/inventory/add');
+        },
+        child: const Icon(Icons.filter),
+      ),
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -57,7 +74,7 @@ class _InventoryPageState extends ConsumerState<InventoryPage> {
               decoration: InputDecoration(
                 hintText: l10n.search,
                 prefixIcon: const Icon(IonIcons.search, color: AppTheme.primaryDarkColor),
-                suffixIcon: ref.watch(inventoryNotifierProvider).filter.search!.isNotEmpty
+                suffixIcon: ref.watch(inventoryNotifierProvider).filter.search?.isNotEmpty ?? true
                     ? IconButton(
                         icon: const Icon(IonIcons.close_circle),
                         onPressed: () {

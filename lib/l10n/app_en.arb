@@ -27,6 +27,97 @@
   "solar_tips": "Solar Tips & Hints",
   "store": "Store",
   "buy_components": "Buy components",
+  "b2b_storefront": "B2B Storefront",
+  "b2c_storefront": "B2C Storefront",
+  "storefront_b2b_subtitle": "Member-only catalog with wholesale pricing and company inventory visibility.",
+  "storefront_b2c_subtitle": "Open storefront for all users with public product access.",
+  "storefront_products_available": "{count} products available",
+  "@storefront_products_available": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "search_products": "Search products",
+  "search_b2b_products": "Search B2B products",
+  "filters": "Filters",
+  "sort_by": "Sort By",
+  "sort_newest": "Newest",
+  "sort_oldest": "Oldest",
+  "sort_name_asc": "Name A-Z",
+  "sort_name_desc": "Name Z-A",
+  "sort_price_asc": "Price Low-High",
+  "sort_price_desc": "Price High-Low",
+  "all": "All",
+  "all_categories": "All Categories",
+  "all_companies": "All companies",
+  "availability": "Availability",
+  "available": "Available",
+  "unavailable": "Unavailable",
+  "min_price": "Min price",
+  "max_price": "Max price",
+  "clear_filters": "Clear",
+  "apply_filters": "Apply",
+  "store_filters": "Store Filters",
+  "no_store_products_found": "No products matched the current filters.",
+  "load_more": "Load More",
+  "global_category": "Global",
+  "internal_category": "Internal",
+  "company_category": "Company",
+  "iqd_price": "IQD {amount}",
+  "@iqd_price": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "retail_price_label": "Retail {amount}",
+  "@retail_price_label": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "wholesale_price_label": "Wholesale {amount}",
+  "@wholesale_price_label": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "stock_count": "Stock {count}",
+  "@stock_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "product_details": "Product Details",
+  "price_overview": "Price Overview",
+  "display_price": "Display Price",
+  "retail_price": "Retail Price",
+  "wholesale_price": "Wholesale Price",
+  "sku": "SKU",
+  "pricing_tiers": "Pricing Tiers",
+  "pricing_tier_line": "{quantity}+ units: IQD {amount}",
+  "@pricing_tier_line": {
+    "placeholders": {
+      "quantity": {},
+      "amount": {}
+    }
+  },
+  "add_to_cart": "Add to Cart",
+  "added_to_cart": "Added to cart",
+  "b2b_cart": "B2B Cart",
+  "b2c_cart": "B2C Cart",
+  "cart_empty": "Your cart is empty",
+  "cart_empty_subtitle": "Add products from the storefront to create a local cart for each company.",
+  "cart_summary": "Cart Summary",
+  "total_items": "Total Items",
+  "total_amount": "Total Amount",
+  "cart_items_count": "{count} items",
+  "@cart_items_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "clear_cart": "Clear Cart",
+  "subtotal": "Subtotal",
   "join_community": "Join the Community",
   "share_system_feedback": "Share your system & get feedback",
   "reset_password": "Reset Password",
@@ -215,6 +306,178 @@
   "my_purchases": "My Purchases",
   "tools": "Tools",
   "analytics": "Analytics",
+  "overview": "Overview",
+  "services": "Services",
+  "contacts": "Contacts",
+  "status_active": "Active",
+  "status_pending": "Pending",
+  "status_rejected": "Rejected",
+  "status_suspended": "Suspended",
+  "status_cancelled": "Cancelled",
+  "status_accepted": "Accepted",
+  "status_completed": "Completed",
+  "status_unavailable": "Unavailable",
+  "request_status_open": "Open",
+  "request_status_closed": "Closed",
+  "request_status_fulfilled": "Fulfilled",
+  "battery_type_gel": "Gel",
+  "battery_type_tubular": "Tubular",
+  "battery_type_lithium": "Lithium",
+  "inverter_type_off_grid": "Off Grid",
+  "inverter_type_on_grid": "On Grid",
+  "inverter_type_hybrid": "Hybrid",
+  "offers_marketplace": "Solar Marketplace",
+  "available_requests": "Available Requests",
+  "my_bids": "My Bids",
+  "no_requests_found": "No requests found",
+  "no_offers_found": "No offers found",
+  "new_projects_will_appear_here": "New solar projects in your area will appear here.",
+  "browse_requests_to_start_bidding": "Browse the requests tab to start bidding on projects.",
+  "admin_marketplace_oversight": "Admin: Marketplace Oversight",
+  "all_requests": "All Requests",
+  "all_offers": "All Offers",
+  "my_solar_project_inquiries": "My Solar Project Inquiries",
+  "add_new_request": "Add New Request",
+  "received_offers_count": "Received Offers ({count})",
+  "@received_offers_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "no_offers_received_yet": "No offers received yet.",
+  "no_requests_posted": "No requests posted",
+  "post_first_solar_request": "Ready to save on energy? Post your first solar request and get bids from solar companies.",
+  "create_solar_request": "Create Solar Request",
+  "location_preferences": "Location Preferences",
+  "broadcast_to_all_cities": "Broadcast to All Cities",
+  "broadcast_to_all_cities_desc": "Enable to reach companies nationwide",
+  "solar_panel_needs": "Solar Panel Needs",
+  "expected_power_per_unit": "Expected Power/Unit (W)",
+  "quantity_needed": "Quantity Needed",
+  "estimated_pv_power_needed": "Estimated PV Power Needed",
+  "storage_requirements": "Storage Requirements",
+  "preferred_battery_type": "Preferred Battery Type",
+  "battery_size_wh": "Battery Size (Wh)",
+  "total_energy_capacity_needed": "Total Energy Capacity Needed",
+  "inverter_configuration": "Inverter Configuration",
+  "desired_inverter_type": "Desired Inverter Type",
+  "total_inverter_power_peak": "Total Inverter Power Peak",
+  "additional_specifications": "Additional Specifications",
+  "project_description_notes": "Project Description / Notes",
+  "required_field": "Required",
+  "post_solar_request": "Post Solar Request",
+  "new_offer_proposal": "New Offer Proposal",
+  "financial_information": "Financial Information",
+  "solar_panels": "Solar Panels",
+  "power_per_unit": "Power/Unit (W)",
+  "count": "Count",
+  "total_energy_capacity": "Total Energy Capacity",
+  "battery_type_label": "Battery Type",
+  "inverter_type_label": "Inverter Type",
+  "storage_batteries": "Storage (Batteries)",
+  "additional_notes": "Additional Notes",
+  "notes_for_user": "Notes for the User",
+  "enter_quotation_price": "Enter quotation price",
+  "price_required": "Price is required",
+  "submit_quotation": "Submit Quotation",
+  "offer_details": "Offer Details",
+  "offering_price": "Offering Price",
+  "technical_specifications": "Technical Specifications",
+  "included_services_items": "Included Services & Items",
+  "notes_from_provider": "Notes from Provider",
+  "submitted_on_date": "Submitted on {date}",
+  "@submitted_on_date": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "quotation": "Quotation",
+  "panels": "Panels",
+  "battery_storage": "Battery & Storage",
+  "total_project_quote": "Total Project Quote",
+  "chat": "Chat",
+  "accept_offer": "Accept Offer",
+  "reject_offer": "Reject Offer",
+  "solar_request_details": "Solar Request Details",
+  "user_needs": "User Needs",
+  "technical_notes": "Technical Notes",
+  "send_offer_for_request": "Send Offer for this Request",
+  "panels_power": "Panels Power",
+  "battery_power": "Battery Power",
+  "battery_type_full": "Battery Type",
+  "pv_power": "PV Power",
+  "battery": "Battery",
+  "city_label": "City: {city}",
+  "@city_label": {
+    "placeholders": {
+      "city": {}
+    }
+  },
+  "company_dashboard_subtitle": "Manage your solar operations efficiently",
+  "error_loading_data": "Error loading data",
+  "section_label": "Section: {name}",
+  "@section_label": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "quick_stats": "Quick Stats",
+  "ready_to_scale_business": "Ready to scale your business?",
+  "monitor_growth_subscriptions": "Monitor your growth and subscriptions here.",
+  "solar_solutions_provider": "Solar Solutions Provider",
+  "standard": "Standard",
+  "company": "Company",
+  "admin_user": "Admin User",
+  "super_admin": "Super Admin",
+  "ready_to_scale_title": "Ready to Scale?",
+  "service_not_requested": "You have not requested access to {service} yet.",
+  "@service_not_requested": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_unlock_description": "Unlock this service to enhance your solar business and automate your workflow.",
+  "access_requested_successfully": "Access requested successfully!",
+  "request_access_now": "Request Access Now",
+  "awaiting_approval": "Awaiting Approval",
+  "service_under_review": "Your application for {service} is currently under review.",
+  "@service_under_review": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_pending_help": "Our team usually takes 24-48 hours to approve new services. Please wait or contact support for help.",
+  "contact_support": "Contact Support",
+  "request_denied": "Request Denied",
+  "service_request_rejected": "Your request for {service} has been rejected.",
+  "@service_request_rejected": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_rejected_help": "This might be due to missing information or eligibility. Please reach out to our team to appeal.",
+  "appeal_decision": "Appeal Decision",
+  "access_limited": "Access Limited",
+  "service_suspended_or_cancelled": "Your {service} service is currently suspended or cancelled.",
+  "@service_suspended_or_cancelled": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_accounts_help": "Please check your subscription status or contact our customer team to resolve this issue.",
+  "contact_accounts": "Contact Accounts",
+  "service_maintenance": "Service Maintenance",
+  "service_being_updated": "{service} is currently being updated.",
+  "@service_being_updated": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_maintenance_help": "We are adding new features to improve your experience. Check back shortly!",
+  "back_to_dashboard": "Back to Dashboard",
+  "maybe_later": "Maybe Later",
+  "email_support": "Email Support",
+  "chat_on_whatsapp": "Chat on WhatsApp",
   "systems": "Systems",
   "delivery": "Delivery",
   "company_profile": "Company Profile",

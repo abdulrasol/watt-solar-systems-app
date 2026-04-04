@@ -1,28 +1,239 @@
 class AppUrls {
+  // Base URL - Change for production
   //static const String baseUrl = 'https://abdulrasol.pythonanywhere.com/api/v1';
   static const String baseUrl = 'http://127.0.0.1:8000/api/v1';
 
-  // Auth
+  // ==================== AUTH & USERS ====================
   static const String authBaseUrl = '$baseUrl/users';
   static const String login = '$authBaseUrl/login';
   static const String register = '$authBaseUrl/register';
   static const String profile = '$authBaseUrl/profile';
+  static const String forgotPassword = '$authBaseUrl/forgot-password';
+  static const String resetPassword = '$authBaseUrl/reset-password';
+  static String userProfile(String username) => '$authBaseUrl/$username';
+  static const String allUsers = authBaseUrl; // Admin only
+  static String promoteUser(String username) =>
+      '$authBaseUrl/promote/$username';
 
-  // admin
+  // ==================== ADMIN ====================
   static const String adminBaseUrl = '$baseUrl/admin';
   static const String appConfigs = '$adminBaseUrl/config';
   static const String currency = '$adminBaseUrl/currency';
+  static const String currencies = '$adminBaseUrl/currency'; // Get all
+  static String currencyItem(int id) => '$currencies/$id';
 
-  // cities & countries
+  // Cities & Countries
   static const String countries = '$adminBaseUrl/countries';
   static const String cities = '$adminBaseUrl/cities';
+  static String country(int id) => '$countries/$id';
+  static String city(int id) => '$cities/$id';
 
-  // companies
-  static const String companiesBaseUrl = '$baseUrl/company';
+  // Companies (Admin)
+  static const String companies = '$adminBaseUrl/companies';
+  static String companyAdmin(int id) => '$companies/$id';
+  static String updateCompanyStatus(int id) => '$companies/$id/status';
+
+  // ==================== COMPANIES ====================
+  static const String companiesBaseUrl = '$baseUrl/companies';
   static const String registerCompany = '$companiesBaseUrl/register';
-  static String company(int id) => '$companiesBaseUrl/$id';
+  static const String companiesCatalogServices =
+      '$companiesBaseUrl/catalog/services';
 
-  // dashboard
-  /// products
-  static String products(int companyId) => '$companiesBaseUrl/$companyId/products';
+  static String company(int id) => '$companiesBaseUrl/$id';
+  static String updateCompany(int id) => company(id);
+  static String companySummary(int id) => '${company(id)}/summary';
+  static String companyServices(int id) => '${company(id)}/services';
+  static String companyServiceRequests(int id) =>
+      '${company(id)}/service-requests';
+  static String companyMembers(int companyId) =>
+      '${company(companyId)}/members';
+  static String inviteMember(int companyId) =>
+      '${companyMembers(companyId)}/invite';
+  static String createNewMember(int companyId) =>
+      '${companyMembers(companyId)}/create';
+
+  // Company Products
+  static String products(int companyId) => '${company(companyId)}/products';
+  static String productDetails(int companyId, int productId) =>
+      '${products(companyId)}/$productId';
+  static String deleteProduct(int companyId, int productId) =>
+      productDetails(companyId, productId);
+
+  // Company Categories
+  static String categories(int companyId) => '${company(companyId)}/categories';
+
+  // Company Contacts
+  static String contacts(int companyId) => '${company(companyId)}/contacts';
+
+  // Company Delivery Options
+  static String deliveryOptions(int companyId) =>
+      '${company(companyId)}/delivery';
+  static String deleteDeliveryOption(int companyId, int optionId) =>
+      '${deliveryOptions(companyId)}/$optionId';
+
+  // Company Expenses
+  static String expenses(int companyId) => '${company(companyId)}/expenses';
+  static String deleteExpense(int companyId, int expenseId) =>
+      '${expenses(companyId)}/$expenseId';
+
+  // Company Finances
+  static String finances(int companyId) => '${company(companyId)}/finance';
+  static String deleteFinance(int companyId, int financeId) =>
+      '${finances(companyId)}/$financeId';
+  static String analytics(int companyId) => '${company(companyId)}/analytics';
+
+  // Company Customers / Suppliers / Orders / Systems
+  static String customers(int companyId) => '${company(companyId)}/customers';
+  static String suppliers(int companyId) => '${company(companyId)}/suppliers';
+  static String orders(int companyId) => '${company(companyId)}/orders';
+  static String companySystems(int companyId) =>
+      '${company(companyId)}/systems';
+
+  // Company Offers
+  static String companyOfferRequests(int companyId) =>
+      '${company(companyId)}/offers/requests';
+  static String companyOffers(int companyId) => '${company(companyId)}/offers';
+  static String createOfferReply(int companyId, int requestId) =>
+      '${companyOfferRequests(companyId)}/$requestId/reply';
+
+  // ==================== SHOP ====================
+  static const String shopBaseUrl = '$baseUrl/shop';
+  static const String shopCatalogMeta = '$shopBaseUrl/catalog/meta';
+  static const String storefront = '$shopBaseUrl/frontstore';
+  static const String storefrontProducts = '$shopBaseUrl/frontstore/products';
+  static const String b2cProducts = '$shopBaseUrl/store/products';
+  static const String b2cSearch = '$shopBaseUrl/store/search';
+  static String b2cCompanyProducts(int companyId) =>
+      '$shopBaseUrl/store/companies/$companyId/products';
+  static String b2cCategoryProducts(String categoryType, int categoryId) =>
+      '$shopBaseUrl/store/categories/$categoryType/$categoryId/products';
+  static const String b2bProducts = '$shopBaseUrl/b2b/products';
+  static const String b2bSearch = '$shopBaseUrl/b2b/search';
+  static String b2bCompanyProducts(int companyId) =>
+      '$shopBaseUrl/b2b/companies/$companyId/products';
+  static String b2bCategoryProducts(String categoryType, int categoryId) =>
+      '$shopBaseUrl/b2b/categories/$categoryType/$categoryId/products';
+  static String shopProduct(int id) => '$shopBaseUrl/products/$id';
+
+  // ==================== COMMUNITY ====================
+  static const String communityBaseUrl = '$baseUrl/community';
+  static const String allPosts = '$communityBaseUrl/posts';
+  static const String createPost = '$communityBaseUrl/posts/create';
+  static String postById(int postId) => '$communityBaseUrl/posts/$postId';
+  static String updatePost(int postId) =>
+      '$communityBaseUrl/posts/$postId/update';
+  static String deletePost(int postId) =>
+      '$communityBaseUrl/posts/$postId/delete';
+  static String postComments(int postId) =>
+      '$communityBaseUrl/posts/$postId/comments';
+  static String createComment(int postId) =>
+      '$communityBaseUrl/posts/$postId/comments/create';
+  static String commentById(int postId, int commentId) =>
+      '$communityBaseUrl/posts/$postId/comments/$commentId';
+  static String updateComment(int postId, int commentId) =>
+      '$communityBaseUrl/posts/$postId/comments/$commentId/update';
+  static String deleteComment(int postId, int commentId) =>
+      '$communityBaseUrl/posts/$postId/comments/$commentId/delete';
+  static String commentReplies(int postId, int commentId) =>
+      '$communityBaseUrl/posts/$postId/comments/$commentId/replies';
+  static String createReply(int postId, int commentId) =>
+      '$communityBaseUrl/posts/$postId/comments/$commentId/replies/create';
+  static String replyById(int postId, int commentId, int replyId) =>
+      '$communityBaseUrl/posts/$postId/comments/$commentId/replies/$replyId';
+  static String deleteReply(int postId, int commentId, int replyId) =>
+      '$communityBaseUrl/posts/$postId/comments/$commentId/replies/$replyId/delete';
+  static String filteredPosts = '$communityBaseUrl/posts/filter';
+
+  // ==================== ACCOUNTING ====================
+  static const String accountingBaseUrl = '$baseUrl/accounting';
+
+  // Accounts
+  static const String accounts = '$accountingBaseUrl/accounts';
+  static const String createAccount = '$accountingBaseUrl/accounts/create';
+  static String account(int id) => '$accountingBaseUrl/accounts/$id';
+
+  // Invoices
+  static const String invoices = '$accountingBaseUrl/invoices';
+  static const String createInvoice = '$accountingBaseUrl/invoices/create';
+  static String invoice(int id) => '$accountingBaseUrl/invoices/$id';
+
+  // Bills
+  static const String bills = '$accountingBaseUrl/bills';
+  static const String createBill = '$accountingBaseUrl/bills/create';
+  static String bill(int id) => '$accountingBaseUrl/bills/$id';
+
+  // Payments
+  static const String payments = '$accountingBaseUrl/payments';
+  static const String createPayment = '$accountingBaseUrl/payments/create';
+  static String payment(int id) => '$accountingBaseUrl/payments/$id';
+
+  // Journal Entries
+  static const String journalEntries = '$accountingBaseUrl/journal-entries';
+  static const String createJournalEntry =
+      '$accountingBaseUrl/journal-entries/create';
+  static String journalEntry(int id) =>
+      '$accountingBaseUrl/journal-entries/$id';
+
+  // Payroll
+  static const String payroll = '$accountingBaseUrl/payroll';
+  static const String createPayroll = '$accountingBaseUrl/payroll/create';
+  static String payrollItem(int id) => '$accountingBaseUrl/payroll/$id';
+
+  // Ledger
+  static const String ledger = '$accountingBaseUrl/ledger';
+
+  // ==================== SYSTEMS ====================
+  static const String systemsBaseUrl = '$baseUrl/systems';
+  static const String mySystems = '$systemsBaseUrl/my-systems';
+  static String systemDetails(int id) => '$systemsBaseUrl/$id';
+
+  // ==================== NOTIFICATIONS ====================
+  static const String notificationBaseUrl = '$baseUrl/notification';
+  static const String notificationSubscribe = '$notificationBaseUrl/subscribe';
+  static const String notificationUnsubscribe =
+      '$notificationBaseUrl/unsubscribe';
+  static const String notificationHistory = '$notificationBaseUrl/history';
+  static const String notificationDevices = '$notificationBaseUrl/devices';
+  static const String notificationSendBroadcast =
+      '$notificationBaseUrl/send-broadcast';
+  static const String notificationSendTopic = '$notificationBaseUrl/send-topic';
+  static const String notificationStatistics =
+      '$notificationBaseUrl/statistics';
+  static String notificationDeactivateDevice(int deviceId) =>
+      '$notificationBaseUrl/tokens/$deviceId/deactivate';
+
+  // ==================== CONFIGURATION ====================
+  static const String configBaseUrl = '$baseUrl/config';
+  static const String generalConfig = '$configBaseUrl/general';
+  static const String siteConfig = '$configBaseUrl/site';
+
+  // ==================== OFFERS & REQUESTS (MARKETPLACE) ====================
+
+  static const String _offersBaseUrl = '$baseUrl/offers';
+  static const String requestsBaseUrl = '$_offersBaseUrl/requests';
+  static const String availableRequests = '$_offersBaseUrl/available-requests';
+  static const String myOffers = '$_offersBaseUrl/my-offers';
+
+  // User Interface
+  static const String createRequest = requestsBaseUrl;
+  static const String userRequests = requestsBaseUrl;
+  static String deleteRequest(int id) => '$requestsBaseUrl/$id';
+  static String requestOffers(int requestId) =>
+      '$requestsBaseUrl/$requestId/offers';
+  static String respondToOffer(int offerId) =>
+      '$_offersBaseUrl/$offerId/response';
+
+  // Company Interface
+  static String replyToRequest(int requestId) =>
+      '$requestsBaseUrl/$requestId/reply';
+  static String finishOffer(int offerId) => '$myOffers/$offerId/finish';
+  static String offerDetails(int offerId) => '$myOffers/$offerId';
+  static String updateOffer(int offerId) => offerDetails(offerId);
+  static String deleteOffer(int offerId) => offerDetails(offerId);
+  static const String involves = '$baseUrl/involves';
+  static String involve(int id) => '$involves/$id';
+
+  // Admin Interface
+  static const String adminOffers = '$baseUrl/offers/admin/offers';
+  static const String adminRequests = '$baseUrl/offers/admin/requests';
 }
