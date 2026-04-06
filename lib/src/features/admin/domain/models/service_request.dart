@@ -28,6 +28,8 @@ class ServiceRequest {
   bool get isActive => status.toLowerCase() == 'active';
   bool get isPending => status.toLowerCase() == 'pending';
   bool get isRejected => status.toLowerCase() == 'rejected';
+  bool get isSuspended => status.toLowerCase() == 'suspended';
+  bool get isCancelled => status.toLowerCase() == 'cancelled';
 
   factory ServiceRequest.fromJson(Map<String, dynamic> json) {
     return ServiceRequest(
@@ -42,6 +44,50 @@ class ServiceRequest {
       requestedAt: json['requested_at'],
       reviewedAt: json['reviewed_at'],
       notes: json['notes'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'company_id': companyId,
+      'company_name': companyName,
+      'service_code': serviceCode,
+      'service_name': serviceName,
+      'status': status,
+      'requested_by': requestedBy,
+      'reviewed_by': reviewedBy,
+      'requested_at': requestedAt,
+      'reviewed_at': reviewedAt,
+      'notes': notes,
+    };
+  }
+
+  ServiceRequest copyWith({
+    int? id,
+    int? companyId,
+    String? companyName,
+    String? serviceCode,
+    String? serviceName,
+    String? status,
+    String? requestedBy,
+    String? reviewedBy,
+    String? requestedAt,
+    String? reviewedAt,
+    String? notes,
+  }) {
+    return ServiceRequest(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      companyName: companyName ?? this.companyName,
+      serviceCode: serviceCode ?? this.serviceCode,
+      serviceName: serviceName ?? this.serviceName,
+      status: status ?? this.status,
+      requestedBy: requestedBy ?? this.requestedBy,
+      reviewedBy: reviewedBy ?? this.reviewedBy,
+      requestedAt: requestedAt ?? this.requestedAt,
+      reviewedAt: reviewedAt ?? this.reviewedAt,
+      notes: notes ?? this.notes,
     );
   }
 }

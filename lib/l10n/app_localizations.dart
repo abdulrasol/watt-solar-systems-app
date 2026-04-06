@@ -1775,6 +1775,84 @@ abstract class AppLocalizations {
   /// **'Hybrid'**
   String get inverter_type_hybrid;
 
+  /// No description provided for @offers_catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers Catalog'**
+  String get offers_catalog;
+
+  /// No description provided for @manage_extra_fees.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Extra Fees'**
+  String get manage_extra_fees;
+
+  /// No description provided for @manage_extra_fees_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this list for installation fees, delivery, mounting, wiring, or other extra services you add to offers.'**
+  String get manage_extra_fees_desc;
+
+  /// No description provided for @no_involves_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No involves yet'**
+  String get no_involves_yet;
+
+  /// No description provided for @no_involves_yet_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first extra cost item to reuse it in offer replies.'**
+  String get no_involves_yet_desc;
+
+  /// No description provided for @create_item.
+  ///
+  /// In en, this message translates to:
+  /// **'Create item'**
+  String get create_item;
+
+  /// No description provided for @active_in_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Active in offers'**
+  String get active_in_offers;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
+
+  /// No description provided for @create_involve.
+  ///
+  /// In en, this message translates to:
+  /// **'Create involve'**
+  String get create_involve;
+
+  /// No description provided for @edit_involve.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit involve'**
+  String get edit_involve;
+
+  /// No description provided for @involve_examples.
+  ///
+  /// In en, this message translates to:
+  /// **'Examples: installation fee, delivery, mounting structure.'**
+  String get involve_examples;
+
+  /// No description provided for @delete_item.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete item?'**
+  String get delete_item;
+
+  /// No description provided for @delete_item_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'This item will be removed from your involves catalog.'**
+  String get delete_item_desc;
+
   /// No description provided for @offers_marketplace.
   ///
   /// In en, this message translates to:
@@ -2594,7 +2672,7 @@ abstract class AppLocalizations {
   /// No description provided for @request_notes_hint.
   ///
   /// In en, this message translates to:
-  /// **'Specific installation constraints, location notes, or other requests...'**
+  /// **'Explain why you need this service (optional)'**
   String get request_notes_hint;
 
   /// No description provided for @new_system.
@@ -3214,6 +3292,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save to System'**
   String get save_to_system;
+
+  /// No description provided for @addProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Product'**
+  String get addProduct;
+
+  /// No description provided for @editProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Product'**
+  String get editProduct;
+
+  /// No description provided for @deleteProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Product'**
+  String get deleteProduct;
+
+  /// No description provided for @costPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost Price'**
+  String get costPrice;
+
+  /// No description provided for @stockQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock Quantity'**
+  String get stockQuantity;
+
+  /// No description provided for @minStockAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Min Stock Alert'**
+  String get minStockAlert;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @confirmDeleteProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this product?'**
+  String get confirmDeleteProduct;
+
+  /// No description provided for @productDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Product deleted successfully'**
+  String get productDeleted;
+
+  /// No description provided for @productCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Product created successfully'**
+  String get productCreated;
+
+  /// No description provided for @productUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Product updated successfully'**
+  String get productUpdated;
+
+  /// No description provided for @addOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Option'**
+  String get addOption;
+
+  /// No description provided for @addTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Tier'**
+  String get addTier;
+
+  /// No description provided for @isRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Is Required'**
+  String get isRequired;
+
+  /// No description provided for @noProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get noProducts;
+
+  /// No description provided for @searchProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Search products...'**
+  String get searchProducts;
+
+  /// No description provided for @productName.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Name'**
+  String get productName;
+
+  /// No description provided for @basicInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Information'**
+  String get basicInformation;
+
+  /// No description provided for @productImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Images'**
+  String get productImages;
+
+  /// No description provided for @pricing.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing'**
+  String get pricing;
+
+  /// No description provided for @productOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Options'**
+  String get productOptions;
+
+  /// No description provided for @saveProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Product'**
+  String get saveProduct;
+
+  /// No description provided for @productSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Product saved successfully'**
+  String get productSaved;
+
+  /// No description provided for @noTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'No tiers added yet'**
+  String get noTiers;
+
+  /// No description provided for @noOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'No options added yet'**
+  String get noOptions;
+
+  /// No description provided for @optionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Option Name'**
+  String get optionName;
+
+  /// No description provided for @add_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Image'**
+  String get add_image;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @request_service.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Service'**
+  String get request_service;
+
+  /// No description provided for @request_service_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Request {service} Access'**
+  String request_service_title(Object service);
+
+  /// No description provided for @service_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Code'**
+  String get service_code;
+
+  /// No description provided for @service_code_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., offers, inventory, storefront'**
+  String get service_code_hint;
+
+  /// No description provided for @service_code_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Service code is required'**
+  String get service_code_required;
+
+  /// No description provided for @request_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get request_notes;
+
+  /// No description provided for @request_notes_hint_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide details about your requirements...'**
+  String get request_notes_hint_text;
+
+  /// No description provided for @request_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot/Image'**
+  String get request_image;
+
+  /// No description provided for @request_image_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a screenshot or image (optional)'**
+  String get request_image_hint;
+
+  /// No description provided for @remove_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Image'**
+  String get remove_image;
+
+  /// No description provided for @submitting_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting...'**
+  String get submitting_request;
+
+  /// No description provided for @request_submitted_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Service request submitted successfully!'**
+  String get request_submitted_success;
+
+  /// No description provided for @request_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to submit request'**
+  String get request_failed;
+
+  /// No description provided for @select_image_source.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Image Source'**
+  String get select_image_source;
+
+  /// No description provided for @service_not_active.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Not Active'**
+  String get service_not_active;
+
+  /// No description provided for @service_not_active_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'This service is not currently available for your company.'**
+  String get service_not_active_desc;
+
+  /// No description provided for @request_access.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Access'**
+  String get request_access;
+
+  /// No description provided for @learn_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn More'**
+  String get learn_more;
+
+  /// No description provided for @service_request_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Pending'**
+  String get service_request_pending;
+
+  /// No description provided for @service_request_pending_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request for {service} is pending approval.'**
+  String service_request_pending_desc(Object service);
+
+  /// No description provided for @view_request_status.
+  ///
+  /// In en, this message translates to:
+  /// **'View Request Status'**
+  String get view_request_status;
+
+  /// No description provided for @service_maintenance_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Under Maintenance'**
+  String get service_maintenance_mode;
+
+  /// No description provided for @service_maintenance_mode_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'{service} is currently being updated with new features.'**
+  String service_maintenance_mode_desc(Object service);
+
+  /// No description provided for @check_back_later.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check back later for improvements.'**
+  String get check_back_later;
+
+  /// No description provided for @open_service.
+  ///
+  /// In en, this message translates to:
+  /// **'Open {service}'**
+  String open_service(Object service);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

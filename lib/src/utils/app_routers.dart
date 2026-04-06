@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
+import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/auth_page.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/company_registration_page.dart';
@@ -12,6 +13,7 @@ import 'package:solar_hub/src/features/home/presentation/screen/home.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/inventory_page.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/admin_offers_dashboard.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/company_offers_hub.dart';
+import 'package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/involves_catalog_screen.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/user_requests_screen.dart';
 import 'package:solar_hub/src/features/settings/presentation/screens/settings_page.dart';
@@ -30,6 +32,9 @@ import 'package:solar_hub/src/features/inventory/presentation/screens/product_de
 import 'package:solar_hub/src/features/notifications/presentation/screens/notification_history_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/construction_page.dart';
+import 'package:solar_hub/src/features/calculations/presentation/screens/offer_request_wizard.dart';
+import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_screen.dart';
 
 // Create a globally accessible provider for the GoRouter
 final routerProvider = Provider<GoRouter>((ref) {
@@ -121,24 +126,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        path: '/company-dashboard/inventory/add',
-        builder: (BuildContext context, GoRouterState state) {
-          return const AddProductPage();
-        },
-      ),
-      GoRoute(
-        path: '/company-dashboard/inventory/product/:id',
-        builder: (BuildContext context, GoRouterState state) {
-          final product = state.extra as Product;
-          return ProductDetailsPage(product: product);
-        },
-      ),
-      GoRoute(
-        path: '/company-dashboard/inventory/edit/:id',
-        builder: (BuildContext context, GoRouterState state) {
-          final product = state.extra as Product;
-          return AddProductPage(product: product);
-        },
+        path: '/inventory',
+        builder: (context, state) => const InventoryPage(),
+        routes: [
+          GoRoute(
+            path: 'add',
+            builder: (context, state) => const AddProductPage(),
+          ),
+          GoRoute(
+            path: 'product/:id',
+            builder: (BuildContext context, GoRouterState state) {
+              final product = state.extra as Product;
+              return ProductDetailsPage(product: product);
+            },
+          ),
+          GoRoute(
+            path: 'edit/:id',
+            builder: (BuildContext context, GoRouterState state) {
+              final product = state.extra as Product;
+              return AddProductPage(product: product);
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: '/admin',
@@ -210,6 +219,29 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const UserRequestsScreen(),
       ),
       GoRoute(
+        path: '/user-requests/new',
+        builder: (context, state) {
+          final prefill = state.extra is SolarRequestFormPrefill
+              ? state.extra as SolarRequestFormPrefill
+              : null;
+          return SolarRequestForm(prefill: prefill);
+        },
+        redirect: (BuildContext context, GoRouterState state) {
+          final isSigned = ref.read(authProvider).isSigned;
+          if (!isSigned) return '/auth';
+          return null;
+        },
+      ),
+      GoRoute(
+        path: '/calculator/request-offer-wizard',
+        builder: (context, state) => const OfferRequestWizard(),
+        redirect: (BuildContext context, GoRouterState state) {
+          final isSigned = ref.read(authProvider).isSigned;
+          if (!isSigned) return '/auth';
+          return null;
+        },
+      ),
+      GoRoute(
         path: '/offers',
         builder: (context, state) => const CompanyOffersHub(),
       ),
@@ -221,16 +253,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/admin-marketplace',
         builder: (context, state) => const AdminOffersDashboard(),
       ),
-
       GoRoute(
-        path: '/inventory',
-        builder: (context, state) => const InventoryPage(),
-        routes: [
-          GoRoute(
-            path: 'add',
-            builder: (context, state) => const AddProductPage(),
-          ),
-        ],
+        path: '/storefront',
+        builder: (context, state) {
+          final audience = state.extra as StorefrontAudience?;
+          return PreScaffold(
+            child: StorefrontScreen(
+              audience: audience ?? StorefrontAudience.b2c,
+            ),
+          );
+        },
       ),
     ],
   );

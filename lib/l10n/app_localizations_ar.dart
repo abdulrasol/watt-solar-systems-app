@@ -869,6 +869,45 @@ class AppLocalizationsAr extends AppLocalizations {
   String get inverter_type_hybrid => 'هجين';
 
   @override
+  String get offers_catalog => 'كتالوج العروض';
+
+  @override
+  String get manage_extra_fees => 'إدارة الرسوم والخدمات الإضافية';
+
+  @override
+  String get manage_extra_fees_desc => 'استخدم هذه القائمة لرسوم التركيب أو التوصيل أو الهياكل أو التمديدات أو أي خدمات إضافية تدخل ضمن العرض.';
+
+  @override
+  String get no_involves_yet => 'لا توجد عناصر إضافية بعد';
+
+  @override
+  String get no_involves_yet_desc => 'أنشئ أول عنصر تكلفة إضافية لإعادة استخدامه في ردود العروض.';
+
+  @override
+  String get create_item => 'إنشاء عنصر';
+
+  @override
+  String get active_in_offers => 'نشط في العروض';
+
+  @override
+  String get inactive => 'غير نشط';
+
+  @override
+  String get create_involve => 'إنشاء عنصر إضافي';
+
+  @override
+  String get edit_involve => 'تعديل العنصر الإضافي';
+
+  @override
+  String get involve_examples => 'أمثلة: أجور التركيب، التوصيل، هيكل التثبيت.';
+
+  @override
+  String get delete_item => 'حذف العنصر؟';
+
+  @override
+  String get delete_item_desc => 'سيتم حذف هذا العنصر من كتالوج التكاليف الإضافية.';
+
+  @override
   String get offers_marketplace => 'سوق العروض الشمسية';
 
   @override
@@ -1299,7 +1338,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get autonomy => 'الاستقلالية';
 
   @override
-  String get request_notes_hint => 'قيود التركيب، ملاحظات الموقع، أو أي طلبات إضافية...';
+  String get request_notes_hint => 'اشرح لماذا تحتاج هذه الخدمة (اختياري)';
 
   @override
   String get new_system => 'نظام جديد';
@@ -1625,4 +1664,174 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get save_to_system => 'حفظ في النظام';
+
+  @override
+  String get addProduct => 'إضافة منتج';
+
+  @override
+  String get editProduct => 'تعديل المنتج';
+
+  @override
+  String get deleteProduct => 'حذف المنتج';
+
+  @override
+  String get costPrice => 'سعر التكلفة';
+
+  @override
+  String get stockQuantity => 'الكمية في المخزن';
+
+  @override
+  String get minStockAlert => 'تنبيه نقص المخزون';
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get confirmDeleteProduct => 'هل أنت متأكد من حذف هذا المنتج؟';
+
+  @override
+  String get productDeleted => 'تم حذف المنتج بنجاح';
+
+  @override
+  String get productCreated => 'تم إنشاء المنتج بنجاح';
+
+  @override
+  String get productUpdated => 'تم تحديث المنتج بنجاح';
+
+  @override
+  String get addOption => 'إضافة خيار';
+
+  @override
+  String get addTier => 'إضافة مستوى تسعير';
+
+  @override
+  String get isRequired => 'مطلوب';
+
+  @override
+  String get noProducts => 'لم يتم العثور على منتجات';
+
+  @override
+  String get searchProducts => 'البحث عن المنتجات...';
+
+  @override
+  String get productName => 'اسم المنتج';
+
+  @override
+  String get basicInformation => 'المعلومات الأساسية';
+
+  @override
+  String get productImages => 'صور المنتج';
+
+  @override
+  String get pricing => 'التسعير';
+
+  @override
+  String get productOptions => 'خيارات المنتج';
+
+  @override
+  String get saveProduct => 'حفظ المنتج';
+
+  @override
+  String get productSaved => 'تم حفظ المنتج بنجاح';
+
+  @override
+  String get noTiers => 'لم يتم إضافة فئات سعرية بعد';
+
+  @override
+  String get noOptions => 'لم يتم إضافة خيارات بعد';
+
+  @override
+  String get optionName => 'اسم الخيار';
+
+  @override
+  String get add_image => 'إضافة صورة';
+
+  @override
+  String get status => 'الحالة';
+
+  @override
+  String get add => 'إضافة';
+
+  @override
+  String get request_service => 'طلب الخدمة';
+
+  @override
+  String request_service_title(Object service) {
+    return 'طلب الوصول إلى $service';
+  }
+
+  @override
+  String get service_code => 'رمز الخدمة';
+
+  @override
+  String get service_code_hint => 'مثال: offers, inventory, storefront';
+
+  @override
+  String get service_code_required => 'رمز الخدمة مطلوب';
+
+  @override
+  String get request_notes => 'ملاحظات';
+
+  @override
+  String get request_notes_hint_text => 'قدم تفاصيل عن متطلباتك...';
+
+  @override
+  String get request_image => 'لقطة شاشة/صورة';
+
+  @override
+  String get request_image_hint => 'تحميل لقطة شاشة أو صورة (اختياري)';
+
+  @override
+  String get remove_image => 'إزالة الصورة';
+
+  @override
+  String get submitting_request => 'جاري الإرسال...';
+
+  @override
+  String get request_submitted_success => 'تم إرسال طلب الخدمة بنجاح!';
+
+  @override
+  String get request_failed => 'فشل في إرسال الطلب';
+
+  @override
+  String get select_image_source => 'اختر مصدر الصورة';
+
+  @override
+  String get service_not_active => 'الخدمة غير نشطة';
+
+  @override
+  String get service_not_active_desc => 'هذه الخدمة غير متاحة حالياً لشركتك.';
+
+  @override
+  String get request_access => 'طلب الوصول';
+
+  @override
+  String get learn_more => 'اعرف المزيد';
+
+  @override
+  String get service_request_pending => 'الطلب قيد الانتظار';
+
+  @override
+  String service_request_pending_desc(Object service) {
+    return 'طلبك للحصول على $service قيد الموافقة.';
+  }
+
+  @override
+  String get view_request_status => 'عرض حالة الطلب';
+
+  @override
+  String get service_maintenance_mode => 'الخدمة قيد الصيانة';
+
+  @override
+  String service_maintenance_mode_desc(Object service) {
+    return 'يتم حالياً تحديث $service بميزات جديدة.';
+  }
+
+  @override
+  String get check_back_later => 'يرجى التحقق مرة أخرى لاحقاً للتحسينات.';
+
+  @override
+  String open_service(Object service) {
+    return 'فتح $service';
+  }
 }

@@ -869,6 +869,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inverter_type_hybrid => 'Hybrid';
 
   @override
+  String get offers_catalog => 'Offers Catalog';
+
+  @override
+  String get manage_extra_fees => 'Manage Extra Fees';
+
+  @override
+  String get manage_extra_fees_desc => 'Use this list for installation fees, delivery, mounting, wiring, or other extra services you add to offers.';
+
+  @override
+  String get no_involves_yet => 'No involves yet';
+
+  @override
+  String get no_involves_yet_desc => 'Create your first extra cost item to reuse it in offer replies.';
+
+  @override
+  String get create_item => 'Create item';
+
+  @override
+  String get active_in_offers => 'Active in offers';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get create_involve => 'Create involve';
+
+  @override
+  String get edit_involve => 'Edit involve';
+
+  @override
+  String get involve_examples => 'Examples: installation fee, delivery, mounting structure.';
+
+  @override
+  String get delete_item => 'Delete item?';
+
+  @override
+  String get delete_item_desc => 'This item will be removed from your involves catalog.';
+
+  @override
   String get offers_marketplace => 'Solar Marketplace';
 
   @override
@@ -1299,7 +1338,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autonomy => 'Autonomy';
 
   @override
-  String get request_notes_hint => 'Specific installation constraints, location notes, or other requests...';
+  String get request_notes_hint => 'Explain why you need this service (optional)';
 
   @override
   String get new_system => 'New System';
@@ -1625,4 +1664,174 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save_to_system => 'Save to System';
+
+  @override
+  String get addProduct => 'Add Product';
+
+  @override
+  String get editProduct => 'Edit Product';
+
+  @override
+  String get deleteProduct => 'Delete Product';
+
+  @override
+  String get costPrice => 'Cost Price';
+
+  @override
+  String get stockQuantity => 'Stock Quantity';
+
+  @override
+  String get minStockAlert => 'Min Stock Alert';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get confirmDeleteProduct => 'Are you sure you want to delete this product?';
+
+  @override
+  String get productDeleted => 'Product deleted successfully';
+
+  @override
+  String get productCreated => 'Product created successfully';
+
+  @override
+  String get productUpdated => 'Product updated successfully';
+
+  @override
+  String get addOption => 'Add Option';
+
+  @override
+  String get addTier => 'Add Tier';
+
+  @override
+  String get isRequired => 'Is Required';
+
+  @override
+  String get noProducts => 'No products found';
+
+  @override
+  String get searchProducts => 'Search products...';
+
+  @override
+  String get productName => 'Product Name';
+
+  @override
+  String get basicInformation => 'Basic Information';
+
+  @override
+  String get productImages => 'Product Images';
+
+  @override
+  String get pricing => 'Pricing';
+
+  @override
+  String get productOptions => 'Product Options';
+
+  @override
+  String get saveProduct => 'Save Product';
+
+  @override
+  String get productSaved => 'Product saved successfully';
+
+  @override
+  String get noTiers => 'No tiers added yet';
+
+  @override
+  String get noOptions => 'No options added yet';
+
+  @override
+  String get optionName => 'Option Name';
+
+  @override
+  String get add_image => 'Add Image';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get request_service => 'Request Service';
+
+  @override
+  String request_service_title(Object service) {
+    return 'Request $service Access';
+  }
+
+  @override
+  String get service_code => 'Service Code';
+
+  @override
+  String get service_code_hint => 'e.g., offers, inventory, storefront';
+
+  @override
+  String get service_code_required => 'Service code is required';
+
+  @override
+  String get request_notes => 'Notes';
+
+  @override
+  String get request_notes_hint_text => 'Provide details about your requirements...';
+
+  @override
+  String get request_image => 'Screenshot/Image';
+
+  @override
+  String get request_image_hint => 'Upload a screenshot or image (optional)';
+
+  @override
+  String get remove_image => 'Remove Image';
+
+  @override
+  String get submitting_request => 'Submitting...';
+
+  @override
+  String get request_submitted_success => 'Service request submitted successfully!';
+
+  @override
+  String get request_failed => 'Failed to submit request';
+
+  @override
+  String get select_image_source => 'Select Image Source';
+
+  @override
+  String get service_not_active => 'Service Not Active';
+
+  @override
+  String get service_not_active_desc => 'This service is not currently available for your company.';
+
+  @override
+  String get request_access => 'Request Access';
+
+  @override
+  String get learn_more => 'Learn More';
+
+  @override
+  String get service_request_pending => 'Request Pending';
+
+  @override
+  String service_request_pending_desc(Object service) {
+    return 'Your request for $service is pending approval.';
+  }
+
+  @override
+  String get view_request_status => 'View Request Status';
+
+  @override
+  String get service_maintenance_mode => 'Service Under Maintenance';
+
+  @override
+  String service_maintenance_mode_desc(Object service) {
+    return '$service is currently being updated with new features.';
+  }
+
+  @override
+  String get check_back_later => 'Please check back later for improvements.';
+
+  @override
+  String open_service(Object service) {
+    return 'Open $service';
+  }
 }

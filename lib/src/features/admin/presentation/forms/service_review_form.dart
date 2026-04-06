@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:intl/intl.dart';
+import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/status_helper.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class ServiceReviewForm extends StatefulWidget {
-  final ServiceRequest request;
+  final CompanyService? service;
+  final ServiceRequest? request;
   final Function(Map<String, dynamic> data) onSubmit;
 
-  const ServiceReviewForm({super.key, required this.request, required this.onSubmit});
+  const ServiceReviewForm({
+    super.key,
+    this.service,
+    this.request,
+    required this.onSubmit,
+  }) : assert(
+         service != null || request != null,
+         'Either service or request must be provided',
+       );
 
   @override
   State<ServiceReviewForm> createState() => _ServiceReviewFormState();
@@ -16,18 +27,33 @@ class ServiceReviewForm extends StatefulWidget {
 
 class _ServiceReviewFormState extends State<ServiceReviewForm> {
   final _formKey = GlobalKey<FormState>();
+  late String _status;
   late TextEditingController _notesController;
   late DateTime _startDate;
   late DateTime _endDate;
-  late String _status;
+  String get _serviceName =>
+      widget.service?.serviceName ??
+      widget.request?.serviceName ??
+      'Unknown Service';
 
   @override
   void initState() {
     super.initState();
-    _notesController = TextEditingController(text: widget.request.notes ?? '');
-    _startDate = DateTime.now();
-    _endDate = DateTime.now().add(const Duration(days: 365));
-    _status = 'active';
+    _status =
+        widget.service?.status?.toLowerCase() ??
+        widget.request?.status.toLowerCase() ??
+        'pending';
+    _notesController = TextEditingController(
+      text: widget.service?.notes ?? widget.request?.notes ?? '',
+    );
+    _startDate = widget.service?.startsAt != null
+        ? DateTime.parse(widget.service!.startsAt!)
+        : (widget.request?.requestedAt != null
+              ? DateTime.parse(widget.request!.requestedAt!)
+              : DateTime.now());
+    _endDate = widget.service?.endsAt != null
+        ? DateTime.parse(widget.service!.endsAt!)
+        : DateTime.now().add(const Duration(days: 365));
   }
 
   @override
@@ -38,34 +64,39 @@ class _ServiceReviewFormState extends State<ServiceReviewForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+    final isMobile = MediaQuery.sizeOf(context).width < 700;
+
+    return SafeArea(
+      top: false,
       child: Container(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.only(
+          left: 24,
+          top: 24,
+          right: 24,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        ),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              SizedBox(height: 24.h),
-              _buildStatusSelector(),
-              SizedBox(height: 24.h),
-              if (_status == 'active') ...[
-                _buildDatePicker('Start Date', _startDate, (date) => setState(() => _startDate = date)),
-                SizedBox(height: 16.h),
-                _buildDatePicker('End Date', _endDate, (date) => setState(() => _endDate = date)),
-                SizedBox(height: 16.h),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 24),
+                _buildStatusSection(),
+                const SizedBox(height: 24),
+                _buildNotesField(),
+                const SizedBox(height: 24),
+                _buildDateSection(isMobile),
+                const SizedBox(height: 32),
+                _buildSubmitButton(),
               ],
-              _buildTextField('Review Notes', _notesController, maxLines: 3),
-              SizedBox(height: 24.h),
-              _buildSubmitButton(),
-              SizedBox(height: 16.h),
-            ],
+            ),
           ),
         ),
       ),
@@ -73,131 +104,273 @@ class _ServiceReviewFormState extends State<ServiceReviewForm> {
   }
 
   Widget _buildHeader() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Review Service Request',
-              style: TextStyle(
-                fontSize: 20.sp,
+              widget.request != null ? 'Review Request' : 'Review Service',
+              style: const TextStyle(
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: AppTheme.fontFamily,
               ),
             ),
-            IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(Iconsax.close_circle_bold, color: Colors.grey, size: 24.sp),
+            const SizedBox(height: 4),
+            Text(
+              _serviceName,
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.grey,
+                fontFamily: AppTheme.fontFamily,
+              ),
             ),
           ],
         ),
-        Text(
-          '${widget.request.companyName} - ${widget.request.serviceName}',
-          style: TextStyle(
-            fontSize: 14.sp,
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Iconsax.close_circle_bold,
             color: Colors.grey,
-            fontFamily: AppTheme.fontFamily,
+            size: 24,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildStatusSelector() {
-    return Row(
+  Widget _buildStatusSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildStatusButton('active', 'Approve', Colors.green),
-        SizedBox(width: 12.w),
-        _buildStatusButton('rejected', 'Reject', AppTheme.errorColor),
-        SizedBox(width: 12.w),
-        _buildStatusButton('pending', 'Pending', AppTheme.warningColor),
+        Text(
+          'Status',
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            fontFamily: AppTheme.fontFamily,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _buildStatusOption('pending', 'Pending', AppTheme.warningColor),
+            _buildStatusOption('active', 'Active', AppTheme.successColor),
+            _buildStatusOption('rejected', 'Rejected', AppTheme.errorColor),
+            _buildStatusOption('suspended', 'Suspended', Colors.grey),
+            _buildStatusOption('cancelled', 'Cancelled', Colors.orange),
+          ],
+        ),
       ],
     );
   }
 
-  Widget _buildStatusButton(String status, String label, Color color) {
+  Widget _buildStatusOption(String status, String label, Color color) {
     final isSelected = _status == status;
-    return Expanded(
-      child: InkWell(
-        onTap: () => setState(() => _status = status),
-        borderRadius: BorderRadius.circular(12.r),
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
-          decoration: BoxDecoration(
-            color: isSelected ? color.withOpacity(0.1) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: isSelected ? color : Colors.grey.withOpacity(0.3)),
+    return InkWell(
+      onTap: () => setState(() => _status = status),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? color.withValues(alpha: 0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? color : Colors.grey.withValues(alpha: 0.2),
+            width: 1.5,
           ),
-          child: Column(
-            children: [
-              Icon(
-                isSelected ? Iconsax.tick_circle_bold : Iconsax.record_circle_bold,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              StatusHelper.getStatusIcon(status),
+              color: isSelected ? color : Colors.grey,
+              size: 16,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 color: isSelected ? color : Colors.grey,
-                size: 20.sp,
+                fontFamily: AppTheme.fontFamily,
               ),
-              SizedBox(height: 4.h),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? color : Colors.grey,
-                  fontFamily: AppTheme.fontFamily,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotesField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Notes (Optional)',
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            fontFamily: AppTheme.fontFamily,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _notesController,
+          maxLines: 3,
+          decoration: AppTheme.inputDecoration(
+            'Notes',
+            'Add notes about this service review',
+          ).copyWith(contentPadding: const EdgeInsets.all(16)),
+          style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDateSection(bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Service Period',
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            fontFamily: AppTheme.fontFamily,
+          ),
+        ),
+        const SizedBox(height: 12),
+        if (isMobile)
+          Column(
+            children: [
+              _buildDateField(
+                label: 'Start Date',
+                date: _startDate,
+                onTap: () async {
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: _startDate,
+                    firstDate: DateTime.now().subtract(
+                      const Duration(days: 365),
+                    ),
+                    lastDate: DateTime.now().add(const Duration(days: 3650)),
+                  );
+                  if (picked != null) setState(() => _startDate = picked);
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildDateField(
+                label: 'End Date *',
+                date: _endDate,
+                onTap: () async {
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: _endDate,
+                    firstDate: _startDate,
+                    lastDate: DateTime.now().add(const Duration(days: 3650)),
+                  );
+                  if (picked != null) setState(() => _endDate = picked);
+                },
+              ),
+            ],
+          )
+        else
+          Row(
+            children: [
+              Expanded(
+                child: _buildDateField(
+                  label: 'Start Date',
+                  date: _startDate,
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: _startDate,
+                      firstDate: DateTime.now().subtract(
+                        const Duration(days: 365),
+                      ),
+                      lastDate: DateTime.now().add(const Duration(days: 3650)),
+                    );
+                    if (picked != null) setState(() => _startDate = picked);
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildDateField(
+                  label: 'End Date *',
+                  date: _endDate,
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: _endDate,
+                      firstDate: _startDate,
+                      lastDate: DateTime.now().add(const Duration(days: 3650)),
+                    );
+                    if (picked != null) setState(() => _endDate = picked);
+                  },
                 ),
               ),
             ],
           ),
-        ),
-      ),
+      ],
     );
   }
 
-  Widget _buildDatePicker(String label, DateTime current, Function(DateTime) onSelected) {
+  Widget _buildDateField({
+    required String label,
+    required DateTime date,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
-      onTap: () async {
-        final date = await showDatePicker(
-          context: context,
-          initialDate: current,
-          firstDate: DateTime(2020),
-          lastDate: DateTime(2030),
-        );
-        if (date != null) onSelected(date);
-      },
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: Colors.grey.withOpacity(0.3)),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 11,
+                color: Colors.grey,
+                fontFamily: AppTheme.fontFamily,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Row(
               children: [
-                Text(label, style: TextStyle(fontSize: 10.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily)),
+                const Icon(
+                  Iconsax.calendar_bold,
+                  size: 16,
+                  color: AppTheme.primaryColor,
+                ),
+                const SizedBox(width: 8),
                 Text(
-                  '${current.year}-${current.month.toString().padLeft(2, '0')}-${current.day.toString().padLeft(2, '0')}',
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                  DateFormat('yyyy-MM-dd').format(date),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AppTheme.fontFamily,
+                  ),
                 ),
               ],
             ),
-            const Spacer(),
-            Icon(Iconsax.calendar_bold, color: AppTheme.primaryColor, size: 20.sp),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildTextField(String label, TextEditingController controller, {int maxLines = 1}) {
-    return TextFormField(
-      controller: controller,
-      maxLines: maxLines,
-      style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp),
-      decoration: AppTheme.inputDecoration(label, label),
     );
   }
 
@@ -206,25 +379,28 @@ class _ServiceReviewFormState extends State<ServiceReviewForm> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          final data = {
-            'status': _status,
-            'notes': _notesController.text,
-            'starts_at': _startDate.toIso8601String(),
-            'ends_at': _endDate.toIso8601String(),
-          };
-          widget.onSubmit(data);
-          Navigator.pop(context);
+          if (_formKey.currentState!.validate()) {
+            final data = {
+              'status': _status,
+              'notes': _notesController.text.trim(),
+              'starts_at': _startDate.toUtc().toIso8601String(),
+              'ends_at': _endDate.toUtc().toIso8601String(),
+            };
+            widget.onSubmit(data);
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppTheme.primaryColor,
           foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 16.h),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
-        child: Text(
-          'UPDATE SUBSCRIPTION',
+        child: const Text(
+          'SUBMIT REVIEW',
           style: TextStyle(
-            fontSize: 14.sp,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
             fontFamily: AppTheme.fontFamily,
           ),

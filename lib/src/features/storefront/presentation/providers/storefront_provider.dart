@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/models/response.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
@@ -78,25 +77,25 @@ class StorefrontState {
   }
 }
 
-class StorefrontController extends ChangeNotifier {
-  final StorefrontScope scope;
-  final StorefrontRepository _repository;
+class StorefrontNotifier extends Notifier<StorefrontState> {
+  final StorefrontScope arg;
+  StorefrontNotifier(this.arg);
+
+  late StorefrontRepository _repository;
   Timer? _debounce;
-  StorefrontState _state;
 
-  StorefrontController(this.scope)
-    : _repository = getIt<StorefrontRepository>(),
-      _state = StorefrontState(
-        query: StorefrontQuery(companyId: scope.companyId),
-      ) {
-    unawaited(initialize());
-  }
-
-  StorefrontState get state => _state;
-
-  set state(StorefrontState value) {
-    _state = value;
-    notifyListeners();
+  @override
+  StorefrontState build() {
+    _repository = getIt<StorefrontRepository>();
+    
+    ref.onDispose(() => _debounce?.cancel());
+    
+    // Initialize after build to avoid state modification error
+    Future.microtask(() => initialize());
+    
+    return StorefrontState(
+      query: StorefrontQuery(companyId: arg.companyId),
+    );
   }
 
   Future<void> initialize() async {
@@ -127,8 +126,8 @@ class StorefrontController extends ChangeNotifier {
 
     try {
       final response = await _repository.getProducts(
-        audience: scope.audience,
-        companyId: scope.companyId,
+        audience: arg.audience,
+        companyId: arg.companyId,
         query: state.query.copyWith(page: state.pagination.page + 1),
       );
 
@@ -230,7 +229,7 @@ class StorefrontController extends ChangeNotifier {
 
   Future<void> clearFilters() async {
     state = state.copyWith(
-      query: StorefrontQuery(companyId: scope.companyId),
+      query: StorefrontQuery(companyId: arg.companyId),
       clearError: true,
       clearCategoryType: true,
       clearSelectedCategoryId: true,
@@ -242,8 +241,8 @@ class StorefrontController extends ChangeNotifier {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final response = await _repository.getProducts(
-        audience: scope.audience,
-        companyId: scope.companyId,
+        audience: arg.audience,
+        companyId: arg.companyId,
         query: state.query,
       );
       state = state.copyWith(
@@ -269,10 +268,6 @@ class StorefrontController extends ChangeNotifier {
       clearCompanyCategoryId: true,
     );
   }
-
-  @override
-  void dispose() {
-    _debounce?.cancel();
-    super.dispose();
-  }
 }
+
+final storefrontNotifierProvider = NotifierProvider.family<StorefrontNotifier, StorefrontState, StorefrontScope>(StorefrontNotifier.new);

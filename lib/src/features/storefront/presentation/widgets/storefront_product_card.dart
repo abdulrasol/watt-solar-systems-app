@@ -65,6 +65,18 @@ class StorefrontProductCard extends StatelessWidget {
                           child: CachedNetworkImage(
                             imageUrl: product.primaryImage!,
                             fit: BoxFit.cover,
+                            memCacheWidth: (250 * ScreenUtil().textScaleFactor).toInt(),
+                            memCacheHeight: (350 * ScreenUtil().textScaleFactor).toInt(),
+                            placeholder: (context, url) => Container(
+                              color: color.withValues(alpha: 0.05),
+                              child: const Center(
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.error_outline_rounded,
+                              color: AppTheme.errorColor,
+                            ),
                           ),
                         ),
                 ),

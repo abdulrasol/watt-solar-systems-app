@@ -8,22 +8,10 @@ class AdminServiceCatalogState {
   final String? error;
   final List<ServiceCatalogItem> catalog;
 
-  AdminServiceCatalogState({
-    this.isLoading = false,
-    this.error,
-    this.catalog = const [],
-  });
+  AdminServiceCatalogState({this.isLoading = false, this.error, this.catalog = const []});
 
-  AdminServiceCatalogState copyWith({
-    bool? isLoading,
-    String? error,
-    List<ServiceCatalogItem>? catalog,
-  }) {
-    return AdminServiceCatalogState(
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-      catalog: catalog ?? this.catalog,
-    );
+  AdminServiceCatalogState copyWith({bool? isLoading, String? error, List<ServiceCatalogItem>? catalog}) {
+    return AdminServiceCatalogState(isLoading: isLoading ?? this.isLoading, error: error ?? this.error, catalog: catalog ?? this.catalog);
   }
 }
 
@@ -92,6 +80,22 @@ class AdminServiceCatalogController extends Notifier<AdminServiceCatalogState> {
     }).toList();
 
     state = state.copyWith(catalog: updatedItems);
+  }
+
+  void clearError() {
+    state = state.copyWith(error: null);
+  }
+
+  // Sync reordered catalog to server
+  Future<void> syncCatalogOrder() async {
+    try {
+      for (int i = 0; i < state.catalog.length; i++) {
+        final item = state.catalog[i];
+        await _repository.updateServiceCatalogEntry(item.code, {'sort_order': item.sortOrder});
+      }
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
   }
 }
 

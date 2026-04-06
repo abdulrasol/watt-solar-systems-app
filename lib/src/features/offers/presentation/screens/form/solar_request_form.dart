@@ -10,8 +10,46 @@ import 'package:solar_hub/src/features/offers/presentation/providers/offers_prov
 import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
+class SolarRequestFormPrefill {
+  const SolarRequestFormPrefill({
+    required this.panelPower,
+    required this.panelCount,
+    required this.totalPanelPower,
+    required this.batterySize,
+    required this.batteryCount,
+    required this.totalBatteryPower,
+    required this.inverterSize,
+    this.inverterCount = 1,
+    required this.totalInvertersPower,
+    this.batteryType = BatteryType.lithium,
+    this.inverterType = InverterType.hybrid,
+    this.panelNote,
+    this.batteryNote,
+    this.inverterNote,
+    this.note,
+  });
+
+  final int panelPower;
+  final int panelCount;
+  final int totalPanelPower;
+  final double batterySize;
+  final int batteryCount;
+  final double totalBatteryPower;
+  final double inverterSize;
+  final int inverterCount;
+  final double totalInvertersPower;
+  final BatteryType batteryType;
+  final InverterType inverterType;
+  final String? panelNote;
+  final String? batteryNote;
+  final String? inverterNote;
+  final String? note;
+}
+
 class SolarRequestForm extends ConsumerStatefulWidget {
-  const SolarRequestForm({super.key});
+  const SolarRequestForm({super.key, this.prefill});
+
+  final SolarRequestFormPrefill? prefill;
 
   @override
   ConsumerState<SolarRequestForm> createState() => _SolarRequestFormState();
@@ -45,6 +83,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
   @override
   void initState() {
     super.initState();
+    _applyPrefill();
     _recalculateTotals();
   }
 
@@ -75,6 +114,31 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
           _parseDouble(_inverterSizeController.text) *
           _parseInt(_inverterCountController.text);
     });
+  }
+
+  void _applyPrefill() {
+    final prefill = widget.prefill;
+    if (prefill == null) return;
+
+    _panelPowerController.text = prefill.panelPower.toString();
+    _panelCountController.text = prefill.panelCount.toString();
+    _panelNoteController.text = prefill.panelNote ?? '';
+
+    _batterySizeController.text = _formatNumber(prefill.batterySize);
+    _batteryCountController.text = prefill.batteryCount.toString();
+    _batteryNoteController.text = prefill.batteryNote ?? '';
+
+    _inverterSizeController.text = _formatNumber(prefill.inverterSize);
+    _inverterCountController.text = prefill.inverterCount.toString();
+    _inverterNoteController.text = prefill.inverterNote ?? '';
+
+    _noteController.text = prefill.note ?? '';
+
+    _batteryType = prefill.batteryType;
+    _inverterType = prefill.inverterType;
+    _totalPanelPower = prefill.totalPanelPower;
+    _totalBatteryPower = prefill.totalBatteryPower;
+    _totalInvertersPower = prefill.totalInvertersPower;
   }
 
   int _parseInt(String value) => int.tryParse(value.trim()) ?? 0;

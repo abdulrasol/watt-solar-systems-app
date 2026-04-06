@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:solar_hub/src/features/inventory/domain/entities/filter.dart';
+import 'package:solar_hub/src/features/inventory/domain/entities/filter_options.dart';
 
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/inventory_repository.dart';
@@ -13,6 +14,11 @@ class InventoryRepositoryImpl implements InventoryRepository {
   @override
   Future<List<Product>> getProducts(int companyId, {required ProductsFilter filter}) async {
     return await remoteDataSource.getProducts(companyId, filter: filter);
+  }
+
+  @override
+  Future<ProductFilterOptions> getFilterOptions(int companyId) async {
+    return await remoteDataSource.getFilterOptions(companyId);
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:toastification/toastification.dart';
 
@@ -67,18 +68,38 @@ class _SendNotificationScreenState
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: _buildAppBar(context),
-      drawer: const AdminDrawer(),
+      drawer: AppBreakpoints.isDesktop(context) ? null : const AdminDrawer(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(context, isDark),
-            SizedBox(height: 24.h),
-            _buildStatistics(context, state, isDark),
-            SizedBox(height: 32.h),
-            _buildNotificationForm(context, state, isDark),
-          ],
+        padding: AppBreakpoints.pagePadding(context),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: AppBreakpoints.contentMaxWidth(context),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context, isDark),
+                SizedBox(height: 24.h),
+                if (AppBreakpoints.isDesktop(context))
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _buildStatistics(context, state, isDark)),
+                      SizedBox(width: 24.w),
+                      Expanded(
+                        child: _buildNotificationForm(context, state, isDark),
+                      ),
+                    ],
+                  )
+                else ...[
+                  _buildStatistics(context, state, isDark),
+                  SizedBox(height: 32.h),
+                  _buildNotificationForm(context, state, isDark),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -88,13 +109,13 @@ class _SendNotificationScreenState
     return AppBar(
       title: Text(
         'Send Notification',
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: AppTheme.fontFamily,
           fontWeight: FontWeight.bold,
-          fontSize: 20.sp,
+          fontSize: 20,
         ),
       ),
-      centerTitle: true,
+      centerTitle: AppBreakpoints.isMobile(context),
       leading: IconButton(
         icon: Icon(Iconsax.arrow_left_bold, size: 24.sp),
         onPressed: () => context.go('/admin'),
@@ -103,13 +124,15 @@ class _SendNotificationScreenState
   }
 
   Widget _buildHeader(BuildContext context, bool isDark) {
+    final isMobile = AppBreakpoints.isMobile(context);
+
     return Container(
           width: double.infinity,
           padding: EdgeInsets.all(24.w),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                AppTheme.primaryColor.withOpacity(isDark ? 0.3 : 0.15),
+                AppTheme.primaryColor.withValues(alpha: isDark ? 0.3 : 0.15),
                 Theme.of(context).cardColor,
               ],
               begin: Alignment.topLeft,
@@ -118,57 +141,79 @@ class _SendNotificationScreenState
             borderRadius: BorderRadius.circular(24.r),
             border: Border.all(
               color: isDark
-                  ? Colors.white.withOpacity(0.1)
-                  : AppTheme.primaryColor.withOpacity(0.2),
+                  ? Colors.white.withValues(alpha: 0.1)
+                  : AppTheme.primaryColor.withValues(alpha: 0.2),
               width: 1.5.w,
             ),
           ),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
-                child: Icon(
-                  Iconsax.notification_bing_bold,
-                  color: AppTheme.primaryColor,
-                  size: 32.sp,
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: Column(
+          child: isMobile
+              ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Push Notifications',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Icon(
+                        Iconsax.notification_bing_bold,
                         color: AppTheme.primaryColor,
-                        fontFamily: AppTheme.fontFamily,
+                        size: 32.sp,
                       ),
                     ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      'Send server push to all active devices or a subscribed topic',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        fontFamily: AppTheme.fontFamily,
+                    SizedBox(height: 16.h),
+                    _buildHeaderText(isDark),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Icon(
+                        Iconsax.notification_bing_bold,
+                        color: AppTheme.primaryColor,
+                        size: 32.sp,
                       ),
                     ),
+                    SizedBox(width: 16.w),
+                    Expanded(child: _buildHeaderText(isDark)),
                   ],
                 ),
-              ),
-            ],
-          ),
         )
         .animate()
         .fadeIn(duration: const Duration(milliseconds: 600))
         .slideY(begin: 0.3, end: 0);
+  }
+
+  Widget _buildHeaderText(bool isDark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Push Notifications',
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primaryColor,
+            fontFamily: AppTheme.fontFamily,
+          ),
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          'Send server push to all active devices or a subscribed topic',
+          style: TextStyle(
+            fontSize: 14,
+            color: isDark ? Colors.grey[400] : Colors.grey[600],
+            fontFamily: AppTheme.fontFamily,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildStatistics(
@@ -176,6 +221,13 @@ class _SendNotificationScreenState
     NotificationState state,
     bool isDark,
   ) {
+    final columns = AppBreakpoints.adaptiveGridCount(
+      context,
+      mobile: 1,
+      tablet: 3,
+      desktop: 3,
+    );
+
     return Container(
           padding: EdgeInsets.all(20.w),
           decoration: BoxDecoration(
@@ -183,8 +235,8 @@ class _SendNotificationScreenState
             borderRadius: BorderRadius.circular(20.r),
             border: Border.all(
               color: isDark
-                  ? Colors.white.withOpacity(0.1)
-                  : Colors.grey.withOpacity(0.1),
+                  ? Colors.white.withValues(alpha: 0.1)
+                  : Colors.grey.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -209,64 +261,60 @@ class _SendNotificationScreenState
                 ],
               ),
               SizedBox(height: 20.h),
-              Row(
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: columns,
+                crossAxisSpacing: 16.w,
+                mainAxisSpacing: 16.h,
+                childAspectRatio: AppBreakpoints.isMobile(context) ? 3.2 : 1.3,
                 children: [
-                  Expanded(
-                    child: _buildStatItem(
-                      'Active',
-                      '${state.stats.devices.active}',
-                      Colors.blue,
-                      isDark,
-                    ),
+                  _buildStatItem(
+                    'Active',
+                    '${state.stats.devices.active}',
+                    Colors.blue,
+                    isDark,
                   ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: _buildStatItem(
-                      'iOS',
-                      '${state.stats.devices.ios}',
-                      Colors.grey,
-                      isDark,
-                    ),
+                  _buildStatItem(
+                    'iOS',
+                    '${state.stats.devices.ios}',
+                    Colors.grey,
+                    isDark,
                   ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: _buildStatItem(
-                      'Android',
-                      '${state.stats.devices.android}',
-                      Colors.green,
-                      isDark,
-                    ),
+                  _buildStatItem(
+                    'Android',
+                    '${state.stats.devices.android}',
+                    Colors.green,
+                    isDark,
                   ),
                 ],
               ),
               SizedBox(height: 16.h),
-              Row(
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: columns,
+                crossAxisSpacing: 16.w,
+                mainAxisSpacing: 16.h,
+                childAspectRatio: AppBreakpoints.isMobile(context) ? 3.2 : 1.3,
                 children: [
-                  Expanded(
-                    child: _buildStatItem(
-                      'Sent',
-                      '${state.stats.notifications.sent}',
-                      AppTheme.primaryColor,
-                      isDark,
-                    ),
+                  _buildStatItem(
+                    'Sent',
+                    '${state.stats.notifications.sent}',
+                    AppTheme.primaryColor,
+                    isDark,
                   ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: _buildStatItem(
-                      'Failed',
-                      '${state.stats.notifications.failed}',
-                      AppTheme.errorColor,
-                      isDark,
-                    ),
+                  _buildStatItem(
+                    'Failed',
+                    '${state.stats.notifications.failed}',
+                    AppTheme.errorColor,
+                    isDark,
                   ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: _buildStatItem(
-                      'Total',
-                      '${state.stats.notifications.total}',
-                      AppTheme.warningColor,
-                      isDark,
-                    ),
+                  _buildStatItem(
+                    'Total',
+                    '${state.stats.notifications.total}',
+                    AppTheme.warningColor,
+                    isDark,
                   ),
                 ],
               ),
@@ -300,10 +348,10 @@ class _SendNotificationScreenState
                 Container(
                   padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
-                    color: AppTheme.errorColor.withOpacity(0.1),
+                    color: AppTheme.errorColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12.r),
                     border: Border.all(
-                      color: AppTheme.errorColor.withOpacity(0.3),
+                      color: AppTheme.errorColor.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Row(
@@ -341,8 +389,8 @@ class _SendNotificationScreenState
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: isDark
-            ? Colors.white.withOpacity(0.05)
-            : Colors.grey.withOpacity(0.05),
+            ? Colors.white.withValues(alpha: 0.05)
+            : Colors.grey.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
@@ -350,7 +398,7 @@ class _SendNotificationScreenState
           Container(
             padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Icon(Iconsax.people_bold, color: color, size: 20.sp),
@@ -392,8 +440,8 @@ class _SendNotificationScreenState
               borderRadius: BorderRadius.circular(20.r),
               border: Border.all(
                 color: isDark
-                    ? Colors.white.withOpacity(0.1)
-                    : Colors.grey.withOpacity(0.1),
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.grey.withValues(alpha: 0.1),
               ),
             ),
             child: Column(
@@ -610,7 +658,7 @@ class _SendNotificationScreenState
           _selectedType = selected ? value : _selectedType;
         });
       },
-      selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+      selectedColor: AppTheme.primaryColor.withValues(alpha: 0.2),
       checkmarkColor: AppTheme.primaryColor,
       labelStyle: TextStyle(
         color: isSelected

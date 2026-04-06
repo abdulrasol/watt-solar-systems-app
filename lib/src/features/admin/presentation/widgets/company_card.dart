@@ -1,92 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_company.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/status_badge.dart';
+import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyCard extends StatelessWidget {
-  final AdminCompany company;
-  final VoidCallback onTap;
-
   const CompanyCard({super.key, required this.company, required this.onTap});
+
+  final Company company;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final statusColor = _getStatusColor(company.status);
+    final isMobile = MediaQuery.sizeOf(context).width < 700;
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20.r),
+      borderRadius: BorderRadius.circular(20),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: company.isPending
-                ? AppTheme.warningColor.withOpacity(0.3)
-                : isDark
-                      ? Colors.white.withOpacity(0.1)
-                      : Colors.grey.withOpacity(0.1),
+            color: statusColor.withValues(alpha: 0.3),
+            width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: statusColor.withValues(alpha: 0.1),
               blurRadius: 10,
-              offset: Offset(0, 4.h),
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildLogo(context),
-            SizedBox(width: 16.w),
+            _buildLogo(),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    alignment: WrapAlignment.spaceBetween,
                     children: [
-                      Expanded(
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: isMobile ? 180 : 320,
+                        ),
                         child: Text(
                           company.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
+                            fontSize: 15,
+                            fontFamily: AppTheme.fontFamily,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      StatusBadge(status: company.status, small: true),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Icon(
+                        Iconsax.location_bold,
+                        size: 12,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          company.city?.name ?? 'Unknown',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark ? Colors.grey[400] : Colors.grey[600],
                             fontFamily: AppTheme.fontFamily,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      _buildStatusBadge(context),
                     ],
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    company.cityName ?? 'Unknown City',
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
-                      fontFamily: AppTheme.fontFamily,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
                     children: [
-                      _buildFeatureTag(context, 'B2B', company.allowsB2b),
-                      SizedBox(width: 8.w),
-                      _buildFeatureTag(context, 'B2C', company.allowsB2c),
-                      const Spacer(),
+                      _buildFeatureTag('B2B', company.allowsB2B),
+                      _buildFeatureTag('B2C', company.allowsB2C),
                       if (company.tier != null)
-                        Text(
-                          company.tier!,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.primaryColor,
-                            fontFamily: AppTheme.fontFamily,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.accentColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            company.tier!,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.accentColor,
+                              fontFamily: AppTheme.fontFamily,
+                            ),
                           ),
                         ),
                     ],
@@ -100,70 +129,61 @@ class CompanyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLogo(BuildContext context) {
+  Widget _buildLogo() {
     return Container(
-      width: 60.w,
-      height: 60.h,
+      width: 56,
+      height: 56,
       decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12.r),
+        color: AppTheme.primaryColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
         image: company.logo != null
-            ? DecorationImage(image: NetworkImage(company.logo!), fit: BoxFit.cover)
+            ? DecorationImage(
+                image: NetworkImage(company.logo!),
+                fit: BoxFit.cover,
+              )
             : null,
       ),
       child: company.logo == null
-          ? Icon(Iconsax.building_bold, color: AppTheme.primaryColor, size: 28.sp)
+          ? const Icon(
+              Iconsax.building_bold,
+              color: AppTheme.primaryColor,
+              size: 26,
+            )
           : null,
     );
   }
 
-  Widget _buildStatusBadge(BuildContext context) {
-    Color color;
-    switch (company.status.toLowerCase()) {
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
       case 'active':
-        color = Colors.green;
-        break;
+        return AppTheme.successColor;
       case 'pending':
-        color = AppTheme.warningColor;
-        break;
+        return AppTheme.warningColor;
       case 'rejected':
-        color = AppTheme.errorColor;
-        break;
+        return AppTheme.errorColor;
+      case 'suspended':
+        return Colors.grey;
+      case 'cancelled':
+        return AppTheme.errorColor;
       default:
-        color = Colors.grey;
+        return Colors.grey;
     }
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6.r),
-      ),
-      child: Text(
-        company.status.toUpperCase(),
-        style: TextStyle(
-          color: color,
-          fontSize: 10.sp,
-          fontWeight: FontWeight.bold,
-          fontFamily: AppTheme.fontFamily,
-        ),
-      ),
-    );
   }
 
-  Widget _buildFeatureTag(BuildContext context, String label, bool enabled) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  Widget _buildFeatureTag(String label, bool enabled) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: enabled ? AppTheme.primaryColor.withOpacity(0.1) : (isDark ? Colors.white.withOpacity(0.05) : Colors.grey.withOpacity(0.1)),
-        borderRadius: BorderRadius.circular(4.r),
+        color: enabled
+            ? AppTheme.primaryColor.withValues(alpha: 0.1)
+            : Colors.grey.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
         label,
         style: TextStyle(
           color: enabled ? AppTheme.primaryColor : Colors.grey,
-          fontSize: 10.sp,
+          fontSize: 10,
           fontWeight: FontWeight.w600,
           fontFamily: AppTheme.fontFamily,
         ),

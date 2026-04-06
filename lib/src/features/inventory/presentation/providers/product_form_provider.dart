@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/di/get_it.dart';
-import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../../../../core/cashe/cashe_interface.dart';
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/inventory_repository.dart';
 import 'inventory_provider.dart';
@@ -13,10 +12,33 @@ class ProductFormState {
 
   final List<ProductOption> options;
   final List<ProductPricingTier> pricingTiers;
-  final File? selectedImage;
-  final String? existingImageUrl;
+  final List<File> selectedImages;
+  final List<String> existingImageUrls;
 
-  ProductFormState({this.isLoading = false, this.error, this.options = const [], this.pricingTiers = const [], this.selectedImage, this.existingImageUrl});
+  // New fields
+  // Form Fields
+  final String status;
+  final bool isAvailable;
+  final int? globalCategoryId;
+  final List<int> internalCategoryIds;
+  final int? companyCategoryId;
+
+  ProductFormState({
+    this.isLoading = false,
+    this.error,
+    this.options = const [],
+    this.pricingTiers = const [],
+    this.selectedImages = const [],
+    this.existingImageUrls = const [],
+    this.status = 'active',
+    this.isAvailable = true,
+    this.globalCategoryId,
+    this.internalCategoryIds = const [],
+    this.companyCategoryId,
+  });
+
+  bool get isSubmitting => isLoading;
+  List<String> get existingImages => existingImageUrls;
 
   ProductFormState copyWith({
     bool? isLoading,
@@ -24,28 +46,37 @@ class ProductFormState {
     bool clearError = false,
     List<ProductOption>? options,
     List<ProductPricingTier>? pricingTiers,
-    File? selectedImage,
-    bool clearImage = false,
-    String? existingImageUrl,
-    bool clearExistingImageUrl = false,
+    List<File>? selectedImages,
+    List<String>? existingImageUrls,
+    String? status,
+    bool? isAvailable,
+    int? globalCategoryId,
+    List<int>? internalCategoryIds,
+    int? companyCategoryId,
   }) {
     return ProductFormState(
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
       options: options ?? this.options,
       pricingTiers: pricingTiers ?? this.pricingTiers,
-      selectedImage: clearImage ? null : (selectedImage ?? this.selectedImage),
-      existingImageUrl: clearExistingImageUrl ? null : (existingImageUrl ?? this.existingImageUrl),
+      selectedImages: selectedImages ?? this.selectedImages,
+      existingImageUrls: existingImageUrls ?? this.existingImageUrls,
+      status: status ?? this.status,
+      isAvailable: isAvailable ?? this.isAvailable,
+      globalCategoryId: globalCategoryId ?? this.globalCategoryId,
+      internalCategoryIds: internalCategoryIds ?? this.internalCategoryIds,
+      companyCategoryId: companyCategoryId ?? this.companyCategoryId,
     );
   }
 }
 
-class ProductFormNotifier extends StateNotifier<ProductFormState> {
-  final Ref ref;
+class ProductFormNotifier extends Notifier<ProductFormState> {
   late InventoryRepository _repository;
 
-  ProductFormNotifier(this.ref) : super(ProductFormState()) {
+  @override
+  ProductFormState build() {
     _repository = getIt<InventoryRepository>();
+    return ProductFormState();
   }
 
   void initializeWithProduct(Product? product) {
@@ -53,11 +84,36 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
       state = state.copyWith(
         options: List.from(product.options),
         pricingTiers: List.from(product.pricingTiers),
-        existingImageUrl: product.productImages.isNotEmpty ? product.productImages.first : null,
+        existingImageUrls: List.from(product.images),
+        status: product.status,
+        isAvailable: product.isAvailable,
+        globalCategoryId: product.globalCategory?.id,
+        internalCategoryIds: product.internalCategories.map((e) => e.id).toList(),
+        companyCategoryId: product.category?.id,
       );
     } else {
       state = ProductFormState(); // Reset
     }
+  }
+
+  void setStatus(String status) {
+    state = state.copyWith(status: status);
+  }
+
+  void setAvailability(bool isAvailable) {
+    state = state.copyWith(isAvailable: isAvailable);
+  }
+
+  void setGlobalCategory(int? categoryId) {
+    state = state.copyWith(globalCategoryId: categoryId);
+  }
+
+  void setInternalCategories(List<int> categoryIds) {
+    state = state.copyWith(internalCategoryIds: categoryIds);
+  }
+
+  void setCompanyCategory(int? categoryId) {
+    state = state.copyWith(companyCategoryId: categoryId);
   }
 
   void addOption(ProductOption option) {
@@ -84,12 +140,24 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
     state = state.copyWith(pricingTiers: newTiers);
   }
 
-  void setImage(File file) {
-    state = state.copyWith(selectedImage: file, clearExistingImageUrl: true);
+  void addImage(File file) {
+    state = state.copyWith(selectedImages: [...state.selectedImages, file]);
   }
 
-  void clearImage() {
-    state = state.copyWith(clearImage: true, clearExistingImageUrl: true);
+  void addImages(List<File> files) {
+    state = state.copyWith(selectedImages: [...state.selectedImages, ...files]);
+  }
+
+  void removeSelectedImage(File file) {
+    state = state.copyWith(
+      selectedImages: state.selectedImages.where((f) => f.path != file.path).toList(),
+    );
+  }
+
+  void removeExistingImage(String url) {
+    state = state.copyWith(
+      existingImageUrls: state.existingImageUrls.where((u) => u != url).toList(),
+    );
   }
 
   Future<bool> saveProduct({
@@ -102,15 +170,15 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
     required double wholesalePrice,
     required int stockQuantity,
     required int minStockAlert,
-    int? categoryId,
   }) async {
     state = state.copyWith(isLoading: true, clearError: true);
 
     try {
-      final companyId = ref.read(authProvider).company?.id;
-      if (companyId == null) throw Exception("No company selected");
+      final user = getIt<CasheInterface>().user();
+      if (user?.company?.id == null) throw Exception("No company selected");
+      final companyId = user!.company!.id;
 
-      final productData = {
+      final Map<String, dynamic> productData = {
         'name': name,
         'sku': sku,
         'description': description,
@@ -119,29 +187,38 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
         'wholesale_price': wholesalePrice,
         'stock_quantity': stockQuantity,
         'min_stock_alert': minStockAlert,
-        'status': 'active',
+        'status': state.status,
+        'is_available': state.isAvailable,
         'options': state.options
-            .map((e) => {'name': e.name, 'retail_price': e.retailPrice, 'cost': e.cost, 'wholesale_price': e.wholesalePrice ?? 0, 'is_required': e.isRequired})
+            .map((e) => {
+                  if (e.id != null) 'id': e.id,
+                  'name': e.name,
+                  'retail_price': e.retailPrice,
+                  'cost': e.cost,
+                  'wholesale_price': e.wholesalePrice ?? 0,
+                  'is_required': e.isRequired
+                })
             .toList(),
-        'pricing_tiers': state.pricingTiers.map((e) => {'quantity': e.quantity, 'unit_price': e.unitPrice}).toList(),
+        'pricing_tiers': state.pricingTiers.map((e) => {if (e.id != null) 'id': e.id, 'quantity': e.quantity, 'unit_price': e.unitPrice}).toList(),
       };
 
-      if (categoryId != null) productData['category_id'] = categoryId;
+      final globalCategoryId = state.globalCategoryId;
+      if (globalCategoryId != null) productData['global_category_id'] = globalCategoryId;
 
-      List<File> imagesToUpload = [];
-      if (state.selectedImage != null) {
-        imagesToUpload.add(state.selectedImage!);
+      if (state.internalCategoryIds.isNotEmpty) {
+        productData['internal_category_ids'] = state.internalCategoryIds;
       }
+
+      final companyCategoryId = state.companyCategoryId;
+      if (companyCategoryId != null) productData['company_category_id'] = companyCategoryId;
 
       if (currentProductId == null) {
-        final product = await _repository.createProduct(companyId, productData, images: imagesToUpload);
-        ref.read(inventoryNotifierProvider.notifier).addPorodcut(product);
+        final product = await _repository.createProduct(companyId, productData, images: state.selectedImages);
+        ref.read(inventoryNotifierProvider.notifier).addProduct(product);
       } else {
-        final product = await _repository.updateProduct(companyId, currentProductId, productData, images: imagesToUpload);
-        ref.read(inventoryNotifierProvider.notifier).addPorodcut(product, isUpdate: true);
+        final product = await _repository.updateProduct(companyId, currentProductId, productData, images: state.selectedImages,);
+        ref.read(inventoryNotifierProvider.notifier).addProduct(product, isUpdate: true);
       }
-
-      // Refresh list
 
       state = state.copyWith(isLoading: false);
       return true;
@@ -152,6 +229,5 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
   }
 }
 
-final productFormNotifierProvider = StateNotifierProvider.autoDispose<ProductFormNotifier, ProductFormState>((ref) {
-  return ProductFormNotifier(ref);
-});
+final productFormNotifierProvider = NotifierProvider<ProductFormNotifier, ProductFormState>(ProductFormNotifier.new);
+

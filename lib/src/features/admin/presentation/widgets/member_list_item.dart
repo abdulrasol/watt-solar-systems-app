@@ -18,16 +18,21 @@ class MemberListItem extends StatelessWidget {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.grey.withValues(alpha: 0.1),
         ),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 20.r,
-            backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+            backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
             child: Text(
-              member.username.isNotEmpty ? member.username[0].toUpperCase() : '?',
+              member.username.isNotEmpty
+                  ? member.username[0].toUpperCase()
+                  : '?',
               style: TextStyle(
                 color: AppTheme.primaryColor,
                 fontWeight: FontWeight.bold,
@@ -48,6 +53,8 @@ class MemberListItem extends StatelessWidget {
                     fontSize: 14.sp,
                     fontFamily: AppTheme.fontFamily,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   member.email,
@@ -56,11 +63,14 @@ class MemberListItem extends StatelessWidget {
                     color: Colors.grey,
                     fontFamily: AppTheme.fontFamily,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                SizedBox(height: 8.h),
+                _buildRoleBadge(context, member.role),
               ],
             ),
           ),
-          _buildRoleBadge(context, member.role),
         ],
       ),
     );
@@ -82,7 +92,7 @@ class MemberListItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6.r),
       ),
       child: Text(

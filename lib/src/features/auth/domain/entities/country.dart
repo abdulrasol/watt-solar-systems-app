@@ -6,7 +6,7 @@ class Country {
   Country({this.id, required this.name, required this.code});
 
   factory Country.fromJson(Map<String, dynamic> json) {
-    return Country(id: json['id'] ?? 0, name: json['name'], code: json['code']);
+    return Country(id: json['id'] ?? 0, name: json['name'], code: json['code'] ?? '');
   }
 
   Map<String, dynamic> toJson() {

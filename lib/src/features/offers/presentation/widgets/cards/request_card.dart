@@ -25,13 +25,7 @@ class RequestCard extends StatelessWidget {
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.02),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,23 +33,18 @@ class RequestCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                _buildSpecItem(icon: Iconsax.sun_1_bold, label: l10n.pv_power, value: '${request.totalPanelPower}W', color: Colors.orange),
                 _buildSpecItem(
-                  icon: Iconsax.sun_1_bold,
-                  label: l10n.pv_power,
-                  value: '${request.totalPanelPower}W',
-                  color: Colors.orange,
+                  icon: Iconsax.battery_charging_bold,
+                  label: l10n.battery,
+                  value: '${_formatNumber(request.totalBatteryPower)}KWh',
+                  color: Colors.green,
                 ),
                 _buildSpecItem(
                   icon: Iconsax.flash_1_bold,
-                  label: l10n.battery,
-                  value: '${_formatNumber(request.totalBatteryPower)}Wh',
-                  color: Colors.blue,
-                ),
-                _buildSpecItem(
-                  icon: Iconsax.setting_2_bold,
                   label: l10n.inverter_calc,
-                  value: '${_formatNumber(request.totalInvertersPower)}W',
-                  color: Colors.purple,
+                  value: '${_formatNumber(request.totalInvertersPower)}KW',
+                  color: Colors.blue,
                 ),
               ],
             ),
@@ -66,29 +55,15 @@ class RequestCard extends StatelessWidget {
                 SizedBox(width: 4.w),
                 Text(
                   l10n.city_label(request.city?.name ?? '-'),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 4.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: request.status.color.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                  decoration: BoxDecoration(color: request.status.color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20.r)),
                   child: Text(
                     request.status.localizedLabel(l10n),
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      color: request.status.color,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 10.sp, color: request.status.color, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -99,31 +74,18 @@ class RequestCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSpecItem({
-    required IconData icon,
-    required String label,
-    required String value,
-    required Color color,
-  }) {
+  Widget _buildSpecItem({required IconData icon, required String label, required String value, required Color color}) {
     return Column(
       children: [
         Icon(icon, color: color, size: 20.sp),
         SizedBox(height: 4.h),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w800,
-            fontFamily: AppTheme.fontFamily,
-          ),
+          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 10.sp,
-            color: Colors.grey,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 10.sp, color: Colors.grey, fontWeight: FontWeight.w500),
         ),
       ],
     );

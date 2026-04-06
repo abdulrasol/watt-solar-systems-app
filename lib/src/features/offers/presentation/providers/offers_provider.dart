@@ -284,8 +284,9 @@ class OffersNotifier extends StateNotifier<OffersState> {
         availableRequestsHasMore: true,
       );
     } else {
-      if (!state.availableRequestsHasMore || state.availableRequestsIsMoreLoading)
+      if (!state.availableRequestsHasMore || state.availableRequestsIsMoreLoading) {
         return;
+      }
       state = state.copyWith(availableRequestsIsMoreLoading: true, error: null);
     }
 
@@ -310,8 +311,9 @@ class OffersNotifier extends StateNotifier<OffersState> {
   }
 
   Future<void> availableRequestsNextPage() async {
-    if (!state.availableRequestsHasMore || state.availableRequestsIsMoreLoading)
+    if (!state.availableRequestsHasMore || state.availableRequestsIsMoreLoading) {
       return;
+    }
     state = state.copyWith(
       availableRequestsFilter: state.availableRequestsFilter.copyWith(
         page: state.availableRequestsFilter.page + 1,
@@ -399,8 +401,9 @@ class OffersNotifier extends StateNotifier<OffersState> {
         adminRequestsHasMore: true,
       );
     } else {
-      if (!state.adminRequestsHasMore || state.adminRequestsIsMoreLoading)
+      if (!state.adminRequestsHasMore || state.adminRequestsIsMoreLoading) {
         return;
+      }
       state = state.copyWith(adminRequestsIsMoreLoading: true, error: null);
     }
 

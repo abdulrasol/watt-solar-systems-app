@@ -1,12 +1,18 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:barcode_scan2/barcode_scan2.dart';
-import '../../domain/entities/product.dart';
-import '../providers/product_form_provider.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
+import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
+import 'package:solar_hub/src/features/inventory/presentation/providers/product_form_provider.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_basic_info_form.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_form.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_inventory_form.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_category_form.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_image_picker.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_options_form.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_tiers_form.dart';
 
 class AddProductPage extends ConsumerStatefulWidget {
   final Product? product;
@@ -23,14 +29,11 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   final _nameCtrl = TextEditingController();
   final _skuCtrl = TextEditingController();
   final _descCtrl = TextEditingController();
-  final _retailPriceCtrl = TextEditingController(text: '0');
-  final _costPriceCtrl = TextEditingController(text: '0');
-  final _wholesalePriceCtrl = TextEditingController(text: '0');
-  final _stockCtrl = TextEditingController(text: '0');
-  final _minStockCtrl = TextEditingController(text: '5');
-
-  // Category management would typically load from a provider. For now we use ID or leave null
-  int? _selectedCategoryId;
+  final _retailPriceCtrl = TextEditingController();
+  final _costPriceCtrl = TextEditingController();
+  final _wholesalePriceCtrl = TextEditingController();
+  final _stockCtrl = TextEditingController();
+  final _minStockCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -47,7 +50,6 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
         _wholesalePriceCtrl.text = widget.product!.wholesalePrice.toString();
         _stockCtrl.text = widget.product!.stockQuantity.toString();
         _minStockCtrl.text = widget.product!.minStockAlert.toString();
-        _selectedCategoryId = widget.product!.category?.id;
       }
     });
   }
@@ -65,280 +67,60 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     super.dispose();
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: source, maxWidth: 1024, maxHeight: 1024);
-      if (pickedFile != null) {
-        ref.read(productFormNotifierProvider.notifier).setImage(File(pickedFile.path));
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to pick image')));
-      }
-    }
-  }
-
-  Future<void> _scanBarcode() async {
-    try {
-      final result = await BarcodeScanner.scan();
-      if (result.type == ResultType.Barcode && result.rawContent.isNotEmpty) {
-        setState(() {
-          _skuCtrl.text = result.rawContent;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to scan barcode')));
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(productFormNotifierProvider);
+    final l10n = AppLocalizations.of(context)!;
     final isEditing = widget.product != null;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'Edit Product' : 'Add Product')),
-      body: state.isLoading
+    return PreScaffold(
+      title: isEditing ? l10n.editProduct : l10n.addProduct,
+      child: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(16.r),
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (state.error != null)
                       Container(
-                        padding: const EdgeInsets.all(12),
-                        color: Colors.red.withValues(alpha: 0.1),
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: 16.h),
+                        padding: EdgeInsets.all(12.r),
+                        decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12.r)),
                         child: Text(state.error!, style: const TextStyle(color: Colors.red)),
                       ),
-
-                    // -- Basic Info
-                    _buildSectionCard("Basic Information", [
-                      TextFormField(
-                        controller: _nameCtrl,
-                        decoration: const InputDecoration(labelText: 'Product Name', border: OutlineInputBorder()),
-                        validator: (val) => val == null || val.isEmpty ? 'Required' : null,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _descCtrl,
-                        decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder()),
-                        maxLines: 3,
-                      ),
-                      const SizedBox(height: 16),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _skuCtrl,
-                        decoration: InputDecoration(
-                          labelText: 'SKU / Barcode',
-                          border: const OutlineInputBorder(),
-                          suffixIcon: IconButton(icon: const Icon(Icons.qr_code_scanner), onPressed: _scanBarcode, tooltip: 'Scan Barcode'),
-                        ),
-                      ),
-                    ]),
-
-                    const SizedBox(height: 24),
-
-                    // -- Image Upload
-                    _buildSectionCard("Product Image", [
-                      Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (_) => SafeArea(
-                                child: Wrap(
-                                  children: [
-                                    ListTile(
-                                      leading: const Icon(Icons.photo_library),
-                                      title: const Text('Gallery'),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        _pickImage(ImageSource.gallery);
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.camera_alt),
-                                      title: const Text('Camera'),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        _pickImage(ImageSource.camera);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 150,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              border: Border.all(color: Colors.grey[300]!),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: state.selectedImage != null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.file(state.selectedImage!, fit: BoxFit.cover),
-                                  )
-                                : (state.existingImageUrl != null)
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: CachedNetworkImage(imageUrl: state.existingImageUrl!, fit: BoxFit.cover),
-                                  )
-                                : Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.add_a_photo, size: 40, color: Colors.grey[400]),
-                                      const SizedBox(height: 8),
-                                      Text('Add Image', style: TextStyle(color: Colors.grey[600])),
-                                    ],
-                                  ),
-                          ),
-                        ),
-                      ),
-                      if (state.selectedImage != null || state.existingImageUrl != null)
-                        Center(
-                          child: TextButton.icon(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            label: const Text("Remove Image", style: TextStyle(color: Colors.red)),
-                            onPressed: () => ref.read(productFormNotifierProvider.notifier).clearImage(),
-                          ),
-                        ),
-                    ]),
-
-                    const SizedBox(height: 24),
-
-                    // -- Pricing
-                    _buildSectionCard("Pricing", [
-                      TextFormField(
-                        controller: _retailPriceCtrl,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: 'Retail Price', border: OutlineInputBorder()),
-                        validator: (val) => val == null || val.isEmpty ? 'Required' : null,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _costPriceCtrl,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: 'Cost Price', border: OutlineInputBorder()),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _wholesalePriceCtrl,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: 'Wholesale Price', border: OutlineInputBorder()),
-                      ),
-                    ]),
-
-                    const SizedBox(height: 24),
-
-                    // -- Inventory
-                    _buildSectionCard("Inventory", [
-                      TextFormField(
-                        controller: _stockCtrl,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: 'Initial Stock Quantity', border: OutlineInputBorder()),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _minStockCtrl,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: 'Low Stock Alert Limit', border: OutlineInputBorder()),
-                      ),
-                    ]),
-
-                    const SizedBox(height: 24),
-
-                    // -- Options
-                    _buildSectionCard(
-                      "Product Options (Variants)",
-                      [
-                        if (state.options.isEmpty) const Text("No options currently added."),
-                        ...state.options.asMap().entries.map((req) {
-                          final idx = req.key;
-                          final opt = req.value;
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            color: Colors.grey[50],
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(color: Colors.grey.shade300),
-                            ),
-                            child: ListTile(
-                              title: Text(opt.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text('+\$${opt.retailPrice} Retail \n+\$${opt.cost} Cost'),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
-                                tooltip: 'Remove Option',
-                                onPressed: () => ref.read(productFormNotifierProvider.notifier).removeOption(idx),
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                      headerAction: IconButton(
-                        icon: const Icon(Icons.add_circle, color: Colors.blue),
-                        tooltip: 'Add Option',
-                        onPressed: _showAddOptionDialog,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // -- Pricing Tiers
-                    _buildSectionCard(
-                      "Quantity Discounts (Pricing Tiers)",
-                      [
-                        if (state.pricingTiers.isEmpty) const Text("No tiers currently added."),
-                        ...state.pricingTiers.asMap().entries.map((req) {
-                          final idx = req.key;
-                          final tier = req.value;
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            color: Colors.grey[50],
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(color: Colors.grey.shade300),
-                            ),
-                            child: ListTile(
-                              title: Text('Min Qty: ${tier.quantity}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text('Unit Price: \$${tier.unitPrice}'),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
-                                tooltip: 'Remove Tier',
-                                onPressed: () => ref.read(productFormNotifierProvider.notifier).removePricingTier(idx),
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                      headerAction: IconButton(
-                        icon: const Icon(Icons.add_circle, color: Colors.blue),
-                        tooltip: 'Add Tier',
-                        onPressed: _showAddTierDialog,
-                      ),
-                    ),
-
-                    const SizedBox(height: 40),
+                    
+                    _buildSection(l10n.basicInformation, ProductBasicInfoForm(nameCtrl: _nameCtrl, descCtrl: _descCtrl, skuCtrl: _skuCtrl)),
+                    SizedBox(height: 20.h),
+                    _buildSection(l10n.productImages, const ProductImagePicker()),
+                    SizedBox(height: 20.h),
+                    _buildSection(l10n.pricing, ProductPricingForm(retailPriceCtrl: _retailPriceCtrl, costPriceCtrl: _costPriceCtrl, wholesalePriceCtrl: _wholesalePriceCtrl)),
+                    SizedBox(height: 20.h),
+                    _buildSection(l10n.inventory, ProductInventoryForm(stockCtrl: _stockCtrl, minStockCtrl: _minStockCtrl)),
+                    SizedBox(height: 20.h),
+                    _buildSection(l10n.all_categories, const ProductCategoryForm()),
+                    SizedBox(height: 20.h),
+                    _buildSection(l10n.productOptions, const ProductOptionsForm()),
+                    SizedBox(height: 20.h),
+                    _buildSection(l10n.pricing_tiers, const ProductPricingTiersForm()),
+                    
+                    SizedBox(height: 40.h),
                     SizedBox(
                       width: double.infinity,
-                      height: 50,
+                      height: 50.h,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                        ),
                         onPressed: _submit,
-                        child: Text(isEditing ? 'Save Changes' : 'Create Product', style: const TextStyle(fontSize: 16)),
+                        child: state.isSubmitting 
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : Text(isEditing ? l10n.saveProduct : l10n.addProduct, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 60.h),
                   ],
                 ),
               ),
@@ -346,105 +128,22 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     );
   }
 
-  Widget _buildSectionCard(String title, List<Widget> children, {Widget? headerAction}) {
+  Widget _buildSection(String title, Widget child) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ),
-              ?headerAction,
-            ],
-          ),
+          Text(title, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey[800])),
           const Divider(height: 24),
-          ...children,
-        ],
-      ),
-    );
-  }
-
-  void _showAddOptionDialog() {
-    String name = '';
-    double ret = 0;
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Add Option'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'Option Name (e.g. Size M)'),
-              onChanged: (v) => name = v,
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Additional Price'),
-              keyboardType: TextInputType.number,
-              onChanged: (v) => ret = double.tryParse(v) ?? 0,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              if (name.isNotEmpty) {
-                ref.read(productFormNotifierProvider.notifier).addOption(ProductOption(name: name, retailPrice: ret));
-              }
-              Navigator.pop(ctx);
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAddTierDialog() {
-    int qty = 10;
-    double price = 0;
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Add Pricing Tier'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'Minimum Quantity'),
-              keyboardType: TextInputType.number,
-              onChanged: (v) => qty = int.tryParse(v) ?? 10,
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Unit Offer Price'),
-              keyboardType: TextInputType.number,
-              onChanged: (v) => price = double.tryParse(v) ?? 0,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              if (price > 0) {
-                ref.read(productFormNotifierProvider.notifier).addPricingTier(ProductPricingTier(quantity: qty, unitPrice: price));
-              }
-              Navigator.pop(ctx);
-            },
-            child: const Text('Add'),
-          ),
+          child,
         ],
       ),
     );
@@ -464,16 +163,12 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
             wholesalePrice: double.tryParse(_wholesalePriceCtrl.text) ?? 0,
             stockQuantity: int.tryParse(_stockCtrl.text) ?? 0,
             minStockAlert: int.tryParse(_minStockCtrl.text) ?? 5,
-            categoryId: _selectedCategoryId,
           );
 
       if (success && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Product saved successfully')));
-        if (widget.product != null) {
-          context.go('/company-dashboard/inventory'); // Go back to list, details might be stale unless they refresh it
-        } else {
-          context.pop();
-        }
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.productSaved)));
+        context.pop();
       }
     }
   }

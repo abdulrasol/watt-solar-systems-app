@@ -326,6 +326,19 @@
   "inverter_type_off_grid": "Off Grid",
   "inverter_type_on_grid": "On Grid",
   "inverter_type_hybrid": "Hybrid",
+  "offers_catalog": "Offers Catalog",
+  "manage_extra_fees": "Manage Extra Fees",
+  "manage_extra_fees_desc": "Use this list for installation fees, delivery, mounting, wiring, or other extra services you add to offers.",
+  "no_involves_yet": "No involves yet",
+  "no_involves_yet_desc": "Create your first extra cost item to reuse it in offer replies.",
+  "create_item": "Create item",
+  "active_in_offers": "Active in offers",
+  "inactive": "Inactive",
+  "create_involve": "Create involve",
+  "edit_involve": "Edit involve",
+  "involve_examples": "Examples: installation fee, delivery, mounting structure.",
+  "delete_item": "Delete item?",
+  "delete_item_desc": "This item will be removed from your involves catalog.",
   "offers_marketplace": "Solar Marketplace",
   "available_requests": "Available Requests",
   "my_bids": "My Bids",
@@ -663,5 +676,86 @@
       "value": {}
     }
   },
-  "save_to_system": "Save to System"
+  "save_to_system": "Save to System",
+  "addProduct": "Add Product",
+  "editProduct": "Edit Product",
+  "deleteProduct": "Delete Product",
+  "costPrice": "Cost Price",
+  "stockQuantity": "Stock Quantity",
+  "minStockAlert": "Min Stock Alert",
+  "active": "Active",
+  "inactive": "Inactive",
+  "confirmDeleteProduct": "Are you sure you want to delete this product?",
+  "productDeleted": "Product deleted successfully",
+  "productCreated": "Product created successfully",
+  "productUpdated": "Product updated successfully",
+  "addOption": "Add Option",
+  "addTier": "Add Tier",
+  "isRequired": "Is Required",
+  "noProducts": "No products found",
+  "searchProducts": "Search products...",
+  "productName": "Product Name",
+  "basicInformation": "Basic Information",
+  "productImages": "Product Images",
+  "pricing": "Pricing",
+  "productOptions": "Product Options",
+  "saveProduct": "Save Product",
+  "productSaved": "Product saved successfully",
+  "noTiers": "No tiers added yet",
+  "noOptions": "No options added yet",
+  "optionName": "Option Name",
+  "add_image": "Add Image",
+  "status": "Status",
+  "availability": "Availability",
+  "add": "Add",
+  "request_service": "Request Service",
+  "request_service_title": "Request {service} Access",
+  "@request_service_title": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_code": "Service Code",
+  "service_code_hint": "e.g., offers, inventory, storefront",
+  "service_code_required": "Service code is required",
+  "request_notes": "Notes",
+  "request_notes_hint": "Explain why you need this service (optional)",
+  "request_notes_hint_text": "Provide details about your requirements...",
+  "request_image": "Screenshot/Image",
+  "request_image_hint": "Upload a screenshot or image (optional)",
+  "tap_to_select_image": "Tap to select an image",
+  "remove_image": "Remove Image",
+  "submit_request": "Submit Request",
+  "submitting_request": "Submitting...",
+  "request_submitted_success": "Service request submitted successfully!",
+  "request_failed": "Failed to submit request",
+  "select_image_source": "Select Image Source",
+  "gallery": "Gallery",
+  "camera": "Camera",
+  "service_not_active": "Service Not Active",
+  "service_not_active_desc": "This service is not currently available for your company.",
+  "request_access": "Request Access",
+  "learn_more": "Learn More",
+  "service_request_pending": "Request Pending",
+  "service_request_pending_desc": "Your request for {service} is pending approval.",
+  "@service_request_pending_desc": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "view_request_status": "View Request Status",
+  "service_maintenance_mode": "Service Under Maintenance",
+  "service_maintenance_mode_desc": "{service} is currently being updated with new features.",
+  "@service_maintenance_mode_desc": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "check_back_later": "Please check back later for improvements.",
+  "open_service": "Open {service}",
+  "@open_service": {
+    "placeholders": {
+      "service": {}
+    }
+  }
 }

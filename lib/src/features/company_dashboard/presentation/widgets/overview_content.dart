@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
@@ -13,14 +14,27 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 
 class OverviewContent extends ConsumerWidget {
   final CompanySummeryState state;
-  const OverviewContent({super.key, required this.state});
+  final int? companyId;
+
+  const OverviewContent({super.key, required this.state, this.companyId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = state.summery;
     final user = ref.watch(authProvider).user;
     final company = user?.company;
-    final bool isDesktop = MediaQuery.of(context).size.shortestSide >= 600;
+    final statsGridCount = AppBreakpoints.adaptiveGridCount(
+      context,
+      mobile: 2,
+      tablet: 2,
+      desktop: 4,
+    );
+    final servicesGridCount = AppBreakpoints.adaptiveGridCount(
+      context,
+      mobile: 2,
+      tablet: 3,
+      desktop: 4,
+    );
     final l10n = AppLocalizations.of(context)!;
     final services = [...?s?.services];
     final hasActiveOffers = services.any(
@@ -35,7 +49,7 @@ class OverviewContent extends ConsumerWidget {
       services.add(
         CompanyService(
           serviceCode: 'offers_catalog',
-          serviceName: _isArabic(context) ? 'كتالوج الرسوم' : 'Offers Catalog',
+          serviceName: l10n.offers_catalog,
           status: 'active',
           isAutoEnabled: true,
           autoEnabledBy: const [],
@@ -67,8 +81,8 @@ class OverviewContent extends ConsumerWidget {
         GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: isDesktop ? 4 : 2,
-          childAspectRatio: 1.2,
+          crossAxisCount: statsGridCount,
+          childAspectRatio: AppBreakpoints.isMobile(context) ? 1.15 : 1.35,
           crossAxisSpacing: 16.r,
           mainAxisSpacing: 16.r,
           children: [
@@ -114,15 +128,15 @@ class OverviewContent extends ConsumerWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: isDesktop ? 4 : 2,
-            childAspectRatio: 1.1,
+            crossAxisCount: servicesGridCount,
+            childAspectRatio: AppBreakpoints.isDesktop(context) ? 1.18 : 1.02,
             crossAxisSpacing: 16.r,
             mainAxisSpacing: 16.r,
           ),
           itemCount: services.length,
           itemBuilder: (context, index) {
             final service = services[index];
-            return ServiceCard(service: service);
+            return ServiceCard(service: service, companyId: companyId);
           },
         ),
         SizedBox(height: 30.h),
@@ -132,9 +146,6 @@ class OverviewContent extends ConsumerWidget {
       ],
     );
   }
-
-  bool _isArabic(BuildContext context) =>
-      Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
 
   Widget _buildCTA(BuildContext context) {
     return Container(

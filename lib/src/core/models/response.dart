@@ -16,13 +16,7 @@ abstract class BaseResponse {
 /// Standard API response with status, message, body, error, message_user
 /// Example: {"status": 200, "message": "...", "body": {...}, "error": false, "message_user": null}
 class Response extends BaseResponse {
-  Response({
-    required int status,
-    required String message,
-    required dynamic body,
-    required bool error,
-    required String messageUser,
-  }) {
+  Response({required int status, required String message, required dynamic body, required bool error, required String messageUser}) {
     this.status = status;
     this.message = message;
     this.body = body;
@@ -70,14 +64,7 @@ class PaginationMeta {
     );
   }
 
-  static const empty = PaginationMeta(
-    page: 1,
-    pageSize: 0,
-    totalItems: 0,
-    totalPages: 1,
-    hasNext: false,
-    hasPrevious: false,
-  );
+  static const empty = PaginationMeta(page: 1, pageSize: 0, totalItems: 0, totalPages: 1, hasNext: false, hasPrevious: false);
 }
 
 /// Paginated API response with items list and count
@@ -111,17 +98,12 @@ class PaginationResponse extends BaseResponse {
 
     if (bodyData is Map) {
       dPrint('Found wrapped body (Map)', tag: 'PaginationResponse');
-      items = bodyData['items'] as List? ?? [];
-      pagination = PaginationMeta.fromJson(
-        bodyData['pagination'] as Map<String, dynamic>?,
-      );
-      count =
-          bodyData['count'] ?? bodyData['total_items'] ?? pagination.totalItems;
+      items = (bodyData['items'] as List?) ?? [];
+      pagination = PaginationMeta.fromJson(bodyData['pagination'] as Map<String, dynamic>?);
+      count = bodyData['count'] ?? bodyData['total_items'] ?? pagination.totalItems;
+      dPrint('Extracted ${items.length} items, count=$count', tag: 'PaginationResponse');
     } else if (bodyData is List) {
-      dPrint(
-        'Found wrapped body (List): ${bodyData.length}',
-        tag: 'PaginationResponse',
-      );
+      dPrint('Found wrapped body (List): ${bodyData.length}', tag: 'PaginationResponse');
       items = bodyData;
       count = bodyData.length;
     } else if (json['items'] is List) {
@@ -130,10 +112,7 @@ class PaginationResponse extends BaseResponse {
       items = json['items'] as List;
       count = json['count'];
     } else {
-      dPrint(
-        'Warning: No items found in JSON structure',
-        tag: 'PaginationResponse',
-      );
+      dPrint('Warning: No items found in JSON structure. bodyData type: ${bodyData.runtimeType}', tag: 'PaginationResponse');
     }
 
     return PaginationResponse(
@@ -167,23 +146,14 @@ class PaginatedItemsResponse<T> extends BaseResponse {
     this.messageUser = messageUser;
   }
 
-  factory PaginatedItemsResponse.fromJson(
-    Map<String, dynamic> json,
-    T Function(Map<String, dynamic> itemJson) itemFromJson,
-  ) {
-    final bodyData =
-        json['body'] as Map<String, dynamic>? ?? const <String, dynamic>{};
+  factory PaginatedItemsResponse.fromJson(Map<String, dynamic> json, T Function(Map<String, dynamic> itemJson) itemFromJson) {
+    final bodyData = json['body'] as Map<String, dynamic>? ?? const <String, dynamic>{};
     final rawItems = bodyData['items'] as List? ?? const [];
-    final items = rawItems
-        .whereType<Map>()
-        .map((item) => itemFromJson(Map<String, dynamic>.from(item)))
-        .toList();
+    final items = rawItems.whereType<Map>().map((item) => itemFromJson(Map<String, dynamic>.from(item))).toList();
 
     return PaginatedItemsResponse<T>(
       items: items,
-      pagination: PaginationMeta.fromJson(
-        bodyData['pagination'] as Map<String, dynamic>?,
-      ),
+      pagination: PaginationMeta.fromJson(bodyData['pagination'] as Map<String, dynamic>?),
       status: json['status'] ?? 0,
       message: json['message'] ?? '',
       error: json['error'] == true,

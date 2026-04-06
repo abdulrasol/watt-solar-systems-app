@@ -25,7 +25,7 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(homePageIndexProvider);
     final bool hasCommunity = isEnabled(ref, 'community');
-    final bool hasStore = isEnabled(ref, 'store', defaultValue: true);
+    final bool hasStore = isEnabled(ref, 'store', defaultValue: false);
 
     final availableIndices = [0, 1];
     if (hasCommunity) availableIndices.add(2);
@@ -37,88 +37,60 @@ class Home extends ConsumerWidget {
     // List pages = [const UserDashboard(), const CalculatorLandingPage(), const CommunityFeedPage(), const Store()];
     List<Widget> pages = [
       const UserDashboard(),
-      const CalculatorLandingPage(),
+      const CalculatorLandingPage(showAppBar: false),
       const UserDashboard(),
       const StorefrontScreen(audience: StorefrontAudience.b2c),
     ];
 
     List<CrystalNavigationBarItem> navItems = [
       /// Dashboard
-      CrystalNavigationBarItem(
-        icon: Iconsax.home_bold,
-        unselectedIcon: Iconsax.home_outline,
-        selectedColor: Theme.of(context).primaryColor,
-      ),
+      CrystalNavigationBarItem(icon: Iconsax.home_bold, unselectedIcon: Iconsax.home_outline, selectedColor: Theme.of(context).primaryColor),
 
       /// Calculator
-      CrystalNavigationBarItem(
-        icon: FontAwesome.calculator_solid,
-        unselectedIcon: FontAwesome.calculator_solid,
-        selectedColor: Theme.of(context).primaryColor,
-      ),
+      CrystalNavigationBarItem(icon: FontAwesome.calculator_solid, unselectedIcon: FontAwesome.calculator_solid, selectedColor: Theme.of(context).primaryColor),
     ];
 
     if (hasCommunity) {
       navItems.add(
         /// Hub
-        CrystalNavigationBarItem(
-          icon: Icons.hub_outlined,
-          unselectedIcon: Icons.hub_outlined,
-          selectedColor: Theme.of(context).primaryColor,
-        ),
+        CrystalNavigationBarItem(icon: Icons.hub_outlined, unselectedIcon: Icons.hub_outlined, selectedColor: Theme.of(context).primaryColor),
       );
     }
 
     if (hasStore) {
-      navItems.add(
-        /// Store
-        CrystalNavigationBarItem(
-          icon: Iconsax.shop_bold,
-          unselectedIcon: Iconsax.shop_outline,
-          selectedColor: Theme.of(context).primaryColor,
-        ),
-      );
+      navItems.add(CrystalNavigationBarItem(icon: Iconsax.shop_bold, unselectedIcon: Iconsax.shop_outline, selectedColor: Theme.of(context).primaryColor));
     }
 
     return Scaffold(
       extendBody: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: _appBar(context, ref),
-      ),
+      appBar: PreferredSize(preferredSize: const Size.fromHeight(kToolbarHeight), child: _appBar(context, ref)),
       body: IndexedStack(index: index, children: pages),
-
-      bottomNavigationBar: Padding(
-        padding: navItems.length <= 2
-            ? EdgeInsets.only(
-                left: MediaQuery.sizeOf(context).width * 0.22,
-                right: MediaQuery.sizeOf(context).width * 0.22,
-                bottom: 10,
-              )
-            : EdgeInsets.zero,
-        child: CrystalNavigationBar(
-          currentIndex: navIndex,
-          height: 10,
-          unselectedItemColor: Colors.white70,
-          backgroundColor: Colors.black.withValues(alpha: 0.1),
-          onTap: (int index) {
-            ref.read(homePageIndexProvider.notifier).state =
-                availableIndices[index];
-          },
-          items: navItems,
-        ),
-      ),
-
+      bottomNavigationBar: _navbar(navItems, context, navIndex, ref, availableIndices),
       drawer: const AppDrawer(),
+    );
+  }
+
+  Padding _navbar(List<CrystalNavigationBarItem> navItems, BuildContext context, int navIndex, WidgetRef ref, List<int> availableIndices) {
+    return Padding(
+      padding: navItems.length <= 2
+          ? EdgeInsets.only(left: MediaQuery.sizeOf(context).width * 0.22, right: MediaQuery.sizeOf(context).width * 0.22, bottom: 10)
+          : EdgeInsets.zero,
+      child: CrystalNavigationBar(
+        currentIndex: navIndex,
+        height: 10,
+        unselectedItemColor: Colors.white70,
+        backgroundColor: Colors.black.withValues(alpha: 0.1),
+        onTap: (int index) {
+          ref.read(homePageIndexProvider.notifier).state = availableIndices[index];
+        },
+        items: navItems,
+      ),
     );
   }
 
   AppBar _appBar(BuildContext context, WidgetRef ref) {
     int index = ref.watch(homePageIndexProvider);
-    final notificationCount = ref
-        .watch(notificationHistoryProvider)
-        .items
-        .length;
+    final notificationCount = ref.watch(notificationHistoryProvider).items.length;
 
     return AppBar(
       title: Text(
@@ -146,9 +118,7 @@ class Home extends ConsumerWidget {
               ListenableBuilder(
                 listenable: storefrontCart,
                 builder: (context, _) {
-                  final count = storefrontCart.totalItems(
-                    StorefrontAudience.b2c,
-                  );
+                  final count = storefrontCart.totalItems(StorefrontAudience.b2c);
                   return Stack(
                     children: [
                       IconButton(
@@ -156,16 +126,11 @@ class Home extends ConsumerWidget {
                           Navigator.of(context).push(
                             buildStorefrontRoute(
                               context: context,
-                              page: const StorefrontCartScreen(
-                                audience: StorefrontAudience.b2c,
-                              ),
+                              page: const StorefrontCartScreen(audience: StorefrontAudience.b2c),
                             ),
                           );
                         },
-                        icon: const Icon(
-                          FontAwesome.cart_shopping_solid,
-                          size: 20,
-                        ),
+                        icon: const Icon(FontAwesome.cart_shopping_solid, size: 20),
                       ),
                       if (count > 0)
                         Positioned(
@@ -173,17 +138,10 @@ class Home extends ConsumerWidget {
                           top: 8,
                           child: Container(
                             padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
+                            decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                             child: Text(
                               count > 99 ? '99+' : '$count',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -198,10 +156,7 @@ class Home extends ConsumerWidget {
                 children: [
                   IconButton(
                     onPressed: () => context.push('/notifications'),
-                    icon: const Icon(
-                      Iconsax.notification_bing_bold,
-                      color: AppTheme.primaryColor,
-                    ),
+                    icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
                   ),
                   if (notificationCount > 0)
                     Positioned(
@@ -209,17 +164,10 @@ class Home extends ConsumerWidget {
                       top: 8,
                       child: Container(
                         padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
+                        decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                         child: Text(
                           notificationCount > 9 ? '9+' : '$notificationCount',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

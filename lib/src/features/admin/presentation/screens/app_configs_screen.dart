@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/admin/domain/entities/app_config.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/app_config_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -41,7 +42,11 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
     return AppBar(
       title: Text(
         'App Configurations',
-        style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.bold, fontSize: 20.sp),
+        style: const TextStyle(
+          fontFamily: AppTheme.fontFamily,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
       ),
       centerTitle: true,
       actions: [
@@ -59,11 +64,19 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Iconsax.setting_bold, size: 80.sp, color: AppTheme.primaryColor.withOpacity(0.3)),
+          Icon(
+            Iconsax.setting_bold,
+            size: 80.sp,
+            color: AppTheme.primaryColor.withValues(alpha: 0.3),
+          ),
           SizedBox(height: 24.h),
           Text(
             'Loading Configurations...',
-            style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+              fontFamily: AppTheme.fontFamily,
+            ),
           ),
         ],
       ),
@@ -75,28 +88,43 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.error_outline, size: 80.sp, color: AppTheme.errorColor.withOpacity(0.5)),
+          Icon(
+            Icons.error_outline,
+            size: 80.sp,
+            color: AppTheme.errorColor.withValues(alpha: 0.5),
+          ),
           SizedBox(height: 24.h),
           Text(
             'Failed to load configurations',
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: AppTheme.fontFamily,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
             error,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+              fontFamily: AppTheme.fontFamily,
+            ),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 24.h),
           ElevatedButton.icon(
-            onPressed: () => ref.read(appConfigProvider.notifier).fetchConfigs(),
+            onPressed: () =>
+                ref.read(appConfigProvider.notifier).fetchConfigs(),
             icon: Icon(Iconsax.refresh_bold, size: 20.sp),
-            label: Text('Retry', style: TextStyle(fontSize: 14.sp)),
+            label: const Text('Retry', style: TextStyle(fontSize: 14)),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
             ),
           ),
         ],
@@ -104,15 +132,29 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
     );
   }
 
-  Widget _buildContent(BuildContext context, AppConfigState state, bool isDark) {
+  Widget _buildContent(
+    BuildContext context,
+    AppConfigState state,
+    bool isDark,
+  ) {
     return RefreshIndicator(
       color: AppTheme.primaryColor,
       backgroundColor: Theme.of(context).cardColor,
       onRefresh: () => ref.read(appConfigProvider.notifier).fetchConfigs(),
-      child: ListView.separated(
+      child: GridView.builder(
         padding: EdgeInsets.all(20.w),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: AppBreakpoints.adaptiveGridCount(
+            context,
+            mobile: 1,
+            tablet: 2,
+            desktop: 2,
+          ),
+          crossAxisSpacing: 12.w,
+          mainAxisSpacing: 12.h,
+          childAspectRatio: AppBreakpoints.isMobile(context) ? 2.6 : 3.0,
+        ),
         itemCount: state.configs.length,
-        separatorBuilder: (context, index) => SizedBox(height: 12.h),
         itemBuilder: (context, index) {
           final config = state.configs[index];
           return _buildConfigCard(context, config, isDark, state.isSubmitting)
@@ -132,14 +174,22 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
     );
   }
 
-  Widget _buildConfigCard(BuildContext context, AppConfig config, bool isDark, bool isSubmitting) {
+  Widget _buildConfigCard(
+    BuildContext context,
+    AppConfig config,
+    bool isDark,
+    bool isSubmitting,
+  ) {
     return Dismissible(
       key: Key(config.key),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
         padding: EdgeInsets.only(right: 20.w),
-        decoration: BoxDecoration(color: AppTheme.errorColor, borderRadius: BorderRadius.circular(16.r)),
+        decoration: BoxDecoration(
+          color: AppTheme.errorColor,
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         child: Icon(Iconsax.trash_bold, color: Colors.white, size: 24.sp),
       ),
       confirmDismiss: (direction) => _confirmDelete(context, config),
@@ -153,10 +203,10 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: config.value
-                ? AppTheme.successColor.withOpacity(0.3)
+                ? AppTheme.successColor.withValues(alpha: 0.3)
                 : isDark
-                ? Colors.white.withOpacity(0.1)
-                : Colors.grey.withOpacity(0.1),
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.grey.withValues(alpha: 0.1),
           ),
         ),
         child: Row(
@@ -164,7 +214,9 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: config.value ? AppTheme.successColor.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+                color: config.value
+                    ? AppTheme.successColor.withValues(alpha: 0.1)
+                    : Colors.grey.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
@@ -180,13 +232,22 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                 children: [
                   Text(
                     config.key,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp, fontFamily: AppTheme.fontFamily),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.sp,
+                      fontFamily: AppTheme.fontFamily,
+                    ),
                   ),
-                  if (config.description != null && config.description!.isNotEmpty) ...[
+                  if (config.description != null &&
+                      config.description!.isNotEmpty) ...[
                     SizedBox(height: 4.h),
                     Text(
                       config.description!,
-                      style: TextStyle(fontSize: 12.sp, color: isDark ? Colors.grey[400] : Colors.grey[600], fontFamily: AppTheme.fontFamily),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        fontFamily: AppTheme.fontFamily,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -202,16 +263,20 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                 onChanged: isSubmitting
                     ? null
                     : (value) {
-                        ref.read(appConfigProvider.notifier).toggleConfig(config.key, value);
+                        ref
+                            .read(appConfigProvider.notifier)
+                            .toggleConfig(config.key, value);
                       },
                 activeThumbColor: AppTheme.successColor,
-                activeTrackColor: AppTheme.successColor.withOpacity(0.3),
+                activeTrackColor: AppTheme.successColor.withValues(alpha: 0.3),
               ),
             ),
             SizedBox(width: 8.w),
             PopupMenuButton<String>(
               icon: Icon(Iconsax.more_bold, size: 22.sp, color: Colors.grey),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
               onSelected: (value) {
                 if (value == 'edit') {
                   _showEditConfigDialog(context, config);
@@ -224,11 +289,18 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                   value: 'edit',
                   child: Row(
                     children: [
-                      Icon(Iconsax.edit_bold, size: 20.sp, color: AppTheme.primaryColor),
+                      Icon(
+                        Iconsax.edit_bold,
+                        size: 20.sp,
+                        color: AppTheme.primaryColor,
+                      ),
                       SizedBox(width: 12.w),
                       Text(
                         'Edit',
-                        style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp),
+                        style: TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          fontSize: 14.sp,
+                        ),
                       ),
                     ],
                   ),
@@ -237,11 +309,19 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Iconsax.trash_bold, size: 20.sp, color: AppTheme.errorColor),
+                      Icon(
+                        Iconsax.trash_bold,
+                        size: 20.sp,
+                        color: AppTheme.errorColor,
+                      ),
                       SizedBox(width: 12.w),
                       Text(
                         'Delete',
-                        style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, color: AppTheme.errorColor),
+                        style: TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          fontSize: 14.sp,
+                          color: AppTheme.errorColor,
+                        ),
                       ),
                     ],
                   ),
@@ -258,13 +338,22 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
         title: Row(
           children: [
             Container(
               padding: EdgeInsets.all(8.w),
-              decoration: BoxDecoration(color: AppTheme.errorColor.withOpacity(0.1), shape: BoxShape.circle),
-              child: Icon(Iconsax.warning_2_bold, color: AppTheme.errorColor, size: 24.sp),
+              decoration: BoxDecoration(
+                color: AppTheme.errorColor.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Iconsax.warning_2_bold,
+                color: AppTheme.errorColor,
+                size: 24.sp,
+              ),
             ),
             SizedBox(width: 12.w),
             Text('Delete Config'),
@@ -279,7 +368,10 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
             onPressed: () => Navigator.pop(context, false),
             child: Text(
               'Cancel',
-              style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp),
+              style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                fontSize: 14.sp,
+              ),
             ),
           ),
           ElevatedButton(
@@ -288,11 +380,17 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
               backgroundColor: AppTheme.errorColor,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
             ),
             child: Text(
               'Delete',
-              style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -310,18 +408,30 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
           title: Row(
             children: [
               Container(
                 padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(color: AppTheme.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
-                child: Icon(Iconsax.add_bold, color: AppTheme.primaryColor, size: 24.sp),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Iconsax.add_bold,
+                  color: AppTheme.primaryColor,
+                  size: 24.sp,
+                ),
               ),
               SizedBox(width: 12.w),
               Text(
                 'Add Configuration',
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -353,7 +463,11 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                   children: [
                     Text(
                       'Default Value:',
-                      style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     SizedBox(width: 12.w),
                     Switch(
@@ -367,7 +481,11 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                     ),
                     Text(
                       value ? 'Enabled' : 'Disabled',
-                      style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: value ? FontWeight.bold : FontWeight.normal),
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        fontSize: 14.sp,
+                        fontWeight: value ? FontWeight.bold : FontWeight.normal,
+                      ),
                     ),
                   ],
                 ),
@@ -379,7 +497,10 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'Cancel',
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14.sp,
+                ),
               ),
             ),
             ElevatedButton(
@@ -390,7 +511,9 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                       .createConfig(
                         key: keyController.text.trim(),
                         value: value,
-                        description: descriptionController.text.trim().isEmpty ? null : descriptionController.text.trim(),
+                        description: descriptionController.text.trim().isEmpty
+                            ? null
+                            : descriptionController.text.trim(),
                       );
                   Navigator.pop(context);
                 }
@@ -399,11 +522,17 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                 backgroundColor: AppTheme.primaryColor,
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
               ),
               child: Text(
                 'Add',
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -414,25 +543,39 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
 
   void _showEditConfigDialog(BuildContext context, AppConfig config) {
     final keyController = TextEditingController(text: config.key);
-    final descriptionController = TextEditingController(text: config.description);
+    final descriptionController = TextEditingController(
+      text: config.description,
+    );
     bool value = config.value;
 
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
           title: Row(
             children: [
               Container(
                 padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(color: AppTheme.primaryColor.withOpacity(0.1), shape: BoxShape.circle),
-                child: Icon(Iconsax.edit_bold, color: AppTheme.primaryColor, size: 24.sp),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Iconsax.edit_bold,
+                  color: AppTheme.primaryColor,
+                  size: 24.sp,
+                ),
               ),
               SizedBox(width: 12.w),
               Text(
                 'Edit Configuration',
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -461,7 +604,11 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                   children: [
                     Text(
                       'Value:',
-                      style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     SizedBox(width: 12.w),
                     Switch(
@@ -475,7 +622,11 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                     ),
                     Text(
                       value ? 'Enabled' : 'Disabled',
-                      style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: value ? FontWeight.bold : FontWeight.normal),
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        fontSize: 14.sp,
+                        fontWeight: value ? FontWeight.bold : FontWeight.normal,
+                      ),
                     ),
                   ],
                 ),
@@ -487,7 +638,10 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'Cancel',
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14.sp,
+                ),
               ),
             ),
             ElevatedButton(
@@ -499,7 +653,9 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                         oldKey: config.key,
                         newKey: keyController.text.trim(),
                         value: value,
-                        description: descriptionController.text.trim().isEmpty ? null : descriptionController.text.trim(),
+                        description: descriptionController.text.trim().isEmpty
+                            ? null
+                            : descriptionController.text.trim(),
                       );
                   Navigator.pop(context);
                 }
@@ -508,11 +664,17 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                 backgroundColor: AppTheme.primaryColor,
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
               ),
               child: Text(
                 'Update',
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

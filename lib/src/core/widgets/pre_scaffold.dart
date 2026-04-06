@@ -10,6 +10,7 @@ class PreScaffold extends StatelessWidget {
     this.bottomNavigationBar,
     this.drawer,
     this.clickBack,
+    this.extendBody = true,
   });
   final Widget child;
   final String? title;
@@ -17,6 +18,7 @@ class PreScaffold extends StatelessWidget {
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
   final Widget? drawer;
+  final bool extendBody;
   final void Function()? clickBack;
 
   @override
@@ -24,6 +26,7 @@ class PreScaffold extends StatelessWidget {
     return PopScope(
       onPopInvokedWithResult: clickBack != null ? (didPop, result) => clickBack!() : null,
       child: Scaffold(
+        extendBody: extendBody,
         appBar: AppBar(title: title != null ? Text(title!) : null, actions: actions),
         body: SafeArea(child: child),
         floatingActionButton: floatingActionButton,

@@ -58,4 +58,60 @@ class CompanyService {
       icon: json['icon'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'service_code': serviceCode,
+      'service_name': serviceName,
+      'status': status,
+      'is_auto_enabled': isAutoEnabled,
+      'auto_enabled_by': autoEnabledBy,
+      'subscription_id': subscriptionId,
+      'requested_at': requestedAt,
+      'approved_at': approvedAt,
+      'activated_at': activatedAt,
+      'starts_at': startsAt,
+      'ends_at': endsAt,
+      'notes': notes,
+      'meta': meta,
+      'route': route,
+      'icon': icon,
+    };
+  }
+
+  CompanyService copyWith({
+    String? serviceCode,
+    String? serviceName,
+    String? status,
+    bool? isAutoEnabled,
+    List<dynamic>? autoEnabledBy,
+    int? subscriptionId,
+    String? requestedAt,
+    String? approvedAt,
+    String? activatedAt,
+    String? startsAt,
+    String? endsAt,
+    String? notes,
+    Map<String, dynamic>? meta,
+    String? route,
+    String? icon,
+  }) {
+    return CompanyService(
+      serviceCode: serviceCode ?? this.serviceCode,
+      serviceName: serviceName ?? this.serviceName,
+      status: status ?? this.status,
+      isAutoEnabled: isAutoEnabled ?? this.isAutoEnabled,
+      autoEnabledBy: autoEnabledBy ?? this.autoEnabledBy,
+      subscriptionId: subscriptionId ?? this.subscriptionId,
+      requestedAt: requestedAt ?? this.requestedAt,
+      approvedAt: approvedAt ?? this.approvedAt,
+      activatedAt: activatedAt ?? this.activatedAt,
+      startsAt: startsAt ?? this.startsAt,
+      endsAt: endsAt ?? this.endsAt,
+      notes: notes ?? this.notes,
+      meta: meta ?? this.meta,
+      route: route ?? this.route,
+      icon: icon ?? this.icon,
+    );
+  }
 }

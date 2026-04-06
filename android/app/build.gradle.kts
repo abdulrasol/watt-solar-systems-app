@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.abdulrasol.watt_pv_app"
+    namespace = "io.github.abdulrasol.watt"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -22,7 +22,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "io.github.abdulrasol.watt_pv_app"
+        applicationId = "io.github.abdulrasol.watt"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

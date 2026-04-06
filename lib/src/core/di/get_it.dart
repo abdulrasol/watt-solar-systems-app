@@ -28,6 +28,9 @@ import 'package:solar_hub/src/utils/toast_service.dart';
 
 import 'package:solar_hub/src/features/inventory/data/data_sources/inventory_remote_data_source.dart';
 import 'package:solar_hub/src/features/inventory/data/repositories/inventory_repository_impl.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/data_sources/company_service_request_remote_data_source.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/repositories/company_service_request_repository_impl.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/repositories/company_service_request_repository.dart';
 import 'package:solar_hub/src/features/inventory/domain/repositories/inventory_repository.dart';
 import 'package:solar_hub/src/features/notifications/data/repositories/notification_history_repository_impl.dart';
 import 'package:solar_hub/src/features/notifications/domain/repositories/notification_history_repository.dart';
@@ -75,16 +78,12 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<InventoryRepository>(() {
     dPrint('init inventory repository', tag: 'getIt');
-    return InventoryRepositoryImpl(
-      InventoryRemoteDataSourceImpl(getIt<DioService>()),
-    );
+    return InventoryRepositoryImpl(InventoryRemoteDataSourceImpl(getIt<DioService>()));
   });
 
   getIt.registerLazySingleton<StorefrontRepository>(() {
     dPrint('init storefront repository', tag: 'getIt');
-    return StorefrontRepositoryImpl(
-      StorefrontRemoteDataSourceImpl(getIt<DioService>()),
-    );
+    return StorefrontRepositoryImpl(StorefrontRemoteDataSourceImpl(getIt<DioService>()));
   });
 
   getIt.registerLazySingleton<StorefrontCartController>(() {
@@ -104,10 +103,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<AppInitRepository>(() {
     dPrint('init app init repository', tag: 'getIt');
-    return AppInitRepositoryImpl(
-      remoteDataSource: getIt<AppInitRemoteDataSource>(),
-      localDataSource: getIt<AppInitLocalDataSource>(),
-    );
+    return AppInitRepositoryImpl(remoteDataSource: getIt<AppInitRemoteDataSource>(), localDataSource: getIt<AppInitLocalDataSource>());
   });
 
   getIt.registerLazySingleton<GetConfigsUseCase>(() {
@@ -122,11 +118,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<AppConfigRepository>(() {
     dPrint('init app config repository', tag: 'getIt');
-    return AppConfigRepositoryImpl(
-      remoteDataSource: AppConfigRemoteDataSourceImpl(
-        dioService: getIt<DioService>(),
-      ),
-    );
+    return AppConfigRepositoryImpl(remoteDataSource: AppConfigRemoteDataSourceImpl(dioService: getIt<DioService>()));
   });
 
   getIt.registerLazySingleton<NotificationRepository>(() {
@@ -151,17 +143,12 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<CompanySummeryRepository>(() {
     dPrint('init company summery repository', tag: 'getIt');
-    return CompanySummeryRepositoryImpl(
-      remoteDataSource: getIt<RemoteDataSource>(),
-      localDataSource: getIt<LocalDataSource>(),
-    );
+    return CompanySummeryRepositoryImpl(remoteDataSource: getIt<RemoteDataSource>(), localDataSource: getIt<LocalDataSource>());
   });
 
   getIt.registerLazySingleton<GetCompanySummeryUseCase>(() {
     dPrint('init get company summery usecase', tag: 'getIt');
-    return GetCompanySummeryUseCase(
-      repository: getIt<CompanySummeryRepository>(),
-    );
+    return GetCompanySummeryUseCase(repository: getIt<CompanySummeryRepository>());
   });
 
   // ==================== OFFERS & REQUESTS ====================
@@ -184,5 +171,16 @@ void setupDependencies() {
   getIt.registerLazySingleton<AdminRepository>(() {
     dPrint('init admin repository', tag: 'getIt');
     return AdminRepositoryImpl(getIt<AdminRemoteDataSource>());
+  });
+
+  // ==================== COMPANY SERVICE REQUESTS ====================
+  getIt.registerLazySingleton<CompanyServiceRequestRemoteDataSource>(() {
+    dPrint('init company service request remote data source', tag: 'getIt');
+    return CompanyServiceRequestRemoteDataSourceImpl(getIt<DioService>());
+  });
+
+  getIt.registerLazySingleton<CompanyServiceRequestRepository>(() {
+    dPrint('init company service request repository', tag: 'getIt');
+    return CompanyServiceRequestRepositoryImpl(getIt<CompanyServiceRequestRemoteDataSource>());
   });
 }

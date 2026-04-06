@@ -41,9 +41,9 @@ class ServiceCatalogItem {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool includeCode = false}) {
     return {
-      'code': code,
+      if (includeCode) 'code': code,
       'name': name,
       'description': description,
       'category': category,

@@ -36,10 +36,7 @@ class OfferCard extends StatelessWidget {
                   backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
                   child: offer.company.logo != null
                       ? WdImagePreview(imageUrl: offer.company.logo!)
-                      : const Icon(
-                          Iconsax.building_bold,
-                          color: AppTheme.primaryColor,
-                        ),
+                      : const Icon(Iconsax.building_bold, color: AppTheme.primaryColor),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
@@ -48,16 +45,10 @@ class OfferCard extends StatelessWidget {
                     children: [
                       Text(
                         offer.company.name,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: AppTheme.fontFamily,
-                        ),
+                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
                       ),
                       Text(
-                        offer.createdAt != null
-                            ? '${offer.createdAt!.day}/${offer.createdAt!.month}/${offer.createdAt!.year}'
-                            : '',
+                        offer.createdAt != null ? '${offer.createdAt!.day}/${offer.createdAt!.month}/${offer.createdAt!.year}' : '',
                         style: TextStyle(fontSize: 10.sp, color: Colors.grey),
                       ),
                     ],
@@ -65,11 +56,7 @@ class OfferCard extends StatelessWidget {
                 ),
                 Text(
                   '\$${offer.price}',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w900,
-                    color: AppTheme.primaryColor,
-                  ),
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
                 ),
               ],
             ),
@@ -78,27 +65,14 @@ class OfferCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildMiniSpec(Iconsax.sun_1_bold, '${offer.totalPanelPower}W'),
-                _buildMiniSpec(
-                  Iconsax.flash_1_bold,
-                  '${_formatNumber(offer.totalBatteryPower)}Wh',
-                ),
-                _buildMiniSpec(
-                  Iconsax.setting_2_bold,
-                  '${_formatNumber(offer.inverterSize)}W',
-                ),
+                _buildMiniSpec(Iconsax.flash_1_bold, '${_formatNumber(offer.totalBatteryPower)}KWh'),
+                _buildMiniSpec(Iconsax.setting_2_bold, '${_formatNumber(offer.inverterSize)}W'),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: offer.status.color.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
+                  decoration: BoxDecoration(color: offer.status.color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20.r)),
                   child: Text(
                     offer.status.localizedLabel(l10n),
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      color: offer.status.color,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 10.sp, color: offer.status.color, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -106,10 +80,7 @@ class OfferCard extends StatelessWidget {
             if (offer.involves != null && offer.involves!.isNotEmpty) ...[
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Divider(
-                  height: 1,
-                  color: Colors.grey.withValues(alpha: 0.1),
-                ),
+                child: Divider(height: 1, color: Colors.grey.withValues(alpha: 0.1)),
               ),
               ...offer.involves!.map(
                 (item) => Padding(
@@ -120,28 +91,17 @@ class OfferCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           item.name,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: AppTheme.fontFamily,
-                          ),
+                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, fontFamily: AppTheme.fontFamily),
                         ),
                       ),
                       Text(
                         'x${item.quantity ?? 1}',
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 11.sp, color: Colors.grey[600]),
                       ),
                       SizedBox(width: 20.w),
                       Text(
                         '\$${item.totalCost ?? (item.cost * (item.quantity ?? 1))}',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
-                        ),
+                        style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
                       ),
                     ],
                   ),
@@ -161,11 +121,7 @@ class OfferCard extends StatelessWidget {
         SizedBox(width: 4.w),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 10.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey[700],
-          ),
+          style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.grey[700]),
         ),
       ],
     );

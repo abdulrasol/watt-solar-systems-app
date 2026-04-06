@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
+import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_service_requests_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/forms/service_review_form.dart';
@@ -15,33 +16,50 @@ class AdminServiceRequestsScreen extends ConsumerStatefulWidget {
   const AdminServiceRequestsScreen({super.key});
 
   @override
-  ConsumerState<AdminServiceRequestsScreen> createState() => _AdminServiceRequestsScreenState();
+  ConsumerState<AdminServiceRequestsScreen> createState() =>
+      _AdminServiceRequestsScreenState();
 }
 
-class _AdminServiceRequestsScreenState extends ConsumerState<AdminServiceRequestsScreen> {
+class _AdminServiceRequestsScreenState
+    extends ConsumerState<AdminServiceRequestsScreen> {
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(adminServiceRequestsProvider.notifier).fetchServiceRequests());
+    _scrollController = ScrollController()..addListener(_onScroll);
+    Future.microtask(
+      () => ref
+          .read(adminServiceRequestsProvider.notifier)
+          .fetchServiceRequests(isRefresh: true),
+    );
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      ref.read(adminServiceRequestsProvider.notifier).fetchNextPage();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(adminServiceRequestsProvider);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Service Requests',
-          style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.bold, fontSize: 18.sp),
-        ),
-        centerTitle: true,
-      ),
-      body: state.isLoading && state.requests.isEmpty
+    return PreScaffold(
+      title: 'Service Requests',
+      child: state.isLoading && state.requests.isEmpty
           ? _buildLoadingState()
           : RefreshIndicator(
-              onRefresh: () => ref.read(adminServiceRequestsProvider.notifier).fetchServiceRequests(),
+              onRefresh: () => ref
+                  .read(adminServiceRequestsProvider.notifier)
+                  .fetchServiceRequests(isRefresh: true),
               color: AppTheme.primaryColor,
               child: _buildContent(state),
             ),
@@ -57,7 +75,11 @@ class _AdminServiceRequestsScreenState extends ConsumerState<AdminServiceRequest
           SizedBox(height: 16.h),
           Text(
             'Loading Requests...',
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.grey,
+              fontFamily: AppTheme.fontFamily,
+            ),
           ),
         ],
       ),
@@ -66,19 +88,46 @@ class _AdminServiceRequestsScreenState extends ConsumerState<AdminServiceRequest
 
   Widget _buildContent(AdminServiceRequestsState state) {
     if (state.requests.isEmpty && !state.isLoading) {
-      return AdminEmptyState(icon: Iconsax.briefcase_bold, title: 'No Pending Requests', subtitle: 'Company service requests will appear here.');
+      return AdminEmptyState(
+        icon: Icons.business_center_outlined,
+        title: 'No Pending Requests',
+        subtitle: 'Company service requests will appear here.',
+      );
     }
 
-    return ListView.separated(
-      padding: EdgeInsets.all(20.w),
-      itemCount: state.requests.length,
-      separatorBuilder: (context, index) => SizedBox(height: 16.h),
+    return GridView.builder(
+      controller: _scrollController,
+      padding: EdgeInsets.all(16.w),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: AppBreakpoints.adaptiveGridCount(
+          context,
+          mobile: 1,
+          tablet: 2,
+          desktop: 2,
+        ),
+        crossAxisSpacing: 12.w,
+        mainAxisSpacing: 12.h,
+        childAspectRatio: AppBreakpoints.isMobile(context) ? 1.45 : 1.65,
+      ),
+      itemCount: state.requests.length + (state.hasMore ? 1 : 0),
       itemBuilder: (context, index) {
+        if (index == state.requests.length) {
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.h),
+              child: LoadingWidget.widget(context: context, size: 25),
+            ),
+          );
+        }
+
         final request = state.requests[index];
         return ServiceRequestCard(
-          request: request,
-          onReview: () => _showReviewForm(context, request),
-        ).animate().fadeIn(delay: (index * 50).ms).slideY(begin: 0.1, end: 0);
+              request: request,
+              onReview: () => _showReviewForm(context, request),
+            )
+            .animate()
+            .fadeIn(delay: (index % 10 * 50).ms)
+            .slideY(begin: 0.1, end: 0);
       },
     );
   }
@@ -92,7 +141,17 @@ class _AdminServiceRequestsScreenState extends ConsumerState<AdminServiceRequest
         request: request,
         onSubmit: (data) {
           if (request.companyId != null) {
-            ref.read(adminServiceRequestsProvider.notifier).reviewRequest(request.companyId!, request.serviceCode, data);
+            ref
+                .read(adminServiceRequestsProvider.notifier)
+                .reviewRequest(request.companyId!, request.serviceCode, data);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Service request reviewed successfully'),
+                backgroundColor: AppTheme.successColor,
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
           }
         },
       ),

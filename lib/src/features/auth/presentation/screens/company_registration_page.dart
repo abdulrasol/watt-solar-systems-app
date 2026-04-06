@@ -61,7 +61,7 @@ class _CompanyRegistrationPageState
   @override
   void initState() {
     super.initState();
-    _fetchCountries();
+    Future.microtask(() => _fetchCountries());
   }
 
   @override
@@ -383,7 +383,6 @@ class _CompanyRegistrationPageState
   }
 
   Future<void> _fetchCountries() async {
-    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoadingCountries = true;
     });
@@ -393,7 +392,10 @@ class _CompanyRegistrationPageState
         _countries = response;
       });
     } catch (e) {
-      if (mounted) ToastService.error(context, l10n.error, e.toString());
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ToastService.error(context, l10n.error, e.toString());
+      }
     }
     if (_selectedCity != null) {
       _selectedCountry = _countries.firstWhere(
@@ -406,7 +408,6 @@ class _CompanyRegistrationPageState
   }
 
   Future<void> _fetchCities({int? countryId}) async {
-    final l10n = AppLocalizations.of(context)!;
     if (_selectedCountry == null && countryId == null) return;
     setState(() {
       _isLoadingCities = true;
@@ -419,7 +420,10 @@ class _CompanyRegistrationPageState
         _cities = response;
       });
     } catch (e) {
-      if (mounted) ToastService.error(context, l10n.error, e.toString());
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ToastService.error(context, l10n.error, e.toString());
+      }
     }
     setState(() {
       _isLoadingCities = false;

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_company_details.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart' show dPrint;
 
 class AdminCompanyDetailsState {
   final bool isLoading;
@@ -33,8 +34,10 @@ class AdminCompanyDetailsController extends Notifier<AdminCompanyDetailsState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final details = await _repository.getCompanyDetails(_companyId);
+      // dPrint(details);
       state = state.copyWith(isLoading: false, details: details);
-    } catch (e) {
+    } catch (e, s) {
+      dPrint(e, stackTrace: s);
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -44,9 +47,25 @@ class AdminCompanyDetailsController extends Notifier<AdminCompanyDetailsState> {
     try {
       await _repository.updateCompanyStatus(_companyId, status);
       await fetchDetails();
-    } catch (e) {
+    } catch (e, s) {
+      dPrint(e, stackTrace: s);
       state = state.copyWith(isLoading: false, error: e.toString());
     }
+  }
+
+  Future<void> toggleService(String serviceCode, Map<String, dynamic> data) async {
+    try {
+      await _repository.toggleCompanyService(_companyId, serviceCode, data);
+      // Refresh details to show updated service status
+      await fetchDetails();
+    } catch (e, s) {
+      dPrint(e, stackTrace: s);
+      state = state.copyWith(error: e.toString());
+    }
+  }
+
+  void clearError() {
+    state = state.copyWith(error: null);
   }
 }
 

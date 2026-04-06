@@ -1,15 +1,14 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
 import 'package:solar_hub/src/features/inventory/presentation/widgets/product_card.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/inventory_search_bar.dart';
+import 'package:solar_hub/src/features/inventory/presentation/widgets/inventory_filter_sheet.dart';
 
 class InventoryPage extends ConsumerStatefulWidget {
   const InventoryPage({super.key});
@@ -19,118 +18,84 @@ class InventoryPage extends ConsumerStatefulWidget {
 }
 
 class _InventoryPageState extends ConsumerState<InventoryPage> {
-  late InventoryState inventoryState;
   final ScrollController _scrollController = ScrollController();
-  late GlobalKey<RefreshIndicatorState> keyRefreshIndicator;
-  final TextEditingController _searchController = TextEditingController();
-  late final Timer _debounce;
 
   @override
   void initState() {
     super.initState();
-    keyRefreshIndicator = GlobalKey<RefreshIndicatorState>();
-    if (keyRefreshIndicator.currentState != null) {
-      keyRefreshIndicator.currentState!.show();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      final state = ref.read(inventoryNotifierProvider);
+      if (!state.isLoading && !state.isMoreLoading && state.hasMore) {
+        ref.read(inventoryNotifierProvider.notifier).nextPage();
+      }
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.addListener(() {
-        if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
-          final state = ref.read(inventoryNotifierProvider);
-          if (!state.isLoading && !state.isMoreLoading && state.hasMore) {
-            ref.read(inventoryNotifierProvider.notifier).nextPage();
-          }
-        }
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    inventoryState = ref.watch(inventoryNotifierProvider);
+    final inventoryState = ref.watch(inventoryNotifierProvider);
     final l10n = AppLocalizations.of(context)!;
 
     return PreScaffold(
       title: l10n.inventory,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            context.push('/inventory/add');
-          },
-        ),
-      ],
+      actions: [IconButton(icon: const Icon(Icons.add), onPressed: () => context.push('/inventory/add'))],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // context.push('/inventory/add');
+          showModalBottomSheet(context: context, isScrollControlled: true, useSafeArea: true, builder: (context) => const InventoryFilterSheet());
         },
-        child: const Icon(Icons.filter),
+        child: const Icon(Icons.tune),
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.search,
-                prefixIcon: const Icon(IonIcons.search, color: AppTheme.primaryDarkColor),
-                suffixIcon: ref.watch(inventoryNotifierProvider).filter.search?.isNotEmpty ?? true
-                    ? IconButton(
-                        icon: const Icon(IonIcons.close_circle),
-                        onPressed: () {
-                          _searchController.clear();
-                          ref.read(inventoryNotifierProvider.notifier).search('');
-                        },
-                      )
-                    : null,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
-              onChanged: (val) {
-                ref.read(inventoryNotifierProvider.notifier).search(_searchController.text);
-              },
-            ),
-          ),
-          const SizedBox(height: 8),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(children: []),
-          ),
-          inventoryState.products.isEmpty
-              ? Expanded(child: wdEmpty())
-              : Expanded(
-                  child: RefreshIndicator(
-                    key: keyRefreshIndicator,
-                    onRefresh: () async {
-                      await ref.read(inventoryNotifierProvider.notifier).fetchProducts(isRefresh: true);
-                    },
+          const InventorySearchBar(),
+          Expanded(
+            child: inventoryState.isLoading && inventoryState.products.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : inventoryState.products.isEmpty
+                ? _buildEmptyState(l10n)
+                : RefreshIndicator(
+                    onRefresh: () => ref.read(inventoryNotifierProvider.notifier).fetchProducts(isRefresh: true),
                     child: ListView.builder(
                       controller: _scrollController,
-                      padding: EdgeInsets.all(16.r),
-                      itemCount: inventoryState.products.length,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      itemCount: inventoryState.products.length + (inventoryState.hasMore ? 1 : 0),
                       itemBuilder: (context, index) {
-                        final product = inventoryState.products[index];
-
-                        return ProdcutCard(product: product);
+                        if (index == inventoryState.products.length) {
+                          return const Center(
+                            child: Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator()),
+                          );
+                        }
+                        return ProductCard(product: inventoryState.products[index]);
                       },
                     ),
                   ),
-                ),
+          ),
         ],
       ),
     );
   }
 
-  Widget wdEmpty() {
+  Widget _buildEmptyState(AppLocalizations l10n) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.inventory, size: 80, color: Colors.grey),
-          const SizedBox(height: 16),
-          Text('No products found', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          Text('Add products to your inventory to get started', style: TextStyle(color: Colors.grey)),
+          Icon(Icons.inventory_2_outlined, size: 80.r, color: Colors.grey.withValues(alpha: 0.5)),
+          SizedBox(height: 16.h),
+          Text(
+            l10n.noProducts,
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.grey),
+          ),
         ],
       ),
     );

@@ -1,57 +1,70 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
+import 'package:solar_hub/src/utils/app_theme.dart';
 
-class ProdcutCard extends StatelessWidget {
-  const ProdcutCard({super.key, required this.product});
+class ProductCard extends StatelessWidget {
+  const ProductCard({super.key, required this.product});
 
   final Product product;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final bool isOutOfStock = product.stockQuantity == 0;
     final bool isLowStock = product.stockQuantity <= product.minStockAlert && product.stockQuantity > 0;
 
     Color statusColor = Colors.green;
-    String statusText = 'In Stock';
-    // String statusText = l10n.in_stock;
+    String statusText = l10n.available;
     if (isOutOfStock) {
       statusColor = Colors.red;
-      statusText = 'Out of Stock';
+      statusText = l10n.unavailable;
     } else if (isLowStock) {
       statusColor = Colors.orange;
-      statusText = 'Low Stock';
+      statusText = l10n.low_stock;
     }
 
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 0,
+      margin: EdgeInsets.only(bottom: 12.h),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.r),
+        side: BorderSide(color: Colors.grey.withValues(alpha: 0.1)),
+      ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          // TODO: Route to product details
-          context.push('/company-dashboard/inventory/product/${product.id}', extra: product);
+          context.push('/inventory/product/${product.id}', extra: product);
         },
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(12.r),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image
+              // Image container with premium feel
               Container(
-                width: 90,
-                height: 90,
+                width: 100.r,
+                height: 100.r,
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                  image: product.productImages.isNotEmpty
-                      ? DecorationImage(image: CachedNetworkImageProvider(product.productImages.first), fit: BoxFit.cover)
-                      : null,
+                  color: Colors.grey.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: product.productImages.isEmpty ? const Icon(Icons.image, size: 40, color: Colors.grey) : null,
+                child: product.images.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r),
+                        child: CachedNetworkImage(
+                          imageUrl: product.images.first,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                          errorWidget: (context, url, error) => Icon(Icons.image_outlined, color: Colors.grey, size: 30.r),
+                        ),
+                      )
+                    : Icon(Icons.inventory_2_outlined, color: Colors.grey.withValues(alpha: 0.5), size: 40.r),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               // Details
               Expanded(
                 child: Column(
@@ -59,69 +72,79 @@ class ProdcutCard extends StatelessWidget {
                   children: [
                     Text(
                       product.name,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    Text('SKU: ${product.sku ?? "N/A"}', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 4,
+                    SizedBox(height: 4.h),
+                    Text(
+                      '${l10n.sku}: ${product.sku ?? "---"}',
+                      style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
                       children: [
                         Text(
-                          'Retail: \$${product.retailPrice.toStringAsFixed(2)}',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.green[700]),
+                          l10n.iqd_price(product.displayPrice),
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.primaryDarkColor,
+                          ),
                         ),
-                        Text('Cost: \$${product.costPrice.toStringAsFixed(2)}', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                        const Spacer(),
+                        _buildStatusBadge(statusText, statusColor),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 4,
+                    SizedBox(height: 8.h),
+                    Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: statusColor.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: statusColor.withValues(alpha: 0.5)),
-                          ),
-                          child: Text(
-                            statusText,
-                            style: TextStyle(fontSize: 10, color: statusColor, fontWeight: FontWeight.bold),
-                          ),
+                        Icon(Icons.inventory_2, size: 14.r, color: Colors.grey),
+                        SizedBox(width: 4.w),
+                        Text(
+                          '${l10n.stock_count(product.stockQuantity)}',
+                          style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontWeight: FontWeight.w600),
                         ),
-                        if (product.category?.name != null)
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(color: Colors.blue.withValues(alpha: 0.5)),
-                            ),
-                            child: Text(
-                              product.category!.name,
-                              style: TextStyle(fontSize: 10, color: Colors.blue[700], fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                        const Spacer(),
+                        if (product.globalCategory != null)
+                          _buildCategoryBadge(product.globalCategory!.name, Colors.blue),
                       ],
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  'Qty: ${product.stockQuantity}',
-                  style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
-                ),
-              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge(String text, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 10.sp, color: color, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildCategoryBadge(String text, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 10.sp, color: color.withValues(alpha: 0.8), fontWeight: FontWeight.w500),
       ),
     );
   }

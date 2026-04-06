@@ -16,7 +16,7 @@ class AdminEmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withOpacity(0.3)),
+          Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withValues(alpha: 0.3)),
           SizedBox(height: 24.h),
           Text(
             title,
@@ -26,7 +26,7 @@ class AdminEmptyState extends StatelessWidget {
             SizedBox(height: 8.h),
             Text(
               subtitle!,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey.withOpacity(0.7), fontFamily: AppTheme.fontFamily),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey.withValues(alpha: 0.7), fontFamily: AppTheme.fontFamily),
             ),
           ],
         ],
@@ -47,7 +47,7 @@ class AdminErrorState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.error_outline, size: 80.sp, color: AppTheme.errorColor.withOpacity(0.5)),
+          Icon(Icons.error_outline, size: 80.sp, color: AppTheme.errorColor.withValues(alpha: 0.5)),
           SizedBox(height: 24.h),
           Text(
             'Failed to load',
@@ -89,7 +89,7 @@ class AdminLoadingState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withOpacity(0.3)),
+          Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withValues(alpha: 0.3)),
           SizedBox(height: 24.h),
           Text(
             message,
@@ -122,15 +122,15 @@ class AdminStatCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.1)),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: Offset(0, 8.h))],
+          border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1)),
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: Offset(0, 8.h))],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.all(10.w),
-              decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(14.r)),
+              decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(14.r)),
               child: Icon(icon, color: color, size: 24.sp),
             ),
             SizedBox(height: 12.h),
@@ -178,13 +178,13 @@ class AdminActionTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.1)),
+          border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1)),
         ),
         child: Row(
           children: [
             Container(
               padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(color: AppTheme.primaryColor.withOpacity(0.1), borderRadius: BorderRadius.circular(14.r)),
+              decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(14.r)),
               child: Icon(icon, color: AppTheme.primaryColor, size: 24.sp),
             ),
             SizedBox(width: 16.w),

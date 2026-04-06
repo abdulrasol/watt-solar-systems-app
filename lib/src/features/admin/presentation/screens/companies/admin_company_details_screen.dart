@@ -3,14 +3,19 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
+import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_company_details.dart';
+import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_company_details_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/forms/company_status_form.dart';
+import 'package:solar_hub/src/features/admin/presentation/forms/service_review_form.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_section_header.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/company_service_card.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/member_list_item.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/status_badge.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class AdminCompanyDetailsScreen extends ConsumerStatefulWidget {
@@ -18,10 +23,12 @@ class AdminCompanyDetailsScreen extends ConsumerStatefulWidget {
   const AdminCompanyDetailsScreen({super.key, required this.companyId});
 
   @override
-  ConsumerState<AdminCompanyDetailsScreen> createState() => _AdminCompanyDetailsScreenState();
+  ConsumerState<AdminCompanyDetailsScreen> createState() =>
+      _AdminCompanyDetailsScreenState();
 }
 
-class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsScreen> {
+class _AdminCompanyDetailsScreenState
+    extends ConsumerState<AdminCompanyDetailsScreen> {
   @override
   void initState() {
     super.initState();
@@ -34,27 +41,30 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
   Widget build(BuildContext context) {
     final state = ref.watch(adminCompanyDetailsProvider);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Company Details',
-          style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.bold, fontSize: 18.sp),
-        ),
-        actions: [
-          if (state.details != null)
-            IconButton(
-              icon: Icon(Iconsax.edit_bold, color: AppTheme.primaryColor, size: 24.sp),
-              onPressed: () => _showStatusUpdateForm(context),
+    return PreScaffold(
+      title: 'Company Details',
+      actions: [
+        if (state.details != null)
+          IconButton(
+            icon: Icon(
+              Iconsax.edit_bold,
+              color: AppTheme.primaryColor,
+              size: 24.sp,
             ),
-        ],
-      ),
-      body: state.isLoading && state.details == null
+            onPressed: () => _showStatusUpdateForm(context),
+          ),
+      ],
+      child: state.isLoading && state.details == null
           ? _buildLoadingState()
           : state.error != null
-          ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminCompanyDetailsProvider.notifier).fetchDetails())
+          ? AdminErrorState(
+              error: state.error!,
+              onRetry: () =>
+                  ref.read(adminCompanyDetailsProvider.notifier).fetchDetails(),
+            )
           : RefreshIndicator(
-              onRefresh: () => ref.read(adminCompanyDetailsProvider.notifier).fetchDetails(),
+              onRefresh: () =>
+                  ref.read(adminCompanyDetailsProvider.notifier).fetchDetails(),
               color: AppTheme.primaryColor,
               child: _buildContent(state),
             ),
@@ -70,7 +80,11 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
           SizedBox(height: 16.h),
           Text(
             'Loading Details...',
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.grey,
+              fontFamily: AppTheme.fontFamily,
+            ),
           ),
         ],
       ),
@@ -80,21 +94,39 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
   Widget _buildContent(AdminCompanyDetailsState state) {
     final details = state.details;
     if (details == null) return const SizedBox.shrink();
+    final isWide = !AppBreakpoints.isMobile(context);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.all(20.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeaderSection(details),
-          SizedBox(height: 32.h),
-          _buildInfoSection(details),
-          SizedBox(height: 32.h),
-          _buildServicesSection(details),
-          SizedBox(height: 32.h),
-          _buildMembersSection(details),
-          SizedBox(height: 32.h),
-        ],
+      padding: EdgeInsets.all(16.w),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: AppBreakpoints.contentMaxWidth(context),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeaderSection(details),
+              SizedBox(height: 24.h),
+              if (isWide)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: _buildInfoSection(details)),
+                    SizedBox(width: 24.w),
+                    Expanded(child: _buildServicesSection(details)),
+                  ],
+                )
+              else ...[
+                _buildInfoSection(details),
+                SizedBox(height: 24.h),
+                _buildServicesSection(details),
+              ],
+              SizedBox(height: 24.h),
+              _buildMembersSection(details),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -102,15 +134,33 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
   Widget _buildHeaderSection(AdminCompanyDetails details) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final company = details.company;
+    final isMobile = AppBreakpoints.isMobile(context);
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: isDark ? Colors.white.withOpacity(0.1) : AppTheme.primaryColor.withOpacity(0.2)),
-        boxShadow: [BoxShadow(color: AppTheme.primaryColor.withOpacity(0.1), blurRadius: 20, offset: Offset(0, 10.h))],
+        gradient: LinearGradient(
+          colors: [
+            AppTheme.primaryColor.withValues(alpha: 0.1),
+            AppTheme.primaryColor.withValues(alpha: 0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.1)
+              : AppTheme.primaryColor.withValues(alpha: 0.2),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withValues(alpha: 0.1),
+            blurRadius: 20,
+            offset: Offset(0, 8.h),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -118,23 +168,45 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
           SizedBox(height: 16.h),
           Text(
             company.name,
-            style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: AppTheme.fontFamily,
+            ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 8.h),
-          _buildStatusBadge(company.status),
+          SizedBox(height: 12.h),
+          StatusBadge(status: company.status),
           SizedBox(height: 16.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: isMobile ? 12.w : 20.w,
+            runSpacing: 12.h,
             children: [
-              _buildStatItem('Tier', company.tier ?? 'Standard', Iconsax.medal_bold, Colors.orange),
-              Container(
-                width: 1.w,
-                height: 30.h,
-                color: Colors.grey.withOpacity(0.2),
-                margin: EdgeInsets.symmetric(horizontal: 20.w),
+              _buildStatItem(
+                'Tier',
+                company.tier ?? 'Standard',
+                Iconsax.medal_bold,
+                AppTheme.accentColor,
               ),
-              _buildStatItem('Type', company.type ?? 'N/A', Iconsax.building_bold, AppTheme.primaryColor),
+              _buildStatItem(
+                'Type',
+                company.type ?? 'N/A',
+                Iconsax.building_bold,
+                AppTheme.primaryColor,
+              ),
+              _buildStatItem(
+                'B2B',
+                company.allowsB2B ? 'Yes' : 'No',
+                Iconsax.tick_circle_bold,
+                company.allowsB2B ? AppTheme.successColor : Colors.grey,
+              ),
+              _buildStatItem(
+                'B2C',
+                company.allowsB2C ? 'Yes' : 'No',
+                Iconsax.tick_circle_bold,
+                company.allowsB2C ? AppTheme.successColor : Colors.grey,
+              ),
             ],
           ),
         ],
@@ -147,72 +219,52 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
       width: 80.w,
       height: 80.h,
       decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withOpacity(0.1),
+        color: AppTheme.primaryColor.withValues(alpha: 0.1),
         shape: BoxShape.circle,
-        image: logo != null ? DecorationImage(image: NetworkImage(logo), fit: BoxFit.cover) : null,
+        image: logo != null
+            ? DecorationImage(image: NetworkImage(logo), fit: BoxFit.cover)
+            : null,
       ),
-      child: logo == null ? Icon(Iconsax.building_bold, color: AppTheme.primaryColor, size: 40.sp) : null,
+      child: logo == null
+          ? Icon(
+              Iconsax.building_bold,
+              color: AppTheme.primaryColor,
+              size: 40.sp,
+            )
+          : null,
     );
   }
 
-  Widget _buildStatusBadge(String status) {
-    Color color;
-    switch (status.toLowerCase()) {
-      case 'active':
-        color = Colors.green;
-        break;
-      case 'pending':
-        color = AppTheme.warningColor;
-        break;
-      case 'rejected':
-        color = AppTheme.errorColor;
-        break;
-      default:
-        color = Colors.grey;
-    }
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 8.w,
-            height: 8.h,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          ),
-          SizedBox(width: 8.w),
-          Text(
-            status.toUpperCase(),
-            style: TextStyle(color: color, fontSize: 12.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
+  Widget _buildStatItem(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Column(
       children: [
         Row(
           children: [
-            Icon(icon, color: color, size: 16.sp),
-            SizedBox(width: 6.w),
+            Icon(icon, color: color, size: 14.sp),
+            SizedBox(width: 4.w),
             Text(
               label,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+              style: TextStyle(
+                fontSize: 11.sp,
+                color: Colors.grey,
+                fontFamily: AppTheme.fontFamily,
+              ),
             ),
           ],
         ),
         SizedBox(height: 4.h),
         Text(
           value,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+          style: TextStyle(
+            fontSize: 13.sp,
+            fontWeight: FontWeight.bold,
+            fontFamily: AppTheme.fontFamily,
+          ),
         ),
       ],
     );
@@ -223,12 +275,35 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AdminSectionHeader(title: 'Information', subtitle: 'Company location and contact details'),
-        _buildInfoTile(Iconsax.location_bold, 'Address', company.address ?? 'No address provided'),
+        const AdminSectionHeader(
+          title: 'Information',
+          subtitle: 'Company location and contact details',
+        ),
+        _buildInfoTile(
+          Iconsax.location_bold,
+          'Address',
+          company.address ?? 'No address provided',
+        ),
         SizedBox(height: 12.h),
-        _buildInfoTile(Iconsax.global_bold, 'City', company.cityName ?? 'Unknown City'),
+        _buildInfoTile(
+          Iconsax.global_bold,
+          'City',
+          company.city?.name ?? 'N/A',
+        ),
         SizedBox(height: 12.h),
-        _buildInfoTile(Iconsax.calendar_bold, 'Joined', company.createdAt?.substring(0, 10) ?? 'N/A'),
+        _buildInfoTile(
+          Iconsax.calendar_bold,
+          'Joined',
+          company.createdAt?.substring(0, 10) ?? 'N/A',
+        ),
+        if (company.description != null && company.description!.isNotEmpty) ...[
+          SizedBox(height: 12.h),
+          _buildInfoTile(
+            Iconsax.note_bold,
+            'Description',
+            company.description!,
+          ),
+        ],
       ],
     );
   }
@@ -240,7 +315,11 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.1)),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.grey.withValues(alpha: 0.1),
+        ),
       ),
       child: Row(
         children: [
@@ -252,11 +331,20 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
               children: [
                 Text(
                   label,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: Colors.grey,
+                    fontFamily: AppTheme.fontFamily,
+                  ),
                 ),
+                SizedBox(height: 4.h),
                 Text(
                   value,
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AppTheme.fontFamily,
+                  ),
                 ),
               ],
             ),
@@ -271,13 +359,34 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AdminSectionHeader(title: 'Active Services', subtitle: 'Global services enabled for this company'),
-        ListView.separated(
+        const AdminSectionHeader(
+          title: 'Services',
+          subtitle: 'Tap a service to toggle its status',
+        ),
+        GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: details.services.length,
-          separatorBuilder: (context, index) => SizedBox(height: 12.h),
-          itemBuilder: (context, index) => CompanyServiceCard(service: details.services[index]),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: AppBreakpoints.adaptiveGridCount(
+              context,
+              mobile: 1,
+              tablet: 1,
+              desktop: 1,
+            ),
+            mainAxisSpacing: 12.h,
+            crossAxisSpacing: 12.w,
+            childAspectRatio: AppBreakpoints.isMobile(context) ? 1.9 : 2.5,
+          ),
+          itemBuilder: (context, index) {
+            final service = details.services[index];
+            return CompanyServiceCard(
+              service: service,
+              onToggle: service.status != null
+                  ? () => _confirmToggleService(context, service)
+                  : null,
+            );
+          },
         ),
       ],
     );
@@ -288,13 +397,27 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AdminSectionHeader(title: 'Team Members', subtitle: 'People associated with this company'),
-        ListView.separated(
+        const AdminSectionHeader(
+          title: 'Team Members',
+          subtitle: 'People associated with this company',
+        ),
+        GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: details.members.length,
-          separatorBuilder: (context, index) => SizedBox(height: 12.h),
-          itemBuilder: (context, index) => MemberListItem(member: details.members[index]),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: AppBreakpoints.adaptiveGridCount(
+              context,
+              mobile: 1,
+              tablet: 2,
+              desktop: 2,
+            ),
+            mainAxisSpacing: 12.h,
+            crossAxisSpacing: 12.w,
+            childAspectRatio: AppBreakpoints.isMobile(context) ? 3.0 : 3.4,
+          ),
+          itemBuilder: (context, index) =>
+              MemberListItem(member: details.members[index]),
         ),
       ],
     );
@@ -312,6 +435,31 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
         currentStatus: state.details!.company.status,
         onSubmit: (status) {
           ref.read(adminCompanyDetailsProvider.notifier).updateStatus(status);
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  void _confirmToggleService(BuildContext context, CompanyService service) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ServiceReviewForm(
+        service: service,
+        onSubmit: (data) {
+          ref
+              .read(adminCompanyDetailsProvider.notifier)
+              .toggleService(service.serviceCode, data);
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Service reviewed successfully'),
+              backgroundColor: AppTheme.successColor,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         },
       ),
     );

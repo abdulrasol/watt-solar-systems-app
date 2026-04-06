@@ -8,7 +8,7 @@
 PRODUCT_NAME = solar_hub
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = io.github.abdulrasol.watt-pv-app
+PRODUCT_BUNDLE_IDENTIFIER = io.github.abdulrasol.watt
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.

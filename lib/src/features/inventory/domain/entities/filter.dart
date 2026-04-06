@@ -2,49 +2,62 @@ import 'package:solar_hub/src/utils/app_ints.dart';
 
 class ProductsFilter {
   final String? status;
-  final int? minStock;
-  final int? maxStock;
+  final int? globalCategoryId;
+  final int? internalCategoryId;
+  final int? companyCategoryId;
+  final int? categoryId; // Legacy
   final double? minPrice;
   final double? maxPrice;
-  final int? categoryId;
+  final bool? isAvailable;
   final String? search;
-  final String? sortBy;
+  final String? ordering;
   final int page;
   final int pageSize;
 
   ProductsFilter({
     this.status,
-    this.minStock,
-    this.maxStock,
+    this.globalCategoryId,
+    this.internalCategoryId,
+    this.companyCategoryId,
+    this.categoryId,
     this.minPrice,
     this.maxPrice,
-    this.categoryId,
+    this.isAvailable,
     this.search,
-    this.sortBy,
+    this.ordering = '-created_at',
     this.page = 1,
     this.pageSize = AppInts.perPage,
   });
 
   ProductsFilter copyWith({
     String? status,
-    int? minStock,
-    int? maxStock,
+    int? globalCategoryId,
+    int? internalCategoryId,
+    int? companyCategoryId,
+    int? categoryId,
     double? minPrice,
     double? maxPrice,
-    int? categoryId,
+    bool? isAvailable,
     String? search,
-    String? sortBy,
+    String? ordering,
     int? page,
+    bool clearGlobalCategoryId = false,
+    bool clearInternalCategoryId = false,
+    bool clearCompanyCategoryId = false,
+    bool clearCategoryId = false,
+    bool clearIsAvailable = false,
   }) {
     return ProductsFilter(
       status: status ?? this.status,
-      minStock: minStock ?? this.minStock,
-      maxStock: maxStock ?? this.maxStock,
+      globalCategoryId: clearGlobalCategoryId ? null : (globalCategoryId ?? this.globalCategoryId),
+      internalCategoryId: clearInternalCategoryId ? null : (internalCategoryId ?? this.internalCategoryId),
+      companyCategoryId: clearCompanyCategoryId ? null : (companyCategoryId ?? this.companyCategoryId),
+      categoryId: clearCategoryId ? null : (categoryId ?? this.categoryId),
       minPrice: minPrice ?? this.minPrice,
       maxPrice: maxPrice ?? this.maxPrice,
-      categoryId: categoryId ?? this.categoryId,
+      isAvailable: clearIsAvailable ? null : (isAvailable ?? this.isAvailable),
       search: search ?? this.search,
-      sortBy: sortBy ?? this.sortBy,
+      ordering: ordering ?? this.ordering,
       page: page ?? this.page,
     );
   }
@@ -52,13 +65,15 @@ class ProductsFilter {
   Map<String, dynamic> query() {
     final Map<String, dynamic> query = {'page': page, 'page_size': pageSize};
     if (status != null) query['status'] = status;
-    if (minStock != null) query['min_stock'] = minStock;
-    if (maxStock != null) query['max_stock'] = maxStock;
+    if (globalCategoryId != null) query['global_category_id'] = globalCategoryId;
+    if (internalCategoryId != null) query['internal_category_id'] = internalCategoryId;
+    if (companyCategoryId != null) query['company_category_id'] = companyCategoryId;
+    if (categoryId != null) query['category_id'] = categoryId;
     if (minPrice != null) query['min_price'] = minPrice;
     if (maxPrice != null) query['max_price'] = maxPrice;
-    if (categoryId != null) query['category_id'] = categoryId;
+    if (isAvailable != null) query['is_available'] = isAvailable;
     if (search != null) query['search'] = search;
-    if (sortBy != null) query['sort_by'] = sortBy;
+    if (ordering != null) query['ordering'] = ordering;
 
     return query;
   }

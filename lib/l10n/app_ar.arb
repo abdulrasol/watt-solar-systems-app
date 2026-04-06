@@ -325,6 +325,19 @@
   "inverter_type_off_grid": "منفصل عن الشبكة",
   "inverter_type_on_grid": "مرتبط بالشبكة",
   "inverter_type_hybrid": "هجين",
+  "offers_catalog": "كتالوج العروض",
+  "manage_extra_fees": "إدارة الرسوم والخدمات الإضافية",
+  "manage_extra_fees_desc": "استخدم هذه القائمة لرسوم التركيب أو التوصيل أو الهياكل أو التمديدات أو أي خدمات إضافية تدخل ضمن العرض.",
+  "no_involves_yet": "لا توجد عناصر إضافية بعد",
+  "no_involves_yet_desc": "أنشئ أول عنصر تكلفة إضافية لإعادة استخدامه في ردود العروض.",
+  "create_item": "إنشاء عنصر",
+  "active_in_offers": "نشط في العروض",
+  "inactive": "غير نشط",
+  "create_involve": "إنشاء عنصر إضافي",
+  "edit_involve": "تعديل العنصر الإضافي",
+  "involve_examples": "أمثلة: أجور التركيب، التوصيل، هيكل التثبيت.",
+  "delete_item": "حذف العنصر؟",
+  "delete_item_desc": "سيتم حذف هذا العنصر من كتالوج التكاليف الإضافية.",
   "offers_marketplace": "سوق العروض الشمسية",
   "available_requests": "الطلبات المتاحة",
   "my_bids": "عروضي المقدمة",
@@ -660,5 +673,86 @@
       "value": {}
     }
   },
-  "save_to_system": "حفظ في النظام"
+  "save_to_system": "حفظ في النظام",
+  "addProduct": "إضافة منتج",
+  "editProduct": "تعديل المنتج",
+  "deleteProduct": "حذف المنتج",
+  "costPrice": "سعر التكلفة",
+  "stockQuantity": "الكمية في المخزن",
+  "minStockAlert": "تنبيه نقص المخزون",
+  "active": "نشط",
+  "inactive": "غير نشط",
+  "confirmDeleteProduct": "هل أنت متأكد من حذف هذا المنتج؟",
+  "productDeleted": "تم حذف المنتج بنجاح",
+  "productCreated": "تم إنشاء المنتج بنجاح",
+  "productUpdated": "تم تحديث المنتج بنجاح",
+  "addOption": "إضافة خيار",
+  "addTier": "إضافة مستوى تسعير",
+  "isRequired": "مطلوب",
+  "noProducts": "لم يتم العثور على منتجات",
+  "searchProducts": "البحث عن المنتجات...",
+  "productName": "اسم المنتج",
+  "basicInformation": "المعلومات الأساسية",
+  "productImages": "صور المنتج",
+  "pricing": "التسعير",
+  "productOptions": "خيارات المنتج",
+  "saveProduct": "حفظ المنتج",
+  "productSaved": "تم حفظ المنتج بنجاح",
+  "noTiers": "لم يتم إضافة فئات سعرية بعد",
+  "noOptions": "لم يتم إضافة خيارات بعد",
+  "optionName": "اسم الخيار",
+  "add_image": "إضافة صورة",
+  "status": "الحالة",
+  "availability": "التوفر",
+  "add": "إضافة",
+  "request_service": "طلب الخدمة",
+  "request_service_title": "طلب الوصول إلى {service}",
+  "@request_service_title": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "service_code": "رمز الخدمة",
+  "service_code_hint": "مثال: offers, inventory, storefront",
+  "service_code_required": "رمز الخدمة مطلوب",
+  "request_notes": "ملاحظات",
+  "request_notes_hint": "اشرح لماذا تحتاج هذه الخدمة (اختياري)",
+  "request_notes_hint_text": "قدم تفاصيل عن متطلباتك...",
+  "request_image": "لقطة شاشة/صورة",
+  "request_image_hint": "تحميل لقطة شاشة أو صورة (اختياري)",
+  "tap_to_select_image": "اضغط لاختيار صورة",
+  "remove_image": "إزالة الصورة",
+  "submit_request": "إرسال الطلب",
+  "submitting_request": "جاري الإرسال...",
+  "request_submitted_success": "تم إرسال طلب الخدمة بنجاح!",
+  "request_failed": "فشل في إرسال الطلب",
+  "select_image_source": "اختر مصدر الصورة",
+  "gallery": "المعرض",
+  "camera": "الكاميرا",
+  "service_not_active": "الخدمة غير نشطة",
+  "service_not_active_desc": "هذه الخدمة غير متاحة حالياً لشركتك.",
+  "request_access": "طلب الوصول",
+  "learn_more": "اعرف المزيد",
+  "service_request_pending": "الطلب قيد الانتظار",
+  "service_request_pending_desc": "طلبك للحصول على {service} قيد الموافقة.",
+  "@service_request_pending_desc": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "view_request_status": "عرض حالة الطلب",
+  "service_maintenance_mode": "الخدمة قيد الصيانة",
+  "service_maintenance_mode_desc": "يتم حالياً تحديث {service} بميزات جديدة.",
+  "@service_maintenance_mode_desc": {
+    "placeholders": {
+      "service": {}
+    }
+  },
+  "check_back_later": "يرجى التحقق مرة أخرى لاحقاً للتحسينات.",
+  "open_service": "فتح {service}",
+  "@open_service": {
+    "placeholders": {
+      "service": {}
+    }
+  }
 }

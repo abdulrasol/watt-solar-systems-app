@@ -1,5 +1,6 @@
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class Company {
   final int id;
@@ -15,7 +16,7 @@ class Company {
   final City? city;
   final String? currency;
   final List<dynamic> categories;
-  final String? subscriptionPlan;
+  final int? subscriptionPlan;
   final String? expireDate;
   final String? createdAt;
   final String? updatedAt;
@@ -47,8 +48,9 @@ class Company {
   });
 
   factory Company.fromJson(Map<String, dynamic> json) {
+    dPrint('company json: ${json['id']}', tag: 'Company');
     return Company(
-      id: json['id'] ?? 0,
+      id: int.parse(json['id'].toString()),
       name: json['name'] ?? '',
       type: json['type'],
       description: json['description'],
@@ -75,11 +77,11 @@ class Company {
               isAutoEnabled: e['is_auto_enabled'] ?? false,
               autoEnabledBy: (e['auto_enabled_by'] as List?)?.map((item) => '$item').toList() ?? const [],
               subscriptionId: e['subscription_id'],
-              requestedAt: e['requested_at'],
-              approvedAt: e['approved_at'],
-              activatedAt: e['activated_at'],
-              startsAt: e['starts_at'],
-              endsAt: e['ends_at'],
+              requestedAt: e['requested_at'] != null ? DateTime.parse(e['requested_at']) : null,
+              approvedAt: e['approved_at'] != null ? DateTime.parse(e['approved_at']) : null,
+              activatedAt: e['activated_at'] != null ? DateTime.parse(e['activated_at']) : null,
+              startsAt: e['starts_at'] != null ? DateTime.parse(e['starts_at']) : null,
+              endsAt: e['ends_at'] != null ? DateTime.parse(e['ends_at']) : null,
               notes: e['notes'],
               meta: e['meta'] != null ? Map<String, dynamic>.from(e['meta']) : const {},
             ),
@@ -109,16 +111,60 @@ class Company {
       'created_at': createdAt,
       'updated_at': updatedAt,
       'user_permission': userPermission,
-      'services': services
-          .map(
-            (service) => {
-              'service_code': service.serviceCode,
-              'service_name': service.serviceName,
-              'status': service.status,
-            },
-          )
-          .toList(),
+      'services': services.map((service) => {'service_code': service.serviceCode, 'service_name': service.serviceName, 'status': service.status}).toList(),
       'member_role': memberRole,
     };
+  }
+
+  bool get isPending => status.toLowerCase() == 'pending';
+  bool get isActive => status.toLowerCase() == 'active';
+  bool get isRejected => status.toLowerCase() == 'rejected';
+  bool get isSuspended => status.toLowerCase() == 'suspended';
+  bool get isCancelled => status.toLowerCase() == 'cancelled';
+
+  Company copyWith({
+    int? id,
+    String? name,
+    String? type,
+    String? description,
+    String? address,
+    bool? allowsB2B,
+    bool? allowsB2C,
+    String? status,
+    String? tier,
+    String? logo,
+    City? city,
+    String? currency,
+    List<dynamic>? categories,
+    int? subscriptionPlan,
+    String? expireDate,
+    String? createdAt,
+    String? updatedAt,
+    dynamic userPermission,
+    List<CompanyService>? services,
+    String? memberRole,
+  }) {
+    return Company(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      description: description ?? this.description,
+      address: address ?? this.address,
+      allowsB2B: allowsB2B ?? this.allowsB2B,
+      allowsB2C: allowsB2C ?? this.allowsB2C,
+      status: status ?? this.status,
+      tier: tier ?? this.tier,
+      logo: logo ?? this.logo,
+      city: city ?? this.city,
+      currency: currency ?? this.currency,
+      categories: categories ?? this.categories,
+      subscriptionPlan: subscriptionPlan ?? this.subscriptionPlan,
+      expireDate: expireDate ?? this.expireDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      userPermission: userPermission ?? this.userPermission,
+      services: services ?? this.services,
+      memberRole: memberRole ?? this.memberRole,
+    );
   }
 }
