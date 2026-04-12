@@ -6,10 +6,10 @@ class SystemModel {
   final String? installedByCompanyId;
   final SystemStatus verificationStatus;
   final String? systemName;
-  final String? locationCoordinates; 
+  final String? locationCoordinates;
   final double? totalCapacityKw;
   final String? imageUrl;
-  final Map<String, dynamic> specs; 
+  final Map<String, dynamic> specs;
   final String? notes;
   final DateTime? installDate;
   final DateTime? createdAt;
@@ -21,9 +21,9 @@ class SystemModel {
     required this.id,
     this.ownerId,
     this.installedByCompanyId,
-    this.verificationStatus = SystemStatus.pending_verification,
+    this.verificationStatus = SystemStatus.pendingVerification,
     this.systemName,
-    this.locationCoordinates, 
+    this.locationCoordinates,
     this.totalCapacityKw,
     this.imageUrl,
     this.specs = const {},
@@ -46,7 +46,7 @@ class SystemModel {
       installedByCompanyId: json['installed_by'] as String?,
       verificationStatus: SystemStatus.values.firstWhere(
         (e) => e.toString().split('.').last == (json['company_status'] == 'accepted' ? 'verified' : 'pending_verification'),
-        orElse: () => SystemStatus.pending_verification,
+        orElse: () => SystemStatus.pendingVerification,
       ),
       systemName: json['notes'] != null ? (json['notes'] as String).split('\n').first : 'System',
       locationCoordinates: json['lat'] != null ? "${json['lat']}, ${json['lan']}" : null,

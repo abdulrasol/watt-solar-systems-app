@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_step_checkout/simple_step_checkout.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/tabs/appliances_tab.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/tabs/preferences_tab.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/tabs/results_tab.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/wizard_bottom_bar.dart';
+import 'package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart';
+import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:get_storage/get_storage.dart';
@@ -85,13 +89,21 @@ class _SystemCalculatorWizardState extends ConsumerState<SystemCalculatorWizard>
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: AppBar(
-          title: Text(l10n.system_wizard),
-          actions: [IconButton(onPressed: _showHelpDialog, icon: const Icon(Icons.help_outline_rounded), tooltip: l10n.guide)],
-        ),
-        body: Column(
+      child: PreScaffold(
+        title: l10n.system_wizard,
+        actions: [IconButton(onPressed: _showHelpDialog, icon: const Icon(Icons.help_outline_rounded), tooltip: l10n.guide)],
+        // backgroundColor: theme.scaffoldBackgroundColor,
+        // appBar: AppBar(
+        //   title: Text(l10n.system_wizard),
+        //   actions: [
+        //     IconButton(
+        //       onPressed: _showHelpDialog,
+        //       icon: const Icon(Icons.help_outline_rounded),
+        //       tooltip: l10n.guide,
+        //     ),
+        //   ],
+        // ),
+        child: Column(
           children: [
             // ── Simple Checkout Stepper ───────────────────────────────────────
             Builder(
@@ -156,7 +168,8 @@ class _SystemCalculatorWizardState extends ConsumerState<SystemCalculatorWizard>
           },
           onNext: _nextTab,
           onRequest: () {
-            // Future request system
+            final prefill = _buildRequestPrefill(controller);
+            context.push('/user-requests/new', extra: prefill);
           },
         ),
       ),
@@ -167,6 +180,50 @@ class _SystemCalculatorWizardState extends ConsumerState<SystemCalculatorWizard>
   void _showHelpDialog() {
     final explanations = AppExplanations(context).getExplanations();
     ExplanationDialog.show(context, explanations: explanations, showDontShowAgain: true, storageKey: 'system_calculator_wizard_help_viewed');
+  }
+
+  SolarRequestFormPrefill _buildRequestPrefill(CalculatorNotifier controller) {
+    final panelPower = controller.selectedPanelWattage;
+    final panelCount = controller.recommendedPanels;
+    final totalPanelPower = panelPower * panelCount;
+
+    final batterySize = controller.batteryUnitCapacityAh;
+    final batteryCount = controller.recommendedBatteries;
+    final totalBatteryPower = batterySize * batteryCount;
+
+    final inverterSize = controller.recommendedInverterSize;
+    final inverterCount = 1;
+    final totalInvertersPower = inverterSize * inverterCount;
+
+    final phaseNote = controller.isThreePhase ? 'Three-phase' : 'Single-phase';
+    final modeNote = controller.isPracticalHybridMode ? 'Practical Hybrid mode using direct AC load.' : 'Full Energy mode using appliance list.';
+    final panelNote = controller.isPracticalHybridMode
+        ? 'Mode: practical hybrid. Direct load ${controller.directAcLoadWatts.toStringAsFixed(0)}W, grid ${controller.gridOnHours.toStringAsFixed(0)}h on / ${controller.gridOffHours.toStringAsFixed(0)}h off, panel size ${controller.selectedPanelWattage}W.'
+        : 'Mode: full energy. Daily energy ${controller.dailyUsageKWh.toStringAsFixed(2)} kWh, grid coverage ${(controller.gridCoverageFactor * 100).toStringAsFixed(0)}%, PV derating ${(controller.pvDerating * 100).toStringAsFixed(0)}%.';
+    final batteryNote =
+        'System ${controller.systemVoltage.toStringAsFixed(0)}V, unit ${controller.systemCalcSingleBatteryVoltage.toStringAsFixed(1)}V ${controller.batteryUnitCapacityAh.toStringAsFixed(0)}Ah, topology ${controller.batterySeriesCount}S${controller.batteryParallelCount}P, required ${controller.requiredBatteryKWh.toStringAsFixed(2)} kWh, recharge ${controller.rechargePercentage.toStringAsFixed(0)}%, reserve ${controller.batteryReservePercent.toStringAsFixed(0)}%.';
+    final inverterNote =
+        '$phaseNote AC ${controller.acSystemVoltage.toStringAsFixed(0)}V, peak load ${controller.peakLoadW.toStringAsFixed(0)}W, design current ${controller.acLoadCurrent.toStringAsFixed(1)}A, reserve x${controller.inverterSafetyFactor.toStringAsFixed(2)}.';
+    final note =
+        'Generated from system calculator wizard. $modeNote Grid cycle ${controller.gridOnHours.toStringAsFixed(0)}h on / ${controller.gridOffHours.toStringAsFixed(0)}h off, recharge ${controller.rechargePercentage.toStringAsFixed(0)}%, reserve ${controller.batteryReservePercent.toStringAsFixed(0)}%.';
+
+    return SolarRequestFormPrefill(
+      panelPower: panelPower,
+      panelCount: panelCount,
+      totalPanelPower: totalPanelPower,
+      batterySize: batterySize,
+      batteryCount: batteryCount,
+      totalBatteryPower: totalBatteryPower,
+      inverterSize: inverterSize,
+      inverterCount: inverterCount,
+      totalInvertersPower: totalInvertersPower,
+      batteryType: controller.systemBatteryType,
+      inverterType: InverterType.hybrid,
+      panelNote: panelNote,
+      batteryNote: batteryNote,
+      inverterNote: inverterNote,
+      note: note,
+    );
   }
 }
 

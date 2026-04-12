@@ -12,6 +12,7 @@ class AdminSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final trailingWidgets = trailing == null ? const <Widget>[] : <Widget>[trailing!];
 
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
@@ -45,7 +46,7 @@ class AdminSectionHeader extends StatelessWidget {
               ],
             ),
           ),
-          if (trailing != null) trailing!,
+          ...trailingWidgets,
         ],
       ),
     );

@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get app_name => 'Watt';
+  String get app_name => 'واط، احسب منظومتك الشمسية';
 
   @override
   String get app_slug => 'Calculate Your Solar System';
@@ -69,6 +69,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get good_evening => 'Good evening,';
 
   @override
+  String get good_night => 'Good night,';
+
+  @override
   String get ready_to_manage_solar => 'Ready to manage your solar systems?';
 
   @override
@@ -88,6 +91,111 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get store => 'Store';
+
+  @override
+  String get dashboard_hero_subtitle => 'Start with a quick estimate, prepare an offer request, or explore components for your next solar setup.';
+
+  @override
+  String get dashboard_chip_fast => 'Fast sizing';
+
+  @override
+  String get dashboard_chip_offers => 'Offer ready';
+
+  @override
+  String get dashboard_chip_store => 'Shop parts';
+
+  @override
+  String get dashboard_quick_actions_subtitle => 'Jump directly into the calculator flow that matches your job.';
+
+  @override
+  String get dashboard_fast_calculator => 'Fast Calculator';
+
+  @override
+  String get dashboard_fast_calculator_desc => 'Estimate panels, inverter size, and battery storage from a few direct inputs.';
+
+  @override
+  String get dashboard_offer_wizard => 'Offer Request Wizard';
+
+  @override
+  String get dashboard_offer_wizard_desc => 'Prepare a structured request for panels, inverter, and batteries before sending it.';
+
+  @override
+  String get dashboard_system_wizard => 'System Calculator Wizard';
+
+  @override
+  String get dashboard_system_wizard_desc => 'Build a fuller solar system design using appliances, usage, and system preferences.';
+
+  @override
+  String get dashboard_shopping => 'Shopping';
+
+  @override
+  String get dashboard_shopping_subtitle => 'Browse available products now and keep room for featured items later.';
+
+  @override
+  String get dashboard_shop_now => 'Open Store';
+
+  @override
+  String get dashboard_shop_now_desc => 'Move to the storefront tab and start browsing solar components.';
+
+  @override
+  String get dashboard_featured_products => 'Featured Picks';
+
+  @override
+  String get dashboard_featured_products_desc => 'Reserved for curated products and bundles after the next API integration.';
+
+  @override
+  String get dashboard_store_coming_soon => 'Store access is currently unavailable on this device.';
+
+  @override
+  String get dashboard_open_store => 'Open store';
+
+  @override
+  String get dashboard_placeholder_badge => 'Placeholder';
+
+  @override
+  String get dashboard_promotions => 'Company Posters';
+
+  @override
+  String get dashboard_promotions_subtitle => 'Temporary slides now, ready for company campaigns and poster APIs later.';
+
+  @override
+  String get dashboard_poster_title_1 => 'Brand campaign slot';
+
+  @override
+  String get dashboard_poster_desc_1 => 'Company banners, launch offers, and seasonal promotions will appear here.';
+
+  @override
+  String get dashboard_poster_title_2 => 'Installer spotlight';
+
+  @override
+  String get dashboard_poster_desc_2 => 'Use this space later for partner highlights, service coverage, or campaign banners.';
+
+  @override
+  String get dashboard_poster_title_3 => 'New arrivals banner';
+
+  @override
+  String get dashboard_poster_desc_3 => 'Upcoming APIs can feed this carousel with new stock, featured kits, or limited offers.';
+
+  @override
+  String get dashboard_tips_subtitle => 'Practical reminders to size better, buy smarter, and avoid avoidable system mistakes.';
+
+  @override
+  String get dashboard_hint_clean_title => 'Keep panels clean';
+
+  @override
+  String get dashboard_hint_clean_desc => 'Dust and shading quickly reduce solar output. A simple cleaning plan can improve production consistency.';
+
+  @override
+  String get dashboard_hint_expand_title => 'Leave room to expand';
+
+  @override
+  String get dashboard_hint_expand_desc => 'When sizing an inverter or battery bank, consider future loads so the system does not become tight too early.';
+
+  @override
+  String get dashboard_hint_compare_title => 'Compare before you buy';
+
+  @override
+  String get dashboard_hint_compare_desc => 'Use the calculators first, then compare offers and components against the same target system size.';
 
   @override
   String get buy_components => 'Buy components';
@@ -140,10 +248,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sort_price_desc => 'Price High-Low';
 
   @override
+  String get sort_retail_price_asc => 'Retail Price Low-High';
+
+  @override
+  String get sort_retail_price_desc => 'Retail Price High-Low';
+
+  @override
+  String get sort_wholesale_price_asc => 'Wholesale Price Low-High';
+
+  @override
+  String get sort_wholesale_price_desc => 'Wholesale Price High-Low';
+
+  @override
+  String get sort_stock_asc => 'Stock Low-High';
+
+  @override
+  String get sort_stock_desc => 'Stock High-Low';
+
+  @override
   String get all => 'All';
 
   @override
   String get all_categories => 'All Categories';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get cancel_action => 'Cancel';
+
+  @override
+  String get delete_action => 'Delete';
 
   @override
   String get all_companies => 'All companies';
@@ -284,6 +419,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reset_password_instructions => 'Enter your email address and we will send you a link to reset your password.';
 
   @override
+  String get reset_password_token_instructions => 'Enter the token you received and choose a new password.';
+
+  @override
   String get email_is_required => 'Email is required';
 
   @override
@@ -299,10 +437,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get password_reset_email_sent => 'Password reset email sent!';
 
   @override
+  String get password_reset_success => 'Your password has been reset successfully.';
+
+  @override
   String get error => 'Error';
 
   @override
   String get send_reset_link => 'Send Reset Link';
+
+  @override
+  String get reset_token => 'Reset Token';
+
+  @override
+  String get reset_token_required => 'Reset token is required';
+
+  @override
+  String get verify_token => 'Verify Token';
+
+  @override
+  String get reset_token_verified => 'Token verified successfully.';
+
+  @override
+  String get new_password => 'New Password';
+
+  @override
+  String get confirm_new_password => 'Confirm New Password';
+
+  @override
+  String get delete_account => 'Delete Account';
+
+  @override
+  String get delete_account_warning => 'This action is permanent. Enter your password to delete your account.';
+
+  @override
+  String get delete_account_reason => 'Reason (optional)';
+
+  @override
+  String get account_deleted_successfully => 'Account deleted successfully.';
 
   @override
   String get send_feedback => 'Send Feedback';
@@ -480,6 +651,111 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get company_registered_success => 'Company registered successfully';
+
+  @override
+  String get company_updated_successfully => 'Company updated successfully.';
+
+  @override
+  String get company_type => 'Company Type';
+
+  @override
+  String get company_type_required => 'Company type is required';
+
+  @override
+  String get edit_company => 'Edit Company';
+
+  @override
+  String get company_profile => 'Company Profile';
+
+  @override
+  String get company_profile_subtitle => 'Keep your company profile up to date.';
+
+  @override
+  String get company_activation_required_title => 'Company activation required';
+
+  @override
+  String get company_activation_required_message => 'This company is inactive or its subscription is not valid yet. Contact admin to activate the company and enable management actions.';
+
+  @override
+  String get company_activation_required_short => 'Activation required';
+
+  @override
+  String get company_pending_activation_title => 'Company activation is pending';
+
+  @override
+  String get company_pending_activation_message => 'Your company is still pending admin review. You can contact admin, and if the company has been waiting for more than 24 hours an activation reminder can be sent.';
+
+  @override
+  String get company_send_activation_reminder => 'Send activation reminder';
+
+  @override
+  String get company_activation_reminder_sent => 'Activation reminder sent successfully.';
+
+  @override
+  String company_activation_reminder_sent_message(Object availableAt) {
+    return 'An activation reminder was sent to admins. The next reminder will be available at $availableAt.';
+  }
+
+  @override
+  String get company_subscription_required_title => 'Subscription required';
+
+  @override
+  String get company_subscription_required_message => 'Your company is active, but the subscription is not valid. Choose a plan below to submit a subscription request.';
+
+  @override
+  String get company_subscription_available_plans => 'Available subscription plans';
+
+  @override
+  String get company_subscription_plans_error => 'Could not load subscription plans.';
+
+  @override
+  String get company_subscription_plans_empty => 'No subscription plans are available right now.';
+
+  @override
+  String company_subscription_plan_meta(Object days, Object price) {
+    return '$days days • $price';
+  }
+
+  @override
+  String get company_subscription_request_cta => 'Request this plan';
+
+  @override
+  String get company_subscription_notes => 'Notes (optional)';
+
+  @override
+  String get company_subscription_image_optional => 'Image (optional)';
+
+  @override
+  String get company_subscription_submit => 'Submit subscription request';
+
+  @override
+  String get company_subscription_request_submitted => 'Subscription request submitted successfully.';
+
+  @override
+  String get company_subscription_request_pending => 'Subscription request pending review.';
+
+  @override
+  String company_subscription_request_pending_message(Object planName) {
+    return 'Your subscription request for $planName is pending admin review.';
+  }
+
+  @override
+  String get company_call_admin => 'Call admin';
+
+  @override
+  String get company_email_admin => 'Email admin';
+
+  @override
+  String get company_chat_admin => 'Chat with admin';
+
+  @override
+  String get company_chat_admin_coming_soon => 'Chat coming soon';
+
+  @override
+  String get company_contact_admin_failed => 'Could not open the selected admin contact action.';
+
+  @override
+  String get retry => 'Retry';
 
   @override
   String get min_6_characters => 'Minimum 6 characters';
@@ -815,7 +1091,252 @@ class AppLocalizationsEn extends AppLocalizations {
   String get services => 'Services';
 
   @override
+  String get services_explorer_subtitle => 'Browse trusted solar companies by service type, then open the companies that match what you need.';
+
+  @override
+  String get services_choose_category => 'Choose a service category';
+
+  @override
+  String get services_no_categories => 'No service categories are available yet.';
+
+  @override
+  String get services_explore_companies => 'Explore companies';
+
+  @override
+  String services_companies_found(Object count) {
+    return '$count companies found';
+  }
+
+  @override
+  String get services_companies_subtitle => 'Find public companies that match this service type. Change city or search to narrow the results.';
+
+  @override
+  String get services_all_cities => 'All cities';
+
+  @override
+  String get services_search_companies => 'Search companies';
+
+  @override
+  String get services_no_companies_found => 'No companies matched this service type with the current filters.';
+
+  @override
+  String get services_retry => 'Retry';
+
+  @override
+  String get services_public_badge => 'Public';
+
+  @override
+  String services_contacts_count(Object count) {
+    return '$count contacts';
+  }
+
+  @override
+  String services_services_count(Object count) {
+    return '$count services';
+  }
+
+  @override
+  String get services_company_details => 'Company details';
+
+  @override
+  String get services_company_info => 'Company info';
+
+  @override
+  String get services_address => 'Address';
+
+  @override
+  String get services_no_address => 'No address';
+
+  @override
+  String get services_city_label => 'City';
+
+  @override
+  String get services_not_specified => 'Not specified';
+
+  @override
+  String get services_type_label => 'Type';
+
+  @override
+  String get services_phone_label => 'Phone';
+
+  @override
+  String get services_no_phone => 'No phone number';
+
+  @override
+  String get services_section_services => 'Services';
+
+  @override
+  String get services_no_public_services => 'No public services listed yet.';
+
+  @override
+  String get services_price_on_request => 'Price on request';
+
+  @override
+  String get services_contacts_title => 'Contacts';
+
+  @override
+  String get services_no_contacts => 'No contacts available.';
+
+  @override
+  String get services_delivery_options => 'Delivery options';
+
+  @override
+  String get services_no_delivery_options => 'No delivery options available.';
+
+  @override
+  String get services_flexible_delivery => 'Flexible';
+
+  @override
+  String services_estimated_days(Object min, Object max) {
+    return 'Estimated: $min - $max days';
+  }
+
+  @override
   String get contacts => 'Contacts';
+
+  @override
+  String get company_contacts_subtitle => 'Manage contact people for your company.';
+
+  @override
+  String get company_contacts_loading => 'Loading contacts...';
+
+  @override
+  String get company_contacts_empty_title => 'No contacts yet';
+
+  @override
+  String get company_contacts_empty_subtitle => 'Create your first company contact.';
+
+  @override
+  String get company_contacts_add => 'Add contact';
+
+  @override
+  String get company_contacts_save => 'Save contact';
+
+  @override
+  String get company_contacts_name => 'Name';
+
+  @override
+  String get company_contacts_email => 'Email';
+
+  @override
+  String get company_contacts_phone => 'Phone';
+
+  @override
+  String get company_contacts_notes => 'Notes';
+
+  @override
+  String get company_contacts_name_required => 'Contact name is required';
+
+  @override
+  String get company_contacts_email_required => 'Email is required';
+
+  @override
+  String get company_contacts_email_invalid => 'Enter a valid email';
+
+  @override
+  String get company_contacts_phone_required => 'Phone is required';
+
+  @override
+  String get company_contacts_deleted => 'Contact deleted successfully.';
+
+  @override
+  String get company_contacts_delete_title => 'Delete contact';
+
+  @override
+  String company_contacts_delete_message(Object name) {
+    return 'Delete $name from contacts?';
+  }
+
+  @override
+  String get company_contacts_no_company => 'A company account is required to manage contacts.';
+
+  @override
+  String get company_public_services => 'Public Services';
+
+  @override
+  String get company_public_services_subtitle => 'Show the services your company offers publicly.';
+
+  @override
+  String get company_public_services_loading => 'Loading public services...';
+
+  @override
+  String get company_public_services_empty_title => 'No public services yet';
+
+  @override
+  String get company_public_services_empty_subtitle => 'Create the first public service for your company.';
+
+  @override
+  String get company_public_services_add => 'Add service';
+
+  @override
+  String get company_public_services_edit => 'Edit service';
+
+  @override
+  String get company_public_services_save => 'Save service';
+
+  @override
+  String get company_public_services_title => 'Title';
+
+  @override
+  String get company_public_services_title_required => 'Service title is required';
+
+  @override
+  String get company_public_services_price => 'Price';
+
+  @override
+  String get company_public_services_description => 'Description';
+
+  @override
+  String get company_public_services_deleted => 'Public service deleted successfully.';
+
+  @override
+  String get company_public_services_delete_title => 'Delete public service';
+
+  @override
+  String company_public_services_delete_message(Object name) {
+    return 'Delete $name from public services?';
+  }
+
+  @override
+  String get company_public_services_no_company => 'A company account is required to manage public services.';
+
+  @override
+  String get company_categories_subtitle => 'Organize your company with custom categories.';
+
+  @override
+  String get company_categories_loading => 'Loading categories...';
+
+  @override
+  String get company_categories_empty_title => 'No categories yet';
+
+  @override
+  String get company_categories_empty_subtitle => 'Create the first category for your company.';
+
+  @override
+  String get company_categories_add => 'Add category';
+
+  @override
+  String get company_categories_save => 'Save category';
+
+  @override
+  String get company_categories_name => 'Category name';
+
+  @override
+  String get company_categories_name_required => 'Category name is required';
+
+  @override
+  String get company_categories_deleted => 'Category deleted successfully.';
+
+  @override
+  String get company_categories_delete_title => 'Delete category';
+
+  @override
+  String company_categories_delete_message(Object name) {
+    return 'Delete $name from categories?';
+  }
+
+  @override
+  String get company_categories_no_company => 'A company account is required to manage categories.';
 
   @override
   String get status_active => 'Active';
@@ -1250,9 +1771,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delivery => 'Delivery';
 
   @override
-  String get company_profile => 'Company Profile';
-
-  @override
   String get subscription => 'Subscription';
 
   @override
@@ -1287,9 +1805,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get startup_role_subtitle => 'Automatically open your preferred dashboard when the app starts';
-
-  @override
-  String get edit_company => 'Edit Company';
 
   @override
   String get profile_updated_success => 'Profile updated successfully!';

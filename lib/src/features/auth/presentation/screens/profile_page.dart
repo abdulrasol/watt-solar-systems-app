@@ -7,6 +7,7 @@ import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:solar_hub/src/features/auth/presentation/widgets/delete_account_sheet.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class ProfilePage extends ConsumerWidget {
@@ -166,6 +167,34 @@ class ProfilePage extends ConsumerWidget {
             const SizedBox(height: 24),
             if (authController.isSigned) ...[
               const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (_) => const DeleteAccountSheet(),
+                    );
+                  },
+                  icon: const Icon(Iconsax.trash_bold),
+                  label: Text(l10n.delete_account),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.red,
+                    side: const BorderSide(color: Colors.red),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(

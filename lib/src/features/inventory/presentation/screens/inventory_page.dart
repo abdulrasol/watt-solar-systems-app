@@ -287,7 +287,7 @@ class _InventoryPageState extends ConsumerState<InventoryPage> {
 //                       clipBehavior: Clip.antiAlias,
 //                       child: InkWell(
 //                         onTap: () {
-//                           // TODO: Route to product details
+//                           // TODO1: Route to product details
 //                           context.push('/company-dashboard/inventory/product/${product.id}', extra: product);
 //                         },
 //                         child: Padding(

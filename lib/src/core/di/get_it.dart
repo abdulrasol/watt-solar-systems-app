@@ -16,6 +16,7 @@ import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.
 // import 'package:solar_hub/src/features/company_dashboard/data/repositories/dashboard_repository_impl.dart';
 // import 'package:solar_hub/src/features/company_dashboard/domain/repositories/dashboard_repository.dart';
 import 'package:solar_hub/src/features/feedback/data/repositories/feedback_repository_impl.dart';
+import 'package:solar_hub/src/features/feedback/data/data_sourece/remote_data_source.dart';
 import 'package:solar_hub/src/features/feedback/domain/repositories/feedback_repository.dart';
 import 'package:solar_hub/src/features/splash/domain/repositories/app_init_repository.dart';
 import 'package:solar_hub/src/features/company_dashboard/data/datasources/local_datasource.dart';
@@ -24,11 +25,14 @@ import 'package:solar_hub/src/features/company_dashboard/data/repositoies/compan
 import 'package:solar_hub/src/features/company_dashboard/domain/repositories/dashboard_repository.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/usecases/get_company_usecase.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
-import 'package:solar_hub/src/utils/toast_service.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 
 import 'package:solar_hub/src/features/inventory/data/data_sources/inventory_remote_data_source.dart';
 import 'package:solar_hub/src/features/inventory/data/repositories/inventory_repository_impl.dart';
 import 'package:solar_hub/src/features/company_dashboard/data/data_sources/company_service_request_remote_data_source.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/data_sources/company_management_remote_data_source.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/repositories/company_management_repository_impl.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/repositories/company_management_repository.dart';
 import 'package:solar_hub/src/features/company_dashboard/data/repositories/company_service_request_repository_impl.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/repositories/company_service_request_repository.dart';
 import 'package:solar_hub/src/features/inventory/domain/repositories/inventory_repository.dart';
@@ -49,6 +53,9 @@ import 'package:solar_hub/src/features/storefront/data/datasources/storefront_re
 import 'package:solar_hub/src/features/storefront/data/repositories/storefront_repository_impl.dart';
 import 'package:solar_hub/src/features/storefront/domain/repositories/storefront_repository.dart';
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
+import 'package:solar_hub/src/features/services/data/datasources/public_services_remote_data_source.dart';
+import 'package:solar_hub/src/features/services/data/repositories/public_services_repository_impl.dart';
+import 'package:solar_hub/src/features/services/domain/repositories/public_services_repository.dart';
 
 final getIt = GetIt.instance;
 
@@ -78,17 +85,28 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<InventoryRepository>(() {
     dPrint('init inventory repository', tag: 'getIt');
-    return InventoryRepositoryImpl(InventoryRemoteDataSourceImpl(getIt<DioService>()));
+    return InventoryRepositoryImpl(
+      InventoryRemoteDataSourceImpl(getIt<DioService>()),
+    );
   });
 
   getIt.registerLazySingleton<StorefrontRepository>(() {
     dPrint('init storefront repository', tag: 'getIt');
-    return StorefrontRepositoryImpl(StorefrontRemoteDataSourceImpl(getIt<DioService>()));
+    return StorefrontRepositoryImpl(
+      StorefrontRemoteDataSourceImpl(getIt<DioService>()),
+    );
   });
 
   getIt.registerLazySingleton<StorefrontCartController>(() {
     dPrint('init storefront cart controller', tag: 'getIt');
     return StorefrontCartController(getIt<CasheInterface>());
+  });
+
+  getIt.registerLazySingleton<PublicServicesRepository>(() {
+    dPrint('init public services repository', tag: 'getIt');
+    return PublicServicesRepositoryImpl(
+      PublicServicesRemoteDataSourceImpl(getIt<DioService>()),
+    );
   });
 
   getIt.registerLazySingleton<AppInitRemoteDataSource>(() {
@@ -103,7 +121,10 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<AppInitRepository>(() {
     dPrint('init app init repository', tag: 'getIt');
-    return AppInitRepositoryImpl(remoteDataSource: getIt<AppInitRemoteDataSource>(), localDataSource: getIt<AppInitLocalDataSource>());
+    return AppInitRepositoryImpl(
+      remoteDataSource: getIt<AppInitRemoteDataSource>(),
+      localDataSource: getIt<AppInitLocalDataSource>(),
+    );
   });
 
   getIt.registerLazySingleton<GetConfigsUseCase>(() {
@@ -113,12 +134,21 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<FeedbackRepository>(() {
     dPrint('init feedback repository', tag: 'getIt');
-    return FeedbackRepositoryImpl();
+    return FeedbackRepositoryImpl(getIt<FeedbackRemoteDataSource>());
+  });
+
+  getIt.registerLazySingleton<FeedbackRemoteDataSource>(() {
+    dPrint('init feedback remote data source', tag: 'getIt');
+    return FeedbackRemoteDataSourceImpl(getIt<DioService>());
   });
 
   getIt.registerLazySingleton<AppConfigRepository>(() {
     dPrint('init app config repository', tag: 'getIt');
-    return AppConfigRepositoryImpl(remoteDataSource: AppConfigRemoteDataSourceImpl(dioService: getIt<DioService>()));
+    return AppConfigRepositoryImpl(
+      remoteDataSource: AppConfigRemoteDataSourceImpl(
+        dioService: getIt<DioService>(),
+      ),
+    );
   });
 
   getIt.registerLazySingleton<NotificationRepository>(() {
@@ -143,12 +173,17 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<CompanySummeryRepository>(() {
     dPrint('init company summery repository', tag: 'getIt');
-    return CompanySummeryRepositoryImpl(remoteDataSource: getIt<RemoteDataSource>(), localDataSource: getIt<LocalDataSource>());
+    return CompanySummeryRepositoryImpl(
+      remoteDataSource: getIt<RemoteDataSource>(),
+      localDataSource: getIt<LocalDataSource>(),
+    );
   });
 
   getIt.registerLazySingleton<GetCompanySummeryUseCase>(() {
     dPrint('init get company summery usecase', tag: 'getIt');
-    return GetCompanySummeryUseCase(repository: getIt<CompanySummeryRepository>());
+    return GetCompanySummeryUseCase(
+      repository: getIt<CompanySummeryRepository>(),
+    );
   });
 
   // ==================== OFFERS & REQUESTS ====================
@@ -181,6 +216,20 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<CompanyServiceRequestRepository>(() {
     dPrint('init company service request repository', tag: 'getIt');
-    return CompanyServiceRequestRepositoryImpl(getIt<CompanyServiceRequestRemoteDataSource>());
+    return CompanyServiceRequestRepositoryImpl(
+      getIt<CompanyServiceRequestRemoteDataSource>(),
+    );
+  });
+
+  getIt.registerLazySingleton<CompanyManagementRemoteDataSource>(() {
+    dPrint('init company management remote data source', tag: 'getIt');
+    return CompanyManagementRemoteDataSourceImpl(getIt<DioService>());
+  });
+
+  getIt.registerLazySingleton<CompanyManagementRepository>(() {
+    dPrint('init company management repository', tag: 'getIt');
+    return CompanyManagementRepositoryImpl(
+      getIt<CompanyManagementRemoteDataSource>(),
+    );
   });
 }

@@ -113,6 +113,8 @@ class PushNotificationService {
 
       if (_isSignedInLocally) {
         await onAuthenticated();
+      } else {
+        await _syncCurrentTokenWithBackend();
       }
 
       final initialMessage = await _messaging.getInitialMessage();
@@ -177,9 +179,7 @@ class PushNotificationService {
     await _cache.delete('fcm_backend_device_id');
     await _ensureGuestTopics();
 
-    if (_isSignedInLocally) {
-      await _syncTokenWithBackend(token);
-    }
+    await _syncTokenWithBackend(token);
   }
 
   Future<void> _syncCurrentTokenWithBackend() async {
@@ -194,15 +194,14 @@ class PushNotificationService {
 
   Future<void> _syncTokenWithBackend(String token) async {
     final user = _cache.user();
-    if (user == null || _cache.token() == null) {
-      return;
-    }
 
     final syncedToken = _cache.get('fcm_synced_token') as String?;
     final syncedUserId = _cache.get('fcm_synced_user_id')?.toString();
     final backendDeviceId = _cache.get('fcm_backend_device_id');
 
-    if (syncedToken == token && syncedUserId == user.id.toString() && backendDeviceId != null) {
+    final currentUserIdStr = user?.id.toString();
+
+    if (syncedToken == token && syncedUserId == currentUserIdStr && backendDeviceId != null) {
       return;
     }
 
@@ -220,12 +219,16 @@ class PushNotificationService {
 
       if ((response.status == 200 || response.status == 201) && !response.error) {
         await _cache.save('fcm_synced_token', token);
-        await _cache.save('fcm_synced_user_id', user.id);
+        if (currentUserIdStr != null) {
+          await _cache.save('fcm_synced_user_id', user!.id);
+        } else {
+          await _cache.delete('fcm_synced_user_id');
+        }
         final body = response.body is Map<String, dynamic> ? response.body as Map<String, dynamic> : <String, dynamic>{};
         if (body['device_id'] != null) {
           await _cache.save('fcm_backend_device_id', body['device_id']);
         }
-        dPrint('FCM token synced for user ${user.id}', tag: 'fcm');
+        dPrint('FCM token synced${user != null ? ' for user ${user.id}' : ' for guest device'}', tag: 'fcm');
       } else {
         dPrint('FCM sync failed: ${response.message}', tag: 'fcm');
       }
@@ -245,6 +248,7 @@ class PushNotificationService {
     final guestToken = await _getTokenIfReady();
     if (guestToken != null && guestToken.isNotEmpty) {
       await _cache.save('fcm_token', guestToken);
+      await _syncTokenWithBackend(guestToken);
     }
 
     await _cache.delete('fcm_backend_device_id');

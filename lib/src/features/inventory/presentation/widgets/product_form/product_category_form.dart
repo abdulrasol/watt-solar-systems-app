@@ -55,7 +55,7 @@ class ProductCategoryForm extends ConsumerWidget {
     required Function(int?) onChanged,
   }) {
     return DropdownButtonFormField<int>(
-      value: value,
+      initialValue: value,
       decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
       items: [
         const DropdownMenuItem(value: null, child: Text('None')),

@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
-import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
-import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_company_details.dart';
 import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_company_details_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/forms/company_status_form.dart';
 import 'package:solar_hub/src/features/admin/presentation/forms/service_review_form.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_section_header.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/company_service_card.dart';
@@ -19,8 +15,9 @@ import 'package:solar_hub/src/features/admin/presentation/widgets/status_badge.d
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class AdminCompanyDetailsScreen extends ConsumerStatefulWidget {
-  final int companyId;
   const AdminCompanyDetailsScreen({super.key, required this.companyId});
+
+  final int companyId;
 
   @override
   ConsumerState<AdminCompanyDetailsScreen> createState() =>
@@ -41,426 +38,342 @@ class _AdminCompanyDetailsScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(adminCompanyDetailsProvider);
 
-    return PreScaffold(
-      title: 'Company Details',
+    return AdminPageScaffold(
+      // title: 'Company Details',
+      // subtitle: 'Detailed company data loads only when a company is opened.',
       actions: [
         if (state.details != null)
-          IconButton(
-            icon: Icon(
-              Iconsax.edit_bold,
-              color: AppTheme.primaryColor,
-              size: 24.sp,
-            ),
+          FilledButton.icon(
             onPressed: () => _showStatusUpdateForm(context),
+            icon: const Icon(Iconsax.edit_bold),
+            label: const Text('Update Status'),
           ),
       ],
       child: state.isLoading && state.details == null
-          ? _buildLoadingState()
-          : state.error != null
+          ? const AdminLoadingState(
+              icon: Iconsax.building_bold,
+              message: 'Loading company details...',
+            )
+          : state.error != null && state.details == null
           ? AdminErrorState(
               error: state.error!,
               onRetry: () =>
                   ref.read(adminCompanyDetailsProvider.notifier).fetchDetails(),
             )
-          : RefreshIndicator(
-              onRefresh: () =>
-                  ref.read(adminCompanyDetailsProvider.notifier).fetchDetails(),
-              color: AppTheme.primaryColor,
-              child: _buildContent(state),
-            ),
+          : _buildContent(context, state.details!),
     );
   }
 
-  Widget _buildLoadingState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          LoadingWidget.widget(context: context, size: 30),
-          SizedBox(height: 16.h),
-          Text(
-            'Loading Details...',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey,
-              fontFamily: AppTheme.fontFamily,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget _buildContent(BuildContext context, AdminCompanyDetails details) {
+    return RefreshIndicator(
+      onRefresh: () =>
+          ref.read(adminCompanyDetailsProvider.notifier).fetchDetails(),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final wide = constraints.maxWidth >= 900;
+          final info = _buildInfoSection(context, details);
+          final services = _buildServicesSection(details);
 
-  Widget _buildContent(AdminCompanyDetailsState state) {
-    final details = state.details;
-    if (details == null) return const SizedBox.shrink();
-    final isWide = !AppBreakpoints.isMobile(context);
-
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(16.w),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: AppBreakpoints.contentMaxWidth(context),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          return ListView(
             children: [
-              _buildHeaderSection(details),
-              SizedBox(height: 24.h),
-              if (isWide)
+              _buildHeroCard(context, details),
+              const SizedBox(height: 20),
+              if (wide)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: _buildInfoSection(details)),
-                    SizedBox(width: 24.w),
-                    Expanded(child: _buildServicesSection(details)),
+                    Expanded(child: info),
+                    const SizedBox(width: 16),
+                    Expanded(child: services),
                   ],
                 )
               else ...[
-                _buildInfoSection(details),
-                SizedBox(height: 24.h),
-                _buildServicesSection(details),
+                info,
+                const SizedBox(height: 16),
+                services,
               ],
-              SizedBox(height: 24.h),
+              const SizedBox(height: 16),
               _buildMembersSection(details),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildHeaderSection(AdminCompanyDetails details) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  Widget _buildHeroCard(BuildContext context, AdminCompanyDetails details) {
     final company = details.company;
-    final isMobile = AppBreakpoints.isMobile(context);
 
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(20.w),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppTheme.primaryColor.withValues(alpha: 0.1),
-            AppTheme.primaryColor.withValues(alpha: 0.05),
+            AppTheme.primaryColor.withValues(alpha: 0.14),
+            Theme.of(context).cardColor,
           ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.1)
-              : AppTheme.primaryColor.withValues(alpha: 0.2),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.primaryColor.withValues(alpha: 0.1),
-            blurRadius: 20,
-            offset: Offset(0, 8.h),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(28),
       ),
       child: Column(
         children: [
-          _buildCompanyLogo(company.logo),
-          SizedBox(height: 16.h),
+          CircleAvatar(
+            radius: 40,
+            backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.14),
+            backgroundImage: company.logo != null
+                ? NetworkImage(company.logo!)
+                : null,
+            child: company.logo == null
+                ? const Icon(
+                    Iconsax.building_bold,
+                    color: AppTheme.primaryColor,
+                    size: 34,
+                  )
+                : null,
+          ),
+          const SizedBox(height: 16),
           Text(
             company.name,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              fontFamily: AppTheme.fontFamily,
-            ),
             textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontFamily: AppTheme.fontFamily,
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+            ),
           ),
-          SizedBox(height: 12.h),
+          const SizedBox(height: 10),
           StatusBadge(status: company.status),
-          SizedBox(height: 16.h),
+          const SizedBox(height: 16),
           Wrap(
+            spacing: 12,
+            runSpacing: 12,
             alignment: WrapAlignment.center,
-            spacing: isMobile ? 12.w : 20.w,
-            runSpacing: 12.h,
             children: [
-              _buildStatItem(
-                'Tier',
-                company.tier ?? 'Standard',
-                Iconsax.medal_bold,
-                AppTheme.accentColor,
-              ),
-              _buildStatItem(
-                'Type',
-                company.type ?? 'N/A',
-                Iconsax.building_bold,
-                AppTheme.primaryColor,
-              ),
-              _buildStatItem(
-                'B2B',
-                company.allowsB2B ? 'Yes' : 'No',
-                Iconsax.tick_circle_bold,
-                company.allowsB2B ? AppTheme.successColor : Colors.grey,
-              ),
-              _buildStatItem(
-                'B2C',
-                company.allowsB2C ? 'Yes' : 'No',
-                Iconsax.tick_circle_bold,
-                company.allowsB2C ? AppTheme.successColor : Colors.grey,
-              ),
+              _Tag(label: 'Tier', value: company.tier ?? 'Standard'),
+              _Tag(label: 'Type', value: company.type ?? 'N/A'),
+              _Tag(label: 'B2B', value: company.allowsB2B ? 'Yes' : 'No'),
+              _Tag(label: 'B2C', value: company.allowsB2C ? 'Yes' : 'No'),
             ],
           ),
         ],
       ),
-    ).animate().fadeIn(duration: (600).ms).slideY(begin: 0.1, end: 0);
-  }
-
-  Widget _buildCompanyLogo(String? logo) {
-    return Container(
-      width: 80.w,
-      height: 80.h,
-      decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withValues(alpha: 0.1),
-        shape: BoxShape.circle,
-        image: logo != null
-            ? DecorationImage(image: NetworkImage(logo), fit: BoxFit.cover)
-            : null,
-      ),
-      child: logo == null
-          ? Icon(
-              Iconsax.building_bold,
-              color: AppTheme.primaryColor,
-              size: 40.sp,
-            )
-          : null,
     );
   }
 
-  Widget _buildStatItem(
-    String label,
-    String value,
-    IconData icon,
-    Color color,
-  ) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Icon(icon, color: color, size: 14.sp),
-            SizedBox(width: 4.w),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 11.sp,
-                color: Colors.grey,
-                fontFamily: AppTheme.fontFamily,
-              ),
+  Widget _buildInfoSection(BuildContext context, AdminCompanyDetails details) {
+    final company = details.company;
+
+    return _SectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AdminSectionHeader(
+            title: 'Company Profile',
+            subtitle: 'Core account and business information.',
+          ),
+          _InfoRow(label: 'Address', value: company.address ?? 'N/A'),
+          _InfoRow(label: 'City', value: company.city?.name ?? 'N/A'),
+          _InfoRow(label: 'Currency', value: company.currencyLabel ?? 'N/A'),
+          _InfoRow(
+            label: 'Categories',
+            value: company.categoryNames.isEmpty
+                ? 'N/A'
+                : company.categoryNames.join(', '),
+          ),
+          _InfoRow(
+            label: 'Description',
+            value: company.description?.isNotEmpty == true
+                ? company.description!
+                : 'No description',
+          ),
+          if (details.financials.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            const AdminSectionHeader(
+              title: 'Financials',
+              subtitle: 'Aggregated values returned by the backend.',
+            ),
+            ...details.financials.entries.map(
+              (entry) => _InfoRow(label: entry.key, value: '${entry.value}'),
             ),
           ],
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.bold,
-            fontFamily: AppTheme.fontFamily,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoSection(AdminCompanyDetails details) {
-    final company = details.company;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const AdminSectionHeader(
-          title: 'Information',
-          subtitle: 'Company location and contact details',
-        ),
-        _buildInfoTile(
-          Iconsax.location_bold,
-          'Address',
-          company.address ?? 'No address provided',
-        ),
-        SizedBox(height: 12.h),
-        _buildInfoTile(
-          Iconsax.global_bold,
-          'City',
-          company.city?.name ?? 'N/A',
-        ),
-        SizedBox(height: 12.h),
-        _buildInfoTile(
-          Iconsax.calendar_bold,
-          'Joined',
-          company.createdAt?.substring(0, 10) ?? 'N/A',
-        ),
-        if (company.description != null && company.description!.isNotEmpty) ...[
-          SizedBox(height: 12.h),
-          _buildInfoTile(
-            Iconsax.note_bold,
-            'Description',
-            company.description!,
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildInfoTile(IconData icon, String label, String value) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.grey.withValues(alpha: 0.1),
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: AppTheme.primaryColor, size: 24.sp),
-          SizedBox(width: 16.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    color: Colors.grey,
-                    fontFamily: AppTheme.fontFamily,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: AppTheme.fontFamily,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
   Widget _buildServicesSection(AdminCompanyDetails details) {
-    if (details.services.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const AdminSectionHeader(
-          title: 'Services',
-          subtitle: 'Tap a service to toggle its status',
-        ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: details.services.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: AppBreakpoints.adaptiveGridCount(
-              context,
-              mobile: 1,
-              tablet: 1,
-              desktop: 1,
-            ),
-            mainAxisSpacing: 12.h,
-            crossAxisSpacing: 12.w,
-            childAspectRatio: AppBreakpoints.isMobile(context) ? 1.9 : 2.5,
+    return _SectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AdminSectionHeader(
+            title: 'Company Services',
+            subtitle: 'Review subscription and activation status.',
           ),
-          itemBuilder: (context, index) {
-            final service = details.services[index];
-            return CompanyServiceCard(
-              service: service,
-              onToggle: service.status != null
-                  ? () => _confirmToggleService(context, service)
-                  : null,
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMembersSection(AdminCompanyDetails details) {
-    if (details.members.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const AdminSectionHeader(
-          title: 'Team Members',
-          subtitle: 'People associated with this company',
-        ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: details.members.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: AppBreakpoints.adaptiveGridCount(
-              context,
-              mobile: 1,
-              tablet: 2,
-              desktop: 2,
+          if (details.services.isEmpty)
+            const AdminEmptyState(
+              icon: Iconsax.category_bold,
+              title: 'No services assigned',
+            )
+          else
+            Column(
+              children: details.services
+                  .map(
+                    (service) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: CompanyServiceCard(
+                        service: service,
+                        onToggle: () => _showServiceReviewForm(service),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
-            mainAxisSpacing: 12.h,
-            crossAxisSpacing: 12.w,
-            childAspectRatio: AppBreakpoints.isMobile(context) ? 3.0 : 3.4,
-          ),
-          itemBuilder: (context, index) =>
-              MemberListItem(member: details.members[index]),
-        ),
-      ],
-    );
-  }
-
-  void _showStatusUpdateForm(BuildContext context) {
-    final state = ref.read(adminCompanyDetailsProvider);
-    if (state.details == null) return;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CompanyStatusForm(
-        currentStatus: state.details!.company.status,
-        onSubmit: (status) {
-          ref.read(adminCompanyDetailsProvider.notifier).updateStatus(status);
-          Navigator.pop(context);
-        },
+        ],
       ),
     );
   }
 
-  void _confirmToggleService(BuildContext context, CompanyService service) {
-    showModalBottomSheet(
+  Widget _buildMembersSection(AdminCompanyDetails details) {
+    return _SectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AdminSectionHeader(
+            title: 'Members',
+            subtitle: 'Company users returned with this account.',
+          ),
+          if (details.members.isEmpty)
+            const AdminEmptyState(
+              icon: Iconsax.people_bold,
+              title: 'No members found',
+            )
+          else
+            Column(
+              children: details.members
+                  .map(
+                    (member) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: MemberListItem(member: member),
+                    ),
+                  )
+                  .toList(),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _showStatusUpdateForm(BuildContext context) {
+    final currentStatus =
+        ref.read(adminCompanyDetailsProvider).details?.company.status ??
+        'pending';
+
+    showModalBottomSheet<void>(
       context: context,
-      isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => CompanyStatusForm(
+        currentStatus: currentStatus,
+        onSubmit: (status) =>
+            ref.read(adminCompanyDetailsProvider.notifier).updateStatus(status),
+      ),
+    );
+  }
+
+  void _showServiceReviewForm(CompanyService service) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => ServiceReviewForm(
         service: service,
-        onSubmit: (data) {
-          ref
-              .read(adminCompanyDetailsProvider.notifier)
-              .toggleService(service.serviceCode, data);
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Service reviewed successfully'),
-              backgroundColor: AppTheme.successColor,
-              behavior: SnackBarBehavior.floating,
+        onSubmit: (data) => ref
+            .read(adminCompanyDetailsProvider.notifier)
+            .toggleService(service.serviceCode, data),
+      ),
+    );
+  }
+}
+
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: child,
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).hintColor,
+              ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Tag extends StatelessWidget {
+  const _Tag({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.65),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        '$label: $value',
+        style: const TextStyle(
+          fontFamily: AppTheme.fontFamily,
+          fontWeight: FontWeight.w700,
+          color: AppTheme.primaryColor,
+        ),
       ),
     );
   }

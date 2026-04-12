@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
+import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart';
+import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 
@@ -27,7 +29,6 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
   final _panelWattController = TextEditingController(text: '620');
 
   bool _batteryAmpEdited = false;
-  bool _isGuideExpanded = true;
 
   @override
   void dispose() {
@@ -51,6 +52,72 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
   String _hourLabel(BuildContext context, num value) => _tr(context, value == 1 ? 'hour' : 'hours', value == 1 ? 'ساعة' : 'ساعات');
 
   String _ampLabel(BuildContext context) => _tr(context, 'ampere', 'أمبير');
+
+  List<ExplanationItem> _fieldExplanations(BuildContext context) {
+    return [
+      ExplanationItem(
+        title: _tr(context, 'AC load current', 'تيار الحمل المتناوب'),
+        description: _tr(
+          context,
+          'Enter the AC current you want the solar system to support continuously. This value is used to estimate panel count and inverter size.',
+          'أدخل تيار الحمل المتناوب الذي تريد أن تدعمه المنظومة الشمسية بشكل مستمر. تستخدم هذه القيمة لتقدير عدد الألواح وحجم العاكس.',
+        ),
+      ),
+      ExplanationItem(
+        title: _tr(context, 'Battery running time', 'مدة تشغيل البطارية'),
+        description: _tr(
+          context,
+          'Enter the backup duration you want from the battery bank when there is no charging source available.',
+          'أدخل مدة التشغيل الاحتياطي المطلوبة من بنك البطاريات عند غياب مصدر الشحن.',
+        ),
+      ),
+      ExplanationItem(
+        title: _tr(context, 'Battery running current', 'تيار تشغيل البطارية'),
+        description: _tr(
+          context,
+          'Enter the current the battery bank should support during backup operation. It starts with the same value as the AC load current and can be adjusted.',
+          'أدخل التيار الذي يجب أن يدعمه بنك البطاريات أثناء التشغيل الاحتياطي. يبدأ بنفس قيمة تيار الحمل المتناوب ويمكن تعديله.',
+        ),
+      ),
+      ExplanationItem(
+        title: _tr(context, 'Solar panel wattage', 'قدرة اللوح الشمسي'),
+        description: _tr(
+          context,
+          'Enter the wattage of one solar panel module. The default value is 620 watt.',
+          'أدخل قدرة اللوح الشمسي الواحد بالواط. القيمة الافتراضية هي 620 واط.',
+        ),
+      ),
+    ];
+  }
+
+  List<ExplanationItem> _guideExplanations(BuildContext context) {
+    return [
+      ExplanationItem(
+        title: _tr(context, 'Fast calculator guide', 'دليل الحاسبة السريعة'),
+        description: _tr(
+          context,
+          'Use this calculator for a quick home estimate based on AC load current, battery backup time, battery running current, and solar panel wattage.',
+          'استخدم هذه الحاسبة للحصول على تقدير سريع منزلي اعتماداً على تيار الحمل المتناوب ومدة تشغيل البطارية وتيار تشغيل البطارية وقدرة اللوح الشمسي.',
+        ),
+      ),
+      ExplanationItem(
+        title: _tr(context, 'Battery reserve', 'احتياطي البطارية'),
+        description: _tr(
+          context,
+          'Keep about 20% battery reserve to reduce damage and extend battery life.',
+          'احتفظ بحوالي 20% احتياطي في البطارية لتقليل الضرر وإطالة عمر البطارية.',
+        ),
+      ),
+      ExplanationItem(
+        title: _tr(context, 'Calculation formulas', 'معادلات الحساب'),
+        description: _tr(
+          context,
+          'Panels = (AC load current × 230 × 1.35) ÷ solar panel wattage. Inverter = (AC load current × 230 × 1.3) ÷ 1000. Battery = (battery running time × battery running current × 230) ÷ 1000.',
+          'الألواح = (تيار الحمل المتناوب × 230 × 1.35) ÷ قدرة اللوح الشمسي. العاكس = (تيار الحمل المتناوب × 230 × 1.3) ÷ 1000. البطارية = (مدة تشغيل البطارية × تيار تشغيل البطارية × 230) ÷ 1000.',
+        ),
+      ),
+    ];
+  }
 
   double? _parsePositive(String value) {
     final parsed = double.tryParse(value.trim());
@@ -147,21 +214,19 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: PreScaffold(
         title: _tr(context, 'Fast PV Calculator', 'حاسبة سريعة للطاقة الشمسية'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ExplanationDialog.show(context, explanations: _guideExplanations(context));
+            },
+            icon: const Icon(Icons.help_outline_rounded),
+            tooltip: _tr(context, 'Guide', 'الدليل'),
+          ),
+        ],
         clickBack: () => Navigator.of(context).maybePop(),
         child: ListView(
           padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 28.h),
           children: [
-            TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0.97, end: 1),
-              duration: const Duration(milliseconds: 280),
-              curve: Curves.easeOutCubic,
-              builder: (context, value, child) => Transform.scale(
-                scale: value,
-                child: Opacity(opacity: value, child: child),
-              ),
-              child: _buildGuideCard(context),
-            ),
-            SizedBox(height: 18.h),
             _buildInputsCard(context),
             SizedBox(height: 18.h),
             AnimatedSwitcher(
@@ -183,105 +248,8 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
     );
   }
 
-  Widget _buildGuideCard(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(18.r),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [Color(0xFFFFF2CC), Color(0xFFFFFFFF)], begin: Alignment.topLeft, end: Alignment.bottomRight),
-        borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: const Color(0xFFFFDF8B)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            borderRadius: BorderRadius.circular(18.r),
-            onTap: () => setState(() => _isGuideExpanded = !_isGuideExpanded),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 2.h),
-              child: Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12.r),
-                    decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(16.r)),
-                    child: const Icon(Iconsax.info_circle_bold, color: AppTheme.primaryColor),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Text(
-                      _tr(context, 'Guide and hints', 'الدليل والتنبيهات'),
-                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900),
-                    ),
-                  ),
-                  AnimatedRotation(
-                    turns: _isGuideExpanded ? 0.5 : 0,
-                    duration: const Duration(milliseconds: 220),
-                    curve: Curves.easeOutCubic,
-                    child: IconButton(
-                      onPressed: () => setState(() => _isGuideExpanded = !_isGuideExpanded),
-                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      color: Colors.grey[800],
-                      tooltip: _tr(context, 'Toggle guide', 'إظهار أو إخفاء الدليل'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          AnimatedCrossFade(
-            duration: const Duration(milliseconds: 220),
-            sizeCurve: Curves.easeOutCubic,
-            crossFadeState: _isGuideExpanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            firstChild: Padding(
-              padding: EdgeInsets.only(top: 14.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHintLine(
-                    context,
-                    'Current I is the home AC load you want to support, for example 10 ampere.',
-                    'التيار I هو حمل المنزل المتناوب الذي تريد تشغيله، مثل 10 أمبير.',
-                  ),
-                  _buildHintLine(
-                    context,
-                    'Battery time bt is the backup duration you want from the batteries.',
-                    'زمن البطارية bt هو مدة التشغيل الاحتياطي المطلوبة من البطاريات.',
-                  ),
-                  _buildHintLine(
-                    context,
-                    'Battery ampere ba starts with the same value as current and can be adjusted if needed.',
-                    'تيار البطارية ba يبدأ بنفس قيمة التيار ويمكن تعديله عند الحاجة.',
-                  ),
-                  _buildHintLine(
-                    context,
-                    'Keep about 20% battery reserve to reduce damage and extend battery life.',
-                    'احتفظ بحوالي 20% احتياطي في البطارية لتقليل الضرر وإطالة عمر البطارية.',
-                  ),
-                  _buildHintLine(
-                    context,
-                    'Panel size pw is the power of one module, and the default value is 620 watt.',
-                    'قدرة اللوح pw هي قدرة اللوح الواحد، والقيمة الافتراضية هي 620 واط.',
-                  ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    _tr(
-                      context,
-                      'Formulas: panels = (I × 230 × 1.35) ÷ pw, inverter = (I × 230 × 1.3) ÷ 1000, battery = (bt × ba × 230) ÷ 1000.',
-                      'المعادلات: الألواح = (I × 230 × 1.35) ÷ pw، العاكس = (I × 230 × 1.3) ÷ 1000، البطارية = (bt × ba × 230) ÷ 1000.',
-                    ),
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey[800], height: 1.5),
-                  ),
-                ],
-              ),
-            ),
-            secondChild: const SizedBox.shrink(),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildInputsCard(BuildContext context) {
+    final explanations = _fieldExplanations(context);
     return _buildSurface(
       context,
       child: Column(
@@ -292,58 +260,78 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
           ),
           SizedBox(height: 14.h),
-          Row(
-            children: [
-              Expanded(
-                child: _buildNumberField(
-                  context: context,
-                  label: _tr(context, 'Current I', 'التيار I'),
-                  hint: _tr(context, 'Example: 10 ampere', 'مثال: 10 أمبير'),
-                  controller: _currentController,
-                  onChanged: (value) {
-                    _handleCurrentChanged(value);
-                    setState(() {});
-                  },
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: _buildNumberField(
-                  context: context,
-                  label: _tr(context, 'Battery time bt', 'زمن البطارية bt'),
-                  hint: _tr(context, 'Example: 4 hours', 'مثال: 4 ساعات'),
-                  controller: _batteryTimeController,
-                  onChanged: (_) => setState(() {}),
-                ),
-              ),
-            ],
+          _buildFieldSection(
+            context: context,
+            title: _tr(context, 'AC load current', 'تيار الحمل المتناوب'),
+            helper: _tr(
+              context,
+              'Enter the current you want the solar system to support, for example 10 ampere.',
+              'أدخل التيار الذي تريد أن تدعمه المنظومة الشمسية، مثل 10 أمبير.',
+            ),
+            explanation: explanations[0],
+            field: _buildNumberField(
+              context: context,
+              label: _tr(context, 'AC load current', 'تيار الحمل المتناوب'),
+              hint: _tr(context, 'Example: 10 ampere', 'مثال: 10 أمبير'),
+              controller: _currentController,
+              onChanged: (value) {
+                _handleCurrentChanged(value);
+                setState(() {});
+              },
+            ),
           ),
           SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: _buildNumberField(
-                  context: context,
-                  label: _tr(context, 'Battery current ba', 'تيار البطارية ba'),
-                  hint: _tr(context, 'Defaults to the current value', 'يأخذ قيمة التيار افتراضيًا'),
-                  controller: _batteryAmpController,
-                  onChanged: (value) {
-                    _batteryAmpEdited = value.trim().isNotEmpty && value.trim() != _currentController.text.trim();
-                    setState(() {});
-                  },
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: _buildNumberField(
-                  context: context,
-                  label: _tr(context, 'Panel size pw', 'قدرة اللوح pw'),
-                  hint: _tr(context, 'Default: 620 watt', 'الافتراضي: 620 واط'),
-                  controller: _panelWattController,
-                  onChanged: (_) => setState(() {}),
-                ),
-              ),
-            ],
+          _buildFieldSection(
+            context: context,
+            title: _tr(context, 'Battery running time', 'مدة تشغيل البطارية'),
+            helper: _tr(context, 'Enter the backup duration you want from the batteries.', 'أدخل مدة التشغيل الاحتياطي المطلوبة من البطاريات.'),
+            explanation: explanations[1],
+            field: _buildNumberField(
+              context: context,
+              label: _tr(context, 'Battery running time', 'مدة تشغيل البطارية'),
+              hint: _tr(context, 'Example: 4 hours', 'مثال: 4 ساعات'),
+              controller: _batteryTimeController,
+              onChanged: (_) => setState(() {}),
+            ),
+          ),
+          SizedBox(height: 12.h),
+          _buildFieldSection(
+            context: context,
+            title: _tr(context, 'Battery running current', 'تيار تشغيل البطارية'),
+            helper: _tr(
+              context,
+              'This starts with the same value as the AC load current and can be adjusted if needed.',
+              'يبدأ بنفس قيمة تيار الحمل المتناوب ويمكن تعديله عند الحاجة.',
+            ),
+            explanation: explanations[2],
+            field: _buildNumberField(
+              context: context,
+              label: _tr(context, 'Battery running current', 'تيار تشغيل البطارية'),
+              hint: _tr(context, 'Defaults to the AC load current', 'يأخذ قيمة تيار الحمل افتراضيًا'),
+              controller: _batteryAmpController,
+              onChanged: (value) {
+                _batteryAmpEdited = value.trim().isNotEmpty && value.trim() != _currentController.text.trim();
+                setState(() {});
+              },
+            ),
+          ),
+          SizedBox(height: 12.h),
+          _buildFieldSection(
+            context: context,
+            title: _tr(context, 'Solar panel wattage', 'قدرة اللوح الشمسي'),
+            helper: _tr(
+              context,
+              'Enter the wattage of one solar panel module. The default value is 620 watt.',
+              'أدخل قدرة اللوح الشمسي الواحد. القيمة الافتراضية هي 620 واط.',
+            ),
+            explanation: explanations[3],
+            field: _buildNumberField(
+              context: context,
+              label: _tr(context, 'Solar panel wattage', 'قدرة اللوح الشمسي'),
+              hint: _tr(context, 'Default: 620 watt', 'الافتراضي: 620 واط'),
+              controller: _panelWattController,
+              onChanged: (_) => setState(() {}),
+            ),
           ),
         ],
       ),
@@ -442,16 +430,77 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
     );
   }
 
+  Widget _buildFieldSection({
+    required BuildContext context,
+    required String title,
+    required String helper,
+    required ExplanationItem explanation,
+    required Widget field,
+  }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      padding: EdgeInsets.all(14.r),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.black.withValues(alpha: 0.02),
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.05)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w800, color: isDark ? Colors.white : Colors.black87),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      helper,
+                      style: TextStyle(fontSize: 12.sp, height: 1.45, color: isDark ? Colors.white70 : Colors.grey[700]),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 8.w),
+              IconButton(
+                onPressed: () {
+                  ExplanationDialog.show(context, explanations: [explanation]);
+                },
+                icon: const Icon(Icons.help_outline_rounded),
+                color: AppTheme.primaryColor,
+                tooltip: _tr(context, 'More info', 'معلومات أكثر'),
+              ),
+            ],
+          ),
+          SizedBox(height: 10.h),
+          field,
+        ],
+      ),
+    );
+  }
+
   Widget _buildPrimaryMetric(BuildContext context, {required String label, required String value, required String unit, required Color accent}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(color: accent.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(20.r)),
+      decoration: BoxDecoration(
+        color: isDark ? accent.withValues(alpha: 0.14) : accent.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: accent.withValues(alpha: isDark ? 0.22 : 0.1)),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700, color: Colors.grey[700]),
+            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700, color: isDark ? Colors.white70 : Colors.grey[700]),
           ),
           SizedBox(height: 10.h),
           Text(
@@ -461,7 +510,7 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
           SizedBox(height: 4.h),
           Text(
             unit,
-            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: Colors.grey[800]),
+            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: isDark ? Colors.white : Colors.grey[800]),
           ),
         ],
       ),
@@ -469,19 +518,25 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
   }
 
   Widget _buildBatteryHighlight(BuildContext context, _FastCalculation result) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(18.r),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [AppTheme.primaryColor.withValues(alpha: 0.14), AppTheme.primaryLightColor.withValues(alpha: 0.12)]),
+        gradient: LinearGradient(
+          colors: isDark
+              ? [AppTheme.primaryDarkColor.withValues(alpha: 0.35), AppTheme.primaryColor.withValues(alpha: 0.16)]
+              : [AppTheme.primaryColor.withValues(alpha: 0.14), AppTheme.primaryLightColor.withValues(alpha: 0.12)],
+        ),
         borderRadius: BorderRadius.circular(22.r),
+        border: Border.all(color: AppTheme.primaryColor.withValues(alpha: isDark ? 0.22 : 0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             _tr(context, 'Battery recommendation', 'توصية البطارية'),
-            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: Colors.grey[800]),
+            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: isDark ? Colors.white70 : Colors.grey[800]),
           ),
           SizedBox(height: 8.h),
           Text(
@@ -495,7 +550,7 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
               'For ${_formatNum(result.batteryAmp)} ${_ampLabel(context)} during about ${_formatNum(result.batteryTimeHours)} ${_hourLabel(context, result.batteryTimeHours)}',
               'لتشغيل ${_formatNum(result.batteryAmp)} ${_ampLabel(context)} لمدة تقارب ${_formatNum(result.batteryTimeHours)} ${_hourLabel(context, result.batteryTimeHours)}',
             ),
-            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: Colors.grey[800]),
+            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: isDark ? Colors.white70 : Colors.grey[800]),
           ),
         ],
       ),
@@ -503,43 +558,42 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
   }
 
   Widget _buildSupportRow(BuildContext context, {required String title, required String value}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Expanded(
           child: Text(
             title,
-            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700, color: Colors.grey[700]),
+            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700, color: isDark ? Colors.white70 : Colors.grey[700]),
           ),
         ),
         Text(
           value,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w800, color: Colors.grey[900]),
+          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w800, color: isDark ? Colors.white : Colors.grey[900]),
         ),
       ],
     );
   }
 
   Widget _buildSurface(BuildContext context, {required Widget child, Key? key}) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       key: key,
       padding: EdgeInsets.all(18.r),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.12)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 18, offset: const Offset(0, 8))],
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.grey.withValues(alpha: 0.12)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.16 : 0.03),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: child,
-    );
-  }
-
-  Widget _buildHintLine(BuildContext context, String en, String ar) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 8.h),
-      child: Text(
-        _tr(context, en, ar),
-        style: TextStyle(fontSize: 12.sp, color: Colors.grey[800], height: 1.45),
-      ),
     );
   }
 
@@ -550,16 +604,22 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
     required TextEditingController controller,
     required ValueChanged<String> onChanged,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return TextField(
       controller: controller,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
       onChanged: onChanged,
+      style: TextStyle(color: isDark ? Colors.white : Colors.black87),
       decoration: AppTheme.inputDecoration(label, hint).copyWith(
+        labelStyle: TextStyle(color: isDark ? Colors.white70 : Colors.grey, fontFamily: AppTheme.fontFamily),
+        hintStyle: TextStyle(color: isDark ? Colors.white38 : Colors.grey, fontFamily: AppTheme.fontFamily),
+        fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.white,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.r),
-          borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.18)),
+          borderSide: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.10) : Colors.grey.withValues(alpha: 0.18)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.r),

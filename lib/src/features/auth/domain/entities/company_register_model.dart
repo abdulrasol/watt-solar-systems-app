@@ -2,38 +2,49 @@ import 'package:dio/dio.dart';
 
 class CompanyRegistrationModel {
   final String name;
-  final String description;
+  final String? description;
   final String? address;
+  final String? phone;
   final int? city;
-  final String? logo;
-  final int? tire;
-  final int? type;
-  final bool b2b;
-  final bool b2c;
+  final String? image;
+  final int companyType;
+  final bool allowsB2B;
+  final bool allowsB2C;
+  final int? currency;
+  final List<int>? categories;
 
   CompanyRegistrationModel({
     required this.name,
-    required this.description,
-    required this.address,
-    required this.city,
-    required this.b2b,
-    required this.b2c,
-    this.logo,
-    this.tire,
-    this.type,
+    required this.companyType,
+    required this.allowsB2B,
+    required this.allowsB2C,
+    this.description,
+    this.address,
+    this.phone,
+    this.city,
+    this.image,
+    this.currency,
+    this.categories,
   });
 
   Future<Map<String, dynamic>> toJson() async {
-    return {
+    final data = <String, dynamic>{
       'name': name,
-      'description': description,
-      'address': address,
-      'city': city,
-      'b2b': b2b,
-      'b2c': b2c,
-      'logo': logo != null && logo!.isNotEmpty ? await MultipartFile.fromFile(logo!) : null,
-      'tire': tire,
-      'type': type,
+      'company_type': companyType,
+      'allows_b2b': allowsB2B,
+      'allows_b2c': allowsB2C,
     };
+
+    if (description != null) data['description'] = description;
+    if (address != null) data['address'] = address;
+    if (phone != null) data['phone'] = phone;
+    if (city != null) data['city'] = city;
+    if (currency != null) data['currency'] = currency;
+    if (categories != null) data['categories'] = categories;
+    if (image != null && image!.isNotEmpty) {
+      data['image'] = await MultipartFile.fromFile(image!);
+    }
+
+    return data;
   }
 }

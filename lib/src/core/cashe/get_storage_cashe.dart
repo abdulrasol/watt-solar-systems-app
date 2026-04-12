@@ -72,7 +72,7 @@ class GetStorageCashe implements CasheInterface {
   Settings settings() {
     final Map<String, dynamic>? settingsMap = box.read<Map<String, dynamic>>('settings');
     if (settingsMap == null) {
-      return Settings(isDark: false, isNotificationEnabled: false, language: 'en', saveRolePageSelection: false, saveRolePageSelectionRoute: null);
+      return Settings(isDark: false, isNotificationEnabled: false, language: 'ar', saveRolePageSelection: false, saveRolePageSelectionRoute: null);
     }
     return Settings.fromJson(settingsMap);
   }

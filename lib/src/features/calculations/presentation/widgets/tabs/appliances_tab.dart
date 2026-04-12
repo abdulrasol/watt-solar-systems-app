@@ -22,6 +22,44 @@ class SystemAppliancesTab extends StatelessWidget {
 
     return Column(
       children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: AppTheme.accentColor.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppTheme.accentColor.withValues(alpha: 0.18),
+            ),
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.info_outline_rounded,
+                color: AppTheme.accentColor,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  controller.isPracticalHybridMode
+                      ? (Localizations.localeOf(context).languageCode == 'ar'
+                            ? 'في الوضع العملي الهجين تكون قائمة الأجهزة اختيارية، والحساب الأساسي يتم من الحمل المباشر في الخطوة التالية.'
+                            : 'In Practical Hybrid mode the appliance list is optional. The main calculation uses the direct AC load in the next step.')
+                      : (Localizations.localeOf(context).languageCode == 'ar'
+                            ? 'في وضع الطاقة الكامل تعتمد النتيجة الأساسية على هذه الأجهزة مع الأخذ بعين الاعتبار دورة الشبكة.'
+                            : 'In Full Energy mode the result is primarily based on these appliances, with the grid cycle applied later.'),
+                  style: TextStyle(
+                    fontSize: 12,
+                    height: 1.35,
+                    color: isDark ? Colors.white70 : Colors.grey.shade700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
         // Summary badge — only shown when there are appliances
         AnimatedSize(
           duration: const Duration(milliseconds: 250),
@@ -117,14 +155,18 @@ class SystemAppliancesTab extends StatelessWidget {
               const SizedBox(width: 8),
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                  ),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: IconButton(
                   onPressed: () {
                     ExplanationDialog.show(
                       context,
-                      explanations: [AppExplanations(context).getExplanations()[0]],
+                      explanations: [
+                        AppExplanations(context).getExplanations()[0],
+                      ],
                     );
                   },
                   icon: const Icon(Icons.help_outline_rounded),

@@ -14,7 +14,7 @@ import '../../domain/repositories/auth_repository.dart';
 import '../widgets/forgot_password_sheet.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:solar_hub/src/utils/toast_service.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});

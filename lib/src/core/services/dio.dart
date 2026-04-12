@@ -5,7 +5,7 @@ import 'package:solar_hub/src/core/models/response.dart' as local;
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
-import 'package:solar_hub/src/utils/toast_service.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 
 abstract class ApiServicesInterface {
   Future get(String url);

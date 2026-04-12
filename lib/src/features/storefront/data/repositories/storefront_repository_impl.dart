@@ -26,6 +26,19 @@ class StorefrontRepositoryImpl implements StorefrontRepository {
   }
 
   @override
+  Future<PaginatedItemsResponse<StorefrontCompanyListItem>> getCompanies({
+    required StorefrontAudience audience,
+    required StorefrontCompanyQuery query,
+  }) {
+    return _remoteDataSource.getCompanies(audience: audience, query: query);
+  }
+
+  @override
+  Future<List<StorefrontCompanyCategory>> getCompanyCategories(int companyId) {
+    return _remoteDataSource.getCompanyCategories(companyId);
+  }
+
+  @override
   Future<PaginatedItemsResponse<StorefrontProduct>> getProducts({
     required StorefrontAudience audience,
     required StorefrontQuery query,

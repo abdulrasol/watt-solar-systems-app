@@ -102,7 +102,7 @@ class ProductCard extends StatelessWidget {
                         Icon(Icons.inventory_2, size: 14.r, color: Colors.grey),
                         SizedBox(width: 4.w),
                         Text(
-                          '${l10n.stock_count(product.stockQuantity)}',
+                          l10n.stock_count(product.stockQuantity),
                           style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontWeight: FontWeight.w600),
                         ),
                         const Spacer(),

@@ -4,15 +4,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
+import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/offers/domain/entities/solar_offer.dart';
 import 'package:solar_hub/src/features/offers/presentation/providers/offers_provider.dart';
+import 'package:solar_hub/src/features/offers/presentation/screens/form/offer_reply_form.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OfferDetailsScreen extends ConsumerWidget {
   final SolarOffer offer;
+  final bool isCompanyView;
 
-  const OfferDetailsScreen({super.key, required this.offer});
+  const OfferDetailsScreen({
+    super.key,
+    required this.offer,
+    this.isCompanyView = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,15 +86,21 @@ class OfferDetailsScreen extends ConsumerWidget {
             Container(
               padding: EdgeInsets.all(16.r),
               decoration: BoxDecoration(
-                color: Colors.grey.withValues(alpha: 0.05),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.08),
+                ),
               ),
               child: Text(
                 offer.note!,
                 style: TextStyle(
                   fontSize: 13.sp,
-                  color: Colors.grey[700],
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.78),
                   height: 1.5,
                 ),
               ),
@@ -94,7 +109,7 @@ class OfferDetailsScreen extends ConsumerWidget {
           SizedBox(height: 32.h),
           const Divider(),
           SizedBox(height: 16.h),
-          _buildActualActionArea(context, ref),
+          _buildActionArea(context, ref),
           SizedBox(height: 40.h),
         ],
       ),
@@ -194,6 +209,7 @@ class OfferDetailsScreen extends ConsumerWidget {
     return Column(
       children: [
         _buildSpecRow(
+          context,
           l10n.panels,
           '${offer.panelCount} x ${offer.panelPower}W',
           note: offer.panelNote,
@@ -201,6 +217,7 @@ class OfferDetailsScreen extends ConsumerWidget {
         ),
         SizedBox(height: 12.h),
         _buildSpecRow(
+          context,
           l10n.battery_storage,
           '${offer.batteryCount} x ${_formatNumber(offer.batterySize)}Wh (${offer.batteryType.localizedLabel(l10n)})',
           note: offer.batteryNote,
@@ -208,6 +225,7 @@ class OfferDetailsScreen extends ConsumerWidget {
         ),
         SizedBox(height: 12.h),
         _buildSpecRow(
+          context,
           l10n.inverter_calc,
           '${_formatNumber(offer.inverterSize)}W (${offer.inverterType.localizedLabel(l10n)})',
           note: offer.inverterNote,
@@ -218,17 +236,21 @@ class OfferDetailsScreen extends ConsumerWidget {
   }
 
   Widget _buildSpecRow(
+    BuildContext context,
     String label,
     String value, {
     String? note,
     required IconData icon,
   }) {
+    final theme = Theme.of(context);
+    final onSurface = theme.colorScheme.onSurface;
+
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+        border: Border.all(color: onSurface.withValues(alpha: 0.08)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.02),
@@ -249,7 +271,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                   label,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: Colors.grey[600],
+                    color: onSurface.withValues(alpha: 0.64),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -268,7 +290,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                     note,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: Colors.blueGrey[600],
+                      color: onSurface.withValues(alpha: 0.72),
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -315,53 +337,72 @@ class OfferDetailsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildActualActionArea(BuildContext context, WidgetRef ref) {
-    final totalInvolvesPrice =
-        offer.involves?.fold(
-          0.0,
-          (sum, item) =>
-              sum + (item.totalCost ?? (item.cost * (item.quantity ?? 1))),
-        ) ??
-        0.0;
-    final grandTotal = offer.price + totalInvolvesPrice;
+  Widget _buildActionArea(BuildContext context, WidgetRef ref) {
+    return isCompanyView
+        ? _buildCompanyActionArea(context, ref)
+        : _buildUserActionArea(context, ref);
+  }
+
+  Widget _buildUserActionArea(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    final l10n = AppLocalizations.of(context)!;
+    final contactNumber = authState.company?.phone?.trim();
+    final hasContact = contactNumber != null && contactNumber.isNotEmpty;
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.total_project_quote,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
-            Text(
-              '\$${grandTotal.toStringAsFixed(1)}',
-              style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w900,
-                color: AppTheme.primaryColor,
-              ),
-            ),
-          ],
-        ),
+        _buildGrandTotalRow(context),
         SizedBox(height: 24.h),
         Row(
           children: [
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: () {}, // TODO: Chat
+                onPressed: hasContact
+                    ? () => _openWhatsApp(context, contactNumber)
+                    : () => _showMissingContact(context),
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
-                icon: const Icon(Iconsax.message_2_bold),
-                label: Text(AppLocalizations.of(context)!.chat),
+                icon: const Icon(Iconsax.whatsapp_bold),
+                label: Text(l10n.whatsapp),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: hasContact
+                    ? () => _openCall(context, contactNumber)
+                    : () => _showMissingContact(context),
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+                icon: const Icon(Iconsax.call_bold),
+                label: Text(l10n.call),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () async {
+                  await ref
+                      .read(offersProvider.notifier)
+                      .respondToOffer(offer.id!, 'rejected');
+                  if (context.mounted) Navigator.pop(context);
+                },
+                child: Text(
+                  l10n.reject_offer,
+                  style: const TextStyle(color: Colors.red),
+                ),
               ),
             ),
             SizedBox(width: 12.w),
@@ -381,29 +422,189 @@ class OfferDetailsScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
-                child: Text(AppLocalizations.of(context)!.accept_offer),
+                child: Text(l10n.accept_offer),
               ),
             ),
           ],
         ),
-        SizedBox(height: 12.h),
-        SizedBox(
-          width: double.infinity,
-          child: TextButton(
-            onPressed: () async {
-              await ref
-                  .read(offersProvider.notifier)
-                  .respondToOffer(offer.id!, 'rejected');
-              if (context.mounted) Navigator.pop(context);
-            },
-            child: Text(
-              AppLocalizations.of(context)!.reject_offer,
-              style: const TextStyle(color: Colors.red),
+      ],
+    );
+  }
+
+  Widget _buildCompanyActionArea(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final isPending = offer.status == OfferStatus.pending;
+    final isRejected = offer.status == OfferStatus.rejected;
+    final isAccepted = offer.status == OfferStatus.accepted;
+
+    return Column(
+      children: [
+        _buildGrandTotalRow(context),
+        SizedBox(height: 24.h),
+        if (isPending || isRejected) ...[
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () => _openEditForm(context),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                  ),
+                  icon: const Icon(Iconsax.edit_bold),
+                  label: Text(_tr(context, 'Edit', 'تعديل')),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: () => _confirmDelete(context, ref),
+                  icon: const Icon(Iconsax.trash_bold, color: Colors.red),
+                  label: Text(
+                    l10n.remove,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+        if (isAccepted)
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () async {
+                final success = await ref
+                    .read(offersProvider.notifier)
+                    .finishOffer(offer.id!);
+                if (success && context.mounted) {
+                  Navigator.pop(context);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+              ),
+              icon: const Icon(Iconsax.tick_circle_bold),
+              label: Text(_tr(context, 'Finish offer', 'إنهاء العرض')),
             ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildGrandTotalRow(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          l10n.total_project_quote,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey[700],
+          ),
+        ),
+        Text(
+          '\$${offer.price.toStringAsFixed(1)}',
+          style: TextStyle(
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w900,
+            color: AppTheme.primaryColor,
           ),
         ),
       ],
     );
+  }
+
+  Future<void> _openEditForm(BuildContext context) async {
+    final updated = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(builder: (_) => OfferReplyForm(offer: offer)),
+    );
+    if (updated == true && context.mounted) {
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(_tr(context, 'Delete offer', 'حذف العرض')),
+          content: Text(
+            _tr(
+              context,
+              'This will remove the offer permanently.',
+              'سيؤدي هذا إلى حذف العرض نهائيًا.',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(_tr(context, 'Cancel', 'إلغاء')),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(
+                _tr(context, 'Delete', 'حذف'),
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldDelete != true) return;
+    final success = await ref
+        .read(offersProvider.notifier)
+        .deleteOffer(offer.id!);
+    if (success && context.mounted) {
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> _openWhatsApp(BuildContext context, String rawNumber) async {
+    final sanitized = rawNumber
+        .replaceAll(RegExp(r'[^0-9+]'), '')
+        .replaceAll('+', '');
+    final uri = Uri.parse('https://wa.me/$sanitized');
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (context.mounted) _showMissingContact(context);
+    }
+  }
+
+  Future<void> _openCall(BuildContext context, String rawNumber) async {
+    final uri = Uri.parse('tel:${rawNumber.replaceAll(' ', '')}');
+    if (!await launchUrl(uri)) {
+      if (context.mounted) _showMissingContact(context);
+    }
+  }
+
+  void _showMissingContact(BuildContext context) {
+    ToastService.error(
+      context,
+      _tr(context, 'Contact unavailable', 'جهة الاتصال غير متاحة'),
+      _tr(
+        context,
+        'No phone number is available for this action.',
+        'لا يوجد رقم هاتف متاح لهذا الإجراء.',
+      ),
+    );
+  }
+
+  String _tr(BuildContext context, String en, String ar) {
+    return Localizations.localeOf(context).languageCode.toLowerCase() == 'ar'
+        ? ar
+        : en;
   }
 
   String _formatNumber(num value) {

@@ -28,6 +28,19 @@ class InvolveItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final onSurface = colorScheme.onSurface;
+    final fieldFillColor = onSurface.withValues(alpha: 0.06);
+    final uniqueOptions = <int, Involve>{};
+    for (final item in options) {
+      uniqueOptions[item.id] = item;
+    }
+    final dropdownOptions = uniqueOptions.values.toList();
+    final hasSelectedOption = dropdownOptions.any(
+      (item) => item.id == selected.templateId,
+    );
+
     Involve? selectedTemplate;
     for (final item in catalogItems) {
       if (item.id == selected.templateId) {
@@ -35,13 +48,15 @@ class InvolveItemCard extends StatelessWidget {
         break;
       }
     }
-    final rowCost = selectedTemplate == null ? 0.0 : selectedTemplate.cost.toDouble() * selected.quantity;
+    final rowCost = selectedTemplate == null
+        ? 0.0
+        : selectedTemplate.cost.toDouble() * selected.quantity;
 
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
@@ -50,7 +65,7 @@ class InvolveItemCard extends StatelessWidget {
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+        border: Border.all(color: onSurface.withValues(alpha: 0.08)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +90,11 @@ class InvolveItemCard extends StatelessWidget {
               SizedBox(width: 8.w),
               Text(
                 tr('Service details', 'تفاصيل الخدمة'),
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: onSurface,
+                ),
               ),
             ],
           ),
@@ -83,25 +102,29 @@ class InvolveItemCard extends StatelessWidget {
           // Item Selection (Full Row)
           DropdownButtonFormField<int>(
             isExpanded: true,
-            initialValue: selected.templateId,
+            initialValue: hasSelectedOption ? selected.templateId : null,
             onChanged: (value) {
               selected.templateId = value;
               onChanged();
             },
             decoration: InputDecoration(
               labelText: tr('Item', 'العنصر'),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16.r),
+              ),
               filled: true,
-              fillColor: Colors.grey.withValues(alpha: 0.02),
+              fillColor: fieldFillColor,
             ),
-            items: options
-                .map((item) => DropdownMenuItem<int>(
-                      value: item.id,
-                      child: Text(
-                        '${item.name} (\$${item.cost})',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ))
+            items: dropdownOptions
+                .map(
+                  (item) => DropdownMenuItem<int>(
+                    value: item.id,
+                    child: Text(
+                      '${item.name} (\$${item.cost})',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                )
                 .toList(),
           ),
           SizedBox(height: 12.h),
@@ -117,10 +140,12 @@ class InvolveItemCard extends StatelessWidget {
                   onChanged: (_) => onChanged(),
                   decoration: InputDecoration(
                     labelText: tr('Quantity', 'الكمية'),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
                     prefixIcon: const Icon(Iconsax.box_bold, size: 20),
                     filled: true,
-                    fillColor: Colors.grey.withValues(alpha: 0.02),
+                    fillColor: fieldFillColor,
                   ),
                 ),
               ),
@@ -133,7 +158,10 @@ class InvolveItemCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16.r),
                   child: Container(
                     padding: EdgeInsets.all(12.r),
-                    child: const Icon(Iconsax.trash_bold, color: Colors.redAccent),
+                    child: const Icon(
+                      Iconsax.trash_bold,
+                      color: Colors.redAccent,
+                    ),
                   ),
                 ),
               ),
@@ -148,7 +176,10 @@ class InvolveItemCard extends StatelessWidget {
               children: [
                 Text(
                   tr('Line total', 'إجمالي البند'),
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: onSurface.withValues(alpha: 0.7),
+                  ),
                 ),
                 Text(
                   '\$${rowCost.toStringAsFixed(2)}',

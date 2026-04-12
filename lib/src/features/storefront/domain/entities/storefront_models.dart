@@ -1,38 +1,6 @@
 enum StorefrontAudience { b2b, b2c }
 
-enum StorefrontCategoryType { global, internal, company }
-
-class StorefrontCompany {
-  final int id;
-  final String name;
-  final bool allowsB2b;
-  final bool allowsB2c;
-  final List<StorefrontCategory> companyCategories;
-
-  const StorefrontCompany({
-    required this.id,
-    required this.name,
-    required this.allowsB2b,
-    required this.allowsB2c,
-    this.companyCategories = const [],
-  });
-
-  factory StorefrontCompany.fromJson(Map<String, dynamic> json) {
-    return StorefrontCompany(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      allowsB2b: json['allows_b2b'] ?? false,
-      allowsB2c: json['allows_b2c'] ?? false,
-      companyCategories: (json['company_categories'] as List? ?? const [])
-          .whereType<Map>()
-          .map(
-            (item) =>
-                StorefrontCategory.fromJson(Map<String, dynamic>.from(item)),
-          )
-          .toList(),
-    );
-  }
-}
+enum StorefrontCategoryType { global, company }
 
 class StorefrontCategory {
   final int id;
@@ -50,6 +18,101 @@ class StorefrontCategory {
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
       companyId: json['company_id'],
+    );
+  }
+}
+
+class StorefrontCompanyCategory {
+  final int id;
+  final String name;
+  final int? companyId;
+  final String? companyName;
+  final DateTime? createdAt;
+
+  const StorefrontCompanyCategory({
+    required this.id,
+    required this.name,
+    this.companyId,
+    this.companyName,
+    this.createdAt,
+  });
+
+  factory StorefrontCompanyCategory.fromJson(Map<String, dynamic> json) {
+    final company = json['company'] as Map<String, dynamic>?;
+    return StorefrontCompanyCategory(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      companyId: company?['id'] ?? json['company_id'],
+      companyName: company?['name'],
+      createdAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'])
+          : null,
+    );
+  }
+}
+
+class StorefrontCompany {
+  final int id;
+  final String name;
+  final String? phone;
+  final bool allowsB2b;
+  final bool allowsB2c;
+  final bool subscriptionIsValid;
+  final List<StorefrontCompanyCategory> companyCategories;
+
+  const StorefrontCompany({
+    required this.id,
+    required this.name,
+    this.phone,
+    this.allowsB2b = false,
+    this.allowsB2c = false,
+    this.subscriptionIsValid = false,
+    this.companyCategories = const [],
+  });
+
+  factory StorefrontCompany.fromJson(Map<String, dynamic> json) {
+    return StorefrontCompany(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      phone: json['phone'],
+      allowsB2b: json['allows_b2b'] ?? false,
+      allowsB2c: json['allows_b2c'] ?? false,
+      subscriptionIsValid: json['subscription_is_valid'] ?? false,
+      companyCategories: (json['company_categories'] as List? ?? const [])
+          .whereType<Map>()
+          .map(
+            (item) => StorefrontCompanyCategory.fromJson(
+              Map<String, dynamic>.from(item),
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class StorefrontCompanyListItem {
+  final int id;
+  final String name;
+  final String? logo;
+  final String? cityName;
+  final String? cityCode;
+
+  const StorefrontCompanyListItem({
+    required this.id,
+    required this.name,
+    this.logo,
+    this.cityName,
+    this.cityCode,
+  });
+
+  factory StorefrontCompanyListItem.fromJson(Map<String, dynamic> json) {
+    final city = json['city'] as Map<String, dynamic>?;
+    return StorefrontCompanyListItem(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      logo: json['logo'],
+      cityName: city?['name'],
+      cityCode: city?['code'],
     );
   }
 }
@@ -220,42 +283,13 @@ class StorefrontProduct {
 }
 
 class StorefrontMeta {
-  final List<StorefrontCompany> companies;
   final List<StorefrontCategory> globalCategories;
-  final List<StorefrontCategory> internalCategories;
-  final List<StorefrontCategory> companyCategories;
 
-  const StorefrontMeta({
-    this.companies = const [],
-    this.globalCategories = const [],
-    this.internalCategories = const [],
-    this.companyCategories = const [],
-  });
+  const StorefrontMeta({this.globalCategories = const []});
 
   factory StorefrontMeta.fromJson(Map<String, dynamic> json) {
     return StorefrontMeta(
-      companies: (json['companies'] as List? ?? const [])
-          .whereType<Map>()
-          .map(
-            (item) =>
-                StorefrontCompany.fromJson(Map<String, dynamic>.from(item)),
-          )
-          .toList(),
       globalCategories: (json['global_categories'] as List? ?? const [])
-          .whereType<Map>()
-          .map(
-            (item) =>
-                StorefrontCategory.fromJson(Map<String, dynamic>.from(item)),
-          )
-          .toList(),
-      internalCategories: (json['internal_categories'] as List? ?? const [])
-          .whereType<Map>()
-          .map(
-            (item) =>
-                StorefrontCategory.fromJson(Map<String, dynamic>.from(item)),
-          )
-          .toList(),
-      companyCategories: (json['company_categories'] as List? ?? const [])
           .whereType<Map>()
           .map(
             (item) =>
@@ -266,19 +300,6 @@ class StorefrontMeta {
   }
 
   static const empty = StorefrontMeta();
-
-  List<StorefrontCategory> categoriesForType(StorefrontCategoryType? type) {
-    switch (type) {
-      case StorefrontCategoryType.global:
-        return globalCategories;
-      case StorefrontCategoryType.internal:
-        return internalCategories;
-      case StorefrontCategoryType.company:
-        return companyCategories;
-      case null:
-        return const [];
-    }
-  }
 }
 
 class StorefrontQuery {
@@ -288,7 +309,6 @@ class StorefrontQuery {
   final int? companyId;
   final int? categoryId;
   final int? globalCategoryId;
-  final int? internalCategoryId;
   final int? companyCategoryId;
   final double? minPrice;
   final double? maxPrice;
@@ -303,7 +323,6 @@ class StorefrontQuery {
     this.companyId,
     this.categoryId,
     this.globalCategoryId,
-    this.internalCategoryId,
     this.companyCategoryId,
     this.minPrice,
     this.maxPrice,
@@ -322,8 +341,6 @@ class StorefrontQuery {
     bool clearCategoryId = false,
     int? globalCategoryId,
     bool clearGlobalCategoryId = false,
-    int? internalCategoryId,
-    bool clearInternalCategoryId = false,
     int? companyCategoryId,
     bool clearCompanyCategoryId = false,
     double? minPrice,
@@ -345,9 +362,6 @@ class StorefrontQuery {
       globalCategoryId: clearGlobalCategoryId
           ? null
           : (globalCategoryId ?? this.globalCategoryId),
-      internalCategoryId: clearInternalCategoryId
-          ? null
-          : (internalCategoryId ?? this.internalCategoryId),
       companyCategoryId: clearCompanyCategoryId
           ? null
           : (companyCategoryId ?? this.companyCategoryId),
@@ -367,8 +381,6 @@ class StorefrontQuery {
       if (companyId != null) 'company_id': companyId,
       if (categoryId != null) 'category_id': categoryId,
       if (globalCategoryId != null) 'global_category_id': globalCategoryId,
-      if (internalCategoryId != null)
-        'internal_category_id': internalCategoryId,
       if (companyCategoryId != null) 'company_category_id': companyCategoryId,
       if (minPrice != null) 'min_price': minPrice,
       if (maxPrice != null) 'max_price': maxPrice,
@@ -379,4 +391,46 @@ class StorefrontQuery {
   }
 
   StorefrontQuery resetPage() => copyWith(page: 1);
+}
+
+class StorefrontCompanyQuery {
+  final int page;
+  final int pageSize;
+  final String search;
+  final String salesChannel;
+  final String ordering;
+
+  const StorefrontCompanyQuery({
+    this.page = 1,
+    this.pageSize = 12,
+    this.search = '',
+    required this.salesChannel,
+    this.ordering = 'name',
+  });
+
+  StorefrontCompanyQuery copyWith({
+    int? page,
+    int? pageSize,
+    String? search,
+    String? salesChannel,
+    String? ordering,
+  }) {
+    return StorefrontCompanyQuery(
+      page: page ?? this.page,
+      pageSize: pageSize ?? this.pageSize,
+      search: search ?? this.search,
+      salesChannel: salesChannel ?? this.salesChannel,
+      ordering: ordering ?? this.ordering,
+    );
+  }
+
+  Map<String, dynamic> toQueryParameters() {
+    return {
+      'page': page,
+      'page_size': pageSize,
+      if (search.trim().isNotEmpty) 'search': search.trim(),
+      'sales_channel': salesChannel,
+      'ordering': ordering,
+    };
+  }
 }

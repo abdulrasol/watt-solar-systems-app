@@ -20,7 +20,7 @@ class FormSurface extends StatelessWidget {
             color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 18,
             offset: const Offset(0, 8),
-          )
+          ),
         ],
       ),
       child: child,
@@ -136,16 +136,26 @@ class HeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final onSurface = theme.colorScheme.onSurface;
+
     return Container(
       padding: EdgeInsets.all(18.r),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFEFF5FF), Color(0xFFFFFFFF)],
+        gradient: LinearGradient(
+          colors: isDark
+              ? [const Color(0xFF1B2230), const Color(0xFF131A24)]
+              : [const Color(0xFFEFF5FF), const Color(0xFFFFFFFF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: const Color(0xFFD6E4FF)),
+        border: Border.all(
+          color: isDark
+              ? onSurface.withValues(alpha: 0.08)
+              : const Color(0xFFD6E4FF),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +168,10 @@ class HeroCard extends StatelessWidget {
                   color: AppTheme.primaryColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(14.r),
                 ),
-                child: const Icon(Iconsax.briefcase_bold, color: AppTheme.primaryColor),
+                child: const Icon(
+                  Iconsax.briefcase_bold,
+                  color: AppTheme.primaryColor,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -167,12 +180,19 @@ class HeroCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900),
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w900,
+                        color: onSurface,
+                      ),
                     ),
                     SizedBox(height: 4.h),
                     Text(
                       subtitle,
-                      style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: onSurface.withValues(alpha: 0.72),
+                      ),
                     ),
                   ],
                 ),
@@ -180,11 +200,7 @@ class HeroCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 14.h),
-          Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
-            children: chips,
-          ),
+          Wrap(spacing: 8.w, runSpacing: 8.h, children: chips),
         ],
       ),
     );
@@ -218,13 +234,15 @@ class FormDropdown<T extends Object> extends StatelessWidget {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
       ),
       items: items
-          .map((item) => DropdownMenuItem<T>(
-                value: item,
-                child: Text(
-                  itemLabelBuilder(item),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ))
+          .map(
+            (item) => DropdownMenuItem<T>(
+              value: item,
+              child: Text(
+                itemLabelBuilder(item),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          )
           .toList(),
     );
   }

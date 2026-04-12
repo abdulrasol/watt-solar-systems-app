@@ -4,7 +4,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
+import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyHeaderCard extends StatelessWidget {

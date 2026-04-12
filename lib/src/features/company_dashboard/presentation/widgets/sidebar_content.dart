@@ -22,7 +22,7 @@ class SidebarContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       children: [
         SizedBox(height: 50.h),
@@ -37,7 +37,11 @@ class SidebarContent extends StatelessWidget {
                   color: AppTheme.primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(Iconsax.sun_1_bold, color: AppTheme.primaryColor, size: 28.sp),
+                child: Icon(
+                  Iconsax.sun_1_bold,
+                  color: AppTheme.primaryColor,
+                  size: 28.sp,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -87,8 +91,14 @@ class SidebarContent extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 18.r,
-                    backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.2),
-                    child: Icon(Iconsax.user_bold, size: 18.sp, color: AppTheme.primaryColor),
+                    backgroundColor: AppTheme.primaryColor.withValues(
+                      alpha: 0.2,
+                    ),
+                    child: Icon(
+                      Iconsax.user_bold,
+                      size: 18.sp,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                   SizedBox(width: 10.w),
                   Expanded(
@@ -97,7 +107,10 @@ class SidebarContent extends StatelessWidget {
                       children: [
                         Text(
                           l10n.admin_user,
-                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13.sp),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13.sp,
+                          ),
                         ),
                         Text(
                           l10n.super_admin,
@@ -106,7 +119,11 @@ class SidebarContent extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(Iconsax.logout_1_bold, size: 18.sp, color: Colors.redAccent),
+                  Icon(
+                    Iconsax.logout_1_bold,
+                    size: 18.sp,
+                    color: Colors.redAccent,
+                  ),
                 ],
               ),
             ),

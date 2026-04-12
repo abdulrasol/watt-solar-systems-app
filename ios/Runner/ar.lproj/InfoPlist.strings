@@ -1,2 +1,7 @@
-"CFBundleDisplayName" = "Watt, Calculate Your Solar System";
-"CFBundleName" = "Watt, Calculate Your Solar System";
+"CFBundleDisplayName" = "واط، احسب منظومتك الشمسية";
+"CFBundleName" = "واط، احسب منظومتك الشمسية";
+"NSCameraUsageDescription" = "هذا التطبيق يحتاج إلى الوصول للكاميرا لمسح باركود المنتجات والتقاط الصور.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "هذا التطبيق يحتاج إلى الوصول للموقع لتوفير حسابات طاقة شمسية دقيقة وخدمات قريبة.";
+"NSLocationWhenInUseUsageDescription" = "هذا التطبيق يحتاج إلى الوصول للموقع عند الاستخدام لحساب كفاءة الطاقة الشمسية بناءً على إحداثياتك.";
+"NSPhotoLibraryUsageDescription" = "هذا التطبيق يحتاج للوصول إلى معرض الصور للسماح لك برفع صور للمنتجات والخدمات والملف الشخصي.";
+"NSMicrophoneUsageDescription" = "هذا التطبيق يحتاج للوصول للميكروفون لتسجيل الصوت في حال التقاط فيديو عبر الكاميرا.";

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_controller.dart';
 import 'package:solar_hub/src/features/feedback/domain/entities/feedback_entity.dart';
@@ -16,17 +18,22 @@ class AdminFeedbacksScreen extends ConsumerStatefulWidget {
   const AdminFeedbacksScreen({super.key});
 
   @override
-  ConsumerState<AdminFeedbacksScreen> createState() => _AdminFeedbacksScreenState();
+  ConsumerState<AdminFeedbacksScreen> createState() =>
+      _AdminFeedbacksScreenState();
 }
 
-class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> with SingleTickerProviderStateMixin {
+class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   String _filterMode = 'all'; // all, unread, read
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     Future.microtask(() => ref.read(adminProvider.notifier).fetchFeedbacks());
   }
 
@@ -53,11 +60,19 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context, AdminState state, AppLocalizations l10n) {
+  PreferredSizeWidget _buildAppBar(
+    BuildContext context,
+    AdminState state,
+    AppLocalizations l10n,
+  ) {
     return AppBar(
       title: Text(
         l10n.user_feedbacks,
-        style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.bold, fontSize: 20.sp),
+        style: TextStyle(
+          fontFamily: AppTheme.fontFamily,
+          fontWeight: FontWeight.bold,
+          fontSize: 20.sp,
+        ),
       ),
       centerTitle: true,
       actions: [
@@ -79,28 +94,48 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
           SizedBox(height: 24.h),
           Text(
             'Loading Feedbacks...',
-            style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: Colors.grey,
+              fontFamily: AppTheme.fontFamily,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildErrorState(BuildContext context, String error, AppLocalizations l10n) {
+  Widget _buildErrorState(
+    BuildContext context,
+    String error,
+    AppLocalizations l10n,
+  ) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Iconsax.warning_2_bold, size: 80.sp, color: AppTheme.errorColor.withValues(alpha: 0.5)),
+          Icon(
+            Iconsax.warning_2_bold,
+            size: 80.sp,
+            color: AppTheme.errorColor.withValues(alpha: 0.5),
+          ),
           SizedBox(height: 24.h),
           Text(
             'Failed to load feedbacks',
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: AppTheme.fontFamily,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
             error,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.grey,
+              fontFamily: AppTheme.fontFamily,
+            ),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 24.h),
@@ -112,7 +147,9 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
             ),
           ),
         ],
@@ -120,7 +157,12 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
     );
   }
 
-  Widget _buildContent(BuildContext context, AdminState state, AppLocalizations l10n, bool isDark) {
+  Widget _buildContent(
+    BuildContext context,
+    AdminState state,
+    AppLocalizations l10n,
+    bool isDark,
+  ) {
     final filteredFeedbacks = _getFilteredFeedbacks(state.feedbacks);
 
     return Column(
@@ -132,11 +174,13 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               : RefreshIndicator(
                   color: AppTheme.primaryColor,
                   backgroundColor: Theme.of(context).cardColor,
-                  onRefresh: () => ref.read(adminProvider.notifier).fetchFeedbacks(),
+                  onRefresh: () =>
+                      ref.read(adminProvider.notifier).fetchFeedbacks(),
                   child: ListView.separated(
                     padding: EdgeInsets.all(20.w),
                     itemCount: filteredFeedbacks.length,
-                    separatorBuilder: (context, index) => SizedBox(height: 12.h),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 12.h),
                     itemBuilder: (context, index) {
                       final feedback = filteredFeedbacks[index];
                       return _buildFeedbackCard(context, feedback, isDark, l10n)
@@ -213,7 +257,11 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
-        side: BorderSide(color: isSelected ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.3)),
+        side: BorderSide(
+          color: isSelected
+              ? AppTheme.primaryColor
+              : Colors.grey.withValues(alpha: 0.3),
+        ),
       ),
     );
   }
@@ -223,7 +271,11 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Iconsax.message_circle_bold, size: 80.sp, color: Colors.grey.withValues(alpha: 0.5)),
+          Icon(
+            Iconsax.message_circle_bold,
+            size: 80.sp,
+            color: Colors.grey.withValues(alpha: 0.5),
+          ),
           SizedBox(height: 24.h),
           Text(
             _filterMode == 'all'
@@ -231,19 +283,33 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                 : _filterMode == 'unread'
                 ? 'No unread feedbacks'
                 : 'No read feedbacks',
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: AppTheme.fontFamily,
+              color: Colors.grey,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
             'Feedbacks will appear here',
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey.withValues(alpha: 0.7), fontFamily: AppTheme.fontFamily),
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.grey.withValues(alpha: 0.7),
+              fontFamily: AppTheme.fontFamily,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFeedbackCard(BuildContext context, FeedbackEntity feedback, bool isDark, AppLocalizations l10n) {
+  Widget _buildFeedbackCard(
+    BuildContext context,
+    FeedbackEntity feedback,
+    bool isDark,
+    AppLocalizations l10n,
+  ) {
     return InkWell(
       onTap: () => _showFeedbackDetails(context, feedback, l10n),
       onLongPress: () => _showActionsBottomSheet(context, feedback, l10n),
@@ -263,7 +329,9 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
           ),
           boxShadow: [
             BoxShadow(
-              color: feedback.isRead ? Colors.black.withValues(alpha: 0.03) : AppTheme.primaryColor.withValues(alpha: 0.1),
+              color: feedback.isRead
+                  ? Colors.black.withValues(alpha: 0.03)
+                  : AppTheme.primaryColor.withValues(alpha: 0.1),
               blurRadius: feedback.isRead ? 10 : 15,
               offset: Offset(0, feedback.isRead ? 4 : 8.h),
             ),
@@ -275,11 +343,15 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               children: [
                 CircleAvatar(
                   radius: 24.r,
-                  backgroundColor: feedback.isRead ? Colors.grey.withValues(alpha: 0.2) : AppTheme.primaryColor.withValues(alpha: 0.2),
+                  backgroundColor: feedback.isRead
+                      ? Colors.grey.withValues(alpha: 0.2)
+                      : AppTheme.primaryColor.withValues(alpha: 0.2),
                   child: Text(
                     feedback.name[0].toUpperCase(),
                     style: TextStyle(
-                      color: feedback.isRead ? Colors.grey : AppTheme.primaryColor,
+                      color: feedback.isRead
+                          ? Colors.grey
+                          : AppTheme.primaryColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
                       fontFamily: AppTheme.fontFamily,
@@ -296,7 +368,10 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                       decoration: BoxDecoration(
                         color: AppTheme.successColor,
                         shape: BoxShape.circle,
-                        border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 2.w),
+                        border: Border.all(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          width: 2.w,
+                        ),
                       ),
                     ),
                   ),
@@ -313,13 +388,23 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                       Expanded(
                         child: Text(
                           feedback.name,
-                          style: TextStyle(fontWeight: feedback.isRead ? FontWeight.normal : FontWeight.bold, fontSize: 15.sp, fontFamily: AppTheme.fontFamily),
+                          style: TextStyle(
+                            fontWeight: feedback.isRead
+                                ? FontWeight.normal
+                                : FontWeight.bold,
+                            fontSize: 15.sp,
+                            fontFamily: AppTheme.fontFamily,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Text(
                         _formatTime(feedback.createdAt),
-                        style: TextStyle(fontSize: 11.sp, color: isDark ? Colors.grey[400] : Colors.grey[600], fontFamily: AppTheme.fontFamily),
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: isDark ? Colors.grey[400] : Colors.grey[600],
+                          fontFamily: AppTheme.fontFamily,
+                        ),
                       ),
                     ],
                   ),
@@ -328,17 +413,33 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                     feedback.message,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 13.sp, color: isDark ? Colors.grey[400] : Colors.grey[600], fontFamily: AppTheme.fontFamily, height: 1.4),
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      fontFamily: AppTheme.fontFamily,
+                      height: 1.4,
+                    ),
                   ),
                   if (feedback.imageData != null) ...[
                     SizedBox(height: 8.h),
                     Row(
                       children: [
-                        Icon(Iconsax.image_bold, size: 14.sp, color: AppTheme.primaryColor),
+                        _buildAttachmentThumbnail(feedback.imageData!),
+                        SizedBox(width: 8.w),
+                        Icon(
+                          Iconsax.image_bold,
+                          size: 14.sp,
+                          color: AppTheme.primaryColor,
+                        ),
                         SizedBox(width: 4.w),
                         Text(
                           'Has attachment',
-                          style: TextStyle(fontSize: 11.sp, color: AppTheme.primaryColor, fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                            fontSize: 11.sp,
+                            color: AppTheme.primaryColor,
+                            fontFamily: AppTheme.fontFamily,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -369,14 +470,20 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
     }
   }
 
-  Widget _buildMoreButton(BuildContext context, FeedbackEntity feedback, AppLocalizations l10n) {
+  Widget _buildMoreButton(
+    BuildContext context,
+    FeedbackEntity feedback,
+    AppLocalizations l10n,
+  ) {
     return PopupMenuButton<String>(
       icon: Icon(Iconsax.more_bold, size: 22.sp, color: Colors.grey),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       elevation: 8,
       onSelected: (value) {
         if (value == 'toggle') {
-          ref.read(adminProvider.notifier).toggleFeedbackReadStatus(feedback.id!, !feedback.isRead);
+          ref
+              .read(adminProvider.notifier)
+              .toggleFeedbackReadStatus(feedback.id!, !feedback.isRead);
         } else if (value == 'delete') {
           _confirmDelete(context, feedback.id!, l10n);
         }
@@ -387,14 +494,19 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
           child: Row(
             children: [
               Icon(
-                feedback.isRead ? Iconsax.message_circle_bold : Iconsax.check_bold,
+                feedback.isRead
+                    ? Iconsax.message_circle_bold
+                    : Iconsax.check_bold,
                 size: 20.sp,
                 color: feedback.isRead ? Colors.grey : AppTheme.successColor,
               ),
               SizedBox(width: 12.w),
               Text(
                 feedback.isRead ? l10n.mark_as_unread : l10n.mark_as_read,
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14.sp,
+                ),
               ),
             ],
           ),
@@ -407,7 +519,11 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               SizedBox(width: 12.w),
               Text(
                 l10n.delete_feedback,
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, color: AppTheme.errorColor),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14.sp,
+                  color: AppTheme.errorColor,
+                ),
               ),
             ],
           ),
@@ -416,9 +532,15 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
     );
   }
 
-  void _showFeedbackDetails(BuildContext context, FeedbackEntity feedback, AppLocalizations l10n) {
+  void _showFeedbackDetails(
+    BuildContext context,
+    FeedbackEntity feedback,
+    AppLocalizations l10n,
+  ) {
     if (!feedback.isRead) {
-      ref.read(adminProvider.notifier).toggleFeedbackReadStatus(feedback.id!, true);
+      ref
+          .read(adminProvider.notifier)
+          .toggleFeedbackReadStatus(feedback.id!, true);
     }
 
     showModalBottomSheet(
@@ -429,7 +551,11 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
     );
   }
 
-  Widget _buildDetailsSheet(BuildContext context, FeedbackEntity feedback, AppLocalizations l10n) {
+  Widget _buildDetailsSheet(
+    BuildContext context,
+    FeedbackEntity feedback,
+    AppLocalizations l10n,
+  ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return DraggableScrollableSheet(
@@ -449,7 +575,10 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               child: Container(
                 width: 48.w,
                 height: 5.h,
-                decoration: BoxDecoration(color: isDark ? Colors.grey[700] : Colors.grey[300], borderRadius: BorderRadius.circular(3.r)),
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey[700] : Colors.grey[300],
+                  borderRadius: BorderRadius.circular(3.r),
+                ),
               ),
             ),
             SizedBox(height: 24.h),
@@ -457,10 +586,17 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               children: [
                 CircleAvatar(
                   radius: 28.r,
-                  backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.15),
+                  backgroundColor: AppTheme.primaryColor.withValues(
+                    alpha: 0.15,
+                  ),
                   child: Text(
                     feedback.name[0].toUpperCase(),
-                    style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.bold, fontSize: 22.sp, fontFamily: AppTheme.fontFamily),
+                    style: TextStyle(
+                      color: AppTheme.primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22.sp,
+                      fontFamily: AppTheme.fontFamily,
+                    ),
                   ),
                 ),
                 SizedBox(width: 16.w),
@@ -470,27 +606,44 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                     children: [
                       Text(
                         feedback.name,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp, fontFamily: AppTheme.fontFamily),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.sp,
+                          fontFamily: AppTheme.fontFamily,
+                        ),
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        DateFormat('MMM d, yyyy - HH:mm').format(feedback.createdAt),
-                        style: TextStyle(fontSize: 13.sp, color: isDark ? Colors.grey[400] : Colors.grey[600], fontFamily: AppTheme.fontFamily),
+                        DateFormat(
+                          'MMM d, yyyy - HH:mm',
+                        ).format(feedback.createdAt),
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.grey[400] : Colors.grey[600],
+                          fontFamily: AppTheme.fontFamily,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
+                  ),
                   decoration: BoxDecoration(
-                    color: feedback.isRead ? AppTheme.successColor.withValues(alpha: 0.1) : AppTheme.warningColor.withValues(alpha: 0.1),
+                    color: feedback.isRead
+                        ? AppTheme.successColor.withValues(alpha: 0.1)
+                        : AppTheme.warningColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Text(
                     feedback.isRead ? 'Read' : 'Unread',
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: feedback.isRead ? AppTheme.successColor : AppTheme.warningColor,
+                      color: feedback.isRead
+                          ? AppTheme.successColor
+                          : AppTheme.warningColor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppTheme.fontFamily,
                     ),
@@ -499,7 +652,12 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               ],
             ),
             SizedBox(height: 24.h),
-            Divider(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2), height: 1.h),
+            Divider(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.1)
+                  : Colors.grey.withValues(alpha: 0.2),
+              height: 1.h,
+            ),
             SizedBox(height: 20.h),
             Expanded(
               child: ListView(
@@ -507,13 +665,22 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                 children: [
                   Text(
                     feedback.message,
-                    style: TextStyle(fontSize: 15.sp, height: 1.6, fontFamily: AppTheme.fontFamily, color: isDark ? Colors.white : Colors.black87),
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      height: 1.6,
+                      fontFamily: AppTheme.fontFamily,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
                   ),
                   if (feedback.imageData != null) ...[
                     SizedBox(height: 20.h),
                     Text(
                       'Attachment',
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: AppTheme.fontFamily,
+                      ),
                     ),
                     SizedBox(height: 12.h),
                     ClipRRect(
@@ -521,26 +688,16 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                       child: Container(
                         width: double.infinity,
                         constraints: BoxConstraints(maxHeight: 300.h),
-                        decoration: BoxDecoration(border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2))),
-                        child: Image.memory(
-                          base64Decode(feedback.imageData!.split(',').last),
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              padding: EdgeInsets.all(40.w),
-                              color: isDark ? Colors.grey[800] : Colors.grey[100],
-                              child: Column(
-                                children: [
-                                  Icon(Iconsax.image_bold, size: 50.sp, color: Colors.grey),
-                                  SizedBox(height: 12.h),
-                                  Text(
-                                    'Image unavailable',
-                                    style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: isDark
+                                ? Colors.white.withValues(alpha: 0.1)
+                                : Colors.grey.withValues(alpha: 0.2),
+                          ),
+                        ),
+                        child: _buildAttachmentPreview(
+                          feedback.imageData!,
+                          isDark,
                         ),
                       ),
                     ),
@@ -549,27 +706,43 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               ),
             ),
             SizedBox(height: 20.h),
-            if (feedback.phoneNumber != null && feedback.phoneNumber!.isNotEmpty) ...[
-              Divider(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2), height: 1.h),
+            if (feedback.phoneNumber != null &&
+                feedback.phoneNumber!.isNotEmpty) ...[
+              Divider(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.grey.withValues(alpha: 0.2),
+                height: 1.h,
+              ),
               SizedBox(height: 20.h),
               Text(
                 'Contact',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: AppTheme.fontFamily,
+                ),
               ),
               SizedBox(height: 12.h),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () => launchUrl(Uri.parse('tel:${feedback.phoneNumber}')),
+                      onPressed: () =>
+                          launchUrl(Uri.parse('tel:${feedback.phoneNumber}')),
                       icon: Icon(Iconsax.call_bold, size: 20.sp),
                       label: Text(l10n.call, style: TextStyle(fontSize: 14.sp)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
                         elevation: 0,
-                        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 24.w,
+                          vertical: 16.h,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14.r),
+                        ),
                       ),
                     ),
                   ),
@@ -577,17 +750,29 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        final whatsappUrl = "https://wa.me/${feedback.phoneNumber.toString().replaceAll(' ', '').replaceAll('+', '')}";
-                        launchUrl(Uri.parse(whatsappUrl), mode: LaunchMode.externalApplication);
+                        final whatsappUrl =
+                            "https://wa.me/${feedback.phoneNumber.toString().replaceAll(' ', '').replaceAll('+', '')}";
+                        launchUrl(
+                          Uri.parse(whatsappUrl),
+                          mode: LaunchMode.externalApplication,
+                        );
                       },
                       icon: Icon(Iconsax.whatsapp_bold, size: 20.sp),
-                      label: Text(l10n.whatsapp, style: TextStyle(fontSize: 14.sp)),
+                      label: Text(
+                        l10n.whatsapp,
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
                         elevation: 0,
-                        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 24.w,
+                          vertical: 16.h,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14.r),
+                        ),
                       ),
                     ),
                   ),
@@ -601,7 +786,66 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
     );
   }
 
-  void _showActionsBottomSheet(BuildContext context, FeedbackEntity feedback, AppLocalizations l10n) {
+  Widget _buildAttachmentPreview(String imageValue, bool isDark) {
+    if (imageValue.startsWith('http://') || imageValue.startsWith('https://')) {
+      return Center(
+        child: WdImagePreview(
+          imageUrl: imageValue,
+          size: 260,
+          shape: BoxShape.rectangle,
+        ),
+      );
+    }
+
+    try {
+      return Image.memory(
+        base64Decode(imageValue.split(',').last),
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) =>
+            _buildUnavailableImage(isDark),
+      );
+    } catch (_) {
+      return _buildUnavailableImage(isDark);
+    }
+  }
+
+  Widget _buildAttachmentThumbnail(String imageValue) {
+    if (imageValue.startsWith('http://') || imageValue.startsWith('https://')) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8.r),
+        child: WdImagePreview(
+          imageUrl: imageValue,
+          size: 28,
+          shape: BoxShape.rectangle,
+        ),
+      );
+    }
+
+    return Icon(Iconsax.image_bold, size: 14.sp, color: AppTheme.primaryColor);
+  }
+
+  Widget _buildUnavailableImage(bool isDark) {
+    return Container(
+      padding: EdgeInsets.all(40.w),
+      color: isDark ? Colors.grey[800] : Colors.grey[100],
+      child: Column(
+        children: [
+          Icon(Iconsax.image_bold, size: 50.sp, color: Colors.grey),
+          SizedBox(height: 12.h),
+          Text(
+            'Image unavailable',
+            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showActionsBottomSheet(
+    BuildContext context,
+    FeedbackEntity feedback,
+    AppLocalizations l10n,
+  ) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -617,40 +861,63 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
             Container(
               width: 48.w,
               height: 5.h,
-              decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(3.r)),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(3.r),
+              ),
             ),
             SizedBox(height: 20.h),
             ListTile(
               leading: Container(
                 padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
-                  color: feedback.isRead ? Colors.grey.withValues(alpha: 0.2) : AppTheme.primaryColor.withValues(alpha: 0.1),
+                  color: feedback.isRead
+                      ? Colors.grey.withValues(alpha: 0.2)
+                      : AppTheme.primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Icon(
-                  feedback.isRead ? Iconsax.message_circle_bold : Iconsax.check_bold,
+                  feedback.isRead
+                      ? Iconsax.message_circle_bold
+                      : Iconsax.check_bold,
                   color: feedback.isRead ? Colors.grey : AppTheme.primaryColor,
                   size: 24.sp,
                 ),
               ),
               title: Text(
                 feedback.isRead ? l10n.mark_as_unread : l10n.mark_as_read,
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 15.sp),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 15.sp,
+                ),
               ),
               onTap: () {
                 Navigator.pop(context);
-                ref.read(adminProvider.notifier).toggleFeedbackReadStatus(feedback.id!, !feedback.isRead);
+                ref
+                    .read(adminProvider.notifier)
+                    .toggleFeedbackReadStatus(feedback.id!, !feedback.isRead);
               },
             ),
             ListTile(
               leading: Container(
                 padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(color: AppTheme.errorColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10.r)),
-                child: Icon(Iconsax.trash_bold, color: AppTheme.errorColor, size: 24.sp),
+                decoration: BoxDecoration(
+                  color: AppTheme.errorColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Icon(
+                  Iconsax.trash_bold,
+                  color: AppTheme.errorColor,
+                  size: 24.sp,
+                ),
               ),
               title: Text(
                 l10n.delete_feedback,
-                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 15.sp, color: AppTheme.errorColor),
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 15.sp,
+                  color: AppTheme.errorColor,
+                ),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -668,13 +935,22 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
         title: Row(
           children: [
             Container(
               padding: EdgeInsets.all(8.w),
-              decoration: BoxDecoration(color: AppTheme.errorColor.withValues(alpha: 0.1), shape: BoxShape.circle),
-              child: Icon(Iconsax.warning_2_bold, color: AppTheme.errorColor, size: 24.sp),
+              decoration: BoxDecoration(
+                color: AppTheme.errorColor.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Iconsax.warning_2_bold,
+                color: AppTheme.errorColor,
+                size: 24.sp,
+              ),
             ),
             SizedBox(width: 12.w),
             Text(l10n.delete_feedback),
@@ -689,7 +965,10 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
             onPressed: () => Navigator.pop(context),
             child: Text(
               l10n.cancel,
-              style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp),
+              style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                fontSize: 14.sp,
+              ),
             ),
           ),
           ElevatedButton(
@@ -701,11 +980,17 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> wit
               backgroundColor: AppTheme.errorColor,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
             ),
             child: Text(
               l10n.delete_feedback,
-              style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

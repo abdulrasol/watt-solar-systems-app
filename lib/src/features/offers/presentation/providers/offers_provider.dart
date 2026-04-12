@@ -109,27 +109,35 @@ class OffersState {
       isLoading: isLoading ?? this.isLoading,
       userRequests: userRequests ?? this.userRequests,
       userRequestsHasMore: userRequestsHasMore ?? this.userRequestsHasMore,
-      userRequestsIsMoreLoading: userRequestsIsMoreLoading ?? this.userRequestsIsMoreLoading,
+      userRequestsIsMoreLoading:
+          userRequestsIsMoreLoading ?? this.userRequestsIsMoreLoading,
       userRequestsFilter: userRequestsFilter ?? this.userRequestsFilter,
       availableRequests: availableRequests ?? this.availableRequests,
-      availableRequestsHasMore: availableRequestsHasMore ?? this.availableRequestsHasMore,
-      availableRequestsIsMoreLoading: availableRequestsIsMoreLoading ?? this.availableRequestsIsMoreLoading,
-      availableRequestsFilter: availableRequestsFilter ?? this.availableRequestsFilter,
+      availableRequestsHasMore:
+          availableRequestsHasMore ?? this.availableRequestsHasMore,
+      availableRequestsIsMoreLoading:
+          availableRequestsIsMoreLoading ?? this.availableRequestsIsMoreLoading,
+      availableRequestsFilter:
+          availableRequestsFilter ?? this.availableRequestsFilter,
       adminRequests: adminRequests ?? this.adminRequests,
       adminRequestsHasMore: adminRequestsHasMore ?? this.adminRequestsHasMore,
-      adminRequestsIsMoreLoading: adminRequestsIsMoreLoading ?? this.adminRequestsIsMoreLoading,
+      adminRequestsIsMoreLoading:
+          adminRequestsIsMoreLoading ?? this.adminRequestsIsMoreLoading,
       adminRequestsFilter: adminRequestsFilter ?? this.adminRequestsFilter,
       myOffers: myOffers ?? this.myOffers,
       myOffersHasMore: myOffersHasMore ?? this.myOffersHasMore,
-      myOffersIsMoreLoading: myOffersIsMoreLoading ?? this.myOffersIsMoreLoading,
+      myOffersIsMoreLoading:
+          myOffersIsMoreLoading ?? this.myOffersIsMoreLoading,
       myOffersFilter: myOffersFilter ?? this.myOffersFilter,
       adminOffers: adminOffers ?? this.adminOffers,
       adminOffersHasMore: adminOffersHasMore ?? this.adminOffersHasMore,
-      adminOffersIsMoreLoading: adminOffersIsMoreLoading ?? this.adminOffersIsMoreLoading,
+      adminOffersIsMoreLoading:
+          adminOffersIsMoreLoading ?? this.adminOffersIsMoreLoading,
       adminOffersFilter: adminOffersFilter ?? this.adminOffersFilter,
       requestOffers: requestOffers ?? this.requestOffers,
       requestOffersHasMore: requestOffersHasMore ?? this.requestOffersHasMore,
-      requestOffersIsMoreLoading: requestOffersIsMoreLoading ?? this.requestOffersIsMoreLoading,
+      requestOffersIsMoreLoading:
+          requestOffersIsMoreLoading ?? this.requestOffersIsMoreLoading,
       requestOffersFilter: requestOffersFilter ?? this.requestOffersFilter,
       offersByRequest: offersByRequest ?? this.offersByRequest,
       selectedOffer: selectedOffer ?? this.selectedOffer,
@@ -182,9 +190,11 @@ class OffersNotifier extends StateNotifier<OffersState> {
       (requests) => state = state.copyWith(
         isLoading: false,
         userRequestsIsMoreLoading: false,
-        userRequests:
-            isRefresh ? requests : [...state.userRequests, ...requests],
-        userRequestsHasMore: requests.length == state.userRequestsFilter.pageSize,
+        userRequests: isRefresh
+            ? requests
+            : [...state.userRequests, ...requests],
+        userRequestsHasMore:
+            requests.length == state.userRequestsFilter.pageSize,
       ),
     );
   }
@@ -214,7 +224,10 @@ class OffersNotifier extends StateNotifier<OffersState> {
     );
   }
 
-  Future<void> getOffersForRequest(int requestId, {bool isRefresh = false}) async {
+  Future<void> getOffersForRequest(
+    int requestId, {
+    bool isRefresh = false,
+  }) async {
     if (isRefresh) {
       state = state.copyWith(
         isLoading: true,
@@ -223,7 +236,9 @@ class OffersNotifier extends StateNotifier<OffersState> {
         requestOffersHasMore: true,
       );
     } else {
-      if (!state.requestOffersHasMore || state.requestOffersIsMoreLoading) return;
+      if (!state.requestOffersHasMore || state.requestOffersIsMoreLoading) {
+        return;
+      }
       state = state.copyWith(requestOffersIsMoreLoading: true, error: null);
     }
 
@@ -239,7 +254,9 @@ class OffersNotifier extends StateNotifier<OffersState> {
       ),
       (offers) {
         final newMap = Map<int, List<SolarOffer>>.from(state.offersByRequest);
-        final currentOffers = isRefresh ? <SolarOffer>[] : (newMap[requestId] ?? []);
+        final currentOffers = isRefresh
+            ? <SolarOffer>[]
+            : (newMap[requestId] ?? []);
         final updatedOffers = [...currentOffers, ...offers];
         newMap[requestId] = updatedOffers;
 
@@ -248,7 +265,8 @@ class OffersNotifier extends StateNotifier<OffersState> {
           requestOffersIsMoreLoading: false,
           requestOffers: updatedOffers,
           offersByRequest: newMap,
-          requestOffersHasMore: offers.length == state.requestOffersFilter.pageSize,
+          requestOffersHasMore:
+              offers.length == state.requestOffersFilter.pageSize,
         );
       },
     );
@@ -280,11 +298,14 @@ class OffersNotifier extends StateNotifier<OffersState> {
       state = state.copyWith(
         isLoading: true,
         error: null,
-        availableRequestsFilter: state.availableRequestsFilter.copyWith(page: 1),
+        availableRequestsFilter: state.availableRequestsFilter.copyWith(
+          page: 1,
+        ),
         availableRequestsHasMore: true,
       );
     } else {
-      if (!state.availableRequestsHasMore || state.availableRequestsIsMoreLoading) {
+      if (!state.availableRequestsHasMore ||
+          state.availableRequestsIsMoreLoading) {
         return;
       }
       state = state.copyWith(availableRequestsIsMoreLoading: true, error: null);
@@ -302,8 +323,9 @@ class OffersNotifier extends StateNotifier<OffersState> {
       (requests) => state = state.copyWith(
         isLoading: false,
         availableRequestsIsMoreLoading: false,
-        availableRequests:
-            isRefresh ? requests : [...state.availableRequests, ...requests],
+        availableRequests: isRefresh
+            ? requests
+            : [...state.availableRequests, ...requests],
         availableRequestsHasMore:
             requests.length == state.availableRequestsFilter.pageSize,
       ),
@@ -311,7 +333,8 @@ class OffersNotifier extends StateNotifier<OffersState> {
   }
 
   Future<void> availableRequestsNextPage() async {
-    if (!state.availableRequestsHasMore || state.availableRequestsIsMoreLoading) {
+    if (!state.availableRequestsHasMore ||
+        state.availableRequestsIsMoreLoading) {
       return;
     }
     state = state.copyWith(
@@ -361,34 +384,79 @@ class OffersNotifier extends StateNotifier<OffersState> {
     await getMyOffers();
   }
 
-  Future<void> replyToRequest(int requestId, Map<String, dynamic> data) async {
+  Future<bool> replyToRequest(int requestId, Map<String, dynamic> data) async {
     state = state.copyWith(isLoading: true, error: null);
     final result = await _repository.replyToRequest(requestId, data);
-    result.fold(
-      (failure) =>
-          state = state.copyWith(isLoading: false, error: failure.toString()),
+    return result.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, error: failure.toString());
+        return false;
+      },
       (offer) {
         state = state.copyWith(
           isLoading: false,
           myOffers: [offer, ...state.myOffers],
         );
+        return true;
       },
     );
   }
 
-  Future<void> updateOffer(int offerId, Map<String, dynamic> data) async {
+  Future<bool> updateOffer(int offerId, Map<String, dynamic> data) async {
     state = state.copyWith(isLoading: true, error: null);
     final result = await _repository.updateOffer(offerId, data);
-    result.fold(
-      (failure) =>
-          state = state.copyWith(isLoading: false, error: failure.toString()),
+    return result.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, error: failure.toString());
+        return false;
+      },
       (offer) {
         final updatedList = state.myOffers
             .map((o) => o.id == offerId ? offer : o)
             .toList();
         state = state.copyWith(isLoading: false, myOffers: updatedList);
+        return true;
       },
     );
+  }
+
+  Future<bool> deleteOffer(int offerId) async {
+    state = state.copyWith(isLoading: true, error: null);
+    final result = await _repository.deleteOffer(offerId);
+    return result.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, error: failure.toString());
+        return false;
+      },
+      (_) {
+        state = state.copyWith(
+          isLoading: false,
+          myOffers: state.myOffers
+              .where((offer) => offer.id != offerId)
+              .toList(),
+        );
+        return true;
+      },
+    );
+  }
+
+  Future<bool> finishOffer(int offerId) async {
+    state = state.copyWith(isLoading: true, error: null);
+    final result = await _repository.finishOffer(offerId);
+    final success = result.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, error: failure.toString());
+        return false;
+      },
+      (_) {
+        state = state.copyWith(isLoading: false);
+        return true;
+      },
+    );
+    if (success) {
+      await getMyOffers(isRefresh: true);
+    }
+    return success;
   }
 
   // Admin Actions
@@ -417,8 +485,9 @@ class OffersNotifier extends StateNotifier<OffersState> {
       (requests) => state = state.copyWith(
         isLoading: false,
         adminRequestsIsMoreLoading: false,
-        adminRequests:
-            isRefresh ? requests : [...state.adminRequests, ...requests],
+        adminRequests: isRefresh
+            ? requests
+            : [...state.adminRequests, ...requests],
         adminRequestsHasMore:
             requests.length == state.adminRequestsFilter.pageSize,
       ),
@@ -477,7 +546,10 @@ class OffersNotifier extends StateNotifier<OffersState> {
   // Filter Updates
   void updateRequestsStatus(String? status) {
     state = state.copyWith(
-      userRequestsFilter: state.userRequestsFilter.copyWith(status: status, page: 1),
+      userRequestsFilter: state.userRequestsFilter.copyWith(
+        status: status,
+        page: 1,
+      ),
       userRequestsHasMore: true,
     );
     getUserRequests(isRefresh: true);
@@ -485,7 +557,10 @@ class OffersNotifier extends StateNotifier<OffersState> {
 
   void updateAvailableRequestsStatus(String? status) {
     state = state.copyWith(
-      availableRequestsFilter: state.availableRequestsFilter.copyWith(status: status, page: 1),
+      availableRequestsFilter: state.availableRequestsFilter.copyWith(
+        status: status,
+        page: 1,
+      ),
       availableRequestsHasMore: true,
     );
     getAvailableRequests(isRefresh: true);
@@ -501,7 +576,10 @@ class OffersNotifier extends StateNotifier<OffersState> {
 
   void updateAdminRequestsStatus(String? status) {
     state = state.copyWith(
-      adminRequestsFilter: state.adminRequestsFilter.copyWith(status: status, page: 1),
+      adminRequestsFilter: state.adminRequestsFilter.copyWith(
+        status: status,
+        page: 1,
+      ),
       adminRequestsHasMore: true,
     );
     getAllRequests(isRefresh: true);
@@ -509,7 +587,10 @@ class OffersNotifier extends StateNotifier<OffersState> {
 
   void updateAdminOffersStatus(String? status) {
     state = state.copyWith(
-      adminOffersFilter: state.adminOffersFilter.copyWith(status: status, page: 1),
+      adminOffersFilter: state.adminOffersFilter.copyWith(
+        status: status,
+        page: 1,
+      ),
       adminOffersHasMore: true,
     );
     getAllOffers(isRefresh: true);

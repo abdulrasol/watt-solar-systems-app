@@ -32,7 +32,7 @@ class CompanySummeryState {
   }
 
   bool isPermisseon(String permission) {
-    return summery?.permissions?[permission] == 'write';
+    return summery?.permissionValue(permission) == 'write';
   }
 }
 
@@ -74,6 +74,7 @@ class CompanySummeryNotifier extends Notifier<CompanySummeryState> {
         state = state.copyWith(isLoading: false, isError: true);
       },
       (summery) {
+        ref.read(authProvider.notifier).updateCompany(summery);
         state = state.copyWith(
           isLoading: false,
           summery: summery,

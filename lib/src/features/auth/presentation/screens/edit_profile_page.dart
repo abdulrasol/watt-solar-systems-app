@@ -9,7 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
-import 'package:solar_hub/src/utils/toast_service.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:validatorless/validatorless.dart';
 
 import 'package:solar_hub/src/core/di/get_it.dart';
@@ -47,6 +47,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   String? _uploadedAvatarUrl;
   bool _isLoading = false;
   late AuthState authController;
+  bool _didLoadInitialData = false;
 
   @override
   void initState() {
@@ -57,7 +58,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     _firstNameController = TextEditingController(text: user?.firstName ?? '');
     _lastNameController = TextEditingController(text: user?.lastName ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
-    _phoneController = TextEditingController(text: user?.phone ?? '');
+    _phoneController = TextEditingController(
+      text: user?.phone.toString() ?? '',
+    );
     _securityQuestionController = TextEditingController(
       text: user?.securityQuestion ?? '',
     );
@@ -66,13 +69,18 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     );
     _selectedCity = user?.city;
     _uploadedAvatarUrl = user?.image;
-    if (user?.city != null) {
-      _cities = [user!.city!];
-      //  _selectedCountry = user.city!.country;
-      // _countries = [user.city!.country];
-      _fetchCities(countryId: user.city!.country.id);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didLoadInitialData) return;
+    _didLoadInitialData = true;
+    if (_selectedCity != null) {
+      _cities = [_selectedCity!];
+      _selectedCountry = _selectedCity!.country;
     }
-    _fetchCountries();
+    Future.microtask(_fetchCountries);
   }
 
   @override
@@ -511,6 +519,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   Future<void> _fetchCountries() async {
+    if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoadingCountries = true;
@@ -523,17 +532,23 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     } catch (e) {
       if (mounted) ToastService.error(context, l10n.error, e.toString());
     }
-    if (_selectedCity != null) {
-      _selectedCountry = _countries.firstWhere(
+    if (_selectedCity != null && _countries.isNotEmpty) {
+      final match = _countries.where(
         (element) => element.id == _selectedCity!.country.id,
       );
+      if (match.isNotEmpty) {
+        _selectedCountry = match.first;
+        await _fetchCities(countryId: _selectedCountry!.id);
+      }
     }
+    if (!mounted) return;
     setState(() {
       _isLoadingCountries = false;
     });
   }
 
   Future<void> _fetchCities({int? countryId}) async {
+    if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
     if (_selectedCountry == null && countryId == null) return;
     setState(() {
@@ -543,12 +558,18 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       final response = await getIt.get<AuthRepository>().getCities(
         countryId: countryId ?? _selectedCountry!.id,
       );
+      if (!mounted) return;
       setState(() {
         _cities = response;
+        if (_selectedCity != null &&
+            !_cities.any((city) => city.id == _selectedCity!.id)) {
+          _selectedCity = null;
+        }
       });
     } catch (e) {
       if (mounted) ToastService.error(context, l10n.error, e.toString());
     }
+    if (!mounted) return;
     setState(() {
       _isLoadingCities = false;
     });

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/models/response.dart';
@@ -22,6 +23,50 @@ class StorefrontScope {
   int get hashCode => Object.hash(audience, companyId);
 }
 
+class StorefrontFilterSheetState {
+  final bool isLoadingCompanies;
+  final bool isLoadingMoreCompanies;
+  final bool hasLoadedCompanies;
+  final String? companiesError;
+  final List<StorefrontCompanyListItem> companies;
+  final PaginationMeta companiesPagination;
+  final String companySearch;
+
+  const StorefrontFilterSheetState({
+    this.isLoadingCompanies = false,
+    this.isLoadingMoreCompanies = false,
+    this.hasLoadedCompanies = false,
+    this.companiesError,
+    this.companies = const [],
+    this.companiesPagination = PaginationMeta.empty,
+    this.companySearch = '',
+  });
+
+  StorefrontFilterSheetState copyWith({
+    bool? isLoadingCompanies,
+    bool? isLoadingMoreCompanies,
+    bool? hasLoadedCompanies,
+    String? companiesError,
+    bool clearCompaniesError = false,
+    List<StorefrontCompanyListItem>? companies,
+    PaginationMeta? companiesPagination,
+    String? companySearch,
+  }) {
+    return StorefrontFilterSheetState(
+      isLoadingCompanies: isLoadingCompanies ?? this.isLoadingCompanies,
+      isLoadingMoreCompanies:
+          isLoadingMoreCompanies ?? this.isLoadingMoreCompanies,
+      hasLoadedCompanies: hasLoadedCompanies ?? this.hasLoadedCompanies,
+      companiesError: clearCompaniesError
+          ? null
+          : (companiesError ?? this.companiesError),
+      companies: companies ?? this.companies,
+      companiesPagination: companiesPagination ?? this.companiesPagination,
+      companySearch: companySearch ?? this.companySearch,
+    );
+  }
+}
+
 class StorefrontState {
   final bool isLoading;
   final bool isLoadingMore;
@@ -30,8 +75,11 @@ class StorefrontState {
   final List<StorefrontProduct> products;
   final PaginationMeta pagination;
   final StorefrontQuery query;
-  final StorefrontCategoryType? activeCategoryType;
-  final int? selectedCategoryId;
+  final StorefrontFilterSheetState filterSheet;
+  final List<StorefrontCompanyCategory> companyCategories;
+  final bool isLoadingCompanyCategories;
+  final String? companyCategoriesError;
+  final int? loadedCompanyCategoriesForCompanyId;
 
   const StorefrontState({
     this.isLoading = false,
@@ -41,8 +89,11 @@ class StorefrontState {
     this.products = const [],
     this.pagination = PaginationMeta.empty,
     this.query = const StorefrontQuery(),
-    this.activeCategoryType,
-    this.selectedCategoryId,
+    this.filterSheet = const StorefrontFilterSheetState(),
+    this.companyCategories = const [],
+    this.isLoadingCompanyCategories = false,
+    this.companyCategoriesError,
+    this.loadedCompanyCategoriesForCompanyId,
   });
 
   StorefrontState copyWith({
@@ -54,10 +105,13 @@ class StorefrontState {
     List<StorefrontProduct>? products,
     PaginationMeta? pagination,
     StorefrontQuery? query,
-    StorefrontCategoryType? activeCategoryType,
-    bool clearCategoryType = false,
-    int? selectedCategoryId,
-    bool clearSelectedCategoryId = false,
+    StorefrontFilterSheetState? filterSheet,
+    List<StorefrontCompanyCategory>? companyCategories,
+    bool? isLoadingCompanyCategories,
+    String? companyCategoriesError,
+    bool clearCompanyCategoriesError = false,
+    int? loadedCompanyCategoriesForCompanyId,
+    bool clearLoadedCompanyCategoriesForCompanyId = false,
   }) {
     return StorefrontState(
       isLoading: isLoading ?? this.isLoading,
@@ -67,44 +121,58 @@ class StorefrontState {
       products: products ?? this.products,
       pagination: pagination ?? this.pagination,
       query: query ?? this.query,
-      activeCategoryType: clearCategoryType
+      filterSheet: filterSheet ?? this.filterSheet,
+      companyCategories: companyCategories ?? this.companyCategories,
+      isLoadingCompanyCategories:
+          isLoadingCompanyCategories ?? this.isLoadingCompanyCategories,
+      companyCategoriesError: clearCompanyCategoriesError
           ? null
-          : (activeCategoryType ?? this.activeCategoryType),
-      selectedCategoryId: clearSelectedCategoryId
+          : (companyCategoriesError ?? this.companyCategoriesError),
+      loadedCompanyCategoriesForCompanyId:
+          clearLoadedCompanyCategoriesForCompanyId
           ? null
-          : (selectedCategoryId ?? this.selectedCategoryId),
+          : (loadedCompanyCategoriesForCompanyId ??
+                this.loadedCompanyCategoriesForCompanyId),
     );
   }
 }
 
 class StorefrontNotifier extends Notifier<StorefrontState> {
   final StorefrontScope arg;
+
   StorefrontNotifier(this.arg);
 
-  late StorefrontRepository _repository;
-  Timer? _debounce;
+  late final StorefrontRepository _repository;
+  Timer? _productSearchDebounce;
+  Timer? _companySearchDebounce;
+
+  String get _salesChannel =>
+      arg.audience == StorefrontAudience.b2b ? 'b2b' : 'b2c';
+
+  int? get effectiveCompanyId => arg.companyId ?? state.query.companyId;
 
   @override
   StorefrontState build() {
     _repository = getIt<StorefrontRepository>();
-    
-    ref.onDispose(() => _debounce?.cancel());
-    
-    // Initialize after build to avoid state modification error
-    Future.microtask(() => initialize());
-    
-    return StorefrontState(
-      query: StorefrontQuery(companyId: arg.companyId),
-    );
+    ref.onDispose(() {
+      _productSearchDebounce?.cancel();
+      _companySearchDebounce?.cancel();
+    });
+    Future.microtask(initialize);
+    return const StorefrontState();
   }
 
   Future<void> initialize() async {
     if (state.isLoading) return;
+
     state = state.copyWith(isLoading: true, clearError: true);
 
     try {
       final meta = await _repository.getMeta();
       state = state.copyWith(meta: meta);
+      if (arg.companyId != null) {
+        unawaited(ensureCompanyCategoriesLoaded(arg.companyId!));
+      }
       await _fetchProducts();
     } catch (e) {
       state = state.copyWith(
@@ -116,12 +184,13 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(query: state.query.resetPage(), products: const []);
+    state = state.copyWith(query: state.query.resetPage());
     await _fetchProducts();
   }
 
   Future<void> loadMore() async {
     if (state.isLoadingMore || !state.pagination.hasNext) return;
+
     state = state.copyWith(isLoadingMore: true, clearError: true);
 
     try {
@@ -133,8 +202,8 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
 
       state = state.copyWith(
         isLoadingMore: false,
-        query: state.query.copyWith(page: response.pagination.page),
         pagination: response.pagination,
+        query: state.query.copyWith(page: response.pagination.page),
         products: [...state.products, ...response.items],
       );
     } catch (e) {
@@ -143,8 +212,8 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
   }
 
   void updateSearch(String value) {
-    _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 350), () {
+    _productSearchDebounce?.cancel();
+    _productSearchDebounce = Timer(const Duration(milliseconds: 350), () {
       state = state.copyWith(
         query: state.query.copyWith(search: value, page: 1),
       );
@@ -159,92 +228,246 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
     await _fetchProducts();
   }
 
-  Future<void> applyFilters({
-    int? companyId,
-    bool clearCompanyId = false,
-    bool? isAvailable,
-    bool clearAvailability = false,
-    double? minPrice,
-    bool clearMinPrice = false,
-    double? maxPrice,
-    bool clearMaxPrice = false,
-    String? ordering,
-  }) async {
+  Future<void> updateGlobalCategory(int? categoryId) async {
     state = state.copyWith(
       query: state.query.copyWith(
-        companyId: companyId,
-        clearCompanyId: clearCompanyId,
-        isAvailable: isAvailable,
-        clearAvailability: clearAvailability,
-        minPrice: minPrice,
-        clearMinPrice: clearMinPrice,
-        maxPrice: maxPrice,
-        clearMaxPrice: clearMaxPrice,
-        ordering: ordering,
+        globalCategoryId: categoryId,
+        clearGlobalCategoryId: categoryId == null,
         page: 1,
       ),
     );
     await _fetchProducts();
   }
 
-  Future<void> updateCategoryType(StorefrontCategoryType? type) async {
-    if (type == state.activeCategoryType) {
-      state = state.copyWith(
-        clearCategoryType: true,
-        clearSelectedCategoryId: true,
-        query: _clearCategoryFilters(state.query).copyWith(page: 1),
-      );
-    } else {
-      state = state.copyWith(
-        activeCategoryType: type,
-        clearSelectedCategoryId: true,
-        query: _clearCategoryFilters(state.query).copyWith(page: 1),
-      );
-    }
-    await _fetchProducts();
-  }
-
-  Future<void> updateCategory(int? categoryId) async {
-    final currentType = state.activeCategoryType;
-    var nextQuery = _clearCategoryFilters(state.query).copyWith(page: 1);
-
-    if (categoryId != null && currentType != null) {
-      switch (currentType) {
-        case StorefrontCategoryType.global:
-          nextQuery = nextQuery.copyWith(globalCategoryId: categoryId);
-        case StorefrontCategoryType.internal:
-          nextQuery = nextQuery.copyWith(internalCategoryId: categoryId);
-        case StorefrontCategoryType.company:
-          nextQuery = nextQuery.copyWith(companyCategoryId: categoryId);
-      }
-    }
-
+  Future<void> updateCompanyCategory(int? categoryId) async {
     state = state.copyWith(
-      selectedCategoryId: categoryId,
-      clearSelectedCategoryId: categoryId == null,
-      query: nextQuery,
+      query: state.query.copyWith(
+        companyCategoryId: categoryId,
+        clearCompanyCategoryId: categoryId == null,
+        page: 1,
+      ),
     );
     await _fetchProducts();
   }
 
   Future<void> clearFilters() async {
     state = state.copyWith(
-      query: StorefrontQuery(companyId: arg.companyId),
-      clearError: true,
-      clearCategoryType: true,
-      clearSelectedCategoryId: true,
+      query: state.query.copyWith(
+        companyId: null,
+        clearCompanyId: true,
+        companyCategoryId: null,
+        clearCompanyCategoryId: true,
+        globalCategoryId: null,
+        clearGlobalCategoryId: true,
+        isAvailable: null,
+        clearAvailability: true,
+        minPrice: null,
+        clearMinPrice: true,
+        maxPrice: null,
+        clearMaxPrice: true,
+        page: 1,
+      ),
+      companyCategories: arg.companyId == null
+          ? const []
+          : state.companyCategories,
+      clearCompanyCategoriesError: true,
+      clearLoadedCompanyCategoriesForCompanyId: arg.companyId == null,
     );
+
+    if (arg.companyId != null) {
+      await ensureCompanyCategoriesLoaded(arg.companyId!);
+    }
+
     await _fetchProducts();
+  }
+
+  Future<void> ensureCompaniesLoaded({bool forceRefresh = false}) async {
+    final filterSheet = state.filterSheet;
+    if (!forceRefresh &&
+        (filterSheet.hasLoadedCompanies || filterSheet.isLoadingCompanies)) {
+      return;
+    }
+
+    await _fetchCompanies(reset: true);
+  }
+
+  void updateCompanySearch(String value) {
+    state = state.copyWith(
+      filterSheet: state.filterSheet.copyWith(companySearch: value),
+    );
+
+    _companySearchDebounce?.cancel();
+    _companySearchDebounce = Timer(const Duration(milliseconds: 350), () {
+      unawaited(_fetchCompanies(reset: true));
+    });
+  }
+
+  Future<void> loadMoreCompanies() async {
+    if (state.filterSheet.isLoadingMoreCompanies ||
+        !state.filterSheet.companiesPagination.hasNext) {
+      return;
+    }
+
+    await _fetchCompanies(
+      reset: false,
+      page: state.filterSheet.companiesPagination.page + 1,
+    );
+  }
+
+  Future<void> ensureCompanyCategoriesLoaded(
+    int companyId, {
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh &&
+        state.loadedCompanyCategoriesForCompanyId == companyId &&
+        state.companyCategories.isNotEmpty) {
+      return;
+    }
+
+    state = state.copyWith(
+      isLoadingCompanyCategories: true,
+      clearCompanyCategoriesError: true,
+      loadedCompanyCategoriesForCompanyId: companyId,
+    );
+
+    try {
+      final categories = await _repository.getCompanyCategories(companyId);
+      state = state.copyWith(
+        isLoadingCompanyCategories: false,
+        companyCategories: categories,
+        loadedCompanyCategoriesForCompanyId: companyId,
+      );
+
+      if (state.query.companyCategoryId != null &&
+          !categories.any((item) => item.id == state.query.companyCategoryId)) {
+        state = state.copyWith(
+          query: state.query.copyWith(
+            companyCategoryId: null,
+            clearCompanyCategoryId: true,
+          ),
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoadingCompanyCategories: false,
+        companyCategoriesError: e.toString(),
+        companyCategories: const [],
+      );
+    }
+  }
+
+  void clearDraftCompanyCategories() {
+    state = state.copyWith(
+      companyCategories: const [],
+      clearCompanyCategoriesError: true,
+      clearLoadedCompanyCategoriesForCompanyId: true,
+      isLoadingCompanyCategories: false,
+    );
+  }
+
+  Future<void> applyFilters({
+    int? companyId,
+    bool clearCompanyId = false,
+    int? companyCategoryId,
+    bool clearCompanyCategoryId = false,
+    bool? isAvailable,
+    bool clearAvailability = false,
+    double? minPrice,
+    bool clearMinPrice = false,
+    double? maxPrice,
+    bool clearMaxPrice = false,
+  }) async {
+    final previousEffectiveCompanyId = effectiveCompanyId;
+    final nextQuery = state.query.copyWith(
+      companyId: companyId,
+      clearCompanyId: arg.companyId != null ? true : clearCompanyId,
+      companyCategoryId: companyCategoryId,
+      clearCompanyCategoryId: clearCompanyCategoryId,
+      isAvailable: isAvailable,
+      clearAvailability: clearAvailability,
+      minPrice: minPrice,
+      clearMinPrice: clearMinPrice,
+      maxPrice: maxPrice,
+      clearMaxPrice: clearMaxPrice,
+      page: 1,
+    );
+
+    state = state.copyWith(query: nextQuery);
+
+    final nextEffectiveCompanyId = effectiveCompanyId;
+
+    if (nextEffectiveCompanyId == null) {
+      clearDraftCompanyCategories();
+    } else if (previousEffectiveCompanyId != nextEffectiveCompanyId ||
+        state.loadedCompanyCategoriesForCompanyId != nextEffectiveCompanyId) {
+      await ensureCompanyCategoriesLoaded(
+        nextEffectiveCompanyId,
+        forceRefresh: true,
+      );
+    }
+
+    await _fetchProducts();
+  }
+
+  Future<void> _fetchCompanies({required bool reset, int? page}) async {
+    final nextPage = reset
+        ? 1
+        : (page ?? state.filterSheet.companiesPagination.page);
+    state = state.copyWith(
+      filterSheet: state.filterSheet.copyWith(
+        isLoadingCompanies: reset,
+        isLoadingMoreCompanies: !reset,
+        clearCompaniesError: true,
+        companies: reset ? const [] : null,
+      ),
+    );
+
+    try {
+      final response = await _repository.getCompanies(
+        audience: arg.audience,
+        query: StorefrontCompanyQuery(
+          page: nextPage,
+          pageSize: state.filterSheet.companiesPagination.pageSize == 0
+              ? 12
+              : state.filterSheet.companiesPagination.pageSize,
+          search: state.filterSheet.companySearch,
+          salesChannel: _salesChannel,
+          ordering: 'name',
+        ),
+      );
+
+      state = state.copyWith(
+        filterSheet: state.filterSheet.copyWith(
+          isLoadingCompanies: false,
+          isLoadingMoreCompanies: false,
+          hasLoadedCompanies: true,
+          companiesPagination: response.pagination,
+          companies: reset
+              ? response.items
+              : [...state.filterSheet.companies, ...response.items],
+        ),
+      );
+    } catch (e) {
+      state = state.copyWith(
+        filterSheet: state.filterSheet.copyWith(
+          isLoadingCompanies: false,
+          isLoadingMoreCompanies: false,
+          companiesError: e.toString(),
+        ),
+      );
+    }
   }
 
   Future<void> _fetchProducts() async {
     state = state.copyWith(isLoading: true, clearError: true);
+
     try {
       final response = await _repository.getProducts(
         audience: arg.audience,
         companyId: arg.companyId,
         query: state.query,
       );
+
       state = state.copyWith(
         isLoading: false,
         products: response.items,
@@ -259,15 +482,11 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
       );
     }
   }
-
-  StorefrontQuery _clearCategoryFilters(StorefrontQuery query) {
-    return query.copyWith(
-      clearCategoryId: true,
-      clearGlobalCategoryId: true,
-      clearInternalCategoryId: true,
-      clearCompanyCategoryId: true,
-    );
-  }
 }
 
-final storefrontNotifierProvider = NotifierProvider.family<StorefrontNotifier, StorefrontState, StorefrontScope>(StorefrontNotifier.new);
+final storefrontNotifierProvider =
+    NotifierProvider.family<
+      StorefrontNotifier,
+      StorefrontState,
+      StorefrontScope
+    >(StorefrontNotifier.new);

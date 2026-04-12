@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watt Store Listing Kit</title>
+  <style>
+    :root {
+      --bg: #eef4f1;
+      --card: #ffffff;
+      --text: #16312b;
+      --muted: #5c726a;
+      --line: #d8e4de;
+      --accent: #118a6b;
+      --accent-soft: #e5f4ef;
+      --warning: #8a5b11;
+      --warning-soft: #fff4de;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #f5faf8 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0d6c57 0%, #1f8b74 52%, #f5fbf7 52%, #ffffff 100%);
+      border-radius: 24px;
+      padding: 28px;
+      color: #ffffff;
+      box-shadow: 0 18px 40px rgba(17, 66, 54, 0.14);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .meta-item {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 14px;
+      padding: 14px;
+      backdrop-filter: blur(6px);
+    }
+
+    .meta-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.82;
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      font-size: 14px;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--warning-soft);
+      color: var(--warning);
+      border: 1px solid #f0deb4;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 22px;
+      margin-top: 26px;
+    }
+
+    .column {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 10px 24px rgba(14, 47, 40, 0.05);
+    }
+
+    .column.ar {
+      direction: rtl;
+      text-align: right;
+      font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+    }
+
+    .column h2 {
+      margin: 0 0 6px;
+      font-size: 26px;
+    }
+
+    .column-subtitle {
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .section h3 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .copy-box {
+      position: relative;
+      background: #f9fcfb;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      cursor: pointer;
+    }
+
+    .column.ar .copy-btn {
+      right: auto;
+      left: 12px;
+    }
+
+    .copy-btn:hover {
+      filter: brightness(0.95);
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid #cde9df;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      padding: 18px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    code {
+      background: #f2f7f5;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .columns {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script>
+    function copyText(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('[data-copy="' + id + '"]');
+        if (!btn) return;
+        const oldText = btn.innerText;
+        btn.innerText = 'Copied';
+        setTimeout(() => btn.innerText = oldText, 1200);
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Watt Release Store Listing Kit</h1>
+      <p>
+        Bilingual release copy for Google Play and the App Store, rewritten to emphasize the end-user value:
+        understanding energy needs, designing a suitable solar setup, comparing options, and buying solar components
+        with less confusion and better planning.
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">App Name</div>
+          <div class="meta-value">Watt</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Secondary Brand</div>
+          <div class="meta-value">Solar Hub</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Publisher</div>
+          <div class="meta-value">AbdulRasol Al-Hilo</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Support Email</div>
+          <div class="meta-value">watt.app.calculator@gmail.com</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Privacy Policy</div>
+          <div class="meta-value">https://abdulrasol.github.io/watt/privacy_policy/</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Suggested Category</div>
+          <div class="meta-value">Tools / Productivity</div>
+        </div>
+      </div>
+
+      <div class="notice">
+        App Store subtitle should stay under about 30 characters. Google Play short description should stay under 80 characters.
+        This file includes both platform-specific short options where needed.
+      </div>
+    </section>
+
+    <section class="columns">
+      <article class="column">
+        <h2>English</h2>
+        <div class="column-subtitle">Release-ready copy for Play Console and App Store Connect.</div>
+
+        <div class="section">
+          <h3>App Name</h3>
+          <div class="hint">Recommended public app name.</div>
+          <div class="copy-box" id="en-app-name">Watt</div>
+          <button class="copy-btn" data-copy="en-app-name" onclick="copyText('en-app-name')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Alternative App Name</h3>
+          <div class="hint">Use only if you want a more descriptive store-facing variant.</div>
+          <div class="copy-box" id="en-alt-name">Watt Solar Hub</div>
+          <button class="copy-btn" data-copy="en-alt-name" onclick="copyText('en-alt-name')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Short Description (Google Play)</h3>
+          <div class="hint">Target: up to 80 characters.</div>
+          <div class="copy-box" id="en-short-play">Plan, calculate, compare, and buy the right solar system more easily.</div>
+          <button class="copy-btn" data-copy="en-short-play" onclick="copyText('en-short-play')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Subtitle (App Store)</h3>
+          <div class="hint">Target: up to 30 characters.</div>
+          <div class="copy-box" id="en-subtitle-ios">Calculate and buy solar easier</div>
+          <button class="copy-btn" data-copy="en-subtitle-ios" onclick="copyText('en-subtitle-ios')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Promotional Text (App Store)</h3>
+          <div class="hint">Optional field. Good for feature focus without resubmitting a binary.</div>
+          <div class="copy-box" id="en-promo">Understand your needs, size your system, compare components, and move toward a better solar purchase with practical tools in Arabic and English.</div>
+          <button class="copy-btn" data-copy="en-promo" onclick="copyText('en-promo')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Full Description</h3>
+          <div class="hint">For Google Play. Also useful as a base for App Store marketing copy.</div>
+          <div class="copy-box" id="en-full">Watt helps people understand, calculate, and shop for solar systems with more clarity.
+
+Instead of guessing what size system you need, Watt gives you practical tools that make solar planning easier step by step. You can estimate loads, calculate panel and battery needs, review inverter and wiring choices, and build a clearer picture of the system that fits your home, project, or budget.
+
+With Watt, you can:
+
+- Estimate your solar system needs with calculators built for real solar decisions
+- Use quick tools for panels, batteries, inverters, wires, and water pump setups
+- Build a more complete design with the System Calculator Wizard
+- Prepare organized offer requests before contacting providers
+- Browse solar products and compare options in the storefront
+- Explore services and companies that can help you move from planning to execution
+- Manage your profile, notifications, feedback, password reset, and account deletion inside the app
+
+Why Watt is useful for end users:
+
+- It turns technical solar questions into simpler guided steps
+- It helps you avoid buying components blindly
+- It gives you a better starting point before speaking to installers or sellers
+- It brings planning, request preparation, and product browsing into one place
+- It supports both English and Arabic for easier everyday use
+
+Watt is useful whether you are:
+
+- trying to understand how many panels you may need
+- comparing battery and inverter sizes
+- planning a pump or household setup
+- preparing to buy a full system or individual components
+- looking for a clearer, more organized way to start your solar journey
+
+If you want an easier way to design, calculate, and buy a solar system with more confidence, Watt gives you the tools to start well and choose more carefully.</div>
+          <button class="copy-btn" data-copy="en-full" onclick="copyText('en-full')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Keywords / ASO Ideas</h3>
+          <div class="hint">Useful for App Store keyword planning and internal ASO docs.</div>
+          <div class="copy-box" id="en-keywords">solar calculator, solar system, solar panels, inverter calculator, battery calculator, pump calculator, buy solar, solar products, solar store, solar design, home solar, solar planning, solar offers, Watt</div>
+          <button class="copy-btn" data-copy="en-keywords" onclick="copyText('en-keywords')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Support / Store Fields</h3>
+          <div class="copy-box" id="en-support">Developer: AbdulRasol Al-Hilo
+Support Email: watt.app.calculator@gmail.com
+Privacy Policy: https://abdulrasol.github.io/watt/privacy_policy/
+Category Suggestion: Tools or Productivity
+Target Audience: End users planning, comparing, and buying solar systems</div>
+          <button class="copy-btn" data-copy="en-support" onclick="copyText('en-support')">Copy</button>
+        </div>
+
+        <div class="section">
+          <h3>Feature Tags</h3>
+          <div class="pill-list">
+            <span class="pill">Solar calculators</span>
+            <span class="pill">Offer requests</span>
+            <span class="pill">Storefront</span>
+            <span class="pill">Company workspace</span>
+            <span class="pill">Inventory</span>
+            <span class="pill">Arabic + English</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="column ar">
+        <h2>العربية</h2>
+        <div class="column-subtitle">نسخة جاهزة للنشر في جوجل بلاي وآب ستور.</div>
+
+        <div class="section">
+          <h3>اسم التطبيق</h3>
+          <div class="hint">الاسم المقترح للمتجر.</div>
+          <div class="copy-box" id="ar-app-name">واط</div>
+          <button class="copy-btn" data-copy="ar-app-name" onclick="copyText('ar-app-name')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>اسم بديل للتطبيق</h3>
+          <div class="hint">استخدمه فقط إذا أردت اسمًا أكثر وصفًا في المتجر.</div>
+          <div class="copy-box" id="ar-alt-name">واط سولار هَب</div>
+          <button class="copy-btn" data-copy="ar-alt-name" onclick="copyText('ar-alt-name')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>الوصف القصير في جوجل بلاي</h3>
+          <div class="hint">يفضل أن يكون ضمن 80 حرفًا.</div>
+          <div class="copy-box" id="ar-short-play">خطط واحسب وقارن واشترِ منظومتك الشمسية بسهولة ووضوح أكبر.</div>
+          <button class="copy-btn" data-copy="ar-short-play" onclick="copyText('ar-short-play')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>العنوان الفرعي في آب ستور</h3>
+          <div class="hint">يفضل أن يكون ضمن 30 حرفًا تقريبًا.</div>
+          <div class="copy-box" id="ar-subtitle-ios">احسب واشترِ منظومتك بسهولة</div>
+          <button class="copy-btn" data-copy="ar-subtitle-ios" onclick="copyText('ar-subtitle-ios')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>النص الترويجي في آب ستور</h3>
+          <div class="hint">اختياري، ومفيد لتسليط الضوء على المزايا الحالية.</div>
+          <div class="copy-box" id="ar-promo">افهم احتياجك، واحسب منظومتك، وقارن المكونات، واتخذ قرار شراء أفضل عبر أدوات عملية تدعم العربية والإنجليزية.</div>
+          <button class="copy-btn" data-copy="ar-promo" onclick="copyText('ar-promo')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>الوصف الكامل</h3>
+          <div class="hint">مناسب لجوجل بلاي ويصلح كأساس لوصف المتجر في المنصات الأخرى.</div>
+          <div class="copy-box" id="ar-full">واط يساعد الناس على فهم وتصميم وحساب وشراء المنظومات الشمسية بشكل أوضح وأسهل.
+
+بدلاً من التخمين أو شراء مكونات غير مناسبة، يمنحك واط أدوات عملية تقرب لك الفكرة خطوة بخطوة. يمكنك تقدير الأحمال، وحساب عدد الألواح وسعة البطاريات، ومراجعة قدرة الإنفرتر والأسلاك، وبناء تصور أوضح عن المنظومة التي تناسب بيتك أو مشروعك أو ميزانيتك.
+
+من خلال واط يمكنك:
+
+- تقدير احتياجك الحقيقي للمنظومة الشمسية باستخدام حاسبات مخصصة للطاقة الشمسية
+- استخدام أدوات سريعة للألواح والبطاريات والإنفرتر والأسلاك والمضخات
+- بناء تصميم أكثر اكتمالاً عبر معالج حساب المنظومة
+- تجهيز طلبات عروض مرتبة قبل التواصل مع الشركات أو البائعين
+- تصفح المنتجات الشمسية ومقارنة الخيارات داخل المتجر
+- استكشاف الخدمات والشركات التي تساعدك في الانتقال من الحساب إلى التنفيذ
+- إدارة ملفك الشخصي والإشعارات والملاحظات وإعادة تعيين كلمة المرور وحذف الحساب من داخل التطبيق
+
+لماذا واط مفيد للمستخدم النهائي:
+
+- يحول الأسئلة الفنية المعقدة إلى خطوات أبسط وأسهل للفهم
+- يساعدك على تجنب شراء مكونات بشكل عشوائي
+- يمنحك نقطة بداية أفضل قبل التحدث مع الفنيين أو الشركات
+- يجمع الحساب والتخطيط وتجهيز الطلبات وتصفح المنتجات في مكان واحد
+- يدعم العربية والإنجليزية ليكون أسهل في الاستخدام اليومي
+
+واط مناسب لك إذا كنت:
+
+- تريد أن تعرف كم لوح قد تحتاجه
+- تقارن بين أحجام البطاريات والإنفرتر
+- تخطط لمنظومة منزلية أو لمنظومة مضخة
+- تستعد لشراء منظومة كاملة أو أجزاء منفصلة
+- تبحث عن طريقة أوضح وأكثر تنظيمًا لبدء مشروعك الشمسي
+
+إذا كنت تريد أسهل طريقة لتصميم وحساب وشراء منظومة شمسية بثقة أكبر، فإن واط يمنحك الأدوات التي تساعدك على البدء الصحيح واتخاذ قرار أفضل.</div>
+          <button class="copy-btn" data-copy="ar-full" onclick="copyText('ar-full')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>كلمات مفتاحية / أفكار ASO</h3>
+          <div class="hint">مفيدة للكلمات المفتاحية في آب ستور أو كمرجع داخلي.</div>
+          <div class="copy-box" id="ar-keywords">حاسبة شمسية، منظومة شمسية، ألواح شمسية، حاسبة انفرتر، حاسبة بطاريات، حاسبة مضخات، شراء منظومة شمسية، تصميم منظومة، متجر شمسي، منتجات شمسية، تخطيط شمسي، واط</div>
+          <button class="copy-btn" data-copy="ar-keywords" onclick="copyText('ar-keywords')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>حقول الدعم والمتجر</h3>
+          <div class="copy-box" id="ar-support">الناشر: AbdulRasol Al-Hilo
+بريد الدعم: watt.app.calculator@gmail.com
+سياسة الخصوصية: https://abdulrasol.github.io/watt/privacy_policy/
+التصنيف المقترح: الأدوات أو الإنتاجية
+الفئة المستهدفة: المستخدم النهائي الذي يريد حساب وتصميم وشراء منظومة شمسية</div>
+          <button class="copy-btn" data-copy="ar-support" onclick="copyText('ar-support')">نسخ</button>
+        </div>
+
+        <div class="section">
+          <h3>بطاقات المزايا</h3>
+          <div class="pill-list">
+            <span class="pill">حاسبات شمسية</span>
+            <span class="pill">طلبات عروض</span>
+            <span class="pill">متجر</span>
+            <span class="pill">مساحة شركة</span>
+            <span class="pill">مخزون</span>
+            <span class="pill">عربي + إنجليزي</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="footer-note">
+      This file is intended as a copy-ready release asset, not an in-app page.
+      It is based on the current app structure and copy found in the repo as of <code>2026-04-11</code>.
+      If you want, the next step can be generating matching screenshot captions, feature graphic text, and store listing checklists.
+    </section>
+  </div>
+</body>
+</html>

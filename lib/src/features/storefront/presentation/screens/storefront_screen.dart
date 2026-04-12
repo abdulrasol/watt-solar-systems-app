@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_cart_screen.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_product_details_screen.dart';
 import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_page_route.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_category_section.dart';
 import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_filters_sheet.dart';
 import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_header.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_product_card.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_products_sliver.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_toolbar_section.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class StorefrontScreen extends ConsumerStatefulWidget {
@@ -52,6 +53,8 @@ class _StorefrontScreenState extends ConsumerState<StorefrontScreen> {
   }
 
   void _onScroll() {
+    if (!_scrollController.hasClients) return;
+
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 400) {
       final state = ref.read(storefrontNotifierProvider(_scope));
@@ -66,18 +69,18 @@ class _StorefrontScreenState extends ConsumerState<StorefrontScreen> {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(storefrontNotifierProvider(_scope));
     final notifier = ref.read(storefrontNotifierProvider(_scope).notifier);
+    final effectiveCompanyId = widget.companyId ?? state.query.companyId;
 
-    final categories = state.meta.categoriesForType(state.activeCategoryType);
+    if (_searchController.text != state.query.search) {
+      _searchController.value = _searchController.value.copyWith(
+        text: state.query.search,
+        selection: TextSelection.collapsed(offset: state.query.search.length),
+      );
+    }
+
     final padding = widget.embedded
         ? EdgeInsets.zero
         : EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h);
-
-    final width = MediaQuery.of(context).size.width;
-    final crossAxisCount = width >= 1200
-        ? 4
-        : width >= 800
-        ? 3
-        : 2;
 
     return RefreshIndicator(
       onRefresh: notifier.refresh,
@@ -103,116 +106,87 @@ class _StorefrontScreenState extends ConsumerState<StorefrontScreen> {
                   },
                 ),
                 SizedBox(height: 16.h),
-                TextField(
-                  controller: _searchController,
-                  textInputAction: TextInputAction.search,
-                  onChanged: (value) {
+                StorefrontToolbarSection(
+                  audience: widget.audience,
+                  searchController: _searchController,
+                  searchHint: widget.audience == StorefrontAudience.b2b
+                      ? l10n.search_b2b_products
+                      : l10n.search_products,
+                  ordering: state.query.ordering,
+                  onSearchChanged: (value) {
                     setState(() {});
                     notifier.updateSearch(value);
                   },
-                  decoration: InputDecoration(
-                    hintText: widget.audience == StorefrontAudience.b2b
-                        ? l10n.search_b2b_products
-                        : l10n.search_products,
-                    prefixIcon: const Icon(Icons.search_rounded),
-                    suffixIcon: _searchController.text.isEmpty
-                        ? null
-                        : IconButton(
-                            onPressed: () {
-                              _searchController.clear();
-                              notifier.updateSearch('');
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.close_rounded),
-                          ),
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                _FilterAndSortBar(
-                  state: state,
-                  notifier: notifier,
-                  companyId: widget.companyId,
+                  onClearSearch: () {
+                    _searchController.clear();
+                    notifier.updateSearch('');
+                    setState(() {});
+                  },
+                  onOpenFilters: () async {
+                    await showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (_) => StorefrontFiltersSheet(
+                        scope: _scope,
+                        hideCompanyFilter: widget.companyId != null,
+                      ),
+                    );
+                  },
+                  onOrderingChanged: (value) {
+                    notifier.updateOrdering(value);
+                  },
                 ),
                 SizedBox(height: 16.h),
-                _CategoryTypeSelector(state: state, notifier: notifier),
-                if (categories.isNotEmpty) ...[
-                  SizedBox(height: 12.h),
-                  _CategorySelector(
+                StorefrontCategorySection(
+                  title: l10n.global_category,
+                  allLabel: l10n.all_categories,
+                  selectedCategoryId: state.query.globalCategoryId,
+                  categories: state.meta.globalCategories
+                      .map(StorefrontCategoryOption.fromGlobalCategory)
+                      .toList(),
+                  onCategorySelected: (value) {
+                    notifier.updateGlobalCategory(value);
+                  },
+                ),
+                if (effectiveCompanyId != null &&
+                    (state.companyCategories.isNotEmpty ||
+                        state.isLoadingCompanyCategories ||
+                        state.companyCategoriesError != null)) ...[
+                  SizedBox(height: 16.h),
+                  _CompanyCategoriesSection(
                     state: state,
-                    notifier: notifier,
-                    categories: categories,
+                    onCategorySelected: (value) {
+                      notifier.updateCompanyCategory(value);
+                    },
                   ),
                 ],
-                SizedBox(height: 16.h),
-                if (state.error != null && !state.isLoading)
+                if (state.error != null && state.products.isNotEmpty) ...[
+                  SizedBox(height: 16.h),
                   _ErrorBanner(error: state.error!),
+                ],
               ]),
             ),
           ),
-          if (state.isLoading && state.products.isEmpty)
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(child: LoadingWidget.widget(context: context)),
-            )
-          else if (state.products.isEmpty)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: padding.copyWith(top: 0),
-                child: _EmptyState(message: l10n.no_store_products_found),
-              ),
-            )
-          else
-            SliverPadding(
-              padding: padding.copyWith(top: 0),
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 12.w,
-                  mainAxisSpacing: 12.h,
-                  childAspectRatio: 0.67,
+          StorefrontProductsSliver(
+            audience: widget.audience,
+            isLoading: state.isLoading,
+            isLoadingMore: state.isLoadingMore,
+            products: state.products,
+            hasNextPage: state.pagination.hasNext,
+            error: state.error,
+            padding: padding,
+            embedded: widget.embedded,
+            onProductTap: (product) {
+              Navigator.of(context).push(
+                buildStorefrontRoute(
+                  context: context,
+                  page: StorefrontProductDetailsScreen(
+                    product: product,
+                    audience: widget.audience,
+                  ),
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final product = state.products[index];
-                    return StorefrontProductCard(
-                      product: product,
-                      audience: widget.audience,
-                      onTap: () {
-                        Navigator.of(context).push(
-                          buildStorefrontRoute(
-                            context: context,
-                            page: StorefrontProductDetailsScreen(
-                              product: product,
-                              audience: widget.audience,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  childCount: state.products.length,
-                ),
-              ),
-            ),
-          if (state.isLoadingMore || state.pagination.hasNext)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 24.h),
-                child: Center(
-                  child: state.isLoadingMore
-                      ? SizedBox(
-                          width: 24.r,
-                          height: 24.r,
-                          child: const CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                          ),
-                        )
-                      : const SizedBox.shrink(), // Auto-loaded by scroll listener
-                ),
-              ),
-            ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: widget.embedded ? 16.h : 32.h),
+              );
+            },
           ),
         ],
       ),
@@ -220,178 +194,45 @@ class _StorefrontScreenState extends ConsumerState<StorefrontScreen> {
   }
 }
 
-class _FilterAndSortBar extends StatelessWidget {
+class _CompanyCategoriesSection extends StatelessWidget {
   final StorefrontState state;
-  final StorefrontNotifier notifier;
-  final int? companyId;
+  final ValueChanged<int?> onCategorySelected;
 
-  const _FilterAndSortBar({
+  const _CompanyCategoriesSection({
     required this.state,
-    required this.notifier,
-    this.companyId,
+    required this.onCategorySelected,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final compact = constraints.maxWidth < 430;
-        final filterButton = OutlinedButton.icon(
-          onPressed: () async {
-            await showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              builder: (sheetContext) => StorefrontFiltersSheet(
-                state: state,
-                hideCompanyFilter: companyId != null,
-                onApply: ({
-                  required int? companyId,
-                  required bool clearCompanyId,
-                  required bool? isAvailable,
-                  required bool clearAvailability,
-                  required double? minPrice,
-                  required bool clearMinPrice,
-                  required double? maxPrice,
-                  required bool clearMaxPrice,
-                }) async {
-                  Navigator.of(sheetContext).pop();
-                  await notifier.applyFilters(
-                    companyId: companyId,
-                    clearCompanyId: clearCompanyId,
-                    isAvailable: isAvailable,
-                    clearAvailability: clearAvailability,
-                    minPrice: minPrice,
-                    clearMinPrice: clearMinPrice,
-                    maxPrice: maxPrice,
-                    clearMaxPrice: clearMaxPrice,
-                  );
-                },
-                onClear: () async {
-                  Navigator.of(sheetContext).pop();
-                  await notifier.clearFilters();
-                },
-              ),
-            );
-          },
-          icon: const Icon(Icons.filter_alt_outlined),
-          label: Text(l10n.filters),
-        );
-
-        final sortField = DropdownButtonFormField<String>(
-          initialValue: state.query.ordering,
-          isExpanded: true,
-          decoration: InputDecoration(
-            labelText: l10n.sort_by,
-            prefixIcon: const Icon(Icons.swap_vert_rounded),
-          ),
-          items: [
-            DropdownMenuItem(value: '-created_at', child: Text(l10n.sort_newest)),
-            DropdownMenuItem(value: 'created_at', child: Text(l10n.sort_oldest)),
-            DropdownMenuItem(value: 'name', child: Text(l10n.sort_name_asc)),
-            DropdownMenuItem(value: '-name', child: Text(l10n.sort_name_desc)),
-            DropdownMenuItem(value: 'price', child: Text(l10n.sort_price_asc)),
-            DropdownMenuItem(value: '-price', child: Text(l10n.sort_price_desc)),
-          ],
-          onChanged: (value) {
-            if (value != null) notifier.updateOrdering(value);
-          },
-        );
-
-        if (compact) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              filterButton,
-              SizedBox(height: 12.h),
-              sortField,
-            ],
-          );
-        }
-
-        return Row(
-          children: [
-            Expanded(child: filterButton),
-            SizedBox(width: 12.w),
-            Expanded(child: sortField),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _CategoryTypeSelector extends StatelessWidget {
-  final StorefrontState state;
-  final StorefrontNotifier notifier;
-
-  const _CategoryTypeSelector({required this.state, required this.notifier});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Wrap(
-      spacing: 8.w,
-      runSpacing: 8.h,
-      children: [
-        _CategoryTypeChip(
-          label: l10n.all,
-          selected: state.activeCategoryType == null,
-          onTap: () => notifier.updateCategoryType(null),
+    if (state.isLoadingCompanyCategories) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 4.h),
+        child: Text(
+          l10n.company_categories_loading,
+          style: TextStyle(fontSize: 13.sp, color: Colors.grey.shade600),
         ),
-        _CategoryTypeChip(
-          label: l10n.global_category,
-          selected: state.activeCategoryType == StorefrontCategoryType.global,
-          onTap: () => notifier.updateCategoryType(StorefrontCategoryType.global),
-        ),
-        _CategoryTypeChip(
-          label: l10n.internal_category,
-          selected: state.activeCategoryType == StorefrontCategoryType.internal,
-          onTap: () => notifier.updateCategoryType(StorefrontCategoryType.internal),
-        ),
-        _CategoryTypeChip(
-          label: l10n.company_category,
-          selected: state.activeCategoryType == StorefrontCategoryType.company,
-          onTap: () => notifier.updateCategoryType(StorefrontCategoryType.company),
-        ),
-      ],
-    );
-  }
-}
+      );
+    }
 
-class _CategorySelector extends StatelessWidget {
-  final StorefrontState state;
-  final StorefrontNotifier notifier;
-  final List<StorefrontCategory> categories;
+    if (state.companyCategoriesError != null) {
+      return _ErrorBanner(error: state.companyCategoriesError!);
+    }
 
-  const _CategorySelector({
-    required this.state,
-    required this.notifier,
-    required this.categories,
-  });
+    if (state.companyCategories.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Wrap(
-      spacing: 8.w,
-      runSpacing: 8.h,
-      children: [
-        _CategoryTypeChip(
-          label: l10n.all_categories,
-          selected: state.selectedCategoryId == null,
-          onTap: () => notifier.updateCategory(null),
-        ),
-        ...categories.map(
-          (category) => _CategoryTypeChip(
-            label: category.name,
-            selected: state.selectedCategoryId == category.id,
-            onTap: () => notifier.updateCategory(category.id),
-          ),
-        ),
-      ],
+    return StorefrontCategorySection(
+      title: l10n.company_category,
+      allLabel: l10n.all_categories,
+      selectedCategoryId: state.query.companyCategoryId,
+      categories: state.companyCategories
+          .map(StorefrontCategoryOption.fromCompanyCategory)
+          .toList(),
+      onCategorySelected: onCategorySelected,
     );
   }
 }
@@ -404,74 +245,12 @@ class _ErrorBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppTheme.errorColor.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16.r),
       ),
-      child: Text(
-        error,
-        style: TextStyle(color: AppTheme.errorColor),
-      ),
-    );
-  }
-}
-
-class _CategoryTypeChip extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _CategoryTypeChip({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ChoiceChip(
-      label: Text(label),
-      selected: selected,
-      onSelected: (_) => onTap(),
-      selectedColor: AppTheme.primaryColor.withValues(alpha: 0.15),
-      labelStyle: TextStyle(
-        color: selected ? AppTheme.primaryDarkColor : null,
-        fontWeight: FontWeight.w700,
-      ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  final String message;
-
-  const _EmptyState({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(28.r),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24.r),
-      ),
-      child: Column(
-        children: [
-          Icon(
-            Icons.storefront_outlined,
-            size: 42.sp,
-            color: Colors.grey.shade500,
-          ),
-          SizedBox(height: 12.h),
-          Text(
-            message,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15.sp),
-          ),
-        ],
-      ),
+      child: Text(error, style: const TextStyle(color: AppTheme.errorColor)),
     );
   }
 }

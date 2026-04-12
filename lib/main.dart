@@ -56,7 +56,7 @@ class SolarHub extends ConsumerWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [Locale('en'), Locale('ar')],
+            supportedLocales: const [Locale('ar'), Locale('en')],
             locale: Locale(settings.language),
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,

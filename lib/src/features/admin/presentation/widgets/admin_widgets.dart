@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class AdminEmptyState extends StatelessWidget {
@@ -89,7 +90,8 @@ class AdminLoadingState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withValues(alpha: 0.3)),
+          LoadingWidget(size: 80.sp),
+          // Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withValues(alpha: 0.3)),
           SizedBox(height: 24.h),
           Text(
             message,

@@ -3,6 +3,11 @@ import 'package:solar_hub/src/features/storefront/domain/entities/storefront_mod
 
 abstract class StorefrontRepository {
   Future<StorefrontMeta> getMeta();
+  Future<PaginatedItemsResponse<StorefrontCompanyListItem>> getCompanies({
+    required StorefrontAudience audience,
+    required StorefrontCompanyQuery query,
+  });
+  Future<List<StorefrontCompanyCategory>> getCompanyCategories(int companyId);
   Future<PaginatedItemsResponse<StorefrontProduct>> getProducts({
     required StorefrontAudience audience,
     required StorefrontQuery query,

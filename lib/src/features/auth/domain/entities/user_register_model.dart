@@ -34,7 +34,9 @@ class UserRegisterModel {
     data['last_name'] = lastName;
     data['phone'] = phone;
     if (city != null) data['city_id'] = city;
-    if (image != null && image!.isNotEmpty) data['image'] = await MultipartFile.fromFile(image!);
+    if (image != null && image!.isNotEmpty) {
+      data['image'] = await MultipartFile.fromFile(image!);
+    }
     if (securityQuestion != null) data['security_question'] = securityQuestion;
     if (securityAnswer != null) data['security_answer'] = securityAnswer;
     return data;

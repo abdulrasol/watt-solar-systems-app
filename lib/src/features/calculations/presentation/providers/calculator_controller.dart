@@ -1,9 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/appliance_entity.dart';
-import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/calculated_system.dart';
+import 'package:solar_hub/src/utils/app_enums.dart';
 
 // Given the high number of fields, using a ChangeNotifier for this specific controller
 // is more practical than creating a massive immutable state class.
@@ -12,6 +14,10 @@ import 'package:flutter/material.dart';
 final calculatorProvider = ChangeNotifierProvider<CalculatorNotifier>((ref) {
   return CalculatorNotifier();
 });
+
+enum SystemCalculationMode { practicalHybrid, fullEnergy }
+
+enum SystemLoadInputUnit { ampere, watt }
 
 class CalculatorNotifier extends ChangeNotifier {
   // System Wizard State
@@ -42,9 +48,36 @@ class CalculatorNotifier extends ChangeNotifier {
   double totalPanelCapacityKw = 0.0;
   String totalBatteryCapacityAh = "";
   double dailyUsageKWh = 0.0;
+  double dailyUsageWh = 0.0;
+  double peakLoadW = 0.0;
+  double acLoadCurrent = 0.0;
+  double requiredPvWatts = 0.0;
+  double requiredBatteryAh = 0.0;
+  double requiredBatteryKWh = 0.0;
+  double totalBatteryStorageKWh = 0.0;
+  int batterySeriesCount = 0;
+  int batteryParallelCount = 0;
+  double usableDepthOfDischarge = 0.0;
+  double inverterEfficiency = 0.92;
+  double gridCoverageFactor = 1.0;
+  double practicalBatteryNeedKWh = 0.0;
+  double effectiveBatteryNeedWh = 0.0;
+  double averageLoadW = 0.0;
+  double gridCycleHours = 0.0;
+  double batteryReservePercent = 20.0;
 
   // Global Settings for Tools
   double acSystemVoltage = 230.0;
+  double batteryUnitCapacityAh = 200.0;
+  double pvDerating = 0.78;
+  double inverterSafetyFactor = 1.30;
+  BatteryType systemBatteryType = BatteryType.lithium;
+  SystemCalculationMode calculationMode = SystemCalculationMode.fullEnergy;
+  SystemLoadInputUnit loadInputUnit = SystemLoadInputUnit.ampere;
+  double directAcLoadInput = 10.0;
+  double gridOnHours = 2.0;
+  double gridOffHours = 4.0;
+  double rechargePercentage = 0.0;
 
   // Lists
   final List<double> acVoltageOptions = [110, 230, 380];
@@ -157,67 +190,138 @@ class CalculatorNotifier extends ChangeNotifier {
   }
 
   void calculateSystem() {
-    double totalEnergyWh = 0;
-    double maxPowerW = 0;
-
-    for (var app in appliances) {
-      totalEnergyWh += app.power * app.quantity * app.hours;
-      maxPowerW += app.power * app.quantity;
-    }
-
-    dailyUsageKWh = totalEnergyWh / 1000;
-
-    double panelWattage = selectedPanelWattage > 0
+    final panelWattage = selectedPanelWattage > 0
         ? selectedPanelWattage.toDouble()
         : 570.0;
-    double panelsNeeded = totalEnergyWh / (sunPeakHours * panelWattage * 0.75);
-    recommendedPanels = panelsNeeded.ceil();
-    totalPanelCapacityKw = (recommendedPanels * panelWattage) / 1000;
+    final safeSunHours = sunPeakHours <= 0 ? 1.0 : sunPeakHours;
+    final safePvDerating = pvDerating.clamp(0.55, 0.95);
+    final safeInverterFactor = inverterSafetyFactor.clamp(1.05, 1.8);
+    final safeBatteryAh = batteryUnitCapacityAh <= 0
+        ? 200.0
+        : batteryUnitCapacityAh;
+    final safeSystemVoltage = systemVoltage <= 0 ? 12.0 : systemVoltage;
+    final safeSingleBatteryVoltage = systemCalcSingleBatteryVoltage <= 0
+        ? 12.0
+        : systemCalcSingleBatteryVoltage;
+    final safeRechargeFactor = (1 - (rechargePercentage.clamp(0, 100) / 100));
+    final safeGridOnHours = gridOnHours < 0 ? 0.0 : gridOnHours;
+    final safeGridOffHours = gridOffHours < 0 ? 0.0 : gridOffHours;
 
-    const double batteryCapacityAh = 200.0;
-    final battResult = HomeSolarSystemCalculator.calculateBatteryBank(
-      dailyUsageKWh: dailyUsageKWh,
-      batteryCapacityAh: batteryCapacityAh,
-      batteryVoltage: systemVoltage,
-      dod: 50.0,
-    );
+    usableDepthOfDischarge = systemBatteryType == BatteryType.lithium
+        ? 0.8
+        : 0.5;
+    inverterEfficiency = systemBatteryType == BatteryType.lithium ? 0.95 : 0.9;
+    gridCycleHours = safeGridOnHours + safeGridOffHours;
+    gridCoverageFactor = gridCycleHours <= 0
+        ? 1.0
+        : (safeGridOffHours / gridCycleHours).clamp(0.0, 1.0);
 
-    double totalAhNeeded = battResult['totalAhNeeded'];
-    double singleBattVoltage = systemCalcSingleBatteryVoltage;
+    dailyUsageWh = 0;
+    peakLoadW = 0;
+    averageLoadW = 0;
+    requiredPvWatts = 0;
+    requiredBatteryAh = 0;
+    requiredBatteryKWh = 0;
+    practicalBatteryNeedKWh = 0;
+    effectiveBatteryNeedWh = 0;
 
-    int seriesCount = (systemVoltage / singleBattVoltage).ceil();
-    int parallelCount = (totalAhNeeded / batteryCapacityAh).ceil();
+    if (calculationMode == SystemCalculationMode.practicalHybrid) {
+      peakLoadW = _resolveDirectLoadW();
+      averageLoadW = peakLoadW;
+      dailyUsageWh = peakLoadW * 24;
+      dailyUsageKWh = dailyUsageWh / 1000;
 
-    recommendedBatteries = seriesCount * parallelCount;
-    if (parallelCount == 0) parallelCount = 1;
+      requiredPvWatts = peakLoadW * safeInverterFactor;
+      recommendedPanels = requiredPvWatts <= 0
+          ? 0
+          : (requiredPvWatts / panelWattage).ceil();
+      totalPanelCapacityKw = (recommendedPanels * panelWattage) / 1000;
 
-    totalBatteryCapacityAh =
-        "${(parallelCount * batteryCapacityAh).toStringAsFixed(0)}Ah @ ${systemVoltage.toStringAsFixed(0)}V (${seriesCount}S${parallelCount}P)";
+      recommendedInverterSize = peakLoadW <= 0
+          ? 0
+          : ((peakLoadW * safeInverterFactor) / 1000).ceilToDouble();
 
-    final invResult = HomeSolarSystemCalculator.calculateInverterSize(
-      peakLoadWatt: maxPowerW,
-      batteryAh: totalAhNeeded,
-      batteryVoltage: systemVoltage,
-      batteryCount: recommendedBatteries.toDouble(),
-      batteryUserChargeCurrent: 0,
-      batteryType: 'Lead-Acid',
-      dod: 50.0,
-    );
+      practicalBatteryNeedKWh = (peakLoadW * safeGridOffHours) / 1000;
+      effectiveBatteryNeedWh =
+          peakLoadW * safeGridOffHours * safeRechargeFactor;
+      requiredBatteryKWh = effectiveBatteryNeedWh / 1000;
+      requiredBatteryAh = effectiveBatteryNeedWh <= 0
+          ? 0
+          : effectiveBatteryNeedWh / safeSystemVoltage;
+    } else {
+      for (final app in appliances) {
+        final itemPower = app.power * app.quantity;
+        dailyUsageWh += itemPower * app.hours;
+        peakLoadW += itemPower;
+      }
 
-    recommendedInverterSize = invResult['inverterSize'];
+      dailyUsageKWh = dailyUsageWh / 1000;
+      averageLoadW = dailyUsageWh <= 0 ? 0 : dailyUsageWh / 24;
 
-    double size = recommendedInverterSize;
-    double volt = systemVoltage;
-    if (volt == 12.0) {
-      size = size.clamp(1.0, 2.0);
-    } else if (volt == 24.0) {
-      size = size.clamp(1.5, 4.0);
-    } else if (volt == 48.0) {
-      if (size < 4.0) size = 4.0;
+      final pvEnergyTargetWh = dailyUsageWh * gridCoverageFactor;
+      requiredPvWatts = pvEnergyTargetWh <= 0
+          ? 0
+          : pvEnergyTargetWh / (safeSunHours * safePvDerating);
+      recommendedPanels = requiredPvWatts <= 0
+          ? 0
+          : (requiredPvWatts / panelWattage).ceil();
+      totalPanelCapacityKw = (recommendedPanels * panelWattage) / 1000;
+
+      recommendedInverterSize = peakLoadW <= 0
+          ? 0
+          : ((peakLoadW * safeInverterFactor) / 1000).ceilToDouble();
+
+      final batteryCoverageHours = safeGridOffHours > 0
+          ? math.min(
+              autonomyHours <= 0 ? safeGridOffHours : autonomyHours,
+              safeGridOffHours,
+            )
+          : autonomyHours;
+      final batteryTargetWh = averageLoadW * batteryCoverageHours;
+      effectiveBatteryNeedWh = batteryTargetWh * safeRechargeFactor;
+      final usableFactor = usableDepthOfDischarge * inverterEfficiency;
+      requiredBatteryKWh = effectiveBatteryNeedWh <= 0 || usableFactor <= 0
+          ? 0
+          : (effectiveBatteryNeedWh / usableFactor) / 1000;
+      requiredBatteryAh = requiredBatteryKWh <= 0
+          ? 0
+          : (requiredBatteryKWh * 1000) / safeSystemVoltage;
     }
-    recommendedInverterSize = size;
-    recommendedControllerSize =
-        ((recommendedPanels * selectedPanelWattage) / systemVoltage).ceil();
+
+    batterySeriesCount = math.max(
+      1,
+      (safeSystemVoltage / safeSingleBatteryVoltage).ceil(),
+    );
+    batteryParallelCount = requiredBatteryAh <= 0
+        ? 0
+        : math.max(1, (requiredBatteryAh / safeBatteryAh).ceil());
+    recommendedBatteries = batteryParallelCount == 0
+        ? 0
+        : batterySeriesCount * batteryParallelCount;
+
+    final totalBankAh = batteryParallelCount * safeBatteryAh;
+    totalBatteryStorageKWh = recommendedBatteries == 0
+        ? 0
+        : (recommendedBatteries * safeSingleBatteryVoltage * safeBatteryAh) /
+              1000;
+    totalBatteryCapacityAh = recommendedBatteries == 0
+        ? "0 Ah"
+        : "${totalBankAh.toStringAsFixed(0)}Ah @ ${safeSystemVoltage.toStringAsFixed(0)}V (${batterySeriesCount}S${batteryParallelCount}P)";
+
+    final totalPvWatt = recommendedPanels * panelWattage;
+    recommendedControllerSize = totalPvWatt <= 0
+        ? 0
+        : ((totalPvWatt / safeSystemVoltage) * 1.25).ceil();
+
+    if (peakLoadW <= 0 || acSystemVoltage <= 0) {
+      acLoadCurrent = 0;
+    } else if (isThreePhase) {
+      acLoadCurrent = peakLoadW / (math.sqrt(3) * acSystemVoltage);
+    } else {
+      acLoadCurrent = peakLoadW / acSystemVoltage;
+    }
+
+    prepareRequestFromCalculation(notify: false);
 
     _saveToCache();
 
@@ -244,39 +348,68 @@ class CalculatorNotifier extends ChangeNotifier {
             this,
           );
         } else {
-          systems.add(CalculatedSystem.fromCalculator(
-            currentSystemId!,
-            'System ${DateTime.now().toLocal().toString().substring(0, 16)}',
-            this,
-          ));
+          systems.add(
+            CalculatedSystem.fromCalculator(
+              currentSystemId!,
+              'System ${DateTime.now().toLocal().toString().substring(0, 16)}',
+              this,
+            ),
+          );
         }
       } else {
         currentSystemId = DateTime.now().millisecondsSinceEpoch.toString();
-        systems.add(CalculatedSystem.fromCalculator(
-          currentSystemId!,
-          'System ${DateTime.now().toLocal().toString().substring(0, 16)}',
-          this,
-        ));
+        systems.add(
+          CalculatedSystem.fromCalculator(
+            currentSystemId!,
+            'System ${DateTime.now().toLocal().toString().substring(0, 16)}',
+            this,
+          ),
+        );
       }
 
-      cache.save('saved_calculated_systems', systems.map((e) => e.toJson()).toList());
+      cache.save(
+        'saved_calculated_systems',
+        systems.map((e) => e.toJson()).toList(),
+      );
     } catch (e) {
       debugPrint('Error saving calculation to cache: $e');
     }
   }
 
-  void prepareRequestFromCalculation() {
+  bool get isThreePhase => acSystemVoltage == 380.0;
+
+  String get systemPhaseLabel => isThreePhase ? 'Three Phase' : 'Single Phase';
+
+  bool get isPracticalHybridMode =>
+      calculationMode == SystemCalculationMode.practicalHybrid;
+
+  double get directAcLoadWatts => _resolveDirectLoadW();
+
+  double _resolveDirectLoadW() {
+    final safeInput = directAcLoadInput < 0 ? 0.0 : directAcLoadInput;
+    if (loadInputUnit == SystemLoadInputUnit.watt) {
+      return safeInput;
+    }
+    return safeInput * acSystemVoltage;
+  }
+
+  void prepareRequestFromCalculation({bool notify = true}) {
     panelCount = recommendedPanels;
     inverterCount = 1;
     selectedInverterKva = recommendedInverterSize;
-    selectedInverterVoltType = 'Low Voltage';
-    selectedInverterPhase = 'Single Phase';
+    selectedInverterVoltType = systemVoltage >= 48
+        ? 'High Voltage'
+        : 'Low Voltage';
+    selectedInverterPhase = systemPhaseLabel;
 
     batteryCount = recommendedBatteries;
-    selectedBatteryAmp = 200.0;
-    selectedBatteryType = 'Gel / Lead-Acid / Tubular';
+    selectedBatteryVoltage = systemCalcSingleBatteryVoltage;
+    selectedBatteryAmp = batteryUnitCapacityAh;
+    selectedBatteryType = systemBatteryType.label;
 
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
   }
 
   // Calculate Pump

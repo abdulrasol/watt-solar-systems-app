@@ -111,7 +111,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 SizedBox(height: 24.h),
                 Text(
                   AppLocalizations.of(context)!.app_name,
-                  style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                  style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.h),
                 Text(

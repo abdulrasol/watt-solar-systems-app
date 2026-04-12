@@ -15,6 +15,7 @@ import 'package:solar_hub/src/features/storefront/presentation/providers/storefr
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_cart_screen.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_screen.dart';
 import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_page_route.dart';
+import 'package:solar_hub/src/features/services/presentation/screens/services_explorer_screen.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 
@@ -26,10 +27,12 @@ class Home extends ConsumerWidget {
     final index = ref.watch(homePageIndexProvider);
     final bool hasCommunity = isEnabled(ref, 'community');
     final bool hasStore = isEnabled(ref, 'store', defaultValue: false);
+    final bool hasServices = isEnabled(ref, 'services', defaultValue: true);
 
     final availableIndices = [0, 1];
-    if (hasCommunity) availableIndices.add(2);
+    if (hasServices) availableIndices.add(2);
     if (hasStore) availableIndices.add(3);
+    if (hasCommunity) availableIndices.add(4);
 
     int navIndex = availableIndices.indexOf(index);
     if (navIndex == -1) navIndex = 0; // fallback if state is out of sync
@@ -38,8 +41,9 @@ class Home extends ConsumerWidget {
     List<Widget> pages = [
       const UserDashboard(),
       const CalculatorLandingPage(showAppBar: false),
-      const UserDashboard(),
+      const ServicesExplorerScreen(embedded: true),
       const StorefrontScreen(audience: StorefrontAudience.b2c),
+      const UserDashboard(),
     ];
 
     List<CrystalNavigationBarItem> navItems = [
@@ -54,6 +58,11 @@ class Home extends ConsumerWidget {
       navItems.add(
         /// Hub
         CrystalNavigationBarItem(icon: Icons.hub_outlined, unselectedIcon: Icons.hub_outlined, selectedColor: Theme.of(context).primaryColor),
+      );
+    }
+    if (hasServices) {
+      navItems.add(
+        CrystalNavigationBarItem(icon: Iconsax.category_2_bold, unselectedIcon: Iconsax.category_2_outline, selectedColor: Theme.of(context).primaryColor),
       );
     }
 
@@ -88,33 +97,29 @@ class Home extends ConsumerWidget {
     );
   }
 
+  String _getTitle(int index, BuildContext context) {
+    return index == 0
+        ? AppLocalizations.of(context)!.home
+        : index == 1
+        ? AppLocalizations.of(context)!.calculator
+        : index == 2
+        ? 'AppLocalizations.of(context)!.services'
+        : index == 3
+        ? AppLocalizations.of(context)!.store
+        : 'community';
+  }
+
   AppBar _appBar(BuildContext context, WidgetRef ref) {
     int index = ref.watch(homePageIndexProvider);
     final notificationCount = ref.watch(notificationHistoryProvider).items.length;
 
     return AppBar(
-      title: Text(
-        index == 0
-            ? AppLocalizations.of(context)!.home
-            : index == 3
-            ? AppLocalizations.of(context)!.store
-            : AppLocalizations.of(context)!.calculator,
-      ),
+      title: Text(_getTitle(index, context)),
       actions: [
-        // IconButton(
-        //   icon: Icon(Icons.search, color: AppTheme.primaryColor),
-        //   onPressed: () {
-        //     // hubController.isSearching.toggle();
-        //     // if (!hubController.isSearching.value) {
-        //     //   hubController.searchController.clear();
-        //     //   hubController.searchPosts('');
-        //     // }
-        //   },
-        // ),
         Row(
           children: [
             // Cart Icon (Only in Store)
-            if (index == 3)
+            if (index == 4)
               ListenableBuilder(
                 listenable: storefrontCart,
                 builder: (context, _) {

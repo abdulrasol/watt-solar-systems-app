@@ -1,34 +1,57 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class FeedbackEntity {
   final String? id;
   final String name;
   final String? phoneNumber;
   final String message;
-  final String? imageData; // Base64 encoded image string
+  final String? imageData;
   final DateTime createdAt;
   final bool isRead;
 
-  FeedbackEntity({this.id, required this.name, this.phoneNumber, required this.message, this.imageData, required this.createdAt, this.isRead = false});
+  FeedbackEntity({
+    this.id,
+    required this.name,
+    this.phoneNumber,
+    required this.message,
+    this.imageData,
+    required this.createdAt,
+    this.isRead = false,
+  });
 
-  factory FeedbackEntity.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+  factory FeedbackEntity.fromJson(Map<String, dynamic> json) {
+    final rawPhoneNumber = json['phone_number'] ?? json['phoneNumber'];
+    final rawCreatedAt = json['created_at'] ?? json['createdAt'];
+
     return FeedbackEntity(
-      id: doc.id,
-      name: data['name'] ?? '',
-      phoneNumber: data['phoneNumber'],
-      message: data['message'] ?? '',
-      imageData: data['imageData'],
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      isRead: data['isRead'] ?? false,
+      id: json['id']?.toString(),
+      name: (json['name'] ?? '').toString(),
+      phoneNumber:
+          rawPhoneNumber == null || rawPhoneNumber.toString().trim().isEmpty
+          ? null
+          : rawPhoneNumber.toString(),
+      message: (json['message'] ?? '').toString(),
+      imageData: _normalizeImage(json['image'] ?? json['imageData']),
+      createdAt:
+          DateTime.tryParse(rawCreatedAt?.toString() ?? '')?.toLocal() ??
+          DateTime.now(),
+      isRead: json['is_read'] == true || json['isRead'] == true,
     );
   }
 
-  Map<String, dynamic> toFirestore() {
-    return {'name': name, 'phoneNumber': phoneNumber, 'message': message, 'imageData': imageData, 'createdAt': Timestamp.fromDate(createdAt), 'isRead': isRead};
+  static String? _normalizeImage(dynamic value) {
+    if (value == null) return null;
+    final normalized = value.toString().trim();
+    return normalized.isEmpty ? null : normalized;
   }
 
-  FeedbackEntity copyWith({String? id, String? name, String? phoneNumber, String? message, String? imageData, DateTime? createdAt, bool? isRead}) {
+  FeedbackEntity copyWith({
+    String? id,
+    String? name,
+    String? phoneNumber,
+    String? message,
+    String? imageData,
+    DateTime? createdAt,
+    bool? isRead,
+  }) {
     return FeedbackEntity(
       id: id ?? this.id,
       name: name ?? this.name,

@@ -31,7 +31,7 @@ class CalculatorLandingPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final isArabic = _isArabic(context);
-    final bool isMobile = MediaQuery.of(context).size.width < 400;
+    final bool isMobile = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
       appBar: showAppBar ? AppBar(title: Text(l10n.calculator_tools)) : null,
@@ -167,14 +167,25 @@ class CalculatorLandingPage extends ConsumerWidget {
   }
 
   Widget _buildHeader(BuildContext context, AppLocalizations l10n, ThemeData theme) {
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(18.r),
       decoration: BoxDecoration(
-        color: theme.cardColor,
+        gradient: LinearGradient(
+          colors: isDark ? const [Color(0xFF171E1D), Color(0xFF101615)] : [theme.cardColor, theme.cardColor],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 18, offset: const Offset(0, 10))],
+        border: Border.all(color: isDark ? AppTheme.primaryColor.withValues(alpha: 0.12) : Colors.grey.withValues(alpha: 0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.04),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,7 +211,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     'Choose a quick estimate, a full wizard, or one focused calculation tool.',
                     'اختر تقديرًا سريعًا أو معالجًا كاملًا أو أداة متخصصة لحساب محدد.',
                   ),
-                  style: theme.textTheme.bodyMedium?.copyWith(fontSize: 13.sp, height: 1.45, color: Colors.grey[700]),
+                  style: theme.textTheme.bodyMedium?.copyWith(fontSize: 13.sp, height: 1.45, color: isDark ? Colors.white70 : Colors.grey[700]),
                 ),
               ],
             ),
@@ -221,16 +232,25 @@ class CalculatorLandingPage extends ConsumerWidget {
     required VoidCallback onTap,
     required bool isMobile,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final surfaceGradient = isDark ? [theme.cardColor, Color.alphaBlend(accent.withValues(alpha: 0.08), theme.cardColor)] : gradient;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: isMobile ? 248.h : null,
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: gradient, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(colors: surfaceGradient, begin: Alignment.topLeft, end: Alignment.bottomRight),
           borderRadius: BorderRadius.circular(22.r),
-          border: Border.all(color: accent.withValues(alpha: 0.24), width: 1.4),
-          boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.08), blurRadius: 18, offset: const Offset(0, 8))],
+          border: Border.all(color: accent.withValues(alpha: isDark ? 0.32 : 0.24), width: 1.4),
+          boxShadow: [
+            BoxShadow(
+              color: accent.withValues(alpha: isDark ? 0.12 : 0.08),
+              blurRadius: 18,
+              offset: const Offset(0, 8),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,14 +267,19 @@ class CalculatorLandingPage extends ConsumerWidget {
               title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: !isMobile ? null : 20.sp, fontWeight: FontWeight.w900, height: 1.12, color: Colors.black87),
+              style: TextStyle(fontSize: !isMobile ? null : 20.sp, fontWeight: FontWeight.w900, height: 1.12, color: isDark ? Colors.white : Colors.black87),
             ),
             SizedBox(height: 8.h),
             Text(
               description,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: !isMobile ? null : 12.5.sp, color: Colors.grey[700], height: 1.45, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: !isMobile ? null : 12.5.sp,
+                color: isDark ? Colors.white70 : Colors.grey[700],
+                height: 1.45,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             SizedBox(height: 14.h),
             Text(
@@ -275,15 +300,29 @@ class CalculatorLandingPage extends ConsumerWidget {
     required Color accent,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(18.r),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(colors: [Color(0xFFF6F3FF), Color(0xFFFFFCFF)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+            colors: isDark
+                ? [Color.alphaBlend(accent.withValues(alpha: 0.06), theme.cardColor), theme.cardColor]
+                : const [Color(0xFFF6F3FF), Color(0xFFFFFCFF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(24.r),
-          border: Border.all(color: accent.withValues(alpha: 0.22), width: 1.4),
-          boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.08), blurRadius: 16, offset: const Offset(0, 8))],
+          border: Border.all(color: accent.withValues(alpha: isDark ? 0.3 : 0.22), width: 1.4),
+          boxShadow: [
+            BoxShadow(
+              color: accent.withValues(alpha: isDark ? 0.12 : 0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -309,7 +348,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     description,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.grey[700], fontSize: 13.sp, height: 1.45),
+                    style: TextStyle(color: isDark ? Colors.white70 : Colors.grey[700], fontSize: 13.sp, height: 1.45),
                   ),
                 ],
               ),
@@ -321,6 +360,8 @@ class CalculatorLandingPage extends ConsumerWidget {
   }
 
   Widget _buildToolCard(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap, [String? heroTag]) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final iconBox = Container(
       width: 46.w,
       height: 46.w,
@@ -333,9 +374,20 @@ class CalculatorLandingPage extends ConsumerWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(colors: [Color(0xFFFCF7FB), Color(0xFFFFFEFF)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+            colors: isDark ? [theme.cardColor, Color.alphaBlend(color.withValues(alpha: 0.05), theme.cardColor)] : const [Color(0xFFFCF7FB), Color(0xFFFFFEFF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(20.r),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10.r, offset: Offset(0, 6.r))],
+          border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.transparent),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: isDark ? 0.16 : 0.04),
+              blurRadius: 10.r,
+              offset: Offset(0, 6.r),
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -347,7 +399,7 @@ class CalculatorLandingPage extends ConsumerWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp, height: 1.24),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp, height: 1.24, color: isDark ? Colors.white : null),
             ),
           ],
         ),

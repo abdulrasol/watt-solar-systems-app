@@ -57,3 +57,8 @@ macos/Runner/GoogleService-Info.plist
 
 # Old files directory (if not needed in repo)
 old files/
+
+# App signing
+key.properties
+*.jks
+*.keystore

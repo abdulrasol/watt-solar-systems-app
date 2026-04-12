@@ -25,12 +25,14 @@ class StorefrontProductCard extends StatelessWidget {
     final isB2b = audience == StorefrontAudience.b2b;
     final color = isB2b ? const Color(0xFF1C6E8C) : AppTheme.primaryColor;
     final heroTag = '${audience.name}_${product.company.id}_${product.id}';
+    final isSingleColumn = MediaQuery.of(context).size.width < 520;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
 
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
+        border: Border.all(color: onSurface.withValues(alpha: 0.08)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -42,146 +44,193 @@ class StorefrontProductCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(20.r),
         onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Hero(
-                tag: heroTag,
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20.r),
+        child: isSingleColumn
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    width: 120.w,
+                    child: _buildImage(context, heroTag, color),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(14.r),
+                      child: _buildContent(
+                        context,
+                        l10n,
+                        priceFormat,
+                        isB2b,
+                        color,
+                        onSurface,
+                      ),
                     ),
                   ),
-                  child: product.primaryImage == null
-                      ? Icon(Icons.image_outlined, size: 36.sp, color: color)
-                      : ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20.r),
-                          ),
-                          child: CachedNetworkImage(
-                            imageUrl: product.primaryImage!,
-                            fit: BoxFit.cover,
-                            memCacheWidth: (250 * ScreenUtil().textScaleFactor).toInt(),
-                            memCacheHeight: (350 * ScreenUtil().textScaleFactor).toInt(),
-                            placeholder: (context, url) => Container(
-                              color: color.withValues(alpha: 0.05),
-                              child: const Center(
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              ),
-                            ),
-                            errorWidget: (context, url, error) => Icon(
-                              Icons.error_outline_rounded,
-                              color: AppTheme.errorColor,
-                            ),
-                          ),
-                        ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(14.r),
-              child: Column(
+                ],
+              )
+            : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 5.h,
+                  Expanded(child: _buildImage(context, heroTag, color)),
+                  Padding(
+                    padding: EdgeInsets.all(14.r),
+                    child: _buildContent(
+                      context,
+                      l10n,
+                      priceFormat,
+                      isB2b,
+                      color,
+                      onSurface,
                     ),
-                    decoration: BoxDecoration(
-                      color: product.isAvailable
-                          ? AppTheme.successColor.withValues(alpha: 0.12)
-                          : AppTheme.errorColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(999.r),
-                    ),
-                    child: Text(
-                      product.isAvailable ? l10n.available : l10n.unavailable,
-                      style: TextStyle(
-                        color: product.isAvailable
-                            ? AppTheme.successColor
-                            : AppTheme.errorColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11.sp,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    product.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    product.company.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                  if (product.categoryLabel.isNotEmpty) ...[
-                    SizedBox(height: 4.h),
-                    Text(
-                      product.categoryLabel,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12.sp, color: color),
-                    ),
-                  ],
-                  SizedBox(height: 10.h),
-                  Text(
-                    l10n.iqd_price(priceFormat.format(product.displayPrice)),
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w900,
-                      color: color,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          isB2b
-                              ? l10n.wholesale_price_label(
-                                  priceFormat.format(product.wholesalePrice),
-                                )
-                              : l10n.retail_price_label(
-                                  priceFormat.format(product.retailPrice),
-                                ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 11.sp,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        l10n.stock_count(product.stockQuantity),
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),
+      ),
+    );
+  }
+
+  Widget _buildImage(BuildContext context, String heroTag, Color color) {
+    return Hero(
+      tag: heroTag,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))
+              .copyWith(
+                bottomLeft: MediaQuery.of(context).size.width < 520
+                    ? Radius.circular(20.r)
+                    : Radius.zero,
+                topRight: MediaQuery.of(context).size.width < 520
+                    ? Radius.zero
+                    : Radius.circular(20.r),
+              ),
+        ),
+        child: product.primaryImage == null
+            ? Icon(Icons.image_outlined, size: 36.sp, color: color)
+            : ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))
+                    .copyWith(
+                      bottomLeft: MediaQuery.of(context).size.width < 520
+                          ? Radius.circular(20.r)
+                          : Radius.zero,
+                      topRight: MediaQuery.of(context).size.width < 520
+                          ? Radius.zero
+                          : Radius.circular(20.r),
+                    ),
+                child: CachedNetworkImage(
+                  imageUrl: product.primaryImage!,
+                  fit: BoxFit.cover,
+                  memCacheWidth: (250 * ScreenUtil().textScaleFactor).toInt(),
+                  memCacheHeight: (350 * ScreenUtil().textScaleFactor).toInt(),
+                  placeholder: (context, url) => Container(
+                    color: color.withValues(alpha: 0.05),
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Icon(
+                    Icons.error_outline_rounded,
+                    color: AppTheme.errorColor,
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    AppLocalizations l10n,
+    NumberFormat priceFormat,
+    bool isB2b,
+    Color color,
+    Color onSurface,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+          decoration: BoxDecoration(
+            color: product.isAvailable
+                ? AppTheme.successColor.withValues(alpha: 0.12)
+                : AppTheme.errorColor.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(999.r),
+          ),
+          child: Text(
+            product.isAvailable ? l10n.available : l10n.unavailable,
+            style: TextStyle(
+              color: product.isAvailable
+                  ? AppTheme.successColor
+                  : AppTheme.errorColor,
+              fontWeight: FontWeight.w700,
+              fontSize: 11.sp,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Text(
+          product.name,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w800),
+        ),
+        SizedBox(height: 6.h),
+        Text(
+          product.company.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 12.sp,
+            color: onSurface.withValues(alpha: 0.64),
+          ),
+        ),
+        if (product.categoryLabel.isNotEmpty) ...[
+          SizedBox(height: 4.h),
+          Text(
+            product.categoryLabel,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 12.sp, color: color),
+          ),
+        ],
+        SizedBox(height: 10.h),
+        Text(
+          l10n.iqd_price(priceFormat.format(product.displayPrice)),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w900,
+            color: color,
+          ),
+        ),
+        SizedBox(height: 6.h),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                isB2b
+                    ? l10n.wholesale_price_label(
+                        priceFormat.format(product.wholesalePrice),
+                      )
+                    : l10n.retail_price_label(
+                        priceFormat.format(product.retailPrice),
+                      ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 11.sp,
+                  color: onSurface.withValues(alpha: 0.64),
+                ),
+              ),
+            ),
+            Text(
+              l10n.stock_count(product.stockQuantity),
+              style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w700),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

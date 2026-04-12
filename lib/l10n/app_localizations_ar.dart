@@ -9,7 +9,7 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get app_name => 'تطبيق واط';
+  String get app_name => 'واط، احسب منظومتك الشمسية';
 
   @override
   String get app_slug => 'احسب منظومة الطاقة الشمسية الخاصة بك';
@@ -69,6 +69,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get good_evening => 'مساء الخير،';
 
   @override
+  String get good_night => 'تصبح على خير،';
+
+  @override
   String get ready_to_manage_solar => 'جاهز لإدارة أنظمتك الشمسية؟';
 
   @override
@@ -88,6 +91,111 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get store => 'المتجر';
+
+  @override
+  String get dashboard_hero_subtitle => 'ابدأ بتقدير سريع، أو جهز طلب عرض، أو استكشف المكونات المناسبة لمنظومتك القادمة.';
+
+  @override
+  String get dashboard_chip_fast => 'حساب سريع';
+
+  @override
+  String get dashboard_chip_offers => 'طلب عرض';
+
+  @override
+  String get dashboard_chip_store => 'تسوق القطع';
+
+  @override
+  String get dashboard_quick_actions_subtitle => 'انتقل مباشرة إلى أداة الحساب المناسبة لطبيعة مشروعك.';
+
+  @override
+  String get dashboard_fast_calculator => 'الحاسبة السريعة';
+
+  @override
+  String get dashboard_fast_calculator_desc => 'قدّر الألواح والعاكس وسعة البطاريات من خلال عدة مدخلات مباشرة فقط.';
+
+  @override
+  String get dashboard_offer_wizard => 'معالج طلب العرض';
+
+  @override
+  String get dashboard_offer_wizard_desc => 'جهّز طلبًا منظمًا للألواح والعاكس والبطاريات قبل إرساله للشركات.';
+
+  @override
+  String get dashboard_system_wizard => 'معالج حساب المنظومة';
+
+  @override
+  String get dashboard_system_wizard_desc => 'ابنِ تصميمًا أشمل للمنظومة اعتمادًا على الأجهزة والاستهلاك وتفضيلات النظام.';
+
+  @override
+  String get dashboard_shopping => 'التسوق';
+
+  @override
+  String get dashboard_shopping_subtitle => 'تصفح المنتجات المتاحة الآن مع مساحة مهيأة للعناصر المميزة لاحقًا.';
+
+  @override
+  String get dashboard_shop_now => 'فتح المتجر';
+
+  @override
+  String get dashboard_shop_now_desc => 'انتقل إلى تبويب المتجر وابدأ بتصفح مكونات الطاقة الشمسية.';
+
+  @override
+  String get dashboard_featured_products => 'منتجات مميزة';
+
+  @override
+  String get dashboard_featured_products_desc => 'مساحة مخصصة لاحقًا للعروض المختارة والباقات بعد ربط الـ API القادم.';
+
+  @override
+  String get dashboard_store_coming_soon => 'الوصول إلى المتجر غير متاح حاليًا على هذا الجهاز.';
+
+  @override
+  String get dashboard_open_store => 'فتح المتجر';
+
+  @override
+  String get dashboard_placeholder_badge => 'عنصر مؤقت';
+
+  @override
+  String get dashboard_promotions => 'ملصقات الشركات';
+
+  @override
+  String get dashboard_promotions_subtitle => 'شرائح مؤقتة الآن ومهيأة لاحقًا لحملات الشركات وواجهات الملصقات.';
+
+  @override
+  String get dashboard_poster_title_1 => 'مكان حملة دعائية';
+
+  @override
+  String get dashboard_poster_desc_1 => 'ستظهر هنا لاحقًا بانرات الشركات والعروض الموسمية والحملات الترويجية.';
+
+  @override
+  String get dashboard_poster_title_2 => 'واجهة شركاء التركيب';
+
+  @override
+  String get dashboard_poster_desc_2 => 'يمكن استخدام هذه المساحة لاحقًا لإبراز الشركاء أو مناطق الخدمة أو حملات التوعية.';
+
+  @override
+  String get dashboard_poster_title_3 => 'بانر المنتجات الجديدة';
+
+  @override
+  String get dashboard_poster_desc_3 => 'يمكن للـ API القادم تغذية هذا السلايدر بالمخزون الجديد أو الباقات المميزة أو العروض المحدودة.';
+
+  @override
+  String get dashboard_tips_subtitle => 'تلميحات عملية لتحسب بشكل أدق، وتشتري بذكاء، وتتجنب أخطاء التصميم الشائعة.';
+
+  @override
+  String get dashboard_hint_clean_title => 'حافظ على نظافة الألواح';
+
+  @override
+  String get dashboard_hint_clean_desc => 'الغبار والظل يقللان إنتاج الطاقة بسرعة. خطة تنظيف بسيطة ترفع استقرار الأداء.';
+
+  @override
+  String get dashboard_hint_expand_title => 'اترك مجالاً للتوسعة';
+
+  @override
+  String get dashboard_hint_expand_desc => 'عند اختيار العاكس أو البطاريات، فكر بالأحمال المستقبلية حتى لا تصبح المنظومة محدودة بسرعة.';
+
+  @override
+  String get dashboard_hint_compare_title => 'قارن قبل الشراء';
+
+  @override
+  String get dashboard_hint_compare_desc => 'استخدم أدوات الحساب أولاً ثم قارن العروض والمكونات على أساس نفس حجم المنظومة المستهدف.';
 
   @override
   String get buy_components => 'شراء المكونات';
@@ -140,10 +248,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sort_price_desc => 'السعر من الأعلى للأقل';
 
   @override
+  String get sort_retail_price_asc => 'سعر المفرد من الأقل للأعلى';
+
+  @override
+  String get sort_retail_price_desc => 'سعر المفرد من الأعلى للأقل';
+
+  @override
+  String get sort_wholesale_price_asc => 'سعر الجملة من الأقل للأعلى';
+
+  @override
+  String get sort_wholesale_price_desc => 'سعر الجملة من الأعلى للأقل';
+
+  @override
+  String get sort_stock_asc => 'المخزون من الأقل للأعلى';
+
+  @override
+  String get sort_stock_desc => 'المخزون من الأعلى للأقل';
+
+  @override
   String get all => 'الكل';
 
   @override
   String get all_categories => 'كل التصنيفات';
+
+  @override
+  String get categories => 'التصنيفات';
+
+  @override
+  String get cancel_action => 'إلغاء';
+
+  @override
+  String get delete_action => 'حذف';
 
   @override
   String get all_companies => 'كل الشركات';
@@ -284,6 +419,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reset_password_instructions => 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.';
 
   @override
+  String get reset_password_token_instructions => 'أدخل الرمز الذي وصلك ثم اختر كلمة مرور جديدة.';
+
+  @override
   String get email_is_required => 'البريد الإلكتروني مطلوب';
 
   @override
@@ -299,10 +437,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get password_reset_email_sent => 'تم إرسال بريد إعادة تعيين كلمة المرور!';
 
   @override
+  String get password_reset_success => 'تمت إعادة تعيين كلمة المرور بنجاح.';
+
+  @override
   String get error => 'خطأ';
 
   @override
   String get send_reset_link => 'إرسال رابط إعادة التعيين';
+
+  @override
+  String get reset_token => 'رمز إعادة التعيين';
+
+  @override
+  String get reset_token_required => 'رمز إعادة التعيين مطلوب';
+
+  @override
+  String get verify_token => 'التحقق من الرمز';
+
+  @override
+  String get reset_token_verified => 'تم التحقق من الرمز بنجاح.';
+
+  @override
+  String get new_password => 'كلمة المرور الجديدة';
+
+  @override
+  String get confirm_new_password => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get delete_account => 'حذف الحساب';
+
+  @override
+  String get delete_account_warning => 'هذا الإجراء نهائي. أدخل كلمة المرور لحذف حسابك.';
+
+  @override
+  String get delete_account_reason => 'سبب الحذف (اختياري)';
+
+  @override
+  String get account_deleted_successfully => 'تم حذف الحساب بنجاح.';
 
   @override
   String get send_feedback => 'إرسال الملاحظات';
@@ -480,6 +651,111 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get company_registered_success => 'تم تسجيل الشركة بنجاح';
+
+  @override
+  String get company_updated_successfully => 'تم تحديث الشركة بنجاح.';
+
+  @override
+  String get company_type => 'نوع الشركة';
+
+  @override
+  String get company_type_required => 'نوع الشركة مطلوب';
+
+  @override
+  String get edit_company => 'تعديل الشركة';
+
+  @override
+  String get company_profile => 'ملف الشركة';
+
+  @override
+  String get company_profile_subtitle => 'حافظ على تحديث ملف شركتك باستمرار.';
+
+  @override
+  String get company_activation_required_title => 'تفعيل الشركة مطلوب';
+
+  @override
+  String get company_activation_required_message => 'هذه الشركة غير مفعلة أو أن الاشتراك غير صالح حالياً. تواصل مع الإدارة لتفعيل الشركة وتمكين إجراءات الإدارة.';
+
+  @override
+  String get company_activation_required_short => 'التفعيل مطلوب';
+
+  @override
+  String get company_pending_activation_title => 'تفعيل الشركة قيد الانتظار';
+
+  @override
+  String get company_pending_activation_message => 'شركتك ما زالت بانتظار مراجعة الإدارة. يمكنك التواصل مع الإدارة، وإذا مر أكثر من 24 ساعة على إنشاء الشركة يمكن إرسال تذكير بالتفعيل.';
+
+  @override
+  String get company_send_activation_reminder => 'إرسال تذكير بالتفعيل';
+
+  @override
+  String get company_activation_reminder_sent => 'تم إرسال تذكير التفعيل بنجاح.';
+
+  @override
+  String company_activation_reminder_sent_message(Object availableAt) {
+    return 'تم إرسال تذكير إلى الإدارة. سيتاح التذكير التالي في $availableAt.';
+  }
+
+  @override
+  String get company_subscription_required_title => 'الاشتراك مطلوب';
+
+  @override
+  String get company_subscription_required_message => 'شركتك مفعلة لكن الاشتراك غير صالح حالياً. اختر إحدى الخطط أدناه لإرسال طلب اشتراك.';
+
+  @override
+  String get company_subscription_available_plans => 'خطط الاشتراك المتاحة';
+
+  @override
+  String get company_subscription_plans_error => 'تعذر تحميل خطط الاشتراك.';
+
+  @override
+  String get company_subscription_plans_empty => 'لا توجد خطط اشتراك متاحة حالياً.';
+
+  @override
+  String company_subscription_plan_meta(Object days, Object price) {
+    return '$days يوم • $price';
+  }
+
+  @override
+  String get company_subscription_request_cta => 'طلب هذه الخطة';
+
+  @override
+  String get company_subscription_notes => 'ملاحظات (اختياري)';
+
+  @override
+  String get company_subscription_image_optional => 'صورة (اختياري)';
+
+  @override
+  String get company_subscription_submit => 'إرسال طلب الاشتراك';
+
+  @override
+  String get company_subscription_request_submitted => 'تم إرسال طلب الاشتراك بنجاح.';
+
+  @override
+  String get company_subscription_request_pending => 'طلب الاشتراك بانتظار المراجعة.';
+
+  @override
+  String company_subscription_request_pending_message(Object planName) {
+    return 'طلب الاشتراك الخاص بخطة $planName بانتظار مراجعة الإدارة.';
+  }
+
+  @override
+  String get company_call_admin => 'الاتصال بالإدارة';
+
+  @override
+  String get company_email_admin => 'مراسلة الإدارة';
+
+  @override
+  String get company_chat_admin => 'محادثة الإدارة';
+
+  @override
+  String get company_chat_admin_coming_soon => 'الدردشة قريباً';
+
+  @override
+  String get company_contact_admin_failed => 'تعذر فتح وسيلة التواصل مع الإدارة.';
+
+  @override
+  String get retry => 'إعادة المحاولة';
 
   @override
   String get min_6_characters => '6 أحرف على الأقل';
@@ -815,7 +1091,252 @@ class AppLocalizationsAr extends AppLocalizations {
   String get services => 'الخدمات';
 
   @override
+  String get services_explorer_subtitle => 'تصفح شركات الطاقة الشمسية الموثوقة حسب نوع الخدمة، ثم افتح الشركات المطابقة لما تحتاجه.';
+
+  @override
+  String get services_choose_category => 'اختر فئة الخدمة';
+
+  @override
+  String get services_no_categories => 'لا توجد فئات خدمات متاحة حالياً.';
+
+  @override
+  String get services_explore_companies => 'استعرض الشركات';
+
+  @override
+  String services_companies_found(Object count) {
+    return 'تم العثور على $count شركة';
+  }
+
+  @override
+  String get services_companies_subtitle => 'اعثر على الشركات العامة المطابقة لنوع الخدمة هذا. غيّر المدينة أو استخدم البحث لتضييق النتائج.';
+
+  @override
+  String get services_all_cities => 'كل المدن';
+
+  @override
+  String get services_search_companies => 'ابحث عن الشركات';
+
+  @override
+  String get services_no_companies_found => 'لا توجد شركات مطابقة لهذا النوع من الخدمات مع الفلاتر الحالية.';
+
+  @override
+  String get services_retry => 'إعادة المحاولة';
+
+  @override
+  String get services_public_badge => 'عام';
+
+  @override
+  String services_contacts_count(Object count) {
+    return '$count جهة اتصال';
+  }
+
+  @override
+  String services_services_count(Object count) {
+    return '$count خدمة';
+  }
+
+  @override
+  String get services_company_details => 'تفاصيل الشركة';
+
+  @override
+  String get services_company_info => 'معلومات الشركة';
+
+  @override
+  String get services_address => 'العنوان';
+
+  @override
+  String get services_no_address => 'لا يوجد عنوان';
+
+  @override
+  String get services_city_label => 'المدينة';
+
+  @override
+  String get services_not_specified => 'غير محدد';
+
+  @override
+  String get services_type_label => 'النوع';
+
+  @override
+  String get services_phone_label => 'الهاتف';
+
+  @override
+  String get services_no_phone => 'لا يوجد رقم هاتف';
+
+  @override
+  String get services_section_services => 'الخدمات';
+
+  @override
+  String get services_no_public_services => 'لا توجد خدمات عامة مدرجة بعد.';
+
+  @override
+  String get services_price_on_request => 'السعر عند الطلب';
+
+  @override
+  String get services_contacts_title => 'جهات الاتصال';
+
+  @override
+  String get services_no_contacts => 'لا توجد جهات اتصال متاحة.';
+
+  @override
+  String get services_delivery_options => 'خيارات التوصيل';
+
+  @override
+  String get services_no_delivery_options => 'لا توجد خيارات توصيل متاحة.';
+
+  @override
+  String get services_flexible_delivery => 'مرن';
+
+  @override
+  String services_estimated_days(Object min, Object max) {
+    return 'المدة المتوقعة: $min - $max يوم';
+  }
+
+  @override
   String get contacts => 'جهات الاتصال';
+
+  @override
+  String get company_contacts_subtitle => 'إدارة جهات الاتصال الخاصة بشركتك.';
+
+  @override
+  String get company_contacts_loading => 'جاري تحميل جهات الاتصال...';
+
+  @override
+  String get company_contacts_empty_title => 'لا توجد جهات اتصال بعد';
+
+  @override
+  String get company_contacts_empty_subtitle => 'أنشئ أول جهة اتصال لشركتك.';
+
+  @override
+  String get company_contacts_add => 'إضافة جهة اتصال';
+
+  @override
+  String get company_contacts_save => 'حفظ جهة الاتصال';
+
+  @override
+  String get company_contacts_name => 'الاسم';
+
+  @override
+  String get company_contacts_email => 'البريد الإلكتروني';
+
+  @override
+  String get company_contacts_phone => 'الهاتف';
+
+  @override
+  String get company_contacts_notes => 'ملاحظات';
+
+  @override
+  String get company_contacts_name_required => 'اسم جهة الاتصال مطلوب';
+
+  @override
+  String get company_contacts_email_required => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get company_contacts_email_invalid => 'أدخل بريدًا إلكترونيًا صحيحًا';
+
+  @override
+  String get company_contacts_phone_required => 'الهاتف مطلوب';
+
+  @override
+  String get company_contacts_deleted => 'تم حذف جهة الاتصال بنجاح.';
+
+  @override
+  String get company_contacts_delete_title => 'حذف جهة الاتصال';
+
+  @override
+  String company_contacts_delete_message(Object name) {
+    return 'هل تريد حذف $name من جهات الاتصال؟';
+  }
+
+  @override
+  String get company_contacts_no_company => 'يلزم وجود حساب شركة لإدارة جهات الاتصال.';
+
+  @override
+  String get company_public_services => 'الخدمات العامة';
+
+  @override
+  String get company_public_services_subtitle => 'اعرض الخدمات التي تقدمها شركتك للجمهور.';
+
+  @override
+  String get company_public_services_loading => 'جاري تحميل الخدمات العامة...';
+
+  @override
+  String get company_public_services_empty_title => 'لا توجد خدمات عامة بعد';
+
+  @override
+  String get company_public_services_empty_subtitle => 'أنشئ أول خدمة عامة لشركتك.';
+
+  @override
+  String get company_public_services_add => 'إضافة خدمة';
+
+  @override
+  String get company_public_services_edit => 'تعديل الخدمة';
+
+  @override
+  String get company_public_services_save => 'حفظ الخدمة';
+
+  @override
+  String get company_public_services_title => 'العنوان';
+
+  @override
+  String get company_public_services_title_required => 'عنوان الخدمة مطلوب';
+
+  @override
+  String get company_public_services_price => 'السعر';
+
+  @override
+  String get company_public_services_description => 'الوصف';
+
+  @override
+  String get company_public_services_deleted => 'تم حذف الخدمة العامة بنجاح.';
+
+  @override
+  String get company_public_services_delete_title => 'حذف الخدمة العامة';
+
+  @override
+  String company_public_services_delete_message(Object name) {
+    return 'هل تريد حذف $name من الخدمات العامة؟';
+  }
+
+  @override
+  String get company_public_services_no_company => 'يلزم وجود حساب شركة لإدارة الخدمات العامة.';
+
+  @override
+  String get company_categories_subtitle => 'نظّم شركتك باستخدام تصنيفات مخصصة.';
+
+  @override
+  String get company_categories_loading => 'جاري تحميل التصنيفات...';
+
+  @override
+  String get company_categories_empty_title => 'لا توجد تصنيفات بعد';
+
+  @override
+  String get company_categories_empty_subtitle => 'أنشئ أول تصنيف لشركتك.';
+
+  @override
+  String get company_categories_add => 'إضافة تصنيف';
+
+  @override
+  String get company_categories_save => 'حفظ التصنيف';
+
+  @override
+  String get company_categories_name => 'اسم التصنيف';
+
+  @override
+  String get company_categories_name_required => 'اسم التصنيف مطلوب';
+
+  @override
+  String get company_categories_deleted => 'تم حذف التصنيف بنجاح.';
+
+  @override
+  String get company_categories_delete_title => 'حذف التصنيف';
+
+  @override
+  String company_categories_delete_message(Object name) {
+    return 'هل تريد حذف $name من التصنيفات؟';
+  }
+
+  @override
+  String get company_categories_no_company => 'يلزم وجود حساب شركة لإدارة التصنيفات.';
 
   @override
   String get status_active => 'نشط';
@@ -1250,9 +1771,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delivery => 'التوصيل';
 
   @override
-  String get company_profile => 'ملف الشركة';
-
-  @override
   String get subscription => 'الاشتراك';
 
   @override
@@ -1287,9 +1805,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get startup_role_subtitle => 'افتح لوحة التحكم المفضلة لديك تلقائياً عند تشغيل التطبيق';
-
-  @override
-  String get edit_company => 'تعديل الشركة';
 
   @override
   String get profile_updated_success => 'تم تحديث الملف بنجاح!';

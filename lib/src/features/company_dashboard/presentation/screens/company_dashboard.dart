@@ -27,26 +27,19 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
   void initState() {
     super.initState();
     // Fetch data on init
-    Future.microtask(
-      () => ref.read(companySummeryProvider.notifier).getSummery(),
-    );
+    Future.microtask(() => ref.read(companySummeryProvider.notifier).getSummery());
   }
 
   List<NavItem> _getNavItems(CompanySummeryState state) {
     final l10n = AppLocalizations.of(context)!;
-    final List<NavItem> items = [
-      NavItem(label: l10n.overview, icon: Iconsax.grid_1_bold),
-      NavItem(label: l10n.services, icon: Iconsax.crown_bold),
-    ];
+    final List<NavItem> items = [NavItem(label: l10n.overview, icon: Iconsax.grid_1_bold), NavItem(label: l10n.services, icon: Iconsax.crown_bold)];
     bool hasActiveOffers = false;
 
     if (state.summery != null) {
       for (final service in state.summery!.services) {
         final bool isAvailable =
             service.status != null &&
-            (service.status!.toLowerCase() == 'active' ||
-                service.status!.toLowerCase() == 'approved' ||
-                service.status!.toLowerCase() == 'string');
+            (service.status!.toLowerCase() == 'active' || service.status!.toLowerCase() == 'approved' || service.status!.toLowerCase() == 'string');
 
         if (isAvailable) {
           if (service.serviceCode == 'offers') {
@@ -55,49 +48,19 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
           NavItem? item;
           switch (service.serviceCode) {
             case 'offers':
-              item = NavItem(
-                label: l10n.offers,
-                icon: Iconsax.document_bold,
-                serviceCode: 'offers',
-                iconUrl: service.icon,
-                route: service.route,
-              );
+              item = NavItem(label: l10n.offers, icon: Iconsax.document_bold, serviceCode: 'offers', iconUrl: service.icon, route: service.route);
               break;
             case 'inventory':
-              item = NavItem(
-                label: l10n.inventory,
-                icon: Iconsax.box_bold,
-                serviceCode: 'inventory',
-                iconUrl: service.icon,
-                route: service.route,
-              );
+              item = NavItem(label: l10n.inventory, icon: Iconsax.box_bold, serviceCode: 'inventory', iconUrl: service.icon, route: service.route);
               break;
             case 'multi_member':
-              item = NavItem(
-                label: l10n.members,
-                icon: Iconsax.people_bold,
-                serviceCode: 'multi_member',
-                iconUrl: service.icon,
-                route: service.route,
-              );
+              item = NavItem(label: l10n.members, icon: Iconsax.people_bold, serviceCode: 'multi_member', iconUrl: service.icon, route: service.route);
               break;
             case 'accounting':
-              item = NavItem(
-                label: l10n.accounting,
-                icon: Iconsax.money_2_bold,
-                serviceCode: 'accounting',
-                iconUrl: service.icon,
-                route: service.route,
-              );
+              item = NavItem(label: l10n.accounting, icon: Iconsax.money_2_bold, serviceCode: 'accounting', iconUrl: service.icon, route: service.route);
               break;
             case 'analytics':
-              item = NavItem(
-                label: l10n.analytics,
-                icon: Iconsax.chart_2_bold,
-                serviceCode: 'analytics',
-                iconUrl: service.icon,
-                route: service.route,
-              );
+              item = NavItem(label: l10n.analytics, icon: Iconsax.chart_2_bold, serviceCode: 'analytics', iconUrl: service.icon, route: service.route);
               break;
             case 'storefront_b2b':
               item = NavItem(
@@ -109,13 +72,7 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
               );
               break;
             case 'storefront_b2c':
-              item = NavItem(
-                label: l10n.b2c_storefront,
-                icon: Iconsax.shop_bold,
-                serviceCode: 'storefront_b2c',
-                iconUrl: service.icon,
-                route: service.route,
-              );
+              item = NavItem(label: l10n.b2c_storefront, icon: Iconsax.shop_bold, serviceCode: 'storefront_b2c', iconUrl: service.icon, route: service.route);
               break;
           }
           if (item != null) items.add(item);
@@ -123,14 +80,7 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
       }
     }
     if (hasActiveOffers) {
-      items.add(
-        NavItem(
-          label: l10n.offers_catalog,
-          icon: Iconsax.receipt_item_bold,
-          serviceCode: 'offers_catalog',
-          route: '/offers/catalog',
-        ),
-      );
+      items.add(NavItem(label: l10n.offers_catalog, icon: Iconsax.receipt_item_bold, serviceCode: 'offers_catalog', route: '/offers/catalog'));
     }
     return items;
   }
@@ -153,12 +103,8 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
       selectedIndex: _selectedIndex,
       onItemSelected: (index) {
         final item = navItems[index];
-        if (item.route != null &&
-            item.route!.isNotEmpty &&
-            item.route != 'null') {
-          final extra = item.route == 'storefront'
-              ? StorefrontAudience.b2b
-              : null;
+        if (item.route != null && item.route!.isNotEmpty && item.route != 'null') {
+          final extra = item.route == 'storefront' ? StorefrontAudience.b2b : null;
           context.push(item.route!, extra: extra);
 
           dPrint('item.route! ${item.route}');
@@ -175,21 +121,14 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
         appBar: AppBar(
           title: Text(navItems[_selectedIndex].label),
           leading: Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Iconsax.menu_1_bold),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
+            builder: (context) => IconButton(icon: const Icon(Iconsax.menu_1_bold), onPressed: () => Scaffold.of(context).openDrawer()),
           ),
           actions: [
             if (state.isLoading)
               const Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
+                  child: SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
                 ),
               ),
           ],
@@ -206,16 +145,8 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
             width: sidebarWidth.w,
             decoration: BoxDecoration(
               color: AppTheme.lightSurface,
-              border: Border(
-                right: BorderSide(color: Colors.grey.withValues(alpha: 0.1)),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(4, 0),
-                ),
-              ],
+              border: Border(right: BorderSide(color: Colors.grey.withValues(alpha: 0.1))),
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(4, 0))],
             ),
             child: sidebar,
           ),

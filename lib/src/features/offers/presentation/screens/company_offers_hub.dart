@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/involves_catalog_screen.dart';
+import 'package:solar_hub/src/features/offers/presentation/screens/offer_details_screen.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import '../providers/offers_provider.dart';
@@ -196,7 +197,17 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
                         );
                       }
                       final offer = state.myOffers[index];
-                      return OfferCard(offer: offer, onTap: () {});
+                      return OfferCard(
+                        offer: offer,
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => OfferDetailsScreen(
+                              offer: offer,
+                              isCompanyView: true,
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -269,24 +280,35 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
     bool isSelected,
     VoidCallback onSelected,
   ) {
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.only(right: 8.w),
-      child: FilterChip(
-        label: Text(
-          label,
-          style: TextStyle(
-            fontSize: 10.sp,
-            color: isSelected ? Colors.white : Colors.black,
-            fontFamily: AppTheme.fontFamily,
+      child: InkWell(
+        onTap: onSelected,
+        borderRadius: BorderRadius.circular(999.r),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+          decoration: BoxDecoration(
+            color: isSelected ? AppTheme.primaryColor : theme.cardColor,
+            borderRadius: BorderRadius.circular(999.r),
+            border: Border.all(
+              color: isSelected
+                  ? AppTheme.primaryColor
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.08),
+            ),
           ),
-        ),
-        selected: isSelected,
-        onSelected: (_) => onSelected(),
-        selectedColor: AppTheme.primaryColor,
-        checkmarkColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 4.w),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: isSelected
+                  ? Colors.white
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.78),
+              fontFamily: AppTheme.fontFamily,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
       ),
     );

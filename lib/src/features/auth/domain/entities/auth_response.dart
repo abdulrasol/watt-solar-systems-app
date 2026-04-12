@@ -15,6 +15,9 @@ class AuthResponse extends BaseResponse {
   }
 
   factory AuthResponse.fromBase(BaseResponse baseResponse) {
-    return AuthResponse(token: baseResponse.body['token'], user: User.fromJson(baseResponse.body['user']));
+    return AuthResponse(
+      token: baseResponse.body['token'],
+      user: User.fromJson(baseResponse.body['user']),
+    );
   }
 }

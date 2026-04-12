@@ -18,12 +18,12 @@ class AppExplanations {
         ExplanationItem(
           title: "ساعات الاستقلالية",
           description:
-              "هي عدد الساعات التي يجب أن تغطيها البطاريات عند غياب الشمس، مثل الليل أو أثناء الغيوم. كلما زادت هذه القيمة زادت سعة البطاريات المطلوبة.",
+              "هي عدد الساعات التي يجب أن تغطيها البطاريات عند غياب الشمس، مثل الليل أو أثناء الغيوم. يتم تحويل هذه القيمة إلى جزء من الاستهلاك اليومي ثم حساب سعة البطاريات المطلوبة مع مراعاة كفاءة العاكس وعمق التفريغ المسموح.",
         ),
         ExplanationItem(
           title: "ساعات ذروة الشمس",
           description:
-              "هي متوسط عدد الساعات اليومية التي تكون فيها أشعة الشمس قوية بما يكفي ليعمل اللوح قريباً من قدرته القصوى. في كثير من المناطق تكون تقريباً بين 4 و6 ساعات.",
+              "هي متوسط عدد الساعات اليومية التي تكون فيها أشعة الشمس قوية بما يكفي ليعمل اللوح قريباً من قدرته القصوى. تستخدم هذه القيمة مع معامل الفواقد لحساب القدرة الشمسية المطلوبة. في كثير من المناطق تكون تقريباً بين 4 و6 ساعات.",
         ),
         ExplanationItem(
           title: "قدرة اللوح",
@@ -40,6 +40,51 @@ class AppExplanations {
           description:
               "هو الجهد الكلي لبنك البطاريات الذي سيعمل عليه النظام، مثل 12V أو 24V أو 48V. عادةً الأنظمة الأكبر تستخدم جهداً أعلى لتقليل التيار والفاقد في الأسلاك.",
         ),
+        ExplanationItem(
+          title: "وضع الحساب",
+          description:
+              "اختر بين الوضع العملي الهجين الذي يعتمد على الحمل المباشر ودورة الشبكة، أو وضع الطاقة الكامل الذي يعتمد على قائمة الأجهزة والاستهلاك اليومي.",
+        ),
+        ExplanationItem(
+          title: "الحمل المتناوب المباشر",
+          description:
+              "في الوضع العملي يمكنك إدخال الحمل مباشرة بالأمبير أو بالواط. إذا أدخلت الأمبير يتم تحويله إلى واط باستخدام جهد النظام المتناوب المختار.",
+        ),
+        ExplanationItem(
+          title: "جهد النظام المتناوب",
+          description:
+              "اختر جهد التغذية المتناوبة للأحمال: 110 أو 230 للفاز الواحد، أو 380 للثلاثي. عند اختيار 380 يتم عرض النتائج على أنها ثلاثي الأطوار ويتم حساب التيار وفق معادلة الثلاثي.",
+        ),
+        ExplanationItem(
+          title: "دورة الشبكة",
+          description:
+              "أدخل عدد ساعات تشغيل الشبكة وعدد ساعات انقطاعها في الدورة المتكررة. في الوضع العملي يتم حساب البطارية من ساعات الانقطاع، بينما في وضع الطاقة الكامل تستخدم الدورة لتقليل الحاجة للألواح والبطاريات.",
+        ),
+        ExplanationItem(
+          title: "نسبة إعادة الشحن",
+          description:
+              "تعبر عن كمية الطاقة التي يمكن للشبكة أو الألواح إعادتها للبطارية أثناء فترة توفر الكهرباء. قيمة 0% تعني عدم الاعتماد على إعادة الشحن في الحساب، و100% تعني تعويض كامل لطاقة فترة الانقطاع التالية.",
+        ),
+        ExplanationItem(
+          title: "سعة البطارية الواحدة",
+          description:
+              "أدخل سعة البطارية الواحدة بالأمبير-ساعة (Ah). يستخدم هذا الرقم مع جهد البطارية الواحدة لتحديد عدد السلاسل والتوازي اللازمين لتحقيق السعة المطلوبة.",
+        ),
+        ExplanationItem(
+          title: "كيمياء البطارية",
+          description:
+              "نوع البطارية يغيّر عمق التفريغ وكفاءة التخزين المستخدمة في الحساب. الليثيوم يسمح عادةً بنسبة استخدام أعلى، بينما الجل أو الرصاص الحمضي يحتاج هامشاً أكبر لحماية العمر التشغيلي.",
+        ),
+        ExplanationItem(
+          title: "معامل فواقد المنظومة",
+          description:
+              "يعبر عن الأداء الفعلي للألواح بعد حساب الفواقد مثل الحرارة، الأوساخ، الأسلاك، ومنظم الشحن. قيمة 0.78 تعني أنك تفترض كفاءة عملية قريبة من 78%.",
+        ),
+        ExplanationItem(
+          title: "هامش أمان العاكس",
+          description:
+              "يزيد قدرة العاكس فوق الحمل الأقصى لتغطية تيارات الإقلاع والتذبذب اللحظي في الأحمال. كلما زاد الهامش زادت قدرة العاكس المقترحة.",
+        ),
       ];
     } else {
       return [
@@ -51,12 +96,12 @@ class AppExplanations {
         ExplanationItem(
           title: "Autonomy Hours",
           description:
-              "This is the number of hours the batteries should keep your loads running without sunlight, such as at night or during cloudy weather. Higher autonomy means a larger battery bank.",
+              "This is how many hours the batteries should keep the loads running without sunlight, such as at night or during cloudy weather. The value is converted into a share of the daily energy demand, then adjusted for inverter efficiency and usable depth of discharge.",
         ),
         ExplanationItem(
           title: "Peak Sun Hours",
           description:
-              "The average number of hours per day when sunlight is strong enough for the panels to operate near full output. In many locations, this is roughly 4 to 6 hours.",
+              "The average number of hours per day when sunlight is strong enough for the panels to operate near full output. This is used together with the PV derating factor to estimate the array size. In many locations, this is roughly 4 to 6 hours.",
         ),
         ExplanationItem(
           title: "Panel Wattage",
@@ -72,6 +117,51 @@ class AppExplanations {
           title: "System Voltage",
           description:
               "This is the overall battery-bank voltage the system will run on, such as 12V, 24V, or 48V. Larger systems usually use higher voltage to reduce current and wiring losses.",
+        ),
+        ExplanationItem(
+          title: "Calculation Mode",
+          description:
+              "Choose between Practical Hybrid mode, which sizes from the live AC load and grid cycle, or Full Energy mode, which sizes from the appliance list and daily energy use.",
+        ),
+        ExplanationItem(
+          title: "Direct AC Load",
+          description:
+              "In Practical Hybrid mode you can enter the main AC load directly in amperes or watts. When amperes are used, the app converts the value to watts using the selected AC system voltage.",
+        ),
+        ExplanationItem(
+          title: "AC System Voltage",
+          description:
+              "Choose the AC supply voltage for the loads: 110 or 230 for single-phase systems, or 380 for three-phase systems. When 380 is selected, the current is shown using the three-phase current formula.",
+        ),
+        ExplanationItem(
+          title: "Grid Cycle",
+          description:
+              "Enter the repeated utility schedule as grid-on hours and grid-off hours. In Practical Hybrid mode the battery is sized from the outage block, while in Full Energy mode the same cycle reduces PV and battery demand.",
+        ),
+        ExplanationItem(
+          title: "Recharge Percentage",
+          description:
+              "This represents how much battery energy is restored during each grid-on period by the grid or PV charging source. A value of 0% means no recharge credit is taken in the calculation, while 100% means the next outage block is fully restored.",
+        ),
+        ExplanationItem(
+          title: "Single Battery Capacity",
+          description:
+              "Enter the capacity of one battery unit in amp-hours (Ah). This value is used with the single-battery voltage to determine how many series batteries and parallel strings are required.",
+        ),
+        ExplanationItem(
+          title: "Battery Chemistry",
+          description:
+              "Battery chemistry changes the usable depth of discharge and storage efficiency used in the sizing model. Lithium usually allows deeper usable capacity, while gel or lead-acid needs more reserve to protect cycle life.",
+        ),
+        ExplanationItem(
+          title: "PV Derating",
+          description:
+              "This represents real-world PV losses from temperature, dirt, wiring, controller losses, and operating conditions. A value of 0.78 means the calculation assumes about 78% effective system performance.",
+        ),
+        ExplanationItem(
+          title: "Inverter Safety Factor",
+          description:
+              "This adds reserve capacity above the measured peak load so the inverter can tolerate startup surges and short-term load fluctuations more safely.",
         ),
       ];
     }

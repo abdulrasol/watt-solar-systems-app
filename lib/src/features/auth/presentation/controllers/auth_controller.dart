@@ -3,7 +3,7 @@ import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/services/push_notification_service.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/auth_response.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
+import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
 
 class AuthState {
@@ -84,6 +84,14 @@ class AuthController extends Notifier<AuthState> {
   Future<void> registerCompany(Company company) async {
     state = state.copyWith(
       user: state.user?.copyWith(company: company, isCompanyMember: true),
+    );
+    await cashe.saveUser(state.user!);
+  }
+
+  Future<void> updateCompany(Company company) async {
+    if (state.user == null) return;
+    state = state.copyWith(
+      user: state.user!.copyWith(company: company, isCompanyMember: true),
     );
     await cashe.saveUser(state.user!);
   }

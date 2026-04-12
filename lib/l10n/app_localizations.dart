@@ -98,7 +98,7 @@ abstract class AppLocalizations {
   /// No description provided for @app_name.
   ///
   /// In en, this message translates to:
-  /// **'Watt'**
+  /// **'واط، احسب منظومتك الشمسية'**
   String get app_name;
 
   /// No description provided for @app_slug.
@@ -215,6 +215,12 @@ abstract class AppLocalizations {
   /// **'Good evening,'**
   String get good_evening;
 
+  /// No description provided for @good_night.
+  ///
+  /// In en, this message translates to:
+  /// **'Good night,'**
+  String get good_night;
+
   /// No description provided for @ready_to_manage_solar.
   ///
   /// In en, this message translates to:
@@ -256,6 +262,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Store'**
   String get store;
+
+  /// No description provided for @dashboard_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with a quick estimate, prepare an offer request, or explore components for your next solar setup.'**
+  String get dashboard_hero_subtitle;
+
+  /// No description provided for @dashboard_chip_fast.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast sizing'**
+  String get dashboard_chip_fast;
+
+  /// No description provided for @dashboard_chip_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer ready'**
+  String get dashboard_chip_offers;
+
+  /// No description provided for @dashboard_chip_store.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop parts'**
+  String get dashboard_chip_store;
+
+  /// No description provided for @dashboard_quick_actions_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump directly into the calculator flow that matches your job.'**
+  String get dashboard_quick_actions_subtitle;
+
+  /// No description provided for @dashboard_fast_calculator.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Calculator'**
+  String get dashboard_fast_calculator;
+
+  /// No description provided for @dashboard_fast_calculator_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimate panels, inverter size, and battery storage from a few direct inputs.'**
+  String get dashboard_fast_calculator_desc;
+
+  /// No description provided for @dashboard_offer_wizard.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer Request Wizard'**
+  String get dashboard_offer_wizard;
+
+  /// No description provided for @dashboard_offer_wizard_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare a structured request for panels, inverter, and batteries before sending it.'**
+  String get dashboard_offer_wizard_desc;
+
+  /// No description provided for @dashboard_system_wizard.
+  ///
+  /// In en, this message translates to:
+  /// **'System Calculator Wizard'**
+  String get dashboard_system_wizard;
+
+  /// No description provided for @dashboard_system_wizard_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Build a fuller solar system design using appliances, usage, and system preferences.'**
+  String get dashboard_system_wizard_desc;
+
+  /// No description provided for @dashboard_shopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get dashboard_shopping;
+
+  /// No description provided for @dashboard_shopping_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse available products now and keep room for featured items later.'**
+  String get dashboard_shopping_subtitle;
+
+  /// No description provided for @dashboard_shop_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Store'**
+  String get dashboard_shop_now;
+
+  /// No description provided for @dashboard_shop_now_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to the storefront tab and start browsing solar components.'**
+  String get dashboard_shop_now_desc;
+
+  /// No description provided for @dashboard_featured_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Picks'**
+  String get dashboard_featured_products;
+
+  /// No description provided for @dashboard_featured_products_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved for curated products and bundles after the next API integration.'**
+  String get dashboard_featured_products_desc;
+
+  /// No description provided for @dashboard_store_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Store access is currently unavailable on this device.'**
+  String get dashboard_store_coming_soon;
+
+  /// No description provided for @dashboard_open_store.
+  ///
+  /// In en, this message translates to:
+  /// **'Open store'**
+  String get dashboard_open_store;
+
+  /// No description provided for @dashboard_placeholder_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Placeholder'**
+  String get dashboard_placeholder_badge;
+
+  /// No description provided for @dashboard_promotions.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Posters'**
+  String get dashboard_promotions;
+
+  /// No description provided for @dashboard_promotions_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary slides now, ready for company campaigns and poster APIs later.'**
+  String get dashboard_promotions_subtitle;
+
+  /// No description provided for @dashboard_poster_title_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand campaign slot'**
+  String get dashboard_poster_title_1;
+
+  /// No description provided for @dashboard_poster_desc_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Company banners, launch offers, and seasonal promotions will appear here.'**
+  String get dashboard_poster_desc_1;
+
+  /// No description provided for @dashboard_poster_title_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Installer spotlight'**
+  String get dashboard_poster_title_2;
+
+  /// No description provided for @dashboard_poster_desc_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this space later for partner highlights, service coverage, or campaign banners.'**
+  String get dashboard_poster_desc_2;
+
+  /// No description provided for @dashboard_poster_title_3.
+  ///
+  /// In en, this message translates to:
+  /// **'New arrivals banner'**
+  String get dashboard_poster_title_3;
+
+  /// No description provided for @dashboard_poster_desc_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming APIs can feed this carousel with new stock, featured kits, or limited offers.'**
+  String get dashboard_poster_desc_3;
+
+  /// No description provided for @dashboard_tips_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Practical reminders to size better, buy smarter, and avoid avoidable system mistakes.'**
+  String get dashboard_tips_subtitle;
+
+  /// No description provided for @dashboard_hint_clean_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep panels clean'**
+  String get dashboard_hint_clean_title;
+
+  /// No description provided for @dashboard_hint_clean_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Dust and shading quickly reduce solar output. A simple cleaning plan can improve production consistency.'**
+  String get dashboard_hint_clean_desc;
+
+  /// No description provided for @dashboard_hint_expand_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave room to expand'**
+  String get dashboard_hint_expand_title;
+
+  /// No description provided for @dashboard_hint_expand_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'When sizing an inverter or battery bank, consider future loads so the system does not become tight too early.'**
+  String get dashboard_hint_expand_desc;
+
+  /// No description provided for @dashboard_hint_compare_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare before you buy'**
+  String get dashboard_hint_compare_title;
+
+  /// No description provided for @dashboard_hint_compare_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the calculators first, then compare offers and components against the same target system size.'**
+  String get dashboard_hint_compare_desc;
 
   /// No description provided for @buy_components.
   ///
@@ -353,6 +569,42 @@ abstract class AppLocalizations {
   /// **'Price High-Low'**
   String get sort_price_desc;
 
+  /// No description provided for @sort_retail_price_asc.
+  ///
+  /// In en, this message translates to:
+  /// **'Retail Price Low-High'**
+  String get sort_retail_price_asc;
+
+  /// No description provided for @sort_retail_price_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Retail Price High-Low'**
+  String get sort_retail_price_desc;
+
+  /// No description provided for @sort_wholesale_price_asc.
+  ///
+  /// In en, this message translates to:
+  /// **'Wholesale Price Low-High'**
+  String get sort_wholesale_price_asc;
+
+  /// No description provided for @sort_wholesale_price_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Wholesale Price High-Low'**
+  String get sort_wholesale_price_desc;
+
+  /// No description provided for @sort_stock_asc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock Low-High'**
+  String get sort_stock_asc;
+
+  /// No description provided for @sort_stock_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock High-Low'**
+  String get sort_stock_desc;
+
   /// No description provided for @all.
   ///
   /// In en, this message translates to:
@@ -364,6 +616,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All Categories'**
   String get all_categories;
+
+  /// No description provided for @categories.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
+  /// No description provided for @cancel_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel_action;
+
+  /// No description provided for @delete_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete_action;
 
   /// No description provided for @all_companies.
   ///
@@ -617,6 +887,12 @@ abstract class AppLocalizations {
   /// **'Enter your email address and we will send you a link to reset your password.'**
   String get reset_password_instructions;
 
+  /// No description provided for @reset_password_token_instructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the token you received and choose a new password.'**
+  String get reset_password_token_instructions;
+
   /// No description provided for @email_is_required.
   ///
   /// In en, this message translates to:
@@ -647,6 +923,12 @@ abstract class AppLocalizations {
   /// **'Password reset email sent!'**
   String get password_reset_email_sent;
 
+  /// No description provided for @password_reset_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been reset successfully.'**
+  String get password_reset_success;
+
   /// No description provided for @error.
   ///
   /// In en, this message translates to:
@@ -658,6 +940,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send Reset Link'**
   String get send_reset_link;
+
+  /// No description provided for @reset_token.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Token'**
+  String get reset_token;
+
+  /// No description provided for @reset_token_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset token is required'**
+  String get reset_token_required;
+
+  /// No description provided for @verify_token.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Token'**
+  String get verify_token;
+
+  /// No description provided for @reset_token_verified.
+  ///
+  /// In en, this message translates to:
+  /// **'Token verified successfully.'**
+  String get reset_token_verified;
+
+  /// No description provided for @new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get new_password;
+
+  /// No description provided for @confirm_new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirm_new_password;
+
+  /// No description provided for @delete_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get delete_account;
+
+  /// No description provided for @delete_account_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is permanent. Enter your password to delete your account.'**
+  String get delete_account_warning;
+
+  /// No description provided for @delete_account_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get delete_account_reason;
+
+  /// No description provided for @account_deleted_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted successfully.'**
+  String get account_deleted_successfully;
 
   /// No description provided for @send_feedback.
   ///
@@ -1012,6 +1354,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Company registered successfully'**
   String get company_registered_success;
+
+  /// No description provided for @company_updated_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Company updated successfully.'**
+  String get company_updated_successfully;
+
+  /// No description provided for @company_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Type'**
+  String get company_type;
+
+  /// No description provided for @company_type_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Company type is required'**
+  String get company_type_required;
+
+  /// No description provided for @edit_company.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Company'**
+  String get edit_company;
+
+  /// No description provided for @company_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Profile'**
+  String get company_profile;
+
+  /// No description provided for @company_profile_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your company profile up to date.'**
+  String get company_profile_subtitle;
+
+  /// No description provided for @company_activation_required_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Company activation required'**
+  String get company_activation_required_title;
+
+  /// No description provided for @company_activation_required_message.
+  ///
+  /// In en, this message translates to:
+  /// **'This company is inactive or its subscription is not valid yet. Contact admin to activate the company and enable management actions.'**
+  String get company_activation_required_message;
+
+  /// No description provided for @company_activation_required_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Activation required'**
+  String get company_activation_required_short;
+
+  /// No description provided for @company_pending_activation_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Company activation is pending'**
+  String get company_pending_activation_title;
+
+  /// No description provided for @company_pending_activation_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Your company is still pending admin review. You can contact admin, and if the company has been waiting for more than 24 hours an activation reminder can be sent.'**
+  String get company_pending_activation_message;
+
+  /// No description provided for @company_send_activation_reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Send activation reminder'**
+  String get company_send_activation_reminder;
+
+  /// No description provided for @company_activation_reminder_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Activation reminder sent successfully.'**
+  String get company_activation_reminder_sent;
+
+  /// No description provided for @company_activation_reminder_sent_message.
+  ///
+  /// In en, this message translates to:
+  /// **'An activation reminder was sent to admins. The next reminder will be available at {availableAt}.'**
+  String company_activation_reminder_sent_message(Object availableAt);
+
+  /// No description provided for @company_subscription_required_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription required'**
+  String get company_subscription_required_title;
+
+  /// No description provided for @company_subscription_required_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Your company is active, but the subscription is not valid. Choose a plan below to submit a subscription request.'**
+  String get company_subscription_required_message;
+
+  /// No description provided for @company_subscription_available_plans.
+  ///
+  /// In en, this message translates to:
+  /// **'Available subscription plans'**
+  String get company_subscription_available_plans;
+
+  /// No description provided for @company_subscription_plans_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load subscription plans.'**
+  String get company_subscription_plans_error;
+
+  /// No description provided for @company_subscription_plans_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription plans are available right now.'**
+  String get company_subscription_plans_empty;
+
+  /// No description provided for @company_subscription_plan_meta.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days • {price}'**
+  String company_subscription_plan_meta(Object days, Object price);
+
+  /// No description provided for @company_subscription_request_cta.
+  ///
+  /// In en, this message translates to:
+  /// **'Request this plan'**
+  String get company_subscription_request_cta;
+
+  /// No description provided for @company_subscription_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get company_subscription_notes;
+
+  /// No description provided for @company_subscription_image_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Image (optional)'**
+  String get company_subscription_image_optional;
+
+  /// No description provided for @company_subscription_submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit subscription request'**
+  String get company_subscription_submit;
+
+  /// No description provided for @company_subscription_request_submitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription request submitted successfully.'**
+  String get company_subscription_request_submitted;
+
+  /// No description provided for @company_subscription_request_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription request pending review.'**
+  String get company_subscription_request_pending;
+
+  /// No description provided for @company_subscription_request_pending_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription request for {planName} is pending admin review.'**
+  String company_subscription_request_pending_message(Object planName);
+
+  /// No description provided for @company_call_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Call admin'**
+  String get company_call_admin;
+
+  /// No description provided for @company_email_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Email admin'**
+  String get company_email_admin;
+
+  /// No description provided for @company_chat_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with admin'**
+  String get company_chat_admin;
+
+  /// No description provided for @company_chat_admin_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat coming soon'**
+  String get company_chat_admin_coming_soon;
+
+  /// No description provided for @company_contact_admin_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the selected admin contact action.'**
+  String get company_contact_admin_failed;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
 
   /// No description provided for @min_6_characters.
   ///
@@ -1667,11 +2207,473 @@ abstract class AppLocalizations {
   /// **'Services'**
   String get services;
 
+  /// No description provided for @services_explorer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse trusted solar companies by service type, then open the companies that match what you need.'**
+  String get services_explorer_subtitle;
+
+  /// No description provided for @services_choose_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a service category'**
+  String get services_choose_category;
+
+  /// No description provided for @services_no_categories.
+  ///
+  /// In en, this message translates to:
+  /// **'No service categories are available yet.'**
+  String get services_no_categories;
+
+  /// No description provided for @services_explore_companies.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore companies'**
+  String get services_explore_companies;
+
+  /// No description provided for @services_companies_found.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} companies found'**
+  String services_companies_found(Object count);
+
+  /// No description provided for @services_companies_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find public companies that match this service type. Change city or search to narrow the results.'**
+  String get services_companies_subtitle;
+
+  /// No description provided for @services_all_cities.
+  ///
+  /// In en, this message translates to:
+  /// **'All cities'**
+  String get services_all_cities;
+
+  /// No description provided for @services_search_companies.
+  ///
+  /// In en, this message translates to:
+  /// **'Search companies'**
+  String get services_search_companies;
+
+  /// No description provided for @services_no_companies_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No companies matched this service type with the current filters.'**
+  String get services_no_companies_found;
+
+  /// No description provided for @services_retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get services_retry;
+
+  /// No description provided for @services_public_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get services_public_badge;
+
+  /// No description provided for @services_contacts_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} contacts'**
+  String services_contacts_count(Object count);
+
+  /// No description provided for @services_services_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} services'**
+  String services_services_count(Object count);
+
+  /// No description provided for @services_company_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Company details'**
+  String get services_company_details;
+
+  /// No description provided for @services_company_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Company info'**
+  String get services_company_info;
+
+  /// No description provided for @services_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get services_address;
+
+  /// No description provided for @services_no_address.
+  ///
+  /// In en, this message translates to:
+  /// **'No address'**
+  String get services_no_address;
+
+  /// No description provided for @services_city_label.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get services_city_label;
+
+  /// No description provided for @services_not_specified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get services_not_specified;
+
+  /// No description provided for @services_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get services_type_label;
+
+  /// No description provided for @services_phone_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get services_phone_label;
+
+  /// No description provided for @services_no_phone.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone number'**
+  String get services_no_phone;
+
+  /// No description provided for @services_section_services.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get services_section_services;
+
+  /// No description provided for @services_no_public_services.
+  ///
+  /// In en, this message translates to:
+  /// **'No public services listed yet.'**
+  String get services_no_public_services;
+
+  /// No description provided for @services_price_on_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Price on request'**
+  String get services_price_on_request;
+
+  /// No description provided for @services_contacts_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts'**
+  String get services_contacts_title;
+
+  /// No description provided for @services_no_contacts.
+  ///
+  /// In en, this message translates to:
+  /// **'No contacts available.'**
+  String get services_no_contacts;
+
+  /// No description provided for @services_delivery_options.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery options'**
+  String get services_delivery_options;
+
+  /// No description provided for @services_no_delivery_options.
+  ///
+  /// In en, this message translates to:
+  /// **'No delivery options available.'**
+  String get services_no_delivery_options;
+
+  /// No description provided for @services_flexible_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexible'**
+  String get services_flexible_delivery;
+
+  /// No description provided for @services_estimated_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated: {min} - {max} days'**
+  String services_estimated_days(Object min, Object max);
+
   /// No description provided for @contacts.
   ///
   /// In en, this message translates to:
   /// **'Contacts'**
   String get contacts;
+
+  /// No description provided for @company_contacts_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage contact people for your company.'**
+  String get company_contacts_subtitle;
+
+  /// No description provided for @company_contacts_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading contacts...'**
+  String get company_contacts_loading;
+
+  /// No description provided for @company_contacts_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No contacts yet'**
+  String get company_contacts_empty_title;
+
+  /// No description provided for @company_contacts_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first company contact.'**
+  String get company_contacts_empty_subtitle;
+
+  /// No description provided for @company_contacts_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add contact'**
+  String get company_contacts_add;
+
+  /// No description provided for @company_contacts_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save contact'**
+  String get company_contacts_save;
+
+  /// No description provided for @company_contacts_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get company_contacts_name;
+
+  /// No description provided for @company_contacts_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get company_contacts_email;
+
+  /// No description provided for @company_contacts_phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get company_contacts_phone;
+
+  /// No description provided for @company_contacts_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get company_contacts_notes;
+
+  /// No description provided for @company_contacts_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact name is required'**
+  String get company_contacts_name_required;
+
+  /// No description provided for @company_contacts_email_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get company_contacts_email_required;
+
+  /// No description provided for @company_contacts_email_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get company_contacts_email_invalid;
+
+  /// No description provided for @company_contacts_phone_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone is required'**
+  String get company_contacts_phone_required;
+
+  /// No description provided for @company_contacts_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact deleted successfully.'**
+  String get company_contacts_deleted;
+
+  /// No description provided for @company_contacts_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete contact'**
+  String get company_contacts_delete_title;
+
+  /// No description provided for @company_contacts_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name} from contacts?'**
+  String company_contacts_delete_message(Object name);
+
+  /// No description provided for @company_contacts_no_company.
+  ///
+  /// In en, this message translates to:
+  /// **'A company account is required to manage contacts.'**
+  String get company_contacts_no_company;
+
+  /// No description provided for @company_public_services.
+  ///
+  /// In en, this message translates to:
+  /// **'Public Services'**
+  String get company_public_services;
+
+  /// No description provided for @company_public_services_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the services your company offers publicly.'**
+  String get company_public_services_subtitle;
+
+  /// No description provided for @company_public_services_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading public services...'**
+  String get company_public_services_loading;
+
+  /// No description provided for @company_public_services_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No public services yet'**
+  String get company_public_services_empty_title;
+
+  /// No description provided for @company_public_services_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create the first public service for your company.'**
+  String get company_public_services_empty_subtitle;
+
+  /// No description provided for @company_public_services_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add service'**
+  String get company_public_services_add;
+
+  /// No description provided for @company_public_services_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit service'**
+  String get company_public_services_edit;
+
+  /// No description provided for @company_public_services_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save service'**
+  String get company_public_services_save;
+
+  /// No description provided for @company_public_services_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get company_public_services_title;
+
+  /// No description provided for @company_public_services_title_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Service title is required'**
+  String get company_public_services_title_required;
+
+  /// No description provided for @company_public_services_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get company_public_services_price;
+
+  /// No description provided for @company_public_services_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get company_public_services_description;
+
+  /// No description provided for @company_public_services_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Public service deleted successfully.'**
+  String get company_public_services_deleted;
+
+  /// No description provided for @company_public_services_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete public service'**
+  String get company_public_services_delete_title;
+
+  /// No description provided for @company_public_services_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name} from public services?'**
+  String company_public_services_delete_message(Object name);
+
+  /// No description provided for @company_public_services_no_company.
+  ///
+  /// In en, this message translates to:
+  /// **'A company account is required to manage public services.'**
+  String get company_public_services_no_company;
+
+  /// No description provided for @company_categories_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize your company with custom categories.'**
+  String get company_categories_subtitle;
+
+  /// No description provided for @company_categories_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading categories...'**
+  String get company_categories_loading;
+
+  /// No description provided for @company_categories_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories yet'**
+  String get company_categories_empty_title;
+
+  /// No description provided for @company_categories_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create the first category for your company.'**
+  String get company_categories_empty_subtitle;
+
+  /// No description provided for @company_categories_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add category'**
+  String get company_categories_add;
+
+  /// No description provided for @company_categories_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save category'**
+  String get company_categories_save;
+
+  /// No description provided for @company_categories_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Category name'**
+  String get company_categories_name;
+
+  /// No description provided for @company_categories_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Category name is required'**
+  String get company_categories_name_required;
+
+  /// No description provided for @company_categories_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Category deleted successfully.'**
+  String get company_categories_deleted;
+
+  /// No description provided for @company_categories_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete category'**
+  String get company_categories_delete_title;
+
+  /// No description provided for @company_categories_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name} from categories?'**
+  String company_categories_delete_message(Object name);
+
+  /// No description provided for @company_categories_no_company.
+  ///
+  /// In en, this message translates to:
+  /// **'A company account is required to manage categories.'**
+  String get company_categories_no_company;
 
   /// No description provided for @status_active.
   ///
@@ -2501,12 +3503,6 @@ abstract class AppLocalizations {
   /// **'Delivery'**
   String get delivery;
 
-  /// No description provided for @company_profile.
-  ///
-  /// In en, this message translates to:
-  /// **'Company Profile'**
-  String get company_profile;
-
   /// No description provided for @subscription.
   ///
   /// In en, this message translates to:
@@ -2578,12 +3574,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Automatically open your preferred dashboard when the app starts'**
   String get startup_role_subtitle;
-
-  /// No description provided for @edit_company.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit Company'**
-  String get edit_company;
 
   /// No description provided for @profile_updated_success.
   ///

@@ -1,5 +1,5 @@
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
+import 'package:solar_hub/src/shared/domain/company/company.dart';
 
 class User {
   final int id;
@@ -8,6 +8,7 @@ class User {
   final String? firstName;
   final String? lastName;
   final String? phone;
+  final String? mobile;
   final City? city;
   final String? image;
   final bool isSuperUser;
@@ -23,6 +24,7 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.phone,
+    this.mobile,
     this.city,
     this.image,
     this.isSuperUser = false,
@@ -40,13 +42,16 @@ class User {
       firstName: json['first_name'],
       lastName: json['last_name'],
       phone: json['phone'],
+      mobile: json['mobile'],
       city: json['city'] != null ? City.fromJson(json['city']) : null,
       image: json['image'],
       isSuperUser: json['is_superuser'] ?? false,
       isCompanyMember: json['is_company_member'] ?? false,
       securityQuestion: json['security_question'],
       securityAnswer: json['security_answer'],
-      company: json['company'] != null ? Company.fromJson(json['company']) : null,
+      company: json['company'] != null
+          ? Company.fromJson(json['company'])
+          : null,
     );
   }
 
@@ -58,6 +63,7 @@ class User {
       'first_name': firstName,
       'last_name': lastName,
       'phone': phone,
+      'mobile': mobile,
       'city': city?.toJson(),
       'image': image,
       'is_superuser': isSuperUser,
@@ -75,6 +81,7 @@ class User {
     String? firstName,
     String? lastName,
     String? phone,
+    String? mobile,
     City? city,
     String? image,
     bool? isSuperUser,
@@ -90,6 +97,7 @@ class User {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       phone: phone ?? this.phone,
+      mobile: mobile ?? this.mobile,
       city: city ?? this.city,
       image: image ?? this.image,
       isSuperUser: isSuperUser ?? this.isSuperUser,

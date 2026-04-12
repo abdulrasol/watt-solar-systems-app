@@ -10,7 +10,6 @@ import 'package:solar_hub/src/features/auth/presentation/controllers/auth_contro
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/admin/presentation/screens/admin_dashboard.dart';
 
 class RoleSelectionPage extends ConsumerStatefulWidget {
   const RoleSelectionPage({super.key});
@@ -96,9 +95,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                   subtitle: l10n.platform_management,
                   icon: Iconsax.security_safe_bold,
                   color: Colors.redAccent,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminDashboard()));
-                  },
+                  routeName: '/admin',
                 ),
               ],
               const SizedBox(height: 40),

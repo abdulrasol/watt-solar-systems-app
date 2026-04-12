@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
+import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/features/offers/data/models/involve_model.dart';
 import 'package:solar_hub/src/features/offers/domain/entities/involve.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
@@ -100,7 +100,6 @@ class SolarOfferModel extends SolarOffer {
               allowsB2B: false,
               allowsB2C: false,
               status: 'unknown',
-              categories: [],
             ),
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'])

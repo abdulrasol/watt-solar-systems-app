@@ -399,16 +399,26 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
     AppLocalizations l10n,
     String cityName,
   ) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final onSurface = theme.colorScheme.onSurface;
+
     return Container(
       padding: EdgeInsets.all(18.r),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFFFF6DD), Color(0xFFFFFFFF)],
+        gradient: LinearGradient(
+          colors: isDark
+              ? [const Color(0xFF2A2212), const Color(0xFF171310)]
+              : [const Color(0xFFFFF6DD), const Color(0xFFFFFFFF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: const Color(0xFFFFE0A3)),
+        border: Border.all(
+          color: isDark
+              ? onSurface.withValues(alpha: 0.08)
+              : const Color(0xFFFFE0A3),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,6 +447,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppTheme.fontFamily,
+                        color: onSurface,
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -448,7 +459,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
                       ),
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.grey[700],
+                        color: onSurface.withValues(alpha: 0.72),
                       ),
                     ),
                   ],
@@ -505,7 +516,9 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
           Container(
             padding: EdgeInsets.all(14.r),
             decoration: BoxDecoration(
-              color: Colors.grey.withValues(alpha: 0.08),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(16.r),
             ),
             child: Row(
@@ -520,7 +533,9 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
                         _tr(context, 'Request city', 'مدينة الطلب'),
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: Colors.grey[700],
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.72),
                         ),
                       ),
                       SizedBox(height: 2.h),
@@ -602,7 +617,9 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
                       recommendation,
                       style: TextStyle(
                         fontSize: 11.sp,
-                        color: Colors.grey[700],
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.72),
                         height: 1.4,
                       ),
                     ),
@@ -646,7 +663,12 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
               'Add any site details, installation limits, or preferred brands.',
               'أضف تفاصيل الموقع أو قيود التركيب أو العلامات التجارية المفضلة.',
             ),
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.72),
+            ),
           ),
           SizedBox(height: 14.h),
           _buildTextField(
@@ -665,12 +687,13 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
   }
 
   Widget _buildSurface({required Widget child}) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Container(
       padding: EdgeInsets.all(18.r),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.12)),
+        border: Border.all(color: onSurface.withValues(alpha: 0.08)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -684,12 +707,13 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
   }
 
   Widget _buildInfoChip(IconData icon, String label) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: onSurface.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(999.r),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.15)),
+        border: Border.all(color: onSurface.withValues(alpha: 0.12)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -698,7 +722,11 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
           SizedBox(width: 6.w),
           Text(
             label,
-            style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w700),
+            style: TextStyle(
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w700,
+              color: onSurface.withValues(alpha: 0.82),
+            ),
           ),
         ],
       ),
@@ -706,6 +734,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
   }
 
   Widget _buildTotalTile(String label, String value) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
       decoration: BoxDecoration(
@@ -719,7 +748,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
               label,
               style: TextStyle(
                 fontSize: 12.sp,
-                color: Colors.grey[800],
+                color: onSurface.withValues(alpha: 0.8),
                 fontWeight: FontWeight.w600,
               ),
             ),

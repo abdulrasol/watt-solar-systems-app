@@ -67,7 +67,7 @@ class ProductBasicInfoForm extends ConsumerWidget {
           children: [
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: state.status,
+                initialValue: state.status,
                 decoration: InputDecoration(labelText: l10n.status, border: const OutlineInputBorder()),
                 items: [
                   DropdownMenuItem(value: 'active', child: Text(l10n.active)),

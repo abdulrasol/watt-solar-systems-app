@@ -11,6 +11,7 @@ class EquipmentSection extends StatelessWidget {
   final Widget? topChild;
   final Widget noteField;
   final Widget? totalTile;
+  final int fieldsPerRow;
 
   const EquipmentSection({
     super.key,
@@ -22,6 +23,7 @@ class EquipmentSection extends StatelessWidget {
     this.topChild,
     required this.noteField,
     this.totalTile,
+    this.fieldsPerRow = 2,
   });
 
   @override
@@ -38,13 +40,22 @@ class EquipmentSection extends StatelessWidget {
           ),
           if (topChild != null) ...[SizedBox(height: 16.h), topChild!],
           SizedBox(height: 16.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: fields[0]),
-              SizedBox(width: 12.w),
-              Expanded(child: fields[1]),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final perRow = fieldsPerRow < 1 ? 1 : fieldsPerRow;
+              final spacing = 12.w;
+              final itemWidth =
+                  (constraints.maxWidth - (spacing * (perRow - 1))) / perRow;
+
+              return Wrap(
+                spacing: spacing,
+                runSpacing: 12.h,
+                children: [
+                  for (final field in fields)
+                    SizedBox(width: itemWidth, child: field),
+                ],
+              );
+            },
           ),
           if (totalTile != null) ...[SizedBox(height: 12.h), totalTile!],
           SizedBox(height: 12.h),

@@ -106,7 +106,7 @@ class OverviewContent extends ConsumerWidget {
             ),
             StatCard(
               label: l10n.contacts,
-              value: '${s?.contacts ?? 0}',
+              value: '${s?.contactsCount ?? 0}',
               icon: Iconsax.call_bold,
               color: Colors.purple,
             ),

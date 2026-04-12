@@ -11,11 +11,12 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/company_register_model.dart';
+import 'package:solar_hub/src/shared/domain/company/company_type.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/toast_service.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CompanyRegistrationPage extends ConsumerStatefulWidget {
@@ -36,10 +37,13 @@ class _CompanyRegistrationPageState
 
   City? _selectedCity;
   Country? _selectedCountry;
+  CompanyType? _selectedCompanyType;
   List<Country> _countries = [];
   List<City> _cities = [];
+  List<CompanyType> _companyTypes = [];
   bool _isLoadingCountries = false;
   bool _isLoadingCities = false;
+  bool _isLoadingCompanyTypes = false;
 
   bool _isB2B = false;
   bool _isB2C = false;
@@ -47,6 +51,8 @@ class _CompanyRegistrationPageState
   bool isLoading = false;
 
   final ValueNotifier<File?> logoFile = ValueNotifier<File?>(null);
+
+  bool get _isEditMode => ref.read(authProvider).company != null;
 
   Future<void> pickLogo() async {
     final ImagePicker picker = ImagePicker();
@@ -61,14 +67,22 @@ class _CompanyRegistrationPageState
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => _fetchCountries());
+    _prefillFromCurrentCompany();
+    Future.microtask(() async {
+      await Future.wait([_fetchCountries(), _fetchCompanyTypes()]);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final company = ref.watch(authProvider).company;
+    final remoteLogo = company?.logo;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.register_company), centerTitle: true),
+      appBar: AppBar(
+        title: Text(_isEditMode ? l10n.edit_company : l10n.register_company),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(24.0.r),
         child: Form(
@@ -77,13 +91,17 @@ class _CompanyRegistrationPageState
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                AppLocalizations.of(context)!.start_your_solar_business,
+                _isEditMode
+                    ? l10n.edit_company
+                    : AppLocalizations.of(context)!.start_your_solar_business,
                 style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 8.h),
               Text(
-                AppLocalizations.of(context)!.register_company_details,
+                _isEditMode
+                    ? l10n.company_profile_subtitle
+                    : AppLocalizations.of(context)!.register_company_details,
                 style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
@@ -107,9 +125,16 @@ class _CompanyRegistrationPageState
                               image: FileImage(logoFile.value!),
                               fit: BoxFit.cover,
                             )
+                          : remoteLogo != null && remoteLogo.isNotEmpty
+                          ? DecorationImage(
+                              image: NetworkImage(remoteLogo),
+                              fit: BoxFit.cover,
+                            )
                           : null,
                     ),
-                    child: logoFile.value == null
+                    child:
+                        logoFile.value == null &&
+                            (remoteLogo == null || remoteLogo.isEmpty)
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -150,6 +175,39 @@ class _CompanyRegistrationPageState
               ),
               SizedBox(height: 16.h),
 
+              DropdownButtonFormField<CompanyType>(
+                initialValue: _selectedCompanyType,
+                decoration: InputDecoration(
+                  labelText: _isLoadingCompanyTypes
+                      ? l10n.loading
+                      : l10n.company_type,
+                  prefixIcon: const Icon(Iconsax.building_4_bold),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                items: _companyTypes
+                    .map(
+                      (type) => DropdownMenuItem<CompanyType>(
+                        value: type,
+                        child: Text(type.name),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCompanyType = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return l10n.company_type_required;
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.h),
+
               TextFormField(
                 controller: descriptionController,
                 maxLines: 3,
@@ -160,9 +218,6 @@ class _CompanyRegistrationPageState
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                validator: (value) => value!.isEmpty
-                    ? AppLocalizations.of(context)!.description_is_required
-                    : null,
               ),
               SizedBox(height: 16.h),
 
@@ -189,90 +244,81 @@ class _CompanyRegistrationPageState
               SizedBox(height: 16.h),
 
               // City Dropdown
-              Row(
-                children: [
-                  Expanded(
-                    child: DropdownButtonFormField<Country>(
-                      initialValue: _selectedCountry,
-                      decoration: InputDecoration(
-                        labelText: _isLoadingCountries
-                            ? AppLocalizations.of(context)!.loading
-                            : AppLocalizations.of(context)!.country,
-                        prefixIcon: _selectedCountry != null
-                            ? Icon(Iconsax.location_bold, size: 20.r)
-                            : null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 16.h,
-                        ),
-                      ),
-                      items: _countries
-                          .map(
-                            (country) => DropdownMenuItem(
-                              value: country,
-                              child: Text(country.name),
-                            ),
-                          )
-                          .toList(), // Now empty list
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCountry = value;
-                          _selectedCity =
-                              null; // Reset city to resolve assertion error
-                          _fetchCities();
-                        });
-                      },
-                    ),
+              DropdownButtonFormField<Country>(
+                initialValue: _selectedCountry,
+                decoration: InputDecoration(
+                  labelText: _isLoadingCountries
+                      ? AppLocalizations.of(context)!.loading
+                      : AppLocalizations.of(context)!.country,
+                  prefixIcon: _selectedCountry != null
+                      ? Icon(Iconsax.location_bold, size: 20.r)
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide.none,
                   ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: DropdownButtonFormField<City>(
-                      initialValue: _selectedCity,
-                      decoration: InputDecoration(
-                        labelText: _isLoadingCities
-                            ? AppLocalizations.of(context)!.loading
-                            : AppLocalizations.of(context)!.city,
-                        prefixIcon: _selectedCity != null
-                            ? Icon(Iconsax.location_bold, size: 20.r)
-                            : null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 16.h,
-                        ),
-                      ),
-                      items: _cities
-                          .map(
-                            (city) => DropdownMenuItem(
-                              value: city,
-                              child: Text(city.name),
-                            ),
-                          )
-                          .toList(), // Now empty list
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCity = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return AppLocalizations.of(context)!.city_is_required;
-                        }
-                        return null;
-                      },
-                    ),
+                  filled: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 16.h,
                   ),
-                ],
+                ),
+                items: _countries
+                    .map(
+                      (country) => DropdownMenuItem(
+                        value: country,
+                        child: Text(country.name),
+                      ),
+                    )
+                    .toList(), // Now empty list
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCountry = value;
+                    _selectedCity =
+                        null; // Reset city to resolve assertion error
+                    _fetchCities();
+                  });
+                },
               ),
+              SizedBox(height: 16.h),
+              DropdownButtonFormField<City>(
+                initialValue: _selectedCity,
+                decoration: InputDecoration(
+                  labelText: _isLoadingCities
+                      ? AppLocalizations.of(context)!.loading
+                      : AppLocalizations.of(context)!.city,
+                  prefixIcon: _selectedCity != null
+                      ? Icon(Iconsax.location_bold, size: 20.r)
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 16.h,
+                  ),
+                ),
+                items: _cities
+                    .map(
+                      (city) =>
+                          DropdownMenuItem(value: city, child: Text(city.name)),
+                    )
+                    .toList(), // Now empty list
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCity = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return AppLocalizations.of(context)!.city_is_required;
+                  }
+                  return null;
+                },
+              ),
+
               SizedBox(height: 16.h),
               TextFormField(
                 controller: addressController,
@@ -324,7 +370,9 @@ class _CompanyRegistrationPageState
                         strokeWidth: 2.r,
                       )
                     : Text(
-                        l10n.submit_application,
+                        _isEditMode
+                            ? l10n.edit_company
+                            : l10n.submit_application,
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
@@ -340,46 +388,73 @@ class _CompanyRegistrationPageState
 
   void sumbit() async {
     final l10n = AppLocalizations.of(context)!;
+    final authState = ref.read(authProvider);
+    final currentCompany = authState.company;
     if (isLoading) return;
     if (_formKey.currentState!.validate()) {
       setState(() {
         isLoading = true;
       });
-      await getIt
-          .get<AuthRepository>()
-          .registerCompany(
-            CompanyRegistrationModel(
-              name: nameController.text,
-              description: descriptionController.text,
-              address: addressController.text,
-              city: _selectedCity!.id,
-              b2b: _isB2B,
-              b2c: _isB2C,
-            ),
-          )
-          .then((value) async {
-            await ref.read(authProvider.notifier).registerCompany(value);
-            setState(() {
-              isLoading = false;
-            });
-            if (mounted) {
-              ToastService.success(
-                context,
-                l10n.success,
-                l10n.company_registered_success,
-              );
-            }
-            if (mounted) context.pop();
-          })
-          .catchError((error) {
-            setState(() {
-              isLoading = false;
-            });
-            if (mounted) {
-              ToastService.error(context, l10n.error, error.toString());
-            }
-          });
+      final model = CompanyRegistrationModel(
+        name: nameController.text.trim(),
+        companyType: _selectedCompanyType!.id,
+        description: descriptionController.text.trim(),
+        address: addressController.text.trim(),
+        phone: phoneController.text.trim(),
+        city: _selectedCity?.id,
+        allowsB2B: _isB2B,
+        allowsB2C: _isB2C,
+        image: logoFile.value?.path,
+        currency: currentCompany?.currency?.id,
+        categories: currentCompany?.categories
+            .map((category) => category.id)
+            .where((id) => id > 0)
+            .toList(),
+      );
+      try {
+        final repository = getIt.get<AuthRepository>();
+        final value = _isEditMode && currentCompany != null
+            ? await repository.updateCompany(
+                companyId: currentCompany.id,
+                companyRegistrationModel: model,
+              )
+            : await repository.registerCompany(model);
+        await ref.read(authProvider.notifier).registerCompany(value);
+        setState(() {
+          isLoading = false;
+        });
+        if (mounted) {
+          ToastService.success(
+            context,
+            l10n.success,
+            _isEditMode
+                ? l10n.company_updated_successfully
+                : l10n.company_registered_success,
+          );
+          context.pop();
+        }
+      } catch (error) {
+        setState(() {
+          isLoading = false;
+        });
+        if (mounted) {
+          ToastService.error(context, l10n.error, error.toString());
+        }
+      }
     }
+  }
+
+  void _prefillFromCurrentCompany() {
+    final company = ref.read(authProvider).company;
+    if (company == null) return;
+
+    nameController.text = company.name;
+    descriptionController.text = company.description ?? '';
+    addressController.text = company.address ?? '';
+    phoneController.text = company.phone ?? '';
+    _isB2B = company.allowsB2B;
+    _isB2C = company.allowsB2C;
+    _selectedCity = company.city;
   }
 
   Future<void> _fetchCountries() async {
@@ -397,10 +472,18 @@ class _CompanyRegistrationPageState
         ToastService.error(context, l10n.error, e.toString());
       }
     }
+    final company = ref.read(authProvider).company;
     if (_selectedCity != null) {
       _selectedCountry = _countries.firstWhere(
         (element) => element.id == _selectedCity!.country.id,
+        orElse: () => _countries.first,
       );
+      await _fetchCities(countryId: _selectedCountry?.id);
+      if (company?.city != null) {
+        _selectedCity = _cities
+            .where((city) => city.id == company!.city!.id)
+            .firstOrNull;
+      }
     }
     setState(() {
       _isLoadingCountries = false;
@@ -427,6 +510,39 @@ class _CompanyRegistrationPageState
     }
     setState(() {
       _isLoadingCities = false;
+    });
+  }
+
+  Future<void> _fetchCompanyTypes() async {
+    setState(() {
+      _isLoadingCompanyTypes = true;
+    });
+    try {
+      final response = await getIt.get<AuthRepository>().getCompanyTypes();
+      final currentCompanyTypeId = ref
+          .read(authProvider)
+          .company
+          ?.companyType
+          ?.id;
+      setState(() {
+        _companyTypes = response;
+        if (currentCompanyTypeId != null) {
+          for (final type in _companyTypes) {
+            if (type.id == currentCompanyTypeId) {
+              _selectedCompanyType = type;
+              break;
+            }
+          }
+        }
+      });
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ToastService.error(context, l10n.error, e.toString());
+      }
+    }
+    setState(() {
+      _isLoadingCompanyTypes = false;
     });
   }
 }

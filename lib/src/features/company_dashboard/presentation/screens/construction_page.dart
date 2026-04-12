@@ -14,20 +14,13 @@ class ServiceStatusPage extends StatelessWidget {
   final String? status;
   final String? iconUrl;
 
-  const ServiceStatusPage({
-    super.key,
-    required this.serviceName,
-    required this.serviceCode,
-    this.status,
-    this.iconUrl,
-  });
+  const ServiceStatusPage({super.key, required this.serviceName, required this.serviceCode, this.status, this.iconUrl});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final ServiceStatus state = ServiceStatus.fromString(status);
-    final bool hasCustomIcon =
-        iconUrl != null && iconUrl!.isNotEmpty && iconUrl != 'null';
+    final bool hasCustomIcon = iconUrl != null && iconUrl!.isNotEmpty && iconUrl != 'null';
 
     // UI Configuration based on status
     String title;
@@ -46,9 +39,7 @@ class ServiceStatusPage extends StatelessWidget {
       actionButton = ElevatedButton.icon(
         onPressed: () {
           // TODO: Implement Request Access logic
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.access_requested_successfully)),
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.access_requested_successfully)));
         },
         icon: const Icon(Iconsax.flash_1_bold),
         label: Text(l10n.request_access_now),
@@ -93,20 +84,14 @@ class ServiceStatusPage extends StatelessWidget {
           title = l10n.service_maintenance;
           description = l10n.service_being_updated(serviceName);
           subDescription = l10n.service_maintenance_help;
-          actionButton = ElevatedButton(
-            onPressed: () => context.pop(),
-            child: Text(l10n.back_to_dashboard),
-          );
+          actionButton = ElevatedButton(onPressed: () => context.pop(), child: Text(l10n.back_to_dashboard));
       }
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(serviceName),
-        leading: IconButton(
-          icon: const Icon(Iconsax.arrow_left_1_bold),
-          onPressed: () => context.pop(),
-        ),
+        leading: IconButton(icon: const Icon(Iconsax.arrow_left_1_bold), onPressed: () => context.pop()),
       ),
       body: Center(
         child: Padding(
@@ -117,35 +102,20 @@ class ServiceStatusPage extends StatelessWidget {
               // Logo Container
               Container(
                     padding: EdgeInsets.all(24.r),
-                    decoration: BoxDecoration(
-                      color: statusColor.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
+                    decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.1), shape: BoxShape.circle),
                     child: hasCustomIcon
-                        ? WdImagePreview(
-                            imageUrl: iconUrl!,
-                            size: 64,
-                            shape: BoxShape.circle,
-                          )
+                        ? WdImagePreview(imageUrl: iconUrl!, size: 64, shape: BoxShape.circle)
                         : Icon(fallbackIcon, color: statusColor, size: 64.sp),
                   )
                   .animate(onPlay: (controller) => controller.repeat())
-                  .shimmer(
-                    duration: 3.seconds,
-                    color: statusColor.withValues(alpha: 0.2),
-                  )
+                  .shimmer(duration: 3.seconds, color: statusColor.withValues(alpha: 0.2))
                   .shake(hz: 1, curve: Curves.easeInOut),
 
               SizedBox(height: 40.h),
 
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 26.sp,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: AppTheme.fontFamily,
-                  color: statusColor,
-                ),
+                style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily, color: statusColor),
                 textAlign: TextAlign.center,
               ).animate().fadeIn(delay: 100.ms).moveY(begin: 15),
 
@@ -153,11 +123,7 @@ class ServiceStatusPage extends StatelessWidget {
 
               Text(
                 description,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: AppTheme.fontFamily,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
                 textAlign: TextAlign.center,
               ).animate().fadeIn(delay: 300.ms).moveY(begin: 15),
 
@@ -165,11 +131,7 @@ class ServiceStatusPage extends StatelessWidget {
 
               Text(
                 subDescription,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey,
-                  fontFamily: AppTheme.fontFamily,
-                ),
+                style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
                 textAlign: TextAlign.center,
               ).animate().fadeIn(delay: 500.ms).moveY(begin: 15),
 
@@ -182,14 +144,10 @@ class ServiceStatusPage extends StatelessWidget {
                   data: Theme.of(context).copyWith(
                     elevatedButtonTheme: ElevatedButtonThemeData(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: statusColor == AppTheme.primaryColor
-                            ? statusColor
-                            : Colors.black87,
+                        backgroundColor: statusColor == AppTheme.primaryColor ? statusColor : Colors.black87,
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
                       ),
                     ),
                   ),
@@ -199,10 +157,7 @@ class ServiceStatusPage extends StatelessWidget {
 
               if (status != null && status != 'null' && status!.isNotEmpty) ...[
                 SizedBox(height: 12.h),
-                TextButton(
-                  onPressed: () => context.pop(),
-                  child: Text(l10n.maybe_later),
-                ).animate().fadeIn(delay: 900.ms),
+                TextButton(onPressed: () => context.pop(), child: Text(l10n.maybe_later)).animate().fadeIn(delay: 900.ms),
               ],
             ],
           ),
@@ -216,9 +171,7 @@ class ServiceStatusPage extends StatelessWidget {
     // Placeholder for support action
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))),
       builder: (context) => Padding(
         padding: EdgeInsets.all(24.r),
         child: Column(
@@ -230,10 +183,7 @@ class ServiceStatusPage extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             ListTile(
-              leading: const Icon(
-                Iconsax.direct_right_bold,
-                color: Colors.blue,
-              ),
+              leading: const Icon(Iconsax.direct_right_bold, color: Colors.blue),
               title: Text(l10n.email_support),
               onTap: () => Navigator.pop(context),
             ),

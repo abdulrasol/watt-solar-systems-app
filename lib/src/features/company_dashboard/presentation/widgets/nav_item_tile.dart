@@ -20,7 +20,9 @@ class NavItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool hasCustomIcon =
-        item.iconUrl != null && item.iconUrl!.isNotEmpty && item.iconUrl != 'null';
+        item.iconUrl != null &&
+        item.iconUrl!.isNotEmpty &&
+        item.iconUrl != 'null';
 
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),

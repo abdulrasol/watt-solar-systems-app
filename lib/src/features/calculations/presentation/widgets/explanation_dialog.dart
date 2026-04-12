@@ -114,7 +114,7 @@ class _ExplanationDialogState extends State<ExplanationDialog> {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                   shrinkWrap: true,
                   itemCount: widget.explanations.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 20),
+                  separatorBuilder: (_, _) => const SizedBox(height: 20),
                   itemBuilder: (context, index) {
                     final item = widget.explanations[index];
                     return Row(
