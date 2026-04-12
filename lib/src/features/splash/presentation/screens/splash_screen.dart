@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +25,10 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
+  String _version = "";
+
+  @override
+
   @override
   void initState() {
     super.initState();
@@ -30,7 +36,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _initializeApp() async {
+    // Fetch version
+    final packageInfo = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() {
+        _version = packageInfo.version;
+      });
+    }
+
     try {
+
       // Fetch app configs early
       final configsResult = await getIt<GetConfigsUseCase>()();
       configsResult.fold(
@@ -102,41 +117,63 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       splitScreenMode: true,
       builder: (_, child) {
         return Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Logo (Replace with your actual asset if available, or icon for now)
-                const AppLogo(size: 80, withBorder: true),
-                SizedBox(height: 24.h),
-                Text(
-                  AppLocalizations.of(context)!.app_name,
-                  style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold),
+          body: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Logo (Replace with your actual asset if available, or icon for now)
+                    const AppLogo(size: 80, withBorder: true),
+                    SizedBox(height: 24.h),
+                    Text(
+                      AppLocalizations.of(context)!.app_name_short,
+                      style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.app_slug_short,
+                      style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 8.h),
+                    SizedBox(height: 24.h),
+                    LoadingWidget.widget(context: context, size: 30),
+                    SizedBox(height: 24.h),
+                    Text(
+                      AppLocalizations.of(context)!.loading,
+                      style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600]),
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      AppLocalizations.of(context)!.use_the_power_of_the_sun,
+                      style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600], fontSize: 18.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                SizedBox(height: 8.h),
-                Text(
-                  AppLocalizations.of(context)!.app_slug,
-                  style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600], fontSize: 18.sp),
-                  textAlign: TextAlign.center,
+              ),
+              if (_version.isNotEmpty)
+                Positioned(
+                  bottom: 30.h,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Text(
+                      "${AppLocalizations.of(context)!.version} $_version",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12.sp,
+                        letterSpacing: 1.2,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 24.h),
-                LoadingWidget.widget(context: context, size: 30),
-                // const CircularProgressIndicator(),
-                SizedBox(height: 16.h),
-                Text(
-                  AppLocalizations.of(context)!.loading,
-                  style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600]),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  AppLocalizations.of(context)!.use_the_power_of_the_sun,
-                  style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600], fontSize: 18.sp),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+            ],
           ),
         );
+
       },
     );
   }

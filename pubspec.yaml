@@ -2,7 +2,7 @@ name: solar_hub
 description: "Solar Hub - Calculate, Design, and Shop your Solar System!"
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.2+1
 
 environment:
   sdk: ^3.11.0
@@ -58,6 +58,8 @@ dependencies:
   flutter_local_notifications: ^21.0.0
   riverpod: ^3.2.1
   change_app_package_name: ^1.5.0
+  package_info_plus: ^9.0.0
+
 
 
 

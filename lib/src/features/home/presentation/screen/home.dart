@@ -103,7 +103,7 @@ class Home extends ConsumerWidget {
         : index == 1
         ? AppLocalizations.of(context)!.calculator
         : index == 2
-        ? 'AppLocalizations.of(context)!.services'
+        ? AppLocalizations.of(context)!.services
         : index == 3
         ? AppLocalizations.of(context)!.store
         : 'community';

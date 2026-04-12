@@ -9,10 +9,19 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get app_name => 'واط، احسب منظومتك الشمسية';
+  String get app_name => 'Watt';
+
+  @override
+  String get version => 'Version';
 
   @override
   String get app_slug => 'Calculate Your Solar System';
+
+  @override
+  String get app_name_short => 'Watt';
+
+  @override
+  String get app_slug_short => 'Calculate Your Solar System';
 
   @override
   String get profile => 'Profile';

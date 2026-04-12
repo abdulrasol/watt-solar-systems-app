@@ -1,6 +1,10 @@
 {
-  "app_name": "واط، احسب منظومتك الشمسية",
+  "app_name": "Watt",
+  "version": "Version",
+
   "app_slug": "Calculate Your Solar System",
+  "app_name_short": "Watt",
+  "app_slug_short": "Calculate Your Solar System",
   "profile": "Profile",
   "my_systems": "My Systems",
   "my_requests": "My Requests",

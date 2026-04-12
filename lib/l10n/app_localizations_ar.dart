@@ -12,7 +12,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get app_name => 'واط، احسب منظومتك الشمسية';
 
   @override
+  String get version => 'الإصدار';
+
+  @override
   String get app_slug => 'احسب منظومة الطاقة الشمسية الخاصة بك';
+
+  @override
+  String get app_name_short => 'تطبيق واط';
+
+  @override
+  String get app_slug_short => 'احسب منظومتك الشمسية';
 
   @override
   String get profile => 'الملف الشخصي';

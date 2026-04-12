@@ -98,14 +98,32 @@ abstract class AppLocalizations {
   /// No description provided for @app_name.
   ///
   /// In en, this message translates to:
-  /// **'واط، احسب منظومتك الشمسية'**
+  /// **'Watt'**
   String get app_name;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
 
   /// No description provided for @app_slug.
   ///
   /// In en, this message translates to:
   /// **'Calculate Your Solar System'**
   String get app_slug;
+
+  /// No description provided for @app_name_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Watt'**
+  String get app_name_short;
+
+  /// No description provided for @app_slug_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate Your Solar System'**
+  String get app_slug_short;
 
   /// No description provided for @profile.
   ///
