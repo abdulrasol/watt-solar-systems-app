@@ -131,8 +131,14 @@ class AppUrls {
 
   // Company Customers / Suppliers / Orders / Systems
   static String customers(int companyId) => '${company(companyId)}/customers';
+  static String customer(int companyId, int customerId) =>
+      '${customers(companyId)}/$customerId';
   static String suppliers(int companyId) => '${company(companyId)}/suppliers';
+  static String supplier(int companyId, int supplierId) =>
+      '${suppliers(companyId)}/$supplierId';
   static String orders(int companyId) => '${company(companyId)}/orders';
+  static String order(int companyId, int orderId) =>
+      '${orders(companyId)}/$orderId';
   static String companySystems(int companyId) =>
       '${company(companyId)}/systems';
 
@@ -153,12 +159,22 @@ class AppUrls {
       '$shopBaseUrl/store/companies/$companyId/company-categories';
   static const String b2cProducts = '$shopBaseUrl/store/products';
   static const String b2cSearch = '$shopBaseUrl/store/search';
+  static const String b2cOrders = '$shopBaseUrl/store/orders';
+  static const String b2cMyOrders = '$shopBaseUrl/store/my-orders';
+  static String b2cMyOrder(int orderId) => '$b2cMyOrders/$orderId';
+  static String cancelB2cMyOrder(int orderId) => '${b2cMyOrder(orderId)}/cancel';
   static String b2cCompanyProducts(int companyId) =>
       '$shopBaseUrl/store/companies/$companyId/products';
   static String b2cCategoryProducts(String categoryType, int categoryId) =>
       '$shopBaseUrl/store/categories/$categoryType/$categoryId/products';
   static const String b2bProducts = '$shopBaseUrl/b2b/products';
   static const String b2bSearch = '$shopBaseUrl/b2b/search';
+  static const String b2bOrders = '$shopBaseUrl/b2b/orders';
+  static const String b2bMyOrders = '$shopBaseUrl/b2b/my-orders';
+  static String b2bMyOrder(int orderId) => '$b2bMyOrders/$orderId';
+  static String cancelB2bMyOrder(int orderId) => '${b2bMyOrder(orderId)}/cancel';
+  static String confirmB2bMyOrderReceipt(int orderId) =>
+      '${b2bMyOrder(orderId)}/confirm-receipt';
   static String b2bCompanyProducts(int companyId) =>
       '$shopBaseUrl/b2b/companies/$companyId/products';
   static String b2bCategoryProducts(String categoryType, int categoryId) =>
@@ -196,41 +212,34 @@ class AppUrls {
 
   // ==================== ACCOUNTING ====================
   static const String accountingBaseUrl = '$baseUrl/accounting';
-
-  // Accounts
-  static const String accounts = '$accountingBaseUrl/accounts';
-  static const String createAccount = '$accountingBaseUrl/accounts/create';
-  static String account(int id) => '$accountingBaseUrl/accounts/$id';
-
-  // Invoices
-  static const String invoices = '$accountingBaseUrl/invoices';
-  static const String createInvoice = '$accountingBaseUrl/invoices/create';
-  static String invoice(int id) => '$accountingBaseUrl/invoices/$id';
-
-  // Bills
-  static const String bills = '$accountingBaseUrl/bills';
-  static const String createBill = '$accountingBaseUrl/bills/create';
-  static String bill(int id) => '$accountingBaseUrl/bills/$id';
-
-  // Payments
-  static const String payments = '$accountingBaseUrl/payments';
-  static const String createPayment = '$accountingBaseUrl/payments/create';
-  static String payment(int id) => '$accountingBaseUrl/payments/$id';
-
-  // Journal Entries
-  static const String journalEntries = '$accountingBaseUrl/journal-entries';
-  static const String createJournalEntry =
-      '$accountingBaseUrl/journal-entries/create';
-  static String journalEntry(int id) =>
-      '$accountingBaseUrl/journal-entries/$id';
-
-  // Payroll
-  static const String payroll = '$accountingBaseUrl/payroll';
-  static const String createPayroll = '$accountingBaseUrl/payroll/create';
-  static String payrollItem(int id) => '$accountingBaseUrl/payroll/$id';
-
-  // Ledger
-  static const String ledger = '$accountingBaseUrl/ledger';
+  static String accountingOverview(int companyId) =>
+      '$accountingBaseUrl/$companyId/overview';
+  static String accountingLedger(int companyId) =>
+      '$accountingBaseUrl/$companyId/ledger';
+  static String accountingAccounts(int companyId) =>
+      '$accountingBaseUrl/$companyId/accounts';
+  static String accountingAccount(int companyId, int accountId) =>
+      '${accountingAccounts(companyId)}/$accountId';
+  static String accountingInvoices(int companyId) =>
+      '$accountingBaseUrl/$companyId/invoices';
+  static String accountingInvoice(int companyId, int invoiceId) =>
+      '${accountingInvoices(companyId)}/$invoiceId';
+  static String accountingBills(int companyId) =>
+      '$accountingBaseUrl/$companyId/bills';
+  static String accountingBill(int companyId, int billId) =>
+      '${accountingBills(companyId)}/$billId';
+  static String accountingPayments(int companyId) =>
+      '$accountingBaseUrl/$companyId/payments';
+  static String accountingJournal(int companyId) =>
+      '$accountingBaseUrl/$companyId/journal';
+  static String accountingJournalEntry(int companyId, int entryId) =>
+      '${accountingJournal(companyId)}/$entryId';
+  static String accountingReceivables(int companyId) =>
+      '$accountingBaseUrl/$companyId/receivables';
+  static String accountingPayables(int companyId) =>
+      '$accountingBaseUrl/$companyId/payables';
+  static String accountingTransactions(int companyId) =>
+      '$accountingBaseUrl/$companyId/transactions';
 
   // ==================== SYSTEMS ====================
   static const String systemsBaseUrl = '$baseUrl/systems';
