@@ -1,6 +1,8 @@
 {
   "app_name": "Watt",
   "version": "Version",
+  "view": "View",
+
 
   "app_slug": "Calculate Your Solar System",
   "app_name_short": "Watt",
@@ -411,6 +413,67 @@
   "offers": "Offers",
   "people": "People",
   "members": "Members",
+  "members_add_member": "Add member",
+  "members_team_overview": "Team overview",
+  "members_count_summary": "{count, plural, =0{No members yet} =1{1 member in this company} other{{count} members in this company}}",
+  "@members_count_summary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "members_empty_title": "No members yet",
+  "members_empty_subtitle": "Company members will appear here once they join.",
+  "members_company_required": "No company is selected for this account.",
+  "members_add_description": "Invite an existing user first. If they do not have an account yet, you can create one from the same flow.",
+  "members_invite_description": "Invite an existing user by email and assign their company role.",
+  "members_create_description": "Create a new account and add it directly to this company.",
+  "members_create_title": "Create new member",
+  "members_email": "Email",
+  "members_username": "Username",
+  "members_password": "Password",
+  "members_first_name": "First name",
+  "members_last_name": "Last name",
+  "members_role": "Role",
+  "members_invite_member": "Invite member",
+  "members_create_member": "Create member",
+  "members_back_to_invite": "Back to invite",
+  "members_remove_member": "Remove member",
+  "members_remove_confirmation": "Remove {name} from this company?",
+  "@members_remove_confirmation": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "members_remove_success": "Member removed successfully.",
+  "members_remove_failed": "Could not remove the member.",
+  "members_invite_success": "Member invited successfully.",
+  "members_invite_failed": "Could not invite this member.",
+  "members_create_success": "Member created and added successfully.",
+  "members_create_failed": "Could not create this member.",
+  "members_requires_registration": "This email does not have an account yet. Complete the create-member form.",
+  "members_email_required": "Email is required.",
+  "members_email_invalid": "Enter a valid email address.",
+  "members_username_required": "Username is required.",
+  "members_password_required": "Password is required.",
+  "members_password_too_short": "Password must be at least 6 characters.",
+  "members_first_name_required": "First name is required.",
+  "members_last_name_required": "Last name is required.",
+  "members_joined_on": "Joined on {date}",
+  "@members_joined_on": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "members_role_admin": "Admin",
+  "members_role_manager": "Manager",
+  "members_role_staff": "Staff",
+  "members_role_accountant": "Accountant",
+  "members_role_delivery": "Delivery",
+  "members_role_installer": "Installer",
+  "members_role_inventory": "Inventory",
+  "members_role_sales": "Sales",
   "customers": "Customers",
   "suppliers": "Suppliers",
   "my_purchases": "My Purchases",
@@ -721,6 +784,21 @@
   "switch_to_user_view": "Switch to User View",
   "dashboard": "Dashboard",
   "notifications": "Notifications",
+  "no_notifications_yet": "No notifications yet",
+  "notif_type_service_request": "Service Request",
+  "notif_type_subscription_request": "Subscription Request",
+  "notif_type_activation_reminder": "Activation Reminder",
+  "notif_type_service_update": "Service Update",
+  "notif_type_offer_request": "Offer Request",
+  "notif_type_offer_received": "Offer Received",
+  "notif_type_invite": "Invitation",
+  "notif_type_member_remove": "Membership Termination",
+  "notif_action_view_services": "View Services",
+  "notif_action_review_request": "Review Request",
+  "notif_action_view_my_requests": "View My Requests",
+  "notif_action_view_offers": "View Offers",
+  "notif_action_go_to_dashboard": "Go to Dashboard",
+  "notif_action_go_home": "Go Home",
   "app_preferences": "App Preferences",
   "push_notifications": "Push Notifications",
   "localization": "Localization",

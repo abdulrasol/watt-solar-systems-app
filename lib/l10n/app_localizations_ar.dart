@@ -15,6 +15,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get version => 'الإصدار';
 
   @override
+  String get view => 'عرض';
+
+  @override
   String get app_slug => 'احسب منظومة الطاقة الشمسية الخاصة بك';
 
   @override
@@ -1079,6 +1082,151 @@ class AppLocalizationsAr extends AppLocalizations {
   String get members => 'الأعضاء';
 
   @override
+  String get members_add_member => 'إضافة عضو';
+
+  @override
+  String get members_team_overview => 'نظرة عامة على الفريق';
+
+  @override
+  String members_count_summary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'يوجد $count أعضاء في هذه الشركة',
+      one: 'يوجد عضو واحد في هذه الشركة',
+      zero: 'لا يوجد أعضاء بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get members_empty_title => 'لا يوجد أعضاء بعد';
+
+  @override
+  String get members_empty_subtitle => 'سيظهر أعضاء الشركة هنا عند انضمامهم.';
+
+  @override
+  String get members_company_required => 'لا توجد شركة مرتبطة بهذا الحساب.';
+
+  @override
+  String get members_add_description => 'ابدأ بدعوة مستخدم موجود. إذا لم يكن لديه حساب بعد، يمكنك إنشاء حساب له من نفس الخطوات.';
+
+  @override
+  String get members_invite_description => 'ادعُ مستخدماً موجوداً عبر البريد الإلكتروني وحدد دوره داخل الشركة.';
+
+  @override
+  String get members_create_description => 'أنشئ حساباً جديداً وأضفه مباشرة إلى هذه الشركة.';
+
+  @override
+  String get members_create_title => 'إنشاء عضو جديد';
+
+  @override
+  String get members_email => 'البريد الإلكتروني';
+
+  @override
+  String get members_username => 'اسم المستخدم';
+
+  @override
+  String get members_password => 'كلمة المرور';
+
+  @override
+  String get members_first_name => 'الاسم الأول';
+
+  @override
+  String get members_last_name => 'اسم العائلة';
+
+  @override
+  String get members_role => 'الدور';
+
+  @override
+  String get members_invite_member => 'دعوة عضو';
+
+  @override
+  String get members_create_member => 'إنشاء عضو';
+
+  @override
+  String get members_back_to_invite => 'العودة إلى الدعوة';
+
+  @override
+  String get members_remove_member => 'إزالة العضو';
+
+  @override
+  String members_remove_confirmation(Object name) {
+    return 'هل تريد إزالة $name من هذه الشركة؟';
+  }
+
+  @override
+  String get members_remove_success => 'تمت إزالة العضو بنجاح.';
+
+  @override
+  String get members_remove_failed => 'تعذر إزالة العضو.';
+
+  @override
+  String get members_invite_success => 'تمت دعوة العضو بنجاح.';
+
+  @override
+  String get members_invite_failed => 'تعذر دعوة هذا العضو.';
+
+  @override
+  String get members_create_success => 'تم إنشاء العضو وإضافته بنجاح.';
+
+  @override
+  String get members_create_failed => 'تعذر إنشاء هذا العضو.';
+
+  @override
+  String get members_requires_registration => 'هذا البريد لا يملك حساباً بعد. أكمل نموذج إنشاء العضو.';
+
+  @override
+  String get members_email_required => 'البريد الإلكتروني مطلوب.';
+
+  @override
+  String get members_email_invalid => 'أدخل بريداً إلكترونياً صالحاً.';
+
+  @override
+  String get members_username_required => 'اسم المستخدم مطلوب.';
+
+  @override
+  String get members_password_required => 'كلمة المرور مطلوبة.';
+
+  @override
+  String get members_password_too_short => 'يجب أن تكون كلمة المرور 6 أحرف على الأقل.';
+
+  @override
+  String get members_first_name_required => 'الاسم الأول مطلوب.';
+
+  @override
+  String get members_last_name_required => 'اسم العائلة مطلوب.';
+
+  @override
+  String members_joined_on(Object date) {
+    return 'انضم في $date';
+  }
+
+  @override
+  String get members_role_admin => 'مدير الشركة';
+
+  @override
+  String get members_role_manager => 'مدير';
+
+  @override
+  String get members_role_staff => 'موظف';
+
+  @override
+  String get members_role_accountant => 'محاسب';
+
+  @override
+  String get members_role_delivery => 'توصيل';
+
+  @override
+  String get members_role_installer => 'تركيب';
+
+  @override
+  String get members_role_inventory => 'مخزون';
+
+  @override
+  String get members_role_sales => 'مبيعات';
+
+  @override
   String get customers => 'العملاء';
 
   @override
@@ -1790,6 +1938,51 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notifications => 'الإشعارات';
+
+  @override
+  String get no_notifications_yet => 'لا توجد إشعارات بعد';
+
+  @override
+  String get notif_type_service_request => 'طلب خدمة';
+
+  @override
+  String get notif_type_subscription_request => 'طلب اشتراك';
+
+  @override
+  String get notif_type_activation_reminder => 'تذكير بالتفعيل';
+
+  @override
+  String get notif_type_service_update => 'تحديث خدمة';
+
+  @override
+  String get notif_type_offer_request => 'طلب عرض';
+
+  @override
+  String get notif_type_offer_received => 'تم استلام عرض';
+
+  @override
+  String get notif_type_invite => 'دعوة';
+
+  @override
+  String get notif_type_member_remove => 'إنهاء العضوية';
+
+  @override
+  String get notif_action_view_services => 'عرض الخدمات';
+
+  @override
+  String get notif_action_review_request => 'مراجعة الطلب';
+
+  @override
+  String get notif_action_view_my_requests => 'عرض طلباتي';
+
+  @override
+  String get notif_action_view_offers => 'عرض العروض';
+
+  @override
+  String get notif_action_go_to_dashboard => 'الانتقال إلى لوحة التحكم';
+
+  @override
+  String get notif_action_go_home => 'الرئيسية';
 
   @override
   String get app_preferences => 'تفضيلات التطبيق';

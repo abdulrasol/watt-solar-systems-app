@@ -101,4 +101,9 @@ class AuthRepositoryImpl implements AuthRepository {
       companyRegistrationModel: companyRegistrationModel,
     );
   }
+
+  @override
+  Future<void> updateLanguage(String language) {
+    return _authRemoteDataSource.updateLanguage(language);
+  }
 }

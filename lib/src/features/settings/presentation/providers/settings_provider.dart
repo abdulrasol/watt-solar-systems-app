@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
 final settingsProvider = NotifierProvider<SettingsProvider, Settings>(
@@ -42,6 +43,13 @@ class SettingsProvider extends Notifier<Settings> {
       saveRolePageSelection: state.saveRolePageSelection,
     );
     casheService.saveSettings(state);
+
+    // Silently sync to server if authenticated, so notifications use the
+    // new language immediately without requiring the user to restart the app.
+    final token = casheService.token();
+    if (token != null) {
+      getIt<AuthRepository>().updateLanguage(language);
+    }
   }
 
   void toggleSaveRolePageSelection() {

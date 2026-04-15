@@ -36,6 +36,9 @@ import 'package:solar_hub/src/features/company_dashboard/domain/repositories/com
 import 'package:solar_hub/src/features/company_dashboard/data/repositories/company_service_request_repository_impl.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/repositories/company_service_request_repository.dart';
 import 'package:solar_hub/src/features/inventory/domain/repositories/inventory_repository.dart';
+import 'package:solar_hub/src/features/members/data/data_sources/members_remote_data_source.dart';
+import 'package:solar_hub/src/features/members/data/repositories/members_repository_impl.dart';
+import 'package:solar_hub/src/features/members/domain/repositories/members_repository.dart';
 import 'package:solar_hub/src/features/notifications/data/repositories/notification_history_repository_impl.dart';
 import 'package:solar_hub/src/features/notifications/domain/repositories/notification_history_repository.dart';
 import 'package:solar_hub/src/features/offers/data/data_sources/offers_remote_data_source.dart';
@@ -45,7 +48,10 @@ import 'package:solar_hub/src/features/offers/domain/repositories/offers_reposit
 import 'package:solar_hub/src/features/splash/data/datasources/app_init_local_data_source.dart';
 import 'package:solar_hub/src/features/splash/data/datasources/app_init_remote_data_source.dart';
 import 'package:solar_hub/src/features/splash/data/repositories/app_init_repository_impl.dart';
+import 'package:solar_hub/src/features/splash/domain/usecases/get_cached_configs_usecase.dart';
 import 'package:solar_hub/src/features/splash/domain/usecases/get_configs_usecase.dart';
+import 'package:solar_hub/src/features/splash/domain/usecases/prepare_startup_usecase.dart';
+import 'package:solar_hub/src/features/splash/domain/usecases/refresh_configs_usecase.dart';
 import 'package:solar_hub/src/features/admin/data/data_sources/admin_remote_data_source.dart';
 import 'package:solar_hub/src/features/admin/data/repositories/admin_repository_impl.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
@@ -90,6 +96,16 @@ void setupDependencies() {
     );
   });
 
+  getIt.registerLazySingleton<MembersRemoteDataSource>(() {
+    dPrint('init members remote data source', tag: 'getIt');
+    return MembersRemoteDataSourceImpl(getIt<DioService>());
+  });
+
+  getIt.registerLazySingleton<MembersRepository>(() {
+    dPrint('init members repository', tag: 'getIt');
+    return MembersRepositoryImpl(getIt<MembersRemoteDataSource>());
+  });
+
   getIt.registerLazySingleton<StorefrontRepository>(() {
     dPrint('init storefront repository', tag: 'getIt');
     return StorefrontRepositoryImpl(
@@ -130,6 +146,21 @@ void setupDependencies() {
   getIt.registerLazySingleton<GetConfigsUseCase>(() {
     dPrint('init get configs usecase', tag: 'getIt');
     return GetConfigsUseCase(getIt<AppInitRepository>());
+  });
+
+  getIt.registerLazySingleton<GetCachedConfigsUseCase>(() {
+    dPrint('init get cached configs usecase', tag: 'getIt');
+    return GetCachedConfigsUseCase(getIt<AppInitRepository>());
+  });
+
+  getIt.registerLazySingleton<RefreshConfigsUseCase>(() {
+    dPrint('init refresh configs usecase', tag: 'getIt');
+    return RefreshConfigsUseCase(getIt<AppInitRepository>());
+  });
+
+  getIt.registerLazySingleton<PrepareStartupUseCase>(() {
+    dPrint('init prepare startup usecase', tag: 'getIt');
+    return PrepareStartupUseCase(cache: getIt<CasheInterface>());
   });
 
   getIt.registerLazySingleton<FeedbackRepository>(() {

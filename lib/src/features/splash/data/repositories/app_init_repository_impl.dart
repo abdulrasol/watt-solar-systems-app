@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:solar_hub/src/core/errors/exceptions.dart';
 import 'package:solar_hub/src/core/errors/failure.dart';
 import 'package:solar_hub/src/features/splash/data/datasources/app_init_remote_data_source.dart';
 import 'package:solar_hub/src/features/splash/data/datasources/app_init_local_data_source.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config.dart';
+import 'package:solar_hub/src/features/splash/domain/entities/config_snapshot.dart';
 import 'package:solar_hub/src/features/splash/domain/repositories/app_init_repository.dart';
 
 class AppInitRepositoryImpl implements AppInitRepository {
@@ -16,25 +15,24 @@ class AppInitRepositoryImpl implements AppInitRepository {
   });
 
   @override
-  Future<Either<Failure, List<Config>>> getConfigs() async {
+  Future<Either<Failure, ConfigSnapshot>> getCachedConfigs() async {
+    try {
+      final cachedConfigs = await localDataSource.getCachedConfigs();
+      return Right(cachedConfigs);
+    } catch (e) {
+      return Left(CacheFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ConfigSnapshot>> refreshConfigs() async {
     try {
       final remoteConfigs = await remoteDataSource.getConfigs();
-      localDataSource.cacheConfigs(remoteConfigs);
-      return Right(remoteConfigs);
-    } on ServerException catch (e) {
-      try {
-        final localConfigs = await localDataSource.getLastConfigs();
-        return Right(localConfigs);
-      } on CacheException {
-        return Left(ServerFailure(e.message));
-      }
+      await localDataSource.cacheConfigs(remoteConfigs);
+      final cachedSnapshot = await localDataSource.getCachedConfigs();
+      return Right(cachedSnapshot.copyWith(isFromCache: false));
     } catch (e) {
-      try {
-        final localConfigs = await localDataSource.getLastConfigs();
-        return Right(localConfigs);
-      } on CacheException {
-        return Left(ServerFailure(e.toString()));
-      }
+      return Left(ServerFailure(e.toString()));
     }
   }
 }

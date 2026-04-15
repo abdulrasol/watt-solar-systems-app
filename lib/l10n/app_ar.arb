@@ -1,6 +1,8 @@
 {
   "app_name": "واط، احسب منظومتك الشمسية",
   "version": "الإصدار",
+  "view": "عرض",
+
 
   "app_name_short": "تطبيق واط",
   "app_slug_short": "احسب منظومتك الشمسية",
@@ -410,6 +412,67 @@
   "offers": "العروض",
   "people": "الأشخاص",
   "members": "الأعضاء",
+  "members_add_member": "إضافة عضو",
+  "members_team_overview": "نظرة عامة على الفريق",
+  "members_count_summary": "{count, plural, =0{لا يوجد أعضاء بعد} =1{يوجد عضو واحد في هذه الشركة} other{يوجد {count} أعضاء في هذه الشركة}}",
+  "@members_count_summary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "members_empty_title": "لا يوجد أعضاء بعد",
+  "members_empty_subtitle": "سيظهر أعضاء الشركة هنا عند انضمامهم.",
+  "members_company_required": "لا توجد شركة مرتبطة بهذا الحساب.",
+  "members_add_description": "ابدأ بدعوة مستخدم موجود. إذا لم يكن لديه حساب بعد، يمكنك إنشاء حساب له من نفس الخطوات.",
+  "members_invite_description": "ادعُ مستخدماً موجوداً عبر البريد الإلكتروني وحدد دوره داخل الشركة.",
+  "members_create_description": "أنشئ حساباً جديداً وأضفه مباشرة إلى هذه الشركة.",
+  "members_create_title": "إنشاء عضو جديد",
+  "members_email": "البريد الإلكتروني",
+  "members_username": "اسم المستخدم",
+  "members_password": "كلمة المرور",
+  "members_first_name": "الاسم الأول",
+  "members_last_name": "اسم العائلة",
+  "members_role": "الدور",
+  "members_invite_member": "دعوة عضو",
+  "members_create_member": "إنشاء عضو",
+  "members_back_to_invite": "العودة إلى الدعوة",
+  "members_remove_member": "إزالة العضو",
+  "members_remove_confirmation": "هل تريد إزالة {name} من هذه الشركة؟",
+  "@members_remove_confirmation": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "members_remove_success": "تمت إزالة العضو بنجاح.",
+  "members_remove_failed": "تعذر إزالة العضو.",
+  "members_invite_success": "تمت دعوة العضو بنجاح.",
+  "members_invite_failed": "تعذر دعوة هذا العضو.",
+  "members_create_success": "تم إنشاء العضو وإضافته بنجاح.",
+  "members_create_failed": "تعذر إنشاء هذا العضو.",
+  "members_requires_registration": "هذا البريد لا يملك حساباً بعد. أكمل نموذج إنشاء العضو.",
+  "members_email_required": "البريد الإلكتروني مطلوب.",
+  "members_email_invalid": "أدخل بريداً إلكترونياً صالحاً.",
+  "members_username_required": "اسم المستخدم مطلوب.",
+  "members_password_required": "كلمة المرور مطلوبة.",
+  "members_password_too_short": "يجب أن تكون كلمة المرور 6 أحرف على الأقل.",
+  "members_first_name_required": "الاسم الأول مطلوب.",
+  "members_last_name_required": "اسم العائلة مطلوب.",
+  "members_joined_on": "انضم في {date}",
+  "@members_joined_on": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "members_role_admin": "مدير الشركة",
+  "members_role_manager": "مدير",
+  "members_role_staff": "موظف",
+  "members_role_accountant": "محاسب",
+  "members_role_delivery": "توصيل",
+  "members_role_installer": "تركيب",
+  "members_role_inventory": "مخزون",
+  "members_role_sales": "مبيعات",
   "customers": "العملاء",
   "suppliers": "الموردون",
   "my_purchases": "مشترياتي",
@@ -718,6 +781,21 @@
   "switch_to_user_view": "التبديل لعرض المستخدم",
   "dashboard": "لوحة التحكم",
   "notifications": "الإشعارات",
+  "no_notifications_yet": "لا توجد إشعارات بعد",
+  "notif_type_service_request": "طلب خدمة",
+  "notif_type_subscription_request": "طلب اشتراك",
+  "notif_type_activation_reminder": "تذكير بالتفعيل",
+  "notif_type_service_update": "تحديث خدمة",
+  "notif_type_offer_request": "طلب عرض",
+  "notif_type_offer_received": "تم استلام عرض",
+  "notif_type_invite": "دعوة",
+  "notif_type_member_remove": "إنهاء العضوية",
+  "notif_action_view_services": "عرض الخدمات",
+  "notif_action_review_request": "مراجعة الطلب",
+  "notif_action_view_my_requests": "عرض طلباتي",
+  "notif_action_view_offers": "عرض العروض",
+  "notif_action_go_to_dashboard": "الانتقال إلى لوحة التحكم",
+  "notif_action_go_home": "الرئيسية",
   "app_preferences": "تفضيلات التطبيق",
   "push_notifications": "الإشعارات الفورية",
   "localization": "اللغة والمنطقة",

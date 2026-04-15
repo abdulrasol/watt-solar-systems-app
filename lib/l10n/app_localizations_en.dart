@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get version => 'Version';
 
   @override
+  String get view => 'View';
+
+  @override
   String get app_slug => 'Calculate Your Solar System';
 
   @override
@@ -1079,6 +1082,151 @@ class AppLocalizationsEn extends AppLocalizations {
   String get members => 'Members';
 
   @override
+  String get members_add_member => 'Add member';
+
+  @override
+  String get members_team_overview => 'Team overview';
+
+  @override
+  String members_count_summary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members in this company',
+      one: '1 member in this company',
+      zero: 'No members yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get members_empty_title => 'No members yet';
+
+  @override
+  String get members_empty_subtitle => 'Company members will appear here once they join.';
+
+  @override
+  String get members_company_required => 'No company is selected for this account.';
+
+  @override
+  String get members_add_description => 'Invite an existing user first. If they do not have an account yet, you can create one from the same flow.';
+
+  @override
+  String get members_invite_description => 'Invite an existing user by email and assign their company role.';
+
+  @override
+  String get members_create_description => 'Create a new account and add it directly to this company.';
+
+  @override
+  String get members_create_title => 'Create new member';
+
+  @override
+  String get members_email => 'Email';
+
+  @override
+  String get members_username => 'Username';
+
+  @override
+  String get members_password => 'Password';
+
+  @override
+  String get members_first_name => 'First name';
+
+  @override
+  String get members_last_name => 'Last name';
+
+  @override
+  String get members_role => 'Role';
+
+  @override
+  String get members_invite_member => 'Invite member';
+
+  @override
+  String get members_create_member => 'Create member';
+
+  @override
+  String get members_back_to_invite => 'Back to invite';
+
+  @override
+  String get members_remove_member => 'Remove member';
+
+  @override
+  String members_remove_confirmation(Object name) {
+    return 'Remove $name from this company?';
+  }
+
+  @override
+  String get members_remove_success => 'Member removed successfully.';
+
+  @override
+  String get members_remove_failed => 'Could not remove the member.';
+
+  @override
+  String get members_invite_success => 'Member invited successfully.';
+
+  @override
+  String get members_invite_failed => 'Could not invite this member.';
+
+  @override
+  String get members_create_success => 'Member created and added successfully.';
+
+  @override
+  String get members_create_failed => 'Could not create this member.';
+
+  @override
+  String get members_requires_registration => 'This email does not have an account yet. Complete the create-member form.';
+
+  @override
+  String get members_email_required => 'Email is required.';
+
+  @override
+  String get members_email_invalid => 'Enter a valid email address.';
+
+  @override
+  String get members_username_required => 'Username is required.';
+
+  @override
+  String get members_password_required => 'Password is required.';
+
+  @override
+  String get members_password_too_short => 'Password must be at least 6 characters.';
+
+  @override
+  String get members_first_name_required => 'First name is required.';
+
+  @override
+  String get members_last_name_required => 'Last name is required.';
+
+  @override
+  String members_joined_on(Object date) {
+    return 'Joined on $date';
+  }
+
+  @override
+  String get members_role_admin => 'Admin';
+
+  @override
+  String get members_role_manager => 'Manager';
+
+  @override
+  String get members_role_staff => 'Staff';
+
+  @override
+  String get members_role_accountant => 'Accountant';
+
+  @override
+  String get members_role_delivery => 'Delivery';
+
+  @override
+  String get members_role_installer => 'Installer';
+
+  @override
+  String get members_role_inventory => 'Inventory';
+
+  @override
+  String get members_role_sales => 'Sales';
+
+  @override
   String get customers => 'Customers';
 
   @override
@@ -1790,6 +1938,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifications => 'Notifications';
+
+  @override
+  String get no_notifications_yet => 'No notifications yet';
+
+  @override
+  String get notif_type_service_request => 'Service Request';
+
+  @override
+  String get notif_type_subscription_request => 'Subscription Request';
+
+  @override
+  String get notif_type_activation_reminder => 'Activation Reminder';
+
+  @override
+  String get notif_type_service_update => 'Service Update';
+
+  @override
+  String get notif_type_offer_request => 'Offer Request';
+
+  @override
+  String get notif_type_offer_received => 'Offer Received';
+
+  @override
+  String get notif_type_invite => 'Invitation';
+
+  @override
+  String get notif_type_member_remove => 'Membership Termination';
+
+  @override
+  String get notif_action_view_services => 'View Services';
+
+  @override
+  String get notif_action_review_request => 'Review Request';
+
+  @override
+  String get notif_action_view_my_requests => 'View My Requests';
+
+  @override
+  String get notif_action_view_offers => 'View Offers';
+
+  @override
+  String get notif_action_go_to_dashboard => 'Go to Dashboard';
+
+  @override
+  String get notif_action_go_home => 'Go Home';
 
   @override
   String get app_preferences => 'App Preferences';

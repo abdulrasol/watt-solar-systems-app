@@ -119,7 +119,7 @@ class Home extends ConsumerWidget {
         Row(
           children: [
             // Cart Icon (Only in Store)
-            if (index == 4)
+            if (index == 3)
               ListenableBuilder(
                 listenable: storefrontCart,
                 builder: (context, _) {
@@ -145,7 +145,7 @@ class Home extends ConsumerWidget {
                             padding: const EdgeInsets.all(4),
                             decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                             child: Text(
-                              count > 99 ? '99+' : '$count',
+                              count > 9 ? '9+' : '$count',
                               style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -157,26 +157,29 @@ class Home extends ConsumerWidget {
 
             // Notification Icon with Badge
             if (ref.watch(authProvider).isSigned)
-              Stack(
-                children: [
-                  IconButton(
-                    onPressed: () => context.push('/notifications'),
-                    icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
-                  ),
-                  if (notificationCount > 0)
-                    Positioned(
-                      right: 8,
-                      top: 8,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                        child: Text(
-                          notificationCount > 9 ? '9+' : '$notificationCount',
-                          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () => context.push('/notifications'),
+                child: Stack(
+                  children: [
+                    IconButton(
+                      onPressed: () => context.push('/notifications'),
+                      icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
+                    ),
+                    if (notificationCount > 0)
+                      Positioned(
+                        right: 8,
+                        top: 8,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                          child: Text(
+                            notificationCount > 9 ? '9+' : '$notificationCount',
+                            style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             const SizedBox(width: 8),
           ],

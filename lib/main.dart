@@ -15,9 +15,13 @@ import 'package:solar_hub/src/utils/app_routers.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:toastification/toastification.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize timeago with Arabic
+  timeago.setLocaleMessages('ar', timeago.ArMessages());
 
   // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -40,6 +44,9 @@ class SolarHub extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
     final router = ref.watch(routerProvider);
+
+    // Set timeago default locale
+    timeago.setDefaultLocale(settings.language);
 
     return ScreenUtilInit(
       designSize: const Size(360, 690),

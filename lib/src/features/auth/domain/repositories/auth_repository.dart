@@ -43,4 +43,7 @@ abstract class AuthRepository {
     required int companyId,
     required CompanyRegistrationModel companyRegistrationModel,
   });
+
+  /// Silently syncs the user's preferred language to the server.
+  Future<void> updateLanguage(String language);
 }

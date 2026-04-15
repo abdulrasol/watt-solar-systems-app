@@ -112,6 +112,18 @@ class CompanyWorkspaceModules {
     if (location.startsWith('/companies/dashboard/services')) {
       return services(l10n);
     }
+    if (location.startsWith('/companies/dashboard/members') ||
+        location.startsWith('/members')) {
+      return CompanyWorkspaceItem(
+        id: 'members',
+        label: l10n.members,
+        subtitle: l10n.section_label(l10n.members),
+        route: '/companies/dashboard/services',
+        icon: Iconsax.people_bold,
+        serviceCode: 'multi_member',
+        externalRoute: '/members',
+      );
+    }
     if (location.startsWith('/companies/dashboard/contacts')) {
       return contacts(l10n);
     }

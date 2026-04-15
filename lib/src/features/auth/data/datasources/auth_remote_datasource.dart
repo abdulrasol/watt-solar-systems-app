@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' hide Response;
 import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/core/errors/exceptions.dart';
 import 'package:solar_hub/src/core/services/dio.dart';
 import 'package:solar_hub/src/core/models/response.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/auth_response.dart';
@@ -49,6 +50,10 @@ abstract class AuthRemoteDataSource {
     required int companyId,
     required CompanyRegistrationModel companyRegistrationModel,
   });
+
+  /// Silently syncs the user's preferred language to the server so that
+  /// push notifications are sent in the correct language.
+  Future<void> updateLanguage(String language);
 }
 
 class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
@@ -111,6 +116,16 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
       BaseResponse response = await _dioService.get(AppUrls.profile);
       _throwIfFailed(response);
       return User.fromJson(response.body);
+    } on DioException catch (e, stackTrace) {
+      dPrint(
+        'fetchProfile error: $e',
+        stackTrace: stackTrace,
+        tag: 'AuthRemoteDataSource',
+      );
+      if (e.response?.statusCode == 401) {
+        throw const UnauthorizedException('Session expired');
+      }
+      rethrow;
     } catch (e, stackTrace) {
       dPrint(
         'fetchProfile error: $e',
@@ -325,6 +340,25 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
         tag: 'AuthRemoteDataSource',
       );
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateLanguage(String language) async {
+    try {
+      final response = await _dioService.put(
+        AppUrls.updateLanguage,
+        data: {'language': language},
+      );
+      _throwIfFailed(response);
+      dPrint('Language synced to server: $language', tag: 'AuthRemoteDataSource');
+    } catch (e, stackTrace) {
+      // Fire-and-forget: log but never surface to UI
+      dPrint(
+        'updateLanguage error (non-fatal): $e',
+        stackTrace: stackTrace,
+        tag: 'AuthRemoteDataSource',
+      );
     }
   }
 }

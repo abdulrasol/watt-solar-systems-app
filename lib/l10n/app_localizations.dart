@@ -107,6 +107,12 @@ abstract class AppLocalizations {
   /// **'Version'**
   String get version;
 
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
   /// No description provided for @app_slug.
   ///
   /// In en, this message translates to:
@@ -2183,6 +2189,270 @@ abstract class AppLocalizations {
   /// **'Members'**
   String get members;
 
+  /// No description provided for @members_add_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Add member'**
+  String get members_add_member;
+
+  /// No description provided for @members_team_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Team overview'**
+  String get members_team_overview;
+
+  /// No description provided for @members_count_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No members yet} =1{1 member in this company} other{{count} members in this company}}'**
+  String members_count_summary(int count);
+
+  /// No description provided for @members_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No members yet'**
+  String get members_empty_title;
+
+  /// No description provided for @members_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Company members will appear here once they join.'**
+  String get members_empty_subtitle;
+
+  /// No description provided for @members_company_required.
+  ///
+  /// In en, this message translates to:
+  /// **'No company is selected for this account.'**
+  String get members_company_required;
+
+  /// No description provided for @members_add_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite an existing user first. If they do not have an account yet, you can create one from the same flow.'**
+  String get members_add_description;
+
+  /// No description provided for @members_invite_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite an existing user by email and assign their company role.'**
+  String get members_invite_description;
+
+  /// No description provided for @members_create_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new account and add it directly to this company.'**
+  String get members_create_description;
+
+  /// No description provided for @members_create_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new member'**
+  String get members_create_title;
+
+  /// No description provided for @members_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get members_email;
+
+  /// No description provided for @members_username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get members_username;
+
+  /// No description provided for @members_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get members_password;
+
+  /// No description provided for @members_first_name.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get members_first_name;
+
+  /// No description provided for @members_last_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get members_last_name;
+
+  /// No description provided for @members_role.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get members_role;
+
+  /// No description provided for @members_invite_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite member'**
+  String get members_invite_member;
+
+  /// No description provided for @members_create_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Create member'**
+  String get members_create_member;
+
+  /// No description provided for @members_back_to_invite.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to invite'**
+  String get members_back_to_invite;
+
+  /// No description provided for @members_remove_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get members_remove_member;
+
+  /// No description provided for @members_remove_confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from this company?'**
+  String members_remove_confirmation(Object name);
+
+  /// No description provided for @members_remove_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Member removed successfully.'**
+  String get members_remove_success;
+
+  /// No description provided for @members_remove_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not remove the member.'**
+  String get members_remove_failed;
+
+  /// No description provided for @members_invite_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Member invited successfully.'**
+  String get members_invite_success;
+
+  /// No description provided for @members_invite_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not invite this member.'**
+  String get members_invite_failed;
+
+  /// No description provided for @members_create_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Member created and added successfully.'**
+  String get members_create_success;
+
+  /// No description provided for @members_create_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create this member.'**
+  String get members_create_failed;
+
+  /// No description provided for @members_requires_registration.
+  ///
+  /// In en, this message translates to:
+  /// **'This email does not have an account yet. Complete the create-member form.'**
+  String get members_requires_registration;
+
+  /// No description provided for @members_email_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required.'**
+  String get members_email_required;
+
+  /// No description provided for @members_email_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address.'**
+  String get members_email_invalid;
+
+  /// No description provided for @members_username_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Username is required.'**
+  String get members_username_required;
+
+  /// No description provided for @members_password_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required.'**
+  String get members_password_required;
+
+  /// No description provided for @members_password_too_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters.'**
+  String get members_password_too_short;
+
+  /// No description provided for @members_first_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'First name is required.'**
+  String get members_first_name_required;
+
+  /// No description provided for @members_last_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name is required.'**
+  String get members_last_name_required;
+
+  /// No description provided for @members_joined_on.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined on {date}'**
+  String members_joined_on(Object date);
+
+  /// No description provided for @members_role_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get members_role_admin;
+
+  /// No description provided for @members_role_manager.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get members_role_manager;
+
+  /// No description provided for @members_role_staff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get members_role_staff;
+
+  /// No description provided for @members_role_accountant.
+  ///
+  /// In en, this message translates to:
+  /// **'Accountant'**
+  String get members_role_accountant;
+
+  /// No description provided for @members_role_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get members_role_delivery;
+
+  /// No description provided for @members_role_installer.
+  ///
+  /// In en, this message translates to:
+  /// **'Installer'**
+  String get members_role_installer;
+
+  /// No description provided for @members_role_inventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get members_role_inventory;
+
+  /// No description provided for @members_role_sales.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales'**
+  String get members_role_sales;
+
   /// No description provided for @customers.
   ///
   /// In en, this message translates to:
@@ -3544,6 +3814,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get notifications;
+
+  /// No description provided for @no_notifications_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get no_notifications_yet;
+
+  /// No description provided for @notif_type_service_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Request'**
+  String get notif_type_service_request;
+
+  /// No description provided for @notif_type_subscription_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Request'**
+  String get notif_type_subscription_request;
+
+  /// No description provided for @notif_type_activation_reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Activation Reminder'**
+  String get notif_type_activation_reminder;
+
+  /// No description provided for @notif_type_service_update.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Update'**
+  String get notif_type_service_update;
+
+  /// No description provided for @notif_type_offer_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer Request'**
+  String get notif_type_offer_request;
+
+  /// No description provided for @notif_type_offer_received.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer Received'**
+  String get notif_type_offer_received;
+
+  /// No description provided for @notif_type_invite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation'**
+  String get notif_type_invite;
+
+  /// No description provided for @notif_type_member_remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership Termination'**
+  String get notif_type_member_remove;
+
+  /// No description provided for @notif_action_view_services.
+  ///
+  /// In en, this message translates to:
+  /// **'View Services'**
+  String get notif_action_view_services;
+
+  /// No description provided for @notif_action_review_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Request'**
+  String get notif_action_review_request;
+
+  /// No description provided for @notif_action_view_my_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'View My Requests'**
+  String get notif_action_view_my_requests;
+
+  /// No description provided for @notif_action_view_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'View Offers'**
+  String get notif_action_view_offers;
+
+  /// No description provided for @notif_action_go_to_dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Dashboard'**
+  String get notif_action_go_to_dashboard;
+
+  /// No description provided for @notif_action_go_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Home'**
+  String get notif_action_go_home;
 
   /// No description provided for @app_preferences.
   ///

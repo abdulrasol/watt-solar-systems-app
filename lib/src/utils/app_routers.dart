@@ -15,6 +15,7 @@ import 'package:solar_hub/src/features/auth/presentation/screens/profile_page.da
 import 'package:solar_hub/src/features/feedback/presentation/screens/feedback_page.dart';
 import 'package:solar_hub/src/features/home/presentation/screen/home.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/inventory_page.dart';
+import 'package:solar_hub/src/features/members/presentation/screens/members_page.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/admin_offers_dashboard.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/company_offers_hub.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart';
@@ -162,6 +163,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
+            path: '/companies/dashboard/members',
+            builder: (BuildContext context, GoRouterState state) {
+              return const MembersPage();
+            },
+          ),
+          GoRoute(
             path: '/companies/dashboard/contacts',
             builder: (BuildContext context, GoRouterState state) {
               return const CompanyDashboardContactsScreen();
@@ -299,6 +306,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           if (!isSigned) return '/auth';
           return null;
         },
+      ),
+      GoRoute(
+        path: '/members',
+        builder: (context, state) => const MembersPage(),
       ),
       GoRoute(
         path: '/offers',
