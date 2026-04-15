@@ -1233,6 +1233,123 @@ class AppLocalizationsAr extends AppLocalizations {
   String get suppliers => 'الموردون';
 
   @override
+  String get manage_orders_subtitle => 'متابعة طلبات العملاء وطلبات المتجر.';
+
+  @override
+  String get manage_customers_subtitle => 'مراجعة أرصدة العملاء ونشاطهم.';
+
+  @override
+  String get manage_suppliers_subtitle => 'مراجعة أرصدة الموردين وسجل المشتريات.';
+
+  @override
+  String get manage_accounting_subtitle => 'متابعة الملخصات المحاسبية والحركات.';
+
+  @override
+  String get b2b_orders => 'طلبات B2B';
+
+  @override
+  String get b2c_orders => 'طلبات B2C';
+
+  @override
+  String get no_orders_found => 'لا توجد طلبات';
+
+  @override
+  String get no_customers_found => 'لا يوجد عملاء';
+
+  @override
+  String get no_suppliers_found => 'لا يوجد موردون';
+
+  @override
+  String get order_details => 'تفاصيل الطلب';
+
+  @override
+  String get order_number => 'رقم الطلب';
+
+  @override
+  String get order_placed => 'تم إنشاء الطلب بنجاح';
+
+  @override
+  String get place_order => 'تنفيذ الطلب';
+
+  @override
+  String get payment_status => 'حالة الدفع';
+
+  @override
+  String get payment_method => 'طريقة الدفع';
+
+  @override
+  String get status => 'الحالة';
+
+  @override
+  String get fulfilled_at => 'تاريخ الإنجاز';
+
+  @override
+  String get items => 'العناصر';
+
+  @override
+  String get parties => 'الأطراف';
+
+  @override
+  String get seller => 'البائع';
+
+  @override
+  String get buyer => 'المشتري';
+
+  @override
+  String get customer => 'العميل';
+
+  @override
+  String get supplier => 'المورد';
+
+  @override
+  String get confirm_receipt => 'تأكيد الاستلام';
+
+  @override
+  String get edit_order_details => 'تعديل تفاصيل الطلب';
+
+  @override
+  String get shipping_cost => 'تكلفة الشحن';
+
+  @override
+  String get shipping_method => 'طريقة الشحن';
+
+  @override
+  String get paid_amount => 'المبلغ المدفوع';
+
+  @override
+  String get cancellation_reason => 'سبب الإلغاء';
+
+  @override
+  String get bills => 'الفواتير المستحقة';
+
+  @override
+  String get payments => 'المدفوعات';
+
+  @override
+  String get net_income => 'صافي الدخل';
+
+  @override
+  String get journal_entries => 'قيود اليومية';
+
+  @override
+  String get receivables => 'الذمم المدينة';
+
+  @override
+  String get payables => 'الذمم الدائنة';
+
+  @override
+  String get transactions => 'الحركات';
+
+  @override
+  String get accounts => 'الحسابات';
+
+  @override
+  String get no_data_available => 'لا توجد بيانات';
+
+  @override
+  String get no_company_workspace => 'لا توجد مساحة عمل شركة لهذا الحساب.';
+
+  @override
   String get my_purchases => 'مشترياتي';
 
   @override
@@ -2462,9 +2579,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get add_image => 'إضافة صورة';
-
-  @override
-  String get status => 'الحالة';
 
   @override
   String get add => 'إضافة';

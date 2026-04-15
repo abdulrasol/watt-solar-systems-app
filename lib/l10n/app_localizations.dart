@@ -2465,6 +2465,240 @@ abstract class AppLocalizations {
   /// **'Suppliers'**
   String get suppliers;
 
+  /// No description provided for @manage_orders_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track customer and storefront orders.'**
+  String get manage_orders_subtitle;
+
+  /// No description provided for @manage_customers_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review customer balances and activity.'**
+  String get manage_customers_subtitle;
+
+  /// No description provided for @manage_suppliers_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review supplier balances and purchase history.'**
+  String get manage_suppliers_subtitle;
+
+  /// No description provided for @manage_accounting_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor accounting summaries and transactions.'**
+  String get manage_accounting_subtitle;
+
+  /// No description provided for @b2b_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'B2B Orders'**
+  String get b2b_orders;
+
+  /// No description provided for @b2c_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'B2C Orders'**
+  String get b2c_orders;
+
+  /// No description provided for @no_orders_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No orders found'**
+  String get no_orders_found;
+
+  /// No description provided for @no_customers_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers found'**
+  String get no_customers_found;
+
+  /// No description provided for @no_suppliers_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No suppliers found'**
+  String get no_suppliers_found;
+
+  /// No description provided for @order_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Details'**
+  String get order_details;
+
+  /// No description provided for @order_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Number'**
+  String get order_number;
+
+  /// No description provided for @order_placed.
+  ///
+  /// In en, this message translates to:
+  /// **'Order placed successfully'**
+  String get order_placed;
+
+  /// No description provided for @place_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Place Order'**
+  String get place_order;
+
+  /// No description provided for @payment_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Status'**
+  String get payment_status;
+
+  /// No description provided for @payment_method.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get payment_method;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @fulfilled_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Fulfilled At'**
+  String get fulfilled_at;
+
+  /// No description provided for @items.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get items;
+
+  /// No description provided for @parties.
+  ///
+  /// In en, this message translates to:
+  /// **'Parties'**
+  String get parties;
+
+  /// No description provided for @seller.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get seller;
+
+  /// No description provided for @buyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer'**
+  String get buyer;
+
+  /// No description provided for @customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customer;
+
+  /// No description provided for @supplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier'**
+  String get supplier;
+
+  /// No description provided for @confirm_receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Receipt'**
+  String get confirm_receipt;
+
+  /// No description provided for @edit_order_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Order Details'**
+  String get edit_order_details;
+
+  /// No description provided for @shipping_cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping Cost'**
+  String get shipping_cost;
+
+  /// No description provided for @shipping_method.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping Method'**
+  String get shipping_method;
+
+  /// No description provided for @paid_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Amount'**
+  String get paid_amount;
+
+  /// No description provided for @cancellation_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation Reason'**
+  String get cancellation_reason;
+
+  /// No description provided for @bills.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get bills;
+
+  /// No description provided for @payments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get payments;
+
+  /// No description provided for @net_income.
+  ///
+  /// In en, this message translates to:
+  /// **'Net Income'**
+  String get net_income;
+
+  /// No description provided for @journal_entries.
+  ///
+  /// In en, this message translates to:
+  /// **'Journal Entries'**
+  String get journal_entries;
+
+  /// No description provided for @receivables.
+  ///
+  /// In en, this message translates to:
+  /// **'Receivables'**
+  String get receivables;
+
+  /// No description provided for @payables.
+  ///
+  /// In en, this message translates to:
+  /// **'Payables'**
+  String get payables;
+
+  /// No description provided for @transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get transactions;
+
+  /// No description provided for @accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get accounts;
+
+  /// No description provided for @no_data_available.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get no_data_available;
+
+  /// No description provided for @no_company_workspace.
+  ///
+  /// In en, this message translates to:
+  /// **'No company workspace is available for this account.'**
+  String get no_company_workspace;
+
   /// No description provided for @my_purchases.
   ///
   /// In en, this message translates to:
@@ -4822,12 +5056,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Image'**
   String get add_image;
-
-  /// No description provided for @status.
-  ///
-  /// In en, this message translates to:
-  /// **'Status'**
-  String get status;
 
   /// No description provided for @add.
   ///

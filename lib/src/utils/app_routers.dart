@@ -28,6 +28,7 @@ import 'package:solar_hub/src/features/admin/presentation/screens/admin_dashboar
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_feedbacks_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/app_configs_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/send_notification_screen.dart';
+import 'package:solar_hub/src/features/accounting/presentation/screens/accounting_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_company_details_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_catalog_screen.dart';
@@ -43,7 +44,13 @@ import 'package:solar_hub/src/features/company_dashboard/presentation/screens/co
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_public_services_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_categories_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_shell.dart';
+import 'package:solar_hub/src/features/crm/presentation/screens/crm_screens.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/offer_request_wizard.dart';
+import 'package:solar_hub/src/features/orders_buyer/presentation/screens/buyer_orders_screen.dart';
+import 'package:solar_hub/src/features/orders_buyer/presentation/screens/order_checkout_result_screen.dart';
+import 'package:solar_hub/src/features/orders_company/presentation/screens/company_orders_screen.dart';
+import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:solar_hub/src/features/orders_core/presentation/screens/order_detail_screen.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_screen.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/company_details_screen.dart';
@@ -186,6 +193,42 @@ final routerProvider = Provider<GoRouter>((ref) {
               return const CompanyDashboardCategoriesScreen();
             },
           ),
+          GoRoute(
+            path: '/companies/dashboard/orders',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyOrdersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/orders/:id',
+            builder: (BuildContext context, GoRouterState state) {
+              final id = int.parse(state.pathParameters['id']!);
+              final auth = ref.read(authProvider);
+              return OrderDetailScreen(
+                orderId: id,
+                companyId: auth.company?.id,
+                sellerView: true,
+              );
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/customers',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyCustomersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/suppliers',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanySuppliersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/accounting',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AccountingScreen();
+            },
+          ),
         ],
       ),
       GoRoute(
@@ -211,6 +254,32 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
         ],
+      ),
+      GoRoute(
+        path: '/storefront/:audience/orders',
+        builder: (context, state) {
+          final audience = state.pathParameters['audience'] == 'b2b'
+              ? OrderAudience.b2b
+              : OrderAudience.b2c;
+          return BuyerOrdersScreen(audience: audience);
+        },
+      ),
+      GoRoute(
+        path: '/storefront/:audience/orders/:id',
+        builder: (context, state) {
+          final audience = state.pathParameters['audience'] == 'b2b'
+              ? OrderAudience.b2b
+              : OrderAudience.b2c;
+          final id = int.parse(state.pathParameters['id']!);
+          return OrderDetailScreen(orderId: id, audience: audience);
+        },
+      ),
+      GoRoute(
+        path: '/storefront/order-result',
+        builder: (context, state) {
+          final order = state.extra as OrderRecord;
+          return OrderCheckoutResultScreen(order: order);
+        },
       ),
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {

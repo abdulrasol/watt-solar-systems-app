@@ -55,6 +55,15 @@ import 'package:solar_hub/src/features/splash/domain/usecases/refresh_configs_us
 import 'package:solar_hub/src/features/admin/data/data_sources/admin_remote_data_source.dart';
 import 'package:solar_hub/src/features/admin/data/repositories/admin_repository_impl.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
+import 'package:solar_hub/src/features/accounting/data/datasources/accounting_remote_data_source.dart';
+import 'package:solar_hub/src/features/accounting/data/repositories/accounting_repository_impl.dart';
+import 'package:solar_hub/src/features/accounting/domain/repositories/accounting_repository.dart';
+import 'package:solar_hub/src/features/crm/data/datasources/crm_remote_data_source.dart';
+import 'package:solar_hub/src/features/crm/data/repositories/crm_repository_impl.dart';
+import 'package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart';
+import 'package:solar_hub/src/features/orders_buyer/data/datasources/orders_remote_data_source.dart';
+import 'package:solar_hub/src/features/orders_buyer/data/repositories/orders_repository_impl.dart';
+import 'package:solar_hub/src/features/orders_buyer/domain/repositories/orders_repository.dart';
 import 'package:solar_hub/src/features/storefront/data/datasources/storefront_remote_data_source.dart';
 import 'package:solar_hub/src/features/storefront/data/repositories/storefront_repository_impl.dart';
 import 'package:solar_hub/src/features/storefront/domain/repositories/storefront_repository.dart';
@@ -262,5 +271,35 @@ void setupDependencies() {
     return CompanyManagementRepositoryImpl(
       getIt<CompanyManagementRemoteDataSource>(),
     );
+  });
+
+  getIt.registerLazySingleton<OrdersRemoteDataSource>(() {
+    dPrint('init orders remote data source', tag: 'getIt');
+    return OrdersRemoteDataSourceImpl(getIt<DioService>());
+  });
+
+  getIt.registerLazySingleton<OrdersRepository>(() {
+    dPrint('init orders repository', tag: 'getIt');
+    return OrdersRepositoryImpl(getIt<OrdersRemoteDataSource>());
+  });
+
+  getIt.registerLazySingleton<CrmRemoteDataSource>(() {
+    dPrint('init crm remote data source', tag: 'getIt');
+    return CrmRemoteDataSourceImpl(getIt<DioService>());
+  });
+
+  getIt.registerLazySingleton<CrmRepository>(() {
+    dPrint('init crm repository', tag: 'getIt');
+    return CrmRepositoryImpl(getIt<CrmRemoteDataSource>());
+  });
+
+  getIt.registerLazySingleton<AccountingRemoteDataSource>(() {
+    dPrint('init accounting remote data source', tag: 'getIt');
+    return AccountingRemoteDataSourceImpl(getIt<DioService>());
+  });
+
+  getIt.registerLazySingleton<AccountingRepository>(() {
+    dPrint('init accounting repository', tag: 'getIt');
+    return AccountingRepositoryImpl(getIt<AccountingRemoteDataSource>());
   });
 }

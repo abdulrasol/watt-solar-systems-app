@@ -1233,6 +1233,123 @@ class AppLocalizationsEn extends AppLocalizations {
   String get suppliers => 'Suppliers';
 
   @override
+  String get manage_orders_subtitle => 'Track customer and storefront orders.';
+
+  @override
+  String get manage_customers_subtitle => 'Review customer balances and activity.';
+
+  @override
+  String get manage_suppliers_subtitle => 'Review supplier balances and purchase history.';
+
+  @override
+  String get manage_accounting_subtitle => 'Monitor accounting summaries and transactions.';
+
+  @override
+  String get b2b_orders => 'B2B Orders';
+
+  @override
+  String get b2c_orders => 'B2C Orders';
+
+  @override
+  String get no_orders_found => 'No orders found';
+
+  @override
+  String get no_customers_found => 'No customers found';
+
+  @override
+  String get no_suppliers_found => 'No suppliers found';
+
+  @override
+  String get order_details => 'Order Details';
+
+  @override
+  String get order_number => 'Order Number';
+
+  @override
+  String get order_placed => 'Order placed successfully';
+
+  @override
+  String get place_order => 'Place Order';
+
+  @override
+  String get payment_status => 'Payment Status';
+
+  @override
+  String get payment_method => 'Payment Method';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get fulfilled_at => 'Fulfilled At';
+
+  @override
+  String get items => 'Items';
+
+  @override
+  String get parties => 'Parties';
+
+  @override
+  String get seller => 'Seller';
+
+  @override
+  String get buyer => 'Buyer';
+
+  @override
+  String get customer => 'Customer';
+
+  @override
+  String get supplier => 'Supplier';
+
+  @override
+  String get confirm_receipt => 'Confirm Receipt';
+
+  @override
+  String get edit_order_details => 'Edit Order Details';
+
+  @override
+  String get shipping_cost => 'Shipping Cost';
+
+  @override
+  String get shipping_method => 'Shipping Method';
+
+  @override
+  String get paid_amount => 'Paid Amount';
+
+  @override
+  String get cancellation_reason => 'Cancellation Reason';
+
+  @override
+  String get bills => 'Bills';
+
+  @override
+  String get payments => 'Payments';
+
+  @override
+  String get net_income => 'Net Income';
+
+  @override
+  String get journal_entries => 'Journal Entries';
+
+  @override
+  String get receivables => 'Receivables';
+
+  @override
+  String get payables => 'Payables';
+
+  @override
+  String get transactions => 'Transactions';
+
+  @override
+  String get accounts => 'Accounts';
+
+  @override
+  String get no_data_available => 'No data available';
+
+  @override
+  String get no_company_workspace => 'No company workspace is available for this account.';
+
+  @override
   String get my_purchases => 'My Purchases';
 
   @override
@@ -2462,9 +2579,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get add_image => 'Add Image';
-
-  @override
-  String get status => 'Status';
 
   @override
   String get add => 'Add';

@@ -42,6 +42,33 @@ class CompanyWorkspaceModules {
         icon: Iconsax.call_bold,
       );
 
+  static CompanyWorkspaceItem orders(AppLocalizations l10n) =>
+      CompanyWorkspaceItem(
+        id: 'orders',
+        label: l10n.orders,
+        subtitle: l10n.manage_orders_subtitle,
+        route: '/companies/dashboard/orders',
+        icon: Iconsax.receipt_1_bold,
+      );
+
+  static CompanyWorkspaceItem customers(AppLocalizations l10n) =>
+      CompanyWorkspaceItem(
+        id: 'customers',
+        label: l10n.customers,
+        subtitle: l10n.manage_customers_subtitle,
+        route: '/companies/dashboard/customers',
+        icon: Iconsax.people_bold,
+      );
+
+  static CompanyWorkspaceItem suppliers(AppLocalizations l10n) =>
+      CompanyWorkspaceItem(
+        id: 'suppliers',
+        label: l10n.suppliers,
+        subtitle: l10n.manage_suppliers_subtitle,
+        route: '/companies/dashboard/suppliers',
+        icon: Iconsax.buildings_2_bold,
+      );
+
   static CompanyWorkspaceItem publicServices(AppLocalizations l10n) =>
       CompanyWorkspaceItem(
         id: 'public_services',
@@ -68,6 +95,9 @@ class CompanyWorkspaceModules {
       overview(l10n),
       profile(l10n),
       services(l10n),
+      orders(l10n),
+      customers(l10n),
+      suppliers(l10n),
       contacts(l10n),
       publicServices(l10n),
       categories(l10n),
@@ -127,8 +157,26 @@ class CompanyWorkspaceModules {
     if (location.startsWith('/companies/dashboard/contacts')) {
       return contacts(l10n);
     }
+    if (location.startsWith('/companies/dashboard/orders')) {
+      return orders(l10n);
+    }
+    if (location.startsWith('/companies/dashboard/customers')) {
+      return customers(l10n);
+    }
+    if (location.startsWith('/companies/dashboard/suppliers')) {
+      return suppliers(l10n);
+    }
     if (location.startsWith('/companies/dashboard/public-services')) {
       return publicServices(l10n);
+    }
+    if (location.startsWith('/companies/dashboard/accounting')) {
+      return CompanyWorkspaceItem(
+        id: 'accounting',
+        label: l10n.accounting,
+        subtitle: l10n.manage_accounting_subtitle,
+        route: '/companies/dashboard/accounting',
+        icon: Iconsax.money_2_bold,
+      );
     }
     if (location.startsWith('/companies/dashboard/categories')) {
       return categories(l10n);
@@ -178,12 +226,12 @@ class CompanyWorkspaceModules {
         return CompanyWorkspaceItem(
           id: 'accounting',
           label: l10n.accounting,
-          subtitle: l10n.section_label(l10n.accounting),
-          route: '/companies/dashboard/services',
+          subtitle: l10n.manage_accounting_subtitle,
+          route: '/companies/dashboard/accounting',
           icon: Iconsax.money_2_bold,
           iconUrl: service.icon,
           serviceCode: service.serviceCode,
-          externalRoute: _normalizeExternalRoute(service.route),
+          externalRoute: '/companies/dashboard/accounting',
         );
       case 'analytics':
         return CompanyWorkspaceItem(

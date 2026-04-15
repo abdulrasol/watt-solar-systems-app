@@ -162,7 +162,8 @@ class AppUrls {
   static const String b2cOrders = '$shopBaseUrl/store/orders';
   static const String b2cMyOrders = '$shopBaseUrl/store/my-orders';
   static String b2cMyOrder(int orderId) => '$b2cMyOrders/$orderId';
-  static String cancelB2cMyOrder(int orderId) => '${b2cMyOrder(orderId)}/cancel';
+  static String cancelB2cMyOrder(int orderId) =>
+      '${b2cMyOrder(orderId)}/cancel';
   static String b2cCompanyProducts(int companyId) =>
       '$shopBaseUrl/store/companies/$companyId/products';
   static String b2cCategoryProducts(String categoryType, int categoryId) =>
@@ -172,7 +173,8 @@ class AppUrls {
   static const String b2bOrders = '$shopBaseUrl/b2b/orders';
   static const String b2bMyOrders = '$shopBaseUrl/b2b/my-orders';
   static String b2bMyOrder(int orderId) => '$b2bMyOrders/$orderId';
-  static String cancelB2bMyOrder(int orderId) => '${b2bMyOrder(orderId)}/cancel';
+  static String cancelB2bMyOrder(int orderId) =>
+      '${b2bMyOrder(orderId)}/cancel';
   static String confirmB2bMyOrderReceipt(int orderId) =>
       '${b2bMyOrder(orderId)}/confirm-receipt';
   static String b2bCompanyProducts(int companyId) =>

@@ -1,8 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/features/orders_buyer/domain/repositories/orders_repository.dart';
+import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_cart.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
@@ -84,6 +88,44 @@ class StorefrontCartScreen extends StatelessWidget {
                     _SummaryRow(
                       label: l10n.total_amount,
                       value: l10n.iqd_price(money.format(totalAmount)),
+                    ),
+                    SizedBox(height: 16.h),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final repository = getIt<OrdersRepository>();
+                          final cartsToSubmit = [...carts];
+                          if (cartsToSubmit.isEmpty) return;
+
+                          for (final cart in cartsToSubmit) {
+                            final order = audience == StorefrontAudience.b2b
+                                ? await repository.createB2bOrder(
+                                    B2bOrderCreateRequest.fromCompanyCart(cart),
+                                  )
+                                : await repository.createB2cOrder(
+                                    B2cOrderCreateRequest.fromCompanyCart(cart),
+                                  );
+                            await storefrontCart.clearCompanyCart(
+                              audience: audience,
+                              companyId: cart.companyId,
+                            );
+                            if (context.mounted) {
+                              context.push(
+                                '/storefront/order-result',
+                                extra: order,
+                              );
+                            }
+                          }
+                        },
+                        child: Text(l10n.place_order),
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    TextButton(
+                      onPressed: () =>
+                          context.push('/storefront/${audience.name}/orders'),
+                      child: Text(l10n.my_orders),
                     ),
                   ],
                 ),
