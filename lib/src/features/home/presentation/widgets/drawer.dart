@@ -55,15 +55,22 @@ class AppDrawer extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        _buildDrawerItem(
-                          context: context,
-                          icon: Iconsax.home_2_bold,
-                          title: AppLocalizations.of(context)!.my_systems,
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (c) => const CalculatedSystemsPage()));
-                          },
-                          delay: 100,
-                        ),
+                        if (isEnabled(ref, 'systems'))
+                          _buildDrawerItem(
+                            context: context,
+                            icon: Iconsax.home_2_bold,
+                            title: AppLocalizations.of(context)!.my_systems,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (c) =>
+                                      const CalculatedSystemsPage(),
+                                ),
+                              );
+                            },
+                            delay: 100,
+                          ),
                         _buildDrawerItem(
                           context: context,
                           icon: Iconsax.clipboard_bold,

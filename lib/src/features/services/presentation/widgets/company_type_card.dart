@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
+import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/services/domain/entities/service_type_visual.dart';
 
 class CompanyTypeCard extends StatelessWidget {
-  final CompanyType type;
+  final ServiceType type;
   final VoidCallback onTap;
 
   const CompanyTypeCard({super.key, required this.type, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final visual = resolveServiceTypeVisual(type.code);
+    final visual = resolveServiceTypeVisual(type.name);
     final l10n = AppLocalizations.of(context)!;
 
     return Material(
@@ -42,11 +43,33 @@ class CompanyTypeCard extends StatelessWidget {
             child: Stack(
               children: [
                 Positioned(
-                  top: -16,
-                  right: -8,
-                  child: CircleAvatar(
-                    radius: 32.r,
-                    backgroundColor: Colors.white.withValues(alpha: 0.14),
+                  top: 16,
+                  right: 16,
+                  child: Container(
+                    width: 48.r,
+                    height: 48.r,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.14),
+                      borderRadius: BorderRadius.circular(14.r),
+                    ),
+                    child: type.image?.isNotEmpty == true
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(14.r),
+                            child: CachedNetworkImage(
+                              imageUrl: type.image!,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) => Icon(
+                                visual.icon,
+                                color: Colors.white.withValues(alpha: 0.88),
+                                size: 22.sp,
+                              ),
+                            ),
+                          )
+                        : Icon(
+                            visual.icon,
+                            color: Colors.white.withValues(alpha: 0.88),
+                            size: 22.sp,
+                          ),
                   ),
                 ),
                 Positioned(
@@ -62,14 +85,7 @@ class CompanyTypeCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Align(
-                        alignment: AlignmentDirectional.topEnd,
-                        child: Icon(
-                          visual.icon,
-                          color: Colors.white.withValues(alpha: 0.88),
-                          size: 24.sp,
-                        ),
-                      ),
+                      SizedBox(height: 28.h),
                       const Spacer(),
                       Text(
                         _displayLabel(type),
@@ -82,24 +98,54 @@ class CompanyTypeCard extends StatelessWidget {
                           height: 1.2,
                         ),
                       ),
-                      SizedBox(height: 8.h),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.16),
-                          borderRadius: BorderRadius.circular(999.r),
-                        ),
-                        child: Text(
-                          l10n.services_explore_companies,
+                      if ((type.description ?? '').trim().isNotEmpty) ...[
+                        SizedBox(height: 6.h),
+                        Text(
+                          type.description!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.white.withValues(alpha: 0.88),
                             fontSize: 11.sp,
-                            fontWeight: FontWeight.w700,
+                            height: 1.3,
                           ),
                         ),
+                      ],
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10.w,
+                                vertical: 6.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.16),
+                                borderRadius: BorderRadius.circular(999.r),
+                              ),
+                              child: Text(
+                                l10n.services_explore_companies,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            '${type.companiesCount}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -112,8 +158,8 @@ class CompanyTypeCard extends StatelessWidget {
     );
   }
 
-  String _displayLabel(CompanyType type) {
-    final text = type.name.trim().isEmpty ? type.code : type.name;
+  String _displayLabel(ServiceType type) {
+    final text = type.name.trim();
     return text.replaceAll('_', ' ').replaceAll('-', ' ');
   }
 }

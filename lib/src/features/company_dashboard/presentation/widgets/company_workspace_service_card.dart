@@ -4,7 +4,6 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/service_request_bottom_sheet.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyWorkspaceServiceCard extends StatelessWidget {
@@ -128,9 +127,7 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
                 Text(
                   _isActive
                       ? service.serviceName
-                      : canManageActions
-                      ? l10n.request_access
-                      : l10n.company_activation_required_short,
+                      : l10n.status_unavailable,
                   style: const TextStyle(
                     fontFamily: AppTheme.fontFamily,
                     fontSize: 12,
@@ -165,21 +162,6 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
     }
 
     if (!_isActive && !canManageActions) {
-      return;
-    }
-
-    if (!_isActive && companyId != null) {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => ServiceRequestBottomSheet(
-          companyId: companyId!,
-          serviceCode: service.serviceCode,
-          serviceName: service.serviceName,
-          onSuccess: () {},
-        ),
-      );
       return;
     }
 
@@ -218,7 +200,7 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
 
   String _description(AppLocalizations l10n) {
     if (_isActive) return l10n.section_label(service.serviceName);
-    return l10n.service_not_requested(service.serviceName);
+    return l10n.status_unavailable;
   }
 
   Color _statusColor(String? status) {
@@ -239,6 +221,7 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
   }
 
   String? _normalizedRoute(String? route) {
+    if (service.serviceCode == 'company_work') return '/company-work';
     if (route == null || route.isEmpty || route == 'null') return null;
     return route.startsWith('/') ? route : '/$route';
   }
@@ -251,6 +234,8 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
         return Iconsax.receipt_item_bold;
       case 'inventory':
         return Iconsax.box_bold;
+      case 'company_work':
+        return Iconsax.gallery_bold;
       case 'accounting':
         return Iconsax.money_2_bold;
       case 'multi_member':

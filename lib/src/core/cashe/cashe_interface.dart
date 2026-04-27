@@ -1,8 +1,12 @@
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
+abstract class CacheBox {
+  void listenKey(String key, void Function(dynamic value) callback);
+}
+
 abstract class CasheInterface {
-  late final box;
+  late final CacheBox box;
   Future<void> save(String key, dynamic value);
   dynamic get(String key); // Changed to synchronous
   Future<void> delete(String key);

@@ -17,7 +17,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
-  const AuthPage({super.key});
+  final String? redirectTo;
+
+  const AuthPage({super.key, this.redirectTo});
 
   @override
   ConsumerState<AuthPage> createState() => _AuthPageState();
@@ -208,7 +210,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
             left: 20,
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
-              onPressed: () => context.go('/home'),
+              onPressed: () => context.go(widget.redirectTo ?? '/home'),
             ),
           ),
         ],
@@ -585,7 +587,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
         ref.read(authProvider.notifier).login(response);
         _loginBtnController.success();
         await Future.delayed(const Duration(milliseconds: 500));
-        if (mounted) context.go('/home');
+        if (mounted) context.go(widget.redirectTo ?? '/home');
       } catch (e) {
         if (!mounted) return;
         _loginBtnController.error();
@@ -626,7 +628,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
           AppLocalizations.of(context)!.please_verify_email,
         );
         await Future.delayed(const Duration(seconds: 2));
-        if (mounted) context.go('/home');
+        if (mounted) context.go(widget.redirectTo ?? '/home');
       } catch (e) {
         if (!mounted) return;
         _signUpBtnController.error();

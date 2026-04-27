@@ -242,7 +242,7 @@ class _SaveToSystemDialogState extends ConsumerState<SaveToSystemDialog> {
         'name': name,
         'system': null,
         'companyId': _selectedCompanyId,
-      }); // TODO: translate
+      });
     } else {
       if (_selectedSystem == null) {
         ScaffoldMessenger.of(context).showSnackBar(

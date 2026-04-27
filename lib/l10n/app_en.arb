@@ -69,10 +69,15 @@
   "dashboard_hint_compare_title": "Compare before you buy",
   "dashboard_hint_compare_desc": "Use the calculators first, then compare offers and components against the same target system size.",
   "buy_components": "Buy components",
+  "new_products": "New Products",
+  "companies": "Companies",
+  "view_more": "View More",
+  "see_all": "See All",
   "b2b_storefront": "B2B Storefront",
   "b2c_storefront": "B2C Storefront",
   "storefront_b2b_subtitle": "Member-only catalog with wholesale pricing and company inventory visibility.",
   "storefront_b2c_subtitle": "Open storefront for all users with public product access.",
+  "storefront_unified_subtitle": "Explore products, compare companies, and move into the full catalog only when you need more detail.",
   "storefront_products_available": "{count} products available",
   "@storefront_products_available": {
     "placeholders": {
@@ -109,7 +114,11 @@
   "clear_filters": "Clear",
   "apply_filters": "Apply",
   "store_filters": "Store Filters",
+  "store_filters_subtitle": "Refine products by sort order, category, company, and price in one place.",
+  "price_range": "Price Range",
+  "unit_price": "Unit Price",
   "no_store_products_found": "No products matched the current filters.",
+  "no_categories_found": "No categories available right now.",
   "load_more": "Load More",
   "global_category": "Global",
   "internal_category": "Internal",
@@ -140,6 +149,22 @@
   },
   "product_details": "Product Details",
   "price_overview": "Price Overview",
+  "base_unit_price": "Base Unit Price",
+  "options_total": "Options Total",
+  "effective_unit_price": "Effective Unit Price",
+  "line_total": "Line Total",
+  "applied_pricing_tier": "Applied Pricing Tier",
+  "selected_options_title": "Selected Options",
+  "choose_cart_audience": "Choose cart mode",
+  "add_to_b2b_cart": "Add this product to the B2B cart",
+  "add_to_b2c_cart": "Add this product to the B2C cart",
+  "added_to_b2b_cart": "Added to B2B cart",
+  "added_to_b2c_cart": "Added to B2C cart",
+  "payment_cash": "Cash",
+  "payment_credit": "Credit",
+  "payment_upon_receipt": "Pay on receipt",
+  "pickup_from_company": "Pick up from company",
+  "no_delivery_selected": "No delivery selected",
   "display_price": "Display Price",
   "retail_price": "Retail Price",
   "wholesale_price": "Wholesale Price",
@@ -153,7 +178,10 @@
     }
   },
   "add_to_cart": "Add to Cart",
+  "remove_from_cart": "Remove from Cart",
   "added_to_cart": "Added to cart",
+  "removed_from_cart": "Removed from cart",
+  "cart": "Cart",
   "b2b_cart": "B2B Cart",
   "b2c_cart": "B2C Cart",
   "cart_empty": "Your cart is empty",
@@ -386,6 +414,7 @@
   "enter_system_name": "Enter a name for your new system:",
   "back_to_list": "Back to List",
   "cancel": "Cancel",
+  "delete": "Delete",
   "save": "Save",
   "error_enter_system_name": "Required: Please enter a system name",
   "error_select_system": "Required: Please select a system",
@@ -525,6 +554,36 @@
   "services_choose_category": "Choose a service category",
   "services_no_categories": "No service categories are available yet.",
   "services_explore_companies": "Explore companies",
+  "service_types": "Service Types",
+  "service_types_loading": "Loading service types...",
+  "service_types_empty_title": "No service types yet",
+  "service_types_empty_subtitle": "Add the first service type to start organizing companies.",
+  "service_types_add": "Add Service Type",
+  "service_types_edit": "Edit Service Type",
+  "service_types_create_action": "Create Service Type",
+  "service_types_update_action": "Update Service Type",
+  "service_types_pick_image": "Pick image",
+  "service_types_deleted": "Service type deleted successfully.",
+  "service_types_created": "Service type created successfully.",
+  "service_types_updated": "Service type updated successfully.",
+  "service_types_delete_title": "Delete service type",
+  "service_types_delete_message": "Delete {name}?",
+  "@service_types_delete_message": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "service_types_company_subtitle": "Select the service types your company provides.",
+  "service_types_mark_served": "Mark served",
+  "service_types_served": "Served",
+  "service_types_marked_served": "Service type added to your company profile.",
+  "service_types_unmarked_served": "Service type removed from your company profile.",
+  "service_types_companies_count": "{count} companies",
+  "@service_types_companies_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "services_companies_found": "{count} companies found",
   "@services_companies_found": {
     "placeholders": {
@@ -558,6 +617,78 @@
   "services_type_label": "Type",
   "services_phone_label": "Phone",
   "services_no_phone": "No phone number",
+  "services_tab_works": "Works",
+  "services_tab_info_contacts": "Info & Contacts",
+  "services_mode_overview": "Overview",
+  "services_mode_products": "Products",
+  "services_products_header": "Company products",
+  "services_products_mode_title": "Shop from this company",
+  "services_company_categories_title": "Company categories",
+  "services_products_subtitle": "Browse available products from {company}.",
+  "@services_products_subtitle": {
+    "placeholders": {
+      "company": {}
+    }
+  },
+  "services_works_preview_title": "Project showcase",
+  "services_works_preview_subtitle": "Preview sample work cards until real portfolio images are added.",
+  "services_work_item_title": "Project {number}",
+  "@services_work_item_title": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "company_work_title": "Company Works",
+  "company_work_subtitle": "Manage completed projects, installations, and portfolio highlights.",
+  "company_work_public_title": "Project Showcase",
+  "company_work_public_subtitle": "Explore recent company projects and installation highlights.",
+  "company_work_public_empty": "No work items have been published yet.",
+  "company_work_public_showcase": "Public showcase",
+  "company_work_add": "Add Work",
+  "company_work_add_title": "Add Work",
+  "company_work_edit_title": "Edit Work",
+  "company_work_title_field": "Work title",
+  "company_work_body_field": "Work description",
+  "company_work_title_required": "Work title is required",
+  "company_work_images": "Work Images",
+  "company_work_images_empty": "Add one or more images to present this project.",
+  "company_work_existing_image": "Existing",
+  "company_work_new_image": "New",
+  "company_work_pick_from_gallery": "Pick from gallery",
+  "company_work_pick_from_camera": "Take photo",
+  "company_work_image_pick_failed": "Failed to pick images.",
+  "company_work_loading": "Loading company works...",
+  "company_work_empty_title": "No works yet",
+  "company_work_empty_subtitle": "Create your first work item to show completed projects to customers.",
+  "company_work_no_description": "No description added yet.",
+  "company_work_images_count": "{count} images",
+  "@company_work_images_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "company_work_created_at": "Created {date}",
+  "@company_work_created_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_updated_at": "Updated {date}",
+  "@company_work_updated_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_publish": "Publish Work",
+  "company_work_save_changes": "Save Work",
+  "company_work_created": "Work created successfully.",
+  "company_work_updated": "Work updated successfully.",
+  "company_work_delete_title": "Delete work",
+  "company_work_delete_message": "This work item will be removed permanently.",
+  "company_work_deleted": "Work deleted successfully.",
+  "company_work_not_found": "This work item is no longer available.",
+  "try_again": "Try Again",
+  "edit": "Edit",
   "services_section_services": "Services",
   "services_no_public_services": "No public services listed yet.",
   "services_price_on_request": "Price on request",
@@ -1001,6 +1132,8 @@
   "example_100_or_200": "e.g., 100 or 200",
   "example_12_24_48_512": "e.g., 12, 24, 48, or 51.2",
   "example_5_or_8": "e.g., 5 or 8",
+  "example_5": "e.g., 5",
+  "example_15": "e.g., 15",
   "battery_count_explanation": "The number of batteries needed is calculated as:\n\n(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\nExample: (2300 W × 5 h) ÷ (12 V × 100 Ah × 0.2) = about 8 batteries.\n\nThis helps estimate how many batteries are needed for a specific load and runtime.",
   "depth_of_discharge_with_value": "Battery Depth of Discharge ({value}%)",
   "@depth_of_discharge_with_value": {

@@ -353,20 +353,27 @@ class OrderRecord {
 class OrderItemCreateRequest {
   final int productId;
   final int quantity;
+  final List<int> selectedOptions;
 
   const OrderItemCreateRequest({
     required this.productId,
     required this.quantity,
+    this.selectedOptions = const [],
   });
 
   Map<String, dynamic> toJson() {
-    return {'product_id': productId, 'quantity': quantity};
+    return {
+      'product_id': productId,
+      'quantity': quantity,
+      'selected_options': selectedOptions,
+    };
   }
 
   factory OrderItemCreateRequest.fromCartItem(StorefrontCartItem item) {
     return OrderItemCreateRequest(
       productId: item.productId,
       quantity: item.quantity,
+      selectedOptions: item.selectedOptionIds,
     );
   }
 }
@@ -430,6 +437,10 @@ class B2cOrderCreateRequest extends BaseOrderCreateRequest {
     return B2cOrderCreateRequest(
       sellerCompanyId: cart.companyId,
       items: cart.items.map(OrderItemCreateRequest.fromCartItem).toList(),
+      paymentMethod: cart.paymentMethod,
+      shippingCost: cart.deliveryCost,
+      shippingMethod: cart.deliveryMethod,
+      shippingAddress: cart.shippingAddress,
     );
   }
 }
@@ -462,6 +473,10 @@ class B2bOrderCreateRequest extends BaseOrderCreateRequest {
     return B2bOrderCreateRequest(
       sellerCompanyId: cart.companyId,
       items: cart.items.map(OrderItemCreateRequest.fromCartItem).toList(),
+      paymentMethod: cart.paymentMethod,
+      shippingCost: cart.deliveryCost,
+      shippingMethod: cart.deliveryMethod,
+      shippingAddress: cart.shippingAddress,
     );
   }
 }

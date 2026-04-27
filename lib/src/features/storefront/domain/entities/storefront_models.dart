@@ -54,6 +54,7 @@ class StorefrontCompanyCategory {
 class StorefrontCompany {
   final int id;
   final String name;
+  final String? logo;
   final String? phone;
   final bool allowsB2b;
   final bool allowsB2c;
@@ -63,6 +64,7 @@ class StorefrontCompany {
   const StorefrontCompany({
     required this.id,
     required this.name,
+    this.logo,
     this.phone,
     this.allowsB2b = false,
     this.allowsB2c = false,
@@ -74,6 +76,7 @@ class StorefrontCompany {
     return StorefrontCompany(
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
+      logo: json['logo'],
       phone: json['phone'],
       allowsB2b: json['allows_b2b'] ?? false,
       allowsB2c: json['allows_b2c'] ?? false,
@@ -303,6 +306,8 @@ class StorefrontMeta {
 }
 
 class StorefrontQuery {
+  static const defaultOrdering = '-created_at';
+
   final int page;
   final int pageSize;
   final String search;
@@ -328,7 +333,7 @@ class StorefrontQuery {
     this.maxPrice,
     this.isAvailable,
     this.status,
-    this.ordering = '-created_at',
+    this.ordering = defaultOrdering,
   });
 
   StorefrontQuery copyWith({
@@ -391,6 +396,53 @@ class StorefrontQuery {
   }
 
   StorefrontQuery resetPage() => copyWith(page: 1);
+
+  int get activeFilterCount {
+    var count = 0;
+    if (companyId != null) count++;
+    if (categoryId != null) count++;
+    if (globalCategoryId != null) count++;
+    if (companyCategoryId != null) count++;
+    if (minPrice != null) count++;
+    if (maxPrice != null) count++;
+    if (isAvailable != null) count++;
+    if (status != null && status!.isNotEmpty) count++;
+    if (ordering != defaultOrdering) count++;
+    return count;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is StorefrontQuery &&
+        other.page == page &&
+        other.pageSize == pageSize &&
+        other.search == search &&
+        other.companyId == companyId &&
+        other.categoryId == categoryId &&
+        other.globalCategoryId == globalCategoryId &&
+        other.companyCategoryId == companyCategoryId &&
+        other.minPrice == minPrice &&
+        other.maxPrice == maxPrice &&
+        other.isAvailable == isAvailable &&
+        other.status == status &&
+        other.ordering == ordering;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    page,
+    pageSize,
+    search,
+    companyId,
+    categoryId,
+    globalCategoryId,
+    companyCategoryId,
+    minPrice,
+    maxPrice,
+    isAvailable,
+    status,
+    ordering,
+  );
 }
 
 class StorefrontCompanyQuery {

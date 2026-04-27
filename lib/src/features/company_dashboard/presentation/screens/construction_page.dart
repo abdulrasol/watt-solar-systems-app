@@ -32,17 +32,13 @@ class ServiceStatusPage extends StatelessWidget {
 
     if (status == null || status == 'null' || status!.isEmpty) {
       title = l10n.ready_to_scale_title;
-      description = l10n.service_not_requested(serviceName);
-      subDescription = l10n.service_unlock_description;
+      description = l10n.status_unavailable;
+      subDescription = l10n.company_activation_required_message;
       fallbackIcon = Iconsax.add_square_bold;
       statusColor = AppTheme.primaryColor;
-      actionButton = ElevatedButton.icon(
-        onPressed: () {
-          // TODO: Implement Request Access logic
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.access_requested_successfully)));
-        },
-        icon: const Icon(Iconsax.flash_1_bold),
-        label: Text(l10n.request_access_now),
+      actionButton = ElevatedButton(
+        onPressed: () => context.pop(),
+        child: Text(l10n.back_to_dashboard),
       );
     } else {
       statusColor = state.color;
@@ -52,7 +48,7 @@ class ServiceStatusPage extends StatelessWidget {
         case ServiceStatus.pending:
           title = l10n.awaiting_approval;
           description = l10n.service_under_review(serviceName);
-          subDescription = l10n.service_pending_help;
+          subDescription = l10n.company_activation_required_message;
           actionButton = OutlinedButton.icon(
             onPressed: () => _contactSupport(context),
             icon: const Icon(Iconsax.message_question_bold),
@@ -61,7 +57,7 @@ class ServiceStatusPage extends StatelessWidget {
           break;
         case ServiceStatus.rejected:
           title = l10n.request_denied;
-          description = l10n.service_request_rejected(serviceName);
+          description = l10n.status_unavailable;
           subDescription = l10n.service_rejected_help;
           actionButton = ElevatedButton.icon(
             onPressed: () => _contactSupport(context),

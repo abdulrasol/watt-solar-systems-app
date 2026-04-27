@@ -45,7 +45,7 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
               child: Icon(Icons.cable, size: 80.sp, color: Colors.grey),
             ),
             const SizedBox(height: 20),
-            Text(l10n.wires_calc_intro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium), // TODO: translate
+            Text(l10n.wires_calc_intro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 30),
 
             // Application Type Selector
@@ -127,7 +127,7 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
                   child: CalcInputRow(
                     label: l10n.distance_one_way,
                     suffix: l10n.metres,
-                    hint: "e.g. 15", // TODO: translate
+                    hint: l10n.example_15,
                     onChanged: (v) {
                       controller.wireCalcLength = double.tryParse(v) ?? 0;
                       controller.calculateWire();
@@ -181,7 +181,7 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
               value: controller.wireCalcResult,
               icon: Iconsax.mask_1_bold,
               color: Colors.blueGrey,
-            ), // TODO: translate
+            ),
 
             const SizedBox(height: 20),
             Container(

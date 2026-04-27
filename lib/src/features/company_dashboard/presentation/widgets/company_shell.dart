@@ -91,7 +91,7 @@ class _CompanyShellState extends ConsumerState<CompanyShell> {
                           child: ConstrainedBox(
                             constraints: BoxConstraints(maxWidth: width >= 1440 ? 1320 : 1180),
                             child: company?.requiresActivationAttention == true
-                                ? Padding(
+                                ? SingleChildScrollView(
                                     padding: const EdgeInsets.only(bottom: 1),
                                     child: CompanyActivationNotice(company: company!),
                                   )

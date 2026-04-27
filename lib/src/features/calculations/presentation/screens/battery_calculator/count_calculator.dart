@@ -10,6 +10,7 @@ import 'package:solar_hub/src/features/calculations/presentation/widgets/text_he
 import 'package:solar_hub/src/utils/app_constants.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 
@@ -134,9 +135,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
           'count': batteryCount,
           'capacity_ah': double.tryParse(batteryCurrent.text) ?? 0,
           'voltage': double.tryParse(batteryVoltage.text) ?? 0,
-          'type': depthOfDischarge >= 50
-              ? "Gel/AGM"
-              : "Lithium/Tubular", // Simple heuristic based on helper text
+          'type': depthOfDischarge >= 50 ? 'Gel/AGM' : 'Lithium/Tubular',
           'brand': 'Unknown',
           'notes':
               'DoD: ${depthOfDischarge.toInt()}%, System Voltage: $systemVoltage V',
@@ -147,6 +146,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
 
   @override
   Widget build(BuildContext context) {
+    final systemsEnabled = isEnabled(ref, 'systems');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: Stack(
@@ -188,7 +188,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    if (batteryCount > 0)
+                    if (systemsEnabled && batteryCount > 0)
                       IconButton(
                         onPressed: () => _saveSystem(),
                         icon: const Icon(Iconsax.save_2_bold),

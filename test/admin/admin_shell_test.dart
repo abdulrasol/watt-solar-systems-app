@@ -12,18 +12,20 @@ import 'package:solar_hub/src/features/admin/domain/models/service_request.dart'
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_dashboard.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/admin_dashboard_card.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_shell.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
-class _FakeBox {
+class _FakeBox implements CacheBox {
+  @override
   void listenKey(String key, void Function(dynamic) listener) {}
 }
 
 class _FakeCache implements CasheInterface {
   @override
-  dynamic box = _FakeBox();
+  CacheBox box = _FakeBox();
 
   final Map<String, dynamic> _values = <String, dynamic>{};
 
@@ -207,7 +209,8 @@ void main() {
       size: const Size(390, 844),
     );
 
-    expect(find.text('Admin Dashboard'), findsOneWidget);
+    expect(find.byType(AdminDashboard), findsOneWidget);
+    expect(find.byType(AdminDashboardCard), findsWidgets);
     expect(find.text('Open section'), findsWidgets);
     expect(repository.listCompaniesCalls, 0);
   });

@@ -33,6 +33,15 @@ class CompanyWorkspaceModules {
         icon: Iconsax.category_2_bold,
       );
 
+  static CompanyWorkspaceItem serviceTypes(AppLocalizations l10n) =>
+      CompanyWorkspaceItem(
+        id: 'service_types',
+        label: l10n.service_types,
+        subtitle: l10n.service_types_company_subtitle,
+        route: '/companies/dashboard/service-types',
+        icon: Iconsax.gallery_edit_bold,
+      );
+
   static CompanyWorkspaceItem contacts(AppLocalizations l10n) =>
       CompanyWorkspaceItem(
         id: 'contacts',
@@ -95,6 +104,7 @@ class CompanyWorkspaceModules {
       overview(l10n),
       profile(l10n),
       services(l10n),
+      serviceTypes(l10n),
       orders(l10n),
       customers(l10n),
       suppliers(l10n),
@@ -142,6 +152,9 @@ class CompanyWorkspaceModules {
     if (location.startsWith('/companies/dashboard/services')) {
       return services(l10n);
     }
+    if (location.startsWith('/companies/dashboard/service-types')) {
+      return serviceTypes(l10n);
+    }
     if (location.startsWith('/companies/dashboard/members') ||
         location.startsWith('/members')) {
       return CompanyWorkspaceItem(
@@ -181,6 +194,17 @@ class CompanyWorkspaceModules {
     if (location.startsWith('/companies/dashboard/categories')) {
       return categories(l10n);
     }
+    if (location.startsWith('/company-work')) {
+      return CompanyWorkspaceItem(
+        id: 'company_work',
+        label: l10n.company_work_title,
+        subtitle: l10n.company_work_subtitle,
+        route: '/companies/dashboard/services',
+        icon: Iconsax.gallery_bold,
+        serviceCode: 'company_work',
+        externalRoute: '/company-work',
+      );
+    }
     return overview(l10n);
   }
 
@@ -210,6 +234,17 @@ class CompanyWorkspaceModules {
           iconUrl: service.icon,
           serviceCode: service.serviceCode,
           externalRoute: _normalizeExternalRoute(service.route),
+        );
+      case 'company_work':
+        return CompanyWorkspaceItem(
+          id: 'company_work',
+          label: l10n.company_work_title,
+          subtitle: l10n.company_work_subtitle,
+          route: '/companies/dashboard/services',
+          icon: Iconsax.gallery_bold,
+          iconUrl: service.icon,
+          serviceCode: service.serviceCode,
+          externalRoute: '/company-work',
         );
       case 'multi_member':
         return CompanyWorkspaceItem(

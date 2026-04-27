@@ -209,17 +209,20 @@ class OffersNotifier extends StateNotifier<OffersState> {
     await getUserRequests();
   }
 
-  Future<void> createRequest(Map<String, dynamic> data) async {
+  Future<bool> createRequest(Map<String, dynamic> data) async {
     state = state.copyWith(isLoading: true, error: null);
     final result = await _repository.createRequest(data);
-    result.fold(
-      (failure) =>
-          state = state.copyWith(isLoading: false, error: failure.toString()),
+    return result.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, error: failure.toString());
+        return false;
+      },
       (request) {
         state = state.copyWith(
           isLoading: false,
           userRequests: [request, ...state.userRequests],
         );
+        return true;
       },
     );
   }

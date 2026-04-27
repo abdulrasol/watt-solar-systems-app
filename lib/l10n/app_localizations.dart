@@ -503,6 +503,30 @@ abstract class AppLocalizations {
   /// **'Buy components'**
   String get buy_components;
 
+  /// No description provided for @new_products.
+  ///
+  /// In en, this message translates to:
+  /// **'New Products'**
+  String get new_products;
+
+  /// No description provided for @companies.
+  ///
+  /// In en, this message translates to:
+  /// **'Companies'**
+  String get companies;
+
+  /// No description provided for @view_more.
+  ///
+  /// In en, this message translates to:
+  /// **'View More'**
+  String get view_more;
+
+  /// No description provided for @see_all.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get see_all;
+
   /// No description provided for @b2b_storefront.
   ///
   /// In en, this message translates to:
@@ -526,6 +550,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open storefront for all users with public product access.'**
   String get storefront_b2c_subtitle;
+
+  /// No description provided for @storefront_unified_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore products, compare companies, and move into the full catalog only when you need more detail.'**
+  String get storefront_unified_subtitle;
 
   /// No description provided for @storefront_products_available.
   ///
@@ -713,11 +743,35 @@ abstract class AppLocalizations {
   /// **'Store Filters'**
   String get store_filters;
 
+  /// No description provided for @store_filters_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refine products by sort order, category, company, and price in one place.'**
+  String get store_filters_subtitle;
+
+  /// No description provided for @price_range.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range'**
+  String get price_range;
+
+  /// No description provided for @unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit Price'**
+  String get unit_price;
+
   /// No description provided for @no_store_products_found.
   ///
   /// In en, this message translates to:
   /// **'No products matched the current filters.'**
   String get no_store_products_found;
+
+  /// No description provided for @no_categories_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories available right now.'**
+  String get no_categories_found;
 
   /// No description provided for @load_more.
   ///
@@ -779,6 +833,102 @@ abstract class AppLocalizations {
   /// **'Price Overview'**
   String get price_overview;
 
+  /// No description provided for @base_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Base Unit Price'**
+  String get base_unit_price;
+
+  /// No description provided for @options_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Options Total'**
+  String get options_total;
+
+  /// No description provided for @effective_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective Unit Price'**
+  String get effective_unit_price;
+
+  /// No description provided for @line_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Line Total'**
+  String get line_total;
+
+  /// No description provided for @applied_pricing_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied Pricing Tier'**
+  String get applied_pricing_tier;
+
+  /// No description provided for @selected_options_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Options'**
+  String get selected_options_title;
+
+  /// No description provided for @choose_cart_audience.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose cart mode'**
+  String get choose_cart_audience;
+
+  /// No description provided for @add_to_b2b_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add this product to the B2B cart'**
+  String get add_to_b2b_cart;
+
+  /// No description provided for @add_to_b2c_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add this product to the B2C cart'**
+  String get add_to_b2c_cart;
+
+  /// No description provided for @added_to_b2b_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to B2B cart'**
+  String get added_to_b2b_cart;
+
+  /// No description provided for @added_to_b2c_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to B2C cart'**
+  String get added_to_b2c_cart;
+
+  /// No description provided for @payment_cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get payment_cash;
+
+  /// No description provided for @payment_credit.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit'**
+  String get payment_credit;
+
+  /// No description provided for @payment_upon_receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay on receipt'**
+  String get payment_upon_receipt;
+
+  /// No description provided for @pickup_from_company.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up from company'**
+  String get pickup_from_company;
+
+  /// No description provided for @no_delivery_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'No delivery selected'**
+  String get no_delivery_selected;
+
   /// No description provided for @display_price.
   ///
   /// In en, this message translates to:
@@ -821,11 +971,29 @@ abstract class AppLocalizations {
   /// **'Add to Cart'**
   String get add_to_cart;
 
+  /// No description provided for @remove_from_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Cart'**
+  String get remove_from_cart;
+
   /// No description provided for @added_to_cart.
   ///
   /// In en, this message translates to:
   /// **'Added to cart'**
   String get added_to_cart;
+
+  /// No description provided for @removed_from_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from cart'**
+  String get removed_from_cart;
+
+  /// No description provided for @cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart'**
+  String get cart;
 
   /// No description provided for @b2b_cart.
   ///
@@ -2027,6 +2195,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -2753,6 +2927,126 @@ abstract class AppLocalizations {
   /// **'Explore companies'**
   String get services_explore_companies;
 
+  /// No description provided for @service_types.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Types'**
+  String get service_types;
+
+  /// No description provided for @service_types_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading service types...'**
+  String get service_types_loading;
+
+  /// No description provided for @service_types_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No service types yet'**
+  String get service_types_empty_title;
+
+  /// No description provided for @service_types_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the first service type to start organizing companies.'**
+  String get service_types_empty_subtitle;
+
+  /// No description provided for @service_types_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Service Type'**
+  String get service_types_add;
+
+  /// No description provided for @service_types_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Service Type'**
+  String get service_types_edit;
+
+  /// No description provided for @service_types_create_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Service Type'**
+  String get service_types_create_action;
+
+  /// No description provided for @service_types_update_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Service Type'**
+  String get service_types_update_action;
+
+  /// No description provided for @service_types_pick_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick image'**
+  String get service_types_pick_image;
+
+  /// No description provided for @service_types_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type deleted successfully.'**
+  String get service_types_deleted;
+
+  /// No description provided for @service_types_created.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type created successfully.'**
+  String get service_types_created;
+
+  /// No description provided for @service_types_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type updated successfully.'**
+  String get service_types_updated;
+
+  /// No description provided for @service_types_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete service type'**
+  String get service_types_delete_title;
+
+  /// No description provided for @service_types_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name}?'**
+  String service_types_delete_message(Object name);
+
+  /// No description provided for @service_types_company_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the service types your company provides.'**
+  String get service_types_company_subtitle;
+
+  /// No description provided for @service_types_mark_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark served'**
+  String get service_types_mark_served;
+
+  /// No description provided for @service_types_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Served'**
+  String get service_types_served;
+
+  /// No description provided for @service_types_marked_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type added to your company profile.'**
+  String get service_types_marked_served;
+
+  /// No description provided for @service_types_unmarked_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type removed from your company profile.'**
+  String get service_types_unmarked_served;
+
+  /// No description provided for @service_types_companies_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} companies'**
+  String service_types_companies_count(Object count);
+
   /// No description provided for @services_companies_found.
   ///
   /// In en, this message translates to:
@@ -2860,6 +3154,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No phone number'**
   String get services_no_phone;
+
+  /// No description provided for @services_tab_works.
+  ///
+  /// In en, this message translates to:
+  /// **'Works'**
+  String get services_tab_works;
+
+  /// No description provided for @services_tab_info_contacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Info & Contacts'**
+  String get services_tab_info_contacts;
+
+  /// No description provided for @services_mode_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get services_mode_overview;
+
+  /// No description provided for @services_mode_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get services_mode_products;
+
+  /// No description provided for @services_products_header.
+  ///
+  /// In en, this message translates to:
+  /// **'Company products'**
+  String get services_products_header;
+
+  /// No description provided for @services_products_mode_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop from this company'**
+  String get services_products_mode_title;
+
+  /// No description provided for @services_company_categories_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Company categories'**
+  String get services_company_categories_title;
+
+  /// No description provided for @services_products_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse available products from {company}.'**
+  String services_products_subtitle(Object company);
+
+  /// No description provided for @services_works_preview_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Project showcase'**
+  String get services_works_preview_title;
+
+  /// No description provided for @services_works_preview_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview sample work cards until real portfolio images are added.'**
+  String get services_works_preview_subtitle;
+
+  /// No description provided for @services_work_item_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Project {number}'**
+  String services_work_item_title(Object number);
+
+  /// No description provided for @company_work_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Works'**
+  String get company_work_title;
+
+  /// No description provided for @company_work_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage completed projects, installations, and portfolio highlights.'**
+  String get company_work_subtitle;
+
+  /// No description provided for @company_work_public_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Showcase'**
+  String get company_work_public_title;
+
+  /// No description provided for @company_work_public_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore recent company projects and installation highlights.'**
+  String get company_work_public_subtitle;
+
+  /// No description provided for @company_work_public_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No work items have been published yet.'**
+  String get company_work_public_empty;
+
+  /// No description provided for @company_work_public_showcase.
+  ///
+  /// In en, this message translates to:
+  /// **'Public showcase'**
+  String get company_work_public_showcase;
+
+  /// No description provided for @company_work_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Work'**
+  String get company_work_add;
+
+  /// No description provided for @company_work_add_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Work'**
+  String get company_work_add_title;
+
+  /// No description provided for @company_work_edit_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Work'**
+  String get company_work_edit_title;
+
+  /// No description provided for @company_work_title_field.
+  ///
+  /// In en, this message translates to:
+  /// **'Work title'**
+  String get company_work_title_field;
+
+  /// No description provided for @company_work_body_field.
+  ///
+  /// In en, this message translates to:
+  /// **'Work description'**
+  String get company_work_body_field;
+
+  /// No description provided for @company_work_title_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Work title is required'**
+  String get company_work_title_required;
+
+  /// No description provided for @company_work_images.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Images'**
+  String get company_work_images;
+
+  /// No description provided for @company_work_images_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add one or more images to present this project.'**
+  String get company_work_images_empty;
+
+  /// No description provided for @company_work_existing_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing'**
+  String get company_work_existing_image;
+
+  /// No description provided for @company_work_new_image.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get company_work_new_image;
+
+  /// No description provided for @company_work_pick_from_gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from gallery'**
+  String get company_work_pick_from_gallery;
+
+  /// No description provided for @company_work_pick_from_camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get company_work_pick_from_camera;
+
+  /// No description provided for @company_work_image_pick_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick images.'**
+  String get company_work_image_pick_failed;
+
+  /// No description provided for @company_work_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading company works...'**
+  String get company_work_loading;
+
+  /// No description provided for @company_work_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No works yet'**
+  String get company_work_empty_title;
+
+  /// No description provided for @company_work_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first work item to show completed projects to customers.'**
+  String get company_work_empty_subtitle;
+
+  /// No description provided for @company_work_no_description.
+  ///
+  /// In en, this message translates to:
+  /// **'No description added yet.'**
+  String get company_work_no_description;
+
+  /// No description provided for @company_work_images_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} images'**
+  String company_work_images_count(Object count);
+
+  /// No description provided for @company_work_created_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Created {date}'**
+  String company_work_created_at(Object date);
+
+  /// No description provided for @company_work_updated_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {date}'**
+  String company_work_updated_at(Object date);
+
+  /// No description provided for @company_work_publish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish Work'**
+  String get company_work_publish;
+
+  /// No description provided for @company_work_save_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Work'**
+  String get company_work_save_changes;
+
+  /// No description provided for @company_work_created.
+  ///
+  /// In en, this message translates to:
+  /// **'Work created successfully.'**
+  String get company_work_created;
+
+  /// No description provided for @company_work_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Work updated successfully.'**
+  String get company_work_updated;
+
+  /// No description provided for @company_work_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete work'**
+  String get company_work_delete_title;
+
+  /// No description provided for @company_work_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'This work item will be removed permanently.'**
+  String get company_work_delete_message;
+
+  /// No description provided for @company_work_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Work deleted successfully.'**
+  String get company_work_deleted;
+
+  /// No description provided for @company_work_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'This work item is no longer available.'**
+  String get company_work_not_found;
+
+  /// No description provided for @try_again.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get try_again;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
 
   /// No description provided for @services_section_services.
   ///
@@ -4852,6 +5428,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g., 5 or 8'**
   String get example_5_or_8;
+
+  /// No description provided for @example_5.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 5'**
+  String get example_5;
+
+  /// No description provided for @example_15.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 15'**
+  String get example_15;
 
   /// No description provided for @battery_count_explanation.
   ///

@@ -68,7 +68,7 @@ class _InverterCalculatorPageState
               l10n.inverter_calc_intro,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
-            ), // TODO: translate
+            ),
             const SizedBox(height: 30),
 
             // Inputs

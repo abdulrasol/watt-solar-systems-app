@@ -377,7 +377,7 @@ class _CompanyRegistrationPageState
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                         ),
-                      ), // TODO: translate
+                      ),
               ),
             ],
           ),
@@ -519,13 +519,14 @@ class _CompanyRegistrationPageState
     });
     try {
       final response = await getIt.get<AuthRepository>().getCompanyTypes();
+      final validTypes = response.where((type) => !type.isPlaceholder).toList();
       final currentCompanyTypeId = ref
           .read(authProvider)
           .company
           ?.companyType
           ?.id;
       setState(() {
-        _companyTypes = response;
+        _companyTypes = validTypes;
         if (currentCompanyTypeId != null) {
           for (final type in _companyTypes) {
             if (type.id == currentCompanyTypeId) {

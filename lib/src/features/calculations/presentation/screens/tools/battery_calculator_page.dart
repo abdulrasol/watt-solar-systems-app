@@ -120,7 +120,7 @@ class _BatteryCalculatorPageState extends ConsumerState<BatteryCalculatorPage> {
                 child: CalcInputRow(
                   label: AppLocalizations.of(context)!.required_backup_time,
                   suffix: AppLocalizations.of(context)!.hours,
-                  hint: "e.g. 5", // TODO: translate
+                  hint: AppLocalizations.of(context)!.example_5,
                   onChanged: (v) {
                     controller.batteryCalcHours = double.tryParse(v) ?? 0;
                     _recalc();

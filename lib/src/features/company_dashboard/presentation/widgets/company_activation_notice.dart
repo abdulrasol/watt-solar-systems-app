@@ -103,7 +103,7 @@ class _CompanyActivationNoticeState extends ConsumerState<CompanyActivationNotic
       return l10n.company_pending_activation_message;
     }
     if (widget.company.requiresSubscriptionRenewal) {
-      if (state.subscriptionRequest != null) {
+      if (state.subscriptionRequest?.isPending == true) {
         return l10n.company_subscription_request_pending_message(state.subscriptionRequest!.subscriptionPlanName);
       }
       return l10n.company_subscription_required_message;
@@ -134,10 +134,16 @@ class _CompanyActivationNoticeState extends ConsumerState<CompanyActivationNotic
         onSubmit: (payload) async {
           final l10n = AppLocalizations.of(context)!;
           try {
-            await ref.read(companyActivationProvider.notifier).createSubscriptionRequest(widget.company.id, payload);
+            final request = await ref.read(companyActivationProvider.notifier).createSubscriptionRequest(widget.company.id, payload);
             await ref.read(companySummeryProvider.notifier).getSummery();
             if (!context.mounted) return;
-            ToastService.success(context, l10n.success, l10n.company_subscription_request_submitted);
+            ToastService.success(
+              context,
+              l10n.success,
+              request.isPending
+                  ? l10n.company_subscription_request_submitted
+                  : l10n.company_updated_successfully,
+            );
           } catch (e) {
             if (!context.mounted) return;
             ToastService.error(context, l10n.error, e.toString());
@@ -262,7 +268,7 @@ class _SubscriptionContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    if (state.subscriptionRequest != null) {
+    if (state.subscriptionRequest?.isPending == true) {
       return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(14),

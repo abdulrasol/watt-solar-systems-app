@@ -5,7 +5,6 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/service_request_bottom_sheet.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -22,6 +21,8 @@ class ServiceCard extends StatelessWidget {
         return Iconsax.receipt_item_bold;
       case 'inventory':
         return Iconsax.box_bold;
+      case 'company_work':
+        return Iconsax.gallery_bold;
       case 'accounting':
         return Iconsax.money_2_bold;
       case 'multi_member':
@@ -52,24 +53,6 @@ class ServiceCard extends StatelessWidget {
     }
   }
 
-  void _showRequestDialog(BuildContext context) {
-    if (companyId == null) return;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => ServiceRequestBottomSheet(
-        companyId: companyId!,
-        serviceCode: service.serviceCode,
-        serviceName: service.serviceName,
-        onSuccess: () {
-          // Refresh or update UI after successful request
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -86,14 +69,8 @@ class ServiceCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (isActive &&
-            service.route != null &&
-            service.route!.isNotEmpty &&
-            service.route != 'null') {
-          // Normalize the route to ensure it's absolute
-          final String targetRoute = service.route!.startsWith('/')
-              ? service.route!
-              : '/${service.route}';
+        if (isActive && _targetRoute != null) {
+          final String targetRoute = _targetRoute!;
 
           try {
             // Use push instead of go for safer navigation and swipe-back support
@@ -111,10 +88,6 @@ class ServiceCard extends StatelessWidget {
             );
           }
         } else if (!isActive) {
-          // Show request dialog for inactive services
-          _showRequestDialog(context);
-        } else {
-          // Navigate to service status page for inactive or missing routes
           context.push(
             '/service-status',
             extra: {
@@ -217,37 +190,6 @@ class ServiceCard extends StatelessWidget {
                 ),
               ],
             ),
-            if (!isActive && companyId != null) ...[
-              SizedBox(height: 8.h),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Iconsax.add_circle_bold,
-                      size: 12.sp,
-                      color: AppTheme.primaryColor,
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      l10n.request_access,
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.primaryColor,
-                        fontFamily: AppTheme.fontFamily,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
           ],
         ),
       ),
@@ -269,5 +211,17 @@ class ServiceCard extends StatelessWidget {
       default:
         return l10n.status_unavailable;
     }
+  }
+
+  String? get _targetRoute {
+    if (service.serviceCode == 'company_work') return '/company-work';
+    if (service.route == null ||
+        service.route!.isEmpty ||
+        service.route == 'null') {
+      return null;
+    }
+    return service.route!.startsWith('/')
+        ? service.route!
+        : '/${service.route}';
   }
 }

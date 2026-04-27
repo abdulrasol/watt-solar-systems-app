@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter_riverpod/legacy.dart';
@@ -12,7 +13,9 @@ import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:flutter/material.dart';
 
 final calculatorProvider = ChangeNotifierProvider<CalculatorNotifier>((ref) {
-  return CalculatorNotifier();
+  final notifier = CalculatorNotifier();
+  ref.onDispose(notifier.dispose);
+  return notifier;
 });
 
 enum SystemCalculationMode { practicalHybrid, fullEnergy }
@@ -20,6 +23,9 @@ enum SystemCalculationMode { practicalHybrid, fullEnergy }
 enum SystemLoadInputUnit { ampere, watt }
 
 class CalculatorNotifier extends ChangeNotifier {
+  static const String _savedCalculatedSystemsKey = 'saved_calculated_systems';
+  Timer? _cacheSaveDebounce;
+
   // System Wizard State
   String? currentSystemId;
 
@@ -323,21 +329,24 @@ class CalculatorNotifier extends ChangeNotifier {
 
     prepareRequestFromCalculation(notify: false);
 
-    _saveToCache();
+    _scheduleCacheSave();
 
     notifyListeners();
+  }
+
+  void _scheduleCacheSave() {
+    _cacheSaveDebounce?.cancel();
+    _cacheSaveDebounce = Timer(
+      const Duration(milliseconds: 250),
+      _saveToCache,
+    );
   }
 
   void _saveToCache() {
     try {
       final cache = getIt<CasheInterface>();
-      final existingData = cache.get('saved_calculated_systems');
-      List<CalculatedSystem> systems = [];
-      if (existingData != null) {
-        systems = List<dynamic>.from(existingData)
-            .map((e) => CalculatedSystem.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
+      final existingData = cache.get(_savedCalculatedSystemsKey);
+      final systems = parseCalculatedSystems(existingData);
 
       if (currentSystemId != null) {
         final idx = systems.indexWhere((s) => s.id == currentSystemId);
@@ -367,9 +376,11 @@ class CalculatorNotifier extends ChangeNotifier {
         );
       }
 
-      cache.save(
-        'saved_calculated_systems',
-        systems.map((e) => e.toJson()).toList(),
+      unawaited(
+        cache.save(
+          _savedCalculatedSystemsKey,
+          systems.map((e) => e.toJson()).toList(),
+        ),
       );
     } catch (e) {
       debugPrint('Error saving calculation to cache: $e');
@@ -410,6 +421,12 @@ class CalculatorNotifier extends ChangeNotifier {
     if (notify) {
       notifyListeners();
     }
+  }
+
+  @override
+  void dispose() {
+    _cacheSaveDebounce?.cancel();
+    super.dispose();
   }
 
   // Calculate Pump

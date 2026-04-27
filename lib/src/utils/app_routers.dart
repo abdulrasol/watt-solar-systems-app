@@ -5,7 +5,7 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_shell.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
+import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/auth_page.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/company_registration_page.dart';
@@ -33,6 +33,7 @@ import 'package:solar_hub/src/features/admin/presentation/screens/companies/admi
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_company_details_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_catalog_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_requests_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_types_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
@@ -40,10 +41,15 @@ import 'package:solar_hub/src/features/notifications/presentation/screens/notifi
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/construction_page.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_overview_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_services_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_service_types_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_contacts_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_public_services_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_categories_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_shell.dart';
+import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
+import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_details_page.dart';
+import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_form_page.dart';
+import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_page.dart';
 import 'package:solar_hub/src/features/crm/presentation/screens/crm_screens.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/offer_request_wizard.dart';
 import 'package:solar_hub/src/features/orders_buyer/presentation/screens/buyer_orders_screen.dart';
@@ -52,7 +58,10 @@ import 'package:solar_hub/src/features/orders_company/presentation/screens/compa
 import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
 import 'package:solar_hub/src/features/orders_core/presentation/screens/order_detail_screen.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_companies_screen.dart';
+import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_products_screen.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_screen.dart';
+import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_routes.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/company_details_screen.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/companies_screen.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/services_explorer_screen.dart';
@@ -66,7 +75,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     redirect: (BuildContext context, GoRouterState state) {
-      // For global redirects if needed
       return null;
     },
     routes: <RouteBase>[
@@ -91,7 +99,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/auth',
         builder: (BuildContext context, GoRouterState state) {
-          return const AuthPage();
+          return AuthPage(redirectTo: state.uri.queryParameters['redirect_to']);
         },
         routes: [
           GoRoute(
@@ -167,6 +175,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/companies/dashboard/services',
             builder: (BuildContext context, GoRouterState state) {
               return const CompanyDashboardServicesScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/service-types',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardServiceTypesScreen();
             },
           ),
           GoRoute(
@@ -256,6 +270,35 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(
+        path: '/company-work',
+        builder: (context, state) => const CompanyWorkPage(),
+        routes: [
+          GoRoute(
+            path: 'add',
+            builder: (context, state) => const CompanyWorkFormPage(),
+          ),
+          GoRoute(
+            path: ':id',
+            builder: (context, state) {
+              final id = int.parse(state.pathParameters['id']!);
+              final work = state.extra is CompanyWork
+                  ? state.extra as CompanyWork
+                  : null;
+              return CompanyWorkDetailsPage(workId: id, initialWork: work);
+            },
+          ),
+          GoRoute(
+            path: 'edit/:id',
+            builder: (context, state) {
+              final work = state.extra is CompanyWork
+                  ? state.extra as CompanyWork
+                  : null;
+              return CompanyWorkFormPage(work: work);
+            },
+          ),
+        ],
+      ),
+      GoRoute(
         path: '/storefront/:audience/orders',
         builder: (context, state) {
           final audience = state.pathParameters['audience'] == 'b2b'
@@ -330,6 +373,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
+            path: '/admin/service-types',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminServiceTypesScreen();
+            },
+          ),
+          GoRoute(
             path: '/admin/service-requests',
             builder: (BuildContext context, GoRouterState state) {
               return const AdminServiceRequestsScreen();
@@ -395,12 +444,48 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/storefront',
         builder: (context, state) {
-          final audience = state.extra as StorefrontAudience?;
-          return PreScaffold(
-            child: StorefrontScreen(
-              audience: audience ?? StorefrontAudience.b2c,
-            ),
+          final audience =
+              state.extra as StorefrontAudience? ??
+              storefrontAudienceFromQuery(
+                state.uri.queryParameters['audience'],
+              );
+          final companyId = int.tryParse(
+            state.uri.queryParameters['company_id'] ?? '',
           );
+          return PreScaffold(
+            child: StorefrontScreen(audience: audience, companyId: companyId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/storefront/products',
+        builder: (context, state) {
+          final audience = storefrontAudienceFromQuery(
+            state.uri.queryParameters['audience'],
+          );
+          final companyId = int.tryParse(
+            state.uri.queryParameters['company_id'] ?? '',
+          );
+          final globalCategoryId = int.tryParse(
+            state.uri.queryParameters['global_category_id'] ?? '',
+          );
+          final title = state.uri.queryParameters['title'];
+
+          return StorefrontProductsScreen(
+            audience: audience,
+            companyId: companyId,
+            initialGlobalCategoryId: globalCategoryId,
+            title: title,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/storefront/companies',
+        builder: (context, state) {
+          final audience = storefrontAudienceFromQuery(
+            state.uri.queryParameters['audience'],
+          );
+          return StorefrontCompaniesScreen(audience: audience);
         },
       ),
       GoRoute(
@@ -413,10 +498,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/services/companies',
         builder: (context, state) {
           final l10n = AppLocalizations.of(context)!;
-          final typeCode = state.uri.queryParameters['typeCode'] ?? '';
           final typeName =
               state.uri.queryParameters['typeName'] ??
-              state.uri.queryParameters['typeCode'] ??
+              state.uri.queryParameters['typeId'] ??
               l10n.services;
           final typeId =
               int.tryParse(state.uri.queryParameters['typeId'] ?? '') ?? 0;
@@ -424,7 +508,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return PreScaffold(
             title: typeName,
             child: CompaniesScreen(
-              type: CompanyType(id: typeId, code: typeCode, name: typeName),
+              type: ServiceType(id: typeId, name: typeName),
             ),
           );
         },

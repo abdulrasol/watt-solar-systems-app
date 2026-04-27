@@ -385,8 +385,40 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
       'note': _emptyToNull(_noteController.text),
     };
 
-    await ref.read(offersProvider.notifier).createRequest(data);
-    if (mounted) Navigator.of(context).pop();
+    final success = await ref.read(offersProvider.notifier).createRequest(data);
+    if (!mounted) {
+      return;
+    }
+
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _tr(
+              context,
+              'Your solar request was submitted successfully.',
+              'تم إرسال طلبك الشمسي بنجاح.',
+            ),
+          ),
+        ),
+      );
+      Navigator.of(context).pop();
+      return;
+    }
+
+    final error = ref.read(offersProvider).error;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          error ??
+              _tr(
+                context,
+                'Could not submit the request. Please try again.',
+                'تعذر إرسال الطلب. حاول مرة أخرى.',
+              ),
+        ),
+      ),
+    );
   }
 
   String? _emptyToNull(String value) {

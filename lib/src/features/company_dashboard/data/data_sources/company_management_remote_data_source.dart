@@ -294,13 +294,15 @@ class CompanyManagementRemoteDataSourceImpl
   Future<List<CompanySubscriptionPlan>> listSubscriptionPlans() async {
     try {
       final response = await _dioService.get(AppUrls.companySubscriptions);
-      final pagination = api.PaginationResponse.fromJson({
-        'status': response.status,
-        'message': response.message,
-        'body': response.body,
-        'error': response.error,
-        'message_user': response.messageUser,
-      });
+      final pagination = api.PaginationResponse.fromJson(
+        <String, dynamic>{
+          'status': response.status,
+          'message': response.message,
+          'body': response.body,
+          'error': response.error,
+          'message_user': response.messageUser,
+        },
+      );
       final items = List<Map<String, dynamic>>.from(
         (pagination.body as List? ?? const []).whereType<Map>().map(
           (item) => Map<String, dynamic>.from(item),
@@ -350,7 +352,11 @@ class CompanyManagementRemoteDataSourceImpl
         file: formData,
       );
       return CompanySubscriptionRequest.fromJson(
-        Map<String, dynamic>.from(response.body as Map),
+        Map<String, dynamic>.from(
+          response.body is Map && (response.body as Map).containsKey('body')
+              ? Map<String, dynamic>.from((response.body as Map)['body'] as Map)
+              : response.body as Map,
+        ),
       );
     } catch (e, stackTrace) {
       dPrint(

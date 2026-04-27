@@ -697,13 +697,38 @@ class _OfferRequestWizardState extends ConsumerState<OfferRequestWizard> {
       'note': _emptyToNull(controller.requestNotes),
     };
 
-    await ref.read(offersProvider.notifier).createRequest(data);
+    final success = await ref.read(offersProvider.notifier).createRequest(data);
     if (!context.mounted) return;
 
-    final error = ref.read(offersProvider).error;
-    if (error == null) {
+    if (success) {
+      toastification.show(
+        title: Text(l10n.success),
+        description: Text(
+          _isArabic(context)
+              ? 'تم إرسال طلب العرض بنجاح.'
+              : 'Your offer request was submitted successfully.',
+        ),
+        type: ToastificationType.success,
+        style: ToastificationStyle.flat,
+        autoCloseDuration: const Duration(seconds: 3),
+      );
       Navigator.pop(context);
+      return;
     }
+
+    final error = ref.read(offersProvider).error;
+    toastification.show(
+      title: Text(l10n.error),
+      description: Text(
+        error ??
+            (_isArabic(context)
+                ? 'تعذر إرسال الطلب. حاول مرة أخرى.'
+                : 'Could not submit the request. Please try again.'),
+      ),
+      type: ToastificationType.error,
+      style: ToastificationStyle.flat,
+      autoCloseDuration: const Duration(seconds: 4),
+    );
   }
 
   String? _emptyToNull(String value) {

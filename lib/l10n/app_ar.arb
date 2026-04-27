@@ -69,10 +69,15 @@
   "dashboard_hint_compare_title": "قارن قبل الشراء",
   "dashboard_hint_compare_desc": "استخدم أدوات الحساب أولاً ثم قارن العروض والمكونات على أساس نفس حجم المنظومة المستهدف.",
   "buy_components": "شراء المكونات",
+  "new_products": "منتجات جديدة",
+  "companies": "الشركات",
+  "view_more": "عرض المزيد",
+  "see_all": "عرض الكل",
   "b2b_storefront": "واجهة B2B",
   "b2c_storefront": "واجهة B2C",
   "storefront_b2b_subtitle": "كتالوج مخصص للأعضاء مع أسعار الجملة وإظهار مخزون الشركة.",
   "storefront_b2c_subtitle": "واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.",
+  "storefront_unified_subtitle": "استكشف المنتجات، وقارن بين الشركات، وانتقل إلى الكتالوج الكامل فقط عندما تحتاج تفاصيل أكثر.",
   "storefront_products_available": "المنتجات المتاحة {count}",
   "@storefront_products_available": {
     "placeholders": {
@@ -109,7 +114,11 @@
   "clear_filters": "مسح",
   "apply_filters": "تطبيق",
   "store_filters": "فلاتر المتجر",
+  "store_filters_subtitle": "قم بتضييق النتائج حسب الترتيب والتصنيف والشركة والسعر من مكان واحد.",
+  "price_range": "نطاق السعر",
+  "unit_price": "سعر الوحدة",
   "no_store_products_found": "لا توجد منتجات مطابقة للفلاتر الحالية.",
+  "no_categories_found": "لا توجد تصنيفات متاحة حالياً.",
   "load_more": "تحميل المزيد",
   "global_category": "عام",
   "internal_category": "داخلي",
@@ -140,6 +149,22 @@
   },
   "product_details": "تفاصيل المنتج",
   "price_overview": "ملخص الأسعار",
+  "base_unit_price": "سعر الوحدة الأساسي",
+  "options_total": "إجمالي الخيارات",
+  "effective_unit_price": "سعر الوحدة النهائي",
+  "line_total": "إجمالي السطر",
+  "applied_pricing_tier": "شريحة التسعير المطبقة",
+  "selected_options_title": "الخيارات المحددة",
+  "choose_cart_audience": "اختر وضع السلة",
+  "add_to_b2b_cart": "أضف هذا المنتج إلى سلة B2B",
+  "add_to_b2c_cart": "أضف هذا المنتج إلى سلة B2C",
+  "added_to_b2b_cart": "تمت الإضافة إلى سلة B2B",
+  "added_to_b2c_cart": "تمت الإضافة إلى سلة B2C",
+  "payment_cash": "نقداً",
+  "payment_credit": "آجل",
+  "payment_upon_receipt": "الدفع عند الاستلام",
+  "pickup_from_company": "استلام من الشركة",
+  "no_delivery_selected": "بدون توصيل",
   "display_price": "السعر المعروض",
   "retail_price": "سعر المفرد",
   "wholesale_price": "سعر الجملة",
@@ -153,7 +178,10 @@
     }
   },
   "add_to_cart": "أضف إلى السلة",
+  "remove_from_cart": "إزالة من السلة",
   "added_to_cart": "تمت الإضافة إلى السلة",
+  "removed_from_cart": "تمت الإزالة من السلة",
+  "cart": "السلة",
   "b2b_cart": "سلة B2B",
   "b2c_cart": "سلة B2C",
   "cart_empty": "سلتك فارغة",
@@ -385,6 +413,7 @@
   "enter_system_name": "أدخل اسماً لنظامك الجديد:",
   "back_to_list": "العودة للقائمة",
   "cancel": "إلغاء",
+  "delete": "حذف",
   "save": "حفظ",
   "error_enter_system_name": "مطلوب: يرجى إدخال اسم النظام",
   "error_select_system": "مطلوب: يرجى تحديد نظام",
@@ -524,6 +553,36 @@
   "services_choose_category": "اختر فئة الخدمة",
   "services_no_categories": "لا توجد فئات خدمات متاحة حالياً.",
   "services_explore_companies": "استعرض الشركات",
+  "service_types": "أنواع الخدمات",
+  "service_types_loading": "جاري تحميل أنواع الخدمات...",
+  "service_types_empty_title": "لا توجد أنواع خدمات بعد",
+  "service_types_empty_subtitle": "أضف أول نوع خدمة لبدء تنظيم الشركات.",
+  "service_types_add": "إضافة نوع خدمة",
+  "service_types_edit": "تعديل نوع الخدمة",
+  "service_types_create_action": "إنشاء نوع خدمة",
+  "service_types_update_action": "تحديث نوع الخدمة",
+  "service_types_pick_image": "اختيار صورة",
+  "service_types_deleted": "تم حذف نوع الخدمة بنجاح.",
+  "service_types_created": "تم إنشاء نوع الخدمة بنجاح.",
+  "service_types_updated": "تم تحديث نوع الخدمة بنجاح.",
+  "service_types_delete_title": "حذف نوع الخدمة",
+  "service_types_delete_message": "هل تريد حذف {name}؟",
+  "@service_types_delete_message": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "service_types_company_subtitle": "حدد أنواع الخدمات التي تقدمها شركتك.",
+  "service_types_mark_served": "تحديد كمخدوم",
+  "service_types_served": "مخدوم",
+  "service_types_marked_served": "تمت إضافة نوع الخدمة إلى ملف الشركة.",
+  "service_types_unmarked_served": "تمت إزالة نوع الخدمة من ملف الشركة.",
+  "service_types_companies_count": "{count} شركة",
+  "@service_types_companies_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "services_companies_found": "تم العثور على {count} شركة",
   "@services_companies_found": {
     "placeholders": {
@@ -557,6 +616,78 @@
   "services_type_label": "النوع",
   "services_phone_label": "الهاتف",
   "services_no_phone": "لا يوجد رقم هاتف",
+  "services_tab_works": "الأعمال",
+  "services_tab_info_contacts": "المعلومات وجهات الاتصال",
+  "services_mode_overview": "نظرة عامة",
+  "services_mode_products": "المنتجات",
+  "services_products_header": "منتجات الشركة",
+  "services_products_mode_title": "تسوق من هذه الشركة",
+  "services_company_categories_title": "تصنيفات الشركة",
+  "services_products_subtitle": "تصفح المنتجات المتاحة من {company}.",
+  "@services_products_subtitle": {
+    "placeholders": {
+      "company": {}
+    }
+  },
+  "services_works_preview_title": "معرض الأعمال",
+  "services_works_preview_subtitle": "عرض تجريبي لبطاقات الأعمال إلى حين إضافة صور المشاريع الحقيقية.",
+  "services_work_item_title": "مشروع {number}",
+  "@services_work_item_title": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "company_work_title": "أعمال الشركة",
+  "company_work_subtitle": "إدارة المشاريع المنفذة وأعمال التركيب ونماذج الأعمال.",
+  "company_work_public_title": "معرض المشاريع",
+  "company_work_public_subtitle": "استكشف أحدث مشاريع الشركة وأعمال التركيب المنجزة.",
+  "company_work_public_empty": "لم يتم نشر أي أعمال حتى الآن.",
+  "company_work_public_showcase": "عرض عام",
+  "company_work_add": "إضافة عمل",
+  "company_work_add_title": "إضافة عمل",
+  "company_work_edit_title": "تعديل العمل",
+  "company_work_title_field": "عنوان العمل",
+  "company_work_body_field": "وصف العمل",
+  "company_work_title_required": "عنوان العمل مطلوب",
+  "company_work_images": "صور العمل",
+  "company_work_images_empty": "أضف صورة واحدة أو أكثر لعرض هذا المشروع.",
+  "company_work_existing_image": "حالياً",
+  "company_work_new_image": "جديدة",
+  "company_work_pick_from_gallery": "اختيار من المعرض",
+  "company_work_pick_from_camera": "التقاط صورة",
+  "company_work_image_pick_failed": "فشل اختيار الصور.",
+  "company_work_loading": "جاري تحميل أعمال الشركة...",
+  "company_work_empty_title": "لا توجد أعمال بعد",
+  "company_work_empty_subtitle": "أنشئ أول عمل لعرض المشاريع المنجزة للعملاء.",
+  "company_work_no_description": "لم يتم إضافة وصف بعد.",
+  "company_work_images_count": "{count} صور",
+  "@company_work_images_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "company_work_created_at": "أُنشئ في {date}",
+  "@company_work_created_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_updated_at": "آخر تحديث {date}",
+  "@company_work_updated_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_publish": "نشر العمل",
+  "company_work_save_changes": "حفظ العمل",
+  "company_work_created": "تم إنشاء العمل بنجاح.",
+  "company_work_updated": "تم تحديث العمل بنجاح.",
+  "company_work_delete_title": "حذف العمل",
+  "company_work_delete_message": "سيتم حذف هذا العمل نهائياً.",
+  "company_work_deleted": "تم حذف العمل بنجاح.",
+  "company_work_not_found": "هذا العمل غير متاح الآن.",
+  "try_again": "حاول مرة أخرى",
+  "edit": "تعديل",
   "services_section_services": "الخدمات",
   "services_no_public_services": "لا توجد خدمات عامة مدرجة بعد.",
   "services_price_on_request": "السعر عند الطلب",
@@ -998,6 +1129,8 @@
   "example_100_or_200": "مثال: 100 أو 200",
   "example_12_24_48_512": "مثال: 12 أو 24 أو 48 أو 51.2",
   "example_5_or_8": "مثال: 5 أو 8",
+  "example_5": "مثال: 5",
+  "example_15": "مثال: 15",
   "battery_count_explanation": "يتم حساب عدد البطاريات المطلوبة وفق المعادلة التالية:\n\n(القدرة × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)\n\nمثال: (2300 واط × 5 ساعات) ÷ (12 فولت × 100Ah × 0.2) = حوالي 8 بطاريات.\n\nهذا يساعدك على تقدير عدد البطاريات اللازمة لحمل ومدة تشغيل محددين.",
   "depth_of_discharge_with_value": "عمق تفريغ البطارية ({value}%)",
   "@depth_of_discharge_with_value": {

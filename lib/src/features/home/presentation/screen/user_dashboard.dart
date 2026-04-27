@@ -356,7 +356,7 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
             accent: const Color(0xFFD94681),
             isDark: isDark,
             enabled: storeEnabled,
-            onTap: storeEnabled ? () => ref.read(homePageIndexProvider.notifier).state = 3 : null,
+            onTap: storeEnabled ? () => selectHomeTab(ref, HomeTab.store) : null,
           ),
         ),
         SizedBox(width: 12.w),

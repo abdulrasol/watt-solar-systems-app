@@ -3,15 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/widgets/offline_status_banner.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
+import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/services/presentation/providers/public_services_provider.dart';
 import 'package:solar_hub/src/features/services/presentation/widgets/company_card.dart';
 import 'package:solar_hub/src/features/services/presentation/widgets/services_header.dart';
 
 class CompaniesScreen extends ConsumerStatefulWidget {
-  final CompanyType type;
+  final ServiceType type;
 
   const CompaniesScreen({super.key, required this.type});
 
@@ -56,6 +57,8 @@ class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
                   subtitle: l10n.services_companies_subtitle,
                   badge: l10n.services_companies_found(state.totalItems),
                 ),
+                SizedBox(height: 16.h),
+                const OfflineStatusBanner(padding: EdgeInsets.zero),
                 SizedBox(height: 16.h),
                 _FiltersSection(
                   searchController: _searchController,

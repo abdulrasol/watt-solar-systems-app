@@ -96,7 +96,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       if (!mounted) return;
       context.go(bootstrap.route);
-
       _startBackgroundInitialization(bootstrap);
     } catch (e, s) {
       dPrint('Initialization error: $e', tag: 'splash_screen', stackTrace: s);
@@ -116,27 +115,31 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _refreshConfigsInBackground() async {
-    final configNotifier = ref.read(configProvider.notifier);
-    configNotifier.setRefreshing(true);
+    final notifier = ref.read(configProvider.notifier);
+    notifier.setRefreshing(true);
 
-    final refreshResult = await getIt<RefreshConfigsUseCase>()();
-    if (!mounted) {
-      configNotifier.setRefreshing(false);
-      return;
+    try {
+      final refreshResult = await getIt<RefreshConfigsUseCase>()();
+      if (!mounted) {
+        notifier.setRefreshing(false);
+        return;
+      }
+
+      refreshResult.fold(
+        (failure) {
+          dPrint(
+            'Background config refresh failed: ${failure.message}',
+            tag: 'splash_screen',
+          );
+          notifier.setRefreshing(false);
+        },
+        (snapshot) {
+          notifier.hydrateFromSnapshot(snapshot);
+        },
+      );
+    } catch (e) {
+      if (mounted) notifier.setRefreshing(false);
     }
-
-    refreshResult.fold(
-      (failure) {
-        dPrint(
-          'Background config refresh failed: ${failure.message}',
-          tag: 'splash_screen',
-        );
-        configNotifier.setRefreshing(false);
-      },
-      (snapshot) {
-        configNotifier.hydrateFromSnapshot(snapshot);
-      },
-    );
   }
 
   Future<void> _initializePushNotifications() async {
@@ -155,8 +158,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Future<void> _refreshSignedInProfile() async {
     try {
       final response = await getIt<AuthRepository>().fetchProfile();
+      if (!mounted) return;
+
       await ref.read(authProvider.notifier).fetchProfile(response);
 
+      if (!mounted) return;
       final currentLanguage = ref.read(settingsProvider).language;
       unawaited(getIt<AuthRepository>().updateLanguage(currentLanguage));
     } on UnauthorizedException catch (e, s) {
@@ -165,6 +171,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         tag: 'splash_screen',
         stackTrace: s,
       );
+      if (!mounted) return;
       await ref.read(authProvider.notifier).logout();
       if (mounted) {
         context.go('/home');

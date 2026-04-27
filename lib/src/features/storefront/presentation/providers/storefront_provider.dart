@@ -3,24 +3,31 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/models/response.dart';
+import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/domain/repositories/storefront_repository.dart';
 
 class StorefrontScope {
   final StorefrontAudience audience;
   final int? companyId;
+  final StorefrontQuery initialQuery;
 
-  const StorefrontScope({required this.audience, this.companyId});
+  const StorefrontScope({
+    required this.audience,
+    this.companyId,
+    this.initialQuery = const StorefrontQuery(),
+  });
 
   @override
   bool operator ==(Object other) {
     return other is StorefrontScope &&
         other.audience == audience &&
-        other.companyId == companyId;
+        other.companyId == companyId &&
+        other.initialQuery == initialQuery;
   }
 
   @override
-  int get hashCode => Object.hash(audience, companyId);
+  int get hashCode => Object.hash(audience, companyId, initialQuery);
 }
 
 class StorefrontFilterSheetState {
@@ -143,6 +150,7 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
   StorefrontNotifier(this.arg);
 
   late final StorefrontRepository _repository;
+  late final NetworkStatusService _networkStatus;
   Timer? _productSearchDebounce;
   Timer? _companySearchDebounce;
 
@@ -154,12 +162,13 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
   @override
   StorefrontState build() {
     _repository = getIt<StorefrontRepository>();
+    _networkStatus = getIt<NetworkStatusService>();
     ref.onDispose(() {
       _productSearchDebounce?.cancel();
       _companySearchDebounce?.cancel();
     });
     Future.microtask(initialize);
-    return const StorefrontState();
+    return StorefrontState(query: arg.initialQuery);
   }
 
   Future<void> initialize() async {
@@ -177,7 +186,10 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: e.toString(),
+        error: _networkStatus.userMessageFor(
+          e,
+          fallback: 'Could not load storefront data.',
+        ),
         products: const [],
       );
     }
@@ -207,7 +219,13 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
         products: [...state.products, ...response.items],
       );
     } catch (e) {
-      state = state.copyWith(isLoadingMore: false, error: e.toString());
+      state = state.copyWith(
+        isLoadingMore: false,
+        error: _networkStatus.userMessageFor(
+          e,
+          fallback: 'Could not load more products.',
+        ),
+      );
     }
   }
 
@@ -252,21 +270,7 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
 
   Future<void> clearFilters() async {
     state = state.copyWith(
-      query: state.query.copyWith(
-        companyId: null,
-        clearCompanyId: true,
-        companyCategoryId: null,
-        clearCompanyCategoryId: true,
-        globalCategoryId: null,
-        clearGlobalCategoryId: true,
-        isAvailable: null,
-        clearAvailability: true,
-        minPrice: null,
-        clearMinPrice: true,
-        maxPrice: null,
-        clearMaxPrice: true,
-        page: 1,
-      ),
+      query: arg.initialQuery.copyWith(page: 1),
       companyCategories: arg.companyId == null
           ? const []
           : state.companyCategories,
@@ -350,7 +354,10 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
     } catch (e) {
       state = state.copyWith(
         isLoadingCompanyCategories: false,
-        companyCategoriesError: e.toString(),
+        companyCategoriesError: _networkStatus.userMessageFor(
+          e,
+          fallback: 'Could not load company categories.',
+        ),
         companyCategories: const [],
       );
     }
@@ -368,6 +375,8 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
   Future<void> applyFilters({
     int? companyId,
     bool clearCompanyId = false,
+    int? globalCategoryId,
+    bool clearGlobalCategoryId = false,
     int? companyCategoryId,
     bool clearCompanyCategoryId = false,
     bool? isAvailable,
@@ -376,11 +385,14 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
     bool clearMinPrice = false,
     double? maxPrice,
     bool clearMaxPrice = false,
+    String? ordering,
   }) async {
     final previousEffectiveCompanyId = effectiveCompanyId;
     final nextQuery = state.query.copyWith(
       companyId: companyId,
       clearCompanyId: arg.companyId != null ? true : clearCompanyId,
+      globalCategoryId: globalCategoryId,
+      clearGlobalCategoryId: clearGlobalCategoryId,
       companyCategoryId: companyCategoryId,
       clearCompanyCategoryId: clearCompanyCategoryId,
       isAvailable: isAvailable,
@@ -389,6 +401,7 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
       clearMinPrice: clearMinPrice,
       maxPrice: maxPrice,
       clearMaxPrice: clearMaxPrice,
+      ordering: ordering,
       page: 1,
     );
 
@@ -452,7 +465,10 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
         filterSheet: state.filterSheet.copyWith(
           isLoadingCompanies: false,
           isLoadingMoreCompanies: false,
-          companiesError: e.toString(),
+          companiesError: _networkStatus.userMessageFor(
+            e,
+            fallback: 'Could not load companies.',
+          ),
         ),
       );
     }
@@ -477,7 +493,10 @@ class StorefrontNotifier extends Notifier<StorefrontState> {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: e.toString(),
+        error: _networkStatus.userMessageFor(
+          e,
+          fallback: 'Could not load storefront data.',
+        ),
         products: const [],
       );
     }

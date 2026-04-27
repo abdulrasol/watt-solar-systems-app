@@ -62,9 +62,11 @@ class AppUrls {
   static const String companiesBaseUrl = '$baseUrl/companies';
   static const String registerCompany = '$companiesBaseUrl/register';
   static const String companyTypes = '$companiesBaseUrl/types';
+  static const String serviceTypes = '$baseUrl/service-types';
+  static const String serviceTypesPublic = '$serviceTypes/public';
+  static String serviceType(int id) => '$serviceTypes/$id';
+  static String toggleServiceType(int id) => '${serviceType(id)}/toggle';
   static const String companySubscriptions = '$companiesBaseUrl/subscriptions';
-  static const String companiesCatalogServices =
-      '$companiesBaseUrl/catalog/services';
   static const String publicCompanies = '$baseUrl/public/companies';
   static String publicCompany(int id) => '$publicCompanies/$id';
 
@@ -72,10 +74,6 @@ class AppUrls {
   static String updateCompany(int id) => company(id);
   static String companySummary(int id) => '${company(id)}/summary';
   static String companyServices(int id) => '${company(id)}/services';
-  static String companyServiceRequests(int id) =>
-      '${company(id)}/service-requests';
-  static String createCompanyServiceRequest(int id) =>
-      companyServiceRequests(id);
   static String companySubscriptionRequest(int id) =>
       '${company(id)}/subscription-request';
   static String companyActivationReminder(int id) =>
@@ -148,6 +146,13 @@ class AppUrls {
   static String companyOffers(int companyId) => '${company(companyId)}/offers';
   static String createOfferReply(int companyId, int requestId) =>
       '${companyOfferRequests(companyId)}/$requestId/reply';
+  static String companyWorks(int companyId) => '${company(companyId)}/works';
+  static String companyWork(int companyId, int workId) =>
+      '${companyWorks(companyId)}/$workId';
+  static String companyWorkImage(int companyId, int imageId) =>
+      '${company(companyId)}/works/image/$imageId';
+  static String publicCompanyWorks(int companyId) =>
+      '$publicCompanies/$companyId/works';
 
   // ==================== SHOP ====================
   static const String shopBaseUrl = '$baseUrl/shop';

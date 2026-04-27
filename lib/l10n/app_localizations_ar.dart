@@ -213,6 +213,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get buy_components => 'شراء المكونات';
 
   @override
+  String get new_products => 'منتجات جديدة';
+
+  @override
+  String get companies => 'الشركات';
+
+  @override
+  String get view_more => 'عرض المزيد';
+
+  @override
+  String get see_all => 'عرض الكل';
+
+  @override
   String get b2b_storefront => 'واجهة B2B';
 
   @override
@@ -223,6 +235,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get storefront_b2c_subtitle => 'واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.';
+
+  @override
+  String get storefront_unified_subtitle => 'استكشف المنتجات، وقارن بين الشركات، وانتقل إلى الكتالوج الكامل فقط عندما تحتاج تفاصيل أكثر.';
 
   @override
   String storefront_products_available(Object count) {
@@ -320,7 +335,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get store_filters => 'فلاتر المتجر';
 
   @override
+  String get store_filters_subtitle => 'قم بتضييق النتائج حسب الترتيب والتصنيف والشركة والسعر من مكان واحد.';
+
+  @override
+  String get price_range => 'نطاق السعر';
+
+  @override
+  String get unit_price => 'سعر الوحدة';
+
+  @override
   String get no_store_products_found => 'لا توجد منتجات مطابقة للفلاتر الحالية.';
+
+  @override
+  String get no_categories_found => 'لا توجد تصنيفات متاحة حالياً.';
 
   @override
   String get load_more => 'تحميل المزيد';
@@ -361,6 +388,54 @@ class AppLocalizationsAr extends AppLocalizations {
   String get price_overview => 'ملخص الأسعار';
 
   @override
+  String get base_unit_price => 'سعر الوحدة الأساسي';
+
+  @override
+  String get options_total => 'إجمالي الخيارات';
+
+  @override
+  String get effective_unit_price => 'سعر الوحدة النهائي';
+
+  @override
+  String get line_total => 'إجمالي السطر';
+
+  @override
+  String get applied_pricing_tier => 'شريحة التسعير المطبقة';
+
+  @override
+  String get selected_options_title => 'الخيارات المحددة';
+
+  @override
+  String get choose_cart_audience => 'اختر وضع السلة';
+
+  @override
+  String get add_to_b2b_cart => 'أضف هذا المنتج إلى سلة B2B';
+
+  @override
+  String get add_to_b2c_cart => 'أضف هذا المنتج إلى سلة B2C';
+
+  @override
+  String get added_to_b2b_cart => 'تمت الإضافة إلى سلة B2B';
+
+  @override
+  String get added_to_b2c_cart => 'تمت الإضافة إلى سلة B2C';
+
+  @override
+  String get payment_cash => 'نقداً';
+
+  @override
+  String get payment_credit => 'آجل';
+
+  @override
+  String get payment_upon_receipt => 'الدفع عند الاستلام';
+
+  @override
+  String get pickup_from_company => 'استلام من الشركة';
+
+  @override
+  String get no_delivery_selected => 'بدون توصيل';
+
+  @override
   String get display_price => 'السعر المعروض';
 
   @override
@@ -384,7 +459,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get add_to_cart => 'أضف إلى السلة';
 
   @override
+  String get remove_from_cart => 'إزالة من السلة';
+
+  @override
   String get added_to_cart => 'تمت الإضافة إلى السلة';
+
+  @override
+  String get removed_from_cart => 'تمت الإزالة من السلة';
+
+  @override
+  String get cart => 'السلة';
 
   @override
   String get b2b_cart => 'سلة B2B';
@@ -1001,6 +1085,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancel => 'إلغاء';
 
   @override
+  String get delete => 'حذف';
+
+  @override
   String get save => 'حفظ';
 
   @override
@@ -1377,6 +1464,70 @@ class AppLocalizationsAr extends AppLocalizations {
   String get services_explore_companies => 'استعرض الشركات';
 
   @override
+  String get service_types => 'أنواع الخدمات';
+
+  @override
+  String get service_types_loading => 'جاري تحميل أنواع الخدمات...';
+
+  @override
+  String get service_types_empty_title => 'لا توجد أنواع خدمات بعد';
+
+  @override
+  String get service_types_empty_subtitle => 'أضف أول نوع خدمة لبدء تنظيم الشركات.';
+
+  @override
+  String get service_types_add => 'إضافة نوع خدمة';
+
+  @override
+  String get service_types_edit => 'تعديل نوع الخدمة';
+
+  @override
+  String get service_types_create_action => 'إنشاء نوع خدمة';
+
+  @override
+  String get service_types_update_action => 'تحديث نوع الخدمة';
+
+  @override
+  String get service_types_pick_image => 'اختيار صورة';
+
+  @override
+  String get service_types_deleted => 'تم حذف نوع الخدمة بنجاح.';
+
+  @override
+  String get service_types_created => 'تم إنشاء نوع الخدمة بنجاح.';
+
+  @override
+  String get service_types_updated => 'تم تحديث نوع الخدمة بنجاح.';
+
+  @override
+  String get service_types_delete_title => 'حذف نوع الخدمة';
+
+  @override
+  String service_types_delete_message(Object name) {
+    return 'هل تريد حذف $name؟';
+  }
+
+  @override
+  String get service_types_company_subtitle => 'حدد أنواع الخدمات التي تقدمها شركتك.';
+
+  @override
+  String get service_types_mark_served => 'تحديد كمخدوم';
+
+  @override
+  String get service_types_served => 'مخدوم';
+
+  @override
+  String get service_types_marked_served => 'تمت إضافة نوع الخدمة إلى ملف الشركة.';
+
+  @override
+  String get service_types_unmarked_served => 'تمت إزالة نوع الخدمة من ملف الشركة.';
+
+  @override
+  String service_types_companies_count(Object count) {
+    return '$count شركة';
+  }
+
+  @override
   String services_companies_found(Object count) {
     return 'تم العثور على $count شركة';
   }
@@ -1435,6 +1586,157 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get services_no_phone => 'لا يوجد رقم هاتف';
+
+  @override
+  String get services_tab_works => 'الأعمال';
+
+  @override
+  String get services_tab_info_contacts => 'المعلومات وجهات الاتصال';
+
+  @override
+  String get services_mode_overview => 'نظرة عامة';
+
+  @override
+  String get services_mode_products => 'المنتجات';
+
+  @override
+  String get services_products_header => 'منتجات الشركة';
+
+  @override
+  String get services_products_mode_title => 'تسوق من هذه الشركة';
+
+  @override
+  String get services_company_categories_title => 'تصنيفات الشركة';
+
+  @override
+  String services_products_subtitle(Object company) {
+    return 'تصفح المنتجات المتاحة من $company.';
+  }
+
+  @override
+  String get services_works_preview_title => 'معرض الأعمال';
+
+  @override
+  String get services_works_preview_subtitle => 'عرض تجريبي لبطاقات الأعمال إلى حين إضافة صور المشاريع الحقيقية.';
+
+  @override
+  String services_work_item_title(Object number) {
+    return 'مشروع $number';
+  }
+
+  @override
+  String get company_work_title => 'أعمال الشركة';
+
+  @override
+  String get company_work_subtitle => 'إدارة المشاريع المنفذة وأعمال التركيب ونماذج الأعمال.';
+
+  @override
+  String get company_work_public_title => 'معرض المشاريع';
+
+  @override
+  String get company_work_public_subtitle => 'استكشف أحدث مشاريع الشركة وأعمال التركيب المنجزة.';
+
+  @override
+  String get company_work_public_empty => 'لم يتم نشر أي أعمال حتى الآن.';
+
+  @override
+  String get company_work_public_showcase => 'عرض عام';
+
+  @override
+  String get company_work_add => 'إضافة عمل';
+
+  @override
+  String get company_work_add_title => 'إضافة عمل';
+
+  @override
+  String get company_work_edit_title => 'تعديل العمل';
+
+  @override
+  String get company_work_title_field => 'عنوان العمل';
+
+  @override
+  String get company_work_body_field => 'وصف العمل';
+
+  @override
+  String get company_work_title_required => 'عنوان العمل مطلوب';
+
+  @override
+  String get company_work_images => 'صور العمل';
+
+  @override
+  String get company_work_images_empty => 'أضف صورة واحدة أو أكثر لعرض هذا المشروع.';
+
+  @override
+  String get company_work_existing_image => 'حالياً';
+
+  @override
+  String get company_work_new_image => 'جديدة';
+
+  @override
+  String get company_work_pick_from_gallery => 'اختيار من المعرض';
+
+  @override
+  String get company_work_pick_from_camera => 'التقاط صورة';
+
+  @override
+  String get company_work_image_pick_failed => 'فشل اختيار الصور.';
+
+  @override
+  String get company_work_loading => 'جاري تحميل أعمال الشركة...';
+
+  @override
+  String get company_work_empty_title => 'لا توجد أعمال بعد';
+
+  @override
+  String get company_work_empty_subtitle => 'أنشئ أول عمل لعرض المشاريع المنجزة للعملاء.';
+
+  @override
+  String get company_work_no_description => 'لم يتم إضافة وصف بعد.';
+
+  @override
+  String company_work_images_count(Object count) {
+    return '$count صور';
+  }
+
+  @override
+  String company_work_created_at(Object date) {
+    return 'أُنشئ في $date';
+  }
+
+  @override
+  String company_work_updated_at(Object date) {
+    return 'آخر تحديث $date';
+  }
+
+  @override
+  String get company_work_publish => 'نشر العمل';
+
+  @override
+  String get company_work_save_changes => 'حفظ العمل';
+
+  @override
+  String get company_work_created => 'تم إنشاء العمل بنجاح.';
+
+  @override
+  String get company_work_updated => 'تم تحديث العمل بنجاح.';
+
+  @override
+  String get company_work_delete_title => 'حذف العمل';
+
+  @override
+  String get company_work_delete_message => 'سيتم حذف هذا العمل نهائياً.';
+
+  @override
+  String get company_work_deleted => 'تم حذف العمل بنجاح.';
+
+  @override
+  String get company_work_not_found => 'هذا العمل غير متاح الآن.';
+
+  @override
+  String get try_again => 'حاول مرة أخرى';
+
+  @override
+  String get edit => 'تعديل';
 
   @override
   String get services_section_services => 'الخدمات';
@@ -2473,6 +2775,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get example_5_or_8 => 'مثال: 5 أو 8';
+
+  @override
+  String get example_5 => 'مثال: 5';
+
+  @override
+  String get example_15 => 'مثال: 15';
 
   @override
   String get battery_count_explanation => 'يتم حساب عدد البطاريات المطلوبة وفق المعادلة التالية:\n\n(القدرة × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)\n\nمثال: (2300 واط × 5 ساعات) ÷ (12 فولت × 100Ah × 0.2) = حوالي 8 بطاريات.\n\nهذا يساعدك على تقدير عدد البطاريات اللازمة لحمل ومدة تشغيل محددين.';

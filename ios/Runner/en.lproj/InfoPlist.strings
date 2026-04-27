@@ -1,7 +1,4 @@
 "CFBundleDisplayName" = "واط، احسب منظومتك الشمسية";
 "CFBundleName" = "واط، احسب منظومتك الشمسية";
-"NSCameraUsageDescription" = "This app needs camera access to scan product SKU barcodes and capture photos.";
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "This app needs access to location to provide accurate solar calculations and nearby services.";
-"NSLocationWhenInUseUsageDescription" = "This app needs access to location when open to calculate solar potential based on your coordinates.";
+"NSCameraUsageDescription" = "This app needs camera access to capture photos for products, services, and profiles.";
 "NSPhotoLibraryUsageDescription" = "This app needs photo library access to allow you to upload images for products, services, and profiles.";
-"NSMicrophoneUsageDescription" = "This app needs microphone access for recording audio if capturing videos via camera.";

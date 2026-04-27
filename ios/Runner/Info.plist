@@ -34,15 +34,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to scan product SKU barcodes.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to location to provide accurate solar calculations and nearby services.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open to calculate solar potential based on your coordinates.</string>
+	<string>This app needs camera access to capture photos for products, services, and profiles.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs photo library access to allow you to upload images for products, services, and profiles.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This app needs microphone access for recording audio if capturing videos via camera.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

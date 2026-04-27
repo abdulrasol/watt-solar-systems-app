@@ -72,8 +72,13 @@ class AppTheme {
         .apply(fontFamily: fontFamily, bodyColor: textColor, displayColor: textColor);
   }
 
-  // --- Light Theme ---
-  static ThemeData get lightTheme {
+  // Pre-built themes - cached as static constants to avoid rebuilding on every access
+  // This improves performance by preventing ThemeData recreation
+  static final ThemeData lightTheme = _buildLightTheme();
+  static final ThemeData darkTheme = _buildDarkTheme();
+
+  // Private helper methods for building themes
+  static ThemeData _buildLightTheme() {
     final base = ThemeData.light();
     return base.copyWith(
       brightness: Brightness.light,
@@ -133,8 +138,8 @@ class AppTheme {
     );
   }
 
-  // --- Dark Theme ---
-  static ThemeData get darkTheme {
+  // Dark theme builder
+  static ThemeData _buildDarkTheme() {
     final base = ThemeData.dark();
     return base.copyWith(
       brightness: Brightness.dark,

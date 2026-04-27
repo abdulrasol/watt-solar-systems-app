@@ -17,21 +17,43 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:toastification/toastification.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+Future<void> _initializeFirebaseSafely() async {
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e, stackTrace) {
+    dPrint(
+      'Firebase initialization skipped: $e',
+      tag: 'main',
+      stackTrace: stackTrace,
+    );
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize timeago with Arabic
+  // Initialize timeago with Arabic - set once, not on every build
   timeago.setLocaleMessages('ar', timeago.ArMessages());
+  timeago.setDefaultLocale('ar'); // Set default locale at startup
 
-  // Initialize Firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await _initializeFirebaseSafely();
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     dPrint('Initializing SQL FFI for Desktop', tag: 'main');
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
-  await GetStorage.init();
+  try {
+    await GetStorage.init();
+  } catch (e, stackTrace) {
+    dPrint(
+      'GetStorage initialization failed: $e',
+      tag: 'main',
+      stackTrace: stackTrace,
+    );
+  }
   setupDependencies();
   await getIt.allReady();
   runApp(const ProviderScope(child: SolarHub()));
@@ -43,10 +65,8 @@ class SolarHub extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
+    // Use cachedRouterProvider to avoid recreating GoRouter on every rebuild
     final router = ref.watch(routerProvider);
-
-    // Set timeago default locale
-    timeago.setDefaultLocale(settings.language);
 
     return ScreenUtilInit(
       designSize: const Size(360, 690),

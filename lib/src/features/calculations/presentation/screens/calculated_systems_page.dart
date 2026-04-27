@@ -17,6 +17,7 @@ class CalculatedSystemsPage extends ConsumerStatefulWidget {
 }
 
 class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
+  static const String _savedCalculatedSystemsKey = 'saved_calculated_systems';
   List<CalculatedSystem> savedSystems = [];
 
   @override
@@ -27,12 +28,10 @@ class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
 
   void _loadSavedSystems() {
     try {
-      final cached = getIt<CasheInterface>().get('saved_calculated_systems');
+      final cached = getIt<CasheInterface>().get(_savedCalculatedSystemsKey);
       if (cached != null) {
         setState(() {
-          savedSystems = List<dynamic>.from(cached)
-              .map((e) => CalculatedSystem.fromJson(e as Map<String, dynamic>))
-              .toList().reversed.toList();
+          savedSystems = parseCalculatedSystems(cached).reversed.toList();
         });
       }
     } catch (e) {
@@ -43,13 +42,14 @@ class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
   Future<void> _deleteSystem(String id) async {
     try {
       final cache = getIt<CasheInterface>();
-      final existingData = cache.get('saved_calculated_systems');
+      final existingData = cache.get(_savedCalculatedSystemsKey);
       if (existingData != null) {
-        List<CalculatedSystem> systems = List<dynamic>.from(existingData)
-            .map((e) => CalculatedSystem.fromJson(e as Map<String, dynamic>))
-            .toList();
+        final systems = parseCalculatedSystems(existingData);
         systems.removeWhere((s) => s.id == id);
-        await cache.save('saved_calculated_systems', systems.map((e) => e.toJson()).toList());
+        await cache.save(
+          _savedCalculatedSystemsKey,
+          systems.map((e) => e.toJson()).toList(),
+        );
         _loadSavedSystems();
       }
     } catch (e) {

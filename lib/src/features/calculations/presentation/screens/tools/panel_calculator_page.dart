@@ -63,7 +63,7 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
                 Expanded(
                   child: CalcInputRow(
                     label: l10n.total_daily_usage,
-                    suffix: "Ah", // TODO: translate
+                    suffix: "Ah",
                     hint: l10n.example_100_or_200,
                     onChanged: (v) {
                       controller.panelCalcDailyUsage = double.tryParse(v) ?? 0;

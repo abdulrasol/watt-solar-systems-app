@@ -3,6 +3,7 @@ import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/models/response.dart' as local;
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
+import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
@@ -27,6 +28,7 @@ abstract class ApiServicesInterface {
 
 class DioService implements ApiServicesInterface {
   final Dio _dio = Dio();
+  final NetworkStatusService _networkStatus = getIt<NetworkStatusService>();
 
   DioService() {
     _dio.options.baseUrl = AppUrls.baseUrl;
@@ -57,10 +59,17 @@ class DioService implements ApiServicesInterface {
           return handler.next(options);
         },
         onResponse: (response, handler) {
+          _networkStatus.markOnline();
           return handler.next(response);
         },
 
         onError: (error, handler) {
+          final isConnectivityIssue = _networkStatus.isConnectivityError(error);
+          if (isConnectivityIssue) {
+            _networkStatus.markOffline(
+              'Remote data is unavailable while your device is offline.',
+            );
+          }
           final context = rootNavigatorKey.currentContext;
           if (context != null) {
             String title = 'Server Error';
@@ -161,4 +170,3 @@ class DioService implements ApiServicesInterface {
     return local.Response.fromJson(response.data);
   }
 }
-

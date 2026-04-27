@@ -1,4 +1,6 @@
-class CompanyType {
+import 'package:equatable/equatable.dart';
+
+class CompanyType extends Equatable {
   final int id;
   final String code;
   final String name;
@@ -28,6 +30,9 @@ class CompanyType {
   bool get isPlaceholder {
     final normalizedCode = code.trim().toLowerCase();
     final normalizedName = name.trim().toLowerCase();
-    return id == 0 || normalizedCode == 'dummy' || normalizedName == 'dummy';
+    return normalizedCode == 'dummy' || normalizedName == 'dummy';
   }
+
+  @override
+  List<Object?> get props => [id, code, name];
 }

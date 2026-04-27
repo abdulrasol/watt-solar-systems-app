@@ -213,6 +213,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buy_components => 'Buy components';
 
   @override
+  String get new_products => 'New Products';
+
+  @override
+  String get companies => 'Companies';
+
+  @override
+  String get view_more => 'View More';
+
+  @override
+  String get see_all => 'See All';
+
+  @override
   String get b2b_storefront => 'B2B Storefront';
 
   @override
@@ -223,6 +235,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get storefront_b2c_subtitle => 'Open storefront for all users with public product access.';
+
+  @override
+  String get storefront_unified_subtitle => 'Explore products, compare companies, and move into the full catalog only when you need more detail.';
 
   @override
   String storefront_products_available(Object count) {
@@ -320,7 +335,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get store_filters => 'Store Filters';
 
   @override
+  String get store_filters_subtitle => 'Refine products by sort order, category, company, and price in one place.';
+
+  @override
+  String get price_range => 'Price Range';
+
+  @override
+  String get unit_price => 'Unit Price';
+
+  @override
   String get no_store_products_found => 'No products matched the current filters.';
+
+  @override
+  String get no_categories_found => 'No categories available right now.';
 
   @override
   String get load_more => 'Load More';
@@ -361,6 +388,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get price_overview => 'Price Overview';
 
   @override
+  String get base_unit_price => 'Base Unit Price';
+
+  @override
+  String get options_total => 'Options Total';
+
+  @override
+  String get effective_unit_price => 'Effective Unit Price';
+
+  @override
+  String get line_total => 'Line Total';
+
+  @override
+  String get applied_pricing_tier => 'Applied Pricing Tier';
+
+  @override
+  String get selected_options_title => 'Selected Options';
+
+  @override
+  String get choose_cart_audience => 'Choose cart mode';
+
+  @override
+  String get add_to_b2b_cart => 'Add this product to the B2B cart';
+
+  @override
+  String get add_to_b2c_cart => 'Add this product to the B2C cart';
+
+  @override
+  String get added_to_b2b_cart => 'Added to B2B cart';
+
+  @override
+  String get added_to_b2c_cart => 'Added to B2C cart';
+
+  @override
+  String get payment_cash => 'Cash';
+
+  @override
+  String get payment_credit => 'Credit';
+
+  @override
+  String get payment_upon_receipt => 'Pay on receipt';
+
+  @override
+  String get pickup_from_company => 'Pick up from company';
+
+  @override
+  String get no_delivery_selected => 'No delivery selected';
+
+  @override
   String get display_price => 'Display Price';
 
   @override
@@ -384,7 +459,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get add_to_cart => 'Add to Cart';
 
   @override
+  String get remove_from_cart => 'Remove from Cart';
+
+  @override
   String get added_to_cart => 'Added to cart';
+
+  @override
+  String get removed_from_cart => 'Removed from cart';
+
+  @override
+  String get cart => 'Cart';
 
   @override
   String get b2b_cart => 'B2B Cart';
@@ -1001,6 +1085,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get delete => 'Delete';
+
+  @override
   String get save => 'Save';
 
   @override
@@ -1377,6 +1464,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String get services_explore_companies => 'Explore companies';
 
   @override
+  String get service_types => 'Service Types';
+
+  @override
+  String get service_types_loading => 'Loading service types...';
+
+  @override
+  String get service_types_empty_title => 'No service types yet';
+
+  @override
+  String get service_types_empty_subtitle => 'Add the first service type to start organizing companies.';
+
+  @override
+  String get service_types_add => 'Add Service Type';
+
+  @override
+  String get service_types_edit => 'Edit Service Type';
+
+  @override
+  String get service_types_create_action => 'Create Service Type';
+
+  @override
+  String get service_types_update_action => 'Update Service Type';
+
+  @override
+  String get service_types_pick_image => 'Pick image';
+
+  @override
+  String get service_types_deleted => 'Service type deleted successfully.';
+
+  @override
+  String get service_types_created => 'Service type created successfully.';
+
+  @override
+  String get service_types_updated => 'Service type updated successfully.';
+
+  @override
+  String get service_types_delete_title => 'Delete service type';
+
+  @override
+  String service_types_delete_message(Object name) {
+    return 'Delete $name?';
+  }
+
+  @override
+  String get service_types_company_subtitle => 'Select the service types your company provides.';
+
+  @override
+  String get service_types_mark_served => 'Mark served';
+
+  @override
+  String get service_types_served => 'Served';
+
+  @override
+  String get service_types_marked_served => 'Service type added to your company profile.';
+
+  @override
+  String get service_types_unmarked_served => 'Service type removed from your company profile.';
+
+  @override
+  String service_types_companies_count(Object count) {
+    return '$count companies';
+  }
+
+  @override
   String services_companies_found(Object count) {
     return '$count companies found';
   }
@@ -1435,6 +1586,157 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get services_no_phone => 'No phone number';
+
+  @override
+  String get services_tab_works => 'Works';
+
+  @override
+  String get services_tab_info_contacts => 'Info & Contacts';
+
+  @override
+  String get services_mode_overview => 'Overview';
+
+  @override
+  String get services_mode_products => 'Products';
+
+  @override
+  String get services_products_header => 'Company products';
+
+  @override
+  String get services_products_mode_title => 'Shop from this company';
+
+  @override
+  String get services_company_categories_title => 'Company categories';
+
+  @override
+  String services_products_subtitle(Object company) {
+    return 'Browse available products from $company.';
+  }
+
+  @override
+  String get services_works_preview_title => 'Project showcase';
+
+  @override
+  String get services_works_preview_subtitle => 'Preview sample work cards until real portfolio images are added.';
+
+  @override
+  String services_work_item_title(Object number) {
+    return 'Project $number';
+  }
+
+  @override
+  String get company_work_title => 'Company Works';
+
+  @override
+  String get company_work_subtitle => 'Manage completed projects, installations, and portfolio highlights.';
+
+  @override
+  String get company_work_public_title => 'Project Showcase';
+
+  @override
+  String get company_work_public_subtitle => 'Explore recent company projects and installation highlights.';
+
+  @override
+  String get company_work_public_empty => 'No work items have been published yet.';
+
+  @override
+  String get company_work_public_showcase => 'Public showcase';
+
+  @override
+  String get company_work_add => 'Add Work';
+
+  @override
+  String get company_work_add_title => 'Add Work';
+
+  @override
+  String get company_work_edit_title => 'Edit Work';
+
+  @override
+  String get company_work_title_field => 'Work title';
+
+  @override
+  String get company_work_body_field => 'Work description';
+
+  @override
+  String get company_work_title_required => 'Work title is required';
+
+  @override
+  String get company_work_images => 'Work Images';
+
+  @override
+  String get company_work_images_empty => 'Add one or more images to present this project.';
+
+  @override
+  String get company_work_existing_image => 'Existing';
+
+  @override
+  String get company_work_new_image => 'New';
+
+  @override
+  String get company_work_pick_from_gallery => 'Pick from gallery';
+
+  @override
+  String get company_work_pick_from_camera => 'Take photo';
+
+  @override
+  String get company_work_image_pick_failed => 'Failed to pick images.';
+
+  @override
+  String get company_work_loading => 'Loading company works...';
+
+  @override
+  String get company_work_empty_title => 'No works yet';
+
+  @override
+  String get company_work_empty_subtitle => 'Create your first work item to show completed projects to customers.';
+
+  @override
+  String get company_work_no_description => 'No description added yet.';
+
+  @override
+  String company_work_images_count(Object count) {
+    return '$count images';
+  }
+
+  @override
+  String company_work_created_at(Object date) {
+    return 'Created $date';
+  }
+
+  @override
+  String company_work_updated_at(Object date) {
+    return 'Updated $date';
+  }
+
+  @override
+  String get company_work_publish => 'Publish Work';
+
+  @override
+  String get company_work_save_changes => 'Save Work';
+
+  @override
+  String get company_work_created => 'Work created successfully.';
+
+  @override
+  String get company_work_updated => 'Work updated successfully.';
+
+  @override
+  String get company_work_delete_title => 'Delete work';
+
+  @override
+  String get company_work_delete_message => 'This work item will be removed permanently.';
+
+  @override
+  String get company_work_deleted => 'Work deleted successfully.';
+
+  @override
+  String get company_work_not_found => 'This work item is no longer available.';
+
+  @override
+  String get try_again => 'Try Again';
+
+  @override
+  String get edit => 'Edit';
 
   @override
   String get services_section_services => 'Services';
@@ -2473,6 +2775,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get example_5_or_8 => 'e.g., 5 or 8';
+
+  @override
+  String get example_5 => 'e.g., 5';
+
+  @override
+  String get example_15 => 'e.g., 15';
 
   @override
   String get battery_count_explanation => 'The number of batteries needed is calculated as:\n\n(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\nExample: (2300 W × 5 h) ÷ (12 V × 100 Ah × 0.2) = about 8 batteries.\n\nThis helps estimate how many batteries are needed for a specific load and runtime.';

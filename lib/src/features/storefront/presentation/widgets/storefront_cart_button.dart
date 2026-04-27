@@ -22,7 +22,7 @@ class StorefrontCartButton extends StatelessWidget {
     return ListenableBuilder(
       listenable: storefrontCart,
       builder: (context, _) {
-        final count = storefrontCart.totalItems(audience);
+        final count = storefrontCart.totalItemsAll();
         final background = filled
             ? AppTheme.primaryColor
             : Theme.of(context).cardColor;

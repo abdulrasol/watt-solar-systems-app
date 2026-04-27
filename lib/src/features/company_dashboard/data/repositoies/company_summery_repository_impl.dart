@@ -46,9 +46,4 @@ class CompanySummeryRepositoryImpl implements CompanySummeryRepository {
       },
     );
   }
-
-  @override
-  Future<Either<Failure, void>> requestService(int id, String serviceCode) {
-    return remoteDataSource.requestService(id, serviceCode);
-  }
 }

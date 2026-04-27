@@ -2,7 +2,7 @@ name: solar_hub
 description: "Solar Hub - Calculate, Design, and Shop your Solar System!"
 publish_to: 'none'
 
-version: 1.0.2+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.11.0

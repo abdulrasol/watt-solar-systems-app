@@ -7,6 +7,7 @@ enum AdminModuleId {
   configs,
   notifications,
   companies,
+  serviceTypes,
   serviceCatalog,
   serviceRequests,
 }
@@ -68,6 +69,14 @@ class AdminModules {
     icon: Iconsax.buildings_2_bold,
   );
 
+  static const serviceTypes = AdminModule(
+    id: AdminModuleId.serviceTypes,
+    label: 'Service Types',
+    subtitle: 'Manage public service type tags for companies.',
+    route: '/admin/service-types',
+    icon: Iconsax.gallery_edit_bold,
+  );
+
   static const serviceCatalog = AdminModule(
     id: AdminModuleId.serviceCatalog,
     label: 'Service Catalog',
@@ -90,12 +99,14 @@ class AdminModules {
     configs,
     notifications,
     companies,
+    serviceTypes,
     serviceCatalog,
     serviceRequests,
   ];
 
   static const dashboardCards = <AdminModule>[
     companies,
+    serviceTypes,
     serviceRequests,
     serviceCatalog,
     feedbacks,
@@ -109,6 +120,7 @@ class AdminModules {
     if (location.startsWith('/admin/configs')) return configs;
     if (location.startsWith('/admin/send-notification')) return notifications;
     if (location.startsWith('/admin/companies')) return companies;
+    if (location.startsWith('/admin/service-types')) return serviceTypes;
     if (location.startsWith('/admin/service-catalog')) return serviceCatalog;
     if (location.startsWith('/admin/service-requests')) return serviceRequests;
     return dashboard;

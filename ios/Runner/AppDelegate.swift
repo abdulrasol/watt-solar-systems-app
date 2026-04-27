@@ -14,22 +14,7 @@ import UserNotifications
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self
     }
-    
-    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-    UNUserNotificationCenter.current().requestAuthorization(
-      options: authOptions,
-      completionHandler: { granted, error in
-        if granted {
-          print("✅ Notification permission granted")
-          DispatchQueue.main.async {
-            application.registerForRemoteNotifications()
-          }
-        } else {
-          print("❌ Notification permission denied: \(error?.localizedDescription ?? "unknown error")")
-        }
-      }
-    )
-    
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

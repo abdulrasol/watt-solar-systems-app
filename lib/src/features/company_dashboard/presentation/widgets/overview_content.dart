@@ -59,6 +59,24 @@ class OverviewContent extends ConsumerWidget {
       );
     }
 
+    for (var index = 0; index < services.length; index++) {
+      final service = services[index];
+      if (service.serviceCode == 'company_work') {
+        services[index] = CompanyService(
+          serviceCode: service.serviceCode,
+          serviceName: service.serviceName.isEmpty
+              ? l10n.company_work_title
+              : service.serviceName,
+          status: service.status,
+          isAutoEnabled: service.isAutoEnabled,
+          autoEnabledBy: service.autoEnabledBy,
+          meta: service.meta,
+          route: '/company-work',
+          icon: service.icon,
+        );
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

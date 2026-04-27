@@ -7,6 +7,7 @@ import 'package:solar_hub/src/shared/domain/company/company_permissions.dart';
 import 'package:solar_hub/src/shared/domain/company/company_public_service.dart';
 import 'package:solar_hub/src/shared/domain/company/company_stats.dart';
 import 'package:solar_hub/src/shared/domain/company/company_type.dart';
+import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
 
 class Company {
@@ -34,6 +35,7 @@ class Company {
   final List<CompanyContact> contacts;
   final List<CompanyDeliveryOption> deliveryOptions;
   final List<CompanyPublicService> publicServices;
+  final List<ServiceType> serviceTypes;
   final List<CompanyService> services;
   final String? memberRole;
   final CompanyPermissions? permissions;
@@ -64,6 +66,7 @@ class Company {
     this.contacts = const [],
     this.deliveryOptions = const [],
     this.publicServices = const [],
+    this.serviceTypes = const [],
     this.services = const [],
     this.memberRole,
     this.permissions,
@@ -134,12 +137,21 @@ class Company {
           .map(CompanyDeliveryOption.fromJson)
           .toList(),
       publicServices: (json['public_services'] as List? ?? const [])
-          .whereType<Map<String, dynamic>>()
-          .map(CompanyPublicService.fromJson)
+          .whereType<Map>()
+          .map(
+            (item) =>
+                CompanyPublicService.fromJson(Map<String, dynamic>.from(item)),
+          )
+          .toList(),
+      serviceTypes: (json['service_types'] as List? ?? const [])
+          .whereType<Map>()
+          .map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item)))
           .toList(),
       services: (json['services'] as List? ?? const [])
-          .whereType<Map<String, dynamic>>()
-          .map(CompanyService.fromJson)
+          .whereType<Map>()
+          .map(
+            (item) => CompanyService.fromJson(Map<String, dynamic>.from(item)),
+          )
           .toList(),
       memberRole: json['member_role']?.toString(),
       permissions: permissionsJson is Map<String, dynamic>
@@ -179,6 +191,7 @@ class Company {
       'public_services': publicServices
           .map((service) => service.toJson())
           .toList(),
+      'service_types': serviceTypes.map((type) => type.toJson()).toList(),
       'services': services.map((service) => service.toJson()).toList(),
       'member_role': memberRole,
       'permissions': permissions?.toJson(),
@@ -258,6 +271,7 @@ class Company {
     List<CompanyContact>? contacts,
     List<CompanyDeliveryOption>? deliveryOptions,
     List<CompanyPublicService>? publicServices,
+    List<ServiceType>? serviceTypes,
     List<CompanyService>? services,
     String? memberRole,
     CompanyPermissions? permissions,
@@ -288,6 +302,7 @@ class Company {
       contacts: contacts ?? this.contacts,
       deliveryOptions: deliveryOptions ?? this.deliveryOptions,
       publicServices: publicServices ?? this.publicServices,
+      serviceTypes: serviceTypes ?? this.serviceTypes,
       services: services ?? this.services,
       memberRole: memberRole ?? this.memberRole,
       permissions: permissions ?? this.permissions,

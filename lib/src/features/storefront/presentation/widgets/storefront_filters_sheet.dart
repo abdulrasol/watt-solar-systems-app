@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_categories_picker.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_picker.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_filter_section.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_global_categories_picker.dart';
+import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_sort_picker.dart';
 
 class StorefrontFiltersSheet extends ConsumerStatefulWidget {
   final StorefrontScope scope;
@@ -30,8 +33,10 @@ class _StorefrontFiltersSheetState
   bool _didSubmit = false;
 
   int? _selectedCompanyId;
+  int? _selectedGlobalCategoryId;
   int? _selectedCompanyCategoryId;
   bool? _availability;
+  late String _ordering;
 
   @override
   void initState() {
@@ -40,8 +45,10 @@ class _StorefrontFiltersSheetState
     final effectiveCompanyId = widget.scope.companyId ?? state.query.companyId;
 
     _selectedCompanyId = effectiveCompanyId;
+    _selectedGlobalCategoryId = state.query.globalCategoryId;
     _selectedCompanyCategoryId = state.query.companyCategoryId;
     _availability = state.query.isAvailable;
+    _ordering = state.query.ordering;
     _companySearchController = TextEditingController(
       text: state.filterSheet.companySearch,
     );
@@ -55,12 +62,14 @@ class _StorefrontFiltersSheetState
       ..addListener(_onCompaniesScroll);
 
     Future.microtask(() async {
+      if (!mounted) return;
       final notifier = ref.read(
         storefrontNotifierProvider(widget.scope).notifier,
       );
       if (!widget.hideCompanyFilter) {
         await notifier.ensureCompaniesLoaded();
       }
+      if (!mounted) return;
       if (_selectedCompanyId != null) {
         await notifier.ensureCompanyCategoriesLoaded(_selectedCompanyId!);
       }
@@ -70,20 +79,22 @@ class _StorefrontFiltersSheetState
   @override
   void dispose() {
     if (!_didSubmit) {
-      final notifier = ref.read(
-        storefrontNotifierProvider(widget.scope).notifier,
-      );
-      final appliedState = ref.read(storefrontNotifierProvider(widget.scope));
-      final appliedCompanyId =
-          widget.scope.companyId ?? appliedState.query.companyId;
-      if (appliedCompanyId != null) {
-        notifier.ensureCompanyCategoriesLoaded(
-          appliedCompanyId,
-          forceRefresh: true,
-        );
-      } else {
-        notifier.clearDraftCompanyCategories();
-      }
+      final scope = widget.scope;
+      Future.microtask(() {
+        final notifier = ref.read(storefrontNotifierProvider(scope).notifier);
+        final appliedState = ref.read(storefrontNotifierProvider(scope));
+        final appliedCompanyId =
+            scope.companyId ?? appliedState.query.companyId;
+
+        if (appliedCompanyId != null) {
+          notifier.ensureCompanyCategoriesLoaded(
+            appliedCompanyId,
+            forceRefresh: true,
+          );
+        } else {
+          notifier.clearDraftCompanyCategories();
+        }
+      });
     }
 
     _companiesScrollController.removeListener(_onCompaniesScroll);
@@ -128,110 +139,156 @@ class _StorefrontFiltersSheetState
                 l10n.store_filters,
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w900),
               ),
+              SizedBox(height: 8.h),
+              Text(
+                l10n.store_filters_subtitle,
+                style: TextStyle(fontSize: 13.sp, color: Colors.grey.shade600),
+              ),
               SizedBox(height: 16.h),
-              if (!widget.hideCompanyFilter) ...[
-                TextField(
-                  controller: _companySearchController,
+              StorefrontFilterSection(
+                title: l10n.sort_by,
+                child: StorefrontSortPicker(
+                  ordering: _ordering,
                   onChanged: (value) {
-                    setState(() {});
-                    notifier.updateCompanySearch(value);
+                    if (value == null) return;
+                    setState(() => _ordering = value);
                   },
-                  decoration: InputDecoration(
-                    labelText: l10n.company_name,
-                    hintText: l10n.search_company_hint,
-                    prefixIcon: const Icon(Icons.search_rounded),
-                    suffixIcon: _companySearchController.text.isEmpty
-                        ? null
-                        : IconButton(
-                            onPressed: () {
-                              _companySearchController.clear();
-                              notifier.updateCompanySearch('');
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.close_rounded),
-                          ),
+                ),
+              ),
+              SizedBox(height: 12.h),
+              StorefrontFilterSection(
+                title: l10n.categories,
+                child: StorefrontGlobalCategoriesPicker(
+                  categories: state.meta.globalCategories,
+                  selectedCategoryId: _selectedGlobalCategoryId,
+                  onChanged: (value) {
+                    setState(() => _selectedGlobalCategoryId = value);
+                  },
+                ),
+              ),
+              if (!widget.hideCompanyFilter) ...[
+                SizedBox(height: 12.h),
+                StorefrontFilterSection(
+                  title: l10n.company_name,
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _companySearchController,
+                        onChanged: (value) {
+                          setState(() {});
+                          notifier.updateCompanySearch(value);
+                        },
+                        decoration: InputDecoration(
+                          labelText: l10n.company_name,
+                          hintText: l10n.search_company_hint,
+                          prefixIcon: const Icon(Icons.search_rounded),
+                          suffixIcon: _companySearchController.text.isEmpty
+                              ? null
+                              : IconButton(
+                                  onPressed: () {
+                                    _companySearchController.clear();
+                                    notifier.updateCompanySearch('');
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(Icons.close_rounded),
+                                ),
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      StorefrontCompanyPicker(
+                        filterSheet: state.filterSheet,
+                        scrollController: _companiesScrollController,
+                        selectedCompanyId: _selectedCompanyId,
+                        onCompanyTap: (company) async {
+                          final isSameCompany =
+                              _selectedCompanyId == company.id;
+                          setState(() {
+                            _selectedCompanyId = isSameCompany
+                                ? null
+                                : company.id;
+                            _selectedCompanyCategoryId = null;
+                          });
+
+                          if (isSameCompany) {
+                            notifier.clearDraftCompanyCategories();
+                            return;
+                          }
+
+                          await notifier.ensureCompanyCategoriesLoaded(
+                            company.id,
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 12.h),
-                _CompaniesPicker(
-                  state: state,
-                  scrollController: _companiesScrollController,
-                  selectedCompanyId: _selectedCompanyId,
-                  onCompanyTap: (company) async {
-                    final isSameCompany = _selectedCompanyId == company.id;
-                    setState(() {
-                      _selectedCompanyId = isSameCompany ? null : company.id;
-                      _selectedCompanyCategoryId = null;
-                    });
-
-                    if (isSameCompany) {
-                      notifier.clearDraftCompanyCategories();
-                      return;
-                    }
-
-                    await notifier.ensureCompanyCategoriesLoaded(company.id);
-                  },
-                ),
-                SizedBox(height: 16.h),
               ],
               if (_selectedCompanyId != null || widget.hideCompanyFilter) ...[
-                Text(
-                  l10n.company_category,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 14.sp,
+                SizedBox(height: 12.h),
+                StorefrontFilterSection(
+                  title: l10n.company_category,
+                  child: StorefrontCompanyCategoriesPicker(
+                    categories: state.companyCategories,
+                    isLoading: state.isLoadingCompanyCategories,
+                    error: state.companyCategoriesError,
+                    selectedCompanyCategoryId: _selectedCompanyCategoryId,
+                    onChanged: (value) {
+                      setState(() => _selectedCompanyCategoryId = value);
+                    },
                   ),
                 ),
-                SizedBox(height: 10.h),
-                _CompanyCategoriesPicker(
-                  state: state,
-                  selectedCompanyCategoryId: _selectedCompanyCategoryId,
-                  onChanged: (value) {
-                    setState(() => _selectedCompanyCategoryId = value);
-                  },
-                ),
-                SizedBox(height: 16.h),
               ],
-              DropdownButtonFormField<bool?>(
-                initialValue: _availability,
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: l10n.availability,
-                  prefixIcon: const Icon(Icons.inventory_2_outlined),
-                ),
-                items: [
-                  DropdownMenuItem<bool?>(value: null, child: Text(l10n.all)),
-                  DropdownMenuItem<bool?>(
-                    value: true,
-                    child: Text(l10n.available),
-                  ),
-                  DropdownMenuItem<bool?>(
-                    value: false,
-                    child: Text(l10n.unavailable),
-                  ),
-                ],
-                onChanged: (value) => setState(() => _availability = value),
-              ),
               SizedBox(height: 12.h),
-              TextField(
-                controller: _minController,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                decoration: InputDecoration(
-                  labelText: l10n.min_price,
-                  prefixIcon: const Icon(Icons.attach_money_rounded),
+              StorefrontFilterSection(
+                title: l10n.availability,
+                child: DropdownButtonFormField<bool?>(
+                  initialValue: _availability,
+                  isExpanded: true,
+                  decoration: InputDecoration(
+                    labelText: l10n.availability,
+                    prefixIcon: const Icon(Icons.inventory_2_outlined),
+                  ),
+                  items: [
+                    DropdownMenuItem<bool?>(value: null, child: Text(l10n.all)),
+                    DropdownMenuItem<bool?>(
+                      value: true,
+                      child: Text(l10n.available),
+                    ),
+                    DropdownMenuItem<bool?>(
+                      value: false,
+                      child: Text(l10n.unavailable),
+                    ),
+                  ],
+                  onChanged: (value) => setState(() => _availability = value),
                 ),
               ),
               SizedBox(height: 12.h),
-              TextField(
-                controller: _maxController,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                decoration: InputDecoration(
-                  labelText: l10n.max_price,
-                  prefixIcon: const Icon(Icons.attach_money_rounded),
+              StorefrontFilterSection(
+                title: l10n.price_range,
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _minController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: l10n.min_price,
+                        prefixIcon: const Icon(Icons.attach_money_rounded),
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    TextField(
+                      controller: _maxController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: l10n.max_price,
+                        prefixIcon: const Icon(Icons.attach_money_rounded),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 18.h),
@@ -256,6 +313,9 @@ class _StorefrontFiltersSheetState
                         await notifier.applyFilters(
                           companyId: _selectedCompanyId,
                           clearCompanyId: _selectedCompanyId == null,
+                          globalCategoryId: _selectedGlobalCategoryId,
+                          clearGlobalCategoryId:
+                              _selectedGlobalCategoryId == null,
                           companyCategoryId: _selectedCompanyCategoryId,
                           clearCompanyCategoryId:
                               _selectedCompanyCategoryId == null,
@@ -265,6 +325,7 @@ class _StorefrontFiltersSheetState
                           clearMinPrice: _minController.text.trim().isEmpty,
                           maxPrice: double.tryParse(_maxController.text.trim()),
                           clearMaxPrice: _maxController.text.trim().isEmpty,
+                          ordering: _ordering,
                         );
                       },
                       child: Text(l10n.apply_filters),
@@ -275,162 +336,6 @@ class _StorefrontFiltersSheetState
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _CompaniesPicker extends StatelessWidget {
-  final StorefrontState state;
-  final ScrollController scrollController;
-  final int? selectedCompanyId;
-  final ValueChanged<StorefrontCompanyListItem> onCompanyTap;
-
-  const _CompaniesPicker({
-    required this.state,
-    required this.scrollController,
-    required this.selectedCompanyId,
-    required this.onCompanyTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final filterSheet = state.filterSheet;
-
-    if (filterSheet.isLoadingCompanies && filterSheet.companies.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (filterSheet.companiesError != null && filterSheet.companies.isEmpty) {
-      return _InlineMessage(message: filterSheet.companiesError!);
-    }
-
-    if (filterSheet.companies.isEmpty) {
-      return _InlineMessage(message: l10n.no_company_found);
-    }
-
-    return Container(
-      constraints: BoxConstraints(maxHeight: 260.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: Theme.of(context).dividerColor),
-      ),
-      child: ListView.separated(
-        controller: scrollController,
-        shrinkWrap: true,
-        itemCount:
-            filterSheet.companies.length +
-            (filterSheet.isLoadingMoreCompanies ? 1 : 0),
-        separatorBuilder: (_, _) => Divider(height: 1.h),
-        itemBuilder: (context, index) {
-          if (index >= filterSheet.companies.length) {
-            return Padding(
-              padding: EdgeInsets.all(12.r),
-              child: const Center(child: CircularProgressIndicator()),
-            );
-          }
-
-          final company = filterSheet.companies[index];
-          final selected = selectedCompanyId == company.id;
-
-          return ListTile(
-            onTap: () => onCompanyTap(company),
-            leading: CircleAvatar(
-              backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.12),
-              child: Text(
-                company.name.isEmpty ? '?' : company.name.substring(0, 1),
-                style: const TextStyle(fontWeight: FontWeight.w800),
-              ),
-            ),
-            title: Text(
-              company.name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: company.cityName == null
-                ? null
-                : Text(
-                    company.cityName!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-            trailing: selected
-                ? Icon(Icons.check_circle_rounded, color: AppTheme.primaryColor)
-                : null,
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _CompanyCategoriesPicker extends StatelessWidget {
-  final StorefrontState state;
-  final int? selectedCompanyCategoryId;
-  final ValueChanged<int?> onChanged;
-
-  const _CompanyCategoriesPicker({
-    required this.state,
-    required this.selectedCompanyCategoryId,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    if (state.isLoadingCompanyCategories) {
-      return _InlineMessage(message: l10n.company_categories_loading);
-    }
-
-    if (state.companyCategoriesError != null) {
-      return _InlineMessage(message: state.companyCategoriesError!);
-    }
-
-    if (state.companyCategories.isEmpty) {
-      return _InlineMessage(message: l10n.company_categories_empty_title);
-    }
-
-    return Wrap(
-      spacing: 8.w,
-      runSpacing: 8.h,
-      children: [
-        ChoiceChip(
-          label: Text(l10n.all_categories),
-          selected: selectedCompanyCategoryId == null,
-          onSelected: (_) => onChanged(null),
-        ),
-        ...state.companyCategories.map(
-          (category) => ChoiceChip(
-            label: Text(category.name),
-            selected: selectedCompanyCategoryId == category.id,
-            onSelected: (_) => onChanged(category.id),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _InlineMessage extends StatelessWidget {
-  final String message;
-
-  const _InlineMessage({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Text(
-        message,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 13.sp),
       ),
     );
   }

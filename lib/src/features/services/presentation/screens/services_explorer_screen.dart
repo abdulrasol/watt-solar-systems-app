@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
+import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/services/presentation/providers/public_services_provider.dart';
 import 'package:solar_hub/src/features/services/presentation/widgets/company_type_card.dart';
 
@@ -26,15 +26,6 @@ class ServicesExplorerScreen extends ConsumerWidget {
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
-          // SliverPadding(
-          //   padding: padding,
-          //   sliver: SliverList(
-          //     delegate: SliverChildListDelegate([
-          //       ServicesHeader(title: l10n.services, subtitle: l10n.services_explorer_subtitle, badge: l10n.services_choose_category),
-          //       SizedBox(height: 16.h),
-          //     ]),
-          //   ),
-          // ),
           typesAsync.when(
             data: (types) {
               if (types.isEmpty) {
@@ -93,14 +84,10 @@ class ServicesExplorerScreen extends ConsumerWidget {
     );
   }
 
-  void _openCompanies(BuildContext context, CompanyType type) {
+  void _openCompanies(BuildContext context, ServiceType type) {
     final uri = Uri(
       path: '/services/companies',
-      queryParameters: {
-        'typeId': '${type.id}',
-        'typeCode': type.code,
-        'typeName': type.name,
-      },
+      queryParameters: {'typeId': '${type.id}', 'typeName': type.name},
     );
     context.push(uri.toString());
   }
