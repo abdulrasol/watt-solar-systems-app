@@ -13,30 +13,18 @@ class StorefrontProductCard extends StatelessWidget {
   final VoidCallback onAddToCart;
   final VoidCallback onRemoveFromCart;
 
-  const StorefrontProductCard({
-    super.key,
-    required this.product,
-    required this.onTap,
-    required this.onAddToCart,
-    required this.onRemoveFromCart,
-  });
+  const StorefrontProductCard({super.key, required this.product, required this.onTap, required this.onAddToCart, required this.onRemoveFromCart});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final priceFormat = NumberFormat.decimalPattern();
-    final requiredOptionIds = product.options
-        .where((option) => option.isRequired)
-        .map((e) => e.id)
-        .toList();
+    final requiredOptionIds = product.options.where((option) => option.isRequired).map((e) => e.id).toList();
 
     return ListenableBuilder(
       listenable: storefrontCart,
       builder: (context, _) {
-        final isInCart = storefrontCart.containsProduct(
-          product,
-          selectedOptionIds: requiredOptionIds,
-        );
+        final isInCart = storefrontCart.containsProduct(product, selectedOptionIds: requiredOptionIds);
 
         return Material(
           color: Colors.transparent,
@@ -47,18 +35,8 @@ class StorefrontProductCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(24.r),
-                border: Border.all(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.08),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 16,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
+                border: Border.all(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.08)),
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 16, offset: const Offset(0, 10))],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,24 +46,23 @@ class StorefrontProductCard extends StatelessWidget {
                       children: [
                         Positioned.fill(
                           child: ClipRRect(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(24.r),
-                            ),
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
                             child: product.primaryImage == null
                                 ? Container(
-                                    color: AppTheme.primaryColor.withValues(
-                                      alpha: 0.08,
-                                    ),
+                                    color: AppTheme.primaryColor.withValues(alpha: 0.08),
                                     alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.image_outlined,
-                                      size: 38.sp,
-                                      color: AppTheme.primaryColor,
-                                    ),
+                                    child: Icon(Icons.image_outlined, size: 38.sp, color: AppTheme.primaryColor),
                                   )
-                                : CachedNetworkImage(
-                                    imageUrl: product.primaryImage!,
-                                    fit: BoxFit.cover,
+                                : RepaintBoundary(
+                                    child: CachedNetworkImage(
+                                      imageUrl: product.primaryImage!,
+                                      fit: BoxFit.cover,
+                                      memCacheWidth: 500,
+                                      memCacheHeight: 500,
+                                      placeholder: (context, url) =>
+                                          const Center(child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))),
+                                      errorWidget: (context, url, error) => Icon(Icons.image_outlined, size: 38.sp, color: AppTheme.primaryColor),
+                                    ),
                                   ),
                           ),
                         ),
@@ -93,27 +70,14 @@ class StorefrontProductCard extends StatelessWidget {
                           top: 12,
                           start: 12,
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                              vertical: 6.h,
-                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                             decoration: BoxDecoration(
-                              color: product.isAvailable
-                                  ? AppTheme.successColor.withValues(
-                                      alpha: 0.88,
-                                    )
-                                  : Colors.black.withValues(alpha: 0.62),
+                              color: product.isAvailable ? AppTheme.successColor.withValues(alpha: 0.88) : Colors.black.withValues(alpha: 0.62),
                               borderRadius: BorderRadius.circular(999.r),
                             ),
                             child: Text(
-                              product.isAvailable
-                                  ? l10n.available
-                                  : l10n.unavailable,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w800,
-                              ),
+                              product.isAvailable ? l10n.available : l10n.unavailable,
+                              style: TextStyle(color: Colors.white, fontSize: 11.sp, fontWeight: FontWeight.w800),
                             ),
                           ),
                         ),
@@ -122,21 +86,11 @@ class StorefrontProductCard extends StatelessWidget {
                             bottom: 12,
                             end: 12,
                             child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10.w,
-                                vertical: 6.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.55),
-                                borderRadius: BorderRadius.circular(999.r),
-                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.55), borderRadius: BorderRadius.circular(999.r)),
                               child: Text(
                                 '1/${product.images.length}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                                style: TextStyle(color: Colors.white, fontSize: 11.sp, fontWeight: FontWeight.w800),
                               ),
                             ),
                           ),
@@ -157,11 +111,7 @@ class StorefrontProductCard extends StatelessWidget {
                                 product.company.name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Theme.of(context).colorScheme.onSurface
-                                      .withValues(alpha: 0.62),
-                                ),
+                                style: TextStyle(fontSize: 12.sp, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.62)),
                               ),
                             ),
                           ],
@@ -171,47 +121,25 @@ class StorefrontProductCard extends StatelessWidget {
                           product.name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w900,
-                            height: 1.25,
-                          ),
+                          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w900, height: 1.25),
                         ),
                         if (product.categoryLabel.isNotEmpty) ...[
                           SizedBox(height: 8.h),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                              vertical: 6.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor.withValues(
-                                alpha: 0.10,
-                              ),
-                              borderRadius: BorderRadius.circular(999.r),
-                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.10), borderRadius: BorderRadius.circular(999.r)),
                             child: Text(
                               product.categoryLabel,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w700,
-                                color: AppTheme.primaryColor,
-                              ),
+                              style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w700, color: AppTheme.primaryColor),
                             ),
                           ),
                         ],
                         SizedBox(height: 12.h),
                         Text(
-                          l10n.iqd_price(
-                            priceFormat.format(product.displayPrice),
-                          ),
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w900,
-                            color: AppTheme.primaryColor,
-                          ),
+                          l10n.iqd_price(priceFormat.format(product.displayPrice)),
+                          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
                         ),
                         SizedBox(height: 12.h),
                         SizedBox(
@@ -219,32 +147,20 @@ class StorefrontProductCard extends StatelessWidget {
                           child: isInCart
                               ? OutlinedButton.icon(
                                   onPressed: onRemoveFromCart,
-                                  icon: const Icon(
-                                    Icons.remove_shopping_cart_rounded,
-                                  ),
+                                  icon: const Icon(Icons.remove_shopping_cart_rounded),
                                   label: Text(l10n.remove_from_cart),
                                   style: OutlinedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 12.h,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.r),
-                                    ),
+                                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
                                   ),
                                 )
                               : ElevatedButton.icon(
                                   onPressed: onAddToCart,
-                                  icon: const Icon(
-                                    Icons.add_shopping_cart_rounded,
-                                  ),
+                                  icon: const Icon(Icons.add_shopping_cart_rounded),
                                   label: Text(l10n.add_to_cart),
                                   style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 12.h,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.r),
-                                    ),
+                                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
                                   ),
                                 ),
                         ),
@@ -271,11 +187,8 @@ class _CompanyAvatar extends StatelessWidget {
     if ((company.logo ?? '').isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(12.r),
-        child: CachedNetworkImage(
-          imageUrl: company.logo!,
-          width: 28.r,
-          height: 28.r,
-          fit: BoxFit.cover,
+        child: RepaintBoundary(
+          child: CachedNetworkImage(imageUrl: company.logo!, width: 28.r, height: 28.r, fit: BoxFit.cover, memCacheWidth: 56, memCacheHeight: 56),
         ),
       );
     }
@@ -283,18 +196,11 @@ class _CompanyAvatar extends StatelessWidget {
     return Container(
       width: 28.r,
       height: 28.r,
-      decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+      decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.10), borderRadius: BorderRadius.circular(12.r)),
       alignment: Alignment.center,
       child: Text(
         company.name.isEmpty ? '?' : company.name.substring(0, 1),
-        style: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w900,
-          color: AppTheme.primaryColor,
-        ),
+        style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
@@ -7,6 +8,71 @@ import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
+
+/// Cache interceptor for GET requests to reduce redundant API calls
+class CacheInterceptor extends Interceptor {
+  final CasheInterface _cache;
+  final Duration cacheDuration;
+
+  CacheInterceptor({required CasheInterface cache, this.cacheDuration = const Duration(minutes: 5)}) : _cache = cache;
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    // Only cache GET requests
+    if (options.method != 'GET') {
+      return handler.next(options);
+    }
+
+    final cacheKey = _getCacheKey(options);
+    final cachedData = _cache.getCache(cacheKey);
+
+    if (cachedData != null) {
+      final cached = jsonDecode(cachedData);
+      final timestamp = cached['timestamp'] as int;
+      final isExpired = DateTime.now().millisecondsSinceEpoch - timestamp > cacheDuration.inMilliseconds;
+
+      if (!isExpired) {
+        dPrint('Cache hit for: ${options.path}', tag: 'Cache');
+        return handler.resolve(Response(requestOptions: options, data: cached['data'], statusCode: 200));
+      }
+    }
+
+    return handler.next(options);
+  }
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    final options = response.requestOptions;
+
+    // Only cache GET requests with 200 status
+    if (options.method == 'GET' && response.statusCode == 200) {
+      final cacheKey = _getCacheKey(options);
+      final cacheData = jsonEncode({'data': response.data, 'timestamp': DateTime.now().millisecondsSinceEpoch});
+      _cache.setCache(cacheKey, cacheData);
+      dPrint('Cached response for: ${options.path}', tag: 'Cache');
+    }
+
+    return handler.next(response);
+  }
+
+  String _getCacheKey(RequestOptions options) {
+    final queryString = options.queryParameters.isNotEmpty ? '&${options.queryParameters.entries.map((e) => '${e.key}=${e.value}').join('&')}' : '';
+    return 'http_cache:${options.path}$queryString';
+  }
+}
+
+extension _CacheExtension on CasheInterface {
+  static const _cachePrefix = '_http_cache_';
+
+  void setCache(String key, String value) {
+    save('$_cachePrefix$key', value);
+  }
+
+  String? getCache(String key) {
+    final value = get('$_cachePrefix$key');
+    return value as String?;
+  }
+}
 
 abstract class ApiServicesInterface {
   Future get(String url);
@@ -29,11 +95,15 @@ abstract class ApiServicesInterface {
 class DioService implements ApiServicesInterface {
   final Dio _dio = Dio();
   final NetworkStatusService _networkStatus = getIt<NetworkStatusService>();
+  late final CacheInterceptor _cacheInterceptor;
 
   DioService() {
     _dio.options.baseUrl = AppUrls.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(seconds: 30);
+
+    _cacheInterceptor = CacheInterceptor(cache: getIt<CasheInterface>());
+    _dio.interceptors.add(_cacheInterceptor);
 
     _dio.interceptors.add(
       InterceptorsWrapper(
@@ -66,9 +136,7 @@ class DioService implements ApiServicesInterface {
         onError: (error, handler) {
           final isConnectivityIssue = _networkStatus.isConnectivityError(error);
           if (isConnectivityIssue) {
-            _networkStatus.markOffline(
-              'Remote data is unavailable while your device is offline.',
-            );
+            _networkStatus.markOffline('Remote data is unavailable while your device is offline.');
           }
           final context = rootNavigatorKey.currentContext;
           if (context != null) {

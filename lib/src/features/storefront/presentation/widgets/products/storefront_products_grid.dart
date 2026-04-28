@@ -50,10 +50,7 @@ class StorefrontProductsGridSliver extends StatelessWidget {
       return SliverToBoxAdapter(
         child: Padding(
           padding: padding.copyWith(top: 0),
-          child: StorefrontProductsEmptyState(
-            message: error ?? l10n.no_store_products_found,
-            showErrorStyle: error != null,
-          ),
+          child: StorefrontProductsEmptyState(message: error ?? l10n.no_store_products_found, showErrorStyle: error != null),
         ),
       );
     }
@@ -72,6 +69,7 @@ class StorefrontProductsGridSliver extends StatelessWidget {
             delegate: SliverChildBuilderDelegate((context, index) {
               final product = products[index];
               return StorefrontProductCard(
+                key: ObjectKey(product.id),
                 product: product,
                 onTap: () => onProductTap(product),
                 onAddToCart: () => onAddToCart(product),
@@ -85,15 +83,7 @@ class StorefrontProductsGridSliver extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 24.h),
               child: Center(
-                child: isLoadingMore
-                    ? SizedBox(
-                        width: 24.r,
-                        height: 24.r,
-                        child: const CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+                child: isLoadingMore ? SizedBox(width: 24.r, height: 24.r, child: const CircularProgressIndicator(strokeWidth: 2.5)) : const SizedBox.shrink(),
               ),
             ),
           ),

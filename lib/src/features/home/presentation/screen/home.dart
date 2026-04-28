@@ -1,7 +1,6 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/offline_status_banner.dart';
@@ -121,7 +120,6 @@ class Home extends ConsumerWidget {
     final navigation = ref.watch(homeNavigationProvider);
     final selectedIndex = ref.watch(homePageIndexProvider);
     final currentTab = HomeTab.fromIndex(navigation.sanitizeIndex(selectedIndex));
-    final notificationCount = ref.watch(notificationHistoryProvider).items.length;
 
     return AppBar(
       title: Text(_getTitle(currentTab, context)),
@@ -166,31 +164,37 @@ class Home extends ConsumerWidget {
               ),
 
             // Notification Icon with Badge
-            if (ref.watch(authProvider).isSigned)
-              InkWell(
-                onTap: () => context.push('/notifications'),
-                child: Stack(
-                  children: [
-                    IconButton(
-                      onPressed: () => context.push('/notifications'),
-                      icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
-                    ),
-                    if (notificationCount > 0)
-                      Positioned(
-                        right: 8,
-                        top: 8,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                          child: Text(
-                            notificationCount > 9 ? '9+' : '$notificationCount',
-                            style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+            Consumer(
+              builder: (context, ref, _) {
+                final isSigned = ref.watch(authProvider.select((auth) => auth.isSigned));
+                if (!isSigned) return const SizedBox.shrink();
+                final notificationCount = ref.watch(notificationHistoryProvider.select((state) => state.items.length));
+                return InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/notifications'),
+                  child: Stack(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.of(context).pushNamed('/notifications'),
+                        icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
+                      ),
+                      if (notificationCount > 0)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                            child: Text(
+                              notificationCount > 9 ? '9+' : '$notificationCount',
+                              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                      ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+              },
+            ),
             const SizedBox(width: 8),
           ],
         ),

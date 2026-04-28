@@ -17,8 +17,7 @@ class CompaniesScreen extends ConsumerStatefulWidget {
   const CompaniesScreen({super.key, required this.type});
 
   @override
-  ConsumerState<CompaniesScreen> createState() =>
-      _ServicesCompaniesScreenState();
+  ConsumerState<CompaniesScreen> createState() => _ServicesCompaniesScreenState();
 }
 
 class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
@@ -52,11 +51,7 @@ class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
             padding: padding,
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                ServicesHeader(
-                  title: widget.type.name,
-                  subtitle: l10n.services_companies_subtitle,
-                  badge: l10n.services_companies_found(state.totalItems),
-                ),
+                ServicesHeader(title: widget.type.name, subtitle: l10n.services_companies_subtitle, badge: l10n.services_companies_found(state.totalItems)),
                 SizedBox(height: 16.h),
                 const OfflineStatusBanner(padding: EdgeInsets.zero),
                 SizedBox(height: 16.h),
@@ -68,11 +63,7 @@ class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
                   onSearchChanged: notifier.updateSearch,
                 ),
                 SizedBox(height: 16.h),
-                if (state.error != null && !state.isLoading)
-                  _ErrorBanner(
-                    message: state.error!,
-                    onRetry: notifier.refresh,
-                  ),
+                if (state.error != null && !state.isLoading) _ErrorBanner(message: state.error!, onRetry: notifier.refresh),
               ]),
             ),
           ),
@@ -94,11 +85,7 @@ class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
               sliver: SliverList.builder(
                 itemBuilder: (context, index) {
                   final company = state.companies[index];
-                  return CompanyCard(
-                    company: company,
-                    onTap: () =>
-                        context.push('/services/company/${company.id}'),
-                  );
+                  return CompanyCard(key: ObjectKey(company.id), company: company, onTap: () => context.push('/services/company/${company.id}'));
                 },
                 itemCount: state.companies.length,
               ),
@@ -141,19 +128,10 @@ class _FiltersSection extends StatelessWidget {
         final isCompact = constraints.maxWidth < 620;
         final cityField = DropdownButtonFormField<City?>(
           initialValue: selectedCity,
-          decoration: InputDecoration(
-            labelText: l10n.city,
-            prefixIcon: const Icon(Icons.location_on_outlined),
-          ),
+          decoration: InputDecoration(labelText: l10n.city, prefixIcon: const Icon(Icons.location_on_outlined)),
           items: [
-            DropdownMenuItem<City?>(
-              value: null,
-              child: Text(l10n.services_all_cities),
-            ),
-            ...cities.map(
-              (city) =>
-                  DropdownMenuItem<City?>(value: city, child: Text(city.name)),
-            ),
+            DropdownMenuItem<City?>(value: null, child: Text(l10n.services_all_cities)),
+            ...cities.map((city) => DropdownMenuItem<City?>(value: city, child: Text(city.name))),
           ],
           onChanged: onCityChanged,
         );
@@ -215,17 +193,12 @@ class _ErrorBanner extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: EdgeInsets.all(14.r),
-      decoration: BoxDecoration(
-        color: Colors.red.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(18.r),
-      ),
+      decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(18.r)),
       child: Row(
         children: [
           const Icon(Icons.error_outline_rounded, color: Colors.red),
           SizedBox(width: 12.w),
-          Expanded(
-            child: Text(message, maxLines: 3, overflow: TextOverflow.ellipsis),
-          ),
+          Expanded(child: Text(message, maxLines: 3, overflow: TextOverflow.ellipsis)),
           TextButton(onPressed: onRetry, child: Text(l10n.services_retry)),
         ],
       ),

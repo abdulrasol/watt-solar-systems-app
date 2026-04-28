@@ -98,7 +98,8 @@ class NotificationHistoryScreen extends ConsumerWidget {
               itemCount: state.items.length,
               separatorBuilder: (context, index) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
-                return _NotificationCard(item: state.items[index], isDark: isDark);
+                final item = state.items[index];
+                return _NotificationCard(key: ObjectKey(item.id), item: item, isDark: isDark);
               },
             );
           },
@@ -114,7 +115,7 @@ class _NotificationCard extends StatelessWidget {
   final AppNotificationItem item;
   final bool isDark;
 
-  const _NotificationCard({required this.item, required this.isDark});
+  const _NotificationCard({super.key, required this.item, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -176,10 +177,7 @@ class _NotificationCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    timeago.format(
-                      item.sentAt ?? item.createdAt,
-                      locale: Localizations.localeOf(context).languageCode,
-                    ),
+                    timeago.format(item.sentAt ?? item.createdAt, locale: Localizations.localeOf(context).languageCode),
                     style: TextStyle(fontSize: 10.sp, color: isDark ? Colors.grey[500] : Colors.grey[600]),
                   ),
                 ],
@@ -244,10 +242,7 @@ class _ActionButton extends StatelessWidget {
           children: [
             Icon(notifType.icon, size: 14),
             SizedBox(width: 8.w),
-            Text(
-              notifType.actionLabel(AppLocalizations.of(context)!),
-              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
-            ),
+            Text(notifType.actionLabel(AppLocalizations.of(context)!), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
           ],
         ),
       ),
