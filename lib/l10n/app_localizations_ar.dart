@@ -518,6 +518,295 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reset_password_token_instructions => 'أدخل الرمز الذي وصلك ثم اختر كلمة مرور جديدة.';
 
   @override
+  String get structure_design_title => 'تصميم الهيكل';
+
+  @override
+  String get structure_design_intro => 'صمّم هيكل أرضي ثابت الميل، وقدّر أفضل ميل واتجاه سنوي، وراجع الأبعاد الأساسية للهيكل قبل التفصيل الهندسي النهائي.';
+
+  @override
+  String get structure_site_inputs => 'مدخلات الموقع';
+
+  @override
+  String get structure_site_width => 'عرض الموقع';
+
+  @override
+  String get structure_site_depth => 'عمق الموقع';
+
+  @override
+  String get structure_latitude => 'خط العرض';
+
+  @override
+  String get structure_use_location => 'استخدام الموقع';
+
+  @override
+  String get structure_direction_preference => 'اتجاه التوجيه المسموح';
+
+  @override
+  String get structure_mount_type => 'نوع التركيب';
+
+  @override
+  String get structure_clearances => 'الخلوصات';
+
+  @override
+  String get structure_front_clearance => 'الخلوص الأمامي';
+
+  @override
+  String get structure_rear_clearance => 'الخلوص الخلفي';
+
+  @override
+  String get structure_side_clearance => 'الخلوص الجانبي';
+
+  @override
+  String get structure_front_leg_height => 'ارتفاع الرجل الأمامية';
+
+  @override
+  String get structure_inter_row_gap => 'المسافة بين الصفوف';
+
+  @override
+  String get structure_panel_dimensions => 'أبعاد اللوح';
+
+  @override
+  String get structure_panel_orientation => 'وضعية اللوح';
+
+  @override
+  String get structure_panel_length => 'طول اللوح';
+
+  @override
+  String get structure_panel_width => 'عرض اللوح';
+
+  @override
+  String get structure_panel_thickness => 'سماكة اللوح';
+
+  @override
+  String get structure_horizontal_gap => 'الفاصل الأفقي';
+
+  @override
+  String get structure_vertical_gap => 'الفاصل العمودي';
+
+  @override
+  String get structure_layout_editor => 'محرر الترتيب';
+
+  @override
+  String get structure_rows => 'الصفوف';
+
+  @override
+  String get structure_columns => 'الأعمدة';
+
+  @override
+  String get structure_reset_auto_layout => 'إعادة الضبط التلقائي';
+
+  @override
+  String get structure_ground_mount_only_hint => 'الإصدار الحالي يدعم فقط الهيكل الأرضي ثابت الميل. الأنواع الأخرى محجوزة للمراحل القادمة.';
+
+  @override
+  String get structure_geometry_results => 'نتائج الأبعاد';
+
+  @override
+  String get structure_panel_count => 'عدد الألواح';
+
+  @override
+  String get structure_frame_width => 'عرض الهيكل';
+
+  @override
+  String get structure_frame_length => 'طول الميل';
+
+  @override
+  String get structure_row_spacing => 'تباعد الصفوف';
+
+  @override
+  String get structure_total_footprint_depth => 'العمق الكلي للبصمة';
+
+  @override
+  String get structure_rear_leg_height => 'ارتفاع الرجل الخلفية';
+
+  @override
+  String get structure_rail_length => 'طول السكة';
+
+  @override
+  String get structure_brace_length => 'طول الدعامة';
+
+  @override
+  String get structure_total_front_legs_length => 'إجمالي طول الأرجل الأمامية';
+
+  @override
+  String get structure_total_rear_legs_length => 'إجمالي طول الأرجل الخلفية';
+
+  @override
+  String get structure_total_braces_length => 'إجمالي طول الدعامات';
+
+  @override
+  String get structure_total_steel_length => 'إجمالي طول الحديد';
+
+  @override
+  String structure_total_steel_breakdown(Object rails, Object frontLegs, Object rearLegs, Object braces) {
+    return 'السكات $rails + الأرجل الأمامية $frontLegs + الأرجل الخلفية $rearLegs + الدعامات $braces';
+  }
+
+  @override
+  String get structure_bom_title => 'تقدير المواد';
+
+  @override
+  String get structure_sketch_title => 'رسم تخطيطي';
+
+  @override
+  String get structure_sketch_hint => 'هذا الرسم تخطيطي لغرض التخطيط فقط، وليس رسماً تنفيذياً أو تفصيلاً إنشائياً معتمداً.';
+
+  @override
+  String get structure_results_title => 'نتيجة الهيكل';
+
+  @override
+  String get structure_ideal_tilt => 'الميل المثالي';
+
+  @override
+  String get structure_applied_tilt => 'الميل المطبق';
+
+  @override
+  String get structure_applied_azimuth => 'السمت المطبق';
+
+  @override
+  String get structure_constrained_orientation => 'اتجاه مقيّد';
+
+  @override
+  String get structure_direction_any => 'أي اتجاه / تلقائي';
+
+  @override
+  String get structure_direction_north => 'شمال';
+
+  @override
+  String get structure_direction_northeast => 'شمال شرقي';
+
+  @override
+  String get structure_direction_east => 'شرق';
+
+  @override
+  String get structure_direction_southeast => 'جنوب شرقي';
+
+  @override
+  String get structure_direction_south => 'جنوب';
+
+  @override
+  String get structure_direction_southwest => 'جنوب غربي';
+
+  @override
+  String get structure_direction_west => 'غرب';
+
+  @override
+  String get structure_direction_northwest => 'شمال غربي';
+
+  @override
+  String get structure_mount_ground => 'تركيب أرضي';
+
+  @override
+  String get structure_mount_flat_roof => 'سطح مستوٍ';
+
+  @override
+  String get structure_mount_pitched_roof => 'سطح مائل';
+
+  @override
+  String get structure_mount_custom => 'هيكل مخصص';
+
+  @override
+  String get structure_coming_soon => 'قريباً';
+
+  @override
+  String get structure_orientation_portrait => 'عمودي';
+
+  @override
+  String get structure_orientation_landscape => 'أفقي';
+
+  @override
+  String get structure_validation_positive => 'أدخل قيمة أكبر من صفر';
+
+  @override
+  String get structure_step_site => 'الموقع';
+
+  @override
+  String get structure_step_panels => 'الألواح';
+
+  @override
+  String get structure_step_results => 'النتائج';
+
+  @override
+  String get structure_row_mode => 'وضع الصفوف';
+
+  @override
+  String get structure_row_mode_independent => 'صفوف مستقلة';
+
+  @override
+  String get structure_row_mode_stepped => 'صفوف متدرجة';
+
+  @override
+  String get structure_independent_rows_hint => 'استخدمه عندما يكون كل صف مكرراً على أرض مستوية.';
+
+  @override
+  String get structure_stepped_rows_hint => 'استخدمه عندما يحتاج كل صف إلى ارتفاعات دعم مختلفة.';
+
+  @override
+  String get structure_row_offsets => 'إزاحات الصفوف';
+
+  @override
+  String get structure_base_offset => 'الإزاحة الأساسية';
+
+  @override
+  String get structure_repeated_frame => 'هيكل مكرر';
+
+  @override
+  String get structure_per_row_legs => 'أرجل كل صف';
+
+  @override
+  String get structure_equal_legs_explanation => 'الأرجل متساوية لأن الصفوف مكررة على نفس هندسة الأرض المستوية.';
+
+  @override
+  String get structure_stepped_legs_explanation => 'الأرجل تختلف لأن إزاحات الصفوف تطبق على كل صف بشكل مستقل.';
+
+  @override
+  String get structure_min_front_leg => 'أقل رجل أمامية';
+
+  @override
+  String get structure_max_front_leg => 'أعلى رجل أمامية';
+
+  @override
+  String get structure_min_rear_leg => 'أقل رجل خلفية';
+
+  @override
+  String get structure_max_rear_leg => 'أعلى رجل خلفية';
+
+  @override
+  String get structure_top_view => 'منظر علوي';
+
+  @override
+  String get structure_side_view => 'منظر جانبي';
+
+  @override
+  String get structure_front_view => 'منظر أمامي';
+
+  @override
+  String get structure_isometric_view => 'منظور مجسم';
+
+  @override
+  String get structure_front_label => 'أمام';
+
+  @override
+  String get structure_rear_label => 'خلف';
+
+  @override
+  String get structure_brace_label => 'دعامة';
+
+  @override
+  String get structure_view_full_sketch => 'عرض الرسم الكامل';
+
+  @override
+  String get structure_full_sketch_title => 'الرسم الكامل';
+
+  @override
+  String get structure_geometry_dimensions => 'أبعاد الهندسة';
+
+  @override
+  String structure_row_offset_value(Object row) {
+    return 'إزاحة الصف $row';
+  }
+
+  @override
   String get email_is_required => 'البريد الإلكتروني مطلوب';
 
   @override

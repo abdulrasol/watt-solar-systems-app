@@ -52,6 +52,7 @@ import 'package:solar_hub/src/features/company_work/presentation/screens/company
 import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_page.dart';
 import 'package:solar_hub/src/features/crm/presentation/screens/crm_screens.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/offer_request_wizard.dart';
+import 'package:solar_hub/src/features/structure_design/presentation/screens/structure_design_screen.dart';
 import 'package:solar_hub/src/features/orders_buyer/presentation/screens/buyer_orders_screen.dart';
 import 'package:solar_hub/src/features/orders_buyer/presentation/screens/order_checkout_result_screen.dart';
 import 'package:solar_hub/src/features/orders_company/presentation/screens/company_orders_screen.dart';
@@ -424,6 +425,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           if (!isSigned) return '/auth';
           return null;
         },
+      ),
+      GoRoute(
+        path: '/calculator/structure-design',
+        builder: (context, state) => const StructureDesignScreen(),
       ),
       GoRoute(
         path: '/members',

@@ -539,6 +539,114 @@ class AppExplanations {
             ),
           ];
   }
+
+  List<ExplanationItem> getStructureDesignExplanations() {
+    return isAr
+        ? [
+            ExplanationItem(
+              title: "مدخلات الموقع",
+              description:
+                  "أدخل عرض وعمق المساحة المتاحة للهيكل. هذه الأبعاد تحدد عدد الصفوف والأعمدة التي يمكن تركيبها بعد طرح الخلوصات المطلوبة.",
+            ),
+            ExplanationItem(
+              title: "خط العرض",
+              description:
+                  "خط العرض يستخدم لتقدير الميل السنوي وتحديد الاتجاه المثالي نحو خط الاستواء. يمكنك إدخاله يدوياً أو استخدام الموقع الحالي.",
+            ),
+            ExplanationItem(
+              title: "الاتجاه المثالي والمقيد",
+              description:
+                  "في نصف الكرة الشمالي يكون الاتجاه المثالي جنوباً، وفي النصف الجنوبي يكون شمالاً. إذا كان الموقع يفرض اتجاهاً آخر، يعرض التطبيق أن الاتجاه أصبح مقيّداً.",
+            ),
+            ExplanationItem(
+              title: "قاعدة الميل",
+              description:
+                  "في هذا الإصدار يتم تقدير الميل السنوي باستخدام قاعدة بسيطة تعتمد على القيمة المطلقة لخط العرض، مع حد أدنى 10 درجات وحد أعلى 40 درجة.",
+            ),
+            ExplanationItem(
+              title: "أبعاد اللوح",
+              description:
+                  "أدخل طول اللوح وعرضه وسماكته، واختر التركيب العمودي أو الأفقي. هذه القيم تؤثر مباشرة على عدد الألواح المناسب داخل المساحة المتاحة.",
+            ),
+            ExplanationItem(
+              title: "وضع الصفوف",
+              description:
+                  "اختر الصفوف المستقلة عندما يكون كل صف مكرراً على أرض مستوية وبنفس الأرجل. اختر الصفوف المتدرجة عندما يحتاج كل صف إلى ارتفاعات دعم مختلفة بسبب الإزاحة أو اختلاف المنسوب.",
+            ),
+            ExplanationItem(
+              title: "الخلوصات وتباعد الصفوف",
+              description:
+                  "الخلوصات تترك مساحة للحركة والتنفيذ، أما تباعد الصفوف فيقلل التظليل الذاتي بين صف وآخر بحسب الارتفاع والميل.",
+            ),
+            ExplanationItem(
+              title: "إزاحات الصفوف",
+              description:
+                  "في وضع الصفوف المتدرجة يمكنك إدخال إزاحة لكل صف. هذه الإزاحة تضاف إلى ارتفاع الرجل الأمامية والخلفية لذلك الصف فقط.",
+            ),
+            ExplanationItem(
+              title: "نتائج الأبعاد",
+              description:
+                  "يعرض التطبيق عدد الألواح، أبعاد الصف النموذجي، تباعد الصفوف، عمق البصمة الكلي، وأطوال الأرجل والدعامات. في الصفوف المتدرجة تظهر أيضاً أقل وأعلى قيم الأرجل.",
+            ),
+            ExplanationItem(
+              title: "تقدير المواد",
+              description:
+                  "جدول المواد تقديري لغرض التخطيط الأولي فقط، مثل عدد الأرجل والدعامات وطول السكك. لا يعتبر تفصيلاً تصنيعياً أو اعتماداً إنشائياً نهائياً.",
+            ),
+          ]
+        : [
+            ExplanationItem(
+              title: "Site inputs",
+              description:
+                  "Enter the available width and depth for the structure. These dimensions define how many panel rows and columns can fit after the required clearances are removed.",
+            ),
+            ExplanationItem(
+              title: "Latitude",
+              description:
+                  "Latitude is used to estimate the annual tilt target and the ideal equator-facing direction. You can enter it manually or use the current device location.",
+            ),
+            ExplanationItem(
+              title: "Ideal and constrained direction",
+              description:
+                  "In the northern hemisphere the ideal direction is south, while in the southern hemisphere it is north. If the site forces another direction, the result is marked as constrained.",
+            ),
+            ExplanationItem(
+              title: "Tilt rule",
+              description:
+                  "This version uses a simple annual-production rule based on absolute latitude, with a minimum of 10 degrees and a maximum of 40 degrees.",
+            ),
+            ExplanationItem(
+              title: "Panel dimensions",
+              description:
+                  "Enter panel length, width, thickness, and choose portrait or landscape mounting. These values directly affect how many modules fit inside the usable area.",
+            ),
+            ExplanationItem(
+              title: "Row mode",
+              description:
+                  "Choose Independent rows when each row is a repeated frame on flat ground with the same legs. Choose Stepped rows when each row needs different support heights because of offsets or elevation changes.",
+            ),
+            ExplanationItem(
+              title: "Clearances and row spacing",
+              description:
+                  "Clearances keep working space around the structure, while row spacing helps reduce self-shading between rows based on height rise and tilt.",
+            ),
+            ExplanationItem(
+              title: "Row offsets",
+              description:
+                  "In Stepped rows mode you can enter a base offset for each row. That offset is added only to that row's front and rear leg heights.",
+            ),
+            ExplanationItem(
+              title: "Geometry results",
+              description:
+                  "The results show panel count, representative row dimensions, row spacing, total footprint depth, and support member lengths. In stepped mode, minimum and maximum leg values are also shown.",
+            ),
+            ExplanationItem(
+              title: "Estimated BOM",
+              description:
+                  "The bill of materials is a planning estimate for rails, legs, braces, and anchors. It is not a fabrication drawing or a final structural approval.",
+            ),
+          ];
+  }
 }
 
 class ExplanationItem {

@@ -518,6 +518,295 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reset_password_token_instructions => 'Enter the token you received and choose a new password.';
 
   @override
+  String get structure_design_title => 'Structure Design';
+
+  @override
+  String get structure_design_intro => 'Lay out a fixed-tilt ground frame, estimate the best annual tilt and direction, and review the main structural geometry before detailed engineering.';
+
+  @override
+  String get structure_site_inputs => 'Site Inputs';
+
+  @override
+  String get structure_site_width => 'Site width';
+
+  @override
+  String get structure_site_depth => 'Site depth';
+
+  @override
+  String get structure_latitude => 'Latitude';
+
+  @override
+  String get structure_use_location => 'Use location';
+
+  @override
+  String get structure_direction_preference => 'Allowed facing direction';
+
+  @override
+  String get structure_mount_type => 'Mount type';
+
+  @override
+  String get structure_clearances => 'Clearances';
+
+  @override
+  String get structure_front_clearance => 'Front clearance';
+
+  @override
+  String get structure_rear_clearance => 'Rear clearance';
+
+  @override
+  String get structure_side_clearance => 'Side clearance';
+
+  @override
+  String get structure_front_leg_height => 'Front leg height';
+
+  @override
+  String get structure_inter_row_gap => 'Inter-row gap';
+
+  @override
+  String get structure_panel_dimensions => 'Panel Dimensions';
+
+  @override
+  String get structure_panel_orientation => 'Panel orientation';
+
+  @override
+  String get structure_panel_length => 'Panel length';
+
+  @override
+  String get structure_panel_width => 'Panel width';
+
+  @override
+  String get structure_panel_thickness => 'Panel thickness';
+
+  @override
+  String get structure_horizontal_gap => 'Horizontal gap';
+
+  @override
+  String get structure_vertical_gap => 'Vertical gap';
+
+  @override
+  String get structure_layout_editor => 'Layout Editor';
+
+  @override
+  String get structure_rows => 'Rows';
+
+  @override
+  String get structure_columns => 'Columns';
+
+  @override
+  String get structure_reset_auto_layout => 'Reset to auto layout';
+
+  @override
+  String get structure_ground_mount_only_hint => 'Only fixed-tilt ground mount is implemented in this release. Other mount types remain reserved for later phases.';
+
+  @override
+  String get structure_geometry_results => 'Geometry Results';
+
+  @override
+  String get structure_panel_count => 'Panel count';
+
+  @override
+  String get structure_frame_width => 'Frame width';
+
+  @override
+  String get structure_frame_length => 'Frame slope length';
+
+  @override
+  String get structure_row_spacing => 'Row spacing';
+
+  @override
+  String get structure_total_footprint_depth => 'Total footprint depth';
+
+  @override
+  String get structure_rear_leg_height => 'Rear leg height';
+
+  @override
+  String get structure_rail_length => 'Rail length';
+
+  @override
+  String get structure_brace_length => 'Brace length';
+
+  @override
+  String get structure_total_front_legs_length => 'Total front legs length';
+
+  @override
+  String get structure_total_rear_legs_length => 'Total rear legs length';
+
+  @override
+  String get structure_total_braces_length => 'Total braces length';
+
+  @override
+  String get structure_total_steel_length => 'Total steel length';
+
+  @override
+  String structure_total_steel_breakdown(Object rails, Object frontLegs, Object rearLegs, Object braces) {
+    return 'Rails $rails + Front legs $frontLegs + Rear legs $rearLegs + Braces $braces';
+  }
+
+  @override
+  String get structure_bom_title => 'Estimated BOM';
+
+  @override
+  String get structure_sketch_title => 'Schematic Sketch';
+
+  @override
+  String get structure_sketch_hint => 'This is a schematic preview for planning. It is not a fabrication drawing or a code-compliant engineering detail.';
+
+  @override
+  String get structure_results_title => 'Calculated Frame';
+
+  @override
+  String get structure_ideal_tilt => 'Ideal tilt';
+
+  @override
+  String get structure_applied_tilt => 'Applied tilt';
+
+  @override
+  String get structure_applied_azimuth => 'Applied azimuth';
+
+  @override
+  String get structure_constrained_orientation => 'Constrained orientation';
+
+  @override
+  String get structure_direction_any => 'Any / auto';
+
+  @override
+  String get structure_direction_north => 'North';
+
+  @override
+  String get structure_direction_northeast => 'North-East';
+
+  @override
+  String get structure_direction_east => 'East';
+
+  @override
+  String get structure_direction_southeast => 'South-East';
+
+  @override
+  String get structure_direction_south => 'South';
+
+  @override
+  String get structure_direction_southwest => 'South-West';
+
+  @override
+  String get structure_direction_west => 'West';
+
+  @override
+  String get structure_direction_northwest => 'North-West';
+
+  @override
+  String get structure_mount_ground => 'Ground mount';
+
+  @override
+  String get structure_mount_flat_roof => 'Flat roof';
+
+  @override
+  String get structure_mount_pitched_roof => 'Pitched roof';
+
+  @override
+  String get structure_mount_custom => 'Custom frame';
+
+  @override
+  String get structure_coming_soon => 'coming soon';
+
+  @override
+  String get structure_orientation_portrait => 'Portrait';
+
+  @override
+  String get structure_orientation_landscape => 'Landscape';
+
+  @override
+  String get structure_validation_positive => 'Enter a value greater than zero';
+
+  @override
+  String get structure_step_site => 'Site';
+
+  @override
+  String get structure_step_panels => 'Panels';
+
+  @override
+  String get structure_step_results => 'Results';
+
+  @override
+  String get structure_row_mode => 'Row mode';
+
+  @override
+  String get structure_row_mode_independent => 'Independent rows';
+
+  @override
+  String get structure_row_mode_stepped => 'Stepped rows';
+
+  @override
+  String get structure_independent_rows_hint => 'Use when each row is a repeated frame on flat ground.';
+
+  @override
+  String get structure_stepped_rows_hint => 'Use when rows need different support heights.';
+
+  @override
+  String get structure_row_offsets => 'Row offsets';
+
+  @override
+  String get structure_base_offset => 'Base offset';
+
+  @override
+  String get structure_repeated_frame => 'Repeated frame';
+
+  @override
+  String get structure_per_row_legs => 'Per-row legs';
+
+  @override
+  String get structure_equal_legs_explanation => 'Legs are equal because rows are repeated on the same flat-ground geometry.';
+
+  @override
+  String get structure_stepped_legs_explanation => 'Legs differ because row offsets are applied to each row separately.';
+
+  @override
+  String get structure_min_front_leg => 'Min front leg';
+
+  @override
+  String get structure_max_front_leg => 'Max front leg';
+
+  @override
+  String get structure_min_rear_leg => 'Min rear leg';
+
+  @override
+  String get structure_max_rear_leg => 'Max rear leg';
+
+  @override
+  String get structure_top_view => 'Top view';
+
+  @override
+  String get structure_side_view => 'Side view';
+
+  @override
+  String get structure_front_view => 'Front view';
+
+  @override
+  String get structure_isometric_view => 'Isometric view';
+
+  @override
+  String get structure_front_label => 'Front';
+
+  @override
+  String get structure_rear_label => 'Rear';
+
+  @override
+  String get structure_brace_label => 'Brace';
+
+  @override
+  String get structure_view_full_sketch => 'View full sketch';
+
+  @override
+  String get structure_full_sketch_title => 'Full Sketch';
+
+  @override
+  String get structure_geometry_dimensions => 'Geometry dimensions';
+
+  @override
+  String structure_row_offset_value(Object row) {
+    return 'Row $row offset';
+  }
+
+  @override
   String get email_is_required => 'Email is required';
 
   @override

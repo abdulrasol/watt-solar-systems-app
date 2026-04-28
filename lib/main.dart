@@ -19,15 +19,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 Future<void> _initializeFirebaseSafely() async {
   try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   } catch (e, stackTrace) {
-    dPrint(
-      'Firebase initialization skipped: $e',
-      tag: 'main',
-      stackTrace: stackTrace,
-    );
+    dPrint('Firebase initialization skipped: $e', tag: 'main', stackTrace: stackTrace);
   }
 }
 
@@ -48,11 +42,7 @@ void main() async {
   try {
     await GetStorage.init();
   } catch (e, stackTrace) {
-    dPrint(
-      'GetStorage initialization failed: $e',
-      tag: 'main',
-      stackTrace: stackTrace,
-    );
+    dPrint('GetStorage initialization failed: $e', tag: 'main', stackTrace: stackTrace);
   }
   setupDependencies();
   await getIt.allReady();

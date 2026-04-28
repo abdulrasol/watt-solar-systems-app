@@ -1085,6 +1085,576 @@ abstract class AppLocalizations {
   /// **'Enter the token you received and choose a new password.'**
   String get reset_password_token_instructions;
 
+  /// No description provided for @structure_design_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure Design'**
+  String get structure_design_title;
+
+  /// No description provided for @structure_design_intro.
+  ///
+  /// In en, this message translates to:
+  /// **'Lay out a fixed-tilt ground frame, estimate the best annual tilt and direction, and review the main structural geometry before detailed engineering.'**
+  String get structure_design_intro;
+
+  /// No description provided for @structure_site_inputs.
+  ///
+  /// In en, this message translates to:
+  /// **'Site Inputs'**
+  String get structure_site_inputs;
+
+  /// No description provided for @structure_site_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Site width'**
+  String get structure_site_width;
+
+  /// No description provided for @structure_site_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Site depth'**
+  String get structure_site_depth;
+
+  /// No description provided for @structure_latitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get structure_latitude;
+
+  /// No description provided for @structure_use_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Use location'**
+  String get structure_use_location;
+
+  /// No description provided for @structure_direction_preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed facing direction'**
+  String get structure_direction_preference;
+
+  /// No description provided for @structure_mount_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Mount type'**
+  String get structure_mount_type;
+
+  /// No description provided for @structure_clearances.
+  ///
+  /// In en, this message translates to:
+  /// **'Clearances'**
+  String get structure_clearances;
+
+  /// No description provided for @structure_front_clearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Front clearance'**
+  String get structure_front_clearance;
+
+  /// No description provided for @structure_rear_clearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear clearance'**
+  String get structure_rear_clearance;
+
+  /// No description provided for @structure_side_clearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Side clearance'**
+  String get structure_side_clearance;
+
+  /// No description provided for @structure_front_leg_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Front leg height'**
+  String get structure_front_leg_height;
+
+  /// No description provided for @structure_inter_row_gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Inter-row gap'**
+  String get structure_inter_row_gap;
+
+  /// No description provided for @structure_panel_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel Dimensions'**
+  String get structure_panel_dimensions;
+
+  /// No description provided for @structure_panel_orientation.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel orientation'**
+  String get structure_panel_orientation;
+
+  /// No description provided for @structure_panel_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel length'**
+  String get structure_panel_length;
+
+  /// No description provided for @structure_panel_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel width'**
+  String get structure_panel_width;
+
+  /// No description provided for @structure_panel_thickness.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel thickness'**
+  String get structure_panel_thickness;
+
+  /// No description provided for @structure_horizontal_gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Horizontal gap'**
+  String get structure_horizontal_gap;
+
+  /// No description provided for @structure_vertical_gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Vertical gap'**
+  String get structure_vertical_gap;
+
+  /// No description provided for @structure_layout_editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Layout Editor'**
+  String get structure_layout_editor;
+
+  /// No description provided for @structure_rows.
+  ///
+  /// In en, this message translates to:
+  /// **'Rows'**
+  String get structure_rows;
+
+  /// No description provided for @structure_columns.
+  ///
+  /// In en, this message translates to:
+  /// **'Columns'**
+  String get structure_columns;
+
+  /// No description provided for @structure_reset_auto_layout.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to auto layout'**
+  String get structure_reset_auto_layout;
+
+  /// No description provided for @structure_ground_mount_only_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only fixed-tilt ground mount is implemented in this release. Other mount types remain reserved for later phases.'**
+  String get structure_ground_mount_only_hint;
+
+  /// No description provided for @structure_geometry_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Geometry Results'**
+  String get structure_geometry_results;
+
+  /// No description provided for @structure_panel_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel count'**
+  String get structure_panel_count;
+
+  /// No description provided for @structure_frame_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame width'**
+  String get structure_frame_width;
+
+  /// No description provided for @structure_frame_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame slope length'**
+  String get structure_frame_length;
+
+  /// No description provided for @structure_row_spacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Row spacing'**
+  String get structure_row_spacing;
+
+  /// No description provided for @structure_total_footprint_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Total footprint depth'**
+  String get structure_total_footprint_depth;
+
+  /// No description provided for @structure_rear_leg_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear leg height'**
+  String get structure_rear_leg_height;
+
+  /// No description provided for @structure_rail_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Rail length'**
+  String get structure_rail_length;
+
+  /// No description provided for @structure_brace_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Brace length'**
+  String get structure_brace_length;
+
+  /// No description provided for @structure_total_front_legs_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total front legs length'**
+  String get structure_total_front_legs_length;
+
+  /// No description provided for @structure_total_rear_legs_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total rear legs length'**
+  String get structure_total_rear_legs_length;
+
+  /// No description provided for @structure_total_braces_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total braces length'**
+  String get structure_total_braces_length;
+
+  /// No description provided for @structure_total_steel_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total steel length'**
+  String get structure_total_steel_length;
+
+  /// No description provided for @structure_total_steel_breakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Rails {rails} + Front legs {frontLegs} + Rear legs {rearLegs} + Braces {braces}'**
+  String structure_total_steel_breakdown(Object rails, Object frontLegs, Object rearLegs, Object braces);
+
+  /// No description provided for @structure_bom_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated BOM'**
+  String get structure_bom_title;
+
+  /// No description provided for @structure_sketch_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Schematic Sketch'**
+  String get structure_sketch_title;
+
+  /// No description provided for @structure_sketch_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a schematic preview for planning. It is not a fabrication drawing or a code-compliant engineering detail.'**
+  String get structure_sketch_hint;
+
+  /// No description provided for @structure_results_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated Frame'**
+  String get structure_results_title;
+
+  /// No description provided for @structure_ideal_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideal tilt'**
+  String get structure_ideal_tilt;
+
+  /// No description provided for @structure_applied_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied tilt'**
+  String get structure_applied_tilt;
+
+  /// No description provided for @structure_applied_azimuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied azimuth'**
+  String get structure_applied_azimuth;
+
+  /// No description provided for @structure_constrained_orientation.
+  ///
+  /// In en, this message translates to:
+  /// **'Constrained orientation'**
+  String get structure_constrained_orientation;
+
+  /// No description provided for @structure_direction_any.
+  ///
+  /// In en, this message translates to:
+  /// **'Any / auto'**
+  String get structure_direction_any;
+
+  /// No description provided for @structure_direction_north.
+  ///
+  /// In en, this message translates to:
+  /// **'North'**
+  String get structure_direction_north;
+
+  /// No description provided for @structure_direction_northeast.
+  ///
+  /// In en, this message translates to:
+  /// **'North-East'**
+  String get structure_direction_northeast;
+
+  /// No description provided for @structure_direction_east.
+  ///
+  /// In en, this message translates to:
+  /// **'East'**
+  String get structure_direction_east;
+
+  /// No description provided for @structure_direction_southeast.
+  ///
+  /// In en, this message translates to:
+  /// **'South-East'**
+  String get structure_direction_southeast;
+
+  /// No description provided for @structure_direction_south.
+  ///
+  /// In en, this message translates to:
+  /// **'South'**
+  String get structure_direction_south;
+
+  /// No description provided for @structure_direction_southwest.
+  ///
+  /// In en, this message translates to:
+  /// **'South-West'**
+  String get structure_direction_southwest;
+
+  /// No description provided for @structure_direction_west.
+  ///
+  /// In en, this message translates to:
+  /// **'West'**
+  String get structure_direction_west;
+
+  /// No description provided for @structure_direction_northwest.
+  ///
+  /// In en, this message translates to:
+  /// **'North-West'**
+  String get structure_direction_northwest;
+
+  /// No description provided for @structure_mount_ground.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground mount'**
+  String get structure_mount_ground;
+
+  /// No description provided for @structure_mount_flat_roof.
+  ///
+  /// In en, this message translates to:
+  /// **'Flat roof'**
+  String get structure_mount_flat_roof;
+
+  /// No description provided for @structure_mount_pitched_roof.
+  ///
+  /// In en, this message translates to:
+  /// **'Pitched roof'**
+  String get structure_mount_pitched_roof;
+
+  /// No description provided for @structure_mount_custom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom frame'**
+  String get structure_mount_custom;
+
+  /// No description provided for @structure_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'coming soon'**
+  String get structure_coming_soon;
+
+  /// No description provided for @structure_orientation_portrait.
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait'**
+  String get structure_orientation_portrait;
+
+  /// No description provided for @structure_orientation_landscape.
+  ///
+  /// In en, this message translates to:
+  /// **'Landscape'**
+  String get structure_orientation_landscape;
+
+  /// No description provided for @structure_validation_positive.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a value greater than zero'**
+  String get structure_validation_positive;
+
+  /// No description provided for @structure_step_site.
+  ///
+  /// In en, this message translates to:
+  /// **'Site'**
+  String get structure_step_site;
+
+  /// No description provided for @structure_step_panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels'**
+  String get structure_step_panels;
+
+  /// No description provided for @structure_step_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get structure_step_results;
+
+  /// No description provided for @structure_row_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Row mode'**
+  String get structure_row_mode;
+
+  /// No description provided for @structure_row_mode_independent.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent rows'**
+  String get structure_row_mode_independent;
+
+  /// No description provided for @structure_row_mode_stepped.
+  ///
+  /// In en, this message translates to:
+  /// **'Stepped rows'**
+  String get structure_row_mode_stepped;
+
+  /// No description provided for @structure_independent_rows_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use when each row is a repeated frame on flat ground.'**
+  String get structure_independent_rows_hint;
+
+  /// No description provided for @structure_stepped_rows_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use when rows need different support heights.'**
+  String get structure_stepped_rows_hint;
+
+  /// No description provided for @structure_row_offsets.
+  ///
+  /// In en, this message translates to:
+  /// **'Row offsets'**
+  String get structure_row_offsets;
+
+  /// No description provided for @structure_base_offset.
+  ///
+  /// In en, this message translates to:
+  /// **'Base offset'**
+  String get structure_base_offset;
+
+  /// No description provided for @structure_repeated_frame.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeated frame'**
+  String get structure_repeated_frame;
+
+  /// No description provided for @structure_per_row_legs.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-row legs'**
+  String get structure_per_row_legs;
+
+  /// No description provided for @structure_equal_legs_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Legs are equal because rows are repeated on the same flat-ground geometry.'**
+  String get structure_equal_legs_explanation;
+
+  /// No description provided for @structure_stepped_legs_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Legs differ because row offsets are applied to each row separately.'**
+  String get structure_stepped_legs_explanation;
+
+  /// No description provided for @structure_min_front_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Min front leg'**
+  String get structure_min_front_leg;
+
+  /// No description provided for @structure_max_front_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Max front leg'**
+  String get structure_max_front_leg;
+
+  /// No description provided for @structure_min_rear_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Min rear leg'**
+  String get structure_min_rear_leg;
+
+  /// No description provided for @structure_max_rear_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Max rear leg'**
+  String get structure_max_rear_leg;
+
+  /// No description provided for @structure_top_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Top view'**
+  String get structure_top_view;
+
+  /// No description provided for @structure_side_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Side view'**
+  String get structure_side_view;
+
+  /// No description provided for @structure_front_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Front view'**
+  String get structure_front_view;
+
+  /// No description provided for @structure_isometric_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Isometric view'**
+  String get structure_isometric_view;
+
+  /// No description provided for @structure_front_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Front'**
+  String get structure_front_label;
+
+  /// No description provided for @structure_rear_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear'**
+  String get structure_rear_label;
+
+  /// No description provided for @structure_brace_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Brace'**
+  String get structure_brace_label;
+
+  /// No description provided for @structure_view_full_sketch.
+  ///
+  /// In en, this message translates to:
+  /// **'View full sketch'**
+  String get structure_view_full_sketch;
+
+  /// No description provided for @structure_full_sketch_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Sketch'**
+  String get structure_full_sketch_title;
+
+  /// No description provided for @structure_geometry_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Geometry dimensions'**
+  String get structure_geometry_dimensions;
+
+  /// No description provided for @structure_row_offset_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Row {row} offset'**
+  String structure_row_offset_value(Object row);
+
   /// No description provided for @email_is_required.
   ///
   /// In en, this message translates to:
