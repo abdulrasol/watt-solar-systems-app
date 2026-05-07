@@ -5,12 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/system_calculator_wizard.dart';
 import 'package:solar_hub/src/features/home/presentation/providers/home_page_provider.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class UserDashboard extends ConsumerStatefulWidget {
   const UserDashboard({super.key});
@@ -60,18 +59,9 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
         icon: Iconsax.flash_1_bold,
         accent: const Color(0xFF0BAA9D),
         gradient: const [Color(0xFFE8FCF8), Color(0xFFF7FFFD)],
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FastCalculator()));
-        },
+        onTap: () => context.push('/calculator/fast-calculator'),
       ),
-      _DashboardAction(
-        title: l10n.dashboard_offer_wizard,
-        subtitle: l10n.dashboard_offer_wizard_desc,
-        icon: Iconsax.document_text_bold,
-        accent: const Color(0xFF3178F6),
-        gradient: const [Color(0xFFEAF2FF), Color(0xFFF8FBFF)],
-        onTap: () => context.push('/calculator/request-offer-wizard'),
-      ),
+
       _DashboardAction(
         title: l10n.dashboard_system_wizard,
         subtitle: l10n.dashboard_system_wizard_desc,
@@ -82,6 +72,15 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SystemCalculatorWizard()));
         },
       ),
+      if (ref.watch(isOffersEnabled))
+        _DashboardAction(
+          title: l10n.dashboard_offer_wizard,
+          subtitle: l10n.dashboard_offer_wizard_desc,
+          icon: Iconsax.document_text_bold,
+          accent: const Color(0xFF3178F6),
+          gradient: const [Color(0xFFEAF2FF), Color(0xFFF8FBFF)],
+          onTap: () => context.push('/calculator/request-offer-wizard'),
+        ),
     ];
   }
 
@@ -118,7 +117,8 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
     final actions = _calculatorActions(context, l10n);
     final posters = _posterItems(l10n);
     final hints = _dashboardHints(context, l10n);
-    final storeEnabled = isEnabled(ref, 'store', defaultValue: false);
+    final storeEnabled = ref.watch(isStoreEnabled); // to be checck if store disabled after store is launched
+    final posterEnabled = ref.watch(isPosterEnabled); // to be checck if posters from backend fetched or not after launching  posters
 
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 28.h),
@@ -135,14 +135,18 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
               child: _buildCalculatorCard(context, action, isDark),
             ),
           ),
-          SizedBox(height: 12.h),
-          _buildSectionHeader(context, title: l10n.dashboard_shopping, subtitle: l10n.dashboard_shopping_subtitle),
-          SizedBox(height: 14.h),
-          _buildShoppingRow(context, l10n, isDark, storeEnabled),
-          SizedBox(height: 28.h),
-          _buildSectionHeader(context, title: l10n.dashboard_promotions, subtitle: l10n.dashboard_promotions_subtitle),
-          SizedBox(height: 14.h),
-          _buildPosterSlider(context, posters, isDark),
+          if (storeEnabled) ...[
+            SizedBox(height: 12.h),
+            _buildSectionHeader(context, title: l10n.dashboard_shopping, subtitle: l10n.dashboard_shopping_subtitle),
+            SizedBox(height: 14.h),
+            _buildShoppingRow(context, l10n, isDark, storeEnabled),
+          ],
+          if (posterEnabled) ...[
+            SizedBox(height: 12.h),
+            _buildSectionHeader(context, title: l10n.dashboard_promotions, subtitle: l10n.dashboard_promotions_subtitle),
+            SizedBox(height: 14.h),
+            _buildPosterSlider(context, posters, isDark),
+          ],
           SizedBox(height: 28.h),
           _buildSectionHeader(context, title: l10n.solar_tips, subtitle: l10n.dashboard_tips_subtitle),
           SizedBox(height: 14.h),
@@ -224,12 +228,14 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
             spacing: 10.w,
             runSpacing: 10.h,
             children: [
-              _buildHeroChip(context, Iconsax.flash_1_bold, l10n.dashboard_chip_fast),
-              _buildHeroChip(context, Iconsax.document_text_bold, l10n.dashboard_chip_offers),
-              _buildHeroChip(context, Iconsax.shop_bold, l10n.dashboard_chip_store),
+              _buildHeroChip(context, Iconsax.flash_1_bold, l10n.dashboard_chip_fast, route: '/calculator/fast-calculator'),
+              if (ref.watch(isOffersEnabled))
+                _buildHeroChip(context, Iconsax.document_text_bold, l10n.dashboard_chip_offers, route: '/calculator/request-offer-wizard'),
+              // TODO(rasol): enable store
+              // if (ref.watch(isStoreEnabled)) _buildHeroChip(context, Iconsax.shop_bold, l10n.dashboard_chip_store),
             ],
           ),
-          if (!authController.isSigned && isEnabled(ref, 'auth')) ...[
+          if (!authController.isSigned && ref.watch(isAuthEnabled)) ...[
             SizedBox(height: 18.h),
             ElevatedButton.icon(
               onPressed: () => context.go('/auth'),
@@ -249,25 +255,30 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
     );
   }
 
-  Widget _buildHeroChip(BuildContext context, IconData icon, String label) {
+  Widget _buildHeroChip(BuildContext context, IconData icon, String label, {String? route}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-      decoration: BoxDecoration(
-        color: isDark ? Colors.white10 : Colors.white,
-        borderRadius: BorderRadius.circular(14.r),
-        border: Border.all(color: isDark ? Colors.white12 : Colors.grey.withValues(alpha: 0.12)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16.sp, color: AppTheme.primaryColor),
-          SizedBox(width: 8.w),
-          Text(
-            label,
-            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        if (route != null) context.push(route);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: isDark ? Colors.white10 : Colors.white,
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(color: isDark ? Colors.white12 : Colors.grey.withValues(alpha: 0.12)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16.sp, color: AppTheme.primaryColor),
+            SizedBox(width: 8.w),
+            Text(
+              label,
+              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
       ),
     );
   }

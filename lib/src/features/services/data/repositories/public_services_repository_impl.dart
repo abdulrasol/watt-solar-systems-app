@@ -10,22 +10,9 @@ class PublicServicesRepositoryImpl implements PublicServicesRepository {
 
   PublicServicesRepositoryImpl(this._remoteDataSource);
 
-  List<ServiceType>? _typesCache;
-  DateTime? _lastTypesCacheTime;
-
   @override
-  Future<List<ServiceType>> getTypes() async {
-    final now = DateTime.now();
-    if (_typesCache != null &&
-        _lastTypesCacheTime != null &&
-        now.difference(_lastTypesCacheTime!) < const Duration(minutes: 30)) {
-      return _typesCache!;
-    }
-
-    _typesCache = await _remoteDataSource.getTypes();
-    _lastTypesCacheTime = now;
-    return _typesCache!;
-  }
+  Future<List<ServiceType>> getTypes({bool forceRefresh = false}) =>
+      _remoteDataSource.getTypes();
 
   @override
   Future<PublicCompaniesResult> getCompanies(PublicCompaniesQuery query) {

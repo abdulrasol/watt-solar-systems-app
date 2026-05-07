@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:solar_hub/src/features/structure_design/data/drawing/watt_drawing_file_service.dart';
 import 'package:solar_hub/src/features/structure_design/data/location_service.dart';
+import 'package:solar_hub/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
@@ -15,6 +18,10 @@ final structureDesignCalculatorProvider = Provider<StructureDesignCalculator>((
 
 final structureLocationServiceProvider = Provider<LocationService>((ref) {
   return GeolocatorLocationService();
+});
+
+final wattDrawingFileServiceProvider = Provider<WattDrawingFileService>((ref) {
+  return WattDrawingFileService();
 });
 
 final structureDesignControllerProvider =
@@ -184,6 +191,13 @@ class StructureDesignController extends ChangeNotifier {
     recalculate();
   }
 
+  void loadWattDrawing(WattDrawingDocument document) {
+    _input = document.input;
+    _result = document.result;
+    _locationMessage = null;
+    notifyListeners();
+  }
+
   void incrementRows() {
     final maxRows = _result?.maxRows ?? 0;
     final current = _input.manualRows ?? _result?.rows ?? 0;
@@ -224,20 +238,42 @@ class StructureDesignController extends ChangeNotifier {
     recalculate();
   }
 
-  Future<void> useCurrentLocation() async {
+  /// Fetches the current location and updates the latitude for calculations.
+  /// Returns true if successful, false otherwise.
+  Future<bool> useCurrentLocation() async {
     _isLocating = true;
     _locationMessage = null;
     notifyListeners();
     try {
-      final latitude = await _locationService.getCurrentLatitude();
-      _input = _input.copyWith(latitude: latitude);
+      final location = await _locationService.getCurrentLocation();
+      _input = _input.copyWith(latitude: location.latitude);
       _locationMessage = null;
+      return true;
+    } on LocationException catch (e) {
+      _locationMessage = e.message;
+      return false;
     } catch (error) {
-      _locationMessage = error.toString();
+      _locationMessage = 'Failed to get location: \$error';
+      return false;
     } finally {
       _isLocating = false;
       recalculate();
     }
+  }
+
+  /// Checks the current location permission status.
+  Future<LocationPermission> checkLocationPermission() async {
+    return await _locationService.checkPermission();
+  }
+
+  /// Opens app settings to allow the user to enable location permission.
+  Future<void> openLocationSettings() async {
+    await Geolocator.openAppSettings();
+  }
+
+  /// Opens device location settings to enable GPS.
+  Future<void> openDeviceLocationSettings() async {
+    await Geolocator.openLocationSettings();
   }
 
   void _syncRowOffsetsBeforeCalculation() {

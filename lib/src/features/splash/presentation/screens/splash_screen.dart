@@ -8,8 +8,10 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/errors/exceptions.dart';
 import 'package:solar_hub/src/core/services/push_notification_service.dart';
+import 'package:solar_hub/src/core/services/update_checker_service.dart';
 import 'package:solar_hub/src/core/widgets/app_logo.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
+import 'package:solar_hub/src/core/widgets/update_dialog.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/splash/domain/entities/startup_bootstrap_result.dart';
 import 'package:solar_hub/src/features/splash/domain/usecases/get_cached_configs_usecase.dart';
@@ -51,44 +53,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     try {
       final configProviderNotifier = ref.read(configProvider.notifier);
 
-      final cachedConfigsResult = await getIt<GetCachedConfigsUseCase>()();
-      var hasCachedConfigs = false;
-      cachedConfigsResult.fold(
-        (failure) {
-          dPrint(
-            'No cached configs available: ${failure.message}',
-            tag: 'splash_screen',
-          );
-        },
-        (snapshot) {
-          hasCachedConfigs = snapshot.hasConfigs;
-          configProviderNotifier.hydrateFromSnapshot(snapshot);
-        },
-      );
-
-      if (!hasCachedConfigs) {
-        try {
-          final refreshResult = await getIt<RefreshConfigsUseCase>()().timeout(
-            _initialConfigWaitLimit,
-          );
-          refreshResult.fold(
-            (failure) {
-              dPrint(
-                'Initial remote config refresh failed: ${failure.message}',
-                tag: 'splash_screen',
-              );
-            },
-            (snapshot) {
-              configProviderNotifier.hydrateFromSnapshot(snapshot);
-              hasCachedConfigs = snapshot.hasConfigs;
-            },
-          );
-        } on TimeoutException {
-          dPrint(
-            'Initial remote config refresh timed out after ${_initialConfigWaitLimit.inSeconds}s',
-            tag: 'splash_screen',
-          );
-        }
+      try {
+        final refreshResult = await getIt<RefreshConfigsUseCase>()().timeout(_initialConfigWaitLimit);
+        refreshResult.fold(
+          (failure) {
+            dPrint('Initial remote config refresh failed: ${failure.message}', tag: 'splash_screen');
+          },
+          (snapshot) {
+            configProviderNotifier.hydrateFromSnapshot(snapshot);
+          },
+        );
+      } on TimeoutException {
+        dPrint('Initial remote config refresh timed out after ${_initialConfigWaitLimit.inSeconds}s', tag: 'splash_screen');
+        await _hydrateCachedConfigsIfAvailable(configProviderNotifier);
       }
 
       final bootstrap = getIt<PrepareStartupUseCase>()();
@@ -104,6 +81,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     }
   }
 
+  Future<void> _hydrateCachedConfigsIfAvailable(ConfigNotifier configProviderNotifier) async {
+    final cachedConfigsResult = await getIt<GetCachedConfigsUseCase>()();
+    cachedConfigsResult.fold(
+      (failure) {
+        dPrint('No cached configs available: ${failure.message}', tag: 'splash_screen');
+      },
+      (snapshot) {
+        configProviderNotifier.hydrateFromSnapshot(snapshot);
+      },
+    );
+  }
+
   void _startBackgroundInitialization(StartupBootstrapResult bootstrap) {
     if (bootstrap.shouldRefreshConfigs) {
       unawaited(_refreshConfigsInBackground());
@@ -111,6 +100,28 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     unawaited(_initializePushNotifications());
     if (bootstrap.shouldRefreshProfile) {
       unawaited(_refreshSignedInProfile());
+    }
+    // Check for app updates after navigation
+    unawaited(_checkForUpdates());
+  }
+
+  Future<void> _checkForUpdates() async {
+    try {
+      // Wait a bit for the navigation to complete
+      await Future.delayed(const Duration(seconds: 2));
+
+      final updateInfo = await UpdateCheckerService().checkForUpdate();
+
+      if (updateInfo.hasUpdate) {
+        dPrint('Update available: ${updateInfo.currentVersion} -> ${updateInfo.storeVersion}', tag: 'splash_screen');
+
+        // Show update dialog on the current context
+        if (mounted) {
+          await UpdateUIHelper.handleUpdateFlow(context, updateInfo);
+        }
+      }
+    } catch (e, s) {
+      dPrint('Update check failed: $e', tag: 'splash_screen', stackTrace: s);
     }
   }
 
@@ -127,10 +138,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       refreshResult.fold(
         (failure) {
-          dPrint(
-            'Background config refresh failed: ${failure.message}',
-            tag: 'splash_screen',
-          );
+          dPrint('Background config refresh failed: ${failure.message}', tag: 'splash_screen');
           notifier.setRefreshing(false);
         },
         (snapshot) {
@@ -147,11 +155,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       await getIt<PushNotificationService>().initialize();
       dPrint('Push notification service initialized', tag: 'splash_screen');
     } catch (e, s) {
-      dPrint(
-        'Push notification initialization failed: $e',
-        tag: 'splash_screen',
-        stackTrace: s,
-      );
+      dPrint('Push notification initialization failed: $e', tag: 'splash_screen', stackTrace: s);
     }
   }
 
@@ -166,22 +170,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       final currentLanguage = ref.read(settingsProvider).language;
       unawaited(getIt<AuthRepository>().updateLanguage(currentLanguage));
     } on UnauthorizedException catch (e, s) {
-      dPrint(
-        'Profile refresh unauthorized: ${e.message}',
-        tag: 'splash_screen',
-        stackTrace: s,
-      );
+      dPrint('Profile refresh unauthorized: ${e.message}', tag: 'splash_screen', stackTrace: s);
       if (!mounted) return;
       await ref.read(authProvider.notifier).logout();
       if (mounted) {
         context.go('/home');
       }
     } catch (e, s) {
-      dPrint(
-        'Profile refresh failed: $e',
-        tag: 'splash_screen',
-        stackTrace: s,
-      );
+      dPrint('Profile refresh failed: $e', tag: 'splash_screen', stackTrace: s);
     }
   }
 
@@ -245,12 +241,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                   child: Center(
                     child: Text(
                       "${AppLocalizations.of(context)!.version} $_version",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12.sp,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: TextStyle(color: Colors.grey, fontSize: 12.sp, letterSpacing: 1.2, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),

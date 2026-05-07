@@ -13,16 +13,15 @@ import 'package:solar_hub/src/features/calculations/presentation/screens/tools/p
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/pump_calculator.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/wires_calculator_page.dart';
 import 'package:solar_hub/src/features/structure_design/presentation/screens/structure_design_screen.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class CalculatorLandingPage extends ConsumerWidget {
   const CalculatorLandingPage({super.key, this.showAppBar = false});
 
   final bool showAppBar;
 
-  bool _isArabic(BuildContext context) =>
-      Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
+  bool _isArabic(BuildContext context) => Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
 
   String _tr(BuildContext context, String en, String ar) {
     return _isArabic(context) ? ar : en;
@@ -62,12 +61,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     cta: _tr(context, 'Open calculator', 'فتح الحاسبة'),
                     isMobile: isMobile,
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FastCalculator(),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const FastCalculator()));
                     },
                   ),
                 ),
@@ -84,19 +78,14 @@ class CalculatorLandingPage extends ConsumerWidget {
                     isMobile: isMobile,
                     onTap: () {
                       ref.read(calculatorProvider).currentSystemId = null;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SystemCalculatorWizard(),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SystemCalculatorWizard()));
                     },
                   ),
                 ),
                 if (!isMobile) const Spacer(),
               ],
             ),
-            if (isEnabled(ref, 'offers')) ...[
+            if (ref.watch(isOffersEnabled)) ...[
               SizedBox(height: 14.h),
               _buildOfferCard(
                 context,
@@ -113,10 +102,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     l10n.quick_tools,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 21.sp,
-                    ),
+                    style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900, fontSize: 21.sp),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -126,10 +112,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.end,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 12.sp,
-                      color: Colors.grey[600],
-                    ),
+                    style: theme.textTheme.bodyMedium?.copyWith(fontSize: 12.sp, color: Colors.grey[600]),
                   ),
                 ),
               ],
@@ -148,12 +131,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                   l10n.panels_calc,
                   Iconsax.sun_1_bold,
                   Colors.amber,
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PanelCalculatorPage(),
-                    ),
-                  ),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PanelCalculatorPage())),
                   'panel_hero',
                 ),
                 _buildToolCard(
@@ -161,12 +139,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                   l10n.inverter_calc,
                   Iconsax.flash_bold,
                   Colors.red,
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const InverterCalculatorPage(),
-                    ),
-                  ),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => const InverterCalculatorPage())),
                   'inverter_hero',
                 ),
                 _buildToolCard(
@@ -174,12 +147,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                   l10n.battery_calc,
                   Iconsax.battery_charging_bold,
                   Colors.green,
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BatteryCalculatorPage(),
-                    ),
-                  ),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BatteryCalculatorPage())),
                   'battery_hero',
                 ),
                 _buildToolCard(
@@ -187,12 +155,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                   l10n.wires_calc,
                   Icons.cable,
                   Colors.grey,
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WiresCalculatorPage(),
-                    ),
-                  ),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WiresCalculatorPage())),
                   'wires_hero',
                 ),
                 _buildToolCard(
@@ -200,10 +163,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                   l10n.pump_calc,
                   Icons.water_drop,
                   Colors.blueAccent,
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PumpCalculator()),
-                  ),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => PumpCalculator())),
                   'pump_hero',
                 ),
                 _buildToolCard(
@@ -211,12 +171,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                   l10n.structure_design_title,
                   Icons.straighten,
                   const Color(0xFF5A7D32),
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const StructureDesignScreen(),
-                    ),
-                  ),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => const StructureDesignScreen())),
                   'structure_hero',
                 ),
               ],
@@ -227,29 +182,19 @@ class CalculatorLandingPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader(
-    BuildContext context,
-    AppLocalizations l10n,
-    ThemeData theme,
-  ) {
+  Widget _buildHeader(BuildContext context, AppLocalizations l10n, ThemeData theme) {
     final isDark = theme.brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(18.r),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: isDark
-              ? const [Color(0xFF171E1D), Color(0xFF101615)]
-              : [theme.cardColor, theme.cardColor],
+          colors: isDark ? const [Color(0xFF171E1D), Color(0xFF101615)] : [theme.cardColor, theme.cardColor],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(
-          color: isDark
-              ? AppTheme.primaryColor.withValues(alpha: 0.12)
-              : Colors.grey.withValues(alpha: 0.1),
-        ),
+        border: Border.all(color: isDark ? AppTheme.primaryColor.withValues(alpha: 0.12) : Colors.grey.withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.04),
@@ -263,14 +208,8 @@ class CalculatorLandingPage extends ConsumerWidget {
         children: [
           Container(
             padding: EdgeInsets.all(12.r),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(18.r),
-            ),
-            child: const Icon(
-              Iconsax.category_bold,
-              color: AppTheme.primaryColor,
-            ),
+            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(18.r)),
+            child: const Icon(Iconsax.category_bold, color: AppTheme.primaryColor),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -279,10 +218,7 @@ class CalculatorLandingPage extends ConsumerWidget {
               children: [
                 Text(
                   l10n.calculator_tools,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w900,
-                  ),
+                  style: theme.textTheme.titleLarge?.copyWith(fontSize: 22.sp, fontWeight: FontWeight.w900),
                 ),
                 SizedBox(height: 6.h),
                 Text(
@@ -291,11 +227,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     'Choose a quick estimate, a full wizard, or one focused calculation tool.',
                     'اختر تقديرًا سريعًا أو معالجًا كاملًا أو أداة متخصصة لحساب محدد.',
                   ),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: 13.sp,
-                    height: 1.45,
-                    color: isDark ? Colors.white70 : Colors.grey[700],
-                  ),
+                  style: theme.textTheme.bodyMedium?.copyWith(fontSize: 13.sp, height: 1.45, color: isDark ? Colors.white70 : Colors.grey[700]),
                 ),
               ],
             ),
@@ -318,28 +250,16 @@ class CalculatorLandingPage extends ConsumerWidget {
   }) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final surfaceGradient = isDark
-        ? [
-            theme.cardColor,
-            Color.alphaBlend(accent.withValues(alpha: 0.08), theme.cardColor),
-          ]
-        : gradient;
+    final surfaceGradient = isDark ? [theme.cardColor, Color.alphaBlend(accent.withValues(alpha: 0.08), theme.cardColor)] : gradient;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: isMobile ? 248.h : null,
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: surfaceGradient,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: LinearGradient(colors: surfaceGradient, begin: Alignment.topLeft, end: Alignment.bottomRight),
           borderRadius: BorderRadius.circular(22.r),
-          border: Border.all(
-            color: accent.withValues(alpha: isDark ? 0.32 : 0.24),
-            width: 1.4,
-          ),
+          border: Border.all(color: accent.withValues(alpha: isDark ? 0.32 : 0.24), width: 1.4),
           boxShadow: [
             BoxShadow(
               color: accent.withValues(alpha: isDark ? 0.12 : 0.08),
@@ -355,10 +275,7 @@ class CalculatorLandingPage extends ConsumerWidget {
               padding: isMobile ? null : EdgeInsets.all(38),
               width: !isMobile ? null : 56.w,
               height: !isMobile ? null : 56.w,
-              decoration: BoxDecoration(
-                color: accent.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(18.r),
-              ),
+              decoration: BoxDecoration(color: accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(18.r)),
               child: Icon(icon, color: accent, size: 30),
             ),
             SizedBox(height: 14.h),
@@ -366,12 +283,7 @@ class CalculatorLandingPage extends ConsumerWidget {
               title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: !isMobile ? null : 20.sp,
-                fontWeight: FontWeight.w900,
-                height: 1.12,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
+              style: TextStyle(fontSize: !isMobile ? null : 20.sp, fontWeight: FontWeight.w900, height: 1.12, color: isDark ? Colors.white : Colors.black87),
             ),
             SizedBox(height: 8.h),
             Text(
@@ -388,11 +300,7 @@ class CalculatorLandingPage extends ConsumerWidget {
             SizedBox(height: 14.h),
             Text(
               cta,
-              style: TextStyle(
-                fontSize: !isMobile ? null : 12.sp,
-                fontWeight: FontWeight.w800,
-                color: accent,
-              ),
+              style: TextStyle(fontSize: !isMobile ? null : 12.sp, fontWeight: FontWeight.w800, color: accent),
             ),
           ],
         ),
@@ -417,22 +325,13 @@ class CalculatorLandingPage extends ConsumerWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isDark
-                ? [
-                    Color.alphaBlend(
-                      accent.withValues(alpha: 0.06),
-                      theme.cardColor,
-                    ),
-                    theme.cardColor,
-                  ]
+                ? [Color.alphaBlend(accent.withValues(alpha: 0.06), theme.cardColor), theme.cardColor]
                 : const [Color(0xFFF6F3FF), Color(0xFFFFFCFF)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(24.r),
-          border: Border.all(
-            color: accent.withValues(alpha: isDark ? 0.3 : 0.22),
-            width: 1.4,
-          ),
+          border: Border.all(color: accent.withValues(alpha: isDark ? 0.3 : 0.22), width: 1.4),
           boxShadow: [
             BoxShadow(
               color: accent.withValues(alpha: isDark ? 0.12 : 0.08),
@@ -446,10 +345,7 @@ class CalculatorLandingPage extends ConsumerWidget {
             Container(
               width: 58.w,
               height: 58.w,
-              decoration: BoxDecoration(
-                color: accent.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(18.r),
-              ),
+              decoration: BoxDecoration(color: accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(18.r)),
               child: Icon(icon, color: accent, size: 30.sp),
             ),
             SizedBox(width: 14.w),
@@ -461,22 +357,14 @@ class CalculatorLandingPage extends ConsumerWidget {
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w900,
-                      height: 1.15,
-                    ),
+                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w900, height: 1.15),
                   ),
                   SizedBox(height: 6.h),
                   Text(
                     description,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: isDark ? Colors.white70 : Colors.grey[700],
-                      fontSize: 13.sp,
-                      height: 1.45,
-                    ),
+                    style: TextStyle(color: isDark ? Colors.white70 : Colors.grey[700], fontSize: 13.sp, height: 1.45),
                   ),
                 ],
               ),
@@ -487,23 +375,13 @@ class CalculatorLandingPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildToolCard(
-    BuildContext context,
-    String title,
-    IconData icon,
-    Color color,
-    VoidCallback onTap, [
-    String? heroTag,
-  ]) {
+  Widget _buildToolCard(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap, [String? heroTag]) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final iconBox = Container(
       width: 46.w,
       height: 46.w,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(18.r),
-      ),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(18.r)),
       child: Icon(icon, color: color, size: 24.sp),
     );
 
@@ -513,24 +391,12 @@ class CalculatorLandingPage extends ConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: isDark
-                ? [
-                    theme.cardColor,
-                    Color.alphaBlend(
-                      color.withValues(alpha: 0.05),
-                      theme.cardColor,
-                    ),
-                  ]
-                : const [Color(0xFFFCF7FB), Color(0xFFFFFEFF)],
+            colors: isDark ? [theme.cardColor, Color.alphaBlend(color.withValues(alpha: 0.05), theme.cardColor)] : const [Color(0xFFFCF7FB), Color(0xFFFFFEFF)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.06)
-                : Colors.transparent,
-          ),
+          border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.transparent),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: isDark ? 0.16 : 0.04),
@@ -542,22 +408,14 @@ class CalculatorLandingPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (heroTag != null)
-              Hero(tag: heroTag, child: iconBox)
-            else
-              iconBox,
+            if (heroTag != null) Hero(tag: heroTag, child: iconBox) else iconBox,
             SizedBox(height: 10.h),
             Text(
               title,
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 12.sp,
-                height: 1.24,
-                color: isDark ? Colors.white : null,
-              ),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp, height: 1.24, color: isDark ? Colors.white : null),
             ),
           ],
         ),

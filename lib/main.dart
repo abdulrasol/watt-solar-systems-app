@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:solar_hub/firebase_options.dart';
+import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -45,6 +46,7 @@ void main() async {
     dPrint('GetStorage initialization failed: $e', tag: 'main', stackTrace: stackTrace);
   }
   setupDependencies();
+  await getIt<CasheInterface>().deleteByPrefix(legacyHttpCachePrefix);
   await getIt.allReady();
   runApp(const ProviderScope(child: SolarHub()));
 }

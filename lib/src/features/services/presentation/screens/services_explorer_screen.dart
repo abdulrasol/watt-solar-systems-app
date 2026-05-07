@@ -22,7 +22,7 @@ class ServicesExplorerScreen extends ConsumerWidget {
         : EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h);
 
     return RefreshIndicator(
-      onRefresh: () => ref.refresh(publicServiceTypesProvider.future),
+      onRefresh: () => refreshPublicServiceTypes(ref),
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [

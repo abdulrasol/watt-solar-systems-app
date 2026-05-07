@@ -34,6 +34,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           e.response?.data?['message'] ??
           e.message ??
           e.toString();
+      if (_isConnectivityError(e)) {
+        return Left(NetworkFailure(message));
+      }
       return Left(ServerFailure(message));
     } catch (e, stackTrace) {
       dPrint(
@@ -43,5 +46,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       );
       return Left(ServerFailure(e.toString()));
     }
+  }
+
+  bool _isConnectivityError(DioException error) {
+    return error.type == DioExceptionType.connectionError ||
+        error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.sendTimeout;
   }
 }

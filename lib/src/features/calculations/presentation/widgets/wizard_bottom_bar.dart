@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart' show isEnabled;
 
 class WizardBottomBar extends ConsumerWidget {
   const WizardBottomBar({
@@ -86,7 +86,7 @@ class WizardBottomBar extends ConsumerWidget {
                         ),
                       ),
                     )
-                  : isEnabled(ref, 'offers')
+                  : ref.watch(isOffersEnabled)
                   ? SizedBox(
                       key: const ValueKey('nav_request'),
                       width: double.infinity,

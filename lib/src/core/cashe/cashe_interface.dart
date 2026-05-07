@@ -1,6 +1,8 @@
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
+const legacyHttpCachePrefix = '_http_cache_';
+
 abstract class CacheBox {
   void listenKey(String key, void Function(dynamic value) callback);
 }
@@ -10,6 +12,7 @@ abstract class CasheInterface {
   Future<void> save(String key, dynamic value);
   dynamic get(String key); // Changed to synchronous
   Future<void> delete(String key);
+  Future<void> deleteByPrefix(String prefix);
   Future<void> clear();
   Future<void> saveUser(User user);
   User? user();

@@ -5,6 +5,7 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_shell.dart';
+import 'package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart';
 import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/auth_page.dart';
@@ -219,11 +220,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (BuildContext context, GoRouterState state) {
               final id = int.parse(state.pathParameters['id']!);
               final auth = ref.read(authProvider);
-              return OrderDetailScreen(
-                orderId: id,
-                companyId: auth.company?.id,
-                sellerView: true,
-              );
+              return OrderDetailScreen(orderId: id, companyId: auth.company?.id, sellerView: true);
             },
           ),
           GoRoute(
@@ -250,10 +247,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/inventory',
         builder: (context, state) => const InventoryPage(),
         routes: [
-          GoRoute(
-            path: 'add',
-            builder: (context, state) => const AddProductPage(),
-          ),
+          GoRoute(path: 'add', builder: (context, state) => const AddProductPage()),
           GoRoute(
             path: 'product/:id',
             builder: (BuildContext context, GoRouterState state) {
@@ -274,26 +268,19 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/company-work',
         builder: (context, state) => const CompanyWorkPage(),
         routes: [
-          GoRoute(
-            path: 'add',
-            builder: (context, state) => const CompanyWorkFormPage(),
-          ),
+          GoRoute(path: 'add', builder: (context, state) => const CompanyWorkFormPage()),
           GoRoute(
             path: ':id',
             builder: (context, state) {
               final id = int.parse(state.pathParameters['id']!);
-              final work = state.extra is CompanyWork
-                  ? state.extra as CompanyWork
-                  : null;
+              final work = state.extra is CompanyWork ? state.extra as CompanyWork : null;
               return CompanyWorkDetailsPage(workId: id, initialWork: work);
             },
           ),
           GoRoute(
             path: 'edit/:id',
             builder: (context, state) {
-              final work = state.extra is CompanyWork
-                  ? state.extra as CompanyWork
-                  : null;
+              final work = state.extra is CompanyWork ? state.extra as CompanyWork : null;
               return CompanyWorkFormPage(work: work);
             },
           ),
@@ -302,18 +289,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/storefront/:audience/orders',
         builder: (context, state) {
-          final audience = state.pathParameters['audience'] == 'b2b'
-              ? OrderAudience.b2b
-              : OrderAudience.b2c;
+          final audience = state.pathParameters['audience'] == 'b2b' ? OrderAudience.b2b : OrderAudience.b2c;
           return BuyerOrdersScreen(audience: audience);
         },
       ),
       GoRoute(
         path: '/storefront/:audience/orders/:id',
         builder: (context, state) {
-          final audience = state.pathParameters['audience'] == 'b2b'
-              ? OrderAudience.b2b
-              : OrderAudience.b2c;
+          final audience = state.pathParameters['audience'] == 'b2b' ? OrderAudience.b2b : OrderAudience.b2c;
           final id = int.parse(state.pathParameters['id']!);
           return OrderDetailScreen(orderId: id, audience: audience);
         },
@@ -399,16 +382,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           );
         },
       ),
-      GoRoute(
-        path: '/user-requests',
-        builder: (context, state) => const UserRequestsScreen(),
-      ),
+      GoRoute(path: '/user-requests', builder: (context, state) => const UserRequestsScreen()),
       GoRoute(
         path: '/user-requests/new',
         builder: (context, state) {
-          final prefill = state.extra is SolarRequestFormPrefill
-              ? state.extra as SolarRequestFormPrefill
-              : null;
+          final prefill = state.extra is SolarRequestFormPrefill ? state.extra as SolarRequestFormPrefill : null;
           return SolarRequestForm(prefill: prefill);
         },
         redirect: (BuildContext context, GoRouterState state) {
@@ -426,37 +404,17 @@ final routerProvider = Provider<GoRouter>((ref) {
           return null;
         },
       ),
-      GoRoute(
-        path: '/calculator/structure-design',
-        builder: (context, state) => const StructureDesignScreen(),
-      ),
-      GoRoute(
-        path: '/members',
-        builder: (context, state) => const MembersPage(),
-      ),
-      GoRoute(
-        path: '/offers',
-        builder: (context, state) => const CompanyOffersHub(),
-      ),
-      GoRoute(
-        path: '/offers/catalog',
-        builder: (context, state) => const InvolvesCatalogScreen(),
-      ),
-      GoRoute(
-        path: '/admin-marketplace',
-        builder: (context, state) => const AdminOffersDashboard(),
-      ),
+      GoRoute(path: '/calculator/structure-design', builder: (context, state) => const StructureDesignScreen()),
+      GoRoute(path: '/calculator/fast-calculator', builder: (context, state) => const FastCalculator()),
+      GoRoute(path: '/members', builder: (context, state) => const MembersPage()),
+      GoRoute(path: '/offers', builder: (context, state) => const CompanyOffersHub()),
+      GoRoute(path: '/offers/catalog', builder: (context, state) => const InvolvesCatalogScreen()),
+      GoRoute(path: '/admin-marketplace', builder: (context, state) => const AdminOffersDashboard()),
       GoRoute(
         path: '/storefront',
         builder: (context, state) {
-          final audience =
-              state.extra as StorefrontAudience? ??
-              storefrontAudienceFromQuery(
-                state.uri.queryParameters['audience'],
-              );
-          final companyId = int.tryParse(
-            state.uri.queryParameters['company_id'] ?? '',
-          );
+          final audience = state.extra as StorefrontAudience? ?? storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
+          final companyId = int.tryParse(state.uri.queryParameters['company_id'] ?? '');
           return PreScaffold(
             child: StorefrontScreen(audience: audience, companyId: companyId),
           );
@@ -465,31 +423,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/storefront/products',
         builder: (context, state) {
-          final audience = storefrontAudienceFromQuery(
-            state.uri.queryParameters['audience'],
-          );
-          final companyId = int.tryParse(
-            state.uri.queryParameters['company_id'] ?? '',
-          );
-          final globalCategoryId = int.tryParse(
-            state.uri.queryParameters['global_category_id'] ?? '',
-          );
+          final audience = storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
+          final companyId = int.tryParse(state.uri.queryParameters['company_id'] ?? '');
+          final globalCategoryId = int.tryParse(state.uri.queryParameters['global_category_id'] ?? '');
           final title = state.uri.queryParameters['title'];
 
-          return StorefrontProductsScreen(
-            audience: audience,
-            companyId: companyId,
-            initialGlobalCategoryId: globalCategoryId,
-            title: title,
-          );
+          return StorefrontProductsScreen(audience: audience, companyId: companyId, initialGlobalCategoryId: globalCategoryId, title: title);
         },
       ),
       GoRoute(
         path: '/storefront/companies',
         builder: (context, state) {
-          final audience = storefrontAudienceFromQuery(
-            state.uri.queryParameters['audience'],
-          );
+          final audience = storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
           return StorefrontCompaniesScreen(audience: audience);
         },
       ),
@@ -503,12 +448,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/services/companies',
         builder: (context, state) {
           final l10n = AppLocalizations.of(context)!;
-          final typeName =
-              state.uri.queryParameters['typeName'] ??
-              state.uri.queryParameters['typeId'] ??
-              l10n.services;
-          final typeId =
-              int.tryParse(state.uri.queryParameters['typeId'] ?? '') ?? 0;
+          final typeName = state.uri.queryParameters['typeName'] ?? state.uri.queryParameters['typeId'] ?? l10n.services;
+          final typeId = int.tryParse(state.uri.queryParameters['typeId'] ?? '') ?? 0;
 
           return PreScaffold(
             title: typeName,

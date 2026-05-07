@@ -9,9 +9,9 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class FastCalculator extends ConsumerStatefulWidget {
   const FastCalculator({super.key});
@@ -208,7 +208,7 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final result = _calculate();
-    final offersEnabled = isEnabled(ref, 'offers');
+    final offersEnabled = ref.watch(isOffersEnabled);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),

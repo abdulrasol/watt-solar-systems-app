@@ -17,6 +17,12 @@ final publicServiceTypesProvider = FutureProvider<List<ServiceType>>((
   return getIt<PublicServicesRepository>().getTypes();
 });
 
+Future<void> refreshPublicServiceTypes(WidgetRef ref) async {
+  await getIt<PublicServicesRepository>().getTypes(forceRefresh: true);
+  ref.invalidate(publicServiceTypesProvider);
+  await ref.read(publicServiceTypesProvider.future);
+}
+
 class ServicesCompaniesState extends Equatable {
   final bool isLoading;
   final String? error;

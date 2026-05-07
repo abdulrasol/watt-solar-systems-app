@@ -4,7 +4,7 @@ import 'package:solar_hub/src/features/services/domain/entities/public_companies
 import 'package:solar_hub/src/features/services/domain/entities/public_companies_result.dart';
 
 abstract class PublicServicesRepository {
-  Future<List<ServiceType>> getTypes();
+  Future<List<ServiceType>> getTypes({bool forceRefresh = false});
   Future<PublicCompaniesResult> getCompanies(PublicCompaniesQuery query);
   Future<Company> getCompanyDetails(int companyId);
 }

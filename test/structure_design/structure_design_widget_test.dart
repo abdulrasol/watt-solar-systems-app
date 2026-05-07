@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:geolocator/geolocator.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
@@ -24,18 +27,54 @@ class _FakeLocationService implements LocationService {
     }
     return 33.3;
   }
+
+  @override
+  Future<GeoLocation> getCurrentLocation() async {
+    if (error != null) {
+      throw error!;
+    }
+    return const GeoLocation(latitude: 33.3, longitude: -117.5);
+  }
+
+  @override
+  Future<bool> isLocationServiceEnabled() async => true;
+
+  @override
+  Future<LocationPermission> checkPermission() async =>
+      LocationPermission.whileInUse;
+
+  @override
+  Future<LocationPermission> requestPermission() async =>
+      LocationPermission.whileInUse;
 }
 
 class _FakePathProviderPlatform extends PathProviderPlatform {
+  _FakePathProviderPlatform(this.path);
+
+  final String path;
+
   @override
-  Future<String?> getApplicationDocumentsPath() async => '/tmp';
+  Future<String?> getApplicationDocumentsPath() async => path;
 }
 
 void main() {
+  late Directory storageDirectory;
+
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    PathProviderPlatform.instance = _FakePathProviderPlatform();
+    storageDirectory = Directory.systemTemp.createTempSync(
+      'solar_hub_structure_test_',
+    );
+    PathProviderPlatform.instance = _FakePathProviderPlatform(
+      storageDirectory.path,
+    );
     await GetStorage.init();
+  });
+
+  tearDownAll(() {
+    if (storageDirectory.existsSync()) {
+      storageDirectory.deleteSync(recursive: true);
+    }
   });
 
   setUp(() async {
@@ -86,6 +125,7 @@ void main() {
     expect(find.text('Site'), findsOneWidget);
     expect(find.text('Panels'), findsOneWidget);
     expect(find.text('Results'), findsOneWidget);
+    expect(find.byKey(const Key('open_watt_drawing_button')), findsOneWidget);
   });
 
   testWidgets('input form validates required dimensions', (tester) async {
@@ -117,6 +157,8 @@ void main() {
     expect(find.byKey(const Key('structure_sketch')), findsOneWidget);
     expect(find.text('Estimated BOM'), findsOneWidget);
     expect(find.text('Total steel length'), findsOneWidget);
+    expect(find.byKey(const Key('save_watt_drawing_button')), findsOneWidget);
+    expect(find.text('Save Watt Drawing'), findsOneWidget);
   });
 
   testWidgets('results screen shows view full sketch button', (tester) async {

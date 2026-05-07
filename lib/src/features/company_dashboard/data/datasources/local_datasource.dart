@@ -16,11 +16,11 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<CompanySummery> getCompanySummery(int id) async {
     try {
-      final json = casheInterface.get('company_summery_$id');
-      if (json == null) {
+      final cached = casheInterface.get('company_summery_$id');
+      if (cached == null) {
         throw Exception('Company summery not found');
       }
-      return CompanySummery.fromJson(jsonDecode(json));
+      return CompanySummery.fromJson(_decodeSummery(cached));
     } catch (e, stackTrace) {
       dPrint(
         'getCompanySummery error: $e',
@@ -43,5 +43,20 @@ class LocalDataSourceImpl implements LocalDataSource {
       );
       rethrow;
     }
+  }
+
+  Map<String, dynamic> _decodeSummery(dynamic cached) {
+    if (cached is String) {
+      final decoded = jsonDecode(cached);
+      if (decoded is Map) {
+        return Map<String, dynamic>.from(decoded);
+      }
+    }
+
+    if (cached is Map) {
+      return Map<String, dynamic>.from(cached);
+    }
+
+    throw Exception('Invalid company summery cache payload');
   }
 }

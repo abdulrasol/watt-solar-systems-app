@@ -796,6 +796,35 @@ class AppLocalizationsAr extends AppLocalizations {
   String get structure_view_full_sketch => 'عرض الرسم الكامل';
 
   @override
+  String get structure_save_watt_drawing => 'حفظ رسم Watt';
+
+  @override
+  String get structure_open_watt_drawing => 'فتح رسم Watt';
+
+  @override
+  String get structure_drawing_default_title => 'تصميم الهيكل';
+
+  @override
+  String structure_drawing_saved(Object path) {
+    return 'تم حفظ رسم Watt: $path';
+  }
+
+  @override
+  String structure_drawing_save_failed(Object error) {
+    return 'تعذر حفظ رسم Watt: $error';
+  }
+
+  @override
+  String structure_drawing_opened(Object title) {
+    return 'تم فتح رسم Watt: $title';
+  }
+
+  @override
+  String structure_drawing_open_failed(Object error) {
+    return 'تعذر فتح رسم Watt: $error';
+  }
+
+  @override
   String get structure_full_sketch_title => 'الرسم الكامل';
 
   @override
@@ -805,6 +834,36 @@ class AppLocalizationsAr extends AppLocalizations {
   String structure_row_offset_value(Object row) {
     return 'إزاحة الصف $row';
   }
+
+  @override
+  String get updateAvailable => 'تحديث متوفر';
+
+  @override
+  String get updateAvailableMessage => 'يتوفر إصدار جديد من Watt.';
+
+  @override
+  String get currentVersion => 'الإصدار الحالي';
+
+  @override
+  String get newVersion => 'الإصدار الجديد';
+
+  @override
+  String get whatsNew => 'ما الجديد';
+
+  @override
+  String get later => 'لاحقاً';
+
+  @override
+  String get updateNow => 'التحديث الآن';
+
+  @override
+  String get updateDownloaded => 'تم تنزيل التحديث';
+
+  @override
+  String get restartToInstall => 'أعد التشغيل لتثبيت التحديث.';
+
+  @override
+  String get install => 'تثبيت';
 
   @override
   String get email_is_required => 'البريد الإلكتروني مطلوب';

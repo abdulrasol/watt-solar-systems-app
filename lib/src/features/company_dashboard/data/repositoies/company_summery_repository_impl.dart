@@ -30,12 +30,14 @@ class CompanySummeryRepositoryImpl implements CompanySummeryRepository {
     );
     return result.fold(
       (failure) async {
-        // Remote failed, try local cache
+        if (failure is! NetworkFailure) {
+          return Left(failure);
+        }
+
         try {
           final localData = await localDataSource.getCompanySummery(id);
           return Right(localData);
         } catch (e) {
-          // Both failed
           return Left(failure);
         }
       },

@@ -1,5 +1,5 @@
 import 'dart:math' as math;
- 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,11 +11,15 @@ import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/section_card.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/bom_item.dart';
+import 'package:solar_hub/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/row_frame_result.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
 import 'package:solar_hub/src/features/structure_design/presentation/providers/structure_design_controller.dart';
+import 'package:solar_hub/src/features/structure_design/presentation/screens/technical_sketch_page.dart';
+import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart';
+import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
@@ -173,6 +177,93 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen>
     _tabController.animateTo(_tabController.index - 1);
   }
 
+  Future<void> _openWattDrawing() async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final document = await ref
+          .read(wattDrawingFileServiceProvider)
+          .pickAndDecode();
+      if (document == null) {
+        return;
+      }
+      ref.read(structureDesignControllerProvider).loadWattDrawing(document);
+      _syncControllersFromInput(document.input);
+      _tabController.animateTo(2);
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.structure_drawing_opened(document.title))),
+      );
+    } on WattDrawingFileException catch (error) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.structure_drawing_open_failed(error.message)),
+        ),
+      );
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.structure_drawing_open_failed('$error'))),
+      );
+    }
+  }
+
+  Future<void> _saveWattDrawing() async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = ref.read(structureDesignControllerProvider);
+    final result = controller.result;
+    if (result == null) {
+      return;
+    }
+    final title = l10n.structure_drawing_default_title;
+    try {
+      final service = ref.read(wattDrawingFileServiceProvider);
+      final file = await service.saveStructureDesignToAppDocuments(
+        title: title,
+        input: controller.input,
+        result: result,
+      );
+      await service.shareWattDrawing(file, subject: title);
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.structure_drawing_saved(file.path))),
+      );
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.structure_drawing_save_failed('$error'))),
+      );
+    }
+  }
+
+  void _syncControllersFromInput(StructureDesignInput input) {
+    _siteWidthController.text = input.siteWidthMeters.toString();
+    _siteDepthController.text = input.siteDepthMeters.toString();
+    _latitudeController.text = input.latitude.toString();
+    _frontClearanceController.text = input.frontClearanceMeters.toString();
+    _rearClearanceController.text = input.rearClearanceMeters.toString();
+    _sideClearanceController.text = input.sideClearanceMeters.toString();
+    _frontLegClearanceController.text = input.frontLegClearanceMeters
+        .toString();
+    _interRowGapController.text = input.interRowGapMeters.toString();
+    _panelLengthController.text = input.panelSpec.lengthMeters.toString();
+    _panelWidthController.text = input.panelSpec.widthMeters.toString();
+    _panelThicknessController.text = input.panelSpec.thicknessMeters.toString();
+    _horizontalGapController.text = input.panelSpec.horizontalGapMeters
+        .toString();
+    _verticalGapController.text = input.panelSpec.verticalGapMeters.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(structureDesignControllerProvider);
@@ -200,6 +291,12 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen>
       child: PreScaffold(
         title: l10n.structure_design_title,
         actions: [
+          IconButton(
+            key: const Key('open_watt_drawing_button'),
+            onPressed: _openWattDrawing,
+            icon: const Icon(Icons.folder_open_rounded),
+            tooltip: l10n.structure_open_watt_drawing,
+          ),
           IconButton(
             onPressed: _showHelpDialog,
             icon: const Icon(Icons.help_outline_rounded),
@@ -568,6 +665,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen>
                       controller: controller,
                       l10n: l10n,
                       explanations: explanations,
+                      onSaveWattDrawing: _saveWattDrawing,
                     ),
                   ),
                 ],
@@ -820,11 +918,13 @@ class _ResultsStep extends ConsumerWidget {
     required this.controller,
     required this.l10n,
     required this.explanations,
+    required this.onSaveWattDrawing,
   });
 
   final StructureDesignController controller;
   final AppLocalizations l10n;
   final List<ExplanationItem> explanations;
+  final Future<void> Function() onSaveWattDrawing;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1016,10 +1116,35 @@ class _ResultsStep extends ConsumerWidget {
           explanation: explanations[8],
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: LayoutBuilder(
-                  builder: (context, constraints) => FilledButton.tonalIcon(
+              Wrap(
+                alignment: WrapAlignment.end,
+                spacing: 8.w,
+                runSpacing: 8.h,
+                children: [
+                  FilledButton.tonalIcon(
+                    key: const Key('save_watt_drawing_button'),
+                    onPressed: onSaveWattDrawing,
+                    icon: const Icon(Icons.save_alt_rounded),
+                    label: Text(l10n.structure_save_watt_drawing),
+                  ),
+                  FilledButton.tonalIcon(
+                    key: const Key('view_technical_drawings_button'),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => _TechnicalDrawingsPage(
+                            result: result,
+                            siteWidthMeters: controller.input.siteWidthMeters,
+                            siteDepthMeters: controller.input.siteDepthMeters,
+                            l10n: l10n,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.architecture),
+                    label: const Text('Technical Drawings'),
+                  ),
+                  FilledButton.tonalIcon(
                     key: const Key('view_full_sketch_button'),
                     onPressed: () {
                       Navigator.of(context).push(
@@ -1035,14 +1160,14 @@ class _ResultsStep extends ConsumerWidget {
                     icon: const Icon(Icons.open_in_full_rounded),
                     label: Text(l10n.view),
                   ),
-                ),
+                ],
               ),
               SizedBox(height: 12.h),
               AspectRatio(
                 aspectRatio: 1.7,
                 child: CustomPaint(
                   key: const Key('structure_sketch'),
-                  painter: _StructureSketchPainter(
+                  painter: StructureSketchPainter(
                     result: result,
                     siteWidthMeters: controller.input.siteWidthMeters,
                     siteDepthMeters: controller.input.siteDepthMeters,
@@ -1053,7 +1178,7 @@ class _ResultsStep extends ConsumerWidget {
                     frontLabel: l10n.structure_front_label,
                     rearLabel: l10n.structure_rear_label,
                     braceLabel: l10n.structure_brace_label,
-                    detailLevel: _SketchDetailLevel.preview,
+                    viewMode: StructureSketchView.top,
                   ),
                   child: const SizedBox.expand(),
                 ),
@@ -1446,7 +1571,7 @@ class _StructureSketchViewerPage extends StatelessWidget {
           key: const Key('full_structure_sketch'),
           title: l10n.structure_top_view,
           height: math.min(media.size.height * 0.38, 340.0),
-          painter: _StructureSketchPainter(
+          painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
             siteDepthMeters: siteDepthMeters,
@@ -1457,17 +1582,14 @@ class _StructureSketchViewerPage extends StatelessWidget {
             frontLabel: l10n.structure_front_label,
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
-            detailLevel: _SketchDetailLevel.detailed,
-            repeatedRowLabel: l10n.structure_repeated_frame,
-            rowOffsetLabel: l10n.structure_base_offset,
-            viewMode: _StructureSketchView.top,
+            viewMode: StructureSketchView.top,
           ),
         ),
         SizedBox(height: 14.h),
         _SketchViewCard(
           title: l10n.structure_side_view,
           height: math.min(media.size.height * 0.40, 360.0),
-          painter: _StructureSketchPainter(
+          painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
             siteDepthMeters: siteDepthMeters,
@@ -1478,17 +1600,14 @@ class _StructureSketchViewerPage extends StatelessWidget {
             frontLabel: l10n.structure_front_label,
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
-            detailLevel: _SketchDetailLevel.detailed,
-            repeatedRowLabel: l10n.structure_repeated_frame,
-            rowOffsetLabel: l10n.structure_base_offset,
-            viewMode: _StructureSketchView.side,
+            viewMode: StructureSketchView.side,
           ),
         ),
         SizedBox(height: 14.h),
         _SketchViewCard(
           title: l10n.structure_front_view,
           height: math.min(media.size.height * 0.28, 250.0),
-          painter: _StructureSketchPainter(
+          painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
             siteDepthMeters: siteDepthMeters,
@@ -1499,17 +1618,14 @@ class _StructureSketchViewerPage extends StatelessWidget {
             frontLabel: l10n.structure_front_label,
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
-            detailLevel: _SketchDetailLevel.detailed,
-            repeatedRowLabel: l10n.structure_repeated_frame,
-            rowOffsetLabel: l10n.structure_base_offset,
-            viewMode: _StructureSketchView.front,
+            viewMode: StructureSketchView.front,
           ),
         ),
         SizedBox(height: 14.h),
         _SketchViewCard(
           title: l10n.structure_isometric_view,
           height: math.min(media.size.height * 0.28, 250.0),
-          painter: _StructureSketchPainter(
+          painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
             siteDepthMeters: siteDepthMeters,
@@ -1520,10 +1636,7 @@ class _StructureSketchViewerPage extends StatelessWidget {
             frontLabel: l10n.structure_front_label,
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
-            detailLevel: _SketchDetailLevel.detailed,
-            repeatedRowLabel: l10n.structure_repeated_frame,
-            rowOffsetLabel: l10n.structure_base_offset,
-            viewMode: _StructureSketchView.isometric,
+            viewMode: StructureSketchView.isometric,
           ),
         ),
         SizedBox(height: 12.h),
@@ -1716,664 +1829,108 @@ class _SketchViewCard extends StatelessWidget {
   }
 }
 
-class _StructureSketchPainter extends CustomPainter {
-  _StructureSketchPainter({
+/// Full-screen technical drawings page for construction use
+class _TechnicalDrawingsPage extends StatelessWidget {
+  const _TechnicalDrawingsPage({
     required this.result,
     required this.siteWidthMeters,
     required this.siteDepthMeters,
-    required this.topViewLabel,
-    required this.sideViewLabel,
-    required this.frontViewLabel,
-    required this.isometricViewLabel,
-    required this.frontLabel,
-    required this.rearLabel,
-    required this.braceLabel,
-    this.detailLevel = _SketchDetailLevel.preview,
-    this.repeatedRowLabel,
-    this.rowOffsetLabel,
-    this.viewMode,
+    required this.l10n,
   });
 
   final FrameResult result;
   final double siteWidthMeters;
   final double siteDepthMeters;
-  final String topViewLabel;
-  final String sideViewLabel;
-  final String frontViewLabel;
-  final String isometricViewLabel;
-  final String frontLabel;
-  final String rearLabel;
-  final String braceLabel;
-  final _SketchDetailLevel detailLevel;
-  final String? repeatedRowLabel;
-  final String? rowOffsetLabel;
-  final _StructureSketchView? viewMode;
+  final AppLocalizations l10n;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final background = Paint()..color = const Color(0xFFF9FBFC);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Offset.zero & size, const Radius.circular(18)),
-      background,
-    );
+  Widget build(BuildContext context) {
+    final labels = _createLabels();
 
-    final border = Paint()
-      ..color = const Color(0xFFDDE5EA)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Offset.zero & size, const Radius.circular(18)),
-      border,
-    );
-
-    if (viewMode != null) {
-      final viewRect = Rect.fromLTWH(16, 16, size.width - 32, size.height - 32);
-      if (viewMode == _StructureSketchView.top) {
-        _paintTopView(canvas, viewRect, showTitle: false);
-      } else if (viewMode == _StructureSketchView.side) {
-        _paintSideView(canvas, viewRect, showTitle: false);
-      } else if (viewMode == _StructureSketchView.front) {
-        _paintFrontView(canvas, viewRect, showTitle: false);
-      } else {
-        _paintIsometricView(canvas, viewRect, showTitle: false);
-      }
-      return;
-    }
-
-    final contentRect = Rect.fromLTWH(
-      16,
-      16,
-      size.width - 32,
-      size.height - 32,
-    );
-    final gap = detailLevel == _SketchDetailLevel.detailed ? 14.0 : 10.0;
-    final topHeight = detailLevel == _SketchDetailLevel.detailed
-        ? contentRect.height * 0.42
-        : contentRect.height * 0.46;
-    final topRect = Rect.fromLTWH(
-      contentRect.left,
-      contentRect.top,
-      contentRect.width,
-      topHeight,
-    );
-    final lowerTop = topRect.bottom + gap;
-    final lowerHeight = contentRect.bottom - lowerTop;
-    final halfWidth = (contentRect.width - gap) / 2;
-    final sideRect = Rect.fromLTWH(
-      contentRect.left,
-      lowerTop,
-      halfWidth,
-      lowerHeight,
-    );
-    final rightRect = Rect.fromLTWH(
-      contentRect.left + halfWidth + gap,
-      lowerTop,
-      halfWidth,
-      lowerHeight,
-    );
-    final rightGap = detailLevel == _SketchDetailLevel.detailed ? 12.0 : 8.0;
-    final frontHeight = (rightRect.height - rightGap) / 2;
-    final frontRect = Rect.fromLTWH(
-      rightRect.left,
-      rightRect.top,
-      rightRect.width,
-      frontHeight,
-    );
-    final isoRect = Rect.fromLTWH(
-      rightRect.left,
-      rightRect.top + frontHeight + rightGap,
-      rightRect.width,
-      frontHeight,
-    );
-
-    _paintTopView(canvas, topRect);
-    _paintSideView(canvas, sideRect);
-    _paintFrontView(canvas, frontRect);
-    _paintIsometricView(canvas, isoRect);
-  }
-
-  void _paintTopView(Canvas canvas, Rect rect, {bool showTitle = true}) {
-    if (showTitle) {
-      _paintTitle(canvas, topViewLabel, Offset(rect.left, rect.top));
-    }
-    final frameTop = rect.top + (showTitle ? 22 : 0);
-    final drawingRect = Rect.fromLTWH(
-      rect.left,
-      frameTop,
-      rect.width,
-      rect.height - (showTitle ? 22 : 0),
-    );
-    final workRect = Rect.fromLTWH(
-      drawingRect.left + 8,
-      drawingRect.top + 8,
-      drawingRect.width - 16,
-      drawingRect.height - 16,
-    );
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(workRect, const Radius.circular(12)),
-      Paint()..color = const Color(0xFFEAF4F8),
-    );
-
-    final usableWidthRatio = siteWidthMeters <= 0
-        ? 0.0
-        : result.usableWidthMeters / siteWidthMeters;
-    final usableDepthRatio = siteDepthMeters <= 0
-        ? 0.0
-        : result.usableDepthMeters / siteDepthMeters;
-    final usableRect = Rect.fromLTWH(
-      workRect.left + (workRect.width * (1 - usableWidthRatio) / 2),
-      workRect.top + (workRect.height * (1 - usableDepthRatio) / 2),
-      workRect.width * usableWidthRatio,
-      workRect.height * usableDepthRatio,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(usableRect, const Radius.circular(10)),
-      Paint()..color = const Color(0xFFDCEFD8),
-    );
-
-    if (result.rows == 0 || result.columns == 0) {
-      return;
-    }
-
-    final cellWidth = usableRect.width / result.columns;
-    final cellHeight = usableRect.height / result.rows;
-    final panelPaint = Paint()..color = const Color(0xFFFFB347);
-
-    for (var row = 0; row < result.rows; row++) {
-      for (var col = 0; col < result.columns; col++) {
-        final panelRect = Rect.fromLTWH(
-          usableRect.left + (col * cellWidth) + 2,
-          usableRect.top + (row * cellHeight) + 2,
-          math.max(4, cellWidth - 4),
-          math.max(4, cellHeight - 4),
-        );
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(panelRect, const Radius.circular(4)),
-          panelPaint,
-        );
-      }
-    }
-
-    if (detailLevel == _SketchDetailLevel.detailed) {
-      _paintDimensionLine(
-        canvas,
-        start: Offset(usableRect.left, usableRect.bottom + 10),
-        end: Offset(usableRect.right, usableRect.bottom + 10),
-        label: '${result.frameWidthMeters.toStringAsFixed(2)} m',
-      );
-      _paintVerticalDimension(
-        canvas,
-        x: usableRect.right + 12,
-        baseY: usableRect.bottom,
-        topY: usableRect.top,
-        label: '${result.totalFootprintDepthMeters.toStringAsFixed(2)} m',
-      );
-      if (result.rows > 1) {
-        final rowPitch = usableRect.height / result.rows;
-        _paintSmallLabel(
-          canvas,
-          '${result.rows} rows',
-          Offset(usableRect.left + 4, usableRect.top + 4),
-        );
-        _paintSmallLabel(
-          canvas,
-          '${result.rowSpacingMeters.toStringAsFixed(2)} m gap',
-          Offset(usableRect.left + 4, usableRect.top + rowPitch - 18),
-        );
-      }
-    }
-  }
-
-  void _paintSideView(Canvas canvas, Rect rect, {bool showTitle = true}) {
-    if (showTitle) {
-      _paintTitle(canvas, sideViewLabel, Offset(rect.left, rect.top));
-    }
-    final contentTop = rect.top + (showTitle ? 22 : 0);
-    final bottomReserve = detailLevel == _SketchDetailLevel.detailed
-        ? (result.rows > 1 ? 66.0 : 52.0)
-        : 12.0;
-    final baseY = rect.bottom - bottomReserve;
-    final startX = rect.left + 20;
-    final width = rect.width - 40;
-    final depthScale =
-        width / math.max(result.totalFootprintDepthMeters - 0.5, 1.0);
-    final heightScale =
-        (baseY - contentTop - 10) /
-        math.max(
-          result.maxRearLegHeightMeters,
-          result.rearLegHeightMeters + 0.1,
-        );
-
-    final linePaint = Paint()
-      ..color = const Color(0xFF365A6B)
-      ..strokeWidth = 3
-      ..strokeCap = StrokeCap.round;
-    final bracePaint = Paint()
-      ..color = const Color(0xFF6C8A96)
-      ..strokeWidth = 2;
-
-    final rowsToRender =
-        result.isUniformLegDesign && result.rowResults.isNotEmpty
-        ? <RowFrameResult>[result.rowResults.first]
-        : result.rowResults;
-
-    var currentX = startX;
-    for (final row in rowsToRender) {
-      final frontTopY = baseY - (row.frontLegHeightMeters * heightScale);
-      final rearTopY = baseY - (row.rearLegHeightMeters * heightScale);
-      final rearX = currentX + (result.projectedRowDepthMeters * depthScale);
-
-      canvas.drawLine(
-        Offset(currentX, baseY),
-        Offset(currentX, frontTopY),
-        linePaint,
-      );
-      canvas.drawLine(Offset(rearX, baseY), Offset(rearX, rearTopY), linePaint);
-      canvas.drawLine(
-        Offset(currentX, frontTopY),
-        Offset(rearX, rearTopY),
-        linePaint,
-      );
-      canvas.drawLine(
-        Offset(currentX, baseY),
-        Offset(rearX - 10, rearTopY),
-        bracePaint,
-      );
-
-      if (row.rowIndex == 0) {
-        _paintSmallLabel(
-          canvas,
-          frontLabel,
-          Offset(currentX - 16, frontTopY - 26),
-        );
-        _paintSmallLabel(canvas, rearLabel, Offset(rearX - 18, rearTopY - 28));
-        _paintSmallLabel(
-          canvas,
-          braceLabel,
-          Offset((currentX + rearX) / 2 - 12, rearTopY - 10),
-        );
-      } else if (!result.isUniformLegDesign) {
-        _paintSmallLabel(
-          canvas,
-          '${row.rowIndex + 1}',
-          Offset(currentX + 4, frontTopY - 16),
-        );
-      }
-
-      if (detailLevel == _SketchDetailLevel.detailed) {
-        _paintVerticalDimension(
-          canvas,
-          x: currentX - 12,
-          baseY: baseY,
-          topY: frontTopY,
-          label: '${row.frontLegHeightMeters.toStringAsFixed(2)} m',
-        );
-        _paintVerticalDimension(
-          canvas,
-          x: rearX + 12,
-          baseY: baseY,
-          topY: rearTopY,
-          label: '${row.rearLegHeightMeters.toStringAsFixed(2)} m',
-        );
-        _paintSmallLabel(
-          canvas,
-          '${result.frameSlopeLengthMeters.toStringAsFixed(2)} m',
-          Offset(
-            ((currentX + rearX) / 2) - 20,
-            ((frontTopY + rearTopY) / 2) - 28,
-          ),
-        );
-        if (!result.isUniformLegDesign) {
-          _paintSmallLabel(
-            canvas,
-            '${rowOffsetLabel ?? 'Offset'} ${row.baseOffsetMeters.toStringAsFixed(2)} m',
-            Offset(currentX, baseY + 4),
-          );
-        }
-      }
-
-      currentX = rearX + (result.rowSpacingMeters * depthScale);
-    }
-
-    canvas.drawLine(
-      Offset(startX, baseY),
-      Offset(rect.right - 12, baseY),
-      bracePaint,
-    );
-
-    if (detailLevel == _SketchDetailLevel.detailed &&
-        result.rowResults.isNotEmpty) {
-      final firstFrontX = startX;
-      final firstRearX = startX + (result.projectedRowDepthMeters * depthScale);
-      _paintDimensionLine(
-        canvas,
-        start: Offset(firstFrontX, baseY + 24),
-        end: Offset(firstRearX, baseY + 24),
-        label: '${result.projectedRowDepthMeters.toStringAsFixed(2)} m',
-      );
-      if (result.rows > 1 && !result.isUniformLegDesign) {
-        _paintDimensionLine(
-          canvas,
-          start: Offset(firstRearX, baseY + 40),
-          end: Offset(
-            firstRearX + (result.rowSpacingMeters * depthScale),
-            baseY + 40,
-          ),
-          label: '${result.rowSpacingMeters.toStringAsFixed(2)} m',
-        );
-        _paintDimensionLine(
-          canvas,
-          start: Offset(firstFrontX, baseY + 56),
-          end: Offset(
-            firstFrontX + (result.totalFootprintDepthMeters * depthScale),
-            baseY + 56,
-          ),
-          label: '${result.totalFootprintDepthMeters.toStringAsFixed(2)} m',
-        );
-      }
-    }
-  }
-
-  void _paintFrontView(Canvas canvas, Rect rect, {bool showTitle = true}) {
-    if (showTitle) {
-      _paintTitle(canvas, frontViewLabel, Offset(rect.left, rect.top));
-    }
-    final drawingRect = Rect.fromLTWH(
-      rect.left,
-      rect.top + (showTitle ? 22 : 0),
-      rect.width,
-      rect.height - (showTitle ? 22 : 0),
-    );
-    final baseY = drawingRect.bottom - 10;
-    final leftX = drawingRect.left + 18;
-    final rightX = drawingRect.right - 18;
-    final width = rightX - leftX;
-    final maxHeight = math.max(
-      result.maxRearLegHeightMeters,
-      result.rearLegHeightMeters,
-    );
-    final heightScale = (drawingRect.height - 18) / math.max(maxHeight, 0.5);
-    final frontHeight = result.isUniformLegDesign
-        ? result.frontLegHeightMeters
-        : ((result.minFrontLegHeightMeters + result.maxFrontLegHeightMeters) /
-              2);
-    final rearHeight = result.isUniformLegDesign
-        ? result.rearLegHeightMeters
-        : ((result.minRearLegHeightMeters + result.maxRearLegHeightMeters) / 2);
-    final topY = baseY - (rearHeight * heightScale);
-    final frontTopY = baseY - (frontHeight * heightScale);
-    final linePaint = Paint()
-      ..color = const Color(0xFF365A6B)
-      ..strokeWidth = 3
-      ..strokeCap = StrokeCap.round;
-    final panelPaint = Paint()
-      ..color = const Color(0xFFFFB347)
-      ..style = PaintingStyle.fill;
-
-    canvas.drawLine(Offset(leftX, baseY), Offset(leftX, frontTopY), linePaint);
-    canvas.drawLine(Offset(rightX, baseY), Offset(rightX, topY), linePaint);
-    canvas.drawLine(Offset(leftX, frontTopY), Offset(rightX, topY), linePaint);
-    canvas.drawLine(
-      Offset(leftX, baseY),
-      Offset(rightX, baseY),
-      Paint()
-        ..color = const Color(0xFF6C8A96)
-        ..strokeWidth = 2,
-    );
-
-    final columns = math.max(result.columns, 1);
-    final panelGap = 4.0;
-    final panelWidth = math.max(
-      8.0,
-      (width - ((columns - 1) * panelGap)) / columns,
-    );
-    for (var col = 0; col < columns; col++) {
-      final panelLeft = leftX + (col * (panelWidth + panelGap));
-      final panelRect = Rect.fromLTWH(
-        panelLeft,
-        topY + 4,
-        panelWidth,
-        math.max(8.0, (baseY - topY) * 0.32),
-      );
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(panelRect, const Radius.circular(3)),
-        panelPaint,
-      );
-    }
-
-    if (detailLevel == _SketchDetailLevel.detailed) {
-      _paintDimensionLine(
-        canvas,
-        start: Offset(leftX, baseY + 12),
-        end: Offset(rightX, baseY + 12),
-        label: '${result.frameWidthMeters.toStringAsFixed(2)} m',
-      );
-      _paintVerticalDimension(
-        canvas,
-        x: rightX + 10,
-        baseY: baseY,
-        topY: topY,
-        label: '${rearHeight.toStringAsFixed(2)} m',
-      );
-    }
-  }
-
-  void _paintIsometricView(Canvas canvas, Rect rect, {bool showTitle = true}) {
-    if (showTitle) {
-      _paintTitle(canvas, isometricViewLabel, Offset(rect.left, rect.top));
-    }
-    final drawingRect = Rect.fromLTWH(
-      rect.left,
-      rect.top + (showTitle ? 22 : 0),
-      rect.width,
-      rect.height - (showTitle ? 22 : 0),
-    );
-    final origin = Offset(drawingRect.left + 34, drawingRect.bottom - 28);
-    final isoWidth = math.max(drawingRect.width - 88, 48.0);
-    final isoDepth = math.max(drawingRect.height * 0.28, 20.0);
-    final maxLegHeight = math.max(
-      result.maxRearLegHeightMeters,
-      result.rearLegHeightMeters,
-    );
-    final heightScale = (drawingRect.height * 0.46) / math.max(maxLegHeight, 1);
-    final frontLegHeight = result.isUniformLegDesign
-        ? result.frontLegHeightMeters
-        : result.minFrontLegHeightMeters;
-    final rearLegHeight = result.isUniformLegDesign
-        ? result.rearLegHeightMeters
-        : result.maxRearLegHeightMeters;
-    final cols = math.max(result.columns, 1);
-    final rows = math.max(result.rows, 1);
-    final xAxis = Offset(isoWidth * 0.76, -isoDepth);
-    final yAxis = Offset(isoWidth * 0.34, isoDepth * 0.7);
-    final frontZ = Offset(0, -(frontLegHeight * heightScale));
-    final rearZ = Offset(0, -(rearLegHeight * heightScale));
-    final supportStations = math.max(result.supportStationCount, 2);
-    final framePaint = Paint()
-      ..color = const Color(0xFF365A6B)
-      ..strokeWidth = 2.4
-      ..style = PaintingStyle.stroke;
-    final legPaint = Paint()
-      ..color = const Color(0xFF365A6B)
-      ..strokeWidth = 3.2
-      ..strokeCap = StrokeCap.round;
-    final bracePaint = Paint()
-      ..color = const Color(0xFF6C8A96)
-      ..strokeWidth = 2
-      ..strokeCap = StrokeCap.round;
-    final panelFill = Paint()
-      ..color = const Color(0xFFFFB347).withValues(alpha: 0.75)
-      ..style = PaintingStyle.fill;
-
-    final frontLeft = origin;
-    final frontRight = origin + xAxis;
-    final backLeft = origin + yAxis;
-    final backRight = origin + xAxis + yAxis;
-    final topFrontLeft = frontLeft + frontZ;
-    final topFrontRight = frontRight + frontZ;
-    final topBackLeft = backLeft + rearZ;
-    final topBackRight = backRight + rearZ;
-
-    final topPath = Path()
-      ..moveTo(topFrontLeft.dx, topFrontLeft.dy)
-      ..lineTo(topFrontRight.dx, topFrontRight.dy)
-      ..lineTo(topBackRight.dx, topBackRight.dy)
-      ..lineTo(topBackLeft.dx, topBackLeft.dy)
-      ..close();
-    canvas.drawPath(topPath, panelFill);
-    canvas.drawPath(topPath, framePaint);
-
-    for (var i = 0; i <= cols; i++) {
-      final t = i / cols;
-      final start = topFrontLeft + (xAxis * t);
-      final end = topBackLeft + (xAxis * t);
-      canvas.drawLine(start, end, framePaint);
-    }
-    for (var i = 0; i <= rows; i++) {
-      final t = i / rows;
-      final start = topFrontLeft + (yAxis * t);
-      final end = topFrontRight + (yAxis * t);
-      canvas.drawLine(start, end, framePaint);
-    }
-
-    canvas.drawLine(frontLeft, frontRight, framePaint);
-    canvas.drawLine(frontLeft, backLeft, framePaint);
-    canvas.drawLine(frontRight, backRight, framePaint);
-    canvas.drawLine(backLeft, backRight, framePaint);
-    for (var i = 0; i < supportStations; i++) {
-      final t = supportStations == 1 ? 0.0 : i / (supportStations - 1);
-      final baseFront = frontLeft + (xAxis * t);
-      final baseRear = backLeft + (xAxis * t);
-      final topFront = baseFront + frontZ;
-      final topRear = baseRear + rearZ;
-
-      canvas.drawLine(baseFront, topFront, legPaint);
-      canvas.drawLine(baseRear, topRear, legPaint);
-      canvas.drawLine(topFront, topRear, framePaint);
-      canvas.drawLine(baseFront, topRear, bracePaint);
-
-      if (i == 0 || i == supportStations - 1) {
-        canvas.drawLine(baseRear, topFront, bracePaint);
-      }
-    }
-
-    if (detailLevel == _SketchDetailLevel.detailed) {
-      _paintSmallLabel(
-        canvas,
-        '${result.rows} x ${result.columns}',
-        Offset(drawingRect.left + 4, drawingRect.top + 4),
-      );
-      _paintSmallLabel(
-        canvas,
-        '${frontLegHeight.toStringAsFixed(2)} m',
-        Offset(frontLeft.dx - 10, (frontLeft.dy + topFrontLeft.dy) / 2 - 6),
-      );
-      _paintSmallLabel(
-        canvas,
-        '${rearLegHeight.toStringAsFixed(2)} m',
-        Offset(backRight.dx - 30, (backRight.dy + topBackRight.dy) / 2 - 6),
-      );
-      _paintSmallLabel(
-        canvas,
-        '${result.frameSlopeLengthMeters.toStringAsFixed(2)} m',
-        Offset(
-          ((topFrontRight.dx + topBackRight.dx) / 2) - 26,
-          ((topFrontRight.dy + topBackRight.dy) / 2) - 18,
-        ),
-      );
-    }
-  }
-
-  void _paintTitle(Canvas canvas, String text, Offset offset) {
-    final painter = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: const TextStyle(
-          color: Color(0xFF38515E),
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    painter.paint(canvas, offset);
-  }
-
-  void _paintSmallLabel(Canvas canvas, String text, Offset offset) {
-    final painter = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: const TextStyle(
-          color: Color(0xFF466977),
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    painter.paint(canvas, offset);
-  }
-
-  void _paintDimensionLine(
-    Canvas canvas, {
-    required Offset start,
-    required Offset end,
-    required String label,
-  }) {
-    final paint = Paint()
-      ..color = const Color(0xFF7D98A5)
-      ..strokeWidth = 1.2;
-    canvas.drawLine(start, end, paint);
-    canvas.drawLine(
-      Offset(start.dx, start.dy - 4),
-      Offset(start.dx, start.dy + 4),
-      paint,
-    );
-    canvas.drawLine(
-      Offset(end.dx, end.dy - 4),
-      Offset(end.dx, end.dy + 4),
-      paint,
-    );
-    _paintSmallLabel(
-      canvas,
-      label,
-      Offset(((start.dx + end.dx) / 2) - 30, start.dy - 20),
+    return TechnicalSketchPage(
+      result: result,
+      siteWidthMeters: siteWidthMeters,
+      siteDepthMeters: siteDepthMeters,
+      labels: labels,
     );
   }
 
-  void _paintVerticalDimension(
-    Canvas canvas, {
-    required double x,
-    required double baseY,
-    required double topY,
-    required String label,
-  }) {
-    final paint = Paint()
-      ..color = const Color(0xFF7D98A5)
-      ..strokeWidth = 1.2;
-    canvas.drawLine(Offset(x, baseY), Offset(x, topY), paint);
-    canvas.drawLine(Offset(x - 4, baseY), Offset(x + 4, baseY), paint);
-    canvas.drawLine(Offset(x - 4, topY), Offset(x + 4, topY), paint);
-    _paintSmallLabel(canvas, label, Offset(x - 22, ((baseY + topY) / 2) - 12));
-  }
-
-  @override
-  bool shouldRepaint(covariant _StructureSketchPainter oldDelegate) {
-    return oldDelegate.result != result ||
-        oldDelegate.siteWidthMeters != siteWidthMeters ||
-        oldDelegate.siteDepthMeters != siteDepthMeters ||
-        oldDelegate.topViewLabel != topViewLabel ||
-        oldDelegate.sideViewLabel != sideViewLabel ||
-        oldDelegate.frontViewLabel != frontViewLabel ||
-        oldDelegate.isometricViewLabel != isometricViewLabel ||
-        oldDelegate.detailLevel != detailLevel ||
-        oldDelegate.repeatedRowLabel != repeatedRowLabel ||
-        oldDelegate.rowOffsetLabel != rowOffsetLabel ||
-        oldDelegate.viewMode != viewMode;
+  TechnicalDrawingsLabels _createLabels() {
+    return TechnicalDrawingsLabels(
+      topView: l10n.structure_top_view,
+      sideView: l10n.structure_side_view,
+      frontView: l10n.structure_front_view,
+      isometricView: l10n.structure_isometric_view,
+      detailView: 'Detail View',
+      rows: 'Rows',
+      columns: 'Columns',
+      panels: 'Panels',
+      offset: 'Offset',
+      totalDepth: 'Total Depth',
+      groundLevel: 'Ground Level',
+      scale: 'Scale',
+      date: 'Date',
+      basePlateDetail: 'Base Plate',
+      legDetail: 'Leg Connection',
+      technicalDrawings: 'Technical Drawings',
+      dimensions: 'Dimensions',
+      copyDimensions: 'Copy Dimensions',
+      print: 'Print',
+      share: 'Share',
+      siteDimensions: 'Site Dimensions',
+      siteWidth: l10n.structure_site_width,
+      siteDepth: l10n.structure_site_depth,
+      usableWidth: 'Usable Width',
+      usableDepth: 'Usable Depth',
+      panelLayout: 'Panel Layout',
+      totalPanels: 'Total Panels',
+      panelOrientation: 'Orientation',
+      structureDimensions: 'Structure Dimensions',
+      frameWidth: l10n.structure_frame_width,
+      frameSlopeLength: 'Frame Slope Length',
+      projectedRowDepth: 'Projected Row Depth',
+      rowSpacing: l10n.structure_row_spacing,
+      legHeights: 'Leg Heights',
+      frontLegHeight: l10n.structure_front_leg_height,
+      rearLegHeight: l10n.structure_rear_leg_height,
+      minFrontLegHeight: 'Min Front Leg',
+      maxFrontLegHeight: 'Max Front Leg',
+      minRearLegHeight: 'Min Rear Leg',
+      maxRearLegHeight: 'Max Rear Leg',
+      supportStructure: 'Support Structure',
+      supportStationCount: 'Support Stations',
+      supportSpacing: 'Support Spacing',
+      railLength: l10n.structure_rail_length,
+      braceLength: l10n.structure_brace_length,
+      angles: 'Angles',
+      appliedTilt: l10n.structure_applied_tilt,
+      idealTilt: l10n.structure_ideal_tilt,
+      appliedAzimuth: l10n.structure_applied_azimuth,
+      idealAzimuth: 'Ideal Azimuth',
+      materials: 'Materials',
+      totalSteelLength: l10n.structure_total_steel_length,
+      frontLegCount: 'Front Legs',
+      rearLegCount: 'Rear Legs',
+      anchorCount: 'Anchors',
+      rowDetails: 'Row Details',
+      row: 'Row',
+      baseOffset: 'Base Offset',
+      localFootprint: 'Local Footprint',
+      layout: 'Layout',
+      structureDimensionsReport: 'Structure Dimensions Report',
+      dimensionsCopied: 'Dimensions copied to clipboard',
+      totalFootprintDepth: 'Total Footprint Depth',
+      tilt: 'Tilt',
+      resetView: 'Reset View',
+      showGrid: 'Show Grid',
+      showDimensions: 'Show Dimensions',
+      showAnnotations: 'Show Annotations',
+      front: 'Front',
+      rear: 'Rear',
+      brace: 'Brace',
+      printFeatureComingSoon: 'Print feature coming soon',
+      close: 'Close',
+      supports: 'Supports',
+    );
   }
 }
-
-enum _SketchDetailLevel { preview, detailed }
-
-enum _StructureSketchView { top, side, front, isometric }

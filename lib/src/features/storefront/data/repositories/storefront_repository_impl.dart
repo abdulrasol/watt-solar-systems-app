@@ -8,22 +8,8 @@ class StorefrontRepositoryImpl implements StorefrontRepository {
 
   StorefrontRepositoryImpl(this._remoteDataSource);
 
-  StorefrontMeta? _metaCache;
-  DateTime? _lastCacheTime;
-
   @override
-  Future<StorefrontMeta> getMeta() async {
-    final now = DateTime.now();
-    if (_metaCache != null &&
-        _lastCacheTime != null &&
-        now.difference(_lastCacheTime!) < const Duration(minutes: 30)) {
-      return _metaCache!;
-    }
-
-    _metaCache = await _remoteDataSource.getMeta();
-    _lastCacheTime = now;
-    return _metaCache!;
-  }
+  Future<StorefrontMeta> getMeta() => _remoteDataSource.getMeta();
 
   @override
   Future<PaginatedItemsResponse<StorefrontCompanyListItem>> getCompanies({

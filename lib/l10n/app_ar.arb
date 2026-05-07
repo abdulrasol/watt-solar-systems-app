@@ -302,6 +302,33 @@
   "structure_rear_label": "خلف",
   "structure_brace_label": "دعامة",
   "structure_view_full_sketch": "عرض الرسم الكامل",
+  "structure_save_watt_drawing": "حفظ رسم Watt",
+  "structure_open_watt_drawing": "فتح رسم Watt",
+  "structure_drawing_default_title": "تصميم الهيكل",
+  "structure_drawing_saved": "تم حفظ رسم Watt: {path}",
+  "@structure_drawing_saved": {
+    "placeholders": {
+      "path": {}
+    }
+  },
+  "structure_drawing_save_failed": "تعذر حفظ رسم Watt: {error}",
+  "@structure_drawing_save_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "structure_drawing_opened": "تم فتح رسم Watt: {title}",
+  "@structure_drawing_opened": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "structure_drawing_open_failed": "تعذر فتح رسم Watt: {error}",
+  "@structure_drawing_open_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "structure_full_sketch_title": "الرسم الكامل",
   "structure_geometry_dimensions": "أبعاد الهندسة",
   "structure_row_offset_value": "إزاحة الصف {row}",
@@ -310,6 +337,16 @@
       "row": {}
     }
   },
+  "updateAvailable": "تحديث متوفر",
+  "updateAvailableMessage": "يتوفر إصدار جديد من Watt.",
+  "currentVersion": "الإصدار الحالي",
+  "newVersion": "الإصدار الجديد",
+  "whatsNew": "ما الجديد",
+  "later": "لاحقاً",
+  "updateNow": "التحديث الآن",
+  "updateDownloaded": "تم تنزيل التحديث",
+  "restartToInstall": "أعد التشغيل لتثبيت التحديث.",
+  "install": "تثبيت",
   "email_is_required": "البريد الإلكتروني مطلوب",
   "invalid_email": "بريد إلكتروني غير صالح",
   "email": "البريد الإلكتروني",

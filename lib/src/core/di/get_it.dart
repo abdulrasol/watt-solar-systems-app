@@ -5,6 +5,7 @@ import 'package:solar_hub/src/core/cashe/get_storage_cashe.dart';
 import 'package:solar_hub/src/core/services/dio.dart';
 import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/core/services/push_notification_service.dart';
+import 'package:solar_hub/src/core/services/update_checker_service.dart';
 import 'package:solar_hub/src/features/admin/data/data_sources/app_config_remote_data_source_impl.dart';
 import 'package:solar_hub/src/features/admin/data/repositories/app_config_repository_impl.dart';
 import 'package:solar_hub/src/features/admin/data/repositories/notification_repository_impl.dart';
@@ -310,5 +311,10 @@ void setupDependencies() {
   getIt.registerLazySingleton<AccountingRepository>(() {
     dPrint('init accounting repository', tag: 'getIt');
     return AccountingRepositoryImpl(getIt<AccountingRemoteDataSource>());
+  });
+
+  getIt.registerLazySingleton<UpdateCheckerService>(() {
+    dPrint('init update checker service', tag: 'getIt');
+    return UpdateCheckerService();
   });
 }

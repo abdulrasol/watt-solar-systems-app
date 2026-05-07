@@ -796,6 +796,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get structure_view_full_sketch => 'View full sketch';
 
   @override
+  String get structure_save_watt_drawing => 'Save Watt Drawing';
+
+  @override
+  String get structure_open_watt_drawing => 'Open Watt Drawing';
+
+  @override
+  String get structure_drawing_default_title => 'Structure Design';
+
+  @override
+  String structure_drawing_saved(Object path) {
+    return 'Watt drawing saved: $path';
+  }
+
+  @override
+  String structure_drawing_save_failed(Object error) {
+    return 'Could not save Watt drawing: $error';
+  }
+
+  @override
+  String structure_drawing_opened(Object title) {
+    return 'Opened Watt drawing: $title';
+  }
+
+  @override
+  String structure_drawing_open_failed(Object error) {
+    return 'Could not open Watt drawing: $error';
+  }
+
+  @override
   String get structure_full_sketch_title => 'Full Sketch';
 
   @override
@@ -805,6 +834,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String structure_row_offset_value(Object row) {
     return 'Row $row offset';
   }
+
+  @override
+  String get updateAvailable => 'Update available';
+
+  @override
+  String get updateAvailableMessage => 'A new version of Watt is available.';
+
+  @override
+  String get currentVersion => 'Current version';
+
+  @override
+  String get newVersion => 'New version';
+
+  @override
+  String get whatsNew => 'What\'s new';
+
+  @override
+  String get later => 'Later';
+
+  @override
+  String get updateNow => 'Update now';
+
+  @override
+  String get updateDownloaded => 'Update downloaded';
+
+  @override
+  String get restartToInstall => 'Restart to install the update.';
+
+  @override
+  String get install => 'Install';
 
   @override
   String get email_is_required => 'Email is required';

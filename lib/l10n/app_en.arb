@@ -302,6 +302,33 @@
   "structure_rear_label": "Rear",
   "structure_brace_label": "Brace",
   "structure_view_full_sketch": "View full sketch",
+  "structure_save_watt_drawing": "Save Watt Drawing",
+  "structure_open_watt_drawing": "Open Watt Drawing",
+  "structure_drawing_default_title": "Structure Design",
+  "structure_drawing_saved": "Watt drawing saved: {path}",
+  "@structure_drawing_saved": {
+    "placeholders": {
+      "path": {}
+    }
+  },
+  "structure_drawing_save_failed": "Could not save Watt drawing: {error}",
+  "@structure_drawing_save_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "structure_drawing_opened": "Opened Watt drawing: {title}",
+  "@structure_drawing_opened": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "structure_drawing_open_failed": "Could not open Watt drawing: {error}",
+  "@structure_drawing_open_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "structure_full_sketch_title": "Full Sketch",
   "structure_geometry_dimensions": "Geometry dimensions",
   "structure_row_offset_value": "Row {row} offset",
@@ -310,6 +337,16 @@
       "row": {}
     }
   },
+  "updateAvailable": "Update available",
+  "updateAvailableMessage": "A new version of Watt is available.",
+  "currentVersion": "Current version",
+  "newVersion": "New version",
+  "whatsNew": "What's new",
+  "later": "Later",
+  "updateNow": "Update now",
+  "updateDownloaded": "Update downloaded",
+  "restartToInstall": "Restart to install the update.",
+  "install": "Install",
   "email_is_required": "Email is required",
   "invalid_email": "Invalid email",
   "email": "Email",

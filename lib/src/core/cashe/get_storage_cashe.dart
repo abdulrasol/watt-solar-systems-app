@@ -17,7 +17,7 @@ class GetStorageCashe implements CasheInterface {
   @override
   Future<void> save(String key, dynamic value) async {
     await _storage.write(key, value);
-    _storage.save();
+    await _storage.save();
   }
 
   @override
@@ -28,6 +28,14 @@ class GetStorageCashe implements CasheInterface {
   @override
   Future<void> delete(String key) async {
     await _storage.remove(key);
+  }
+
+  @override
+  Future<void> deleteByPrefix(String prefix) async {
+    final keys = List<String>.from(_storage.getKeys<Iterable<dynamic>>());
+    for (final key in keys.where((key) => key.startsWith(prefix))) {
+      await _storage.remove(key);
+    }
   }
 
   @override
@@ -47,13 +55,13 @@ class GetStorageCashe implements CasheInterface {
   @override
   Future<void> saveUser(User user) async {
     await _storage.write('user', user.toJson());
-    _storage.save();
+    await _storage.save();
   }
 
   @override
   Future<void> saveToken(String token) async {
     await _storage.write('token', token);
-    _storage.save();
+    await _storage.save();
   }
 
   @override
@@ -68,14 +76,21 @@ class GetStorageCashe implements CasheInterface {
   @override
   Future<void> saveSettings(Settings settings) async {
     await _storage.write('settings', settings);
-    _storage.save();
+    await _storage.save();
   }
 
   @override
   Settings settings() {
-    final Map<String, dynamic>? settingsMap = _storage.read<Map<String, dynamic>>('settings');
+    final Map<String, dynamic>? settingsMap = _storage
+        .read<Map<String, dynamic>>('settings');
     if (settingsMap == null) {
-      return Settings(isDark: false, isNotificationEnabled: false, language: 'ar', saveRolePageSelection: false, saveRolePageSelectionRoute: null);
+      return Settings(
+        isDark: false,
+        isNotificationEnabled: false,
+        language: 'ar',
+        saveRolePageSelection: false,
+        saveRolePageSelectionRoute: null,
+      );
     }
     return Settings.fromJson(settingsMap);
   }

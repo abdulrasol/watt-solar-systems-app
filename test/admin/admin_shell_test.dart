@@ -36,6 +36,11 @@ class _FakeCache implements CasheInterface {
   Future<void> delete(String key) async => _values.remove(key);
 
   @override
+  Future<void> deleteByPrefix(String prefix) async {
+    _values.removeWhere((key, value) => key.startsWith(prefix));
+  }
+
+  @override
   dynamic get(String key) => _values[key];
 
   @override
@@ -192,9 +197,7 @@ void main() {
     await tester.pumpWidget(
       ScreenUtilInit(
         designSize: const Size(390, 844),
-        child: ProviderScope(
-          child: MaterialApp.router(routerConfig: router),
-        ),
+        child: ProviderScope(child: MaterialApp.router(routerConfig: router)),
       ),
     );
     await tester.pumpAndSettle();

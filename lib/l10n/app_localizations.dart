@@ -1637,6 +1637,48 @@ abstract class AppLocalizations {
   /// **'View full sketch'**
   String get structure_view_full_sketch;
 
+  /// No description provided for @structure_save_watt_drawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Watt Drawing'**
+  String get structure_save_watt_drawing;
+
+  /// No description provided for @structure_open_watt_drawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Watt Drawing'**
+  String get structure_open_watt_drawing;
+
+  /// No description provided for @structure_drawing_default_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure Design'**
+  String get structure_drawing_default_title;
+
+  /// No description provided for @structure_drawing_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Watt drawing saved: {path}'**
+  String structure_drawing_saved(Object path);
+
+  /// No description provided for @structure_drawing_save_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save Watt drawing: {error}'**
+  String structure_drawing_save_failed(Object error);
+
+  /// No description provided for @structure_drawing_opened.
+  ///
+  /// In en, this message translates to:
+  /// **'Opened Watt drawing: {title}'**
+  String structure_drawing_opened(Object title);
+
+  /// No description provided for @structure_drawing_open_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open Watt drawing: {error}'**
+  String structure_drawing_open_failed(Object error);
+
   /// No description provided for @structure_full_sketch_title.
   ///
   /// In en, this message translates to:
@@ -1654,6 +1696,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Row {row} offset'**
   String structure_row_offset_value(Object row);
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailable;
+
+  /// No description provided for @updateAvailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of Watt is available.'**
+  String get updateAvailableMessage;
+
+  /// No description provided for @currentVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Current version'**
+  String get currentVersion;
+
+  /// No description provided for @newVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'New version'**
+  String get newVersion;
+
+  /// No description provided for @whatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get whatsNew;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
+  /// No description provided for @updateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Update now'**
+  String get updateNow;
+
+  /// No description provided for @updateDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Update downloaded'**
+  String get updateDownloaded;
+
+  /// No description provided for @restartToInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart to install the update.'**
+  String get restartToInstall;
+
+  /// No description provided for @install.
+  ///
+  /// In en, this message translates to:
+  /// **'Install'**
+  String get install;
 
   /// No description provided for @email_is_required.
   ///

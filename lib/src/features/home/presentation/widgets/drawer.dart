@@ -12,8 +12,8 @@ import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart' show isEnabled;
 import 'package:solar_hub/src/features/calculations/presentation/screens/calculated_systems_page.dart';
 
 class AppDrawer extends ConsumerWidget {
@@ -55,19 +55,13 @@ class AppDrawer extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        if (isEnabled(ref, 'systems'))
+                        if (ref.watch(isSystemsEnabled))
                           _buildDrawerItem(
                             context: context,
                             icon: Iconsax.home_2_bold,
                             title: AppLocalizations.of(context)!.my_systems,
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (c) =>
-                                      const CalculatedSystemsPage(),
-                                ),
-                              );
+                              Navigator.push(context, MaterialPageRoute(builder: (c) => const CalculatedSystemsPage()));
                             },
                             delay: 100,
                           ),
@@ -99,7 +93,7 @@ class AppDrawer extends ConsumerWidget {
                             ),
                           ],
                         )
-                      else if (isEnabled(ref, 'auth', skipFalseIfDebug: true) && isEnabled(ref, 'companies', skipFalseIfDebug: true))
+                      else if (ref.watch(isAuthEnabled) && ref.watch(isCompaniesEnabled))
                         _buildDrawerItem(
                           context: context,
                           icon: Iconsax.building_3_bold,
@@ -250,7 +244,7 @@ class AppDrawer extends ConsumerWidget {
             ],
           ),
           SizedBox(height: 20.h),
-          if (isEnabled(ref, 'auth', skipFalseIfDebug: true))
+          if (ref.watch(isAuthEnabled))
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

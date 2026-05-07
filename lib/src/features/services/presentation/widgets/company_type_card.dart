@@ -16,6 +16,8 @@ class CompanyTypeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final visual = resolveServiceTypeVisual(type.name);
     final l10n = AppLocalizations.of(context)!;
+    final label = _displayLabel(type);
+    final description = _displayDescription(type, label);
 
     return Material(
       color: Colors.transparent,
@@ -80,75 +82,107 @@ class CompanyTypeCard extends StatelessWidget {
                     backgroundColor: Colors.black.withValues(alpha: 0.08),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(18.r),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 28.h),
-                      const Spacer(),
-                      Text(
-                        _displayLabel(type),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18.sp,
-                          height: 1.2,
-                        ),
-                      ),
-                      if ((type.description ?? '').trim().isNotEmpty) ...[
-                        SizedBox(height: 6.h),
-                        Text(
-                          type.description!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.88),
-                            fontSize: 11.sp,
-                            height: 1.3,
-                          ),
-                        ),
-                      ],
-                      SizedBox(height: 8.h),
-                      Row(
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final isCompact = constraints.biggest.shortestSide < 190;
+                    final cardPadding = isCompact ? 14.r : 18.r;
+                    final titleFontSize = isCompact ? 16.sp : 18.sp;
+                    final descriptionFontSize = isCompact ? 10.sp : 11.sp;
+                    final chipFontSize = isCompact ? 10.sp : 11.sp;
+                    final countFontSize = isCompact ? 11.sp : 12.sp;
+                    final topGap = isCompact ? 22.h : 28.h;
+                    final descriptionGap = isCompact ? 4.h : 6.h;
+                    final actionGap = isCompact ? 6.h : 8.h;
+                    final chipPadding = EdgeInsets.symmetric(
+                      horizontal: isCompact ? 9.w : 10.w,
+                      vertical: isCompact ? 4.h : 6.h,
+                    );
+
+                    return Padding(
+                      padding: EdgeInsets.all(cardPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: topGap),
                           Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10.w,
-                                vertical: 6.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.16),
-                                borderRadius: BorderRadius.circular(999.r),
-                              ),
-                              child: Text(
-                                l10n.services_explore_companies,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.w700,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    label,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: titleFontSize,
+                                      height: 1.2,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            '${type.companiesCount}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w800,
+                                if (description != null) ...[
+                                  SizedBox(height: descriptionGap),
+                                  Flexible(
+                                    child: Text(
+                                      description,
+                                      maxLines: isCompact ? 1 : 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.88,
+                                        ),
+                                        fontSize: descriptionFontSize,
+                                        height: 1.3,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                SizedBox(height: actionGap),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        padding: chipPadding,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withValues(
+                                            alpha: 0.16,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            999.r,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          l10n.services_explore_companies,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: chipFontSize,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 8.w),
+                                    Text(
+                                      '${type.companiesCount}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: countFontSize,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -161,6 +195,25 @@ class CompanyTypeCard extends StatelessWidget {
   String _displayLabel(ServiceType type) {
     final text = type.name.trim();
     return text.replaceAll('_', ' ').replaceAll('-', ' ');
+  }
+
+  String? _displayDescription(ServiceType type, String label) {
+    final description = type.description?.trim();
+    if (description == null || description.isEmpty) {
+      return null;
+    }
+
+    final normalizedDescription = _normalizeDisplayText(description);
+    final normalizedLabel = _normalizeDisplayText(label);
+    if (normalizedDescription == normalizedLabel) {
+      return null;
+    }
+
+    return description;
+  }
+
+  String _normalizeDisplayText(String text) {
+    return text.trim().replaceAll('_', ' ').replaceAll('-', ' ').toLowerCase();
   }
 }
 
