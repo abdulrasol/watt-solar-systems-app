@@ -15,13 +15,10 @@ import 'package:solar_hub/src/features/structure_design/domain/entities/row_fram
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
 
 class WattDrawingFileService {
-  WattDrawingFileService({
-    AesGcm? algorithm,
-    SecretKey? secretKey,
-    DateTime Function()? now,
-  }) : _algorithm = algorithm ?? AesGcm.with256bits(),
-       _secretKey = secretKey ?? SecretKey(_documentKey),
-       _now = now ?? DateTime.now;
+  WattDrawingFileService({AesGcm? algorithm, SecretKey? secretKey, DateTime Function()? now})
+    : _algorithm = algorithm ?? AesGcm.with256bits(),
+      _secretKey = secretKey ?? SecretKey(_documentKey),
+      _now = now ?? DateTime.now;
 
   static final List<int> _documentKey = <int>[
     0x57,
@@ -100,60 +97,32 @@ class WattDrawingFileService {
     }
     final schemaVersion = decoded['schemaVersion'];
     if (schemaVersion != wattDrawingSchemaVersion) {
-      throw const WattDrawingFileException(
-        'Unsupported Watt drawing schema version.',
-      );
+      throw const WattDrawingFileException('Unsupported Watt drawing schema version.');
     }
     final documentType = decoded['documentType'];
     if (documentType != wattDrawingDocumentTypeStructureDesign) {
-      throw const WattDrawingFileException(
-        'Unsupported Watt drawing document type.',
-      );
+      throw const WattDrawingFileException('Unsupported Watt drawing document type.');
     }
     return _documentFromJson(decoded);
   }
 
-  Future<File> saveToAppDocuments({
-    required String title,
-    required Uint8List bytes,
-  }) async {
+  Future<File> saveToAppDocuments({required String title, required Uint8List bytes}) async {
     final directory = await getApplicationDocumentsDirectory();
-    final safeTitle = _safeFileName(
-      title.trim().isEmpty ? 'structure-design' : title,
-    );
-    final stamp = _now().toUtc().toIso8601String().replaceAll(
-      RegExp(r'[:.]'),
-      '-',
-    );
-    final file = File(
-      '${directory.path}/$safeTitle-$stamp.$wattDrawingExtension',
-    );
+    final safeTitle = _safeFileName(title.trim().isEmpty ? 'structure-design' : title);
+    final stamp = _now().toUtc().toIso8601String().replaceAll(RegExp(r'[:.]'), '-');
+    final file = File('${directory.path}/$safeTitle-$stamp.$wattDrawingExtension');
     return file.writeAsBytes(bytes, flush: true);
   }
 
-  Future<File> saveStructureDesignToAppDocuments({
-    required String title,
-    required StructureDesignInput input,
-    required FrameResult result,
-  }) async {
-    final bytes = await encodeStructureDesign(
-      title: title,
-      input: input,
-      result: result,
-    );
+  Future<File> saveStructureDesignToAppDocuments({required String title, required StructureDesignInput input, required FrameResult result}) async {
+    final bytes = await encodeStructureDesign(title: title, input: input, result: result);
     return saveToAppDocuments(title: title, bytes: bytes);
   }
 
   Future<void> shareWattDrawing(File file, {String? subject}) {
     return SharePlus.instance.share(
       ShareParams(
-        files: <XFile>[
-          XFile(
-            file.path,
-            mimeType: wattDrawingMimeType,
-            name: file.uri.pathSegments.last,
-          ),
-        ],
+        files: <XFile>[XFile(file.path, mimeType: wattDrawingMimeType, name: file.uri.pathSegments.last)],
         subject: subject,
         title: subject,
       ),
@@ -161,11 +130,7 @@ class WattDrawingFileService {
   }
 
   Future<WattDrawingDocument?> pickAndDecode() async {
-    final picked = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: const <String>[wattDrawingExtension],
-      withData: true,
-    );
+    final picked = await FilePicker.pickFiles(type: FileType.custom, allowedExtensions: const <String>[wattDrawingExtension], withData: true);
     final file = picked?.files.single;
     if (file == null) {
       return null;
@@ -178,9 +143,7 @@ class WattDrawingFileService {
     try {
       return await _algorithm.decrypt(secretBox, secretKey: _secretKey);
     } on SecretBoxAuthenticationError {
-      throw const WattDrawingFileException(
-        'Watt drawing authentication failed.',
-      );
+      throw const WattDrawingFileException('Watt drawing authentication failed.');
     } on FormatException {
       throw const WattDrawingFileException('Invalid Watt drawing document.');
     }
@@ -215,9 +178,7 @@ class WattDrawingFileService {
     var offset = magic.length;
     final envelopeVersion = bytes[offset++];
     if (envelopeVersion != wattDrawingSchemaVersion) {
-      throw const WattDrawingFileException(
-        'Unsupported Watt drawing schema version.',
-      );
+      throw const WattDrawingFileException('Unsupported Watt drawing schema version.');
     }
     final nonceLength = bytes[offset++];
     if (bytes.length < offset + nonceLength + 1) {
@@ -248,10 +209,7 @@ class WattDrawingFileService {
       'createdAt': document.createdAt.toUtc().toIso8601String(),
       'updatedAt': document.updatedAt.toUtc().toIso8601String(),
       'appVersion': document.appVersion,
-      'structureDesign': <String, dynamic>{
-        'input': _inputToJson(document.input),
-        'result': _resultToJson(document.result),
-      },
+      'structureDesign': <String, dynamic>{'input': _inputToJson(document.input), 'result': _resultToJson(document.result)},
     };
   }
 
@@ -295,38 +253,16 @@ class WattDrawingFileService {
       siteWidthMeters: _asDouble(json['siteWidthMeters'], 'siteWidthMeters'),
       siteDepthMeters: _asDouble(json['siteDepthMeters'], 'siteDepthMeters'),
       latitude: _asDouble(json['latitude'], 'latitude'),
-      facingPreference: _enumByName(
-        FacingDirectionPreference.values,
-        json['facingPreference'],
-        'facingPreference',
-      ),
+      facingPreference: _enumByName(FacingDirectionPreference.values, json['facingPreference'], 'facingPreference'),
       mountType: _enumByName(MountType.values, json['mountType'], 'mountType'),
-      frontClearanceMeters: _asDouble(
-        json['frontClearanceMeters'],
-        'frontClearanceMeters',
-      ),
-      rearClearanceMeters: _asDouble(
-        json['rearClearanceMeters'],
-        'rearClearanceMeters',
-      ),
-      sideClearanceMeters: _asDouble(
-        json['sideClearanceMeters'],
-        'sideClearanceMeters',
-      ),
-      frontLegClearanceMeters: _asDouble(
-        json['frontLegClearanceMeters'],
-        'frontLegClearanceMeters',
-      ),
-      interRowGapMeters: _asDouble(
-        json['interRowGapMeters'],
-        'interRowGapMeters',
-      ),
+      frontClearanceMeters: _asDouble(json['frontClearanceMeters'], 'frontClearanceMeters'),
+      rearClearanceMeters: _asDouble(json['rearClearanceMeters'], 'rearClearanceMeters'),
+      sideClearanceMeters: _asDouble(json['sideClearanceMeters'], 'sideClearanceMeters'),
+      frontLegClearanceMeters: _asDouble(json['frontLegClearanceMeters'], 'frontLegClearanceMeters'),
+      interRowGapMeters: _asDouble(json['interRowGapMeters'], 'interRowGapMeters'),
       panelSpec: _panelFromJson(_asMap(json['panelSpec'], 'panelSpec')),
       rowMode: _enumByName(RowMode.values, json['rowMode'], 'rowMode'),
-      rowBaseOffsetsMeters: _doubleList(
-        json['rowBaseOffsetsMeters'],
-        'rowBaseOffsetsMeters',
-      ),
+      rowBaseOffsetsMeters: _doubleList(json['rowBaseOffsetsMeters'], 'rowBaseOffsetsMeters'),
       targetPanelCount: _asNullableInt(json['targetPanelCount']),
       manualRows: _asNullableInt(json['manualRows']),
       manualColumns: _asNullableInt(json['manualColumns']),
@@ -349,19 +285,9 @@ class WattDrawingFileService {
       lengthMeters: _asDouble(json['lengthMeters'], 'lengthMeters'),
       widthMeters: _asDouble(json['widthMeters'], 'widthMeters'),
       thicknessMeters: _asDouble(json['thicknessMeters'], 'thicknessMeters'),
-      orientation: _enumByName(
-        PanelOrientation.values,
-        json['orientation'],
-        'orientation',
-      ),
-      horizontalGapMeters: _asDouble(
-        json['horizontalGapMeters'],
-        'horizontalGapMeters',
-      ),
-      verticalGapMeters: _asDouble(
-        json['verticalGapMeters'],
-        'verticalGapMeters',
-      ),
+      orientation: _enumByName(PanelOrientation.values, json['orientation'], 'orientation'),
+      horizontalGapMeters: _asDouble(json['horizontalGapMeters'], 'horizontalGapMeters'),
+      verticalGapMeters: _asDouble(json['verticalGapMeters'], 'verticalGapMeters'),
     );
   }
 
@@ -411,23 +337,11 @@ class WattDrawingFileService {
 
   FrameResult _resultFromJson(Map<String, dynamic> json) {
     return FrameResult(
-      idealAzimuthDegrees: _asDouble(
-        json['idealAzimuthDegrees'],
-        'idealAzimuthDegrees',
-      ),
-      appliedAzimuthDegrees: _asDouble(
-        json['appliedAzimuthDegrees'],
-        'appliedAzimuthDegrees',
-      ),
+      idealAzimuthDegrees: _asDouble(json['idealAzimuthDegrees'], 'idealAzimuthDegrees'),
+      appliedAzimuthDegrees: _asDouble(json['appliedAzimuthDegrees'], 'appliedAzimuthDegrees'),
       idealTiltDegrees: _asDouble(json['idealTiltDegrees'], 'idealTiltDegrees'),
-      appliedTiltDegrees: _asDouble(
-        json['appliedTiltDegrees'],
-        'appliedTiltDegrees',
-      ),
-      isOrientationConstrained: _asBool(
-        json['isOrientationConstrained'],
-        'isOrientationConstrained',
-      ),
+      appliedTiltDegrees: _asDouble(json['appliedTiltDegrees'], 'appliedTiltDegrees'),
+      isOrientationConstrained: _asBool(json['isOrientationConstrained'], 'isOrientationConstrained'),
       rowMode: _enumByName(RowMode.values, json['rowMode'], 'rowMode'),
       rows: _asInt(json['rows'], 'rows'),
       columns: _asInt(json['columns'], 'columns'),
@@ -435,100 +349,33 @@ class WattDrawingFileService {
       maxRows: _asInt(json['maxRows'], 'maxRows'),
       maxColumns: _asInt(json['maxColumns'], 'maxColumns'),
       frameWidthMeters: _asDouble(json['frameWidthMeters'], 'frameWidthMeters'),
-      frameSlopeLengthMeters: _asDouble(
-        json['frameSlopeLengthMeters'],
-        'frameSlopeLengthMeters',
-      ),
-      projectedRowDepthMeters: _asDouble(
-        json['projectedRowDepthMeters'],
-        'projectedRowDepthMeters',
-      ),
+      frameSlopeLengthMeters: _asDouble(json['frameSlopeLengthMeters'], 'frameSlopeLengthMeters'),
+      projectedRowDepthMeters: _asDouble(json['projectedRowDepthMeters'], 'projectedRowDepthMeters'),
       rowSpacingMeters: _asDouble(json['rowSpacingMeters'], 'rowSpacingMeters'),
-      totalFootprintDepthMeters: _asDouble(
-        json['totalFootprintDepthMeters'],
-        'totalFootprintDepthMeters',
-      ),
-      frontLegHeightMeters: _asDouble(
-        json['frontLegHeightMeters'],
-        'frontLegHeightMeters',
-      ),
-      rearLegHeightMeters: _asDouble(
-        json['rearLegHeightMeters'],
-        'rearLegHeightMeters',
-      ),
-      minFrontLegHeightMeters: _asDouble(
-        json['minFrontLegHeightMeters'],
-        'minFrontLegHeightMeters',
-      ),
-      maxFrontLegHeightMeters: _asDouble(
-        json['maxFrontLegHeightMeters'],
-        'maxFrontLegHeightMeters',
-      ),
-      minRearLegHeightMeters: _asDouble(
-        json['minRearLegHeightMeters'],
-        'minRearLegHeightMeters',
-      ),
-      maxRearLegHeightMeters: _asDouble(
-        json['maxRearLegHeightMeters'],
-        'maxRearLegHeightMeters',
-      ),
+      totalFootprintDepthMeters: _asDouble(json['totalFootprintDepthMeters'], 'totalFootprintDepthMeters'),
+      frontLegHeightMeters: _asDouble(json['frontLegHeightMeters'], 'frontLegHeightMeters'),
+      rearLegHeightMeters: _asDouble(json['rearLegHeightMeters'], 'rearLegHeightMeters'),
+      minFrontLegHeightMeters: _asDouble(json['minFrontLegHeightMeters'], 'minFrontLegHeightMeters'),
+      maxFrontLegHeightMeters: _asDouble(json['maxFrontLegHeightMeters'], 'maxFrontLegHeightMeters'),
+      minRearLegHeightMeters: _asDouble(json['minRearLegHeightMeters'], 'minRearLegHeightMeters'),
+      maxRearLegHeightMeters: _asDouble(json['maxRearLegHeightMeters'], 'maxRearLegHeightMeters'),
       railLengthMeters: _asDouble(json['railLengthMeters'], 'railLengthMeters'),
-      braceLengthMeters: _asDouble(
-        json['braceLengthMeters'],
-        'braceLengthMeters',
-      ),
-      supportSpacingMeters: _asDouble(
-        json['supportSpacingMeters'],
-        'supportSpacingMeters',
-      ),
-      supportStationCount: _asInt(
-        json['supportStationCount'],
-        'supportStationCount',
-      ),
-      totalFrontLegLengthMeters: _asDouble(
-        json['totalFrontLegLengthMeters'],
-        'totalFrontLegLengthMeters',
-      ),
-      totalRearLegLengthMeters: _asDouble(
-        json['totalRearLegLengthMeters'],
-        'totalRearLegLengthMeters',
-      ),
-      totalBraceLengthMeters: _asDouble(
-        json['totalBraceLengthMeters'],
-        'totalBraceLengthMeters',
-      ),
-      totalSteelLengthMeters: _asDouble(
-        json['totalSteelLengthMeters'],
-        'totalSteelLengthMeters',
-      ),
+      braceLengthMeters: _asDouble(json['braceLengthMeters'], 'braceLengthMeters'),
+      supportSpacingMeters: _asDouble(json['supportSpacingMeters'], 'supportSpacingMeters'),
+      supportStationCount: _asInt(json['supportStationCount'], 'supportStationCount'),
+      totalFrontLegLengthMeters: _asDouble(json['totalFrontLegLengthMeters'], 'totalFrontLegLengthMeters'),
+      totalRearLegLengthMeters: _asDouble(json['totalRearLegLengthMeters'], 'totalRearLegLengthMeters'),
+      totalBraceLengthMeters: _asDouble(json['totalBraceLengthMeters'], 'totalBraceLengthMeters'),
+      totalSteelLengthMeters: _asDouble(json['totalSteelLengthMeters'], 'totalSteelLengthMeters'),
       frontLegCount: _asInt(json['frontLegCount'], 'frontLegCount'),
       rearLegCount: _asInt(json['rearLegCount'], 'rearLegCount'),
       anchorCount: _asInt(json['anchorCount'], 'anchorCount'),
-      usableWidthMeters: _asDouble(
-        json['usableWidthMeters'],
-        'usableWidthMeters',
-      ),
-      usableDepthMeters: _asDouble(
-        json['usableDepthMeters'],
-        'usableDepthMeters',
-      ),
-      panelOrientation: _enumByName(
-        PanelOrientation.values,
-        json['panelOrientation'],
-        'panelOrientation',
-      ),
-      rowResults: _mapList(
-        json['rowResults'],
-        'rowResults',
-      ).map(_rowFromJson).toList(),
-      isUniformLegDesign: _asBool(
-        json['isUniformLegDesign'],
-        'isUniformLegDesign',
-      ),
-      bomItems: _mapList(
-        json['bomItems'],
-        'bomItems',
-      ).map(_bomFromJson).toList(),
+      usableWidthMeters: _asDouble(json['usableWidthMeters'], 'usableWidthMeters'),
+      usableDepthMeters: _asDouble(json['usableDepthMeters'], 'usableDepthMeters'),
+      panelOrientation: _enumByName(PanelOrientation.values, json['panelOrientation'], 'panelOrientation'),
+      rowResults: _mapList(json['rowResults'], 'rowResults').map(_rowFromJson).toList(),
+      isUniformLegDesign: _asBool(json['isUniformLegDesign'], 'isUniformLegDesign'),
+      bomItems: _mapList(json['bomItems'], 'bomItems').map(_bomFromJson).toList(),
     );
   }
 
@@ -547,29 +394,15 @@ class WattDrawingFileService {
     return RowFrameResult(
       rowIndex: _asInt(json['rowIndex'], 'rowIndex'),
       baseOffsetMeters: _asDouble(json['baseOffsetMeters'], 'baseOffsetMeters'),
-      frontLegHeightMeters: _asDouble(
-        json['frontLegHeightMeters'],
-        'frontLegHeightMeters',
-      ),
-      rearLegHeightMeters: _asDouble(
-        json['rearLegHeightMeters'],
-        'rearLegHeightMeters',
-      ),
+      frontLegHeightMeters: _asDouble(json['frontLegHeightMeters'], 'frontLegHeightMeters'),
+      rearLegHeightMeters: _asDouble(json['rearLegHeightMeters'], 'rearLegHeightMeters'),
       rowSpacingMeters: _asDouble(json['rowSpacingMeters'], 'rowSpacingMeters'),
-      localFootprintDepthMeters: _asDouble(
-        json['localFootprintDepthMeters'],
-        'localFootprintDepthMeters',
-      ),
+      localFootprintDepthMeters: _asDouble(json['localFootprintDepthMeters'], 'localFootprintDepthMeters'),
     );
   }
 
   Map<String, dynamic> _bomToJson(BomItem item) {
-    return <String, dynamic>{
-      'name': item.name,
-      'unit': item.unit,
-      'quantity': item.quantity,
-      'note': item.note,
-    };
+    return <String, dynamic>{'name': item.name, 'unit': item.unit, 'quantity': item.quantity, 'note': item.note};
   }
 
   BomItem _bomFromJson(Map<String, dynamic> json) {
@@ -591,11 +424,7 @@ class WattDrawingFileService {
   }
 
   String _safeFileName(String value) {
-    final safe = value
-        .toLowerCase()
-        .replaceAll(RegExp(r'[^a-z0-9._-]+'), '-')
-        .replaceAll(RegExp(r'-+'), '-')
-        .replaceAll(RegExp(r'^-|-$'), '');
+    final safe = value.toLowerCase().replaceAll(RegExp(r'[^a-z0-9._-]+'), '-').replaceAll(RegExp(r'-+'), '-').replaceAll(RegExp(r'^-|-$'), '');
     return safe.isEmpty ? 'structure-design' : safe;
   }
 
@@ -605,11 +434,7 @@ class WattDrawingFileService {
   }
 
   int _readUint32(Uint8List bytes, int offset) {
-    return ByteData.sublistView(
-      bytes,
-      offset,
-      offset + 4,
-    ).getUint32(0, Endian.big);
+    return ByteData.sublistView(bytes, offset, offset + 4).getUint32(0, Endian.big);
   }
 
   Map<String, dynamic> _asMap(Object? value, String field) {

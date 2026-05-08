@@ -316,13 +316,13 @@ class StructureSketchPainter extends CustomPainter {
     if (detailLevel == SketchDetailLevel.detailed) {
       _paintDimensionLine(
         canvas,
-        start: Offset(usableRect.left, usableRect.bottom + 10),
-        end: Offset(usableRect.right, usableRect.bottom + 10),
+        start: Offset(usableRect.left, usableRect.bottom + 18),
+        end: Offset(usableRect.right, usableRect.bottom + 18),
         label: '${result.frameWidthMeters.toStringAsFixed(2)} m',
       );
       _paintVerticalDimension(
         canvas,
-        x: usableRect.right + 12,
+        x: usableRect.right + 20,
         baseY: usableRect.bottom,
         topY: usableRect.top,
         label: '${result.totalFootprintDepthMeters.toStringAsFixed(2)} m',
@@ -334,11 +334,13 @@ class StructureSketchPainter extends CustomPainter {
           canvas,
           '${result.rows} rows',
           Offset(usableRect.left + 4, usableRect.top + 4),
+          showBackground: true,
         );
         _paintSmallLabel(
           canvas,
           '${result.rowSpacingMeters.toStringAsFixed(2)} m gap',
           Offset(usableRect.left + 4, usableRect.top + rowPitch - 18),
+          showBackground: true,
         );
       }
 
@@ -346,7 +348,8 @@ class StructureSketchPainter extends CustomPainter {
       _paintValueLabel(
         canvas,
         '${result.panelCount} panels',
-        Offset(usableRect.right - 60, usableRect.top + 4),
+        Offset(usableRect.right - 85, usableRect.top + 4),
+        showBackground: true,
       );
     }
   }
@@ -372,16 +375,30 @@ class StructureSketchPainter extends CustomPainter {
           result.rearLegHeightMeters + 0.1,
         );
 
-    // Ground line
+    // Ground line with hatching
     final groundPaint = Paint()
-      ..color = SketchColors.groundColor
+      ..color = SketchColors.legColor.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+      ..strokeWidth = 2.5;
+    
+    final groundEndX = rect.right - 12;
     canvas.drawLine(
       Offset(startX, baseY),
-      Offset(rect.right - 12, baseY),
+      Offset(groundEndX, baseY),
       groundPaint,
     );
+    
+    // Add ground hatching for depth
+    final hatchPaint = Paint()
+      ..color = SketchColors.legColor.withValues(alpha: 0.2)
+      ..strokeWidth = 1.0;
+    for (double hx = startX; hx < groundEndX; hx += 12) {
+      canvas.drawLine(
+        Offset(hx, baseY),
+        Offset(hx - 8, baseY + 8),
+        hatchPaint,
+      );
+    }
 
     // Structure paints
     final legPaint = Paint()
@@ -449,23 +466,27 @@ class StructureSketchPainter extends CustomPainter {
         _paintSmallLabel(
           canvas,
           frontLabel,
-          Offset(currentX - 16, frontTopY - 26),
+          Offset(currentX - 20, frontTopY - 30),
+          showBackground: true,
         );
         _paintSmallLabel(
           canvas,
           rearLabel,
-          Offset(rearX - 18, rearTopY - 28),
+          Offset(rearX - 18, rearTopY - 32),
+          showBackground: true,
         );
         _paintSmallLabel(
           canvas,
           braceLabel,
-          Offset((currentX + rearX) / 2 - 12, rearTopY - 10),
+          Offset((currentX + rearX) / 2 - 20, rearTopY - 14),
+          showBackground: true,
         );
       } else if (!result.isUniformLegDesign) {
         _paintSmallLabel(
           canvas,
           '${row.rowIndex + 1}',
-          Offset(currentX + 4, frontTopY - 16),
+          Offset(currentX + 4, frontTopY - 20),
+          showBackground: true,
         );
       }
 
@@ -521,19 +542,19 @@ class StructureSketchPainter extends CustomPainter {
       if (result.rows > 1 && !result.isUniformLegDesign) {
         _paintDimensionLine(
           canvas,
-          start: Offset(firstRearX, baseY + 40),
+          start: Offset(firstRearX, baseY + 45),
           end: Offset(
             firstRearX + (result.rowSpacingMeters * depthScale),
-            baseY + 40,
+            baseY + 45,
           ),
           label: '${result.rowSpacingMeters.toStringAsFixed(2)} m',
         );
         _paintDimensionLine(
           canvas,
-          start: Offset(firstFrontX, baseY + 56),
+          start: Offset(firstFrontX, baseY + 64),
           end: Offset(
             firstFrontX + (result.totalFootprintDepthMeters * depthScale),
-            baseY + 56,
+            baseY + 64,
           ),
           label: '${result.totalFootprintDepthMeters.toStringAsFixed(2)} m',
         );
@@ -583,12 +604,18 @@ class StructureSketchPainter extends CustomPainter {
       ..color = SketchColors.frameColor
       ..strokeWidth = 3
       ..strokeCap = StrokeCap.round;
+    // Ground line with hatching
     final groundPaint = Paint()
-      ..color = SketchColors.groundColor
-      ..strokeWidth = 2;
-
-    // Ground line
+      ..color = SketchColors.legColor.withValues(alpha: 0.6)
+      ..strokeWidth = 2.5;
     canvas.drawLine(Offset(leftX, baseY), Offset(rightX, baseY), groundPaint);
+    
+    final hatchPaint = Paint()
+      ..color = SketchColors.legColor.withValues(alpha: 0.2)
+      ..strokeWidth = 1.0;
+    for (double hx = leftX; hx < rightX; hx += 12) {
+      canvas.drawLine(Offset(hx, baseY), Offset(hx - 8, baseY + 8), hatchPaint);
+    }
 
     // Legs
     canvas.drawLine(Offset(leftX, baseY), Offset(leftX, frontTopY), legPaint);
@@ -607,11 +634,15 @@ class StructureSketchPainter extends CustomPainter {
 
     for (var col = 0; col < columns; col++) {
       final panelLeft = leftX + (col * (panelWidth + panelGap));
+      // Interpolate Y position along the slope
+      final t = col / math.max(1, columns - 1);
+      final currentTopY = frontTopY + (topY - frontTopY) * t;
+      
       final panelRect = Rect.fromLTWH(
         panelLeft,
-        topY + 4,
+        currentTopY + 2,
         panelWidth,
-        math.max(8.0, (baseY - topY) * 0.32),
+        math.max(8.0, (baseY - currentTopY) * 0.35),
       );
 
       if (showGradients) {
@@ -651,13 +682,13 @@ class StructureSketchPainter extends CustomPainter {
     if (detailLevel == SketchDetailLevel.detailed) {
       _paintDimensionLine(
         canvas,
-        start: Offset(leftX, baseY + 12),
-        end: Offset(rightX, baseY + 12),
+        start: Offset(leftX, baseY + 18),
+        end: Offset(rightX, baseY + 18),
         label: '${result.frameWidthMeters.toStringAsFixed(2)} m',
       );
       _paintVerticalDimension(
         canvas,
-        x: rightX + 10,
+        x: rightX + 22,
         baseY: baseY,
         topY: topY,
         label: '${rearHeight.toStringAsFixed(2)} m',
@@ -814,25 +845,29 @@ class StructureSketchPainter extends CustomPainter {
       _paintValueLabel(
         canvas,
         '${result.rows} x ${result.columns}',
-        Offset(drawingRect.left + 4, drawingRect.top + 4),
+        Offset(drawingRect.left + 8, drawingRect.top + 8),
+        showBackground: true,
       );
       _paintSmallLabel(
         canvas,
         '${frontLegHeight.toStringAsFixed(2)} m',
-        Offset(frontLeft.dx - 10, (frontLeft.dy + topFrontLeft.dy) / 2 - 6),
+        Offset(frontLeft.dx - 25, (frontLeft.dy + topFrontLeft.dy) / 2 - 10),
+        showBackground: true,
       );
       _paintSmallLabel(
         canvas,
         '${rearLegHeight.toStringAsFixed(2)} m',
-        Offset(backRight.dx - 30, (backRight.dy + topBackRight.dy) / 2 - 6),
+        Offset(backRight.dx + 5, (backRight.dy + topBackRight.dy) / 2 - 10),
+        showBackground: true,
       );
       _paintSmallLabel(
         canvas,
         '${result.frameSlopeLengthMeters.toStringAsFixed(2)} m',
         Offset(
-          ((topFrontRight.dx + topBackRight.dx) / 2) - 26,
-          ((topFrontRight.dy + topBackRight.dy) / 2) - 18,
+          ((topFrontRight.dx + topBackRight.dx) / 2) - 35,
+          ((topFrontRight.dy + topBackRight.dy) / 2) - 25,
         ),
+        showBackground: true,
       );
     }
   }
@@ -846,7 +881,7 @@ class StructureSketchPainter extends CustomPainter {
         style: const TextStyle(
           color: SketchColors.titleColor,
           fontWeight: FontWeight.w700,
-          fontSize: 12,
+          fontSize: 16,
         ),
       ),
       textDirection: TextDirection.ltr,
@@ -854,33 +889,69 @@ class StructureSketchPainter extends CustomPainter {
     painter.paint(canvas, offset);
   }
 
-  void _paintSmallLabel(Canvas canvas, String text, Offset offset) {
+  void _paintSmallLabel(
+    Canvas canvas,
+    String text,
+    Offset offset, {
+    bool showBackground = false,
+  }) {
     final painter = TextPainter(
       text: TextSpan(
         text: text,
         style: const TextStyle(
           color: SketchColors.labelColor,
           fontWeight: FontWeight.w600,
-          fontSize: 11,
+          fontSize: 13,
         ),
       ),
       textDirection: TextDirection.ltr,
     )..layout();
+
+    if (showBackground) {
+      final bgRect = Rect.fromLTWH(
+        offset.dx - 4,
+        offset.dy - 2,
+        painter.width + 8,
+        painter.height + 4,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(bgRect, const Radius.circular(4)),
+        Paint()..color = SketchColors.cardBackground.withValues(alpha: 0.85),
+      );
+    }
     painter.paint(canvas, offset);
   }
 
-  void _paintValueLabel(Canvas canvas, String text, Offset offset) {
+  void _paintValueLabel(
+    Canvas canvas,
+    String text,
+    Offset offset, {
+    bool showBackground = false,
+  }) {
     final painter = TextPainter(
       text: TextSpan(
         text: text,
         style: const TextStyle(
           color: SketchColors.valueColor,
           fontWeight: FontWeight.w700,
-          fontSize: 12,
+          fontSize: 14,
         ),
       ),
       textDirection: TextDirection.ltr,
     )..layout();
+
+    if (showBackground) {
+      final bgRect = Rect.fromLTWH(
+        offset.dx - 6,
+        offset.dy - 3,
+        painter.width + 12,
+        painter.height + 6,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(bgRect, const Radius.circular(6)),
+        Paint()..color = SketchColors.cardBackground.withValues(alpha: 0.9),
+      );
+    }
     painter.paint(canvas, offset);
   }
 
@@ -908,7 +979,7 @@ class StructureSketchPainter extends CustomPainter {
         style: const TextStyle(
           color: SketchColors.dimensionText,
           fontWeight: FontWeight.w600,
-          fontSize: 10,
+          fontSize: 13,
         ),
       ),
       textDirection: TextDirection.ltr,
@@ -957,7 +1028,7 @@ class StructureSketchPainter extends CustomPainter {
         style: const TextStyle(
           color: SketchColors.dimensionText,
           fontWeight: FontWeight.w600,
-          fontSize: 10,
+          fontSize: 13,
         ),
       ),
       textDirection: TextDirection.ltr,
