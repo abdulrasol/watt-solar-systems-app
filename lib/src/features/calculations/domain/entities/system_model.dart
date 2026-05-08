@@ -39,23 +39,42 @@ class SystemModel {
     if (json['pv'] != null) specs['panels'] = json['pv'];
     if (json['battery'] != null) specs['batteries'] = json['battery'];
     if (json['inverter'] != null) specs['inverter'] = json['inverter'];
+    final verificationStatusRaw =
+        json['verification_status']?.toString() ??
+        (json['company_status'] == 'accepted' ? 'verified' : 'pendingVerification');
 
     return SystemModel(
-      id: json['id'] as String,
-      ownerId: json['user_id'] as String?,
-      installedByCompanyId: json['installed_by'] as String?,
+      id: json['id']?.toString(),
+      ownerId: json['owner_id']?.toString() ?? json['user_id']?.toString(),
+      installedByCompanyId:
+          json['installed_by_company_id']?.toString() ??
+          json['installed_by']?.toString(),
       verificationStatus: SystemStatus.values.firstWhere(
-        (e) => e.toString().split('.').last == (json['company_status'] == 'accepted' ? 'verified' : 'pending_verification'),
+        (e) => e.name == verificationStatusRaw,
         orElse: () => SystemStatus.pendingVerification,
       ),
-      systemName: json['notes'] != null ? (json['notes'] as String).split('\n').first : 'System',
+      systemName:
+          json['system_name']?.toString() ??
+          (json['notes'] != null
+              ? (json['notes'] as String).split('\n').first
+              : 'System'),
       locationCoordinates: json['lat'] != null ? "${json['lat']}, ${json['lan']}" : null,
       totalCapacityKw: (json['pv']?['capacity'] as num?)?.toDouble(),
       imageUrl: json['image_url'] as String?,
       specs: specs,
       notes: json['notes'] as String?,
-      installDate: json['installed_at'] != null ? DateTime.tryParse(json['installed_at']) : null,
-      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at']) : null,
+      installDate:
+          json['installed_at'] != null
+              ? DateTime.tryParse(json['installed_at'])
+              : (json['installation_date'] != null
+                    ? DateTime.tryParse(json['installation_date'])
+                    : null),
+      createdAt:
+          json['created_at'] != null
+              ? DateTime.tryParse(json['created_at'])
+              : (json['createdAt'] != null
+                    ? DateTime.tryParse(json['createdAt'])
+                    : null),
       userName: json['user_name'] as String? ?? '',
       installer: json['installer'] as String? ?? '',
     );
@@ -74,6 +93,9 @@ class SystemModel {
       'specs': specs,
       'notes': notes,
       'installation_date': installDate?.toIso8601String(),
+      'created_at': createdAt?.toIso8601String(),
+      'user_name': userName,
+      'installer': installer,
     };
   }
 

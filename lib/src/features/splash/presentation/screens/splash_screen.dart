@@ -110,7 +110,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       // Wait a bit for the navigation to complete
       await Future.delayed(const Duration(seconds: 2));
 
-      final updateInfo = await UpdateCheckerService().checkForUpdate();
+      final updateInfo = await getIt<UpdateCheckerService>().checkForUpdate();
 
       if (updateInfo.hasUpdate) {
         dPrint('Update available: ${updateInfo.currentVersion} -> ${updateInfo.storeVersion}', tag: 'splash_screen');

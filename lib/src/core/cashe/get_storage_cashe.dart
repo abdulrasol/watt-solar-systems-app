@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
@@ -102,7 +103,7 @@ class _GetStorageBoxAdapter implements CacheBox {
   final GetStorage _storage;
 
   @override
-  void listenKey(String key, void Function(dynamic value) callback) {
-    _storage.listenKey(key, callback);
+  VoidCallback listenKey(String key, void Function(dynamic value) callback) {
+    return _storage.listenKey(key, callback);
   }
 }

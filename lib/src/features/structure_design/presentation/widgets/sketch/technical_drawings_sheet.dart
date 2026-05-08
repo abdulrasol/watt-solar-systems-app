@@ -60,8 +60,6 @@ class TechnicalDrawingsSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(icon: const Icon(Icons.copy), tooltip: labels.copyDimensions, onPressed: () => _copyDimensionsToClipboard(context)),
-        IconButton(icon: const Icon(Icons.print), tooltip: labels.print, onPressed: () => _printDrawings()),
-        IconButton(icon: const Icon(Icons.share), tooltip: labels.share, onPressed: () => _shareDrawings()),
       ],
     );
   }
@@ -400,14 +398,6 @@ class TechnicalDrawingsSheet extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: buffer.toString()));
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(labels.dimensionsCopied)));
-  }
-
-  void _printDrawings() {
-    // TODO: Implement printing functionality
-  }
-
-  void _shareDrawings() {
-    // TODO: Implement sharing functionality
   }
 }
 

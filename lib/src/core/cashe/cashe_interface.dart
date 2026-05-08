@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
 const legacyHttpCachePrefix = '_http_cache_';
 
 abstract class CacheBox {
-  void listenKey(String key, void Function(dynamic value) callback);
+  VoidCallback listenKey(String key, void Function(dynamic value) callback);
 }
 
 abstract class CasheInterface {

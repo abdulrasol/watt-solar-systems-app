@@ -68,9 +68,6 @@ final homeNavigationProvider = Provider<HomeNavigationState>((ref) {
   if (values['store'] ?? false) {
     visibleTabs.add(HomeTab.store);
   }
-  if (values['community'] ?? false) {
-    visibleTabs.add(HomeTab.community);
-  }
 
   return HomeNavigationState(visibleTabs: visibleTabs);
 });

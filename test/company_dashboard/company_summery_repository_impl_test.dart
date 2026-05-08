@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
@@ -145,7 +146,8 @@ class _FakeLocalDataSource implements LocalDataSource {
 
 class _FakeBox implements CacheBox {
   @override
-  void listenKey(String key, void Function(dynamic value) callback) {}
+  VoidCallback listenKey(String key, void Function(dynamic value) callback) =>
+      () {};
 }
 
 class _FakeCache implements CasheInterface {

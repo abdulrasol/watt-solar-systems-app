@@ -39,7 +39,6 @@ class Home extends ConsumerWidget {
       const CalculatorLandingPage(showAppBar: false),
       const ServicesExplorerScreen(embedded: true),
       const StorefrontScreen(audience: StorefrontAudience.b2c),
-      const UserDashboard(),
     ];
     final navItems = navigation.visibleTabs.map((tab) => _buildNavItem(tab, context)).toList();
     final navIndex = navigation.navIndexFor(effectiveIndex);
@@ -112,7 +111,7 @@ class Home extends ConsumerWidget {
       case HomeTab.store:
         return AppLocalizations.of(context)!.store;
       case HomeTab.community:
-        return 'community';
+        return AppLocalizations.of(context)!.home;
     }
   }
 

@@ -20,7 +20,7 @@ import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
 class _FakeBox implements CacheBox {
   @override
-  void listenKey(String key, void Function(dynamic) listener) {}
+  VoidCallback listenKey(String key, void Function(dynamic) listener) => () {};
 }
 
 class _FakeCache implements CasheInterface {

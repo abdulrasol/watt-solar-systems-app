@@ -70,14 +70,13 @@ import 'package:solar_hub/src/features/services/presentation/screens/services_ex
 
 // Create a globally accessible provider for the GoRouter
 final routerProvider = Provider<GoRouter>((ref) {
-  // We can watch the auth state if we want the router to refresh on auth changes
-  // Or just read it inside the redirect callback.
+  final authState = ref.watch(authProvider);
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     redirect: (BuildContext context, GoRouterState state) {
-      return null;
+      return appRedirectForRoute(state.uri.path, authState);
     },
     routes: <RouteBase>[
       GoRoute(
@@ -126,19 +125,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: 'company_registration',
             builder: (BuildContext context, GoRouterState state) {
               return const CompanyRegistrationPage();
-            },
-            redirect: (BuildContext context, GoRouterState state) {
-              // Read the current authentication state synchronously
-              final isSigned = ref.read(authProvider).isSigned;
-
-              if (!isSigned) {
-                // If the user is NOT logged in, redirect them to the auth (login) page.
-                // You can even pass the intended location as a query parameter if you want to route back!
-                // e.g. return '/auth?redirect_to=${state.uri.toString()}';
-                return '/auth';
-              }
-              // If signed in, let them through
-              return null;
             },
           ),
         ],
@@ -218,9 +204,19 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/companies/dashboard/orders/:id',
             builder: (BuildContext context, GoRouterState state) {
-              final id = int.parse(state.pathParameters['id']!);
-              final auth = ref.read(authProvider);
-              return OrderDetailScreen(orderId: id, companyId: auth.company?.id, sellerView: true);
+              final id = int.tryParse(state.pathParameters['id'] ?? '');
+              if (id == null || authState.company?.id == null) {
+                return const _RouteRequirementPage(
+                  title: 'Order Unavailable',
+                  message:
+                      'This order link is invalid or requires a company workspace session.',
+                );
+              }
+              return OrderDetailScreen(
+                orderId: id,
+                companyId: authState.company?.id,
+                sellerView: true,
+              );
             },
           ),
           GoRoute(
@@ -250,15 +246,20 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: 'add', builder: (context, state) => const AddProductPage()),
           GoRoute(
             path: 'product/:id',
-            builder: (BuildContext context, GoRouterState state) {
-              final product = state.extra as Product;
-              return ProductDetailsPage(product: product);
-            },
+            builder: (BuildContext context, GoRouterState state) =>
+                buildInventoryProductRoute(state),
           ),
           GoRoute(
             path: 'edit/:id',
             builder: (BuildContext context, GoRouterState state) {
-              final product = state.extra as Product;
+              final product = state.extra is Product ? state.extra as Product : null;
+              if (product == null) {
+                return const _RouteRequirementPage(
+                  title: 'Product Edit Unavailable',
+                  message:
+                      'Open product editing from the inventory list or product details page.',
+                );
+              }
               return AddProductPage(product: product);
             },
           ),
@@ -297,16 +298,19 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/storefront/:audience/orders/:id',
         builder: (context, state) {
           final audience = state.pathParameters['audience'] == 'b2b' ? OrderAudience.b2b : OrderAudience.b2c;
-          final id = int.parse(state.pathParameters['id']!);
+          final id = int.tryParse(state.pathParameters['id'] ?? '');
+          if (id == null) {
+            return const _RouteRequirementPage(
+              title: 'Order Unavailable',
+              message: 'This order link is invalid.',
+            );
+          }
           return OrderDetailScreen(orderId: id, audience: audience);
         },
       ),
       GoRoute(
         path: '/storefront/order-result',
-        builder: (context, state) {
-          final order = state.extra as OrderRecord;
-          return OrderCheckoutResultScreen(order: order);
-        },
+        builder: (context, state) => buildOrderResultRoute(state),
       ),
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
@@ -389,20 +393,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           final prefill = state.extra is SolarRequestFormPrefill ? state.extra as SolarRequestFormPrefill : null;
           return SolarRequestForm(prefill: prefill);
         },
-        redirect: (BuildContext context, GoRouterState state) {
-          final isSigned = ref.read(authProvider).isSigned;
-          if (!isSigned) return '/auth';
-          return null;
-        },
       ),
       GoRoute(
         path: '/calculator/request-offer-wizard',
         builder: (context, state) => const OfferRequestWizard(),
-        redirect: (BuildContext context, GoRouterState state) {
-          final isSigned = ref.read(authProvider).isSigned;
-          if (!isSigned) return '/auth';
-          return null;
-        },
       ),
       GoRoute(path: '/calculator/structure-design', builder: (context, state) => const StructureDesignScreen()),
       GoRoute(path: '/calculator/fast-calculator', builder: (context, state) => const FastCalculator()),
@@ -473,3 +467,127 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+String? appRedirectForRoute(String path, AuthState authState) {
+  if (routeRequiresAdmin(path) && !authState.isSuperUser) {
+    return authState.isSigned ? '/home' : '/auth?redirect_to=$path';
+  }
+
+  if (routeRequiresCompanyMember(path) && !authState.isCompanyMember) {
+    return authState.isSigned ? '/home' : '/auth?redirect_to=$path';
+  }
+
+  if (routeRequiresAuthenticatedUser(path) && !authState.isSigned) {
+    return '/auth?redirect_to=$path';
+  }
+
+  return null;
+}
+
+bool routeRequiresAdmin(String path) =>
+    path == '/admin' || path.startsWith('/admin/');
+
+bool routeRequiresCompanyMember(String path) {
+  return path.startsWith('/companies/dashboard') ||
+      path == '/inventory' ||
+      path.startsWith('/inventory/') ||
+      path == '/company-work' ||
+      path.startsWith('/company-work/') ||
+      path == '/members' ||
+      path == '/offers' ||
+      path.startsWith('/offers/');
+}
+
+bool routeRequiresAuthenticatedUser(String path) {
+  return path == '/auth/profile' ||
+      path == '/auth/edit_profile' ||
+      path == '/notifications' ||
+      path == '/user-requests' ||
+      path.startsWith('/user-requests/') ||
+      path == '/calculator/request-offer-wizard' ||
+      (path.startsWith('/storefront/') && path.contains('/orders'));
+}
+
+class _RouteRequirementPage extends StatelessWidget {
+  const _RouteRequirementPage({
+    required this.title,
+    required this.message,
+    this.actionLabel,
+    this.onAction,
+  });
+
+  final String title;
+  final String message;
+  final String? actionLabel;
+  final void Function(BuildContext context)? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return PreScaffold(
+      title: title,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 480),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.info_outline, size: 56),
+                const SizedBox(height: 16),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                ),
+                if (actionLabel != null && onAction != null) ...[
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => onAction!(context),
+                    child: Text(actionLabel!),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget buildInventoryProductRoute(GoRouterState state) {
+  final product = state.extra is Product ? state.extra as Product : null;
+  if (product == null) {
+    return const _RouteRequirementPage(
+      title: 'Product Unavailable',
+      message:
+          'Open this page from the inventory list so the product can be loaded safely.',
+    );
+  }
+  return ProductDetailsPage(product: product);
+}
+
+Widget buildOrderResultRoute(GoRouterState state) {
+  final order = state.extra is OrderRecord ? state.extra as OrderRecord : null;
+  if (order == null) {
+    final audience = storefrontAudienceFromQuery(
+      state.uri.queryParameters['audience'],
+    );
+    return _RouteRequirementPage(
+      title: 'Order Result Unavailable',
+      message:
+          'The checkout result is only available immediately after placing an order.',
+      actionLabel: 'Open My Orders',
+      onAction: (context) => context.go(
+        '/storefront/${audience == StorefrontAudience.b2b ? 'b2b' : 'b2c'}/orders',
+      ),
+    );
+  }
+  return OrderCheckoutResultScreen(order: order);
+}
