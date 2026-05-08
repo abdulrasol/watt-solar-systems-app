@@ -1637,6 +1637,252 @@ abstract class AppLocalizations {
   /// **'View full sketch'**
   String get structure_view_full_sketch;
 
+  /// No description provided for @structure_detail_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Detail view'**
+  String get structure_detail_view;
+
+  /// No description provided for @structure_panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels'**
+  String get structure_panels;
+
+  /// No description provided for @structure_offset.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset'**
+  String get structure_offset;
+
+  /// No description provided for @structure_total_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Total depth'**
+  String get structure_total_depth;
+
+  /// No description provided for @structure_ground_level.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground level'**
+  String get structure_ground_level;
+
+  /// No description provided for @structure_scale.
+  ///
+  /// In en, this message translates to:
+  /// **'Scale'**
+  String get structure_scale;
+
+  /// No description provided for @structure_base_plate_detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Base plate detail'**
+  String get structure_base_plate_detail;
+
+  /// No description provided for @structure_leg_detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg detail'**
+  String get structure_leg_detail;
+
+  /// No description provided for @structure_copy_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Dimensions'**
+  String get structure_copy_dimensions;
+
+  /// No description provided for @structure_print.
+  ///
+  /// In en, this message translates to:
+  /// **'Print'**
+  String get structure_print;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @structure_usable_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Usable width'**
+  String get structure_usable_width;
+
+  /// No description provided for @structure_usable_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Usable depth'**
+  String get structure_usable_depth;
+
+  /// No description provided for @structure_panel_layout.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel layout'**
+  String get structure_panel_layout;
+
+  /// No description provided for @structure_total_panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Total panels'**
+  String get structure_total_panels;
+
+  /// No description provided for @structure_frame_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame depth'**
+  String get structure_frame_depth;
+
+  /// No description provided for @structure_leg_heights.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg heights'**
+  String get structure_leg_heights;
+
+  /// No description provided for @structure_min_front_leg_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Min front leg height'**
+  String get structure_min_front_leg_height;
+
+  /// No description provided for @structure_recents_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Structures'**
+  String get structure_recents_tooltip;
+
+  /// No description provided for @structure_support_structure.
+  ///
+  /// In en, this message translates to:
+  /// **'Support structure'**
+  String get structure_support_structure;
+
+  /// No description provided for @structure_support_station_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Support station count'**
+  String get structure_support_station_count;
+
+  /// No description provided for @structure_support_spacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Support spacing'**
+  String get structure_support_spacing;
+
+  /// No description provided for @structure_angles.
+  ///
+  /// In en, this message translates to:
+  /// **'Angles'**
+  String get structure_angles;
+
+  /// No description provided for @structure_ideal_azimuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideal azimuth'**
+  String get structure_ideal_azimuth;
+
+  /// No description provided for @structure_materials.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials'**
+  String get structure_materials;
+
+  /// No description provided for @structure_front_leg_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Front leg count'**
+  String get structure_front_leg_count;
+
+  /// No description provided for @structure_rear_leg_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear leg count'**
+  String get structure_rear_leg_count;
+
+  /// No description provided for @structure_anchor_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Anchor count'**
+  String get structure_anchor_count;
+
+  /// No description provided for @structure_row_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Row details'**
+  String get structure_row_details;
+
+  /// No description provided for @structure_row.
+  ///
+  /// In en, this message translates to:
+  /// **'Row'**
+  String get structure_row;
+
+  /// No description provided for @structure_local_footprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Local footprint'**
+  String get structure_local_footprint;
+
+  /// No description provided for @structure_layout.
+  ///
+  /// In en, this message translates to:
+  /// **'Layout'**
+  String get structure_layout;
+
+  /// No description provided for @structure_dimensions_report.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure Dimensions Report'**
+  String get structure_dimensions_report;
+
+  /// No description provided for @structure_dimensions_copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Dimensions copied to clipboard'**
+  String get structure_dimensions_copied;
+
+  /// No description provided for @structure_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Tilt'**
+  String get structure_tilt;
+
+  /// No description provided for @structure_reset_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset view'**
+  String get structure_reset_view;
+
+  /// No description provided for @structure_show_grid.
+  ///
+  /// In en, this message translates to:
+  /// **'Show grid'**
+  String get structure_show_grid;
+
+  /// No description provided for @structure_show_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Show dimensions'**
+  String get structure_show_dimensions;
+
+  /// No description provided for @structure_show_annotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Show annotations'**
+  String get structure_show_annotations;
+
+  /// No description provided for @structure_print_feature_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Print feature coming soon'**
+  String get structure_print_feature_coming_soon;
+
+  /// No description provided for @structure_supports.
+  ///
+  /// In en, this message translates to:
+  /// **'Supports'**
+  String get structure_supports;
+
   /// No description provided for @structure_save_watt_drawing.
   ///
   /// In en, this message translates to:
@@ -6472,6 +6718,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open {service}'**
   String open_service(Object service);
+
+  /// No description provided for @structure_button_next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get structure_button_next;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

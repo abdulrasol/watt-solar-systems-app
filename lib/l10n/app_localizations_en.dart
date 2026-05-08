@@ -796,6 +796,129 @@ class AppLocalizationsEn extends AppLocalizations {
   String get structure_view_full_sketch => 'View full sketch';
 
   @override
+  String get structure_detail_view => 'Detail view';
+
+  @override
+  String get structure_panels => 'Panels';
+
+  @override
+  String get structure_offset => 'Offset';
+
+  @override
+  String get structure_total_depth => 'Total depth';
+
+  @override
+  String get structure_ground_level => 'Ground level';
+
+  @override
+  String get structure_scale => 'Scale';
+
+  @override
+  String get structure_base_plate_detail => 'Base plate detail';
+
+  @override
+  String get structure_leg_detail => 'Leg detail';
+
+  @override
+  String get structure_copy_dimensions => 'Copy Dimensions';
+
+  @override
+  String get structure_print => 'Print';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get structure_usable_width => 'Usable width';
+
+  @override
+  String get structure_usable_depth => 'Usable depth';
+
+  @override
+  String get structure_panel_layout => 'Panel layout';
+
+  @override
+  String get structure_total_panels => 'Total panels';
+
+  @override
+  String get structure_frame_depth => 'Frame depth';
+
+  @override
+  String get structure_leg_heights => 'Leg heights';
+
+  @override
+  String get structure_min_front_leg_height => 'Min front leg height';
+
+  @override
+  String get structure_recents_tooltip => 'Recent Structures';
+
+  @override
+  String get structure_support_structure => 'Support structure';
+
+  @override
+  String get structure_support_station_count => 'Support station count';
+
+  @override
+  String get structure_support_spacing => 'Support spacing';
+
+  @override
+  String get structure_angles => 'Angles';
+
+  @override
+  String get structure_ideal_azimuth => 'Ideal azimuth';
+
+  @override
+  String get structure_materials => 'Materials';
+
+  @override
+  String get structure_front_leg_count => 'Front leg count';
+
+  @override
+  String get structure_rear_leg_count => 'Rear leg count';
+
+  @override
+  String get structure_anchor_count => 'Anchor count';
+
+  @override
+  String get structure_row_details => 'Row details';
+
+  @override
+  String get structure_row => 'Row';
+
+  @override
+  String get structure_local_footprint => 'Local footprint';
+
+  @override
+  String get structure_layout => 'Layout';
+
+  @override
+  String get structure_dimensions_report => 'Structure Dimensions Report';
+
+  @override
+  String get structure_dimensions_copied => 'Dimensions copied to clipboard';
+
+  @override
+  String get structure_tilt => 'Tilt';
+
+  @override
+  String get structure_reset_view => 'Reset view';
+
+  @override
+  String get structure_show_grid => 'Show grid';
+
+  @override
+  String get structure_show_dimensions => 'Show dimensions';
+
+  @override
+  String get structure_show_annotations => 'Show annotations';
+
+  @override
+  String get structure_print_feature_coming_soon => 'Print feature coming soon';
+
+  @override
+  String get structure_supports => 'Supports';
+
+  @override
   String get structure_save_watt_drawing => 'Save Watt Drawing';
 
   @override
@@ -3321,4 +3444,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String open_service(Object service) {
     return 'Open $service';
   }
+
+  @override
+  String get structure_button_next => 'Next';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get reset => 'Reset';
 }

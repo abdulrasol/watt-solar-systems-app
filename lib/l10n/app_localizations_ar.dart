@@ -796,6 +796,129 @@ class AppLocalizationsAr extends AppLocalizations {
   String get structure_view_full_sketch => 'عرض الرسم الكامل';
 
   @override
+  String get structure_detail_view => 'عرض التفاصيل';
+
+  @override
+  String get structure_panels => 'الألواح';
+
+  @override
+  String get structure_offset => 'الإزاحة';
+
+  @override
+  String get structure_total_depth => 'العمق الإجمالي';
+
+  @override
+  String get structure_ground_level => 'مستوى الأرض';
+
+  @override
+  String get structure_scale => 'المقياس';
+
+  @override
+  String get structure_base_plate_detail => 'تفاصيل لوحة القاعدة';
+
+  @override
+  String get structure_leg_detail => 'تفاصيل الساق';
+
+  @override
+  String get structure_copy_dimensions => 'نسخ الأبعاد';
+
+  @override
+  String get structure_print => 'طباعة';
+
+  @override
+  String get share => 'مشاركة';
+
+  @override
+  String get structure_usable_width => 'العرض المتاح';
+
+  @override
+  String get structure_usable_depth => 'العمق المتاح';
+
+  @override
+  String get structure_panel_layout => 'تخطيط الألواح';
+
+  @override
+  String get structure_total_panels => 'إجمالي الألواح';
+
+  @override
+  String get structure_frame_depth => 'عمق الإطار';
+
+  @override
+  String get structure_leg_heights => 'ارتفاعات السيقان';
+
+  @override
+  String get structure_min_front_leg_height => 'أقل ارتفاع للساق الأمامية';
+
+  @override
+  String get structure_recents_tooltip => 'الهياكل الأخيرة';
+
+  @override
+  String get structure_support_structure => 'هيكل الدعم';
+
+  @override
+  String get structure_support_station_count => 'عدد محطات الدعم';
+
+  @override
+  String get structure_support_spacing => 'تباعد الدعم';
+
+  @override
+  String get structure_angles => 'الزوايا';
+
+  @override
+  String get structure_ideal_azimuth => 'السمت المثالي';
+
+  @override
+  String get structure_materials => 'المواد';
+
+  @override
+  String get structure_front_leg_count => 'عدد الأرجل الأمامية';
+
+  @override
+  String get structure_rear_leg_count => 'عدد الأرجل الخلفية';
+
+  @override
+  String get structure_anchor_count => 'عدد المثبتات';
+
+  @override
+  String get structure_row_details => 'تفاصيل الصفوف';
+
+  @override
+  String get structure_row => 'صف';
+
+  @override
+  String get structure_local_footprint => 'البصمة المحلية';
+
+  @override
+  String get structure_layout => 'التخطيط';
+
+  @override
+  String get structure_dimensions_report => 'تقرير أبعاد الهيكل';
+
+  @override
+  String get structure_dimensions_copied => 'تم نسخ الأبعاد إلى الحافظة';
+
+  @override
+  String get structure_tilt => 'الميل';
+
+  @override
+  String get structure_reset_view => 'إعادة ضبط العرض';
+
+  @override
+  String get structure_show_grid => 'إظهار الشبكة';
+
+  @override
+  String get structure_show_dimensions => 'إظهار الأبعاد';
+
+  @override
+  String get structure_show_annotations => 'إظهار التوضيحات';
+
+  @override
+  String get structure_print_feature_coming_soon => 'ميزة الطباعة قريباً';
+
+  @override
+  String get structure_supports => 'الدعامات';
+
+  @override
   String get structure_save_watt_drawing => 'حفظ رسم Watt';
 
   @override
@@ -3321,4 +3444,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String open_service(Object service) {
     return 'فتح $service';
   }
+
+  @override
+  String get structure_button_next => 'التالي';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get reset => 'إعادة تعيين';
 }
