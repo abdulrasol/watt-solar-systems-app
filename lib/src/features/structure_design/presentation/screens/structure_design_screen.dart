@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -292,6 +293,12 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen>
         title: l10n.structure_design_title,
         actions: [
           IconButton(
+            key: const Key('recent_structures_button'),
+            onPressed: _openWattDrawing,
+            icon: const Icon(Icons.history_rounded),
+            tooltip: l10n.structure_open_watt_drawing,
+          ),
+          IconButton(
             key: const Key('open_watt_drawing_button'),
             onPressed: _openWattDrawing,
             icon: const Icon(Icons.folder_open_rounded),
@@ -303,363 +310,364 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen>
             tooltip: l10n.guide,
           ),
         ],
-        bottomNavigationBar: _StructureWizardBottomBar(
-          tabIndex: _tabController.index,
-          l10n: l10n,
-          theme: theme,
-          onBack: _handleBack,
-          onNext: _handleNext,
-        ),
+         bottomNavigationBar: _StructureWizardBottomBar(
+           tabIndex: _tabController.index,
+           l10n: l10n,
+           theme: theme,
+           onBack: _handleBack,
+           onNext: _handleNext,
+           onSave: _saveWattDrawing,
+         ),
         child: Column(
           children: [
-            _StepperShell(
-              stepperController: _stepperController,
-              isDark: theme.brightness == Brightness.dark,
-            ),
+             _StepperShell(
+               stepperController: _stepperController,
+               isDark: theme.brightness == Brightness.dark,
+             ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  Form(
-                    key: _siteFormKey,
-                    child: _WizardScroll(
-                      child: Column(
-                        children: [
-                          _IntroCard(
-                            title: l10n.structure_design_title,
-                            description: l10n.structure_design_intro,
-                          ),
-                          SizedBox(height: 16.h),
-                          SectionCard(
-                            icon: Iconsax.map_1_bold,
-                            title: l10n.structure_site_inputs,
-                            explanation: explanations[0],
-                            child: Column(
-                              children: [
-                                _NumberField(
-                                  key: const Key('site_width_field'),
-                                  controller: _siteWidthController,
-                                  label: l10n.structure_site_width,
-                                  suffix: l10n.metres,
-                                  minValue: 0.01,
-                                  onChanged: controller.updateSiteWidth,
-                                ),
-                                _NumberField(
-                                  key: const Key('site_depth_field'),
-                                  controller: _siteDepthController,
-                                  label: l10n.structure_site_depth,
-                                  suffix: l10n.metres,
-                                  minValue: 0.01,
-                                  onChanged: controller.updateSiteDepth,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
-                          SectionCard(
-                            icon: Iconsax.location_bold,
-                            title: l10n.structure_direction_preference,
-                            explanation: explanations[1],
-                            child: Column(
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: _NumberField(
-                                        key: const Key('latitude_field'),
-                                        controller: _latitudeController,
-                                        label: l10n.structure_latitude,
-                                        suffix: 'deg',
-                                        allowAnyNumeric: true,
-                                        onChanged: controller.updateLatitude,
-                                      ),
-                                    ),
-                                    SizedBox(width: 12.w),
-                                    FilledButton.icon(
-                                      onPressed: controller.isLocating
-                                          ? null
-                                          : () async {
-                                              if (!(_siteFormKey.currentState
-                                                      ?.validate() ??
-                                                  false)) {
-                                                return;
-                                              }
-                                              await ref
-                                                  .read(
-                                                    structureDesignControllerProvider,
-                                                  )
-                                                  .useCurrentLocation();
-                                              final updated = ref
-                                                  .read(
-                                                    structureDesignControllerProvider,
-                                                  )
-                                                  .input;
-                                              _latitudeController.text = updated
-                                                  .latitude
-                                                  .toStringAsFixed(4);
-                                            },
-                                      icon: controller.isLocating
-                                          ? const SizedBox(
-                                              width: 16,
-                                              height: 16,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                              ),
-                                            )
-                                          : const Icon(Icons.my_location),
-                                      label: Text(l10n.structure_use_location),
-                                    ),
-                                  ],
-                                ),
-                                if (controller.locationMessage != null) ...[
-                                  SizedBox(height: 8.h),
-                                  Text(
-                                    controller.locationMessage!,
-                                    key: const Key('location_message'),
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      color: Colors.orange[800],
-                                    ),
-                                  ),
-                                ],
-                                SizedBox(height: 12.h),
-                                DropdownButtonFormField<
-                                  FacingDirectionPreference
-                                >(
-                                  initialValue:
-                                      controller.input.facingPreference,
-                                  decoration: _inputDecoration(
-                                    context,
-                                    l10n.structure_direction_preference,
-                                  ),
-                                  items: FacingDirectionPreference.values.map((
-                                    value,
-                                  ) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(_directionLabel(l10n, value)),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      controller.updateFacingPreference(value);
-                                    }
-                                  },
-                                ),
-                                SizedBox(height: 12.h),
-                                DropdownButtonFormField<MountType>(
-                                  initialValue: controller.input.mountType,
-                                  decoration: _inputDecoration(
-                                    context,
-                                    l10n.structure_mount_type,
-                                  ),
-                                  items: MountType.values.map((value) {
-                                    final enabled = value == MountType.ground;
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      enabled: enabled,
-                                      child: Text(
-                                        enabled
-                                            ? _mountTypeLabel(l10n, value)
-                                            : '${_mountTypeLabel(l10n, value)} (${l10n.structure_coming_soon})',
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      controller.updateMountType(value);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                 children: [
+                   Form(
+                     key: _siteFormKey,
+                     child: _WizardScroll(
+                       child: Column(
+                         children: [
+                           _IntroCard(
+                             title: l10n.structure_design_title,
+                             description: l10n.structure_design_intro,
+                           ),
+                           SizedBox(height: 16.h),
+                           SectionCard(
+                             icon: Iconsax.map_1_bold,
+                             title: l10n.structure_site_inputs,
+                             explanation: explanations[0],
+                             child: Column(
+                               children: [
+                                 _NumberField(
+                                   key: const Key('site_width_field'),
+                                   controller: _siteWidthController,
+                                   label: l10n.structure_site_width,
+                                   suffix: l10n.metres,
+                                   minValue: 0.01,
+                                   onChanged: controller.updateSiteWidth,
+                                 ),
+                                 _NumberField(
+                                   key: const Key('site_depth_field'),
+                                   controller: _siteDepthController,
+                                   label: l10n.structure_site_depth,
+                                   suffix: l10n.metres,
+                                   minValue: 0.01,
+                                   onChanged: controller.updateSiteDepth,
+                                 ),
+                               ],
+                             ),
+                           ),
+                           SizedBox(height: 16.h),
+                           SectionCard(
+                             icon: Iconsax.location_bold,
+                             title: l10n.structure_direction_preference,
+                             explanation: explanations[1],
+                             child: Column(
+                               children: [
+                                 Row(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     Expanded(
+                                       child: _NumberField(
+                                         key: const Key('latitude_field'),
+                                         controller: _latitudeController,
+                                         label: l10n.structure_latitude,
+                                         suffix: 'deg',
+                                         allowAnyNumeric: true,
+                                         onChanged: controller.updateLatitude,
+                                       ),
+                                     ),
+                                     SizedBox(width: 12.w),
+                                     FilledButton.icon(
+                                       onPressed: controller.isLocating
+                                           ? null
+                                           : () async {
+                                               if (!(_siteFormKey.currentState
+                                                       ?.validate() ??
+                                                   false)) {
+                                                 return;
+                                               }
+                                               await ref
+                                                   .read(
+                                                     structureDesignControllerProvider,
+                                                   )
+                                                   .useCurrentLocation();
+                                               final updated = ref
+                                                   .read(
+                                                     structureDesignControllerProvider,
+                                                   )
+                                                   .input;
+                                               _latitudeController.text = updated
+                                                   .latitude
+                                                   .toStringAsFixed(4);
+                                             },
+                                       icon: controller.isLocating
+                                           ? const SizedBox(
+                                               width: 16,
+                                               height: 16,
+                                               child: CircularProgressIndicator(
+                                                 strokeWidth: 2,
+                                               ),
+                                             )
+                                           : const Icon(Icons.my_location),
+                                       label: Text(l10n.structure_use_location),
+                                     ),
+                                   ],
+                                 ),
+                                 if (controller.locationMessage != null) ...[
+                                   SizedBox(height: 8.h),
+                                   Text(
+                                     controller.locationMessage!,
+                                     key: const Key('location_message'),
+                                     style: theme.textTheme.bodySmall?.copyWith(
+                                       color: Colors.orange[800],
+                                     ),
+                                   ),
+                                 ],
+                                 SizedBox(height: 12.h),
+                                 DropdownButtonFormField<
+                                   FacingDirectionPreference
+                                 >(
+                                   initialValue:
+                                       controller.input.facingPreference,
+                                   decoration: _inputDecoration(
+                                     context,
+                                     l10n.structure_direction_preference,
+                                   ),
+                                   items: FacingDirectionPreference.values.map((
+                                     value,
+                                   ) {
+                                     return DropdownMenuItem(
+                                       value: value,
+                                       child: Text(_directionLabel(l10n, value)),
+                                     );
+                                   }).toList(),
+                                   onChanged: (value) {
+                                     if (value != null) {
+                                       controller.updateFacingPreference(value);
+                                     }
+                                   },
+                                 ),
+                                 SizedBox(height: 12.h),
+                                 DropdownButtonFormField<MountType>(
+                                   initialValue: controller.input.mountType,
+                                   decoration: _inputDecoration(
+                                     context,
+                                     l10n.structure_mount_type,
+                                   ),
+                                   items: MountType.values.map((value) {
+                                     final enabled = value == MountType.ground;
+                                     return DropdownMenuItem(
+                                       value: value,
+                                       enabled: enabled,
+                                       child: Text(
+                                         enabled
+                                             ? _mountTypeLabel(l10n, value)
+                                             : '${_mountTypeLabel(l10n, value)} (${l10n.structure_coming_soon})',
+                                       ),
+                                     );
+                                   }).toList(),
+                                   onChanged: (value) {
+                                     if (value != null) {
+                                       controller.updateMountType(value);
+                                     }
+                                   },
+                                 ),
+                               ],
+                             ),
+                           ),
                         ],
                       ),
                     ),
                   ),
-                  Form(
-                    key: _panelsFormKey,
-                    child: _WizardScroll(
-                      child: Column(
-                        children: [
-                          SectionCard(
-                            icon: Iconsax.sun_1_bold,
-                            title: l10n.structure_panel_dimensions,
-                            explanation: explanations[4],
-                            child: Column(
-                              children: [
-                                DropdownButtonFormField<PanelOrientation>(
-                                  initialValue:
-                                      controller.input.panelSpec.orientation,
-                                  decoration: _inputDecoration(
-                                    context,
-                                    l10n.structure_panel_orientation,
-                                  ),
-                                  items: PanelOrientation.values.map((value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(
-                                        value == PanelOrientation.portrait
-                                            ? l10n.structure_orientation_portrait
-                                            : l10n.structure_orientation_landscape,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      controller.updatePanelOrientation(value);
-                                    }
-                                  },
-                                ),
-                                SizedBox(height: 12.h),
-                                _NumberField(
-                                  controller: _panelLengthController,
-                                  label: l10n.structure_panel_length,
-                                  suffix: l10n.metres,
-                                  minValue: 0.01,
-                                  onChanged: controller.updatePanelLength,
-                                ),
-                                _NumberField(
-                                  controller: _panelWidthController,
-                                  label: l10n.structure_panel_width,
-                                  suffix: l10n.metres,
-                                  minValue: 0.01,
-                                  onChanged: controller.updatePanelWidth,
-                                ),
-                                _NumberField(
-                                  controller: _panelThicknessController,
-                                  label: l10n.structure_panel_thickness,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updatePanelThickness,
-                                ),
-                                _NumberField(
-                                  controller: _horizontalGapController,
-                                  label: l10n.structure_horizontal_gap,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updateHorizontalGap,
-                                ),
-                                _NumberField(
-                                  controller: _verticalGapController,
-                                  label: l10n.structure_vertical_gap,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updateVerticalGap,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
-                          SectionCard(
-                            icon: Iconsax.buildings_2_bold,
-                            title: l10n.structure_row_mode,
-                            explanation: explanations[5],
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                DropdownButtonFormField<RowMode>(
-                                  key: const Key('row_mode_field'),
-                                  initialValue: controller.input.rowMode,
-                                  decoration: _inputDecoration(
-                                    context,
-                                    l10n.structure_row_mode,
-                                  ),
-                                  items: RowMode.values.map((value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(_rowModeLabel(l10n, value)),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      controller.updateRowMode(value);
-                                    }
-                                  },
-                                ),
-                                SizedBox(height: 12.h),
-                                Text(
-                                  controller.input.rowMode ==
-                                          RowMode.independent
-                                      ? l10n.structure_independent_rows_hint
-                                      : l10n.structure_stepped_rows_hint,
-                                  key: const Key('row_mode_hint'),
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey[700],
-                                    height: 1.4,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
-                          SectionCard(
-                            icon: Iconsax.ruler_bold,
-                            title: l10n.structure_clearances,
-                            explanation: explanations[6],
-                            child: Column(
-                              children: [
-                                _NumberField(
-                                  controller: _frontClearanceController,
-                                  label: l10n.structure_front_clearance,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updateFrontClearance,
-                                ),
-                                _NumberField(
-                                  controller: _rearClearanceController,
-                                  label: l10n.structure_rear_clearance,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updateRearClearance,
-                                ),
-                                _NumberField(
-                                  controller: _sideClearanceController,
-                                  label: l10n.structure_side_clearance,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updateSideClearance,
-                                ),
-                                _NumberField(
-                                  controller: _frontLegClearanceController,
-                                  label: l10n.structure_front_leg_height,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updateFrontLegClearance,
-                                ),
-                                _NumberField(
-                                  controller: _interRowGapController,
-                                  label: l10n.structure_inter_row_gap,
-                                  suffix: l10n.metres,
-                                  minValue: 0.0,
-                                  allowZero: true,
-                                  onChanged: controller.updateInterRowGap,
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (!controller.supportsSelectedMountType) ...[
-                            SizedBox(height: 12.h),
-                            Text(
-                              l10n.structure_ground_mount_only_hint,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: Colors.orange[800],
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
+                   Form(
+                     key: _panelsFormKey,
+                     child: _WizardScroll(
+                       child: Column(
+                         children: [
+                           SectionCard(
+                             icon: Iconsax.sun_1_bold,
+                             title: l10n.structure_panel_dimensions,
+                             explanation: explanations[4],
+                             child: Column(
+                               children: [
+                                 DropdownButtonFormField<PanelOrientation>(
+                                   initialValue:
+                                       controller.input.panelSpec.orientation,
+                                   decoration: _inputDecoration(
+                                     context,
+                                     l10n.structure_panel_orientation,
+                                   ),
+                                   items: PanelOrientation.values.map((value) {
+                                     return DropdownMenuItem(
+                                       value: value,
+                                       child: Text(
+                                         value == PanelOrientation.portrait
+                                             ? l10n.structure_orientation_portrait
+                                             : l10n.structure_orientation_landscape,
+                                       ),
+                                     );
+                                   }).toList(),
+                                   onChanged: (value) {
+                                     if (value != null) {
+                                       controller.updatePanelOrientation(value);
+                                     }
+                                   },
+                                 ),
+                                 SizedBox(height: 12.h),
+                                 _NumberField(
+                                   controller: _panelLengthController,
+                                   label: l10n.structure_panel_length,
+                                   suffix: l10n.metres,
+                                   minValue: 0.01,
+                                   onChanged: controller.updatePanelLength,
+                                 ),
+                                 _NumberField(
+                                   controller: _panelWidthController,
+                                   label: l10n.structure_panel_width,
+                                   suffix: l10n.metres,
+                                   minValue: 0.01,
+                                   onChanged: controller.updatePanelWidth,
+                                 ),
+                                 _NumberField(
+                                   controller: _panelThicknessController,
+                                   label: l10n.structure_panel_thickness,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updatePanelThickness,
+                                 ),
+                                 _NumberField(
+                                   controller: _horizontalGapController,
+                                   label: l10n.structure_horizontal_gap,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updateHorizontalGap,
+                                 ),
+                                 _NumberField(
+                                   controller: _verticalGapController,
+                                   label: l10n.structure_vertical_gap,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updateVerticalGap,
+                                 ),
+                               ],
+                             ),
+                           ),
+                           SizedBox(height: 16.h),
+                           SectionCard(
+                             icon: Iconsax.buildings_2_bold,
+                             title: l10n.structure_row_mode,
+                             explanation: explanations[5],
+                             child: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 DropdownButtonFormField<RowMode>(
+                                   key: const Key('row_mode_field'),
+                                   initialValue: controller.input.rowMode,
+                                   decoration: _inputDecoration(
+                                     context,
+                                     l10n.structure_row_mode,
+                                   ),
+                                   items: RowMode.values.map((value) {
+                                     return DropdownMenuItem(
+                                       value: value,
+                                       child: Text(_rowModeLabel(l10n, value)),
+                                     );
+                                   }).toList(),
+                                   onChanged: (value) {
+                                     if (value != null) {
+                                       controller.updateRowMode(value);
+                                     }
+                                   },
+                                 ),
+                                 SizedBox(height: 12.h),
+                                 Text(
+                                   controller.input.rowMode ==
+                                           RowMode.independent
+                                       ? l10n.structure_independent_rows_hint
+                                       : l10n.structure_stepped_rows_hint,
+                                   key: const Key('row_mode_hint'),
+                                   style: theme.textTheme.bodySmall?.copyWith(
+                                     color: Colors.grey[700],
+                                     height: 1.4,
+                                   ),
+                                 ),
+                               ],
+                             ),
+                           ),
+                           SizedBox(height: 16.h),
+                           SectionCard(
+                             icon: Iconsax.ruler_bold,
+                             title: l10n.structure_clearances,
+                             explanation: explanations[6],
+                             child: Column(
+                               children: [
+                                 _NumberField(
+                                   controller: _frontClearanceController,
+                                   label: l10n.structure_front_clearance,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updateFrontClearance,
+                                 ),
+                                 _NumberField(
+                                   controller: _rearClearanceController,
+                                   label: l10n.structure_rear_clearance,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updateRearClearance,
+                                 ),
+                                 _NumberField(
+                                   controller: _sideClearanceController,
+                                   label: l10n.structure_side_clearance,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updateSideClearance,
+                                 ),
+                                 _NumberField(
+                                   controller: _frontLegClearanceController,
+                                   label: l10n.structure_front_leg_height,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updateFrontLegClearance,
+                                 ),
+                                 _NumberField(
+                                   controller: _interRowGapController,
+                                   label: l10n.structure_inter_row_gap,
+                                   suffix: l10n.metres,
+                                   minValue: 0.0,
+                                   allowZero: true,
+                                   onChanged: controller.updateInterRowGap,
+                                 ),
+                               ],
+                             ),
+                           ),
+                           if (!controller.supportsSelectedMountType) ...[
+                             SizedBox(height: 12.h),
+                             Text(
+                               l10n.structure_ground_mount_only_hint,
+                               style: theme.textTheme.bodyMedium?.copyWith(
+                                 color: Colors.orange[800],
+                               ),
+                             ),
+                           ],
+                         ],
+                       ),
+                     ),
+                   ),
                   _WizardScroll(
                     child: _ResultsStep(
                       controller: controller,
@@ -770,6 +778,7 @@ class _StructureWizardBottomBar extends StatelessWidget {
     required this.theme,
     required this.onBack,
     required this.onNext,
+    this.onSave,
   });
 
   final int tabIndex;
@@ -777,9 +786,12 @@ class _StructureWizardBottomBar extends StatelessWidget {
   final ThemeData theme;
   final VoidCallback onBack;
   final VoidCallback onNext;
+  /// Called when the user taps Share / Save on the final step.
+  final Future<void> Function()? onSave;
 
   @override
   Widget build(BuildContext context) {
+    final isLastStep = tabIndex == 2;
     return Container(
       padding: EdgeInsets.fromLTRB(
         20.w,
@@ -812,34 +824,59 @@ class _StructureWizardBottomBar extends StatelessWidget {
             child: Text(tabIndex == 0 ? l10n.close : l10n.back),
           ),
           const SizedBox(width: 12),
-          Expanded(
-            child: FilledButton.icon(
+          // On the final step show Share/Save + a separate Close button
+          if (isLastStep) ...[
+            Expanded(
+              child: FilledButton.icon(
+                key: const Key('share_save_button'),
+                onPressed: onSave,
+                icon: const Icon(Icons.share_rounded, size: 18),
+                label: Text(l10n.structure_save_watt_drawing),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              key: const Key('close_wizard_button'),
               onPressed: onNext,
-              icon: Icon(
-                tabIndex == 0
-                    ? Icons.arrow_forward_rounded
-                    : tabIndex == 1
-                    ? Iconsax.calculator_bold
-                    : Icons.check_rounded,
-                size: 18,
-              ),
-              label: Text(
-                tabIndex == 0
-                    ? l10n.next
-                    : tabIndex == 1
-                    ? l10n.calculate
-                    : l10n.close,
-              ),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
+              tooltip: l10n.close,
+              icon: const Icon(Icons.close_rounded),
+              style: IconButton.styleFrom(
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
               ),
             ),
-          ),
+          ] else
+            Expanded(
+              child: FilledButton.icon(
+                onPressed: onNext,
+                icon: Icon(
+                  tabIndex == 0
+                      ? Icons.arrow_forward_rounded
+                      : Iconsax.calculator_bold,
+                  size: 18,
+                ),
+                label: Text(
+                  tabIndex == 0 ? l10n.next : l10n.calculate,
+                ),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -1563,14 +1600,21 @@ class _StructureSketchViewerPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final media = MediaQuery.of(context);
-    final useWideLayout =
-        media.orientation == Orientation.landscape && media.size.width > 900;
+    // Responsive breakpoints: >=900 → desktop wide-layout, >=600 → tablet, <600 → mobile
+    final screenWidth = media.size.width;
+    final isDesktop = screenWidth >= 900;
+    final isTablet = screenWidth >= 600 && screenWidth < 900;
+    final useWideLayout = isDesktop;
+    // On tablet/desktop we give more vertical space to each sketch card
+    final sketchHeightFactor = isDesktop ? 0.45 : (isTablet ? 0.38 : 0.32);
+    final sideHeightFactor = isDesktop ? 0.50 : (isTablet ? 0.42 : 0.36);
+    final smallHeightFactor = isDesktop ? 0.35 : (isTablet ? 0.30 : 0.26);
     final sketchColumn = Column(
       children: [
         _SketchViewCard(
           key: const Key('full_structure_sketch'),
           title: l10n.structure_top_view,
-          height: math.min(media.size.height * 0.38, 340.0),
+          height: math.min(media.size.height * sketchHeightFactor, 400.0),
           painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
@@ -1583,12 +1627,13 @@ class _StructureSketchViewerPage extends StatelessWidget {
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
             viewMode: StructureSketchView.top,
+            detailLevel: SketchDetailLevel.detailed,
           ),
         ),
         SizedBox(height: 14.h),
         _SketchViewCard(
           title: l10n.structure_side_view,
-          height: math.min(media.size.height * 0.40, 360.0),
+          height: math.min(media.size.height * sideHeightFactor, 420.0),
           painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
@@ -1601,12 +1646,13 @@ class _StructureSketchViewerPage extends StatelessWidget {
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
             viewMode: StructureSketchView.side,
+            detailLevel: SketchDetailLevel.detailed,
           ),
         ),
         SizedBox(height: 14.h),
         _SketchViewCard(
           title: l10n.structure_front_view,
-          height: math.min(media.size.height * 0.28, 250.0),
+          height: math.min(media.size.height * smallHeightFactor, 320.0),
           painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
@@ -1619,12 +1665,13 @@ class _StructureSketchViewerPage extends StatelessWidget {
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
             viewMode: StructureSketchView.front,
+            detailLevel: SketchDetailLevel.detailed,
           ),
         ),
         SizedBox(height: 14.h),
         _SketchViewCard(
           title: l10n.structure_isometric_view,
-          height: math.min(media.size.height * 0.28, 250.0),
+          height: math.min(media.size.height * smallHeightFactor, 320.0),
           painter: StructureSketchPainter(
             result: result,
             siteWidthMeters: siteWidthMeters,
@@ -1637,6 +1684,7 @@ class _StructureSketchViewerPage extends StatelessWidget {
             rearLabel: l10n.structure_rear_label,
             braceLabel: l10n.structure_brace_label,
             viewMode: StructureSketchView.isometric,
+            detailLevel: SketchDetailLevel.detailed,
           ),
         ),
         SizedBox(height: 12.h),

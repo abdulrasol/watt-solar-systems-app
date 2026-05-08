@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -9,10 +10,9 @@ import 'package:solar_hub/src/features/structure_design/domain/entities/frame_re
 import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
 import 'package:solar_hub/src/features/structure_design/domain/services/structure_design_calculator.dart';
+import 'package:solar_hub/src/features/structure_design/presentation/utils/debounce_util.dart';
 
-final structureDesignCalculatorProvider = Provider<StructureDesignCalculator>((
-  ref,
-) {
+final structureDesignCalculatorProvider = Provider<StructureDesignCalculator>((ref) {
   return StructureDesignCalculator();
 });
 
@@ -24,13 +24,9 @@ final wattDrawingFileServiceProvider = Provider<WattDrawingFileService>((ref) {
   return WattDrawingFileService();
 });
 
-final structureDesignControllerProvider =
-    ChangeNotifierProvider.autoDispose<StructureDesignController>((ref) {
-      return StructureDesignController(
-        calculator: ref.read(structureDesignCalculatorProvider),
-        locationService: ref.read(structureLocationServiceProvider),
-      );
-    });
+final structureDesignControllerProvider = ChangeNotifierProvider.autoDispose<StructureDesignController>((ref) {
+  return StructureDesignController(calculator: ref.read(structureDesignCalculatorProvider), locationService: ref.read(structureLocationServiceProvider));
+});
 
 class StructureDesignController extends ChangeNotifier {
   StructureDesignController({
@@ -59,12 +55,14 @@ class StructureDesignController extends ChangeNotifier {
            horizontalGapMeters: 0.03,
            verticalGapMeters: 0.03,
          ),
-       ) {
+       ),
+       _debouncer = Debouncer(milliseconds: 300) {
     recalculate();
   }
 
   final StructureDesignCalculator _calculator;
   final LocationService _locationService;
+  final Debouncer _debouncer;
 
   StructureDesignInput _input;
   FrameResult? _result;
@@ -80,6 +78,12 @@ class StructureDesignController extends ChangeNotifier {
   List<double> get rowBaseOffsetsMeters => _input.rowBaseOffsetsMeters;
   int get activeRowCount => _input.manualRows ?? _result?.rows ?? 0;
 
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    super.dispose();
+  }
+
   void recalculate() {
     _syncRowOffsetsBeforeCalculation();
     _result = _calculator.calculate(_input);
@@ -88,101 +92,87 @@ class StructureDesignController extends ChangeNotifier {
 
   void updateSiteWidth(double value) {
     _input = _input.copyWith(siteWidthMeters: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateSiteDepth(double value) {
     _input = _input.copyWith(siteDepthMeters: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateLatitude(double value) {
     _input = _input.copyWith(latitude: value);
     _locationMessage = null;
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateFacingPreference(FacingDirectionPreference value) {
     _input = _input.copyWith(facingPreference: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateMountType(MountType value) {
     _input = _input.copyWith(mountType: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateRowMode(RowMode value) {
     _input = _input.copyWith(rowMode: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateFrontClearance(double value) {
     _input = _input.copyWith(frontClearanceMeters: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateRearClearance(double value) {
     _input = _input.copyWith(rearClearanceMeters: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateSideClearance(double value) {
     _input = _input.copyWith(sideClearanceMeters: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateFrontLegClearance(double value) {
     _input = _input.copyWith(frontLegClearanceMeters: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updateInterRowGap(double value) {
     _input = _input.copyWith(interRowGapMeters: value);
-    recalculate();
+    _debouncer.run(recalculate);
   }
 
   void updatePanelLength(double value) {
-    _input = _input.copyWith(
-      panelSpec: _input.panelSpec.copyWith(lengthMeters: value),
-    );
-    recalculate();
+    _input = _input.copyWith(panelSpec: _input.panelSpec.copyWith(lengthMeters: value));
+    _debouncer.run(recalculate);
   }
 
   void updatePanelWidth(double value) {
-    _input = _input.copyWith(
-      panelSpec: _input.panelSpec.copyWith(widthMeters: value),
-    );
-    recalculate();
+    _input = _input.copyWith(panelSpec: _input.panelSpec.copyWith(widthMeters: value));
+    _debouncer.run(recalculate);
   }
 
   void updatePanelThickness(double value) {
-    _input = _input.copyWith(
-      panelSpec: _input.panelSpec.copyWith(thicknessMeters: value),
-    );
-    recalculate();
+    _input = _input.copyWith(panelSpec: _input.panelSpec.copyWith(thicknessMeters: value));
+    _debouncer.run(recalculate);
   }
 
   void updateHorizontalGap(double value) {
-    _input = _input.copyWith(
-      panelSpec: _input.panelSpec.copyWith(horizontalGapMeters: value),
-    );
-    recalculate();
+    _input = _input.copyWith(panelSpec: _input.panelSpec.copyWith(horizontalGapMeters: value));
+    _debouncer.run(recalculate);
   }
 
   void updateVerticalGap(double value) {
-    _input = _input.copyWith(
-      panelSpec: _input.panelSpec.copyWith(verticalGapMeters: value),
-    );
-    recalculate();
+    _input = _input.copyWith(panelSpec: _input.panelSpec.copyWith(verticalGapMeters: value));
+    _debouncer.run(recalculate);
   }
 
   void updatePanelOrientation(PanelOrientation value) {
-    _input = _input.copyWith(
-      panelSpec: _input.panelSpec.copyWith(orientation: value),
-      clearManualRows: true,
-      clearManualColumns: true,
-    );
+    _input = _input.copyWith(panelSpec: _input.panelSpec.copyWith(orientation: value), clearManualRows: true, clearManualColumns: true);
     recalculate();
   }
 
@@ -257,7 +247,7 @@ class StructureDesignController extends ChangeNotifier {
       return false;
     } finally {
       _isLocating = false;
-      recalculate();
+      _debouncer.run(recalculate);
     }
   }
 
