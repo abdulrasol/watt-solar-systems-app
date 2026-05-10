@@ -39,6 +39,7 @@ import 'package:solar_hub/src/features/admin/presentation/screens/admin_currency
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_categories_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_address_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_users_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_subscription_plans_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
@@ -404,6 +405,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/admin/users',
             builder: (BuildContext context, GoRouterState state) {
               return const AdminUsersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/subscriptions',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminSubscriptionPlansScreen();
             },
           ),
         ],

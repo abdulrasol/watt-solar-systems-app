@@ -12,7 +12,6 @@ import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.
 import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class AdminRepositoryImpl implements AdminRepository {
   final AdminRemoteDataSource _remoteDataSource;

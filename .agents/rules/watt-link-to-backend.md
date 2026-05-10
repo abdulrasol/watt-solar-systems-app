@@ -36,3 +36,4 @@ globs: **/*
 
 - **Performance & Memory:** Every code modification or new feature must prioritize low memory usage and high rendering performance. Avoid unnecessary rebuilds and deep widget trees.
 - **Documentation:** Add clear, comprehensive code comments to explain the underlying logic for every single edit or new feature written, ensuring easy future maintenance.
+- **Mandatory Quality Check:** After every code modification, you MUST run `flutter analyze` and resolve all reported errors, warnings, and info diagnostics immediately before concluding the task.

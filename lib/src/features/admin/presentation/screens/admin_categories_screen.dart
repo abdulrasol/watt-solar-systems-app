@@ -152,7 +152,7 @@ class _CategoryCard extends ConsumerWidget {
             ),
             child: Center(
               child: category.icon != null && category.icon!.isNotEmpty
-                  ? Image.network(category.icon!, width: 30.w, height: 30.w, errorBuilder: (_, __, ___) => Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp))
+                  ? Image.network(category.icon!, width: 30.w, height: 30.w, errorBuilder: (_, _, _) => Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp))
                   : Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp),
             ),
           ),
