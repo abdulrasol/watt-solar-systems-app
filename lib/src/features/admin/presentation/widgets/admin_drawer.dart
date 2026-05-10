@@ -116,6 +116,46 @@ class AdminDrawer extends ConsumerWidget {
                   },
                   delay: 220,
                 ),
+                _buildDrawerItem(
+                  context: context,
+                  icon: Iconsax.user_bold,
+                  title: 'Manage Users',
+                  onTap: () {
+                    _closeIfDrawer(context);
+                    context.go('/admin/users');
+                  },
+                  delay: 230,
+                ),
+                _buildDrawerItem(
+                  context: context,
+                  icon: Iconsax.category_bold,
+                  title: 'Global Categories',
+                  onTap: () {
+                    _closeIfDrawer(context);
+                    context.go('/admin/categories');
+                  },
+                  delay: 240,
+                ),
+                _buildDrawerItem(
+                  context: context,
+                  icon: Iconsax.money_bold,
+                  title: 'Currencies',
+                  onTap: () {
+                    _closeIfDrawer(context);
+                    context.go('/admin/currencies');
+                  },
+                  delay: 250,
+                ),
+                _buildDrawerItem(
+                  context: context,
+                  icon: Iconsax.location_bold,
+                  title: 'Address (Countries/Cities)',
+                  onTap: () {
+                    _closeIfDrawer(context);
+                    context.go('/admin/address');
+                  },
+                  delay: 260,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   'Switch Dashboard',

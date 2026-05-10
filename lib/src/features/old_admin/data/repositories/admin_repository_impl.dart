@@ -1,8 +1,14 @@
 import 'package:solar_hub/src/features/admin/data/data_sources/admin_remote_data_source.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_company_details.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_country.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_currency.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_global_category.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
 import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_city.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_plan.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
@@ -101,4 +107,50 @@ class AdminRepositoryImpl implements AdminRepository {
   Future<void> toggleCompanyService(int companyId, String serviceCode, Map<String, dynamic> data) async {
     await _remoteDataSource.reviewServiceRequest(companyId, serviceCode, data);
   }
+
+  @override
+  Future<List<AdminCurrency>> listCurrencies({int page = 1, int pageSize = 12}) => throw UnimplementedError();
+  @override
+  Future<AdminCurrency> createCurrency(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminCurrency> updateCurrency(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteCurrency(int id) => throw UnimplementedError();
+  @override
+  Future<List<AdminCountry>> listCountries({int page = 1, int pageSize = 12}) => throw UnimplementedError();
+  @override
+  Future<AdminCountry> createCountry(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminCountry> updateCountry(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteCountry(int id) => throw UnimplementedError();
+  @override
+  Future<List<AdminCity>> listCities({int page = 1, int pageSize = 12}) => throw UnimplementedError();
+  @override
+  Future<AdminCity> createCity(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminCity> updateCity(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteCity(int id) => throw UnimplementedError();
+  @override
+  Future<List<AdminGlobalCategory>> listGlobalCategories({int page = 1, int pageSize = 12}) => throw UnimplementedError();
+  @override
+  Future<AdminGlobalCategory> createGlobalCategory(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminGlobalCategory> updateGlobalCategory(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteGlobalCategory(int id) => throw UnimplementedError();
+  @override
+  Future<List<AdminUser>> listUsers({int page = 1, int pageSize = 12}) => throw UnimplementedError();
+  @override
+  Future<void> promoteUser(String username, bool promote) => throw UnimplementedError();
+  @override
+  Future<List<AdminSubscriptionPlan>> listSubscriptionPlans({int page = 1, int pageSize = 12}) => throw UnimplementedError();
+  @override
+  Future<AdminSubscriptionPlan> createSubscriptionPlan(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminSubscriptionPlan> updateSubscriptionPlan(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteSubscriptionPlan(int id) => throw UnimplementedError();
 }
+

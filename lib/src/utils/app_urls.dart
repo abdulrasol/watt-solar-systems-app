@@ -29,9 +29,12 @@ class AppUrls {
   static String feedbackStatus(int id) => '$adminBaseUrl/feedback/s$id';
   static String feedback(int id) => '$adminBaseUrl/feedback/$id';
   static const String appConfigs = '$adminBaseUrl/config';
-  static const String currency = '$adminBaseUrl/currency';
-  static const String currencies = '$adminBaseUrl/currency'; // Get all
-  static String currencyItem(int id) => '$currencies/$id';
+  static const String currencies = '$adminBaseUrl/currencies';
+  static String currency(int id) => '$currencies/$id';
+  static const String globalCategories = '$adminBaseUrl/categories';
+  static String globalCategory(int id) => '$globalCategories/$id';
+  static const String adminSubscriptions = '$adminBaseUrl/subscriptions';
+  static String adminSubscription(int id) => '$adminSubscriptions/$id';
 
   // Cities & Countries
   static const String countries = '$adminBaseUrl/countries';

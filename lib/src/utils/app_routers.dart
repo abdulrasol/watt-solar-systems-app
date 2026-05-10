@@ -35,6 +35,10 @@ import 'package:solar_hub/src/features/admin/presentation/screens/companies/admi
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_catalog_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_requests_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_types_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_currency_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_categories_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_address_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_users_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
@@ -70,12 +74,17 @@ import 'package:solar_hub/src/features/services/presentation/screens/services_ex
 
 // Create a globally accessible provider for the GoRouter
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
+  final refreshListenable = ValueNotifier<bool>(false);
+  ref.listen(authProvider, (previous, next) {
+    refreshListenable.value = !refreshListenable.value;
+  });
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
+    refreshListenable: refreshListenable,
     redirect: (BuildContext context, GoRouterState state) {
+      final authState = ref.read(authProvider);
       return appRedirectForRoute(state.uri.path, authState);
     },
     routes: <RouteBase>[
@@ -204,6 +213,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/companies/dashboard/orders/:id',
             builder: (BuildContext context, GoRouterState state) {
+              final authState = ref.read(authProvider);
               final id = int.tryParse(state.pathParameters['id'] ?? '');
               if (id == null || authState.company?.id == null) {
                 return const _RouteRequirementPage(
@@ -370,6 +380,30 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/admin/service-requests',
             builder: (BuildContext context, GoRouterState state) {
               return const AdminServiceRequestsScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/currencies',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminCurrencyScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/categories',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminCategoriesScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/address',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminAddressScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/users',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminUsersScreen();
             },
           ),
         ],
