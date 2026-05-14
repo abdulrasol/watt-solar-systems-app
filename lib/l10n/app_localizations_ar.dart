@@ -105,7 +105,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get store => 'المتجر';
 
   @override
-  String get dashboard_hero_subtitle => 'ابدأ بتقدير سريع، أو جهز طلب عرض، أو استكشف المكونات المناسبة لمنظومتك القادمة.';
+  String get dashboard_hero_subtitle =>
+      'ابدأ بتقدير سريع، أو جهز طلب عرض، أو استكشف المكونات المناسبة لمنظومتك القادمة.';
 
   @override
   String get dashboard_chip_fast => 'حساب سريع';
@@ -117,46 +118,54 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dashboard_chip_store => 'تسوق القطع';
 
   @override
-  String get dashboard_quick_actions_subtitle => 'انتقل مباشرة إلى أداة الحساب المناسبة لطبيعة مشروعك.';
+  String get dashboard_quick_actions_subtitle =>
+      'انتقل مباشرة إلى أداة الحساب المناسبة لطبيعة مشروعك.';
 
   @override
   String get dashboard_fast_calculator => 'الحاسبة السريعة';
 
   @override
-  String get dashboard_fast_calculator_desc => 'قدّر الألواح والعاكس وسعة البطاريات من خلال عدة مدخلات مباشرة فقط.';
+  String get dashboard_fast_calculator_desc =>
+      'قدّر الألواح والعاكس وسعة البطاريات من خلال عدة مدخلات مباشرة فقط.';
 
   @override
   String get dashboard_offer_wizard => 'معالج طلب العرض';
 
   @override
-  String get dashboard_offer_wizard_desc => 'جهّز طلبًا منظمًا للألواح والعاكس والبطاريات قبل إرساله للشركات.';
+  String get dashboard_offer_wizard_desc =>
+      'جهّز طلبًا منظمًا للألواح والعاكس والبطاريات قبل إرساله للشركات.';
 
   @override
   String get dashboard_system_wizard => 'معالج حساب المنظومة';
 
   @override
-  String get dashboard_system_wizard_desc => 'ابنِ تصميمًا أشمل للمنظومة اعتمادًا على الأجهزة والاستهلاك وتفضيلات النظام.';
+  String get dashboard_system_wizard_desc =>
+      'ابنِ تصميمًا أشمل للمنظومة اعتمادًا على الأجهزة والاستهلاك وتفضيلات النظام.';
 
   @override
   String get dashboard_shopping => 'التسوق';
 
   @override
-  String get dashboard_shopping_subtitle => 'تصفح المنتجات المتاحة الآن مع مساحة مهيأة للعناصر المميزة لاحقًا.';
+  String get dashboard_shopping_subtitle =>
+      'تصفح المنتجات المتاحة الآن مع مساحة مهيأة للعناصر المميزة لاحقًا.';
 
   @override
   String get dashboard_shop_now => 'فتح المتجر';
 
   @override
-  String get dashboard_shop_now_desc => 'انتقل إلى تبويب المتجر وابدأ بتصفح مكونات الطاقة الشمسية.';
+  String get dashboard_shop_now_desc =>
+      'انتقل إلى تبويب المتجر وابدأ بتصفح مكونات الطاقة الشمسية.';
 
   @override
   String get dashboard_featured_products => 'منتجات مميزة';
 
   @override
-  String get dashboard_featured_products_desc => 'مساحة مخصصة لاحقًا للعروض المختارة والباقات بعد ربط الـ API القادم.';
+  String get dashboard_featured_products_desc =>
+      'مساحة مخصصة لاحقًا للعروض المختارة والباقات بعد ربط الـ API القادم.';
 
   @override
-  String get dashboard_store_coming_soon => 'الوصول إلى المتجر غير متاح حاليًا على هذا الجهاز.';
+  String get dashboard_store_coming_soon =>
+      'الوصول إلى المتجر غير متاح حاليًا على هذا الجهاز.';
 
   @override
   String get dashboard_open_store => 'فتح المتجر';
@@ -168,46 +177,54 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dashboard_promotions => 'ملصقات الشركات';
 
   @override
-  String get dashboard_promotions_subtitle => 'شرائح مؤقتة الآن ومهيأة لاحقًا لحملات الشركات وواجهات الملصقات.';
+  String get dashboard_promotions_subtitle =>
+      'شرائح مؤقتة الآن ومهيأة لاحقًا لحملات الشركات وواجهات الملصقات.';
 
   @override
   String get dashboard_poster_title_1 => 'مكان حملة دعائية';
 
   @override
-  String get dashboard_poster_desc_1 => 'ستظهر هنا لاحقًا بانرات الشركات والعروض الموسمية والحملات الترويجية.';
+  String get dashboard_poster_desc_1 =>
+      'ستظهر هنا لاحقًا بانرات الشركات والعروض الموسمية والحملات الترويجية.';
 
   @override
   String get dashboard_poster_title_2 => 'واجهة شركاء التركيب';
 
   @override
-  String get dashboard_poster_desc_2 => 'يمكن استخدام هذه المساحة لاحقًا لإبراز الشركاء أو مناطق الخدمة أو حملات التوعية.';
+  String get dashboard_poster_desc_2 =>
+      'يمكن استخدام هذه المساحة لاحقًا لإبراز الشركاء أو مناطق الخدمة أو حملات التوعية.';
 
   @override
   String get dashboard_poster_title_3 => 'بانر المنتجات الجديدة';
 
   @override
-  String get dashboard_poster_desc_3 => 'يمكن للـ API القادم تغذية هذا السلايدر بالمخزون الجديد أو الباقات المميزة أو العروض المحدودة.';
+  String get dashboard_poster_desc_3 =>
+      'يمكن للـ API القادم تغذية هذا السلايدر بالمخزون الجديد أو الباقات المميزة أو العروض المحدودة.';
 
   @override
-  String get dashboard_tips_subtitle => 'تلميحات عملية لتحسب بشكل أدق، وتشتري بذكاء، وتتجنب أخطاء التصميم الشائعة.';
+  String get dashboard_tips_subtitle =>
+      'تلميحات عملية لتحسب بشكل أدق، وتشتري بذكاء، وتتجنب أخطاء التصميم الشائعة.';
 
   @override
   String get dashboard_hint_clean_title => 'حافظ على نظافة الألواح';
 
   @override
-  String get dashboard_hint_clean_desc => 'الغبار والظل يقللان إنتاج الطاقة بسرعة. خطة تنظيف بسيطة ترفع استقرار الأداء.';
+  String get dashboard_hint_clean_desc =>
+      'الغبار والظل يقللان إنتاج الطاقة بسرعة. خطة تنظيف بسيطة ترفع استقرار الأداء.';
 
   @override
   String get dashboard_hint_expand_title => 'اترك مجالاً للتوسعة';
 
   @override
-  String get dashboard_hint_expand_desc => 'عند اختيار العاكس أو البطاريات، فكر بالأحمال المستقبلية حتى لا تصبح المنظومة محدودة بسرعة.';
+  String get dashboard_hint_expand_desc =>
+      'عند اختيار العاكس أو البطاريات، فكر بالأحمال المستقبلية حتى لا تصبح المنظومة محدودة بسرعة.';
 
   @override
   String get dashboard_hint_compare_title => 'قارن قبل الشراء';
 
   @override
-  String get dashboard_hint_compare_desc => 'استخدم أدوات الحساب أولاً ثم قارن العروض والمكونات على أساس نفس حجم المنظومة المستهدف.';
+  String get dashboard_hint_compare_desc =>
+      'استخدم أدوات الحساب أولاً ثم قارن العروض والمكونات على أساس نفس حجم المنظومة المستهدف.';
 
   @override
   String get buy_components => 'شراء المكونات';
@@ -231,13 +248,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get b2c_storefront => 'واجهة B2C';
 
   @override
-  String get storefront_b2b_subtitle => 'كتالوج مخصص للأعضاء مع أسعار الجملة وإظهار مخزون الشركة.';
+  String get storefront_b2b_subtitle =>
+      'كتالوج مخصص للأعضاء مع أسعار الجملة وإظهار مخزون الشركة.';
 
   @override
-  String get storefront_b2c_subtitle => 'واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.';
+  String get storefront_b2c_subtitle =>
+      'واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.';
 
   @override
-  String get storefront_unified_subtitle => 'استكشف المنتجات، وقارن بين الشركات، وانتقل إلى الكتالوج الكامل فقط عندما تحتاج تفاصيل أكثر.';
+  String get storefront_unified_subtitle =>
+      'استكشف المنتجات، وقارن بين الشركات، وانتقل إلى الكتالوج الكامل فقط عندما تحتاج تفاصيل أكثر.';
 
   @override
   String storefront_products_available(Object count) {
@@ -335,7 +355,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get store_filters => 'فلاتر المتجر';
 
   @override
-  String get store_filters_subtitle => 'قم بتضييق النتائج حسب الترتيب والتصنيف والشركة والسعر من مكان واحد.';
+  String get store_filters_subtitle =>
+      'قم بتضييق النتائج حسب الترتيب والتصنيف والشركة والسعر من مكان واحد.';
 
   @override
   String get price_range => 'نطاق السعر';
@@ -344,7 +365,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get unit_price => 'سعر الوحدة';
 
   @override
-  String get no_store_products_found => 'لا توجد منتجات مطابقة للفلاتر الحالية.';
+  String get no_store_products_found =>
+      'لا توجد منتجات مطابقة للفلاتر الحالية.';
 
   @override
   String get no_categories_found => 'لا توجد تصنيفات متاحة حالياً.';
@@ -480,7 +502,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cart_empty => 'سلتك فارغة';
 
   @override
-  String get cart_empty_subtitle => 'أضف منتجات من المتجر لإنشاء سلة محلية مستقلة لكل شركة.';
+  String get cart_empty_subtitle =>
+      'أضف منتجات من المتجر لإنشاء سلة محلية مستقلة لكل شركة.';
 
   @override
   String get cart_summary => 'ملخص السلة';
@@ -512,16 +535,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reset_password => 'إعادة تعيين كلمة المرور';
 
   @override
-  String get reset_password_instructions => 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.';
+  String get reset_password_instructions =>
+      'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.';
 
   @override
-  String get reset_password_token_instructions => 'أدخل الرمز الذي وصلك ثم اختر كلمة مرور جديدة.';
+  String get reset_password_token_instructions =>
+      'أدخل الرمز الذي وصلك ثم اختر كلمة مرور جديدة.';
 
   @override
   String get structure_design_title => 'تصميم الهيكل';
 
   @override
-  String get structure_design_intro => 'صمّم هيكل أرضي ثابت الميل، وقدّر أفضل ميل واتجاه سنوي، وراجع الأبعاد الأساسية للهيكل قبل التفصيل الهندسي النهائي.';
+  String get structure_design_intro =>
+      'صمّم هيكل أرضي ثابت الميل، وقدّر أفضل ميل واتجاه سنوي، وراجع الأبعاد الأساسية للهيكل قبل التفصيل الهندسي النهائي.';
 
   @override
   String get structure_site_inputs => 'مدخلات الموقع';
@@ -596,7 +622,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get structure_reset_auto_layout => 'إعادة الضبط التلقائي';
 
   @override
-  String get structure_ground_mount_only_hint => 'الإصدار الحالي يدعم فقط الهيكل الأرضي ثابت الميل. الأنواع الأخرى محجوزة للمراحل القادمة.';
+  String get structure_ground_mount_only_hint =>
+      'الإصدار الحالي يدعم فقط الهيكل الأرضي ثابت الميل. الأنواع الأخرى محجوزة للمراحل القادمة.';
 
   @override
   String get structure_geometry_results => 'نتائج الأبعاد';
@@ -638,7 +665,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get structure_total_steel_length => 'إجمالي طول الحديد';
 
   @override
-  String structure_total_steel_breakdown(Object rails, Object frontLegs, Object rearLegs, Object braces) {
+  String structure_total_steel_breakdown(
+    Object rails,
+    Object frontLegs,
+    Object rearLegs,
+    Object braces,
+  ) {
     return 'السكات $rails + الأرجل الأمامية $frontLegs + الأرجل الخلفية $rearLegs + الدعامات $braces';
   }
 
@@ -649,7 +681,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get structure_sketch_title => 'رسم تخطيطي';
 
   @override
-  String get structure_sketch_hint => 'هذا الرسم تخطيطي لغرض التخطيط فقط، وليس رسماً تنفيذياً أو تفصيلاً إنشائياً معتمداً.';
+  String get structure_sketch_hint =>
+      'هذا الرسم تخطيطي لغرض التخطيط فقط، وليس رسماً تنفيذياً أو تفصيلاً إنشائياً معتمداً.';
 
   @override
   String get structure_results_title => 'نتيجة الهيكل';
@@ -736,10 +769,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get structure_row_mode_stepped => 'صفوف متدرجة';
 
   @override
-  String get structure_independent_rows_hint => 'استخدمه عندما يكون كل صف مكرراً على أرض مستوية.';
+  String get structure_independent_rows_hint =>
+      'استخدمه عندما يكون كل صف مكرراً على أرض مستوية.';
 
   @override
-  String get structure_stepped_rows_hint => 'استخدمه عندما يحتاج كل صف إلى ارتفاعات دعم مختلفة.';
+  String get structure_stepped_rows_hint =>
+      'استخدمه عندما يحتاج كل صف إلى ارتفاعات دعم مختلفة.';
 
   @override
   String get structure_row_offsets => 'إزاحات الصفوف';
@@ -754,10 +789,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get structure_per_row_legs => 'أرجل كل صف';
 
   @override
-  String get structure_equal_legs_explanation => 'الأرجل متساوية لأن الصفوف مكررة على نفس هندسة الأرض المستوية.';
+  String get structure_equal_legs_explanation =>
+      'الأرجل متساوية لأن الصفوف مكررة على نفس هندسة الأرض المستوية.';
 
   @override
-  String get structure_stepped_legs_explanation => 'الأرجل تختلف لأن إزاحات الصفوف تطبق على كل صف بشكل مستقل.';
+  String get structure_stepped_legs_explanation =>
+      'الأرجل تختلف لأن إزاحات الصفوف تطبق على كل صف بشكل مستقل.';
 
   @override
   String get structure_min_front_leg => 'أقل رجل أمامية';
@@ -1001,7 +1038,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get success => 'نجاح';
 
   @override
-  String get password_reset_email_sent => 'تم إرسال بريد إعادة تعيين كلمة المرور!';
+  String get password_reset_email_sent =>
+      'تم إرسال بريد إعادة تعيين كلمة المرور!';
 
   @override
   String get password_reset_success => 'تمت إعادة تعيين كلمة المرور بنجاح.';
@@ -1034,7 +1072,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delete_account => 'حذف الحساب';
 
   @override
-  String get delete_account_warning => 'هذا الإجراء نهائي. أدخل كلمة المرور لحذف حسابك.';
+  String get delete_account_warning =>
+      'هذا الإجراء نهائي. أدخل كلمة المرور لحذف حسابك.';
 
   @override
   String get delete_account_reason => 'سبب الحذف (اختياري)';
@@ -1049,7 +1088,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get feedback_info_title => 'رأيك يساعدنا على التحسين';
 
   @override
-  String get feedback_info_description => 'شاركنا ملاحظاتك أو اقتراحاتك لنطوّر التطبيق ونحسّن تجربتك.';
+  String get feedback_info_description =>
+      'شاركنا ملاحظاتك أو اقتراحاتك لنطوّر التطبيق ونحسّن تجربتك.';
 
   @override
   String get name => 'الاسم';
@@ -1100,7 +1140,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delete_feedback => 'حذف الملاحظة';
 
   @override
-  String get delete_feedback_confirm => 'هل أنت متأكد من حذف هذه الملاحظة؟ لا يمكن التراجع عن هذا الإجراء.';
+  String get delete_feedback_confirm =>
+      'هل أنت متأكد من حذف هذه الملاحظة؟ لا يمكن التراجع عن هذا الإجراء.';
 
   @override
   String get add_screenshot => 'إضافة لقطة شاشة';
@@ -1181,7 +1222,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get start_your_solar_business => 'ابدأ نشاطك في مجال الطاقة الشمسية';
 
   @override
-  String get register_company_details => 'أدخل البيانات التالية لتسجيل شركتك. سيتم مراجعة طلبك من فريقنا قبل اعتماده.';
+  String get register_company_details =>
+      'أدخل البيانات التالية لتسجيل شركتك. سيتم مراجعة طلبك من فريقنا قبل اعتماده.';
 
   @override
   String get company_name => 'اسم الشركة';
@@ -1241,7 +1283,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_activation_required_title => 'تفعيل الشركة مطلوب';
 
   @override
-  String get company_activation_required_message => 'هذه الشركة غير مفعلة أو أن الاشتراك غير صالح حالياً. تواصل مع الإدارة لتفعيل الشركة وتمكين إجراءات الإدارة.';
+  String get company_activation_required_message =>
+      'هذه الشركة غير مفعلة أو أن الاشتراك غير صالح حالياً. تواصل مع الإدارة لتفعيل الشركة وتمكين إجراءات الإدارة.';
 
   @override
   String get company_activation_required_short => 'التفعيل مطلوب';
@@ -1250,13 +1293,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_pending_activation_title => 'تفعيل الشركة قيد الانتظار';
 
   @override
-  String get company_pending_activation_message => 'شركتك ما زالت بانتظار مراجعة الإدارة. يمكنك التواصل مع الإدارة، وإذا مر أكثر من 24 ساعة على إنشاء الشركة يمكن إرسال تذكير بالتفعيل.';
+  String get company_pending_activation_message =>
+      'شركتك ما زالت بانتظار مراجعة الإدارة. يمكنك التواصل مع الإدارة، وإذا مر أكثر من 24 ساعة على إنشاء الشركة يمكن إرسال تذكير بالتفعيل.';
 
   @override
   String get company_send_activation_reminder => 'إرسال تذكير بالتفعيل';
 
   @override
-  String get company_activation_reminder_sent => 'تم إرسال تذكير التفعيل بنجاح.';
+  String get company_activation_reminder_sent =>
+      'تم إرسال تذكير التفعيل بنجاح.';
 
   @override
   String company_activation_reminder_sent_message(Object availableAt) {
@@ -1267,7 +1312,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_subscription_required_title => 'الاشتراك مطلوب';
 
   @override
-  String get company_subscription_required_message => 'شركتك مفعلة لكن الاشتراك غير صالح حالياً. اختر إحدى الخطط أدناه لإرسال طلب اشتراك.';
+  String get company_subscription_required_message =>
+      'شركتك مفعلة لكن الاشتراك غير صالح حالياً. اختر إحدى الخطط أدناه لإرسال طلب اشتراك.';
 
   @override
   String get company_subscription_available_plans => 'خطط الاشتراك المتاحة';
@@ -1276,7 +1322,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_subscription_plans_error => 'تعذر تحميل خطط الاشتراك.';
 
   @override
-  String get company_subscription_plans_empty => 'لا توجد خطط اشتراك متاحة حالياً.';
+  String get company_subscription_plans_empty =>
+      'لا توجد خطط اشتراك متاحة حالياً.';
 
   @override
   String company_subscription_plan_meta(Object days, Object price) {
@@ -1296,10 +1343,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_subscription_submit => 'إرسال طلب الاشتراك';
 
   @override
-  String get company_subscription_request_submitted => 'تم إرسال طلب الاشتراك بنجاح.';
+  String get company_subscription_request_submitted =>
+      'تم إرسال طلب الاشتراك بنجاح.';
 
   @override
-  String get company_subscription_request_pending => 'طلب الاشتراك بانتظار المراجعة.';
+  String get company_subscription_request_pending =>
+      'طلب الاشتراك بانتظار المراجعة.';
 
   @override
   String company_subscription_request_pending_message(Object planName) {
@@ -1319,7 +1368,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_chat_admin_coming_soon => 'الدردشة قريباً';
 
   @override
-  String get company_contact_admin_failed => 'تعذر فتح وسيلة التواصل مع الإدارة.';
+  String get company_contact_admin_failed =>
+      'تعذر فتح وسيلة التواصل مع الإدارة.';
 
   @override
   String get retry => 'إعادة المحاولة';
@@ -1400,7 +1450,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get system_wizard => 'حساب النظام الشمسي';
 
   @override
-  String get system_wizard_desc => 'أجب عن بعض الأسئلة لتحصل على توصية لنظام شمسي متكامل';
+  String get system_wizard_desc =>
+      'أجب عن بعض الأسئلة لتحصل على توصية لنظام شمسي متكامل';
 
   @override
   String get request_offer_wizard => 'طلب عرض سعر مخصص';
@@ -1463,7 +1514,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get single_battery_voltage => 'جهد البطارية الواحدة';
 
   @override
-  String get battery_type_hint => 'الليثيوم عادة 12.8 فولت، 25.6 فولت، 51.2 فولت | الرصاص الحمضي عادة 12 فولت';
+  String get battery_type_hint =>
+      'الليثيوم عادة 12.8 فولت، 25.6 فولت، 51.2 فولت | الرصاص الحمضي عادة 12 فولت';
 
   @override
   String get system_voltage => 'جهد النظام';
@@ -1475,7 +1527,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get panel_count => 'عدد الألواح';
 
   @override
-  String get inverter_size => 'حجم العاكس';
+  String get inverter_size => 'قدرة العاكس';
 
   @override
   String get battery_bank => 'بنك البطاريات';
@@ -1484,7 +1536,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get request_this_system => 'طلب هذا النظام';
 
   @override
-  String get request_description => 'أرسل تكوين هذا النظام للشركات المحلية للحصول على عروض';
+  String get request_description =>
+      'أرسل تكوين هذا النظام للشركات المحلية للحصول على عروض';
 
   @override
   String get guide => 'دليل';
@@ -1568,7 +1621,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get error_select_system => 'مطلوب: يرجى تحديد نظام';
 
   @override
-  String get error_no_components => 'يرجى إضافة مكون واحد على الأقل (لوح، عاكس، أو بطارية)';
+  String get error_no_components =>
+      'يرجى إضافة مكون واحد على الأقل (لوح، عاكس، أو بطارية)';
 
   @override
   String get appliance_name => 'اسم الجهاز';
@@ -1592,7 +1646,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verification_pending => 'التحقق قيد الانتظار';
 
   @override
-  String get verification_pending_msg => 'تسجيل شركتك قيد المراجعة. يرجى التحقق لاحقاً.';
+  String get verification_pending_msg =>
+      'تسجيل شركتك قيد المراجعة. يرجى التحقق لاحقاً.';
 
   @override
   String get go_back => 'رجوع';
@@ -1667,13 +1722,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get members_company_required => 'لا توجد شركة مرتبطة بهذا الحساب.';
 
   @override
-  String get members_add_description => 'ابدأ بدعوة مستخدم موجود. إذا لم يكن لديه حساب بعد، يمكنك إنشاء حساب له من نفس الخطوات.';
+  String get members_add_description =>
+      'ابدأ بدعوة مستخدم موجود. إذا لم يكن لديه حساب بعد، يمكنك إنشاء حساب له من نفس الخطوات.';
 
   @override
-  String get members_invite_description => 'ادعُ مستخدماً موجوداً عبر البريد الإلكتروني وحدد دوره داخل الشركة.';
+  String get members_invite_description =>
+      'ادعُ مستخدماً موجوداً عبر البريد الإلكتروني وحدد دوره داخل الشركة.';
 
   @override
-  String get members_create_description => 'أنشئ حساباً جديداً وأضفه مباشرة إلى هذه الشركة.';
+  String get members_create_description =>
+      'أنشئ حساباً جديداً وأضفه مباشرة إلى هذه الشركة.';
 
   @override
   String get members_create_title => 'إنشاء عضو جديد';
@@ -1732,7 +1790,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get members_create_failed => 'تعذر إنشاء هذا العضو.';
 
   @override
-  String get members_requires_registration => 'هذا البريد لا يملك حساباً بعد. أكمل نموذج إنشاء العضو.';
+  String get members_requires_registration =>
+      'هذا البريد لا يملك حساباً بعد. أكمل نموذج إنشاء العضو.';
 
   @override
   String get members_email_required => 'البريد الإلكتروني مطلوب.';
@@ -1747,7 +1806,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get members_password_required => 'كلمة المرور مطلوبة.';
 
   @override
-  String get members_password_too_short => 'يجب أن تكون كلمة المرور 6 أحرف على الأقل.';
+  String get members_password_too_short =>
+      'يجب أن تكون كلمة المرور 6 أحرف على الأقل.';
 
   @override
   String get members_first_name_required => 'الاسم الأول مطلوب.';
@@ -1797,10 +1857,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get manage_customers_subtitle => 'مراجعة أرصدة العملاء ونشاطهم.';
 
   @override
-  String get manage_suppliers_subtitle => 'مراجعة أرصدة الموردين وسجل المشتريات.';
+  String get manage_suppliers_subtitle =>
+      'مراجعة أرصدة الموردين وسجل المشتريات.';
 
   @override
-  String get manage_accounting_subtitle => 'متابعة الملخصات المحاسبية والحركات.';
+  String get manage_accounting_subtitle =>
+      'متابعة الملخصات المحاسبية والحركات.';
 
   @override
   String get b2b_orders => 'طلبات B2B';
@@ -1923,7 +1985,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get services => 'الخدمات';
 
   @override
-  String get services_explorer_subtitle => 'تصفح شركات الطاقة الشمسية الموثوقة حسب نوع الخدمة، ثم افتح الشركات المطابقة لما تحتاجه.';
+  String get services_explorer_subtitle =>
+      'تصفح شركات الطاقة الشمسية الموثوقة حسب نوع الخدمة، ثم افتح الشركات المطابقة لما تحتاجه.';
 
   @override
   String get services_choose_category => 'اختر فئة الخدمة';
@@ -1944,7 +2007,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get service_types_empty_title => 'لا توجد أنواع خدمات بعد';
 
   @override
-  String get service_types_empty_subtitle => 'أضف أول نوع خدمة لبدء تنظيم الشركات.';
+  String get service_types_empty_subtitle =>
+      'أضف أول نوع خدمة لبدء تنظيم الشركات.';
 
   @override
   String get service_types_add => 'إضافة نوع خدمة';
@@ -1979,7 +2043,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get service_types_company_subtitle => 'حدد أنواع الخدمات التي تقدمها شركتك.';
+  String get service_types_company_subtitle =>
+      'حدد أنواع الخدمات التي تقدمها شركتك.';
 
   @override
   String get service_types_mark_served => 'تحديد كمخدوم';
@@ -1988,10 +2053,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get service_types_served => 'مخدوم';
 
   @override
-  String get service_types_marked_served => 'تمت إضافة نوع الخدمة إلى ملف الشركة.';
+  String get service_types_marked_served =>
+      'تمت إضافة نوع الخدمة إلى ملف الشركة.';
 
   @override
-  String get service_types_unmarked_served => 'تمت إزالة نوع الخدمة من ملف الشركة.';
+  String get service_types_unmarked_served =>
+      'تمت إزالة نوع الخدمة من ملف الشركة.';
 
   @override
   String service_types_companies_count(Object count) {
@@ -2004,7 +2071,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get services_companies_subtitle => 'اعثر على الشركات العامة المطابقة لنوع الخدمة هذا. غيّر المدينة أو استخدم البحث لتضييق النتائج.';
+  String get services_companies_subtitle =>
+      'اعثر على الشركات العامة المطابقة لنوع الخدمة هذا. غيّر المدينة أو استخدم البحث لتضييق النتائج.';
 
   @override
   String get services_all_cities => 'كل المدن';
@@ -2013,7 +2081,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get services_search_companies => 'ابحث عن الشركات';
 
   @override
-  String get services_no_companies_found => 'لا توجد شركات مطابقة لهذا النوع من الخدمات مع الفلاتر الحالية.';
+  String get services_no_companies_found =>
+      'لا توجد شركات مطابقة لهذا النوع من الخدمات مع الفلاتر الحالية.';
 
   @override
   String get services_retry => 'إعادة المحاولة';
@@ -2088,7 +2157,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get services_works_preview_title => 'معرض الأعمال';
 
   @override
-  String get services_works_preview_subtitle => 'عرض تجريبي لبطاقات الأعمال إلى حين إضافة صور المشاريع الحقيقية.';
+  String get services_works_preview_subtitle =>
+      'عرض تجريبي لبطاقات الأعمال إلى حين إضافة صور المشاريع الحقيقية.';
 
   @override
   String services_work_item_title(Object number) {
@@ -2099,13 +2169,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_work_title => 'أعمال الشركة';
 
   @override
-  String get company_work_subtitle => 'إدارة المشاريع المنفذة وأعمال التركيب ونماذج الأعمال.';
+  String get company_work_subtitle =>
+      'إدارة المشاريع المنفذة وأعمال التركيب ونماذج الأعمال.';
 
   @override
   String get company_work_public_title => 'معرض المشاريع';
 
   @override
-  String get company_work_public_subtitle => 'استكشف أحدث مشاريع الشركة وأعمال التركيب المنجزة.';
+  String get company_work_public_subtitle =>
+      'استكشف أحدث مشاريع الشركة وأعمال التركيب المنجزة.';
 
   @override
   String get company_work_public_empty => 'لم يتم نشر أي أعمال حتى الآن.';
@@ -2135,7 +2207,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_work_images => 'صور العمل';
 
   @override
-  String get company_work_images_empty => 'أضف صورة واحدة أو أكثر لعرض هذا المشروع.';
+  String get company_work_images_empty =>
+      'أضف صورة واحدة أو أكثر لعرض هذا المشروع.';
 
   @override
   String get company_work_existing_image => 'حالياً';
@@ -2159,7 +2232,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_work_empty_title => 'لا توجد أعمال بعد';
 
   @override
-  String get company_work_empty_subtitle => 'أنشئ أول عمل لعرض المشاريع المنجزة للعملاء.';
+  String get company_work_empty_subtitle =>
+      'أنشئ أول عمل لعرض المشاريع المنجزة للعملاء.';
 
   @override
   String get company_work_no_description => 'لم يتم إضافة وصف بعد.';
@@ -2295,13 +2369,15 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get company_contacts_no_company => 'يلزم وجود حساب شركة لإدارة جهات الاتصال.';
+  String get company_contacts_no_company =>
+      'يلزم وجود حساب شركة لإدارة جهات الاتصال.';
 
   @override
   String get company_public_services => 'الخدمات العامة';
 
   @override
-  String get company_public_services_subtitle => 'اعرض الخدمات التي تقدمها شركتك للجمهور.';
+  String get company_public_services_subtitle =>
+      'اعرض الخدمات التي تقدمها شركتك للجمهور.';
 
   @override
   String get company_public_services_loading => 'جاري تحميل الخدمات العامة...';
@@ -2310,7 +2386,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get company_public_services_empty_title => 'لا توجد خدمات عامة بعد';
 
   @override
-  String get company_public_services_empty_subtitle => 'أنشئ أول خدمة عامة لشركتك.';
+  String get company_public_services_empty_subtitle =>
+      'أنشئ أول خدمة عامة لشركتك.';
 
   @override
   String get company_public_services_add => 'إضافة خدمة';
@@ -2345,10 +2422,12 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get company_public_services_no_company => 'يلزم وجود حساب شركة لإدارة الخدمات العامة.';
+  String get company_public_services_no_company =>
+      'يلزم وجود حساب شركة لإدارة الخدمات العامة.';
 
   @override
-  String get company_categories_subtitle => 'نظّم شركتك باستخدام تصنيفات مخصصة.';
+  String get company_categories_subtitle =>
+      'نظّم شركتك باستخدام تصنيفات مخصصة.';
 
   @override
   String get company_categories_loading => 'جاري تحميل التصنيفات...';
@@ -2383,7 +2462,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get company_categories_no_company => 'يلزم وجود حساب شركة لإدارة التصنيفات.';
+  String get company_categories_no_company =>
+      'يلزم وجود حساب شركة لإدارة التصنيفات.';
 
   @override
   String get status_active => 'نشط';
@@ -2419,6 +2499,410 @@ class AppLocalizationsAr extends AppLocalizations {
   String get request_status_fulfilled => 'مكتمل التنفيذ';
 
   @override
+  String get request_status_offered => 'تم تقديم عرض';
+
+  @override
+  String get request_status_accepted => 'مقبول';
+
+  @override
+  String get unknown_user => 'مستخدم غير معروف';
+
+  @override
+  String get requester_info => 'صاحب الطلب';
+
+  @override
+  String bids_count(Object count) {
+    return '$count عروض';
+  }
+
+  @override
+  String time_ago_days(Object count) {
+    return 'منذ $count يوم';
+  }
+
+  @override
+  String time_ago_hours(Object count) {
+    return 'منذ $count ساعة';
+  }
+
+  @override
+  String time_ago_minutes(Object count) {
+    return 'منذ $count دقيقة';
+  }
+
+  @override
+  String get time_ago_just_now => 'الآن';
+
+  @override
+  String unit_watts(Object value) {
+    return '$value واط';
+  }
+
+  @override
+  String unit_kilowatts(Object value) {
+    return '$value كيلوواط';
+  }
+
+  @override
+  String unit_watthours(Object value) {
+    return '$value واط-ساعة';
+  }
+
+  @override
+  String unit_kilowatthours(Object value) {
+    return '$value كيلوواط-ساعة';
+  }
+
+  @override
+  String get edit_offer => 'تعديل العرض';
+
+  @override
+  String get build_quotation => 'أنشئ عرض السعر';
+
+  @override
+  String get build_quotation_subtitle =>
+      'ابدأ من طلب العميل ثم عدّل العرض الفني وأضف الخدمات الإضافية عند الحاجة.';
+
+  @override
+  String get auto_totals_label => 'إجماليات تلقائية من أسعار الوحدة';
+
+  @override
+  String get editing_existing_offer => 'تعديل عرض موجود';
+
+  @override
+  String get uses_request_defaults => 'يعتمد على القيم الافتراضية للطلب';
+
+  @override
+  String get panel_offer => 'عرض الألواح';
+
+  @override
+  String get panel_offer_subtitle =>
+      'هذه القيم تبدأ من طلب العميل ويمكن تعديلها قبل إرسال عرض السعر.';
+
+  @override
+  String get panel_power_watts => 'قدرة اللوح (واط)';
+
+  @override
+  String get panel_unit_price => 'سعر اللوح';
+
+  @override
+  String get total_panel_power_label => 'إجمالي قدرة الألواح';
+
+  @override
+  String get panels_total_price => 'إجمالي سعر الألواح';
+
+  @override
+  String get panel_note_label => 'ملاحظة الألواح (اختياري)';
+
+  @override
+  String get panel_note_hint =>
+      'العلامة التجارية، مونو، الضمان، ملاحظات التركيب...';
+
+  @override
+  String get battery_offer => 'عرض البطاريات';
+
+  @override
+  String get battery_offer_subtitle =>
+      'استخدم نوع البطارية وسعتها لتوضيح توصيتك الخاصة بالنسخ الاحتياطي بشكل واضح.';
+
+  @override
+  String get battery_size => 'سعة البطارية';
+
+  @override
+  String get battery_unit_price => 'سعر البطارية';
+
+  @override
+  String get batteries_total_price => 'إجمالي سعر البطاريات';
+
+  @override
+  String get battery_note_label => 'ملاحظة البطارية (اختياري)';
+
+  @override
+  String get battery_note_hint =>
+      'إعداد الرف، ساعات التشغيل، العلامة المفضلة...';
+
+  @override
+  String get battery_type => 'نوع البطارية';
+
+  @override
+  String get battery_count => 'عدد البطاريات';
+
+  @override
+  String get inverter_offer => 'عرض العاكس';
+
+  @override
+  String get inverter_offer_subtitle =>
+      'اجعل تفاصيل العاكس متوافقة مع إعداد التركيب الفعلي ومتطلبات الشبكة.';
+
+  @override
+  String get inverter_unit_price => 'سعر العاكس';
+
+  @override
+  String get inverters_total_price => 'إجمالي سعر العواكس';
+
+  @override
+  String get inverter_note_label => 'ملاحظة العاكس (اختياري)';
+
+  @override
+  String get inverter_note_hint => 'أحادي الطور، عدد MPPT، ملاحظات الحماية...';
+
+  @override
+  String get inverter_type => 'نوع العاكس';
+
+  @override
+  String get inverter_count => 'عدد العواكس';
+
+  @override
+  String get offer_note_title => 'ملاحظات العرض';
+
+  @override
+  String get offer_note_description =>
+      'استخدم هذا الحقل لوقت التسليم أو الضمان أو ملاحظات التنفيذ أو الاستثناءات.';
+
+  @override
+  String get template_involves => 'الخدمات أو الرسوم الإضافية';
+
+  @override
+  String get template_involves_subtitle =>
+      'استخدم هذا القسم لرسوم التركيب أو التوصيل أو الهياكل أو الكابلات أو أي خدمة إضافية مرتبطة بهذا العرض.';
+
+  @override
+  String get no_extra_services => 'لم تتم إضافة خدمات أو رسوم إضافية بعد.';
+
+  @override
+  String get estimated_extra_fees_label => 'إجمالي الرسوم الإضافية التقديري';
+
+  @override
+  String get add_from_catalog => 'إضافة من الكتالوج';
+
+  @override
+  String get create_new_item => 'إنشاء عنصر جديد';
+
+  @override
+  String get manage_catalog => 'إدارة الكتالوج';
+
+  @override
+  String get quotation_total => 'إجمالي عرض السعر';
+
+  @override
+  String get save_offer_changes => 'حفظ تعديلات العرض';
+
+  @override
+  String get no_more_catalog_items =>
+      'لا توجد عناصر نشطة أخرى متاحة في الكتالوج. أنشئ عنصرًا جديدًا أولًا.';
+
+  @override
+  String get create_item_title => 'إنشاء عنصر كتالوج جديد';
+
+  @override
+  String get create_item_subtitle =>
+      'أضف خدمة أو مادة مخصصة لاستخدامها في هذا العرض والعروض المستقبلية.';
+
+  @override
+  String get name_label => 'الاسم';
+
+  @override
+  String get cost_label => 'السعر';
+
+  @override
+  String get create_item_button => 'إنشاء العنصر';
+
+  @override
+  String get extra_fees_missing_title => 'رسوم إضافية مفقودة';
+
+  @override
+  String get extra_fees_missing_msg =>
+      'يرجى اختيار عنصر من الكتالوج لجميع صفوف الرسوم الإضافية أو إزالتها.';
+
+  @override
+  String get invalid_panel_offer_title => 'عرض ألواح غير صالح';
+
+  @override
+  String get invalid_panel_offer_msg =>
+      'يرجى التحقق من قدرة الألواح وعددها وسعرها.';
+
+  @override
+  String get invalid_battery_offer_title => 'عرض بطاريات غير صالح';
+
+  @override
+  String get invalid_battery_offer_msg =>
+      'يرجى التحقق من سعة البطاريات وعددها وسعرها.';
+
+  @override
+  String get invalid_inverter_offer_title => 'عرض عاكس غير صالح';
+
+  @override
+  String get invalid_inverter_offer_msg =>
+      'يرجى التحقق من قدرة العاكس وعدده وسعره.';
+
+  @override
+  String get invalid_pricing_title => 'تسعير غير صالح';
+
+  @override
+  String get invalid_pricing_msg => 'يجب أن يكون إجمالي سعر العرض أكبر من صفر.';
+
+  @override
+  String get form_required => 'مطلوب';
+
+  @override
+  String get edit_button => 'تعديل';
+
+  @override
+  String get finish_offer => 'إنهاء العرض';
+
+  @override
+  String get delete_offer_title => 'حذف العرض';
+
+  @override
+  String get delete_offer_msg =>
+      'هل أنت متأكد من حذف هذا العرض؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get cancel_button => 'إلغاء';
+
+  @override
+  String get delete_button => 'حذف';
+
+  @override
+  String get contact_unavailable_title => 'الاتصال غير متاح';
+
+  @override
+  String get contact_unavailable_msg =>
+      'لا يتوفر رقم هاتف أو بريد إلكتروني لهذا الطالب.';
+
+  @override
+  String get panel_label => 'اللوح';
+
+  @override
+  String get battery_label => 'البطارية';
+
+  @override
+  String get inverter_label => 'العاكس';
+
+  @override
+  String get location_reach_title => 'الموقع والوصول';
+
+  @override
+  String get request_city_label => 'مدينة الطلب';
+
+  @override
+  String get send_to_all_cities => 'إرسال إلى جميع المدن';
+
+  @override
+  String get general_note_title => 'ملاحظة عامة';
+
+  @override
+  String get no_city_selected => 'لم يتم اختيار مدينة';
+
+  @override
+  String get panels_power_recommendation =>
+      'نوصي باختيار قدرة لوح بين 400 واط و 600 واط للأنظمة الحديثة.';
+
+  @override
+  String get battery_power_recommendation =>
+      'يوصى ببطاريات الليثيوم لعمر أطول وأداء أفضل.';
+
+  @override
+  String get inverter_power_recommendation =>
+      'العواكس الهجينة هي الأفضل للأنظمة التي تحتوي على طاقة شمسية وبطاريات.';
+
+  @override
+  String get send_to_all_cities_msg =>
+      'سيكون طلبك مرئياً للشركات في جميع المدن.';
+
+  @override
+  String get general_note_hint => 'أي تفاصيل أو متطلبات أخرى لنظامك الشمسي...';
+
+  @override
+  String get panel_recommendation_msg =>
+      'مقترح: استخدم نفس القدرة لكل الألواح لتحصل على توافق أفضل وعروض أدق.';
+
+  @override
+  String get panel_count_label => 'عدد الألواح';
+
+  @override
+  String get panel_note_hint_request =>
+      'العلامة التجارية، نصف خلية، مونو، قيود السطح...';
+
+  @override
+  String get battery_recommendation_msg =>
+      'أفضل أداء: الليثيوم هو الخيار الافتراضي لعمر أطول وشحن أسرع.';
+
+  @override
+  String get battery_type_label => 'نوع البطارية';
+
+  @override
+  String get battery_count_label => 'عدد البطاريات';
+
+  @override
+  String get battery_note_hint_request =>
+      'نوع الرف، ساعات النسخ الاحتياطي، العلامة المفضلة...';
+
+  @override
+  String get total_battery_power_label => 'إجمالي سعة البطاريات';
+
+  @override
+  String get inverter_recommendation_msg =>
+      'أفضل أداء: الهايبرد مناسب عند الحاجة لدعم الشبكة وإضافة بطاريات مستقبلًا.';
+
+  @override
+  String get inverter_type_label => 'نوع العاكس';
+
+  @override
+  String get inverter_count_label => 'عدد العواكس';
+
+  @override
+  String get inverter_note_hint_request =>
+      'أحادي الطور، عدد MPPT، العلامة التجارية...';
+
+  @override
+  String get total_inverters_power_label => 'إجمالي قدرة العواكس';
+
+  @override
+  String get city_required_error =>
+      'يجب تحديد مدينة في ملفك الشخصي قبل إنشاء الطلب.';
+
+  @override
+  String get request_submitted_success => 'تم إرسال طلب الخدمة بنجاح!';
+
+  @override
+  String get request_submit_error => 'تعذر إرسال الطلب. حاول مرة أخرى.';
+
+  @override
+  String get hero_request_subtitle =>
+      'أضف المقاسات والملاحظات بوضوح لتصلك عروض أدق من الشركات.';
+
+  @override
+  String get hero_request_info => 'إعدادات افتراضية لإدخال أسرع';
+
+  @override
+  String get send_to_all_cities_subtitle =>
+      'فعّل هذا الخيار للسماح للشركات خارج مدينتك بالرد أيضًا.';
+
+  @override
+  String get general_note_subtitle =>
+      'أضف تفاصيل الموقع أو قيود التركيب أو العلامات التجارية المفضلة.';
+
+  @override
+  String get note_optional_label => 'ملاحظة (اختياري)';
+
+  @override
+  String get note_optional => 'ملاحظة (اختياري)';
+
+  @override
+  String get note_hint => 'أضف أي تفاصيل إضافية أو متطلبات هنا...';
+
+  @override
+  String get note_hint_request =>
+      'نوع السطح، هدف النسخ الاحتياطي، الجدول الزمني...';
+
+  @override
+  String get delete_offer_subtitle => 'سيؤدي هذا إلى حذف العرض نهائيًا.';
+
+  @override
+  String get phone_unavailable_msg => 'لا يوجد رقم هاتف متاح لهذا الإجراء.';
+
+  @override
   String get battery_type_gel => 'جل';
 
   @override
@@ -2443,13 +2927,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get manage_extra_fees => 'إدارة الرسوم والخدمات الإضافية';
 
   @override
-  String get manage_extra_fees_desc => 'استخدم هذه القائمة لرسوم التركيب أو التوصيل أو الهياكل أو التمديدات أو أي خدمات إضافية تدخل ضمن العرض.';
+  String get manage_extra_fees_desc =>
+      'استخدم هذه القائمة لرسوم التركيب أو التوصيل أو الهياكل أو التمديدات أو أي خدمات إضافية تدخل ضمن العرض.';
 
   @override
   String get no_involves_yet => 'لا توجد عناصر إضافية بعد';
 
   @override
-  String get no_involves_yet_desc => 'أنشئ أول عنصر تكلفة إضافية لإعادة استخدامه في ردود العروض.';
+  String get no_involves_yet_desc =>
+      'أنشئ أول عنصر تكلفة إضافية لإعادة استخدامه في ردود العروض.';
 
   @override
   String get create_item => 'إنشاء عنصر';
@@ -2473,7 +2959,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delete_item => 'حذف العنصر؟';
 
   @override
-  String get delete_item_desc => 'سيتم حذف هذا العنصر من كتالوج التكاليف الإضافية.';
+  String get delete_item_desc =>
+      'سيتم حذف هذا العنصر من كتالوج التكاليف الإضافية.';
 
   @override
   String get offers_marketplace => 'سوق العروض الشمسية';
@@ -2491,10 +2978,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_offers_found => 'لا توجد عروض';
 
   @override
-  String get new_projects_will_appear_here => 'ستظهر هنا مشاريع الطاقة الشمسية الجديدة في منطقتك.';
+  String get new_projects_will_appear_here =>
+      'ستظهر هنا مشاريع الطاقة الشمسية الجديدة في منطقتك.';
 
   @override
-  String get browse_requests_to_start_bidding => 'انتقل إلى تبويب الطلبات لبدء تقديم العروض على المشاريع.';
+  String get browse_requests_to_start_bidding =>
+      'انتقل إلى تبويب الطلبات لبدء تقديم العروض على المشاريع.';
 
   @override
   String get admin_marketplace_oversight => 'لوحة متابعة سوق العروض';
@@ -2523,7 +3012,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_requests_posted => 'لا توجد طلبات منشورة';
 
   @override
-  String get post_first_solar_request => 'ابدأ بتوفير الطاقة من خلال نشر أول طلب لنظام شمسي واستقبال عروض من الشركات.';
+  String get post_first_solar_request =>
+      'ابدأ بتوفير الطاقة من خلال نشر أول طلب لنظام شمسي واستقبال عروض من الشركات.';
 
   @override
   String get create_solar_request => 'إنشاء طلب نظام شمسي';
@@ -2535,7 +3025,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get broadcast_to_all_cities => 'إرسال الطلب إلى جميع المدن';
 
   @override
-  String get broadcast_to_all_cities_desc => 'فعّل هذا الخيار للوصول إلى الشركات في مختلف المدن';
+  String get broadcast_to_all_cities_desc =>
+      'فعّل هذا الخيار للوصول إلى الشركات في مختلف المدن';
 
   @override
   String get solar_panel_needs => 'احتياجات الألواح الشمسية';
@@ -2596,12 +3087,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get total_energy_capacity => 'إجمالي سعة التخزين';
-
-  @override
-  String get battery_type_label => 'نوع البطارية';
-
-  @override
-  String get inverter_type_label => 'نوع العاكس';
 
   @override
   String get storage_batteries => 'التخزين (البطاريات)';
@@ -2695,7 +3180,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get company_dashboard_subtitle => 'أدر عملياتك في مجال الطاقة الشمسية بكفاءة';
+  String get company_dashboard_subtitle =>
+      'أدر عملياتك في مجال الطاقة الشمسية بكفاءة';
 
   @override
   String get error_loading_data => 'حدث خطأ أثناء تحميل البيانات';
@@ -2712,7 +3198,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ready_to_scale_business => 'هل أنت مستعد لتوسيع أعمالك؟';
 
   @override
-  String get monitor_growth_subscriptions => 'تابع نمو أعمالك واشتراكاتك من هنا.';
+  String get monitor_growth_subscriptions =>
+      'تابع نمو أعمالك واشتراكاتك من هنا.';
 
   @override
   String get solar_solutions_provider => 'مزود حلول الطاقة الشمسية';
@@ -2738,7 +3225,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get service_unlock_description => 'فعّل هذه الخدمة لتطوير أعمالك في الطاقة الشمسية وأتمتة سير العمل.';
+  String get service_unlock_description =>
+      'فعّل هذه الخدمة لتطوير أعمالك في الطاقة الشمسية وأتمتة سير العمل.';
 
   @override
   String get access_requested_successfully => 'تم إرسال طلب الوصول بنجاح';
@@ -2755,7 +3243,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get service_pending_help => 'عادةً ما يستغرق فريقنا من 24 إلى 48 ساعة للموافقة على الخدمات الجديدة. يُرجى الانتظار أو التواصل مع الدعم عند الحاجة.';
+  String get service_pending_help =>
+      'عادةً ما يستغرق فريقنا من 24 إلى 48 ساعة للموافقة على الخدمات الجديدة. يُرجى الانتظار أو التواصل مع الدعم عند الحاجة.';
 
   @override
   String get contact_support => 'التواصل مع الدعم';
@@ -2769,7 +3258,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get service_rejected_help => 'قد يكون ذلك بسبب نقص في المعلومات أو عدم استيفاء الشروط. يُرجى التواصل مع فريقنا لتقديم اعتراض.';
+  String get service_rejected_help =>
+      'قد يكون ذلك بسبب نقص في المعلومات أو عدم استيفاء الشروط. يُرجى التواصل مع فريقنا لتقديم اعتراض.';
 
   @override
   String get appeal_decision => 'الاعتراض على القرار';
@@ -2783,7 +3273,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get service_accounts_help => 'يرجى التحقق من حالة اشتراكك أو التواصل مع فريق خدمة العملاء لحل المشكلة.';
+  String get service_accounts_help =>
+      'يرجى التحقق من حالة اشتراكك أو التواصل مع فريق خدمة العملاء لحل المشكلة.';
 
   @override
   String get contact_accounts => 'التواصل مع الحسابات';
@@ -2797,7 +3288,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get service_maintenance_help => 'نعمل على إضافة مزايا جديدة لتحسين تجربتك. يُرجى المحاولة مرة أخرى لاحقاً.';
+  String get service_maintenance_help =>
+      'نعمل على إضافة مزايا جديدة لتحسين تجربتك. يُرجى المحاولة مرة أخرى لاحقاً.';
 
   @override
   String get back_to_dashboard => 'العودة إلى لوحة التحكم';
@@ -2896,7 +3388,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get startup_roles => 'بدء التشغيل والأدوار';
 
   @override
-  String get startup_role_subtitle => 'افتح لوحة التحكم المفضلة لديك تلقائياً عند تشغيل التطبيق';
+  String get startup_role_subtitle =>
+      'افتح لوحة التحكم المفضلة لديك تلقائياً عند تشغيل التطبيق';
 
   @override
   String get profile_updated_success => 'تم تحديث الملف بنجاح!';
@@ -2905,7 +3398,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscription_required => 'الاشتراك مطلوب';
 
   @override
-  String get subscription_required_msg => 'تحتاج إلى اشتراك نشط للوصول إلى هذه الميزة.';
+  String get subscription_required_msg =>
+      'تحتاج إلى اشتراك نشط للوصول إلى هذه الميزة.';
 
   @override
   String get view_plans => 'مشاهدة الخطط';
@@ -2954,7 +3448,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get select_system => 'اختر نظاماً';
 
   @override
-  String get add_calculation_to_existing_system => 'أضف هذه الحسبة إلى نظام موجود:';
+  String get add_calculation_to_existing_system =>
+      'أضف هذه الحسبة إلى نظام موجود:';
 
   @override
   String get no_saved_systems_found => 'لم يتم العثور على أنظمة محفوظة.';
@@ -3002,7 +3497,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get gel_lead_acid_tubular => 'جل / رصاص-حامضي / تيوبولر';
 
   @override
-  String get panel_calc_intro => 'احسب عدد الألواح الشمسية المطلوبة بناءً على استهلاكك اليومي للطاقة.';
+  String get panel_calc_intro =>
+      'احسب عدد الألواح الشمسية المطلوبة بناءً على استهلاكك اليومي للطاقة.';
 
   @override
   String get total_daily_usage => 'الاستهلاك اليومي الكلي';
@@ -3022,10 +3518,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get did_you_know => 'هل تعلم؟';
 
   @override
-  String get panel_calc_tip_text => '• الأمبير-ساعة = الواط ÷ الفولت.\n• مثال: حمل يومي 1000 واط-ساعة على نظام 12 فولت يساوي تقريباً 83.3 أمبير-ساعة.\n• نحتسب الفواقد حتى يبقى أداء النظام جيداً في الظروف الواقعية.';
+  String get panel_calc_tip_text =>
+      '• الأمبير-ساعة = الواط ÷ الفولت.\n• مثال: حمل يومي 1000 واط-ساعة على نظام 12 فولت يساوي تقريباً 83.3 أمبير-ساعة.\n• نحتسب الفواقد حتى يبقى أداء النظام جيداً في الظروف الواقعية.';
 
   @override
-  String get inverter_calc_intro => 'احسب حجم العاكس المناسب لتحمل أحمال الذروة بأمان.';
+  String get inverter_calc_intro =>
+      'احسب حجم العاكس المناسب لتحمل أحمال الذروة بأمان.';
 
   @override
   String get total_load_amps => 'إجمالي تيار الحمل';
@@ -3048,7 +3546,8 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get inverter_calc_tip_text => '• عادةً يتم اختيار العاكس بقدرة أعلى من الحمل المستمر بنسبة 20% إلى 30%.\n• معامل الأمان يساعد على تحمل تيارات الإقلاع للأحمال مثل الثلاجات أو المضخات.';
+  String get inverter_calc_tip_text =>
+      '• عادةً يتم اختيار العاكس بقدرة أعلى من الحمل المستمر بنسبة 20% إلى 30%.\n• معامل الأمان يساعد على تحمل تيارات الإقلاع للأحمال مثل الثلاجات أو المضخات.';
 
   @override
   String get wires_calc_intro => 'اختر نوع التطبيق للحصول على مقاس سلك مقترح.';
@@ -3087,10 +3586,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recommended_wire_size => 'مقاس السلك الموصى به';
 
   @override
-  String get wires_calc_tip_text => '• الحفاظ على هبوط الجهد منخفضاً مهم جداً لكفاءة النظام.\n• في كابلات البطاريات يفضّل أن يكون الهبوط أقل من 1% لتجنب فصل العاكس.\n• في خطوط الألواح الشمسية يكون 3% مقبولاً عادةً.';
+  String get wires_calc_tip_text =>
+      '• الحفاظ على هبوط الجهد منخفضاً مهم جداً لكفاءة النظام.\n• في كابلات البطاريات يفضّل أن يكون الهبوط أقل من 1% لتجنب فصل العاكس.\n• في خطوط الألواح الشمسية يكون 3% مقبولاً عادةً.';
 
   @override
-  String get pump_calc_intro => 'احسب القدرة الشمسية اللازمة لنظام مضخة المياه.';
+  String get pump_calc_intro =>
+      'احسب القدرة الشمسية اللازمة لنظام مضخة المياه.';
 
   @override
   String get daily_water_volume => 'حجم المياه اليومي';
@@ -3134,13 +3635,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get definition_tdh => 'الرفع العمودي + فاقد الاحتكاك + الضغط المطلوب.';
 
   @override
-  String get definition_flow_rate => 'كمية المياه المطلوبة يومياً، مثل المتر المكعب.';
+  String get definition_flow_rate =>
+      'كمية المياه المطلوبة يومياً، مثل المتر المكعب.';
 
   @override
-  String get definition_psh => 'عدد الساعات المكافئة لشدة شمس كاملة في موقعك، وغالباً تكون بين 4 و6 ساعات.';
+  String get definition_psh =>
+      'عدد الساعات المكافئة لشدة شمس كاملة في موقعك، وغالباً تكون بين 4 و6 ساعات.';
 
   @override
-  String get definition_hydraulic_power => 'القدرة المطلوبة لرفع الماء قبل احتساب فاقد كفاءة المحرك.';
+  String get definition_hydraulic_power =>
+      'القدرة المطلوبة لرفع الماء قبل احتساب فاقد كفاءة المحرك.';
 
   @override
   String get find_battery_count => 'حساب عدد البطاريات';
@@ -3191,13 +3695,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get depth_of_discharge_dod => 'عمق التفريغ (DoD)';
 
   @override
-  String get typical_dod_hint => 'شائع: 50% لبطاريات الجل/AGM، و80% لليثيوم، و20-30% للرصاص الحمضي';
+  String get typical_dod_hint =>
+      'شائع: 50% لبطاريات الجل/AGM، و80% لليثيوم، و20-30% للرصاص الحمضي';
 
   @override
-  String get battery_count_formula_hint => 'المعادلة: (الحمل × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)';
+  String get battery_count_formula_hint =>
+      'المعادلة: (الحمل × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)';
 
   @override
-  String get battery_runtime_formula_hint => 'تحسب هذه العملية مدة تشغيل بنك البطاريات مع الحمل قبل الوصول إلى عمق التفريغ المحدد.';
+  String get battery_runtime_formula_hint =>
+      'تحسب هذه العملية مدة تشغيل بنك البطاريات مع الحمل قبل الوصول إلى عمق التفريغ المحدد.';
 
   @override
   String get battery_calculator_title => 'حاسبة البطاريات';
@@ -3218,7 +3725,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get numbers_only => 'أدخل أرقاماً فقط';
 
   @override
-  String get load_ampere_helper => 'أدخل الحمل بالأمبير ثم اختر جهد النظام المتناوب. عادةً يتم حساب الحمل من: الجهد × التيار. مثال: 10 أمبير × 230 فولت = 2300 واط.';
+  String get load_ampere_helper =>
+      'أدخل الحمل بالأمبير ثم اختر جهد النظام المتناوب. عادةً يتم حساب الحمل من: الجهد × التيار. مثال: 10 أمبير × 230 فولت = 2300 واط.';
 
   @override
   String get battery_amperes => 'سعة البطارية';
@@ -3227,13 +3735,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get battery_voltage_label => 'جهد البطارية';
 
   @override
-  String get battery_count_label => 'عدد البطاريات';
-
-  @override
   String get battery_count_hint => 'واحدة أو أكثر';
 
   @override
-  String get runtime_question => 'كم ساعة تريد أن يعمل النظام فيها على البطاريات؟';
+  String get runtime_question =>
+      'كم ساعة تريد أن يعمل النظام فيها على البطاريات؟';
 
   @override
   String get required_runtime_hours => 'مدة التشغيل المطلوبة (بالساعات)';
@@ -3254,7 +3760,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get example_15 => 'مثال: 15';
 
   @override
-  String get battery_count_explanation => 'يتم حساب عدد البطاريات المطلوبة وفق المعادلة التالية:\n\n(القدرة × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)\n\nمثال: (2300 واط × 5 ساعات) ÷ (12 فولت × 100Ah × 0.2) = حوالي 8 بطاريات.\n\nهذا يساعدك على تقدير عدد البطاريات اللازمة لحمل ومدة تشغيل محددين.';
+  String get battery_count_explanation =>
+      'يتم حساب عدد البطاريات المطلوبة وفق المعادلة التالية:\n\n(القدرة × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)\n\nمثال: (2300 واط × 5 ساعات) ÷ (12 فولت × 100Ah × 0.2) = حوالي 8 بطاريات.\n\nهذا يساعدك على تقدير عدد البطاريات اللازمة لحمل ومدة تشغيل محددين.';
 
   @override
   String depth_of_discharge_with_value(Object value) {
@@ -3262,13 +3769,16 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get dod_guidance => 'حدد نسبة عمق التفريغ (DoD).\n\nالقيم الشائعة تتراوح بين 20% و80% حسب نوع البطارية.\n\n• 20% لبطاريات الليثيوم أو التيوبولر\n• 50% لبطاريات AGM أو الجل\nراجع ورقة المواصفات للحصول على أفضل دقة.';
+  String get dod_guidance =>
+      'حدد نسبة عمق التفريغ (DoD).\n\nالقيم الشائعة تتراوح بين 20% و80% حسب نوع البطارية.\n\n• 20% لبطاريات الليثيوم أو التيوبولر\n• 50% لبطاريات AGM أو الجل\nراجع ورقة المواصفات للحصول على أفضل دقة.';
 
   @override
-  String get battery_runtime_explanation => 'أدخل سعة البطارية (Ah)، الجهد (V)، وعدد البطاريات.\nيتم حساب إجمالي الطاقة المخزنة كما يلي:\nالجهد × السعة × عدد البطاريات × عمق التفريغ.\n\n• مثال: 4 بطاريات × 12 فولت × 100Ah × 0.2 = 960 واط-ساعة\nوهذا يساعد على تقدير مدة تشغيل الحمل على البطاريات.';
+  String get battery_runtime_explanation =>
+      'أدخل سعة البطارية (Ah)، الجهد (V)، وعدد البطاريات.\nيتم حساب إجمالي الطاقة المخزنة كما يلي:\nالجهد × السعة × عدد البطاريات × عمق التفريغ.\n\n• مثال: 4 بطاريات × 12 فولت × 100Ah × 0.2 = 960 واط-ساعة\nوهذا يساعد على تقدير مدة تشغيل الحمل على البطاريات.';
 
   @override
-  String get dod_guidance_runtime => 'حدد نسبة عمق التفريغ (DoD) للبطارية.\n\nغالباً تتراوح القيم المناسبة بين 50% و80% حسب نوع البطارية ودرجة الحرارة وتعليمات الشركة المصنعة.\n\n• استخدم 20% لبطاريات الليثيوم أو التيوبولر.\n• استخدم 50% لبطاريات AGM أو الجل.\nارجع إلى ورقة المواصفات إذا لم تكن متأكداً.';
+  String get dod_guidance_runtime =>
+      'حدد نسبة عمق التفريغ (DoD) للبطارية.\n\nغالباً تتراوح القيم المناسبة بين 50% و80% حسب نوع البطارية ودرجة الحرارة وتعليمات الشركة المصنعة.\n\n• استخدم 20% لبطاريات الليثيوم أو التيوبولر.\n• استخدم 50% لبطاريات AGM أو الجل.\nارجع إلى ورقة المواصفات إذا لم تكن متأكداً.';
 
   @override
   String runtime_hours_precise(Object value) {
@@ -3398,9 +3908,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get submitting_request => 'جاري الإرسال...';
 
   @override
-  String get request_submitted_success => 'تم إرسال طلب الخدمة بنجاح!';
-
-  @override
   String get request_failed => 'فشل في إرسال الطلب';
 
   @override
@@ -3453,4 +3960,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reset => 'إعادة تعيين';
+
+  @override
+  String get load_more_offers => 'تحميل المزيد من العروض';
+
+  @override
+  String get catalog_tooltip => 'الكتالوج';
 }

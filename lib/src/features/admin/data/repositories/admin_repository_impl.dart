@@ -9,7 +9,6 @@ import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_pl
 import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
 import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
-import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
 
@@ -76,23 +75,6 @@ class AdminRepositoryImpl implements AdminRepository {
     return AdminCompanyDetails.fromJson(response.body as Map<String, dynamic>);
   }
 
-  @override
-  Future<List<ServiceRequest>> listServiceRequests({int page = 1, int pageSize = 12}) async {
-    final response = await _remoteDataSource.listServiceRequests(page: page, pageSize: pageSize);
-    final body = response.body;
-    if (body is! List) throw Exception('Expected List but got ${body.runtimeType}');
-    return body.map((e) => ServiceRequest.fromJson(e as Map<String, dynamic>)).toList();
-  }
-
-  @override
-  Future<void> reviewServiceRequest(int companyId, String serviceCode, Map<String, dynamic> data) async {
-    await _remoteDataSource.reviewServiceRequest(companyId, serviceCode, data);
-  }
-
-  @override
-  Future<void> toggleCompanyService(int companyId, String serviceCode, Map<String, dynamic> data) async {
-    await _remoteDataSource.toggleCompanyService(companyId, serviceCode, data);
-  }
 
   // Currencies
   @override
@@ -122,8 +104,8 @@ class AdminRepositoryImpl implements AdminRepository {
 
   // Countries
   @override
-  Future<List<AdminCountry>> listCountries({int page = 1, int pageSize = 12}) async {
-    final response = await _remoteDataSource.listCountries(page: page, pageSize: pageSize);
+  Future<List<AdminCountry>> listCountries() async {
+    final response = await _remoteDataSource.listCountries();
     final body = response.body;
     if (body is! List) throw Exception('Expected List but got ${body.runtimeType}');
     return body.map((e) => AdminCountry.fromJson(e as Map<String, dynamic>)).toList();
@@ -148,8 +130,8 @@ class AdminRepositoryImpl implements AdminRepository {
 
   // Cities
   @override
-  Future<List<AdminCity>> listCities({int page = 1, int pageSize = 12}) async {
-    final response = await _remoteDataSource.listCities(page: page, pageSize: pageSize);
+  Future<List<AdminCity>> listCities({int? countryId}) async {
+    final response = await _remoteDataSource.listCities(countryId: countryId);
     final body = response.body;
     if (body is! List) throw Exception('Expected List but got ${body.runtimeType}');
     return body.map((e) => AdminCity.fromJson(e as Map<String, dynamic>)).toList();

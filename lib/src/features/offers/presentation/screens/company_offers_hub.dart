@@ -82,7 +82,7 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
         title: Text(l10n.offers_marketplace),
         actions: [
           IconButton(
-            tooltip: 'Catalog',
+            tooltip: l10n.catalog_tooltip,
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

@@ -9,12 +9,13 @@ enum AdminModuleId {
   companies,
   serviceTypes,
   serviceCatalog,
-  serviceRequests,
   currencies,
   categories,
   address,
   users,
   subscriptions,
+  products,
+  systems,
 }
 
 class AdminModule {
@@ -90,13 +91,6 @@ class AdminModules {
     icon: Iconsax.category_2_bold,
   );
 
-  static const serviceRequests = AdminModule(
-    id: AdminModuleId.serviceRequests,
-    label: 'Service Requests',
-    subtitle: 'Review activation requests from companies.',
-    route: '/admin/service-requests',
-    icon: Iconsax.briefcase_bold,
-  );
 
   static const currencies = AdminModule(
     id: AdminModuleId.currencies,
@@ -138,6 +132,22 @@ class AdminModules {
     icon: Iconsax.card_bold,
   );
 
+  static const products = AdminModule(
+    id: AdminModuleId.products,
+    label: 'Global Products',
+    subtitle: 'Inspect and manage products across all companies.',
+    route: '/admin/products',
+    icon: Iconsax.box_bold,
+  );
+
+  static const systems = AdminModule(
+    id: AdminModuleId.systems,
+    label: 'Solar Systems',
+    subtitle: 'Review and manage user-created solar systems.',
+    route: '/admin/systems',
+    icon: Iconsax.sun_1_bold,
+  );
+
   static const navItems = <AdminModule>[
     dashboard,
     feedbacks,
@@ -146,17 +156,17 @@ class AdminModules {
     companies,
     serviceTypes,
     serviceCatalog,
-    serviceRequests,
     currencies,
     categories,
     address,
     users,
     subscriptions,
+    products,
+    systems,
   ];
 
   static const dashboardCards = <AdminModule>[
     companies,
-    serviceRequests,
     serviceCatalog,
     serviceTypes,
     subscriptions,
@@ -167,6 +177,8 @@ class AdminModules {
     feedbacks,
     configs,
     notifications,
+    products,
+    systems,
   ];
 
   static AdminModule fromLocation(String location) {
@@ -177,12 +189,13 @@ class AdminModules {
     if (location.startsWith('/admin/companies')) return companies;
     if (location.startsWith('/admin/service-types')) return serviceTypes;
     if (location.startsWith('/admin/service-catalog')) return serviceCatalog;
-    if (location.startsWith('/admin/service-requests')) return serviceRequests;
     if (location.startsWith('/admin/currencies')) return currencies;
     if (location.startsWith('/admin/categories')) return categories;
     if (location.startsWith('/admin/address')) return address;
     if (location.startsWith('/admin/users')) return users;
     if (location.startsWith('/admin/subscriptions')) return subscriptions;
+    if (location.startsWith('/admin/products')) return products;
+    if (location.startsWith('/admin/systems')) return systems;
     return dashboard;
   }
 }

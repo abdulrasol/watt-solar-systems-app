@@ -17,7 +17,7 @@ class AdminCurrency {
 
   factory AdminCurrency.fromJson(Map<String, dynamic> json) {
     return AdminCurrency(
-      id: json['id'] as int? ?? 0,
+      id: int.tryParse(json['id'].toString()) ?? 0,
       name: json['name']?.toString() ?? '',
       code: json['code']?.toString() ?? '',
       symbol: json['symbol']?.toString() ?? '',

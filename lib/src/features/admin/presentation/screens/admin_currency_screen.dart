@@ -88,18 +88,20 @@ class _AdminCurrencyScreenState extends ConsumerState<AdminCurrencyScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Currencies',
-                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
-              ),
-              Text(
-                'Manage system-wide monetary units',
-                style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Currencies',
+                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                ),
+                Text(
+                  'Manage system-wide monetary units',
+                  style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                ),
+              ],
+            ),
           ),
           ElevatedButton.icon(
             onPressed: () => _showCurrencyDialog(),

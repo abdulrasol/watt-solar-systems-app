@@ -11,7 +11,7 @@ class AdminGlobalCategory {
 
   factory AdminGlobalCategory.fromJson(Map<String, dynamic> json) {
     return AdminGlobalCategory(
-      id: json['id'] as int? ?? 0,
+      id: int.tryParse(json['id'].toString()) ?? 0,
       name: json['name']?.toString() ?? '',
       icon: json['icon']?.toString(),
     );

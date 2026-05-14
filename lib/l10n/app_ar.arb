@@ -962,6 +962,166 @@
   "request_status_open": "مفتوح",
   "request_status_closed": "مغلق",
   "request_status_fulfilled": "مكتمل التنفيذ",
+  "request_status_offered": "تم تقديم عرض",
+  "request_status_accepted": "مقبول",
+  "unknown_user": "مستخدم غير معروف",
+  "requester_info": "صاحب الطلب",
+  "bids_count": "{count} عروض",
+  "@bids_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_days": "منذ {count} يوم",
+  "@time_ago_days": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_hours": "منذ {count} ساعة",
+  "@time_ago_hours": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_minutes": "منذ {count} دقيقة",
+  "@time_ago_minutes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_just_now": "الآن",
+  "unit_watts": "{value} واط",
+  "@unit_watts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatts": "{value} كيلوواط",
+  "@unit_kilowatts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_watthours": "{value} واط-ساعة",
+  "@unit_watthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatthours": "{value} كيلوواط-ساعة",
+  "@unit_kilowatthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "edit_offer": "تعديل العرض",
+  "cancel_button": "إلغاء",
+  "delete_button": "حذف",
+  "edit_button": "تعديل",
+  "finish_offer": "إنهاء العرض",
+  "general_note_title": "ملاحظة عامة",
+  "build_quotation": "أنشئ عرض السعر",
+  "build_quotation_subtitle": "ابدأ من طلب العميل ثم عدّل العرض الفني وأضف الخدمات الإضافية عند الحاجة.",
+  "auto_totals_label": "إجماليات تلقائية من أسعار الوحدة",
+  "editing_existing_offer": "تعديل عرض موجود",
+  "uses_request_defaults": "يعتمد على القيم الافتراضية للطلب",
+  "panel_offer": "عرض الألواح",
+  "panel_offer_subtitle": "هذه القيم تبدأ من طلب العميل ويمكن تعديلها قبل إرسال عرض السعر.",
+  "panel_power_watts": "قدرة اللوح (واط)",
+  "panel_unit_price": "سعر اللوح",
+  "total_panel_power_label": "إجمالي قدرة الألواح",
+  "panels_total_price": "إجمالي سعر الألواح",
+  "panel_note_label": "ملاحظة الألواح (اختياري)",
+  "panel_note_hint": "العلامة التجارية، مونو، الضمان، ملاحظات التركيب...",
+  "battery_offer": "عرض البطاريات",
+  "battery_offer_subtitle": "استخدم نوع البطارية وسعتها لتوضيح توصيتك الخاصة بالنسخ الاحتياطي بشكل واضح.",
+  "battery_size": "سعة البطارية",
+  "battery_unit_price": "سعر البطارية",
+  "batteries_total_price": "إجمالي سعر البطاريات",
+  "battery_note_label": "ملاحظة البطارية (اختياري)",
+  "battery_note_hint": "إعداد الرف، ساعات التشغيل، العلامة المفضلة...",
+  "battery_type": "نوع البطارية",
+  "battery_count": "عدد البطاريات",
+  "inverter_offer": "عرض العاكس",
+  "inverter_offer_subtitle": "اجعل تفاصيل العاكس متوافقة مع إعداد التركيب الفعلي ومتطلبات الشبكة.",
+  "inverter_size": "قدرة العاكس",
+  "inverter_unit_price": "سعر العاكس",
+  "inverters_total_price": "إجمالي سعر العواكس",
+  "inverter_note_label": "ملاحظة العاكس (اختياري)",
+  "inverter_type": "نوع العاكس",
+  "inverter_count": "عدد العواكس",
+  "battery_label": "البطارية",
+  "inverter_label": "العاكس",
+  "panel_label": "اللوح",
+  "inverter_note_hint": "أحادي الطور، عدد MPPT، ملاحظات الحماية...",
+  "general_note_hint": "أي تفاصيل أو متطلبات أخرى لنظامك الشمسي...",
+  "panel_recommendation_msg": "مقترح: استخدم نفس القدرة لكل الألواح لتحصل على توافق أفضل وعروض أدق.",
+  "panel_count_label": "عدد الألواح",
+  "panel_note_hint_request": "العلامة التجارية، نصف خلية، مونو، قيود السطح...",
+  "battery_power_recommendation": "يوصى ببطاريات الليثيوم لعمر أطول وأداء أفضل.",
+  "inverter_power_recommendation": "العواكس الهجينة هي الأفضل للأنظمة التي تحتوي على طاقة شمسية وبطاريات.",
+  "panels_power_recommendation": "نوصي باختيار قدرة لوح بين 400 واط و 600 واط للأنظمة الحديثة.",
+  "battery_recommendation_msg": "أفضل أداء: الليثيوم هو الخيار الافتراضي لعمر أطول وشحن أسرع.",
+  "battery_type_label": "نوع البطارية",
+  "battery_count_label": "عدد البطاريات",
+  "battery_note_hint_request": "نوع الرف، ساعات النسخ الاحتياطي، العلامة المفضلة...",
+  "total_battery_power_label": "إجمالي سعة البطاريات",
+  "inverter_recommendation_msg": "أفضل أداء: الهايبرد مناسب عند الحاجة لدعم الشبكة وإضافة بطاريات مستقبلًا.",
+  "inverter_type_label": "نوع العاكس",
+  "inverter_count_label": "عدد العواكس",
+  "inverter_note_hint_request": "أحادي الطور، عدد MPPT، العلامة التجارية...",
+  "total_inverters_power_label": "إجمالي قدرة العواكس",
+  "city_required_error": "يجب تحديد مدينة في ملفك الشخصي قبل إنشاء الطلب.",
+  "request_submitted_success": "تم إرسال طلبك الشمسي بنجاح.",
+  "request_submit_error": "تعذر إرسال الطلب. حاول مرة أخرى.",
+  "hero_request_subtitle": "أضف المقاسات والملاحظات بوضوح لتصلك عروض أدق من الشركات.",
+  "hero_request_info": "إعدادات افتراضية لإدخال أسرع",
+  "send_to_all_cities": "إرسال إلى جميع المدن",
+  "send_to_all_cities_msg": "سيكون طلبك مرئياً للشركات في جميع المدن.",
+  "location_reach_title": "الموقع والوصول",
+  "no_city_selected": "لم يتم اختيار مدينة",
+  "request_city_label": "مدينة الطلب",
+  "send_to_all_cities_subtitle": "فعّل هذا الخيار للسماح للشركات خارج مدينتك بالرد أيضًا.",
+  "general_note_subtitle": "أضف تفاصيل الموقع أو قيود التركيب أو العلامات التجارية المفضلة.",
+  "note_optional_label": "ملاحظة (اختياري)",
+  "note_optional": "ملاحظة (اختياري)",
+  "note_hint": "أضف أي تفاصيل إضافية أو متطلبات هنا...",
+  "note_hint_request": "نوع السطح، هدف النسخ الاحتياطي، الجدول الزمني...",
+  "delete_offer_subtitle": "سيؤدي هذا إلى حذف العرض نهائيًا.",
+  "delete_offer_title": "حذف العرض",
+  "delete_offer_msg": "هل أنت متأكد من حذف هذا العرض؟ لا يمكن التراجع عن هذا الإجراء.",
+  "phone_unavailable_msg": "لا يوجد رقم هاتف متاح لهذا الإجراء.",
+  "contact_unavailable_title": "الاتصال غير متاح",
+  "contact_unavailable_msg": "لا يتوفر رقم هاتف أو بريد إلكتروني لهذا الطالب.",
+  "offer_note_title": "ملاحظات العرض",
+  "offer_note_description": "استخدم هذا الحقل لوقت التسليم أو الضمان أو ملاحظات التنفيذ أو الاستثناءات.",
+  "template_involves": "الخدمات أو الرسوم الإضافية",
+  "template_involves_subtitle": "استخدم هذا القسم لرسوم التركيب أو التوصيل أو الهياكل أو الكابلات أو أي خدمة إضافية مرتبطة بهذا العرض.",
+  "no_extra_services": "لم تتم إضافة خدمات أو رسوم إضافية بعد.",
+  "estimated_extra_fees_label": "إجمالي الرسوم الإضافية التقديري",
+  "add_from_catalog": "إضافة من الكتالوج",
+  "create_new_item": "إنشاء عنصر جديد",
+  "manage_catalog": "إدارة الكتالوج",
+  "quotation_total": "إجمالي عرض السعر",
+  "save_offer_changes": "حفظ تعديلات العرض",
+  "no_more_catalog_items": "لا توجد عناصر نشطة أخرى متاحة في الكتالوج. أنشئ عنصرًا جديدًا أولًا.",
+  "create_item_title": "إنشاء عنصر كتالوج جديد",
+  "create_item_subtitle": "أضف خدمة أو مادة مخصصة لاستخدامها في هذا العرض والعروض المستقبلية.",
+  "name_label": "الاسم",
+  "cost_label": "السعر",
+  "create_item_button": "إنشاء العنصر",
+  "extra_fees_missing_title": "رسوم إضافية مفقودة",
+  "extra_fees_missing_msg": "يرجى اختيار عنصر من الكتالوج لجميع صفوف الرسوم الإضافية أو إزالتها.",
+  "invalid_panel_offer_title": "عرض ألواح غير صالح",
+  "invalid_panel_offer_msg": "يرجى التحقق من قدرة الألواح وعددها وسعرها.",
+  "invalid_battery_offer_title": "عرض بطاريات غير صالح",
+  "invalid_battery_offer_msg": "يرجى التحقق من سعة البطاريات وعددها وسعرها.",
+  "invalid_inverter_offer_title": "عرض عاكس غير صالح",
+  "invalid_inverter_offer_msg": "يرجى التحقق من قدرة العاكس وعدده وسعره.",
+  "invalid_pricing_title": "تسعير غير صالح",
+  "invalid_pricing_msg": "يجب أن يكون إجمالي سعر العرض أكبر من صفر.",
+  "form_required": "مطلوب",
   "battery_type_gel": "جل",
   "battery_type_tubular": "أنبوبي",
   "battery_type_lithium": "ليثيوم",
@@ -1417,5 +1577,7 @@
   },
   "structure_button_next": "التالي",
   "date": "التاريخ",
-  "reset": "إعادة تعيين"
+  "reset": "إعادة تعيين",
+  "load_more_offers": "تحميل المزيد من العروض",
+  "catalog_tooltip": "الكتالوج"
 }

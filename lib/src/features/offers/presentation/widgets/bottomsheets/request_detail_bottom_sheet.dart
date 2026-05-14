@@ -7,6 +7,7 @@ import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/features/offers/domain/entities/solar_request.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/form/offer_reply_form.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RequestDetailBottomSheet extends ConsumerWidget {
   final SolarRequest request;
@@ -44,6 +45,60 @@ class RequestDetailBottomSheet extends ConsumerWidget {
               ),
             ],
           ),
+          const Divider(),
+          SizedBox(height: 16.h),
+
+          Text(
+            l10n.requester_info,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.grey),
+          ),
+          SizedBox(height: 8.h),
+          // Requester Section
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 24.r,
+                backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
+                backgroundImage: request.user?.image != null ? NetworkImage(request.user!.image!) : null,
+                child: request.user?.image == null
+                    ? Icon(Iconsax.user_bold, size: 24.sp, color: AppTheme.primaryColor)
+                    : null,
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      request.user?.name ?? l10n.unknown_user,
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: [
+                        Icon(Iconsax.location_bold, size: 12.sp, color: Colors.grey),
+                        SizedBox(width: 4.w),
+                        Text(
+                          request.city?.name ?? '-',
+                          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              if (request.user?.phone != null)
+                IconButton(
+                  onPressed: () => launchUrl(Uri.parse('tel:${request.user!.phone}')),
+                  icon: Icon(Iconsax.call_bold, color: Colors.green, size: 24.sp),
+                ),
+              if (request.user?.email != null)
+                IconButton(
+                  onPressed: () => launchUrl(Uri.parse('mailto:${request.user!.email}')),
+                  icon: Icon(Iconsax.sms_bold, color: Colors.blue, size: 24.sp),
+                ),
+            ],
+          ),
+          SizedBox(height: 16.h),
           const Divider(),
           SizedBox(height: 16.h),
 
@@ -104,6 +159,7 @@ class RequestDetailBottomSheet extends ConsumerWidget {
   }
 
   Widget _buildSpecGrid(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -111,20 +167,20 @@ class RequestDetailBottomSheet extends ConsumerWidget {
       childAspectRatio: 3,
       children: [
         _buildMiniSpec(
-          AppLocalizations.of(context)!.panels_power,
-          '${request.totalPanelPower}W',
+          l10n.panels_power,
+          l10n.unit_watts(request.totalPanelPower),
         ),
         _buildMiniSpec(
-          AppLocalizations.of(context)!.battery_power,
-          '${_formatNumber(request.totalBatteryPower)}Wh',
+          l10n.battery_power,
+          l10n.unit_watthours(_formatNumber(request.totalBatteryPower)),
         ),
         _buildMiniSpec(
-          AppLocalizations.of(context)!.inverter_calc,
-          '${_formatNumber(request.totalInvertersPower)}W (${request.inverterType.localizedLabel(AppLocalizations.of(context)!)})',
+          l10n.inverter_calc,
+          '${l10n.unit_watts(_formatNumber(request.totalInvertersPower))} (${request.inverterType.localizedLabel(l10n)})',
         ),
         _buildMiniSpec(
-          AppLocalizations.of(context)!.battery_type_full,
-          request.batteryType.localizedLabel(AppLocalizations.of(context)!),
+          l10n.battery_type_full,
+          request.batteryType.localizedLabel(l10n),
         ),
       ],
     );

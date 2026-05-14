@@ -17,7 +17,7 @@ class AdminSubscriptionPlan {
 
   factory AdminSubscriptionPlan.fromJson(Map<String, dynamic> json) {
     return AdminSubscriptionPlan(
-      id: json['id'] as int? ?? 0,
+      id: int.tryParse(json['id'].toString()) ?? 0,
       name: json['name']?.toString() ?? '',
       price: double.tryParse(json['price'].toString()) ?? 0.0,
       durationDays: json['duration_days'] as int? ?? 0,

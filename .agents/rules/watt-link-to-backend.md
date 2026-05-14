@@ -14,6 +14,7 @@ globs: **/*
 
 - **API Registry File:** `lib/src/utils/app_urls.dart`
 - **Action Required:** Whenever a backend API is added, modified, or referenced, you must update or add the endpoint string inside `lib/src/utils/app_urls.dart`. Organize the URLs strictly under their corresponding categorized lists.
+- **Connectivity:** When working in debug mode, ensure `baseUrl` handles the platform mapping correctly: `10.0.2.2` for Android Emulator and `127.0.0.1` for iOS/Desktop to ensure connectivity to the local backend.
 
 ## Architecture, Core Models & Errors
 
@@ -36,4 +37,4 @@ globs: **/*
 
 - **Performance & Memory:** Every code modification or new feature must prioritize low memory usage and high rendering performance. Avoid unnecessary rebuilds and deep widget trees.
 - **Documentation:** Add clear, comprehensive code comments to explain the underlying logic for every single edit or new feature written, ensuring easy future maintenance.
-- **Mandatory Quality Check:** After every code modification, you MUST run `flutter analyze` and resolve all reported errors, warnings, and info diagnostics immediately before concluding the task.
+- **Mandatory Quality Check:** After every code modification, especially those linked to backend APIs, you MUST run `flutter analyze`. You are strictly required to resolve all reported errors, warnings, and info diagnostics immediately to maintain codebase integrity before finalizing any task.

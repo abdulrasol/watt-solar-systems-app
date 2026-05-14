@@ -151,12 +151,6 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
         : value.toStringAsFixed(2).replaceFirst(RegExp(r'\.?0+$'), '');
   }
 
-  bool _isArabic(BuildContext context) =>
-      Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
-
-  String _tr(BuildContext context, String en, String ar) {
-    return _isArabic(context) ? ar : en;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,67 +170,46 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
             _buildHeroCard(
               context,
               l10n,
-              userCity?.name ??
-                  _tr(context, 'No city selected', 'لم يتم اختيار مدينة'),
+              userCity?.name ?? l10n.no_city_selected,
             ),
             SizedBox(height: 20.h),
             _buildLocationCard(context, l10n, userCity?.name ?? '-'),
             SizedBox(height: 20.h),
             _buildEquipmentSection(
               context: context,
-              title: _tr(context, 'Panel', 'الألواح'),
+              title: l10n.panel_label,
               icon: Iconsax.sun_1_bold,
               accent: const Color(0xFFFFA726),
-              recommendation: _tr(
-                context,
-                'Recommended: keep the same wattage for all panels for better matching and easier offers.',
-                'مقترح: استخدم نفس القدرة لكل الألواح لتحصل على توافق أفضل وعروض أدق.',
-              ),
+              recommendation: l10n.panel_recommendation_msg,
               specs: [
                 _buildNumberField(
-                  label: _tr(context, 'Panel power (W)', 'قدرة اللوح (واط)'),
+                  label: l10n.panel_power_watts,
                   controller: _panelPowerController,
                   onChanged: _recalculateTotals,
                 ),
                 _buildNumberField(
-                  label: _tr(context, 'Panel count', 'عدد الألواح'),
+                  label: l10n.panel_count_label,
                   controller: _panelCountController,
                   onChanged: _recalculateTotals,
                 ),
               ],
               noteField: _buildTextField(
-                label: _tr(
-                  context,
-                  'Panel note (optional)',
-                  'ملاحظة الألواح (اختياري)',
-                ),
+                label: l10n.panel_note_label,
                 controller: _panelNoteController,
-                hintText: _tr(
-                  context,
-                  'Brand, half-cut, mono, roof limits...',
-                  'العلامة التجارية، نصف خلية، مونو، قيود السطح...',
-                ),
+                hintText: l10n.panel_note_hint_request,
               ),
-              totalLabel: _tr(
-                context,
-                'Total panel power',
-                'إجمالي قدرة الألواح',
-              ),
-              totalValue: '${_formatNumber(_totalPanelPower)} W',
+              totalLabel: l10n.total_panel_power_label,
+              totalValue: l10n.unit_watts(_formatNumber(_totalPanelPower)),
             ),
             SizedBox(height: 20.h),
             _buildEquipmentSection(
               context: context,
-              title: _tr(context, 'Battery', 'البطارية'),
+              title: l10n.battery_label,
               icon: Iconsax.flash_1_bold,
               accent: const Color(0xFF42A5F5),
-              recommendation: _tr(
-                context,
-                'Best performance: lithium is the default for longer cycle life and faster charging.',
-                'أفضل أداء: الليثيوم هو الخيار الافتراضي لعمر أطول وشحن أسرع.',
-              ),
+              recommendation: l10n.battery_recommendation_msg,
               topChild: _buildDropdown<BatteryType>(
-                label: _tr(context, 'Battery type', 'نوع البطارية'),
+                label: l10n.battery_type_label,
                 value: _batteryType,
                 items: BatteryType.values,
                 onChanged: (value) =>
@@ -244,49 +217,33 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
               ),
               specs: [
                 _buildDecimalField(
-                  label: _tr(context, 'Battery size', 'سعة البطارية'),
+                  label: l10n.battery_size,
                   controller: _batterySizeController,
                   onChanged: _recalculateTotals,
                 ),
                 _buildNumberField(
-                  label: _tr(context, 'Battery count', 'عدد البطاريات'),
+                  label: l10n.battery_count_label,
                   controller: _batteryCountController,
                   onChanged: _recalculateTotals,
                 ),
               ],
               noteField: _buildTextField(
-                label: _tr(
-                  context,
-                  'Battery note (optional)',
-                  'ملاحظة البطارية (اختياري)',
-                ),
+                label: l10n.battery_note_label,
                 controller: _batteryNoteController,
-                hintText: _tr(
-                  context,
-                  'Rack style, backup hours, preferred brand...',
-                  'نوع الرف، ساعات النسخ الاحتياطي، العلامة المفضلة...',
-                ),
+                hintText: l10n.battery_note_hint_request,
               ),
-              totalLabel: _tr(
-                context,
-                'Total battery power',
-                'إجمالي سعة البطاريات',
-              ),
+              totalLabel: l10n.total_battery_power_label,
               totalValue: _formatNumber(_totalBatteryPower),
             ),
             SizedBox(height: 20.h),
             _buildEquipmentSection(
               context: context,
-              title: _tr(context, 'Inverter', 'العاكس'),
+              title: l10n.inverter_label,
               icon: Iconsax.setting_2_bold,
               accent: const Color(0xFF8E24AA),
-              recommendation: _tr(
-                context,
-                'Best performance: hybrid works well when you want grid support and future battery expansion.',
-                'أفضل أداء: الهايبرد مناسب عند الحاجة لدعم الشبكة وإضافة بطاريات مستقبلًا.',
-              ),
+              recommendation: l10n.inverter_recommendation_msg,
               topChild: _buildDropdown<InverterType>(
-                label: _tr(context, 'Inverter type', 'نوع العاكس'),
+                label: l10n.inverter_type_label,
                 value: _inverterType,
                 items: InverterType.values,
                 onChanged: (value) => setState(
@@ -295,34 +252,22 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
               ),
               specs: [
                 _buildDecimalField(
-                  label: _tr(context, 'Inverter size', 'قدرة العاكس'),
+                  label: l10n.inverter_size,
                   controller: _inverterSizeController,
                   onChanged: _recalculateTotals,
                 ),
                 _buildNumberField(
-                  label: _tr(context, 'Inverter count', 'عدد العواكس'),
+                  label: l10n.inverter_count_label,
                   controller: _inverterCountController,
                   onChanged: _recalculateTotals,
                 ),
               ],
               noteField: _buildTextField(
-                label: _tr(
-                  context,
-                  'Inverter note (optional)',
-                  'ملاحظة العاكس (اختياري)',
-                ),
+                label: l10n.inverter_note_label,
                 controller: _inverterNoteController,
-                hintText: _tr(
-                  context,
-                  'Single phase, MPPT count, brand...',
-                  'أحادي الطور، عدد MPPT، العلامة التجارية...',
-                ),
+                hintText: l10n.inverter_note_hint_request,
               ),
-              totalLabel: _tr(
-                context,
-                'Total inverters power',
-                'إجمالي قدرة العواكس',
-              ),
+              totalLabel: l10n.total_inverters_power_label,
               totalValue: _formatNumber(_totalInvertersPower),
             ),
             SizedBox(height: 20.h),
@@ -349,17 +294,12 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
   }
 
   Future<void> _submit(int? cityId) async {
+    final l10n = AppLocalizations.of(context)!;
     if (!_formKey.currentState!.validate()) return;
     if (cityId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            _tr(
-              context,
-              'Your profile must have a city before creating a request.',
-              'يجب تحديد مدينة في ملفك الشخصي قبل إنشاء الطلب.',
-            ),
-          ),
+          content: Text(l10n.city_required_error),
         ),
       );
       return;
@@ -393,13 +333,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            _tr(
-              context,
-              'Your solar request was submitted successfully.',
-              'تم إرسال طلبك الشمسي بنجاح.',
-            ),
-          ),
+          content: Text(l10n.request_submitted_success),
         ),
       );
       Navigator.of(context).pop();
@@ -411,11 +345,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
       SnackBar(
         content: Text(
           error ??
-              _tr(
-                context,
-                'Could not submit the request. Please try again.',
-                'تعذر إرسال الطلب. حاول مرة أخرى.',
-              ),
+          error ?? l10n.request_submit_error,
         ),
       ),
     );
@@ -484,11 +414,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      _tr(
-                        context,
-                        'Share clear sizes and notes so companies can send more accurate offers.',
-                        'أضف المقاسات والملاحظات بوضوح لتصلك عروض أدق من الشركات.',
-                      ),
+                      l10n.hero_request_subtitle,
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: onSurface.withValues(alpha: 0.72),
@@ -507,11 +433,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
               _buildInfoChip(Iconsax.location_bold, cityName),
               _buildInfoChip(
                 Iconsax.flash_1_bold,
-                _tr(
-                  context,
-                  'Defaults tuned for fast entry',
-                  'إعدادات افتراضية لإدخال أسرع',
-                ),
+                  l10n.hero_request_info,
               ),
             ],
           ),
@@ -535,7 +457,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(
-                  _tr(context, 'Location & reach', 'الموقع ونطاق الإرسال'),
+                  l10n.location_reach_title,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w900,
@@ -562,7 +484,7 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _tr(context, 'Request city', 'مدينة الطلب'),
+                        l10n.request_city_label,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Theme.of(
@@ -590,14 +512,10 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
             contentPadding: EdgeInsets.zero,
             activeThumbColor: AppTheme.primaryColor,
             title: Text(
-              _tr(context, 'Send to all cities', 'الإرسال إلى جميع المدن'),
+              l10n.send_to_all_cities,
             ),
             subtitle: Text(
-              _tr(
-                context,
-                'Turn on to let companies outside your city respond as well.',
-                'فعّل هذا الخيار للسماح للشركات خارج مدينتك بالرد أيضًا.',
-              ),
+              l10n.send_to_all_cities_subtitle,
             ),
             onChanged: (value) => setState(() => _allCities = value),
           ),
@@ -680,21 +598,18 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
   }
 
   Widget _buildNotesCard() {
+    final l10n = AppLocalizations.of(context)!;
     return _buildSurface(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr(context, 'General note', 'ملاحظات عامة'),
+            l10n.general_note_title,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
           ),
           SizedBox(height: 8.h),
           Text(
-            _tr(
-              context,
-              'Add any site details, installation limits, or preferred brands.',
-              'أضف تفاصيل الموقع أو قيود التركيب أو العلامات التجارية المفضلة.',
-            ),
+            l10n.general_note_subtitle,
             style: TextStyle(
               fontSize: 12.sp,
               color: Theme.of(
@@ -704,13 +619,9 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
           ),
           SizedBox(height: 14.h),
           _buildTextField(
-            label: _tr(context, 'Note (optional)', 'ملاحظة (اختياري)'),
+            label: l10n.note_optional_label,
             controller: _noteController,
-            hintText: _tr(
-              context,
-              'Roof type, backup target, timeline...',
-              'نوع السطح، هدف النسخ الاحتياطي، الجدول الزمني...',
-            ),
+            hintText: l10n.note_hint_request,
             maxLines: 4,
           ),
         ],
@@ -813,9 +724,10 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
       ),
       validator: (value) {
+        final l10n = AppLocalizations.of(context)!;
         final parsed = int.tryParse(value?.trim() ?? '');
         if (parsed == null || parsed <= 0) {
-          return _tr(context, 'Required', 'مطلوب');
+          return l10n.form_required;
         }
         return null;
       },
@@ -839,9 +751,10 @@ class _SolarRequestFormState extends ConsumerState<SolarRequestForm> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
       ),
       validator: (value) {
+        final l10n = AppLocalizations.of(context)!;
         final parsed = double.tryParse(value?.trim() ?? '');
         if (parsed == null || parsed <= 0) {
-          return _tr(context, 'Required', 'مطلوب');
+          return l10n.form_required;
         }
         return null;
       },

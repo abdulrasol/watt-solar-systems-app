@@ -19,11 +19,26 @@ class AdminFeedbacksScreen extends ConsumerStatefulWidget {
 
 class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
   String _filterMode = 'all';
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(adminProvider.notifier).fetchFeedbacks());
+    Future.microtask(() => ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true));
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      ref.read(adminProvider.notifier).fetchNextPage();
+    }
   }
 
   @override
@@ -31,11 +46,9 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
     final state = ref.watch(adminProvider);
 
     return AdminPageScaffold(
-      // title: 'User Feedbacks',
-      // subtitle: 'Messages load only when this route is opened.',
       actions: [
         IconButton(
-          onPressed: () => ref.read(adminProvider.notifier).fetchFeedbacks(),
+          onPressed: () => ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true),
           icon: const Icon(Iconsax.refresh_bold),
         ),
       ],
@@ -47,7 +60,7 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
           : state.error != null
           ? AdminErrorState(
               error: state.error!,
-              onRetry: () => ref.read(adminProvider.notifier).fetchFeedbacks(),
+              onRetry: () => ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true),
             )
           : _buildContent(context, state),
     );
@@ -80,11 +93,21 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
                 )
               : RefreshIndicator(
                   onRefresh: () =>
-                      ref.read(adminProvider.notifier).fetchFeedbacks(),
+                      ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true),
                   child: ListView.separated(
-                    itemCount: filtered.length,
+                    controller: _scrollController,
+                    padding: const EdgeInsets.only(bottom: 100),
+                    itemCount: filtered.length + (state.isMoreLoading ? 1 : 0),
                     separatorBuilder: (_, index) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
+                      if (index == filtered.length) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
                       final feedback = filtered[index];
                       return _FeedbackCard(
                         feedback: feedback,

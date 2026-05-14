@@ -8,7 +8,6 @@ import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_pl
 import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
 import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
-import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
 
 abstract class AdminRepository {
@@ -20,9 +19,6 @@ abstract class AdminRepository {
   Future<void> deleteServiceCatalogEntry(String serviceCode);
   Future<List<CompanyService>> listCompanyServices(int companyId);
   Future<AdminCompanyDetails> getCompanyDetails(int companyId);
-  Future<List<ServiceRequest>> listServiceRequests({int page = 1, int pageSize = 12});
-  Future<void> reviewServiceRequest(int companyId, String serviceCode, Map<String, dynamic> data);
-  Future<void> toggleCompanyService(int companyId, String serviceCode, Map<String, dynamic> data);
 
   // Currencies
   Future<List<AdminCurrency>> listCurrencies({int page = 1, int pageSize = 12});
@@ -31,13 +27,13 @@ abstract class AdminRepository {
   Future<void> deleteCurrency(int id);
 
   // Countries
-  Future<List<AdminCountry>> listCountries({int page = 1, int pageSize = 12});
+  Future<List<AdminCountry>> listCountries();
   Future<AdminCountry> createCountry(Map<String, dynamic> data);
   Future<AdminCountry> updateCountry(int id, Map<String, dynamic> data);
   Future<void> deleteCountry(int id);
 
   // Cities
-  Future<List<AdminCity>> listCities({int page = 1, int pageSize = 12});
+  Future<List<AdminCity>> listCities({int? countryId});
   Future<AdminCity> createCity(Map<String, dynamic> data);
   Future<AdminCity> updateCity(int id, Map<String, dynamic> data);
   Future<void> deleteCity(int id);

@@ -9,12 +9,38 @@ import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 
-class AdminSubscriptionPlansScreen extends ConsumerWidget {
+class AdminSubscriptionPlansScreen extends ConsumerStatefulWidget {
   const AdminSubscriptionPlansScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final plansAsync = ref.watch(adminSubscriptionsProvider);
+  ConsumerState<AdminSubscriptionPlansScreen> createState() => _AdminSubscriptionPlansScreenState();
+}
+
+class _AdminSubscriptionPlansScreenState extends ConsumerState<AdminSubscriptionPlansScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.read(adminSubscriptionsProvider.notifier).fetchPlans(isRefresh: true));
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      ref.read(adminSubscriptionsProvider.notifier).fetchNextPage();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(adminSubscriptionsProvider);
 
     return AdminPageScaffold(
       actions: [
@@ -28,25 +54,30 @@ class AdminSubscriptionPlansScreen extends ConsumerWidget {
           ),
         ),
       ],
-      child: plansAsync.when(
-        data: (plans) => plans.isEmpty
-            ? const AdminEmptyState(
-                icon: Iconsax.card_bold,
-                title: 'No subscription plans found',
-                subtitle: 'Add your first pricing tier to get started.',
-              )
-            : ListView.separated(
-                padding: EdgeInsets.all(16.w),
-                itemCount: plans.length,
-                separatorBuilder: (_, _) => SizedBox(height: 12.h),
-                itemBuilder: (context, index) {
-                  final plan = plans[index];
-                  return _buildPlanCard(context, ref, plan);
-                },
-              ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
-      ),
+      child: state.isLoading
+          ? const AdminLoadingState()
+          : state.plans.isEmpty
+              ? const AdminEmptyState(
+                  icon: Iconsax.card_bold,
+                  title: 'No subscription plans found',
+                  subtitle: 'Add your first pricing tier to get started.',
+                )
+              : RefreshIndicator(
+                  onRefresh: () => ref.read(adminSubscriptionsProvider.notifier).fetchPlans(isRefresh: true),
+                  child: ListView.separated(
+                    controller: _scrollController,
+                    padding: EdgeInsets.all(16.w),
+                    itemCount: state.plans.length + (state.isMoreLoading ? 1 : 0),
+                    separatorBuilder: (context, index) => SizedBox(height: 12.h),
+                    itemBuilder: (context, index) {
+                      if (index == state.plans.length) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final plan = state.plans[index];
+                      return _buildPlanCard(context, ref, plan);
+                    },
+                  ),
+                ),
     );
   }
 

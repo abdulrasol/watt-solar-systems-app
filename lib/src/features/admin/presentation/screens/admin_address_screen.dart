@@ -26,9 +26,8 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
     _tabController = TabController(length: 2, vsync: this);
     Future.microtask(() {
       ref.read(adminAddressProvider.notifier).fetchCountries();
-      ref.read(adminAddressProvider.notifier).fetchCities(isRefresh: true);
+      ref.read(adminAddressProvider.notifier).fetchCities();
     });
-    _cityScrollController.addListener(_onCityScroll);
   }
 
   @override
@@ -38,11 +37,6 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
     super.dispose();
   }
 
-  void _onCityScroll() {
-    if (_cityScrollController.position.pixels >= _cityScrollController.position.maxScrollExtent - 200) {
-      ref.read(adminAddressProvider.notifier).fetchNextCitiesPage();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,18 +74,20 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Addresses',
-                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
-              ),
-              Text(
-                'Manage Countries and Cities',
-                style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Addresses',
+                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                ),
+                Text(
+                  'Manage Countries and Cities',
+                  style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                ),
+              ],
+            ),
           ),
           ElevatedButton.icon(
             onPressed: () => _showAddDialog(),
@@ -138,15 +134,12 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
     }
 
     return RefreshIndicator(
-      onRefresh: () => ref.read(adminAddressProvider.notifier).fetchCities(isRefresh: true),
+      onRefresh: () => ref.read(adminAddressProvider.notifier).fetchCities(),
       child: ListView.builder(
         controller: _cityScrollController,
         padding: EdgeInsets.all(20.w),
-        itemCount: state.cities.length + (state.isMoreCitiesLoading ? 1 : 0),
+        itemCount: state.cities.length,
         itemBuilder: (context, index) {
-          if (index == state.cities.length) {
-            return const Center(child: CircularProgressIndicator());
-          }
           return _CityCard(city: state.cities[index]);
         },
       ),
@@ -154,22 +147,51 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
   }
 }
 
-class _CountryCard extends StatelessWidget {
+class _CountryCard extends ConsumerWidget {
   final AdminCountry country;
   const _CountryCard({required this.country});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
         leading: const Icon(Iconsax.global_bold),
         title: Text(country.name),
         subtitle: Text(country.code),
-        trailing: IconButton(
-          icon: const Icon(Icons.edit),
-          onPressed: () => showDialog(context: context, builder: (context) => _CountryDialog(country: country)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => showDialog(context: context, builder: (context) => _CountryDialog(country: country)),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () => _confirmDelete(context, ref),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  void _confirmDelete(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Country'),
+        content: Text('Are you sure you want to delete ${country.name}? This may affect cities associated with it.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () {
+              ref.read(adminAddressProvider.notifier).deleteCountry(country.id);
+              Navigator.pop(context);
+            },
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
       ),
     );
   }

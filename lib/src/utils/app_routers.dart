@@ -33,13 +33,14 @@ import 'package:solar_hub/src/features/accounting/presentation/screens/accountin
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_company_details_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_catalog_screen.dart';
-import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_requests_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_types_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_currency_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_categories_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_address_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_users_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_subscription_plans_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_products_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_systems_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
@@ -378,12 +379,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
-            path: '/admin/service-requests',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminServiceRequestsScreen();
-            },
-          ),
-          GoRoute(
             path: '/admin/currencies',
             builder: (BuildContext context, GoRouterState state) {
               return const AdminCurrencyScreen();
@@ -411,6 +406,18 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/admin/subscriptions',
             builder: (BuildContext context, GoRouterState state) {
               return const AdminSubscriptionPlansScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/products',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminProductsScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/systems',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminSystemsScreen();
             },
           ),
         ],

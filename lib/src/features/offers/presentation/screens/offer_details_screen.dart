@@ -454,7 +454,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                     ),
                   ),
                   icon: const Icon(Iconsax.edit_bold),
-                  label: Text(_tr(context, 'Edit', 'تعديل')),
+                  label: Text(l10n.edit_button),
                 ),
               ),
               SizedBox(width: 12.w),
@@ -491,7 +491,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                 ),
               ),
               icon: const Icon(Iconsax.tick_circle_bold),
-              label: Text(_tr(context, 'Finish offer', 'إنهاء العرض')),
+              label: Text(l10n.finish_offer),
             ),
           ),
       ],
@@ -534,27 +534,22 @@ class OfferDetailsScreen extends ConsumerWidget {
   }
 
   Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
     final shouldDelete = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text(_tr(context, 'Delete offer', 'حذف العرض')),
-          content: Text(
-            _tr(
-              context,
-              'This will remove the offer permanently.',
-              'سيؤدي هذا إلى حذف العرض نهائيًا.',
-            ),
-          ),
+          title: Text(l10n.delete_offer_title),
+          content: Text(l10n.delete_offer_subtitle),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(_tr(context, 'Cancel', 'إلغاء')),
+              child: Text(l10n.cancel_button),
             ),
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, true),
               child: Text(
-                _tr(context, 'Delete', 'حذف'),
+                l10n.delete_button,
                 style: const TextStyle(color: Colors.red),
               ),
             ),
@@ -590,22 +585,14 @@ class OfferDetailsScreen extends ConsumerWidget {
   }
 
   void _showMissingContact(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     ToastService.error(
       context,
-      _tr(context, 'Contact unavailable', 'جهة الاتصال غير متاحة'),
-      _tr(
-        context,
-        'No phone number is available for this action.',
-        'لا يوجد رقم هاتف متاح لهذا الإجراء.',
-      ),
+      l10n.contact_unavailable_title,
+      l10n.phone_unavailable_msg,
     );
   }
 
-  String _tr(BuildContext context, String en, String ar) {
-    return Localizations.localeOf(context).languageCode.toLowerCase() == 'ar'
-        ? ar
-        : en;
-  }
 
   String _formatNumber(num value) {
     return value % 1 == 0 ? value.toInt().toString() : value.toString();

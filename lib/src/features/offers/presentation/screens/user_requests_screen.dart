@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
@@ -56,23 +57,48 @@ class _UserRequestsScreenState extends ConsumerState<UserRequestsScreen> {
 
     return PreScaffold(
       title: l10n.my_solar_project_inquiries,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.push('/user-requests/new'),
+        icon: const Icon(Iconsax.add_bold),
+        label: Text(l10n.add_new_request),
+      ),
       child: Column(
         children: [
           _buildFilterBar(),
+          if (state.error != null && state.userRequests.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 8.h),
+              child: Material(
+                color: AppTheme.errorColor.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(16.r),
+                child: ListTile(
+                  leading: const Icon(
+                    Iconsax.warning_2_bold,
+                    color: AppTheme.errorColor,
+                  ),
+                  title: Text(
+                    state.error!,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: AppTheme.errorColor,
+                    ),
+                  ),
+                  trailing: TextButton(
+                    onPressed: _refetchData,
+                    child: Text(l10n.retry),
+                  ),
+                ),
+              ),
+            ),
           Expanded(
             child: state.isLoading && state.userRequests.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : state.userRequests.isEmpty
-                ? _buildEmptyState()
+                ? _buildEmptyState(state.error)
                 : _buildRequestList(state),
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () => context.push('/user-requests/new'),
-      //   icon: const Icon(Iconsax.add_bold),
-      //   label: Text(l10n.add_new_request),
-      // ),
     );
   }
 
@@ -194,7 +220,7 @@ class _UserRequestsScreenState extends ConsumerState<UserRequestsScreen> {
                   onPressed: () => ref
                       .read(offersProvider.notifier)
                       .requestOffersNextPage(requestId),
-                  child: const Text('Load More Offers'),
+                  child: Text(l10n.load_more_offers),
                 ),
               ),
           ],
@@ -276,7 +302,7 @@ class _UserRequestsScreenState extends ConsumerState<UserRequestsScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(String? error) {
     final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
@@ -294,14 +320,21 @@ class _UserRequestsScreenState extends ConsumerState<UserRequestsScreen> {
             ),
             SizedBox(height: 16.h),
             Text(
-              l10n.no_requests_posted,
+              error == null ? l10n.no_requests_posted : l10n.error,
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
             Text(
-              l10n.post_first_solar_request,
+              error ?? l10n.post_first_solar_request,
               style: TextStyle(fontSize: 14.sp, color: Colors.grey),
               textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 16.h),
+            ElevatedButton(
+              onPressed: error == null
+                  ? () => context.push('/user-requests/new')
+                  : _refetchData,
+              child: Text(error == null ? l10n.add_new_request : l10n.retry),
             ),
           ],
         ),

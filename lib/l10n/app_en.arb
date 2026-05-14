@@ -963,6 +963,166 @@
   "request_status_open": "Open",
   "request_status_closed": "Closed",
   "request_status_fulfilled": "Fulfilled",
+  "request_status_offered": "Offered",
+  "request_status_accepted": "Accepted",
+  "unknown_user": "Unknown User",
+  "requester_info": "Requester",
+  "bids_count": "{count} Bids",
+  "@bids_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_days": "{count}d ago",
+  "@time_ago_days": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_hours": "{count}h ago",
+  "@time_ago_hours": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_minutes": "{count}m ago",
+  "@time_ago_minutes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_just_now": "Just now",
+  "unit_watts": "{value}W",
+  "@unit_watts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatts": "{value}kW",
+  "@unit_kilowatts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_watthours": "{value}Wh",
+  "@unit_watthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatthours": "{value}kWh",
+  "@unit_kilowatthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "edit_offer": "Edit offer",
+  "build_quotation": "Build your quotation",
+  "build_quotation_subtitle": "Start from the customer request, adjust your technical offer, then add extra services if needed.",
+  "auto_totals_label": "Auto totals from unit prices",
+  "editing_existing_offer": "Editing existing offer",
+  "uses_request_defaults": "Uses request defaults",
+  "panel_offer": "Panel offer",
+  "panel_offer_subtitle": "These values start from the customer request and can be adjusted before sending your quote.",
+  "panel_power_watts": "Panel power (W)",
+  "panel_unit_price": "Panel unit price",
+  "total_panel_power_label": "Total panel power",
+  "panels_total_price": "Panels total price",
+  "panel_note_label": "Panel note (optional)",
+  "panel_note_hint": "Brand, mono, warranty, mounting notes...",
+  "battery_offer": "Battery offer",
+  "battery_offer_subtitle": "Use battery type and size details to explain your backup recommendation clearly.",
+  "battery_size": "Battery size",
+  "battery_unit_price": "Battery unit price",
+  "batteries_total_price": "Batteries total price",
+  "battery_note_label": "Battery note (optional)",
+  "battery_note_hint": "Rack setup, backup hours, preferred brand...",
+  "battery_type": "Battery Type",
+  "battery_count": "Battery Count",
+  "inverter_offer": "Inverter offer",
+  "inverter_offer_subtitle": "Keep inverter details aligned with the real installation setup and grid requirements.",
+  "inverter_size": "Inverter size",
+  "inverter_unit_price": "Inverter unit price",
+  "inverters_total_price": "Inverters total price",
+  "inverter_note_label": "Inverter note (optional)",
+  "inverter_note_hint": "Single phase, MPPT count, protection notes...",
+  "inverter_type": "Inverter Type",
+  "inverter_count": "Inverter Count",
+  "offer_note_title": "Offer note",
+  "offer_note_description": "Use this area for delivery time, warranty, execution notes, or exclusions.",
+  "template_involves": "Template involves",
+  "template_involves_subtitle": "Use this for installation fee, delivery, mounting, cables, or any extra service linked to this quotation.",
+  "no_extra_services": "No extra services added yet.",
+  "estimated_extra_fees_label": "Estimated extra fees",
+  "add_from_catalog": "Add from catalog",
+  "create_new_item": "Create new item",
+  "manage_catalog": "Manage catalog",
+  "quotation_total": "Quotation total",
+  "save_offer_changes": "Save offer changes",
+  "no_more_catalog_items": "No more active catalog items are available. Create a new one first.",
+  "create_item_title": "Create new catalog item",
+  "create_item_subtitle": "Add a custom service or material to use in this and future quotations.",
+  "name_label": "Name",
+  "cost_label": "Cost",
+  "create_item_button": "Create item",
+  "extra_fees_missing_title": "Extra fees missing",
+  "extra_fees_missing_msg": "Please select a catalog item for all extra fee rows or remove them.",
+  "invalid_panel_offer_title": "Invalid panel offer",
+  "invalid_panel_offer_msg": "Please check panel power, count, and price.",
+  "invalid_battery_offer_title": "Invalid battery offer",
+  "invalid_battery_offer_msg": "Please check battery size, count, and price.",
+  "invalid_inverter_offer_title": "Invalid inverter offer",
+  "invalid_inverter_offer_msg": "Please check inverter size, count, and price.",
+  "invalid_pricing_title": "Invalid pricing",
+  "invalid_pricing_msg": "Total quotation price must be greater than zero.",
+  "form_required": "Required",
+  "edit_button": "Edit",
+  "finish_offer": "Finish offer",
+  "delete_offer_title": "Delete offer",
+  "delete_offer_msg": "Are you sure you want to delete this offer? This action cannot be undone.",
+  "cancel_button": "Cancel",
+  "delete_button": "Delete",
+  "contact_unavailable_title": "Contact unavailable",
+  "contact_unavailable_msg": "No phone or email available for this requester.",
+  "panel_label": "Panel",
+  "battery_label": "Battery",
+  "inverter_label": "Inverter",
+  "location_reach_title": "Location & reach",
+  "request_city_label": "Request city",
+  "send_to_all_cities": "Send to all cities",
+  "general_note_title": "General note",
+  "no_city_selected": "No city selected",
+  "panels_power_recommendation": "We recommend choosing a panel power between 400W and 600W for modern systems.",
+  "battery_power_recommendation": "Lithium batteries are recommended for longer life and better performance.",
+  "inverter_power_recommendation": "Hybrid inverters are best for systems with solar and batteries.",
+  "send_to_all_cities_msg": "Your request will be visible to companies in all cities.",
+  "general_note_hint": "Any other details or requirements for your solar system...",
+  "panel_recommendation_msg": "Recommended: keep the same wattage for all panels for better matching and easier offers.",
+  "panel_count_label": "Panel count",
+  "panel_note_hint_request": "Brand, half-cut, mono, roof limits...",
+  "battery_recommendation_msg": "Best performance: lithium is the default for longer cycle life and faster charging.",
+  "battery_type_label": "Battery type",
+  "battery_count_label": "Battery count",
+  "battery_note_hint_request": "Rack style, backup hours, preferred brand...",
+  "total_battery_power_label": "Total battery power",
+  "inverter_recommendation_msg": "Best performance: hybrid works well when you want grid support and future battery expansion.",
+  "inverter_type_label": "Inverter type",
+  "inverter_count_label": "Inverter count",
+  "inverter_note_hint_request": "Single phase, MPPT count, brand...",
+  "total_inverters_power_label": "Total inverters power",
+  "city_required_error": "Your profile must have a city before creating a request.",
+  "request_submitted_success": "Your solar request was submitted successfully.",
+  "request_submit_error": "Could not submit the request. Please try again.",
+  "hero_request_subtitle": "Share clear sizes and notes so companies can send more accurate offers.",
+  "hero_request_info": "Defaults tuned for fast entry",
+  "send_to_all_cities_subtitle": "Turn on to let companies outside your city respond as well.",
+  "general_note_subtitle": "Add any site details, installation limits, or preferred brands.",
+  "note_optional_label": "Note (optional)",
+  "note_optional": "Note (optional)",
+  "note_hint": "Add any additional details or requirements...",
+  "note_hint_request": "Roof type, backup target, timeline...",
+  "delete_offer_subtitle": "This will remove the offer permanently.",
+  "phone_unavailable_msg": "No phone number is available for this action.",
   "battery_type_gel": "Gel",
   "battery_type_tubular": "Tubular",
   "battery_type_lithium": "Lithium",
@@ -1420,5 +1580,7 @@
   },
   "structure_button_next": "Next",
   "date": "Date",
-  "reset": "Reset"
+  "reset": "Reset",
+  "load_more_offers": "Load More Offers",
+  "catalog_tooltip": "Catalog"
 }

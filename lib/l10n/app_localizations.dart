@@ -62,7 +62,8 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,17 +84,18 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
-    Locale('en')
+    Locale('en'),
   ];
 
   /// No description provided for @app_name.
@@ -1329,7 +1332,12 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Rails {rails} + Front legs {frontLegs} + Rear legs {rearLegs} + Braces {braces}'**
-  String structure_total_steel_breakdown(Object rails, Object frontLegs, Object rearLegs, Object braces);
+  String structure_total_steel_breakdown(
+    Object rails,
+    Object frontLegs,
+    Object rearLegs,
+    Object braces,
+  );
 
   /// No description provided for @structure_bom_title.
   ///
@@ -2954,7 +2962,7 @@ abstract class AppLocalizations {
   /// No description provided for @inverter_size.
   ///
   /// In en, this message translates to:
-  /// **'Inverter Size'**
+  /// **'Inverter size'**
   String get inverter_size;
 
   /// No description provided for @battery_bank.
@@ -4757,6 +4765,720 @@ abstract class AppLocalizations {
   /// **'Fulfilled'**
   String get request_status_fulfilled;
 
+  /// No description provided for @request_status_offered.
+  ///
+  /// In en, this message translates to:
+  /// **'Offered'**
+  String get request_status_offered;
+
+  /// No description provided for @request_status_accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get request_status_accepted;
+
+  /// No description provided for @unknown_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown User'**
+  String get unknown_user;
+
+  /// No description provided for @requester_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Requester'**
+  String get requester_info;
+
+  /// No description provided for @bids_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Bids'**
+  String bids_count(Object count);
+
+  /// No description provided for @time_ago_days.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String time_ago_days(Object count);
+
+  /// No description provided for @time_ago_hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String time_ago_hours(Object count);
+
+  /// No description provided for @time_ago_minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String time_ago_minutes(Object count);
+
+  /// No description provided for @time_ago_just_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get time_ago_just_now;
+
+  /// No description provided for @unit_watts.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}W'**
+  String unit_watts(Object value);
+
+  /// No description provided for @unit_kilowatts.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}kW'**
+  String unit_kilowatts(Object value);
+
+  /// No description provided for @unit_watthours.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}Wh'**
+  String unit_watthours(Object value);
+
+  /// No description provided for @unit_kilowatthours.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}kWh'**
+  String unit_kilowatthours(Object value);
+
+  /// No description provided for @edit_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit offer'**
+  String get edit_offer;
+
+  /// No description provided for @build_quotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Build your quotation'**
+  String get build_quotation;
+
+  /// No description provided for @build_quotation_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start from the customer request, adjust your technical offer, then add extra services if needed.'**
+  String get build_quotation_subtitle;
+
+  /// No description provided for @auto_totals_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto totals from unit prices'**
+  String get auto_totals_label;
+
+  /// No description provided for @editing_existing_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing existing offer'**
+  String get editing_existing_offer;
+
+  /// No description provided for @uses_request_defaults.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses request defaults'**
+  String get uses_request_defaults;
+
+  /// No description provided for @panel_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel offer'**
+  String get panel_offer;
+
+  /// No description provided for @panel_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'These values start from the customer request and can be adjusted before sending your quote.'**
+  String get panel_offer_subtitle;
+
+  /// No description provided for @panel_power_watts.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel power (W)'**
+  String get panel_power_watts;
+
+  /// No description provided for @panel_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel unit price'**
+  String get panel_unit_price;
+
+  /// No description provided for @total_panel_power_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total panel power'**
+  String get total_panel_power_label;
+
+  /// No description provided for @panels_total_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels total price'**
+  String get panels_total_price;
+
+  /// No description provided for @panel_note_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel note (optional)'**
+  String get panel_note_label;
+
+  /// No description provided for @panel_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand, mono, warranty, mounting notes...'**
+  String get panel_note_hint;
+
+  /// No description provided for @battery_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery offer'**
+  String get battery_offer;
+
+  /// No description provided for @battery_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use battery type and size details to explain your backup recommendation clearly.'**
+  String get battery_offer_subtitle;
+
+  /// No description provided for @battery_size.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery size'**
+  String get battery_size;
+
+  /// No description provided for @battery_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery unit price'**
+  String get battery_unit_price;
+
+  /// No description provided for @batteries_total_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Batteries total price'**
+  String get batteries_total_price;
+
+  /// No description provided for @battery_note_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery note (optional)'**
+  String get battery_note_label;
+
+  /// No description provided for @battery_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Rack setup, backup hours, preferred brand...'**
+  String get battery_note_hint;
+
+  /// No description provided for @battery_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Type'**
+  String get battery_type;
+
+  /// No description provided for @battery_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Count'**
+  String get battery_count;
+
+  /// No description provided for @inverter_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter offer'**
+  String get inverter_offer;
+
+  /// No description provided for @inverter_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep inverter details aligned with the real installation setup and grid requirements.'**
+  String get inverter_offer_subtitle;
+
+  /// No description provided for @inverter_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter unit price'**
+  String get inverter_unit_price;
+
+  /// No description provided for @inverters_total_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverters total price'**
+  String get inverters_total_price;
+
+  /// No description provided for @inverter_note_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter note (optional)'**
+  String get inverter_note_label;
+
+  /// No description provided for @inverter_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Single phase, MPPT count, protection notes...'**
+  String get inverter_note_hint;
+
+  /// No description provided for @inverter_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Type'**
+  String get inverter_type;
+
+  /// No description provided for @inverter_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Count'**
+  String get inverter_count;
+
+  /// No description provided for @offer_note_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer note'**
+  String get offer_note_title;
+
+  /// No description provided for @offer_note_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this area for delivery time, warranty, execution notes, or exclusions.'**
+  String get offer_note_description;
+
+  /// No description provided for @template_involves.
+  ///
+  /// In en, this message translates to:
+  /// **'Template involves'**
+  String get template_involves;
+
+  /// No description provided for @template_involves_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this for installation fee, delivery, mounting, cables, or any extra service linked to this quotation.'**
+  String get template_involves_subtitle;
+
+  /// No description provided for @no_extra_services.
+  ///
+  /// In en, this message translates to:
+  /// **'No extra services added yet.'**
+  String get no_extra_services;
+
+  /// No description provided for @estimated_extra_fees_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated extra fees'**
+  String get estimated_extra_fees_label;
+
+  /// No description provided for @add_from_catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Add from catalog'**
+  String get add_from_catalog;
+
+  /// No description provided for @create_new_item.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new item'**
+  String get create_new_item;
+
+  /// No description provided for @manage_catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage catalog'**
+  String get manage_catalog;
+
+  /// No description provided for @quotation_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Quotation total'**
+  String get quotation_total;
+
+  /// No description provided for @save_offer_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save offer changes'**
+  String get save_offer_changes;
+
+  /// No description provided for @no_more_catalog_items.
+  ///
+  /// In en, this message translates to:
+  /// **'No more active catalog items are available. Create a new one first.'**
+  String get no_more_catalog_items;
+
+  /// No description provided for @create_item_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new catalog item'**
+  String get create_item_title;
+
+  /// No description provided for @create_item_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a custom service or material to use in this and future quotations.'**
+  String get create_item_subtitle;
+
+  /// No description provided for @name_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name_label;
+
+  /// No description provided for @cost_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get cost_label;
+
+  /// No description provided for @create_item_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Create item'**
+  String get create_item_button;
+
+  /// No description provided for @extra_fees_missing_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra fees missing'**
+  String get extra_fees_missing_title;
+
+  /// No description provided for @extra_fees_missing_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a catalog item for all extra fee rows or remove them.'**
+  String get extra_fees_missing_msg;
+
+  /// No description provided for @invalid_panel_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid panel offer'**
+  String get invalid_panel_offer_title;
+
+  /// No description provided for @invalid_panel_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check panel power, count, and price.'**
+  String get invalid_panel_offer_msg;
+
+  /// No description provided for @invalid_battery_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid battery offer'**
+  String get invalid_battery_offer_title;
+
+  /// No description provided for @invalid_battery_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check battery size, count, and price.'**
+  String get invalid_battery_offer_msg;
+
+  /// No description provided for @invalid_inverter_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid inverter offer'**
+  String get invalid_inverter_offer_title;
+
+  /// No description provided for @invalid_inverter_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check inverter size, count, and price.'**
+  String get invalid_inverter_offer_msg;
+
+  /// No description provided for @invalid_pricing_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid pricing'**
+  String get invalid_pricing_title;
+
+  /// No description provided for @invalid_pricing_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Total quotation price must be greater than zero.'**
+  String get invalid_pricing_msg;
+
+  /// No description provided for @form_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get form_required;
+
+  /// No description provided for @edit_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit_button;
+
+  /// No description provided for @finish_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish offer'**
+  String get finish_offer;
+
+  /// No description provided for @delete_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete offer'**
+  String get delete_offer_title;
+
+  /// No description provided for @delete_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this offer? This action cannot be undone.'**
+  String get delete_offer_msg;
+
+  /// No description provided for @cancel_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel_button;
+
+  /// No description provided for @delete_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete_button;
+
+  /// No description provided for @contact_unavailable_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact unavailable'**
+  String get contact_unavailable_title;
+
+  /// No description provided for @contact_unavailable_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone or email available for this requester.'**
+  String get contact_unavailable_msg;
+
+  /// No description provided for @panel_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel'**
+  String get panel_label;
+
+  /// No description provided for @battery_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery'**
+  String get battery_label;
+
+  /// No description provided for @inverter_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter'**
+  String get inverter_label;
+
+  /// No description provided for @location_reach_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & reach'**
+  String get location_reach_title;
+
+  /// No description provided for @request_city_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Request city'**
+  String get request_city_label;
+
+  /// No description provided for @send_to_all_cities.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to all cities'**
+  String get send_to_all_cities;
+
+  /// No description provided for @general_note_title.
+  ///
+  /// In en, this message translates to:
+  /// **'General note'**
+  String get general_note_title;
+
+  /// No description provided for @no_city_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'No city selected'**
+  String get no_city_selected;
+
+  /// No description provided for @panels_power_recommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'We recommend choosing a panel power between 400W and 600W for modern systems.'**
+  String get panels_power_recommendation;
+
+  /// No description provided for @battery_power_recommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Lithium batteries are recommended for longer life and better performance.'**
+  String get battery_power_recommendation;
+
+  /// No description provided for @inverter_power_recommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Hybrid inverters are best for systems with solar and batteries.'**
+  String get inverter_power_recommendation;
+
+  /// No description provided for @send_to_all_cities_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request will be visible to companies in all cities.'**
+  String get send_to_all_cities_msg;
+
+  /// No description provided for @general_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Any other details or requirements for your solar system...'**
+  String get general_note_hint;
+
+  /// No description provided for @panel_recommendation_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended: keep the same wattage for all panels for better matching and easier offers.'**
+  String get panel_recommendation_msg;
+
+  /// No description provided for @panel_count_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel count'**
+  String get panel_count_label;
+
+  /// No description provided for @panel_note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand, half-cut, mono, roof limits...'**
+  String get panel_note_hint_request;
+
+  /// No description provided for @battery_recommendation_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Best performance: lithium is the default for longer cycle life and faster charging.'**
+  String get battery_recommendation_msg;
+
+  /// No description provided for @battery_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Type'**
+  String get battery_type_label;
+
+  /// No description provided for @battery_count_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Count'**
+  String get battery_count_label;
+
+  /// No description provided for @battery_note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Rack style, backup hours, preferred brand...'**
+  String get battery_note_hint_request;
+
+  /// No description provided for @total_battery_power_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total battery power'**
+  String get total_battery_power_label;
+
+  /// No description provided for @inverter_recommendation_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Best performance: hybrid works well when you want grid support and future battery expansion.'**
+  String get inverter_recommendation_msg;
+
+  /// No description provided for @inverter_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Type'**
+  String get inverter_type_label;
+
+  /// No description provided for @inverter_count_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter count'**
+  String get inverter_count_label;
+
+  /// No description provided for @inverter_note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Single phase, MPPT count, brand...'**
+  String get inverter_note_hint_request;
+
+  /// No description provided for @total_inverters_power_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total inverters power'**
+  String get total_inverters_power_label;
+
+  /// No description provided for @city_required_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile must have a city before creating a request.'**
+  String get city_required_error;
+
+  /// No description provided for @request_submitted_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Service request submitted successfully!'**
+  String get request_submitted_success;
+
+  /// No description provided for @request_submit_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not submit the request. Please try again.'**
+  String get request_submit_error;
+
+  /// No description provided for @hero_request_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share clear sizes and notes so companies can send more accurate offers.'**
+  String get hero_request_subtitle;
+
+  /// No description provided for @hero_request_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Defaults tuned for fast entry'**
+  String get hero_request_info;
+
+  /// No description provided for @send_to_all_cities_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on to let companies outside your city respond as well.'**
+  String get send_to_all_cities_subtitle;
+
+  /// No description provided for @general_note_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any site details, installation limits, or preferred brands.'**
+  String get general_note_subtitle;
+
+  /// No description provided for @note_optional_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get note_optional_label;
+
+  /// No description provided for @note_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get note_optional;
+
+  /// No description provided for @note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any additional details or requirements...'**
+  String get note_hint;
+
+  /// No description provided for @note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Roof type, backup target, timeline...'**
+  String get note_hint_request;
+
+  /// No description provided for @delete_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove the offer permanently.'**
+  String get delete_offer_subtitle;
+
+  /// No description provided for @phone_unavailable_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone number is available for this action.'**
+  String get phone_unavailable_msg;
+
   /// No description provided for @battery_type_gel.
   ///
   /// In en, this message translates to:
@@ -5110,18 +5832,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total Energy Capacity'**
   String get total_energy_capacity;
-
-  /// No description provided for @battery_type_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery Type'**
-  String get battery_type_label;
-
-  /// No description provided for @inverter_type_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Inverter Type'**
-  String get inverter_type_label;
 
   /// No description provided for @storage_batteries.
   ///
@@ -6305,12 +7015,6 @@ abstract class AppLocalizations {
   /// **'Battery Voltage'**
   String get battery_voltage_label;
 
-  /// No description provided for @battery_count_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery Count'**
-  String get battery_count_label;
-
   /// No description provided for @battery_count_hint.
   ///
   /// In en, this message translates to:
@@ -6635,12 +7339,6 @@ abstract class AppLocalizations {
   /// **'Submitting...'**
   String get submitting_request;
 
-  /// No description provided for @request_submitted_success.
-  ///
-  /// In en, this message translates to:
-  /// **'Service request submitted successfully!'**
-  String get request_submitted_success;
-
   /// No description provided for @request_failed.
   ///
   /// In en, this message translates to:
@@ -6736,9 +7434,22 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset'**
   String get reset;
+
+  /// No description provided for @load_more_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More Offers'**
+  String get load_more_offers;
+
+  /// No description provided for @catalog_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalog'**
+  String get catalog_tooltip;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -6747,25 +7458,26 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar': return AppLocalizationsAr();
-    case 'en': return AppLocalizationsEn();
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'en':
+      return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

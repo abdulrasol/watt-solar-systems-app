@@ -1,10 +1,12 @@
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
+import '../../domain/entities/solar_profile.dart';
 import '../../domain/entities/solar_request.dart';
 
 class SolarRequestModel extends SolarRequest {
   SolarRequestModel({
     super.id,
+    super.user,
     super.cityId,
     super.city,
     super.allCities,
@@ -31,6 +33,7 @@ class SolarRequestModel extends SolarRequest {
   factory SolarRequestModel.fromJson(Map<String, dynamic> json) {
     return SolarRequestModel(
       id: json['id'],
+      user: json['user'] != null ? SolarProfile.fromJson(json['user']) : null,
       cityId: json['city_id'] ?? json['city']?['id'],
       city: json['city'] != null ? City.fromJson(json['city']) : null,
       allCities: json['all_cities'] ?? false,
@@ -143,10 +146,13 @@ class SolarRequestModel extends SolarRequest {
     switch (value?.toLowerCase()) {
       case 'open':
         return RequestStatus.open;
+      case 'offered':
+        return RequestStatus.offered;
+      case 'accepted':
+      case 'fulfilled':
+        return RequestStatus.accepted;
       case 'closed':
         return RequestStatus.closed;
-      case 'fulfilled':
-        return RequestStatus.fulfilled;
       default:
         return RequestStatus.open;
     }

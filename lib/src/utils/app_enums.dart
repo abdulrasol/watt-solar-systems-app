@@ -57,8 +57,9 @@ enum InverterType {
 
 enum RequestStatus {
   open('Open', Iconsax.folder_open_bold, Colors.blue),
-  closed('Closed', Iconsax.folder_cross_bold, Colors.grey),
-  fulfilled('Fulfilled', Iconsax.tick_circle_bold, Colors.green);
+  offered('Offered', Iconsax.document_text_1_bold, Colors.orange),
+  accepted('Accepted', Iconsax.tick_circle_bold, Colors.purple),
+  closed('Closed', Iconsax.folder_cross_bold, Colors.grey);
 
   final String label;
   final IconData icon;
@@ -126,10 +127,12 @@ extension RequestStatusL10n on RequestStatus {
     switch (this) {
       case RequestStatus.open:
         return l10n.request_status_open;
+      case RequestStatus.offered:
+        return l10n.request_status_offered;
+      case RequestStatus.accepted:
+        return l10n.request_status_accepted;
       case RequestStatus.closed:
         return l10n.request_status_closed;
-      case RequestStatus.fulfilled:
-        return l10n.request_status_fulfilled;
     }
   }
 }

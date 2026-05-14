@@ -14,7 +14,6 @@ import 'package:solar_hub/src/features/admin/domain/models/admin_currency.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_global_category.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_plan.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
-import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_dashboard.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
@@ -116,11 +115,6 @@ class _FakeAdminRepository implements AdminRepository {
   @override
   Future<List<ServiceCatalogItem>> listServiceCatalog() async => [];
 
-  @override
-  Future<List<ServiceRequest>> listServiceRequests({
-    int page = 1,
-    int pageSize = 20,
-  }) async => [];
 
   @override
   Future<ServiceCatalogItem> createServiceCatalogEntry(
@@ -132,20 +126,8 @@ class _FakeAdminRepository implements AdminRepository {
   @override
   Future<void> deleteServiceCatalogEntry(String serviceCode) async {}
 
-  @override
-  Future<void> reviewServiceRequest(
-    int companyId,
-    String serviceCode,
-    Map<String, dynamic> data,
-  ) async {}
 
-  @override
-  Future<void> toggleCompanyService(
-    int companyId,
-    String serviceCode,
-    Map<String, dynamic> data,
-  ) async {}
-
+ 
   @override
   Future<ServiceCatalogItem> updateServiceCatalogEntry(
     String serviceCode,
@@ -167,7 +149,7 @@ class _FakeAdminRepository implements AdminRepository {
   Future<void> deleteCurrency(int id) async {}
 
   @override
-  Future<List<AdminCountry>> listCountries({int page = 1, int pageSize = 12}) async => [];
+  Future<List<AdminCountry>> listCountries() async => [];
   @override
   Future<AdminCountry> createCountry(Map<String, dynamic> data) => throw UnimplementedError();
   @override
@@ -176,7 +158,7 @@ class _FakeAdminRepository implements AdminRepository {
   Future<void> deleteCountry(int id) async {}
 
   @override
-  Future<List<AdminCity>> listCities({int page = 1, int pageSize = 12}) async => [];
+  Future<List<AdminCity>> listCities({int? countryId}) async => [];
   @override
   Future<AdminCity> createCity(Map<String, dynamic> data) => throw UnimplementedError();
   @override

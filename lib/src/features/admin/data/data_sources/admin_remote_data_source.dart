@@ -12,9 +12,6 @@ abstract class AdminRemoteDataSource {
   Future<api.Response> deleteServiceCatalogEntry(String serviceCode);
   Future<api.PaginationResponse> listCompanyServices(int companyId);
   Future<api.Response> getCompanyDetails(int companyId);
-  Future<api.PaginationResponse> listServiceRequests({int page = 1, int pageSize = 12});
-  Future<api.Response> reviewServiceRequest(int companyId, String serviceCode, Map<String, dynamic> data);
-  Future<api.Response> toggleCompanyService(int companyId, String serviceCode, Map<String, dynamic> data);
 
   // Currencies
   Future<api.PaginationResponse> listCurrencies({int page = 1, int pageSize = 12});
@@ -23,13 +20,13 @@ abstract class AdminRemoteDataSource {
   Future<api.Response> deleteCurrency(int id);
 
   // Countries
-  Future<api.PaginationResponse> listCountries({int page = 1, int pageSize = 12});
+  Future<api.ListResponse> listCountries();
   Future<api.Response> createCountry(Map<String, dynamic> data);
   Future<api.Response> updateCountry(int id, Map<String, dynamic> data);
   Future<api.Response> deleteCountry(int id);
 
   // Cities
-  Future<api.PaginationResponse> listCities({int page = 1, int pageSize = 12});
+  Future<api.ListResponse> listCities({int? countryId});
   Future<api.Response> createCity(Map<String, dynamic> data);
   Future<api.Response> updateCity(int id, Map<String, dynamic> data);
   Future<api.Response> deleteCity(int id);
@@ -49,6 +46,20 @@ abstract class AdminRemoteDataSource {
   Future<api.Response> createSubscriptionPlan(Map<String, dynamic> data);
   Future<api.Response> updateSubscriptionPlan(int id, Map<String, dynamic> data);
   Future<api.Response> deleteSubscriptionPlan(int id);
+  
+  // Feedbacks
+  Future<api.PaginationResponse> listFeedbacks({int page = 1, int pageSize = 12});
+  Future<api.Response> updateFeedbackStatus(int id, bool isRead);
+  Future<api.Response> deleteFeedback(int id);
+
+  // Notifications
+  Future<api.PaginationResponse> listNotifications({int page = 1, int pageSize = 12});
+
+  // Products
+  Future<api.PaginationResponse> listAdminProducts({int page = 1, int pageSize = 12});
+
+  // Systems
+  Future<api.PaginationResponse> listAdminSystems({int page = 1, int pageSize = 12});
 }
 
 class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
@@ -134,34 +145,6 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     }
   }
 
-  @override
-  Future<api.PaginationResponse> listServiceRequests({int page = 1, int pageSize = 12}) async {
-    try {
-      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
-      final response = await _dioService.get(AppUrls.adminServiceRequests, queryParameters: queryParameters, isPagination: true);
-      return response as api.PaginationResponse;
-  } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<api.Response> reviewServiceRequest(int companyId, String serviceCode, Map<String, dynamic> data) async {
-    try {
-      return await _dioService.post(AppUrls.reviewCompanyService(companyId, serviceCode), data: data);
-  } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<api.Response> toggleCompanyService(int companyId, String serviceCode, Map<String, dynamic> data) async {
-    try {
-      return await _dioService.post(AppUrls.reviewCompanyService(companyId, serviceCode), data: data);
-  } catch (e) {
-      rethrow;
-    }
-  }
 
   // Currencies
   @override
@@ -204,11 +187,10 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
 
   // Countries
   @override
-  Future<api.PaginationResponse> listCountries({int page = 1, int pageSize = 12}) async {
+  Future<api.ListResponse> listCountries() async {
     try {
-      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
-      final response = await _dioService.get(AppUrls.countries, queryParameters: queryParameters, isPagination: true);
-      return response as api.PaginationResponse;
+      final response = await _dioService.get(AppUrls.countries, isList: true);
+      return response as api.ListResponse;
   } catch (e) {
       rethrow;
     }
@@ -243,11 +225,12 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
 
   // Cities
   @override
-  Future<api.PaginationResponse> listCities({int page = 1, int pageSize = 12}) async {
+  Future<api.ListResponse> listCities({int? countryId}) async {
     try {
-      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
-      final response = await _dioService.get(AppUrls.cities, queryParameters: queryParameters, isPagination: true);
-      return response as api.PaginationResponse;
+      final queryParameters = <String, dynamic>{};
+      if (countryId != null) queryParameters['country_id'] = countryId;
+      final response = await _dioService.get(AppUrls.cities, queryParameters: queryParameters, isList: true);
+      return response as api.ListResponse;
   } catch (e) {
       rethrow;
     }
@@ -375,6 +358,72 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     try {
       return await _dioService.delete(AppUrls.adminSubscription(id));
   } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Feedbacks
+  @override
+  Future<api.PaginationResponse> listFeedbacks({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.feedbacks, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateFeedbackStatus(int id, bool isRead) async {
+    try {
+      return await _dioService.put(AppUrls.feedbackStatus(id), data: {'is_read': isRead});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteFeedback(int id) async {
+    try {
+      return await _dioService.delete(AppUrls.feedback(id));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Notifications
+  @override
+  Future<api.PaginationResponse> listNotifications({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get('${AppUrls.adminBaseUrl}/notifications', queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Products
+  @override
+  Future<api.PaginationResponse> listAdminProducts({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.adminProducts, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Systems
+  @override
+  Future<api.PaginationResponse> listAdminSystems({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.adminSystems, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
       rethrow;
     }
   }

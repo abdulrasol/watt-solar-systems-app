@@ -353,7 +353,7 @@ class OrderRecord {
 class OrderItemCreateRequest {
   final int productId;
   final int quantity;
-  final List<int> selectedOptions;
+  final List<Map<String, dynamic>> selectedOptions;
 
   const OrderItemCreateRequest({
     required this.productId,
@@ -373,7 +373,9 @@ class OrderItemCreateRequest {
     return OrderItemCreateRequest(
       productId: item.productId,
       quantity: item.quantity,
-      selectedOptions: item.selectedOptionIds,
+      selectedOptions: item.selectedOptions
+          .map((option) => option.toJson())
+          .toList(),
     );
   }
 }

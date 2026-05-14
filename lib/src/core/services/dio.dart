@@ -146,6 +146,8 @@ class DioService implements ApiServicesInterface {
     bool isList = false,
   }) async {
     Response response = await _dio.get(url, queryParameters: queryParameters);
+  
+  
     if (isList) {
       return local.ListResponse.fromList(response.data as List);
     } else if (isPagination) {

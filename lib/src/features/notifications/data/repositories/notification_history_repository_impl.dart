@@ -10,10 +10,13 @@ class NotificationHistoryRepositoryImpl
   NotificationHistoryRepositoryImpl(this._dioService);
 
   @override
-  Future<List<AppNotificationItem>> fetchHistory({int limit = 50}) async {
+  Future<NotificationHistoryPage> fetchHistory({
+    int page = 1,
+    int pageSize = 12,
+  }) async {
     final response = await _dioService.get(
       AppUrls.notificationHistory,
-      queryParameters: {'limit': limit},
+      queryParameters: {'page': page, 'page_size': pageSize},
     );
 
     if (response.status != 200 || response.error) {
@@ -27,15 +30,22 @@ class NotificationHistoryRepositoryImpl
     final body = Map<String, dynamic>.from(response.body ?? const {});
     final notifications = body['notifications'];
     if (notifications is! List) {
-      return const [];
+      return NotificationHistoryPage(
+        items: const [],
+        totalCount: int.tryParse(body['count']?.toString() ?? '') ?? 0,
+      );
     }
 
-    return notifications
-        .whereType<Map>()
-        .map(
-          (item) =>
-              AppNotificationItem.fromJson(Map<String, dynamic>.from(item)),
-        )
-        .toList();
+    return NotificationHistoryPage(
+      items: notifications
+          .whereType<Map>()
+          .map(
+            (item) =>
+                AppNotificationItem.fromJson(Map<String, dynamic>.from(item)),
+          )
+          .toList(),
+      totalCount:
+          int.tryParse(body['count']?.toString() ?? '') ?? notifications.length,
+    );
   }
 }

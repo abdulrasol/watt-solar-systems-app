@@ -53,16 +53,6 @@ class AdminCompanyDetailsController extends Notifier<AdminCompanyDetailsState> {
     }
   }
 
-  Future<void> toggleService(String serviceCode, Map<String, dynamic> data) async {
-    try {
-      await _repository.toggleCompanyService(_companyId, serviceCode, data);
-      // Refresh details to show updated service status
-      await fetchDetails();
-    } catch (e, s) {
-      dPrint(e, stackTrace: s);
-      state = state.copyWith(error: e.toString());
-    }
-  }
 
   void clearError() {
     state = state.copyWith(error: null);

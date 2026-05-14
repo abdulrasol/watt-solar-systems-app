@@ -29,10 +29,7 @@ abstract class AuthRemoteDataSource {
 
   Future<void> validatePasswordResetToken(String token);
 
-  Future<void> confirmPasswordReset({
-    required String token,
-    required String password,
-  });
+  Future<void> confirmPasswordReset({required String token, required String password});
 
   Future<void> deleteAccount({required String password, String? reason});
 
@@ -42,14 +39,9 @@ abstract class AuthRemoteDataSource {
 
   Future<List<CompanyType>> getCompanyTypes();
 
-  Future<Company> registerCompany(
-    CompanyRegistrationModel companyRegistrationModel,
-  );
+  Future<Company> registerCompany(CompanyRegistrationModel companyRegistrationModel);
 
-  Future<Company> updateCompany({
-    required int companyId,
-    required CompanyRegistrationModel companyRegistrationModel,
-  });
+  Future<Company> updateCompany({required int companyId, required CompanyRegistrationModel companyRegistrationModel});
 
   /// Silently syncs the user's preferred language to the server so that
   /// push notifications are sent in the correct language.
@@ -62,29 +54,18 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   void _throwIfFailed(BaseResponse response) {
     if (response.status != 200 || response.error) {
       dPrint(response.messageUser);
-      throw Exception(
-        response.messageUser.isNotEmpty
-            ? response.messageUser
-            : response.message,
-      );
+      throw Exception(response.messageUser.isNotEmpty ? response.messageUser : response.message);
     }
   }
 
   @override
   Future<AuthResponse> login(String username, String password) async {
     try {
-      Response response = await _dioService.post(
-        AppUrls.login,
-        data: {'username': username, 'password': password},
-      );
+      Response response = await _dioService.post(AppUrls.login, data: {'username': username, 'password': password});
       _throwIfFailed(response);
       return AuthResponse.fromBase(response);
     } catch (e, stackTrace) {
-      dPrint(
-        'login error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('login error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -93,19 +74,12 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthResponse> register(UserRegisterModel userRegisterModel) async {
     try {
       dPrint(await userRegisterModel.toJson());
-      BaseResponse response = await _dioService.post(
-        AppUrls.register,
-        data: await userRegisterModel.toJson(),
-      );
+      BaseResponse response = await _dioService.post(AppUrls.register, data: await userRegisterModel.toJson());
       _throwIfFailed(response);
       dPrint(response);
       return AuthResponse.fromBase(response);
     } catch (e, stackTrace) {
-      dPrint(
-        'register error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('register error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -117,21 +91,13 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
       _throwIfFailed(response);
       return User.fromJson(response.body);
     } on DioException catch (e, stackTrace) {
-      dPrint(
-        'fetchProfile error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('fetchProfile error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       if (e.response?.statusCode == 401) {
         throw const UnauthorizedException('Session expired');
       }
       rethrow;
     } catch (e, stackTrace) {
-      dPrint(
-        'fetchProfile error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('fetchProfile error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -141,19 +107,11 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
     try {
       dPrint(await userRegisterModel.toJson());
 
-      Response response = await _dioService.multipartRequest(
-        AppUrls.profile,
-        file: FormData.fromMap(await userRegisterModel.toJson()),
-        isPut: true,
-      );
+      Response response = await _dioService.multipartRequest(AppUrls.profile, file: FormData.fromMap(await userRegisterModel.toJson()), isPut: true);
       _throwIfFailed(response);
       return User.fromJson(response.body);
     } catch (e, stackTrace) {
-      dPrint(
-        'updateProfile error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('updateProfile error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -166,17 +124,10 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> requestPasswordReset(String email) async {
     try {
-      final response = await _dioService.post(
-        AppUrls.passwordReset,
-        data: {'email': email},
-      );
+      final response = await _dioService.post(AppUrls.passwordReset, data: {'email': email});
       _throwIfFailed(response);
     } catch (e, stackTrace) {
-      dPrint(
-        'requestPasswordReset error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('requestPasswordReset error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -184,38 +135,21 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> validatePasswordResetToken(String token) async {
     try {
-      final response = await _dioService.post(
-        AppUrls.passwordResetValidateToken,
-        data: {'token': token},
-      );
+      final response = await _dioService.post(AppUrls.passwordResetValidateToken, data: {'token': token});
       _throwIfFailed(response);
     } catch (e, stackTrace) {
-      dPrint(
-        'validatePasswordResetToken error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('validatePasswordResetToken error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
 
   @override
-  Future<void> confirmPasswordReset({
-    required String token,
-    required String password,
-  }) async {
+  Future<void> confirmPasswordReset({required String token, required String password}) async {
     try {
-      final response = await _dioService.post(
-        AppUrls.passwordResetConfirm,
-        data: {'token': token, 'password': password},
-      );
+      final response = await _dioService.post(AppUrls.passwordResetConfirm, data: {'token': token, 'password': password});
       _throwIfFailed(response);
     } catch (e, stackTrace) {
-      dPrint(
-        'confirmPasswordReset error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('confirmPasswordReset error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -225,18 +159,11 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
     try {
       final response = await _dioService.post(
         AppUrls.deleteAccount,
-        data: {
-          'password': password,
-          'reason': reason?.trim().isEmpty == true ? null : reason?.trim(),
-        },
+        data: {'password': password, 'reason': reason?.trim().isEmpty == true ? null : reason?.trim()},
       );
       _throwIfFailed(response);
     } catch (e, stackTrace) {
-      dPrint(
-        'deleteAccount error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('deleteAccount error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -244,18 +171,12 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<List<Country>> getCountries() async {
     try {
-      ListResponse response =
-          await _dioService.get(AppUrls.countries, isList: true)
-              as ListResponse;
+      ListResponse response = await _dioService.get(AppUrls.countries, isList: true) as ListResponse;
       _throwIfFailed(response);
       dPrint(response.body);
       return (response.body as List).map((e) => Country.fromJson(e)).toList();
     } catch (e, stackTrace) {
-      dPrint(
-        'getCountries error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('getCountries error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -263,17 +184,12 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<List<City>> getCities({int? countryId}) async {
     try {
-      ListResponse response =
-          await _dioService.get(AppUrls.cities, isList: true) as ListResponse;
+      ListResponse response = await _dioService.get(AppUrls.cities, isList: true) as ListResponse;
       _throwIfFailed(response);
       dPrint(response.body);
       return (response.body as List).map((e) => City.fromJson(e)).toList();
     } catch (e, stackTrace) {
-      dPrint(
-        'getCities error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('getCities error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -284,47 +200,28 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
       final response = await _dioService.get(AppUrls.companyTypes);
       _throwIfFailed(response);
       final body = response.body as List? ?? const [];
-      return body
-          .whereType<Map>()
-          .map((e) => CompanyType.fromJson(Map<String, dynamic>.from(e)))
-          .toList();
+      return body.whereType<Map>().map((e) => CompanyType.fromJson(Map<String, dynamic>.from(e))).toList();
     } catch (e, stackTrace) {
-      dPrint(
-        'getCompanyTypes error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('getCompanyTypes error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
 
   @override
-  Future<Company> registerCompany(
-    CompanyRegistrationModel companyRegistrationModel,
-  ) async {
+  Future<Company> registerCompany(CompanyRegistrationModel companyRegistrationModel) async {
     try {
-      BaseResponse response = await _dioService.multipartRequest(
-        AppUrls.registerCompany,
-        file: FormData.fromMap(await companyRegistrationModel.toJson()),
-      );
+      BaseResponse response = await _dioService.multipartRequest(AppUrls.registerCompany, file: FormData.fromMap(await companyRegistrationModel.toJson()));
       _throwIfFailed(response);
       dPrint(response);
       return Company.fromJson(response.body);
     } catch (e, stackTrace) {
-      dPrint(
-        'registerCompany error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('registerCompany error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
 
   @override
-  Future<Company> updateCompany({
-    required int companyId,
-    required CompanyRegistrationModel companyRegistrationModel,
-  }) async {
+  Future<Company> updateCompany({required int companyId, required CompanyRegistrationModel companyRegistrationModel}) async {
     try {
       final response = await _dioService.multipartRequest(
         AppUrls.updateCompany(companyId),
@@ -334,11 +231,7 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
       _throwIfFailed(response);
       return Company.fromJson(response.body);
     } catch (e, stackTrace) {
-      dPrint(
-        'updateCompany error: $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('updateCompany error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
     }
   }
@@ -346,19 +239,12 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> updateLanguage(String language) async {
     try {
-      final response = await _dioService.put(
-        AppUrls.updateLanguage,
-        data: {'language': language},
-      );
+      final response = await _dioService.put(AppUrls.updateLanguage, data: {'language': language});
       _throwIfFailed(response);
       dPrint('Language synced to server: $language', tag: 'AuthRemoteDataSource');
     } catch (e, stackTrace) {
       // Fire-and-forget: log but never surface to UI
-      dPrint(
-        'updateLanguage error (non-fatal): $e',
-        stackTrace: stackTrace,
-        tag: 'AuthRemoteDataSource',
-      );
+      dPrint('updateLanguage error (non-fatal): $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
     }
   }
 }

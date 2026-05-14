@@ -11,11 +11,37 @@ import 'package:solar_hub/src/features/notifications/presentation/widgets/notifi
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class NotificationHistoryScreen extends ConsumerWidget {
+class NotificationHistoryScreen extends ConsumerStatefulWidget {
   const NotificationHistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NotificationHistoryScreen> createState() => _NotificationHistoryScreenState();
+}
+
+class _NotificationHistoryScreenState extends ConsumerState<NotificationHistoryScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      ref.read(notificationHistoryProvider.notifier).fetchNextPage();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authState = ref.watch(authProvider);
     final state = ref.watch(notificationHistoryProvider);
@@ -45,7 +71,7 @@ class NotificationHistoryScreen extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         color: AppTheme.primaryColor,
-        onRefresh: () => ref.read(notificationHistoryProvider.notifier).fetchHistory(),
+        onRefresh: () => ref.read(notificationHistoryProvider.notifier).fetchHistory(isRefresh: true),
         child: Builder(
           builder: (_) {
             if (state.isLoading && state.items.isEmpty) {
@@ -93,11 +119,20 @@ class NotificationHistoryScreen extends ConsumerWidget {
             }
 
             return ListView.separated(
+              controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.all(16.w),
-              itemCount: state.items.length,
+              itemCount: state.items.length + (state.isMoreLoading ? 1 : 0),
               separatorBuilder: (context, index) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
+                if (index == state.items.length) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
                 final item = state.items[index];
                 return _NotificationCard(key: ObjectKey(item.id), item: item, isDark: isDark);
               },

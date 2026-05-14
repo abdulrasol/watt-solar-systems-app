@@ -88,18 +88,20 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Global Categories',
-                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
-              ),
-              Text(
-                'System-wide product/service categories',
-                style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Global Categories',
+                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                ),
+                Text(
+                  'System-wide product/service categories',
+                  style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                ),
+              ],
+            ),
           ),
           ElevatedButton.icon(
             onPressed: () => _showCategoryDialog(),
@@ -152,7 +154,7 @@ class _CategoryCard extends ConsumerWidget {
             ),
             child: Center(
               child: category.icon != null && category.icon!.isNotEmpty
-                  ? Image.network(category.icon!, width: 30.w, height: 30.w, errorBuilder: (_, _, _) => Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp))
+                  ? Image.network(category.icon!, width: 30.w, height: 30.w, errorBuilder: (context, error, stackTrace) => Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp))
                   : Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp),
             ),
           ),

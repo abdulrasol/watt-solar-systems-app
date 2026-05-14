@@ -2,42 +2,108 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_plan.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
-class AdminSubscriptionsController extends Notifier<AsyncValue<List<AdminSubscriptionPlan>>> {
+class AdminSubscriptionsState {
+  final bool isLoading;
+  final bool isMoreLoading;
+  final bool hasMore;
+  final String? error;
+  final List<AdminSubscriptionPlan> plans;
+  final int page;
+
+  AdminSubscriptionsState({
+    this.isLoading = false,
+    this.isMoreLoading = false,
+    this.hasMore = true,
+    this.error,
+    this.plans = const [],
+    this.page = 1,
+  });
+
+  AdminSubscriptionsState copyWith({
+    bool? isLoading,
+    bool? isMoreLoading,
+    bool? hasMore,
+    String? error,
+    List<AdminSubscriptionPlan>? plans,
+    int? page,
+  }) {
+    return AdminSubscriptionsState(
+      isLoading: isLoading ?? this.isLoading,
+      isMoreLoading: isMoreLoading ?? this.isMoreLoading,
+      hasMore: hasMore ?? this.hasMore,
+      error: error ?? this.error,
+      plans: plans ?? this.plans,
+      page: page ?? this.page,
+    );
+  }
+}
+
+class AdminSubscriptionsController extends Notifier<AdminSubscriptionsState> {
   late AdminRepository _repository;
 
   @override
-  AsyncValue<List<AdminSubscriptionPlan>> build() {
+  AdminSubscriptionsState build() {
     _repository = getIt<AdminRepository>();
-    // Initial load
-    Future.microtask(() => loadPlans());
-    return const AsyncValue.loading();
+    return AdminSubscriptionsState();
   }
 
-  Future<void> loadPlans() async {
-    state = const AsyncValue.loading();
-    try {
-      final plans = await _repository.listSubscriptionPlans();
-      state = AsyncValue.data(plans);
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
+  Future<void> fetchPlans({bool isRefresh = false}) async {
+    if (isRefresh) {
+      state = state.copyWith(
+        isLoading: true,
+        hasMore: true,
+        page: 1,
+        error: null,
+        plans: [],
+      );
+    } else {
+      if (state.isMoreLoading || !state.hasMore) return;
+      state = state.copyWith(isMoreLoading: true, error: null);
     }
+
+    try {
+      final plans = await _repository.listSubscriptionPlans(
+        page: state.page,
+        pageSize: 12,
+      );
+      state = state.copyWith(
+        isLoading: false,
+        isMoreLoading: false,
+        plans: isRefresh ? plans : [...state.plans, ...plans],
+        hasMore: plans.length >= 12,
+      );
+    } catch (e, s) {
+      dPrint(e, stackTrace: s);
+      state = state.copyWith(isLoading: false, isMoreLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> fetchNextPage() async {
+    if (state.isMoreLoading || !state.hasMore) return;
+    state = state.copyWith(page: state.page + 1);
+    await fetchPlans();
   }
 
   Future<void> createPlan(Map<String, dynamic> data) async {
     try {
-      await _repository.createSubscriptionPlan(data);
-      await loadPlans();
+      final newPlan = await _repository.createSubscriptionPlan(data);
+      state = state.copyWith(plans: [newPlan, ...state.plans]);
     } catch (e) {
+      state = state.copyWith(error: e.toString());
       rethrow;
     }
   }
 
   Future<void> updatePlan(int id, Map<String, dynamic> data) async {
     try {
-      await _repository.updateSubscriptionPlan(id, data);
-      await loadPlans();
+      final updatedPlan = await _repository.updateSubscriptionPlan(id, data);
+      state = state.copyWith(
+        plans: state.plans.map((p) => p.id == id ? updatedPlan : p).toList(),
+      );
     } catch (e) {
+      state = state.copyWith(error: e.toString());
       rethrow;
     }
   }
@@ -45,13 +111,20 @@ class AdminSubscriptionsController extends Notifier<AsyncValue<List<AdminSubscri
   Future<void> deletePlan(int id) async {
     try {
       await _repository.deleteSubscriptionPlan(id);
-      await loadPlans();
+      state = state.copyWith(
+        plans: state.plans.where((p) => p.id != id).toList(),
+      );
     } catch (e) {
+      state = state.copyWith(error: e.toString());
       rethrow;
     }
   }
+
+  void clearError() {
+    state = state.copyWith(error: null);
+  }
 }
 
-final adminSubscriptionsProvider = NotifierProvider<AdminSubscriptionsController, AsyncValue<List<AdminSubscriptionPlan>>>(() {
+final adminSubscriptionsProvider = NotifierProvider<AdminSubscriptionsController, AdminSubscriptionsState>(() {
   return AdminSubscriptionsController();
 });

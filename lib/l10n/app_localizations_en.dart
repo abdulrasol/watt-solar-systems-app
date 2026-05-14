@@ -105,7 +105,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get store => 'Store';
 
   @override
-  String get dashboard_hero_subtitle => 'Start with a quick estimate, prepare an offer request, or explore components for your next solar setup.';
+  String get dashboard_hero_subtitle =>
+      'Start with a quick estimate, prepare an offer request, or explore components for your next solar setup.';
 
   @override
   String get dashboard_chip_fast => 'Fast sizing';
@@ -117,46 +118,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboard_chip_store => 'Shop parts';
 
   @override
-  String get dashboard_quick_actions_subtitle => 'Jump directly into the calculator flow that matches your job.';
+  String get dashboard_quick_actions_subtitle =>
+      'Jump directly into the calculator flow that matches your job.';
 
   @override
   String get dashboard_fast_calculator => 'Fast Calculator';
 
   @override
-  String get dashboard_fast_calculator_desc => 'Estimate panels, inverter size, and battery storage from a few direct inputs.';
+  String get dashboard_fast_calculator_desc =>
+      'Estimate panels, inverter size, and battery storage from a few direct inputs.';
 
   @override
   String get dashboard_offer_wizard => 'Offer Request Wizard';
 
   @override
-  String get dashboard_offer_wizard_desc => 'Prepare a structured request for panels, inverter, and batteries before sending it.';
+  String get dashboard_offer_wizard_desc =>
+      'Prepare a structured request for panels, inverter, and batteries before sending it.';
 
   @override
   String get dashboard_system_wizard => 'System Calculator Wizard';
 
   @override
-  String get dashboard_system_wizard_desc => 'Build a fuller solar system design using appliances, usage, and system preferences.';
+  String get dashboard_system_wizard_desc =>
+      'Build a fuller solar system design using appliances, usage, and system preferences.';
 
   @override
   String get dashboard_shopping => 'Shopping';
 
   @override
-  String get dashboard_shopping_subtitle => 'Browse available products now and keep room for featured items later.';
+  String get dashboard_shopping_subtitle =>
+      'Browse available products now and keep room for featured items later.';
 
   @override
   String get dashboard_shop_now => 'Open Store';
 
   @override
-  String get dashboard_shop_now_desc => 'Move to the storefront tab and start browsing solar components.';
+  String get dashboard_shop_now_desc =>
+      'Move to the storefront tab and start browsing solar components.';
 
   @override
   String get dashboard_featured_products => 'Featured Picks';
 
   @override
-  String get dashboard_featured_products_desc => 'Reserved for curated products and bundles after the next API integration.';
+  String get dashboard_featured_products_desc =>
+      'Reserved for curated products and bundles after the next API integration.';
 
   @override
-  String get dashboard_store_coming_soon => 'Store access is currently unavailable on this device.';
+  String get dashboard_store_coming_soon =>
+      'Store access is currently unavailable on this device.';
 
   @override
   String get dashboard_open_store => 'Open store';
@@ -168,46 +177,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboard_promotions => 'Company Posters';
 
   @override
-  String get dashboard_promotions_subtitle => 'Temporary slides now, ready for company campaigns and poster APIs later.';
+  String get dashboard_promotions_subtitle =>
+      'Temporary slides now, ready for company campaigns and poster APIs later.';
 
   @override
   String get dashboard_poster_title_1 => 'Brand campaign slot';
 
   @override
-  String get dashboard_poster_desc_1 => 'Company banners, launch offers, and seasonal promotions will appear here.';
+  String get dashboard_poster_desc_1 =>
+      'Company banners, launch offers, and seasonal promotions will appear here.';
 
   @override
   String get dashboard_poster_title_2 => 'Installer spotlight';
 
   @override
-  String get dashboard_poster_desc_2 => 'Use this space later for partner highlights, service coverage, or campaign banners.';
+  String get dashboard_poster_desc_2 =>
+      'Use this space later for partner highlights, service coverage, or campaign banners.';
 
   @override
   String get dashboard_poster_title_3 => 'New arrivals banner';
 
   @override
-  String get dashboard_poster_desc_3 => 'Upcoming APIs can feed this carousel with new stock, featured kits, or limited offers.';
+  String get dashboard_poster_desc_3 =>
+      'Upcoming APIs can feed this carousel with new stock, featured kits, or limited offers.';
 
   @override
-  String get dashboard_tips_subtitle => 'Practical reminders to size better, buy smarter, and avoid avoidable system mistakes.';
+  String get dashboard_tips_subtitle =>
+      'Practical reminders to size better, buy smarter, and avoid avoidable system mistakes.';
 
   @override
   String get dashboard_hint_clean_title => 'Keep panels clean';
 
   @override
-  String get dashboard_hint_clean_desc => 'Dust and shading quickly reduce solar output. A simple cleaning plan can improve production consistency.';
+  String get dashboard_hint_clean_desc =>
+      'Dust and shading quickly reduce solar output. A simple cleaning plan can improve production consistency.';
 
   @override
   String get dashboard_hint_expand_title => 'Leave room to expand';
 
   @override
-  String get dashboard_hint_expand_desc => 'When sizing an inverter or battery bank, consider future loads so the system does not become tight too early.';
+  String get dashboard_hint_expand_desc =>
+      'When sizing an inverter or battery bank, consider future loads so the system does not become tight too early.';
 
   @override
   String get dashboard_hint_compare_title => 'Compare before you buy';
 
   @override
-  String get dashboard_hint_compare_desc => 'Use the calculators first, then compare offers and components against the same target system size.';
+  String get dashboard_hint_compare_desc =>
+      'Use the calculators first, then compare offers and components against the same target system size.';
 
   @override
   String get buy_components => 'Buy components';
@@ -231,13 +248,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get b2c_storefront => 'B2C Storefront';
 
   @override
-  String get storefront_b2b_subtitle => 'Member-only catalog with wholesale pricing and company inventory visibility.';
+  String get storefront_b2b_subtitle =>
+      'Member-only catalog with wholesale pricing and company inventory visibility.';
 
   @override
-  String get storefront_b2c_subtitle => 'Open storefront for all users with public product access.';
+  String get storefront_b2c_subtitle =>
+      'Open storefront for all users with public product access.';
 
   @override
-  String get storefront_unified_subtitle => 'Explore products, compare companies, and move into the full catalog only when you need more detail.';
+  String get storefront_unified_subtitle =>
+      'Explore products, compare companies, and move into the full catalog only when you need more detail.';
 
   @override
   String storefront_products_available(Object count) {
@@ -335,7 +355,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get store_filters => 'Store Filters';
 
   @override
-  String get store_filters_subtitle => 'Refine products by sort order, category, company, and price in one place.';
+  String get store_filters_subtitle =>
+      'Refine products by sort order, category, company, and price in one place.';
 
   @override
   String get price_range => 'Price Range';
@@ -344,7 +365,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unit_price => 'Unit Price';
 
   @override
-  String get no_store_products_found => 'No products matched the current filters.';
+  String get no_store_products_found =>
+      'No products matched the current filters.';
 
   @override
   String get no_categories_found => 'No categories available right now.';
@@ -480,7 +502,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cart_empty => 'Your cart is empty';
 
   @override
-  String get cart_empty_subtitle => 'Add products from the storefront to create a local cart for each company.';
+  String get cart_empty_subtitle =>
+      'Add products from the storefront to create a local cart for each company.';
 
   @override
   String get cart_summary => 'Cart Summary';
@@ -512,16 +535,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reset_password => 'Reset Password';
 
   @override
-  String get reset_password_instructions => 'Enter your email address and we will send you a link to reset your password.';
+  String get reset_password_instructions =>
+      'Enter your email address and we will send you a link to reset your password.';
 
   @override
-  String get reset_password_token_instructions => 'Enter the token you received and choose a new password.';
+  String get reset_password_token_instructions =>
+      'Enter the token you received and choose a new password.';
 
   @override
   String get structure_design_title => 'Structure Design';
 
   @override
-  String get structure_design_intro => 'Lay out a fixed-tilt ground frame, estimate the best annual tilt and direction, and review the main structural geometry before detailed engineering.';
+  String get structure_design_intro =>
+      'Lay out a fixed-tilt ground frame, estimate the best annual tilt and direction, and review the main structural geometry before detailed engineering.';
 
   @override
   String get structure_site_inputs => 'Site Inputs';
@@ -596,7 +622,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get structure_reset_auto_layout => 'Reset to auto layout';
 
   @override
-  String get structure_ground_mount_only_hint => 'Only fixed-tilt ground mount is implemented in this release. Other mount types remain reserved for later phases.';
+  String get structure_ground_mount_only_hint =>
+      'Only fixed-tilt ground mount is implemented in this release. Other mount types remain reserved for later phases.';
 
   @override
   String get structure_geometry_results => 'Geometry Results';
@@ -638,7 +665,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get structure_total_steel_length => 'Total steel length';
 
   @override
-  String structure_total_steel_breakdown(Object rails, Object frontLegs, Object rearLegs, Object braces) {
+  String structure_total_steel_breakdown(
+    Object rails,
+    Object frontLegs,
+    Object rearLegs,
+    Object braces,
+  ) {
     return 'Rails $rails + Front legs $frontLegs + Rear legs $rearLegs + Braces $braces';
   }
 
@@ -649,7 +681,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get structure_sketch_title => 'Schematic Sketch';
 
   @override
-  String get structure_sketch_hint => 'This is a schematic preview for planning. It is not a fabrication drawing or a code-compliant engineering detail.';
+  String get structure_sketch_hint =>
+      'This is a schematic preview for planning. It is not a fabrication drawing or a code-compliant engineering detail.';
 
   @override
   String get structure_results_title => 'Calculated Frame';
@@ -736,10 +769,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get structure_row_mode_stepped => 'Stepped rows';
 
   @override
-  String get structure_independent_rows_hint => 'Use when each row is a repeated frame on flat ground.';
+  String get structure_independent_rows_hint =>
+      'Use when each row is a repeated frame on flat ground.';
 
   @override
-  String get structure_stepped_rows_hint => 'Use when rows need different support heights.';
+  String get structure_stepped_rows_hint =>
+      'Use when rows need different support heights.';
 
   @override
   String get structure_row_offsets => 'Row offsets';
@@ -754,10 +789,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get structure_per_row_legs => 'Per-row legs';
 
   @override
-  String get structure_equal_legs_explanation => 'Legs are equal because rows are repeated on the same flat-ground geometry.';
+  String get structure_equal_legs_explanation =>
+      'Legs are equal because rows are repeated on the same flat-ground geometry.';
 
   @override
-  String get structure_stepped_legs_explanation => 'Legs differ because row offsets are applied to each row separately.';
+  String get structure_stepped_legs_explanation =>
+      'Legs differ because row offsets are applied to each row separately.';
 
   @override
   String get structure_min_front_leg => 'Min front leg';
@@ -1004,7 +1041,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get password_reset_email_sent => 'Password reset email sent!';
 
   @override
-  String get password_reset_success => 'Your password has been reset successfully.';
+  String get password_reset_success =>
+      'Your password has been reset successfully.';
 
   @override
   String get error => 'Error';
@@ -1034,7 +1072,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete_account => 'Delete Account';
 
   @override
-  String get delete_account_warning => 'This action is permanent. Enter your password to delete your account.';
+  String get delete_account_warning =>
+      'This action is permanent. Enter your password to delete your account.';
 
   @override
   String get delete_account_reason => 'Reason (optional)';
@@ -1049,7 +1088,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedback_info_title => 'Your feedback helps us improve';
 
   @override
-  String get feedback_info_description => 'Share your feedback or suggestions so we can improve the app and make your experience better.';
+  String get feedback_info_description =>
+      'Share your feedback or suggestions so we can improve the app and make your experience better.';
 
   @override
   String get name => 'Name';
@@ -1076,7 +1116,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedback_required => 'Please enter a message';
 
   @override
-  String get feedback_submitted_successfully => 'Feedback submitted successfully!';
+  String get feedback_submitted_successfully =>
+      'Feedback submitted successfully!';
 
   @override
   String get user_feedbacks => 'User Feedback';
@@ -1100,7 +1141,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete_feedback => 'Delete Feedback';
 
   @override
-  String get delete_feedback_confirm => 'Are you sure you want to delete this feedback? This action cannot be undone.';
+  String get delete_feedback_confirm =>
+      'Are you sure you want to delete this feedback? This action cannot be undone.';
 
   @override
   String get add_screenshot => 'Add Screenshot';
@@ -1181,7 +1223,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get start_your_solar_business => 'Start your solar business';
 
   @override
-  String get register_company_details => 'Fill in the details below to register your company. Our team will review your application before approval.';
+  String get register_company_details =>
+      'Fill in the details below to register your company. Our team will review your application before approval.';
 
   @override
   String get company_name => 'Company Name';
@@ -1235,28 +1278,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_profile => 'Company Profile';
 
   @override
-  String get company_profile_subtitle => 'Keep your company profile up to date.';
+  String get company_profile_subtitle =>
+      'Keep your company profile up to date.';
 
   @override
   String get company_activation_required_title => 'Company activation required';
 
   @override
-  String get company_activation_required_message => 'This company is inactive or its subscription is not valid yet. Contact admin to activate the company and enable management actions.';
+  String get company_activation_required_message =>
+      'This company is inactive or its subscription is not valid yet. Contact admin to activate the company and enable management actions.';
 
   @override
   String get company_activation_required_short => 'Activation required';
 
   @override
-  String get company_pending_activation_title => 'Company activation is pending';
+  String get company_pending_activation_title =>
+      'Company activation is pending';
 
   @override
-  String get company_pending_activation_message => 'Your company is still pending admin review. You can contact admin, and if the company has been waiting for more than 24 hours an activation reminder can be sent.';
+  String get company_pending_activation_message =>
+      'Your company is still pending admin review. You can contact admin, and if the company has been waiting for more than 24 hours an activation reminder can be sent.';
 
   @override
   String get company_send_activation_reminder => 'Send activation reminder';
 
   @override
-  String get company_activation_reminder_sent => 'Activation reminder sent successfully.';
+  String get company_activation_reminder_sent =>
+      'Activation reminder sent successfully.';
 
   @override
   String company_activation_reminder_sent_message(Object availableAt) {
@@ -1267,16 +1315,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_subscription_required_title => 'Subscription required';
 
   @override
-  String get company_subscription_required_message => 'Your company is active, but the subscription is not valid. Choose a plan below to submit a subscription request.';
+  String get company_subscription_required_message =>
+      'Your company is active, but the subscription is not valid. Choose a plan below to submit a subscription request.';
 
   @override
-  String get company_subscription_available_plans => 'Available subscription plans';
+  String get company_subscription_available_plans =>
+      'Available subscription plans';
 
   @override
-  String get company_subscription_plans_error => 'Could not load subscription plans.';
+  String get company_subscription_plans_error =>
+      'Could not load subscription plans.';
 
   @override
-  String get company_subscription_plans_empty => 'No subscription plans are available right now.';
+  String get company_subscription_plans_empty =>
+      'No subscription plans are available right now.';
 
   @override
   String company_subscription_plan_meta(Object days, Object price) {
@@ -1296,10 +1348,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_subscription_submit => 'Submit subscription request';
 
   @override
-  String get company_subscription_request_submitted => 'Subscription request submitted successfully.';
+  String get company_subscription_request_submitted =>
+      'Subscription request submitted successfully.';
 
   @override
-  String get company_subscription_request_pending => 'Subscription request pending review.';
+  String get company_subscription_request_pending =>
+      'Subscription request pending review.';
 
   @override
   String company_subscription_request_pending_message(Object planName) {
@@ -1319,7 +1373,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_chat_admin_coming_soon => 'Chat coming soon';
 
   @override
-  String get company_contact_admin_failed => 'Could not open the selected admin contact action.';
+  String get company_contact_admin_failed =>
+      'Could not open the selected admin contact action.';
 
   @override
   String get retry => 'Retry';
@@ -1400,13 +1455,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get system_wizard => 'System Calculator Wizard';
 
   @override
-  String get system_wizard_desc => 'Answer a few questions to get a complete system recommendation';
+  String get system_wizard_desc =>
+      'Answer a few questions to get a complete system recommendation';
 
   @override
   String get request_offer_wizard => 'Request Custom Offer';
 
   @override
-  String get request_offer_desc => 'Submit your specific requirements to get offers from companies';
+  String get request_offer_desc =>
+      'Submit your specific requirements to get offers from companies';
 
   @override
   String get quick_tools => 'Quick Tools';
@@ -1463,7 +1520,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get single_battery_voltage => 'Single Battery Voltage';
 
   @override
-  String get battery_type_hint => 'Lithium usually 12.8V, 25.6V, 51.2V | Lead-Acid usually 12V';
+  String get battery_type_hint =>
+      'Lithium usually 12.8V, 25.6V, 51.2V | Lead-Acid usually 12V';
 
   @override
   String get system_voltage => 'System Voltage';
@@ -1475,7 +1533,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get panel_count => 'Panel Count';
 
   @override
-  String get inverter_size => 'Inverter Size';
+  String get inverter_size => 'Inverter size';
 
   @override
   String get battery_bank => 'Battery Bank';
@@ -1484,7 +1542,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get request_this_system => 'Request This System';
 
   @override
-  String get request_description => 'Send this system configuration to local companies to get offers';
+  String get request_description =>
+      'Send this system configuration to local companies to get offers';
 
   @override
   String get guide => 'Guide';
@@ -1568,7 +1627,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error_select_system => 'Required: Please select a system';
 
   @override
-  String get error_no_components => 'Please add at least one component (Panel, Inverter, or Battery)';
+  String get error_no_components =>
+      'Please add at least one component (Panel, Inverter, or Battery)';
 
   @override
   String get appliance_name => 'Appliance Name';
@@ -1592,7 +1652,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verification_pending => 'Verification Pending';
 
   @override
-  String get verification_pending_msg => 'Your company registration is under review. Please check back later.';
+  String get verification_pending_msg =>
+      'Your company registration is under review. Please check back later.';
 
   @override
   String get go_back => 'Go Back';
@@ -1661,19 +1722,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get members_empty_title => 'No members yet';
 
   @override
-  String get members_empty_subtitle => 'Company members will appear here once they join.';
+  String get members_empty_subtitle =>
+      'Company members will appear here once they join.';
 
   @override
-  String get members_company_required => 'No company is selected for this account.';
+  String get members_company_required =>
+      'No company is selected for this account.';
 
   @override
-  String get members_add_description => 'Invite an existing user first. If they do not have an account yet, you can create one from the same flow.';
+  String get members_add_description =>
+      'Invite an existing user first. If they do not have an account yet, you can create one from the same flow.';
 
   @override
-  String get members_invite_description => 'Invite an existing user by email and assign their company role.';
+  String get members_invite_description =>
+      'Invite an existing user by email and assign their company role.';
 
   @override
-  String get members_create_description => 'Create a new account and add it directly to this company.';
+  String get members_create_description =>
+      'Create a new account and add it directly to this company.';
 
   @override
   String get members_create_title => 'Create new member';
@@ -1732,7 +1798,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get members_create_failed => 'Could not create this member.';
 
   @override
-  String get members_requires_registration => 'This email does not have an account yet. Complete the create-member form.';
+  String get members_requires_registration =>
+      'This email does not have an account yet. Complete the create-member form.';
 
   @override
   String get members_email_required => 'Email is required.';
@@ -1747,7 +1814,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get members_password_required => 'Password is required.';
 
   @override
-  String get members_password_too_short => 'Password must be at least 6 characters.';
+  String get members_password_too_short =>
+      'Password must be at least 6 characters.';
 
   @override
   String get members_first_name_required => 'First name is required.';
@@ -1794,13 +1862,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manage_orders_subtitle => 'Track customer and storefront orders.';
 
   @override
-  String get manage_customers_subtitle => 'Review customer balances and activity.';
+  String get manage_customers_subtitle =>
+      'Review customer balances and activity.';
 
   @override
-  String get manage_suppliers_subtitle => 'Review supplier balances and purchase history.';
+  String get manage_suppliers_subtitle =>
+      'Review supplier balances and purchase history.';
 
   @override
-  String get manage_accounting_subtitle => 'Monitor accounting summaries and transactions.';
+  String get manage_accounting_subtitle =>
+      'Monitor accounting summaries and transactions.';
 
   @override
   String get b2b_orders => 'B2B Orders';
@@ -1905,7 +1976,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_data_available => 'No data available';
 
   @override
-  String get no_company_workspace => 'No company workspace is available for this account.';
+  String get no_company_workspace =>
+      'No company workspace is available for this account.';
 
   @override
   String get my_purchases => 'My Purchases';
@@ -1923,13 +1995,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get services => 'Services';
 
   @override
-  String get services_explorer_subtitle => 'Browse trusted solar companies by service type, then open the companies that match what you need.';
+  String get services_explorer_subtitle =>
+      'Browse trusted solar companies by service type, then open the companies that match what you need.';
 
   @override
   String get services_choose_category => 'Choose a service category';
 
   @override
-  String get services_no_categories => 'No service categories are available yet.';
+  String get services_no_categories =>
+      'No service categories are available yet.';
 
   @override
   String get services_explore_companies => 'Explore companies';
@@ -1944,7 +2018,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get service_types_empty_title => 'No service types yet';
 
   @override
-  String get service_types_empty_subtitle => 'Add the first service type to start organizing companies.';
+  String get service_types_empty_subtitle =>
+      'Add the first service type to start organizing companies.';
 
   @override
   String get service_types_add => 'Add Service Type';
@@ -1979,7 +2054,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get service_types_company_subtitle => 'Select the service types your company provides.';
+  String get service_types_company_subtitle =>
+      'Select the service types your company provides.';
 
   @override
   String get service_types_mark_served => 'Mark served';
@@ -1988,10 +2064,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get service_types_served => 'Served';
 
   @override
-  String get service_types_marked_served => 'Service type added to your company profile.';
+  String get service_types_marked_served =>
+      'Service type added to your company profile.';
 
   @override
-  String get service_types_unmarked_served => 'Service type removed from your company profile.';
+  String get service_types_unmarked_served =>
+      'Service type removed from your company profile.';
 
   @override
   String service_types_companies_count(Object count) {
@@ -2004,7 +2082,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get services_companies_subtitle => 'Find public companies that match this service type. Change city or search to narrow the results.';
+  String get services_companies_subtitle =>
+      'Find public companies that match this service type. Change city or search to narrow the results.';
 
   @override
   String get services_all_cities => 'All cities';
@@ -2013,7 +2092,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get services_search_companies => 'Search companies';
 
   @override
-  String get services_no_companies_found => 'No companies matched this service type with the current filters.';
+  String get services_no_companies_found =>
+      'No companies matched this service type with the current filters.';
 
   @override
   String get services_retry => 'Retry';
@@ -2088,7 +2168,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get services_works_preview_title => 'Project showcase';
 
   @override
-  String get services_works_preview_subtitle => 'Preview sample work cards until real portfolio images are added.';
+  String get services_works_preview_subtitle =>
+      'Preview sample work cards until real portfolio images are added.';
 
   @override
   String services_work_item_title(Object number) {
@@ -2099,16 +2180,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_work_title => 'Company Works';
 
   @override
-  String get company_work_subtitle => 'Manage completed projects, installations, and portfolio highlights.';
+  String get company_work_subtitle =>
+      'Manage completed projects, installations, and portfolio highlights.';
 
   @override
   String get company_work_public_title => 'Project Showcase';
 
   @override
-  String get company_work_public_subtitle => 'Explore recent company projects and installation highlights.';
+  String get company_work_public_subtitle =>
+      'Explore recent company projects and installation highlights.';
 
   @override
-  String get company_work_public_empty => 'No work items have been published yet.';
+  String get company_work_public_empty =>
+      'No work items have been published yet.';
 
   @override
   String get company_work_public_showcase => 'Public showcase';
@@ -2135,7 +2219,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_work_images => 'Work Images';
 
   @override
-  String get company_work_images_empty => 'Add one or more images to present this project.';
+  String get company_work_images_empty =>
+      'Add one or more images to present this project.';
 
   @override
   String get company_work_existing_image => 'Existing';
@@ -2159,7 +2244,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_work_empty_title => 'No works yet';
 
   @override
-  String get company_work_empty_subtitle => 'Create your first work item to show completed projects to customers.';
+  String get company_work_empty_subtitle =>
+      'Create your first work item to show completed projects to customers.';
 
   @override
   String get company_work_no_description => 'No description added yet.';
@@ -2195,7 +2281,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_work_delete_title => 'Delete work';
 
   @override
-  String get company_work_delete_message => 'This work item will be removed permanently.';
+  String get company_work_delete_message =>
+      'This work item will be removed permanently.';
 
   @override
   String get company_work_deleted => 'Work deleted successfully.';
@@ -2242,7 +2329,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contacts => 'Contacts';
 
   @override
-  String get company_contacts_subtitle => 'Manage contact people for your company.';
+  String get company_contacts_subtitle =>
+      'Manage contact people for your company.';
 
   @override
   String get company_contacts_loading => 'Loading contacts...';
@@ -2251,7 +2339,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_contacts_empty_title => 'No contacts yet';
 
   @override
-  String get company_contacts_empty_subtitle => 'Create your first company contact.';
+  String get company_contacts_empty_subtitle =>
+      'Create your first company contact.';
 
   @override
   String get company_contacts_add => 'Add contact';
@@ -2295,13 +2384,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get company_contacts_no_company => 'A company account is required to manage contacts.';
+  String get company_contacts_no_company =>
+      'A company account is required to manage contacts.';
 
   @override
   String get company_public_services => 'Public Services';
 
   @override
-  String get company_public_services_subtitle => 'Show the services your company offers publicly.';
+  String get company_public_services_subtitle =>
+      'Show the services your company offers publicly.';
 
   @override
   String get company_public_services_loading => 'Loading public services...';
@@ -2310,7 +2401,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_public_services_empty_title => 'No public services yet';
 
   @override
-  String get company_public_services_empty_subtitle => 'Create the first public service for your company.';
+  String get company_public_services_empty_subtitle =>
+      'Create the first public service for your company.';
 
   @override
   String get company_public_services_add => 'Add service';
@@ -2325,7 +2417,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_public_services_title => 'Title';
 
   @override
-  String get company_public_services_title_required => 'Service title is required';
+  String get company_public_services_title_required =>
+      'Service title is required';
 
   @override
   String get company_public_services_price => 'Price';
@@ -2334,7 +2427,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_public_services_description => 'Description';
 
   @override
-  String get company_public_services_deleted => 'Public service deleted successfully.';
+  String get company_public_services_deleted =>
+      'Public service deleted successfully.';
 
   @override
   String get company_public_services_delete_title => 'Delete public service';
@@ -2345,10 +2439,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get company_public_services_no_company => 'A company account is required to manage public services.';
+  String get company_public_services_no_company =>
+      'A company account is required to manage public services.';
 
   @override
-  String get company_categories_subtitle => 'Organize your company with custom categories.';
+  String get company_categories_subtitle =>
+      'Organize your company with custom categories.';
 
   @override
   String get company_categories_loading => 'Loading categories...';
@@ -2357,7 +2453,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get company_categories_empty_title => 'No categories yet';
 
   @override
-  String get company_categories_empty_subtitle => 'Create the first category for your company.';
+  String get company_categories_empty_subtitle =>
+      'Create the first category for your company.';
 
   @override
   String get company_categories_add => 'Add category';
@@ -2383,7 +2480,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get company_categories_no_company => 'A company account is required to manage categories.';
+  String get company_categories_no_company =>
+      'A company account is required to manage categories.';
 
   @override
   String get status_active => 'Active';
@@ -2419,6 +2517,412 @@ class AppLocalizationsEn extends AppLocalizations {
   String get request_status_fulfilled => 'Fulfilled';
 
   @override
+  String get request_status_offered => 'Offered';
+
+  @override
+  String get request_status_accepted => 'Accepted';
+
+  @override
+  String get unknown_user => 'Unknown User';
+
+  @override
+  String get requester_info => 'Requester';
+
+  @override
+  String bids_count(Object count) {
+    return '$count Bids';
+  }
+
+  @override
+  String time_ago_days(Object count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String time_ago_hours(Object count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String time_ago_minutes(Object count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String get time_ago_just_now => 'Just now';
+
+  @override
+  String unit_watts(Object value) {
+    return '${value}W';
+  }
+
+  @override
+  String unit_kilowatts(Object value) {
+    return '${value}kW';
+  }
+
+  @override
+  String unit_watthours(Object value) {
+    return '${value}Wh';
+  }
+
+  @override
+  String unit_kilowatthours(Object value) {
+    return '${value}kWh';
+  }
+
+  @override
+  String get edit_offer => 'Edit offer';
+
+  @override
+  String get build_quotation => 'Build your quotation';
+
+  @override
+  String get build_quotation_subtitle =>
+      'Start from the customer request, adjust your technical offer, then add extra services if needed.';
+
+  @override
+  String get auto_totals_label => 'Auto totals from unit prices';
+
+  @override
+  String get editing_existing_offer => 'Editing existing offer';
+
+  @override
+  String get uses_request_defaults => 'Uses request defaults';
+
+  @override
+  String get panel_offer => 'Panel offer';
+
+  @override
+  String get panel_offer_subtitle =>
+      'These values start from the customer request and can be adjusted before sending your quote.';
+
+  @override
+  String get panel_power_watts => 'Panel power (W)';
+
+  @override
+  String get panel_unit_price => 'Panel unit price';
+
+  @override
+  String get total_panel_power_label => 'Total panel power';
+
+  @override
+  String get panels_total_price => 'Panels total price';
+
+  @override
+  String get panel_note_label => 'Panel note (optional)';
+
+  @override
+  String get panel_note_hint => 'Brand, mono, warranty, mounting notes...';
+
+  @override
+  String get battery_offer => 'Battery offer';
+
+  @override
+  String get battery_offer_subtitle =>
+      'Use battery type and size details to explain your backup recommendation clearly.';
+
+  @override
+  String get battery_size => 'Battery size';
+
+  @override
+  String get battery_unit_price => 'Battery unit price';
+
+  @override
+  String get batteries_total_price => 'Batteries total price';
+
+  @override
+  String get battery_note_label => 'Battery note (optional)';
+
+  @override
+  String get battery_note_hint =>
+      'Rack setup, backup hours, preferred brand...';
+
+  @override
+  String get battery_type => 'Battery Type';
+
+  @override
+  String get battery_count => 'Battery Count';
+
+  @override
+  String get inverter_offer => 'Inverter offer';
+
+  @override
+  String get inverter_offer_subtitle =>
+      'Keep inverter details aligned with the real installation setup and grid requirements.';
+
+  @override
+  String get inverter_unit_price => 'Inverter unit price';
+
+  @override
+  String get inverters_total_price => 'Inverters total price';
+
+  @override
+  String get inverter_note_label => 'Inverter note (optional)';
+
+  @override
+  String get inverter_note_hint =>
+      'Single phase, MPPT count, protection notes...';
+
+  @override
+  String get inverter_type => 'Inverter Type';
+
+  @override
+  String get inverter_count => 'Inverter Count';
+
+  @override
+  String get offer_note_title => 'Offer note';
+
+  @override
+  String get offer_note_description =>
+      'Use this area for delivery time, warranty, execution notes, or exclusions.';
+
+  @override
+  String get template_involves => 'Template involves';
+
+  @override
+  String get template_involves_subtitle =>
+      'Use this for installation fee, delivery, mounting, cables, or any extra service linked to this quotation.';
+
+  @override
+  String get no_extra_services => 'No extra services added yet.';
+
+  @override
+  String get estimated_extra_fees_label => 'Estimated extra fees';
+
+  @override
+  String get add_from_catalog => 'Add from catalog';
+
+  @override
+  String get create_new_item => 'Create new item';
+
+  @override
+  String get manage_catalog => 'Manage catalog';
+
+  @override
+  String get quotation_total => 'Quotation total';
+
+  @override
+  String get save_offer_changes => 'Save offer changes';
+
+  @override
+  String get no_more_catalog_items =>
+      'No more active catalog items are available. Create a new one first.';
+
+  @override
+  String get create_item_title => 'Create new catalog item';
+
+  @override
+  String get create_item_subtitle =>
+      'Add a custom service or material to use in this and future quotations.';
+
+  @override
+  String get name_label => 'Name';
+
+  @override
+  String get cost_label => 'Cost';
+
+  @override
+  String get create_item_button => 'Create item';
+
+  @override
+  String get extra_fees_missing_title => 'Extra fees missing';
+
+  @override
+  String get extra_fees_missing_msg =>
+      'Please select a catalog item for all extra fee rows or remove them.';
+
+  @override
+  String get invalid_panel_offer_title => 'Invalid panel offer';
+
+  @override
+  String get invalid_panel_offer_msg =>
+      'Please check panel power, count, and price.';
+
+  @override
+  String get invalid_battery_offer_title => 'Invalid battery offer';
+
+  @override
+  String get invalid_battery_offer_msg =>
+      'Please check battery size, count, and price.';
+
+  @override
+  String get invalid_inverter_offer_title => 'Invalid inverter offer';
+
+  @override
+  String get invalid_inverter_offer_msg =>
+      'Please check inverter size, count, and price.';
+
+  @override
+  String get invalid_pricing_title => 'Invalid pricing';
+
+  @override
+  String get invalid_pricing_msg =>
+      'Total quotation price must be greater than zero.';
+
+  @override
+  String get form_required => 'Required';
+
+  @override
+  String get edit_button => 'Edit';
+
+  @override
+  String get finish_offer => 'Finish offer';
+
+  @override
+  String get delete_offer_title => 'Delete offer';
+
+  @override
+  String get delete_offer_msg =>
+      'Are you sure you want to delete this offer? This action cannot be undone.';
+
+  @override
+  String get cancel_button => 'Cancel';
+
+  @override
+  String get delete_button => 'Delete';
+
+  @override
+  String get contact_unavailable_title => 'Contact unavailable';
+
+  @override
+  String get contact_unavailable_msg =>
+      'No phone or email available for this requester.';
+
+  @override
+  String get panel_label => 'Panel';
+
+  @override
+  String get battery_label => 'Battery';
+
+  @override
+  String get inverter_label => 'Inverter';
+
+  @override
+  String get location_reach_title => 'Location & reach';
+
+  @override
+  String get request_city_label => 'Request city';
+
+  @override
+  String get send_to_all_cities => 'Send to all cities';
+
+  @override
+  String get general_note_title => 'General note';
+
+  @override
+  String get no_city_selected => 'No city selected';
+
+  @override
+  String get panels_power_recommendation =>
+      'We recommend choosing a panel power between 400W and 600W for modern systems.';
+
+  @override
+  String get battery_power_recommendation =>
+      'Lithium batteries are recommended for longer life and better performance.';
+
+  @override
+  String get inverter_power_recommendation =>
+      'Hybrid inverters are best for systems with solar and batteries.';
+
+  @override
+  String get send_to_all_cities_msg =>
+      'Your request will be visible to companies in all cities.';
+
+  @override
+  String get general_note_hint =>
+      'Any other details or requirements for your solar system...';
+
+  @override
+  String get panel_recommendation_msg =>
+      'Recommended: keep the same wattage for all panels for better matching and easier offers.';
+
+  @override
+  String get panel_count_label => 'Panel count';
+
+  @override
+  String get panel_note_hint_request => 'Brand, half-cut, mono, roof limits...';
+
+  @override
+  String get battery_recommendation_msg =>
+      'Best performance: lithium is the default for longer cycle life and faster charging.';
+
+  @override
+  String get battery_type_label => 'Battery Type';
+
+  @override
+  String get battery_count_label => 'Battery Count';
+
+  @override
+  String get battery_note_hint_request =>
+      'Rack style, backup hours, preferred brand...';
+
+  @override
+  String get total_battery_power_label => 'Total battery power';
+
+  @override
+  String get inverter_recommendation_msg =>
+      'Best performance: hybrid works well when you want grid support and future battery expansion.';
+
+  @override
+  String get inverter_type_label => 'Inverter Type';
+
+  @override
+  String get inverter_count_label => 'Inverter count';
+
+  @override
+  String get inverter_note_hint_request => 'Single phase, MPPT count, brand...';
+
+  @override
+  String get total_inverters_power_label => 'Total inverters power';
+
+  @override
+  String get city_required_error =>
+      'Your profile must have a city before creating a request.';
+
+  @override
+  String get request_submitted_success =>
+      'Service request submitted successfully!';
+
+  @override
+  String get request_submit_error =>
+      'Could not submit the request. Please try again.';
+
+  @override
+  String get hero_request_subtitle =>
+      'Share clear sizes and notes so companies can send more accurate offers.';
+
+  @override
+  String get hero_request_info => 'Defaults tuned for fast entry';
+
+  @override
+  String get send_to_all_cities_subtitle =>
+      'Turn on to let companies outside your city respond as well.';
+
+  @override
+  String get general_note_subtitle =>
+      'Add any site details, installation limits, or preferred brands.';
+
+  @override
+  String get note_optional_label => 'Note (optional)';
+
+  @override
+  String get note_optional => 'Note (optional)';
+
+  @override
+  String get note_hint => 'Add any additional details or requirements...';
+
+  @override
+  String get note_hint_request => 'Roof type, backup target, timeline...';
+
+  @override
+  String get delete_offer_subtitle => 'This will remove the offer permanently.';
+
+  @override
+  String get phone_unavailable_msg =>
+      'No phone number is available for this action.';
+
+  @override
   String get battery_type_gel => 'Gel';
 
   @override
@@ -2443,13 +2947,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manage_extra_fees => 'Manage Extra Fees';
 
   @override
-  String get manage_extra_fees_desc => 'Use this list for installation fees, delivery, mounting, wiring, or other extra services you add to offers.';
+  String get manage_extra_fees_desc =>
+      'Use this list for installation fees, delivery, mounting, wiring, or other extra services you add to offers.';
 
   @override
   String get no_involves_yet => 'No involves yet';
 
   @override
-  String get no_involves_yet_desc => 'Create your first extra cost item to reuse it in offer replies.';
+  String get no_involves_yet_desc =>
+      'Create your first extra cost item to reuse it in offer replies.';
 
   @override
   String get create_item => 'Create item';
@@ -2467,13 +2973,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit_involve => 'Edit involve';
 
   @override
-  String get involve_examples => 'Examples: installation fee, delivery, mounting structure.';
+  String get involve_examples =>
+      'Examples: installation fee, delivery, mounting structure.';
 
   @override
   String get delete_item => 'Delete item?';
 
   @override
-  String get delete_item_desc => 'This item will be removed from your involves catalog.';
+  String get delete_item_desc =>
+      'This item will be removed from your involves catalog.';
 
   @override
   String get offers_marketplace => 'Solar Marketplace';
@@ -2491,10 +2999,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_offers_found => 'No offers found';
 
   @override
-  String get new_projects_will_appear_here => 'New solar projects in your area will appear here.';
+  String get new_projects_will_appear_here =>
+      'New solar projects in your area will appear here.';
 
   @override
-  String get browse_requests_to_start_bidding => 'Browse the requests tab to start bidding on projects.';
+  String get browse_requests_to_start_bidding =>
+      'Browse the requests tab to start bidding on projects.';
 
   @override
   String get admin_marketplace_oversight => 'Admin: Marketplace Oversight';
@@ -2523,7 +3033,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_requests_posted => 'No requests posted';
 
   @override
-  String get post_first_solar_request => 'Ready to save on energy? Post your first solar request and get bids from solar companies.';
+  String get post_first_solar_request =>
+      'Ready to save on energy? Post your first solar request and get bids from solar companies.';
 
   @override
   String get create_solar_request => 'Create Solar Request';
@@ -2535,7 +3046,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get broadcast_to_all_cities => 'Broadcast to All Cities';
 
   @override
-  String get broadcast_to_all_cities_desc => 'Enable to reach companies nationwide';
+  String get broadcast_to_all_cities_desc =>
+      'Enable to reach companies nationwide';
 
   @override
   String get solar_panel_needs => 'Solar Panel Needs';
@@ -2596,12 +3108,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get total_energy_capacity => 'Total Energy Capacity';
-
-  @override
-  String get battery_type_label => 'Battery Type';
-
-  @override
-  String get inverter_type_label => 'Inverter Type';
 
   @override
   String get storage_batteries => 'Storage (Batteries)';
@@ -2695,7 +3201,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get company_dashboard_subtitle => 'Manage your solar operations efficiently';
+  String get company_dashboard_subtitle =>
+      'Manage your solar operations efficiently';
 
   @override
   String get error_loading_data => 'Error loading data';
@@ -2712,7 +3219,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ready_to_scale_business => 'Ready to scale your business?';
 
   @override
-  String get monitor_growth_subscriptions => 'Monitor your growth and subscriptions here.';
+  String get monitor_growth_subscriptions =>
+      'Monitor your growth and subscriptions here.';
 
   @override
   String get solar_solutions_provider => 'Solar Solutions Provider';
@@ -2738,7 +3246,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get service_unlock_description => 'Unlock this service to enhance your solar business and automate your workflow.';
+  String get service_unlock_description =>
+      'Unlock this service to enhance your solar business and automate your workflow.';
 
   @override
   String get access_requested_successfully => 'Access requested successfully!';
@@ -2755,7 +3264,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get service_pending_help => 'Our team usually takes 24-48 hours to approve new services. Please wait or contact support for help.';
+  String get service_pending_help =>
+      'Our team usually takes 24-48 hours to approve new services. Please wait or contact support for help.';
 
   @override
   String get contact_support => 'Contact Support';
@@ -2769,7 +3279,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get service_rejected_help => 'This might be due to missing information or eligibility. Please reach out to our team to appeal.';
+  String get service_rejected_help =>
+      'This might be due to missing information or eligibility. Please reach out to our team to appeal.';
 
   @override
   String get appeal_decision => 'Appeal Decision';
@@ -2783,7 +3294,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get service_accounts_help => 'Please check your subscription status or contact our customer team to resolve this issue.';
+  String get service_accounts_help =>
+      'Please check your subscription status or contact our customer team to resolve this issue.';
 
   @override
   String get contact_accounts => 'Contact Accounts';
@@ -2797,7 +3309,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get service_maintenance_help => 'We are adding new features to improve your experience. Check back shortly!';
+  String get service_maintenance_help =>
+      'We are adding new features to improve your experience. Check back shortly!';
 
   @override
   String get back_to_dashboard => 'Back to Dashboard';
@@ -2896,7 +3409,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startup_roles => 'Startup & Roles';
 
   @override
-  String get startup_role_subtitle => 'Automatically open your preferred dashboard when the app starts';
+  String get startup_role_subtitle =>
+      'Automatically open your preferred dashboard when the app starts';
 
   @override
   String get profile_updated_success => 'Profile updated successfully!';
@@ -2905,7 +3419,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription_required => 'Subscription Required';
 
   @override
-  String get subscription_required_msg => 'You need an active subscription to access this feature.';
+  String get subscription_required_msg =>
+      'You need an active subscription to access this feature.';
 
   @override
   String get view_plans => 'View Plans';
@@ -2945,7 +3460,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autonomy => 'Autonomy';
 
   @override
-  String get request_notes_hint => 'Explain why you need this service (optional)';
+  String get request_notes_hint =>
+      'Explain why you need this service (optional)';
 
   @override
   String get new_system => 'New System';
@@ -2954,7 +3470,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_system => 'Select System';
 
   @override
-  String get add_calculation_to_existing_system => 'Add calculation to existing system:';
+  String get add_calculation_to_existing_system =>
+      'Add calculation to existing system:';
 
   @override
   String get no_saved_systems_found => 'No saved systems found.';
@@ -2975,7 +3492,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_request_details => 'Confirm request details';
 
   @override
-  String get add_notes_constraints => 'Add any notes or specific constraints...';
+  String get add_notes_constraints =>
+      'Add any notes or specific constraints...';
 
   @override
   String get low_voltage => 'Low Voltage';
@@ -3002,7 +3520,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gel_lead_acid_tubular => 'Gel / Lead-Acid / Tubular';
 
   @override
-  String get panel_calc_intro => 'Calculate the number of solar panels required based on your daily energy usage.';
+  String get panel_calc_intro =>
+      'Calculate the number of solar panels required based on your daily energy usage.';
 
   @override
   String get total_daily_usage => 'Total Daily Usage';
@@ -3022,10 +3541,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get did_you_know => 'Did you know?';
 
   @override
-  String get panel_calc_tip_text => '• Ah (amp-hours) = watts ÷ voltage.\n• Example: a 1000 Wh daily load on a 12 V system equals about 83.3 Ah.\n• We include efficiency losses so the system still performs well in real conditions.';
+  String get panel_calc_tip_text =>
+      '• Ah (amp-hours) = watts ÷ voltage.\n• Example: a 1000 Wh daily load on a 12 V system equals about 83.3 Ah.\n• We include efficiency losses so the system still performs well in real conditions.';
 
   @override
-  String get inverter_calc_intro => 'Size your inverter to handle peak loads safely.';
+  String get inverter_calc_intro =>
+      'Size your inverter to handle peak loads safely.';
 
   @override
   String get total_load_amps => 'Total Load Amps';
@@ -3048,10 +3569,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get inverter_calc_tip_text => '• Inverters are usually sized 20% to 30% above the continuous load.\n• The safety factor helps cover startup surges from motors such as refrigerators or pumps.';
+  String get inverter_calc_tip_text =>
+      '• Inverters are usually sized 20% to 30% above the continuous load.\n• The safety factor helps cover startup surges from motors such as refrigerators or pumps.';
 
   @override
-  String get wires_calc_intro => 'Select the application type to get a recommended wire size.';
+  String get wires_calc_intro =>
+      'Select the application type to get a recommended wire size.';
 
   @override
   String get application_type => 'Application Type';
@@ -3087,10 +3610,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recommended_wire_size => 'Recommended Wire Size';
 
   @override
-  String get wires_calc_tip_text => '• Keeping voltage drop low is critical for system efficiency.\n• For battery cables, aim for less than 1% drop to avoid inverter cut-offs.\n• For solar PV runs, 3% is generally acceptable.';
+  String get wires_calc_tip_text =>
+      '• Keeping voltage drop low is critical for system efficiency.\n• For battery cables, aim for less than 1% drop to avoid inverter cut-offs.\n• For solar PV runs, 3% is generally acceptable.';
 
   @override
-  String get pump_calc_intro => 'Calculate the solar power needed for your water pump system.';
+  String get pump_calc_intro =>
+      'Calculate the solar power needed for your water pump system.';
 
   @override
   String get daily_water_volume => 'Daily Water Volume';
@@ -3131,16 +3656,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hydraulic_power => 'Hydraulic Power';
 
   @override
-  String get definition_tdh => 'Vertical lift + friction losses + required pressure.';
+  String get definition_tdh =>
+      'Vertical lift + friction losses + required pressure.';
 
   @override
-  String get definition_flow_rate => 'The amount of water needed each day, for example in cubic meters.';
+  String get definition_flow_rate =>
+      'The amount of water needed each day, for example in cubic meters.';
 
   @override
-  String get definition_psh => 'Equivalent hours of full solar intensity at your location, usually around 4 to 6 hours.';
+  String get definition_psh =>
+      'Equivalent hours of full solar intensity at your location, usually around 4 to 6 hours.';
 
   @override
-  String get definition_hydraulic_power => 'The power required to lift the water before motor efficiency losses are applied.';
+  String get definition_hydraulic_power =>
+      'The power required to lift the water before motor efficiency losses are applied.';
 
   @override
   String get find_battery_count => 'Find Battery Count';
@@ -3191,13 +3720,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get depth_of_discharge_dod => 'Depth of Discharge (DoD)';
 
   @override
-  String get typical_dod_hint => 'Typical: 50% for Gel/AGM, 80% for Lithium, 20-30% for Lead-Acid';
+  String get typical_dod_hint =>
+      'Typical: 50% for Gel/AGM, 80% for Lithium, 20-30% for Lead-Acid';
 
   @override
-  String get battery_count_formula_hint => 'Formula: (Load × Time) ÷ (Battery Voltage × Capacity × DoD)';
+  String get battery_count_formula_hint =>
+      'Formula: (Load × Time) ÷ (Battery Voltage × Capacity × DoD)';
 
   @override
-  String get battery_runtime_formula_hint => 'Calculates how long the battery bank can sustain the load before reaching the selected depth of discharge.';
+  String get battery_runtime_formula_hint =>
+      'Calculates how long the battery bank can sustain the load before reaching the selected depth of discharge.';
 
   @override
   String get battery_calculator_title => 'Battery Calculator';
@@ -3218,7 +3750,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numbers_only => 'Numbers only';
 
   @override
-  String get load_ampere_helper => 'Enter the load in amperes and select the AC system voltage. Load is usually calculated as voltage × current. Example: 10 A × 230 V = 2300 W.';
+  String get load_ampere_helper =>
+      'Enter the load in amperes and select the AC system voltage. Load is usually calculated as voltage × current. Example: 10 A × 230 V = 2300 W.';
 
   @override
   String get battery_amperes => 'Battery Capacity';
@@ -3227,13 +3760,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get battery_voltage_label => 'Battery Voltage';
 
   @override
-  String get battery_count_label => 'Battery Count';
-
-  @override
   String get battery_count_hint => 'One or more';
 
   @override
-  String get runtime_question => 'How many hours do you need the system to run on batteries?';
+  String get runtime_question =>
+      'How many hours do you need the system to run on batteries?';
 
   @override
   String get required_runtime_hours => 'Required Runtime (hours)';
@@ -3254,7 +3785,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get example_15 => 'e.g., 15';
 
   @override
-  String get battery_count_explanation => 'The number of batteries needed is calculated as:\n\n(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\nExample: (2300 W × 5 h) ÷ (12 V × 100 Ah × 0.2) = about 8 batteries.\n\nThis helps estimate how many batteries are needed for a specific load and runtime.';
+  String get battery_count_explanation =>
+      'The number of batteries needed is calculated as:\n\n(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\nExample: (2300 W × 5 h) ÷ (12 V × 100 Ah × 0.2) = about 8 batteries.\n\nThis helps estimate how many batteries are needed for a specific load and runtime.';
 
   @override
   String depth_of_discharge_with_value(Object value) {
@@ -3262,13 +3794,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get dod_guidance => 'Set the depth of discharge (DoD).\n\nTypical values range from 20% to 80% depending on battery type.\n\n• 20% for Lithium or Tubular\n• 50% for AGM or Gel\nCheck the battery datasheet for the best accuracy.';
+  String get dod_guidance =>
+      'Set the depth of discharge (DoD).\n\nTypical values range from 20% to 80% depending on battery type.\n\n• 20% for Lithium or Tubular\n• 50% for AGM or Gel\nCheck the battery datasheet for the best accuracy.';
 
   @override
-  String get battery_runtime_explanation => 'Enter the battery capacity (Ah), voltage (V), and number of batteries.\nThe total stored energy is calculated as:\nVoltage × Capacity × Number of Batteries × Depth of Discharge.\n\n• Example: 4 batteries × 12 V × 100 Ah × 0.2 = 960 Wh\nThis helps estimate how long the battery system can power your load.';
+  String get battery_runtime_explanation =>
+      'Enter the battery capacity (Ah), voltage (V), and number of batteries.\nThe total stored energy is calculated as:\nVoltage × Capacity × Number of Batteries × Depth of Discharge.\n\n• Example: 4 batteries × 12 V × 100 Ah × 0.2 = 960 Wh\nThis helps estimate how long the battery system can power your load.';
 
   @override
-  String get dod_guidance_runtime => 'Set the battery depth of discharge (DoD).\n\nTypical values usually range between 50% and 80% depending on battery type, temperature, and manufacturer guidance.\n\n• Use 20% for Lithium or Tubular batteries.\n• Use 50% for AGM or Gel batteries.\nRefer to the datasheet if you are unsure.';
+  String get dod_guidance_runtime =>
+      'Set the battery depth of discharge (DoD).\n\nTypical values usually range between 50% and 80% depending on battery type, temperature, and manufacturer guidance.\n\n• Use 20% for Lithium or Tubular batteries.\n• Use 50% for AGM or Gel batteries.\nRefer to the datasheet if you are unsure.';
 
   @override
   String runtime_hours_precise(Object value) {
@@ -3300,7 +3835,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get active => 'Active';
 
   @override
-  String get confirmDeleteProduct => 'Are you sure you want to delete this product?';
+  String get confirmDeleteProduct =>
+      'Are you sure you want to delete this product?';
 
   @override
   String get productDeleted => 'Product deleted successfully';
@@ -3383,7 +3919,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get request_notes => 'Notes';
 
   @override
-  String get request_notes_hint_text => 'Provide details about your requirements...';
+  String get request_notes_hint_text =>
+      'Provide details about your requirements...';
 
   @override
   String get request_image => 'Screenshot/Image';
@@ -3398,9 +3935,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submitting_request => 'Submitting...';
 
   @override
-  String get request_submitted_success => 'Service request submitted successfully!';
-
-  @override
   String get request_failed => 'Failed to submit request';
 
   @override
@@ -3410,7 +3944,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get service_not_active => 'Service Not Active';
 
   @override
-  String get service_not_active_desc => 'This service is not currently available for your company.';
+  String get service_not_active_desc =>
+      'This service is not currently available for your company.';
 
   @override
   String get request_access => 'Request Access';
@@ -3453,4 +3988,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reset => 'Reset';
+
+  @override
+  String get load_more_offers => 'Load More Offers';
+
+  @override
+  String get catalog_tooltip => 'Catalog';
 }

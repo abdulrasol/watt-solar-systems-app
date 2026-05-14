@@ -5,6 +5,7 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/offers/domain/entities/solar_request.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/utils/date_utils.dart';
 
 class RequestCard extends StatelessWidget {
   final SolarRequest request;
@@ -31,19 +32,59 @@ class RequestCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              children: [
+                CircleAvatar(
+                  radius: 18.r,
+                  backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
+                  backgroundImage: request.user?.image != null ? NetworkImage(request.user!.image!) : null,
+                  child: request.user?.image == null ? Icon(Iconsax.user_bold, size: 18.sp, color: AppTheme.primaryColor) : null,
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        request.user?.name ?? l10n.unknown_user,
+                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        request.createdAt != null ? AppDateUtils.timeAgo(request.createdAt!, l10n) : '',
+                        style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                  decoration: BoxDecoration(color: request.status.color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20.r)),
+                  child: Text(
+                    request.status.localizedLabel(l10n),
+                    style: TextStyle(fontSize: 10.sp, color: request.status.color, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.h),
+              child: const Divider(height: 1),
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSpecItem(icon: Iconsax.sun_1_bold, label: l10n.pv_power, value: '${request.totalPanelPower}W', color: Colors.orange),
+                _buildSpecItem(icon: Iconsax.sun_1_bold, label: l10n.pv_power, value: l10n.unit_watts(request.totalPanelPower), color: Colors.orange),
                 _buildSpecItem(
                   icon: Iconsax.battery_charging_bold,
                   label: l10n.battery,
-                  value: '${_formatNumber(request.totalBatteryPower)}KWh',
+                  value: l10n.unit_kilowatthours(_formatNumber(request.totalBatteryPower)),
                   color: Colors.green,
                 ),
                 _buildSpecItem(
                   icon: Iconsax.flash_1_bold,
                   label: l10n.inverter_calc,
-                  value: '${_formatNumber(request.totalInvertersPower)}KW',
+                  value: l10n.unit_kilowatts(_formatNumber(request.totalInvertersPower)),
                   color: Colors.blue,
                 ),
               ],
@@ -58,14 +99,21 @@ class RequestCard extends StatelessWidget {
                   style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                  decoration: BoxDecoration(color: request.status.color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20.r)),
-                  child: Text(
-                    request.status.localizedLabel(l10n),
-                    style: TextStyle(fontSize: 10.sp, color: request.status.color, fontWeight: FontWeight.bold),
+                if (request.offersCount != null && request.offersCount! > 0)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                    decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8.r)),
+                    child: Row(
+                      children: [
+                        Icon(Iconsax.document_text_bold, size: 12.sp, color: Colors.blue),
+                        SizedBox(width: 4.w),
+                        Text(
+                          l10n.bids_count(request.offersCount!),
+                          style: TextStyle(fontSize: 10.sp, color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ],

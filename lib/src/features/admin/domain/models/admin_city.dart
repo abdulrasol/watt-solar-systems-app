@@ -15,7 +15,7 @@ class AdminCity {
 
   factory AdminCity.fromJson(Map<String, dynamic> json) {
     return AdminCity(
-      id: json['id'] as int? ?? 0,
+      id: int.tryParse(json['id'].toString()) ?? 0,
       name: json['name']?.toString() ?? '',
       code: json['code']?.toString() ?? '',
       country: AdminCountry.fromJson(

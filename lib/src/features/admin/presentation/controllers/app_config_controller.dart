@@ -9,9 +9,19 @@ class AppConfigState {
   final List<AppConfig> configs;
   final bool isSubmitting;
 
-  const AppConfigState({this.isLoading = false, this.error, this.configs = const [], this.isSubmitting = false});
+  const AppConfigState({
+    this.isLoading = false,
+    this.error,
+    this.configs = const [],
+    this.isSubmitting = false,
+  });
 
-  AppConfigState copyWith({bool? isLoading, String? error, List<AppConfig>? configs, bool? isSubmitting}) {
+  AppConfigState copyWith({
+    bool? isLoading,
+    String? error,
+    List<AppConfig>? configs,
+    bool? isSubmitting,
+  }) {
     return AppConfigState(
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
@@ -30,21 +40,34 @@ class AppConfigController extends Notifier<AppConfigState> {
     return const AppConfigState();
   }
 
-  Future<void> fetchConfigs() async {
-    state = state.copyWith(isLoading: true, error: null, configs: []);
+  Future<void> fetchConfigs({bool isRefresh = false}) async {
+    state = state.copyWith(
+      isLoading: true,
+      error: null,
+      configs: isRefresh ? [] : state.configs,
+    );
+
     final result = await _repository.getAllConfigs();
+
     result.fold(
-      (error) => state = state.copyWith(isLoading: false, error: error.toString()),
-      (configs) => state = state.copyWith(isLoading: false, configs: configs),
+      (error) => state = state.copyWith(
+        isLoading: false,
+        error: error.toString(),
+      ),
+      (configs) => state = state.copyWith(
+        isLoading: false,
+        configs: configs,
+      ),
     );
   }
+
 
   Future<void> createConfig({required String key, required bool value, String? description}) async {
     state = state.copyWith(isSubmitting: true, error: null);
     final config = AppConfig(key: key, value: value, description: description);
     final result = await _repository.createConfig(config);
     result.fold((error) => state = state.copyWith(isSubmitting: false, error: error.toString()), (newConfig) {
-      final updatedConfigs = [...state.configs, newConfig];
+      final updatedConfigs = [newConfig, ...state.configs];
       state = state.copyWith(isSubmitting: false, configs: updatedConfigs);
     });
   }
