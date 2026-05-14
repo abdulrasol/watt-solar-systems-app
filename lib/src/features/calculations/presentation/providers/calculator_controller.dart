@@ -170,6 +170,57 @@ class CalculatorNotifier extends ChangeNotifier {
   double optimalTilt = 0.0;
   String optimalDirection = "South";
   String pumpResultWait = '';
+  bool isSubmitting = false;
+
+  Map<String, dynamic> toRequestMap({
+    int? cityId,
+    bool allCities = false,
+  }) {
+    return {
+      'city_id': cityId,
+      'all_cities': allCities,
+      'total_panel_power': (panelCount * selectedPanelWattage).toInt(),
+      'panel_power': selectedPanelWattage,
+      'panel_count': panelCount,
+      'panel_note': panelNote,
+      'total_battery_power': (batteryCount * selectedBatteryAmp).toDouble(),
+      'battery_size': selectedBatteryAmp.toDouble(),
+      'battery_count': batteryCount,
+      'battery_note': batteryNote,
+      'battery_type': _mapBatteryType(selectedBatteryType).name,
+      'total_inverters_power':
+          (inverterCount * selectedInverterKva).toDouble(),
+      'inverter_size': selectedInverterKva.toDouble(),
+      'inverter_count': inverterCount,
+      'inverter_note': inverterNote,
+      'inverter_type': _mapInverterType(selectedInverterType).name,
+      'note': requestNotes,
+    };
+  }
+
+  BatteryType _mapBatteryType(String value) {
+    switch (value) {
+      case 'Tubular':
+        return BatteryType.tubular;
+      case 'Gel':
+        return BatteryType.gel;
+      case 'Lithium':
+      default:
+        return BatteryType.lithium;
+    }
+  }
+
+  InverterType _mapInverterType(String value) {
+    switch (value) {
+      case 'Off-Grid':
+        return InverterType.offGrid;
+      case 'On-Grid':
+        return InverterType.onGrid;
+      case 'Hybrid':
+      default:
+        return InverterType.hybrid;
+    }
+  }
 
   Future<void> fetchLocation() async {
     locationLoading = true;

@@ -4,9 +4,9 @@ This file tracks suggested edits, new features, and technical debt. Mark items a
 
 ## 🚀 High Priority
 - [x] Standardize API Data Fetching: Remove pagination from Countries and Cities endpoints (Backend & Frontend).
-- [ ] UI Localization: Translate hardcoded strings in `direction_calculator.dart`.
+- [x] UI Localization: Translate hardcoded strings in `direction_calculator.dart`.
 - [ ] Admin CRUD: Implement Create, Update, Delete operations for App Configurations in the Admin Dashboard.
-- [ ] System Requests: Implement "Submit Request" logic in `system_request_confirmation_sheet.dart`.
+- [x] System Requests: Implement "Submit Request" logic in `system_request_confirmation_sheet.dart`.
 
 ## ✨ New Features
 - [ ] Enable Store: Finalize and enable the store module in `user_dashboard.dart`.
