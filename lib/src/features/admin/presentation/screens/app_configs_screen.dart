@@ -116,10 +116,16 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
-                controller: keyController,
-                enabled: config == null,
-                decoration: const InputDecoration(labelText: 'Key'),
+              StatefulBuilder(
+                builder: (context, setInternalState) => TextField(
+                  controller: keyController,
+                  enabled: config == null,
+                  decoration: InputDecoration(
+                    labelText: 'Key',
+                    errorText: keyController.text.trim().isEmpty ? 'Key cannot be empty' : null,
+                  ),
+                  onChanged: (_) => setInternalState(() {}),
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -140,12 +146,22 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
             TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
             FilledButton(
               onPressed: () {
+                final key = keyController.text.trim();
+                if (key.isEmpty) return;
+
                 if (config == null) {
-                  ref.read(appConfigProvider.notifier).createConfig(key: keyController.text, value: value, description: descriptionController.text);
+                  ref.read(appConfigProvider.notifier).createConfig(
+                        key: key,
+                        value: value,
+                        description: descriptionController.text.trim(),
+                      );
                 } else {
-                  ref
-                      .read(appConfigProvider.notifier)
-                      .updateConfig(oldKey: config.key, newKey: keyController.text, value: value, description: descriptionController.text);
+                  ref.read(appConfigProvider.notifier).updateConfig(
+                        oldKey: config.key,
+                        newKey: key,
+                        value: value,
+                        description: descriptionController.text.trim(),
+                      );
                 }
                 Navigator.pop(context);
               },

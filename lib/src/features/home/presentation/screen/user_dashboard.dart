@@ -294,8 +294,13 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
                   l10n.dashboard_chip_offers,
                   route: '/calculator/request-offer-wizard',
                 ),
-              // TODO(rasol): enable store
-              // if (ref.watch(isStoreEnabled)) _buildHeroChip(context, Iconsax.shop_bold, l10n.dashboard_chip_store),
+              if (ref.watch(isStoreEnabled))
+                _buildHeroChip(
+                  context,
+                  Iconsax.shop_bold,
+                  l10n.dashboard_chip_store,
+                  onTap: () => selectHomeTab(ref, HomeTab.store),
+                ),
             ],
           ),
           if (!authController.isSigned && ref.watch(isAuthEnabled)) ...[
@@ -325,11 +330,13 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
     IconData icon,
     String label, {
     String? route,
+    VoidCallback? onTap,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         if (route != null) context.push(route);
+        if (onTap != null) onTap();
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),

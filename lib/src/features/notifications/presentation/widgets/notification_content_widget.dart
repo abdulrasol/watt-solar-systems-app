@@ -35,14 +35,10 @@ class NotificationContentWidget extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     switch (type) {
-      case NotificationType.serviceRequest:
-        return _ServiceRequestContent(content: content, isDark: isDark);
       case NotificationType.subscriptionRequest:
         return _SubscriptionRequestContent(content: content, isDark: isDark);
       case NotificationType.companyActivationReminder:
         return _CompanyActivationContent(content: content, isDark: isDark);
-      case NotificationType.service:
-        return _ServiceContent(content: content, isDark: isDark);
       case NotificationType.offerRequest:
         return _OfferRequestContent(content: content, isDark: isDark);
       case NotificationType.offer:
@@ -113,31 +109,6 @@ Widget _sectionTitle(String text, Color color) {
 
 // ─── Per-type content widgets ─────────────────────────────────────────────────
 
-/// service_request — contains company info about who sent/received the request
-class _ServiceRequestContent extends StatelessWidget {
-  final Map<String, dynamic> content;
-  final bool isDark;
-  const _ServiceRequestContent({required this.content, required this.isDark});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = NotificationType.serviceRequest.color;
-    final companyName = content['company_name']?.toString() ?? '-';
-    final serviceCode = content['service_code']?.toString();
-    final serviceName = content['service_name']?.toString();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _sectionTitle('SERVICE REQUEST', color),
-        _infoRow(icon: Iconsax.buildings_2_bold, label: 'Company', value: companyName, color: color, isDark: isDark),
-        if (serviceName != null)
-          _infoRow(icon: Iconsax.category_2_bold, label: 'Service', value: serviceName, color: color, isDark: isDark),
-        if (serviceCode != null)
-          _infoRow(icon: Iconsax.code_bold, label: 'Code', value: serviceCode, color: color, isDark: isDark),
-      ],
-    );
-  }
-}
 
 /// subscription_request — admin-facing
 class _SubscriptionRequestContent extends StatelessWidget {
@@ -188,31 +159,6 @@ class _CompanyActivationContent extends StatelessWidget {
   }
 }
 
-/// service — status update on a service the company applied for
-class _ServiceContent extends StatelessWidget {
-  final Map<String, dynamic> content;
-  final bool isDark;
-  const _ServiceContent({required this.content, required this.isDark});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = NotificationType.service.color;
-    final serviceName = content['service_name']?.toString() ?? '-';
-    final serviceCode = content['service_code']?.toString();
-    final status = content['status']?.toString();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _sectionTitle('SERVICE UPDATE', color),
-        _infoRow(icon: Iconsax.category_2_bold, label: 'Service', value: serviceName, color: color, isDark: isDark),
-        if (serviceCode != null)
-          _infoRow(icon: Iconsax.code_bold, label: 'Code', value: serviceCode, color: color, isDark: isDark),
-        if (status != null)
-          _infoRow(icon: Iconsax.tick_circle_bold, label: 'Status', value: status, color: color, isDark: isDark),
-      ],
-    );
-  }
-}
 
 /// offer_request — a new solar system offer request
 class _OfferRequestContent extends StatelessWidget {
