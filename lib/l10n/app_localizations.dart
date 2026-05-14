@@ -7446,6 +7446,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Catalog'**
   String get catalog_tooltip;
+
+  /// No description provided for @orientation_calc.
+  ///
+  /// In en, this message translates to:
+  /// **'Orientation Calculator'**
+  String get orientation_calc;
+
+  /// No description provided for @align_panels_efficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Align your solar panels for maximum efficiency.'**
+  String get align_panels_efficiency;
+
+  /// No description provided for @your_latitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Latitude'**
+  String get your_latitude;
+
+  /// No description provided for @auto_detect.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Detect'**
+  String get auto_detect;
+
+  /// No description provided for @latitude_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude (e.g. 33.3)'**
+  String get latitude_label;
+
+  /// No description provided for @latitude_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter manually if needed'**
+  String get latitude_hint;
+
+  /// No description provided for @hemisphere_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Positive (+) = North Hemisphere\nNegative (-) = South Hemisphere'**
+  String get hemisphere_hint;
+
+  /// No description provided for @perfect_alignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Alignment! ✅'**
+  String get perfect_alignment;
+
+  /// No description provided for @rotate_phone_align.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate phone to align Green Arrow'**
+  String get rotate_phone_align;
+
+  /// No description provided for @current_heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Heading: {heading}°'**
+  String current_heading(String heading);
+
+  /// No description provided for @optimal_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal Tilt'**
+  String get optimal_tilt;
+
+  /// No description provided for @face_direction.
+  ///
+  /// In en, this message translates to:
+  /// **'Face Direction'**
+  String get face_direction;
+
+  /// No description provided for @best_performance_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'For best year-round performance, tilt panels at {tilt}° facing {direction}.'**
+  String best_performance_desc(String tilt, String direction);
+
+  /// No description provided for @why_orientation_matters.
+  ///
+  /// In en, this message translates to:
+  /// **'Why Orientation Matters?'**
+  String get why_orientation_matters;
+
+  /// No description provided for @azimuth_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Azimuth (Direction)'**
+  String get azimuth_title;
+
+  /// No description provided for @azimuth_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels should face the equator (South in North Hemisphere) to catch sun all day.'**
+  String get azimuth_desc;
+
+  /// No description provided for @tilt_angle_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Tilt Angle'**
+  String get tilt_angle_title;
+
+  /// No description provided for @tilt_angle_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Angle from horizontal. Usually equals your Latitude for year-round average.'**
+  String get tilt_angle_desc;
+
+  /// No description provided for @close_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close_button;
 }
 
 class _AppLocalizationsDelegate

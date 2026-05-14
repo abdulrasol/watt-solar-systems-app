@@ -3994,4 +3994,69 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get catalog_tooltip => 'Catalog';
+
+  @override
+  String get orientation_calc => 'Orientation Calculator';
+
+  @override
+  String get align_panels_efficiency =>
+      'Align your solar panels for maximum efficiency.';
+
+  @override
+  String get your_latitude => 'Your Latitude';
+
+  @override
+  String get auto_detect => 'Auto Detect';
+
+  @override
+  String get latitude_label => 'Latitude (e.g. 33.3)';
+
+  @override
+  String get latitude_hint => 'Enter manually if needed';
+
+  @override
+  String get hemisphere_hint =>
+      'Positive (+) = North Hemisphere\nNegative (-) = South Hemisphere';
+
+  @override
+  String get perfect_alignment => 'Perfect Alignment! ✅';
+
+  @override
+  String get rotate_phone_align => 'Rotate phone to align Green Arrow';
+
+  @override
+  String current_heading(String heading) {
+    return 'Current Heading: $heading°';
+  }
+
+  @override
+  String get optimal_tilt => 'Optimal Tilt';
+
+  @override
+  String get face_direction => 'Face Direction';
+
+  @override
+  String best_performance_desc(String tilt, String direction) {
+    return 'For best year-round performance, tilt panels at $tilt° facing $direction.';
+  }
+
+  @override
+  String get why_orientation_matters => 'Why Orientation Matters?';
+
+  @override
+  String get azimuth_title => 'Azimuth (Direction)';
+
+  @override
+  String get azimuth_desc =>
+      'Panels should face the equator (South in North Hemisphere) to catch sun all day.';
+
+  @override
+  String get tilt_angle_title => 'Tilt Angle';
+
+  @override
+  String get tilt_angle_desc =>
+      'Angle from horizontal. Usually equals your Latitude for year-round average.';
+
+  @override
+  String get close_button => 'Close';
 }

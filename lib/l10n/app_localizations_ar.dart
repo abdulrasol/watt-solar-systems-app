@@ -3966,4 +3966,69 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get catalog_tooltip => 'الكتالوج';
+
+  @override
+  String get orientation_calc => 'حاسبة التوجيه';
+
+  @override
+  String get align_panels_efficiency =>
+      'قم بمحاذاة ألواحك الشمسية لتحقيق أقصى قدر من الكفاءة.';
+
+  @override
+  String get your_latitude => 'خط العرض الخاص بك';
+
+  @override
+  String get auto_detect => 'كشف تلقائي';
+
+  @override
+  String get latitude_label => 'خط العرض (مثال: 33.3)';
+
+  @override
+  String get latitude_hint => 'أدخل يدوياً إذا لزم الأمر';
+
+  @override
+  String get hemisphere_hint =>
+      'موجب (+) = نصف الكرة الشمالي\nسالب (-) = نصف الكرة الجنوبي';
+
+  @override
+  String get perfect_alignment => 'محاذاة مثالية! ✅';
+
+  @override
+  String get rotate_phone_align => 'قم بتدوير الهاتف لمحاذاة السهم الأخضر';
+
+  @override
+  String current_heading(String heading) {
+    return 'الاتجاه الحالي: $heading°';
+  }
+
+  @override
+  String get optimal_tilt => 'الميل الأمثل';
+
+  @override
+  String get face_direction => 'اتجاه الواجهة';
+
+  @override
+  String best_performance_desc(String tilt, String direction) {
+    return 'لأفضل أداء على مدار العام، قم بإمالة الألواح بزاوية $tilt° باتجاه $direction.';
+  }
+
+  @override
+  String get why_orientation_matters => 'لماذا يهم التوجيه؟';
+
+  @override
+  String get azimuth_title => 'السمت (الاتجاه)';
+
+  @override
+  String get azimuth_desc =>
+      'يجب أن تواجه الألواح خط الاستواء (الجنوب في نصف الكرة الشمالي) لالتقاط الشمس طوال اليوم.';
+
+  @override
+  String get tilt_angle_title => 'زاوية الميل';
+
+  @override
+  String get tilt_angle_desc =>
+      'الزاوية عن الأفق. عادة ما تساوي خط العرض الخاص بك للحصول على متوسط سنوي.';
+
+  @override
+  String get close_button => 'إغلاق';
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/appliance_entity.dart';
@@ -163,10 +164,69 @@ class CalculatorNotifier extends ChangeNotifier {
   int pumpRequiredPanelCount = 0;
 
   // Orientation
+  bool locationLoading = false;
+  double compassHeading = 0.0;
   double orientationLat = 0.0;
   double optimalTilt = 0.0;
   String optimalDirection = "South";
   String pumpResultWait = '';
+
+  Future<void> fetchLocation() async {
+    locationLoading = true;
+    notifyListeners();
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        // You might want to show a toast or dialog here, 
+        // but for now we'll just stop loading.
+        locationLoading = false;
+        notifyListeners();
+        return;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          locationLoading = false;
+          notifyListeners();
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        locationLoading = false;
+        notifyListeners();
+        return;
+      }
+
+      Position position = await Geolocator.getCurrentPosition();
+      orientationLat = position.latitude;
+      calculateOrientation();
+    } catch (e) {
+      debugPrint("Error fetching location: $e");
+    } finally {
+      locationLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void calculateOrientation() {
+    // Basic rule: Face the equator.
+    // North Hemisphere (Lat > 0) -> Face South
+    // South Hemisphere (Lat < 0) -> Face North
+    if (orientationLat > 0) {
+      optimalDirection = "South";
+      optimalTilt = orientationLat;
+    } else if (orientationLat < 0) {
+      optimalDirection = "North";
+      optimalTilt = orientationLat.abs();
+    } else {
+      optimalDirection = "Equator";
+      optimalTilt = 0;
+    }
+    notifyListeners();
+  }
 
   void updateField(void Function() update) {
     update();

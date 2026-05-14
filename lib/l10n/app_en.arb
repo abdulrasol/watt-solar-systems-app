@@ -1582,5 +1582,43 @@
   "date": "Date",
   "reset": "Reset",
   "load_more_offers": "Load More Offers",
-  "catalog_tooltip": "Catalog"
+  "catalog_tooltip": "Catalog",
+  "orientation_calc": "Orientation Calculator",
+  "align_panels_efficiency": "Align your solar panels for maximum efficiency.",
+  "your_latitude": "Your Latitude",
+  "auto_detect": "Auto Detect",
+  "latitude_label": "Latitude (e.g. 33.3)",
+  "latitude_hint": "Enter manually if needed",
+  "hemisphere_hint": "Positive (+) = North Hemisphere\nNegative (-) = South Hemisphere",
+  "perfect_alignment": "Perfect Alignment! ✅",
+  "rotate_phone_align": "Rotate phone to align Green Arrow",
+  "current_heading": "Current Heading: {heading}°",
+  "@current_heading": {
+    "placeholders": {
+      "heading": {
+        "type": "String"
+      }
+    }
+  },
+  "optimal_tilt": "Optimal Tilt",
+  "face_direction": "Face Direction",
+  "best_performance_desc": "For best year-round performance, tilt panels at {tilt}° facing {direction}.",
+  "@best_performance_desc": {
+    "placeholders": {
+      "tilt": {
+        "type": "String"
+      },
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "why_orientation_matters": "Why Orientation Matters?",
+  "azimuth_title": "Azimuth (Direction)",
+  "azimuth_desc": "Panels should face the equator (South in North Hemisphere) to catch sun all day.",
+  "tilt_angle_title": "Tilt Angle",
+  "tilt_angle_desc": "Angle from horizontal. Usually equals your Latitude for year-round average.",
+  "guide": "Guide",
+  "dont_show_again": "Don't show this again",
+  "close_button": "Close"
 }
