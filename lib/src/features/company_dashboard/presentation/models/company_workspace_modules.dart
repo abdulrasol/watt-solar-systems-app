@@ -1,6 +1,7 @@
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
+import 'package:solar_hub/src/utils/app_strings.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 
@@ -121,6 +122,10 @@ class CompanyWorkspaceModules {
 
     for (final service in servicesList) {
       if (!_isServiceActive(service.status)) continue;
+      if (service.serviceCode == 'company_work' &&
+          !state.hasReadPermission(AppStrings.projectsPermission)) {
+        continue;
+      }
       final item = fromService(l10n, service);
       if (item != null) items.add(item);
     }

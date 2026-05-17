@@ -8,6 +8,8 @@ import 'package:solar_hub/src/features/company_work/presentation/providers/compa
 import 'package:solar_hub/src/features/company_work/presentation/widgets/work_gallery_sheet.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:solar_hub/src/utils/app_strings.dart';
 
 class CompanyWorkDetailsPage extends ConsumerWidget {
   const CompanyWorkDetailsPage({
@@ -24,6 +26,8 @@ class CompanyWorkDetailsPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(companyWorkNotifierProvider);
     final work = initialWork ?? state.byId(workId);
+    final summaryState = ref.watch(companySummaryProvider);
+    final hasWritePermission = summaryState.hasWritePermission(AppStrings.projectsPermission);
 
     if (work == null) {
       return PreScaffold(
@@ -34,17 +38,19 @@ class CompanyWorkDetailsPage extends ConsumerWidget {
 
     return PreScaffold(
       title: work.title,
-      actions: [
-        IconButton(
-          onPressed: () =>
-              context.push('/company-work/edit/${work.id}', extra: work),
-          icon: const Icon(Icons.edit_outlined),
-        ),
-        IconButton(
-          onPressed: () => _delete(context, ref, work.id),
-          icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
-        ),
-      ],
+      actions: hasWritePermission
+          ? [
+              IconButton(
+                onPressed: () =>
+                    context.push('/company-work/edit/${work.id}', extra: work),
+                icon: const Icon(Icons.edit_outlined),
+              ),
+              IconButton(
+                onPressed: () => _delete(context, ref, work.id),
+                icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+              ),
+            ]
+          : null,
       child: WorkGallerySheet(work: work, embedded: true),
     );
   }

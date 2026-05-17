@@ -14,6 +14,7 @@ import 'package:solar_hub/src/features/storefront/domain/entities/storefront_mod
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 
+import 'package:solar_hub/src/utils/app_strings.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/providers/sidebar_controller.dart';
 
 class CompanyDashboard extends ConsumerStatefulWidget {
@@ -126,14 +127,16 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
               );
               break;
             case 'company_work':
-              item = NavItem(
-                id: 'company_work',
-                label: l10n.company_work_title,
-                icon: Iconsax.gallery_bold,
-                serviceCode: 'company_work',
-                iconUrl: service.icon,
-                route: '/company-work',
-              );
+              if (state.hasReadPermission(AppStrings.projectsPermission)) {
+                item = NavItem(
+                  id: 'company_work',
+                  label: l10n.company_work_title,
+                  icon: Iconsax.gallery_bold,
+                  serviceCode: 'company_work',
+                  iconUrl: service.icon,
+                  route: '/company-work',
+                );
+              }
               break;
             case 'multi_member':
               item = NavItem(

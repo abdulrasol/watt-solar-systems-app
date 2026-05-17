@@ -8,6 +8,7 @@ import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:solar_hub/src/utils/app_strings.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_header_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/service_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/stat_card.dart';
@@ -40,6 +41,12 @@ class OverviewContent extends ConsumerWidget {
     );
     final l10n = AppLocalizations.of(context)!;
     final services = [...rawServices];
+    final summaryState = ref.watch(companySummaryProvider);
+    final hasProjectsRead = summaryState.hasReadPermission(AppStrings.projectsPermission);
+    if (!hasProjectsRead) {
+      services.removeWhere((s) => s.serviceCode == 'company_work');
+    }
+
     final hasActiveOffers = services.any(
       (service) =>
           service.serviceCode == 'offers' &&

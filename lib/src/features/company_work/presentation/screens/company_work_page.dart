@@ -10,6 +10,8 @@ import 'package:solar_hub/src/features/company_work/presentation/providers/compa
 import 'package:solar_hub/src/features/company_work/presentation/widgets/company_work_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:solar_hub/src/utils/app_strings.dart';
 
 class CompanyWorkPage extends ConsumerStatefulWidget {
   final bool embedded;
@@ -48,6 +50,8 @@ class _CompanyWorkPageState extends ConsumerState<CompanyWorkPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(companyWorkNotifierProvider);
+    final summaryState = ref.watch(companySummaryProvider);
+    final hasWritePermission = summaryState.hasWritePermission(AppStrings.projectsPermission);
 
     final content = RefreshIndicator(
       onRefresh: () => ref
@@ -107,11 +111,15 @@ class _CompanyWorkPageState extends ConsumerState<CompanyWorkPage> {
                   work: work,
                   onTap: () =>
                       context.push('/company-work/${work.id}', extra: work),
-                  onEdit: () => context.push(
-                    '/company-work/edit/${work.id}',
-                    extra: work,
-                  ),
-                  onDelete: () => _deleteWork(context, work.id),
+                  onEdit: hasWritePermission
+                      ? () => context.push(
+                            '/company-work/edit/${work.id}',
+                            extra: work,
+                          )
+                      : null,
+                  onDelete: hasWritePermission
+                      ? () => _deleteWork(context, work.id)
+                      : null,
                 );
               },
             ),
@@ -123,13 +131,15 @@ class _CompanyWorkPageState extends ConsumerState<CompanyWorkPage> {
 
     return PreScaffold(
       title: l10n.company_work_title,
-      actions: [
-        IconButton(
-          onPressed: () => context.push('/company-work/add'),
-          icon: const Icon(Icons.add_circle_outline_rounded),
-          tooltip: l10n.company_work_add,
-        ),
-      ],
+      actions: hasWritePermission
+          ? [
+              IconButton(
+                onPressed: () => context.push('/company-work/add'),
+                icon: const Icon(Icons.add_circle_outline_rounded),
+                tooltip: l10n.company_work_add,
+              ),
+            ]
+          : null,
       child: content,
     );
   }

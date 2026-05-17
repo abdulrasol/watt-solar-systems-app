@@ -35,6 +35,15 @@ class CompanySummaryState {
   bool isPermission(String permission) {
     return summary?.permissionValue(permission) == 'write';
   }
+
+  bool hasReadPermission(String permission) {
+    final value = summary?.permissionValue(permission);
+    return value != null && value != 'none';
+  }
+
+  bool hasWritePermission(String permission) {
+    return summary?.permissionValue(permission) == 'write';
+  }
 }
 
 final companySummaryProvider =

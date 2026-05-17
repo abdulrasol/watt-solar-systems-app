@@ -525,6 +525,18 @@ String? appRedirectForRoute(String path, AuthState authState) {
     return authState.isSigned ? '/home' : '/auth?redirect_to=$path';
   }
 
+  if (path == '/company-work' || path.startsWith('/company-work/')) {
+    final projectsValue = authState.company?.permissions?.projects;
+    if (projectsValue == 'none' || projectsValue == null) {
+      return '/home';
+    }
+
+    if ((path == '/company-work/add' || path.startsWith('/company-work/edit/')) &&
+        projectsValue != 'write') {
+      return '/company-work';
+    }
+  }
+
   if (routeRequiresAuthenticatedUser(path) && !authState.isSigned) {
     return '/auth?redirect_to=$path';
   }
