@@ -2,6 +2,7 @@ import 'package:solar_hub/src/core/services/dio.dart';
 import 'package:solar_hub/src/features/notifications/domain/entities/app_notification.dart';
 import 'package:solar_hub/src/features/notifications/domain/repositories/notification_history_repository.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class NotificationHistoryRepositoryImpl
     implements NotificationHistoryRepository {
@@ -47,5 +48,23 @@ class NotificationHistoryRepositoryImpl
       totalCount:
           int.tryParse(body['count']?.toString() ?? '') ?? notifications.length,
     );
+  }
+
+  @override
+  Future<void> markAllAsRead() async {
+    try {
+      final response = await _dioService.post(
+        '${AppUrls.notificationHistory}/read',
+      );
+      if (response.status != 200 || response.error) {
+        throw Exception(
+          response.messageUser.isNotEmpty
+              ? response.messageUser
+              : response.message,
+        );
+      }
+    } catch (e) {
+      dPrint('Failed to mark notifications as read on server: $e', tag: 'NotificationRepository');
+    }
   }
 }

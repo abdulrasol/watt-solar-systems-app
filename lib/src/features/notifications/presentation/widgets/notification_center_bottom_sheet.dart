@@ -46,10 +46,10 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                     fontFamily: AppTheme.fontFamily,
                   ),
                 ),
-                if (state.items.isNotEmpty)
+                if (state.items.any((item) => item.status != 'read'))
                   TextButton(
                     onPressed: () {
-                      // Logic to mark all as read or clear
+                      ref.read(notificationHistoryProvider.notifier).markAllAsRead();
                     },
                     child: Text(
                       l10n.mark_all_read,
@@ -97,22 +97,45 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                     ),
                     itemBuilder: (context, index) {
                       final notification = state.items[index];
+                      final isUnread = notification.status != 'read';
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(10.r),
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor.withValues(
-                                alpha: 0.1,
+                          Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10.r),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.primaryColor.withValues(
+                                    alpha: 0.1,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Iconsax.notification_bold,
+                                  color: AppTheme.primaryColor,
+                                  size: 20.sp,
+                                ),
                               ),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Iconsax.notification_bold,
-                              color: AppTheme.primaryColor,
-                              size: 20.sp,
-                            ),
+                              if (isUnread)
+                                Positioned(
+                                  top: -2.r,
+                                  right: -2.r,
+                                  child: Container(
+                                    width: 10.r,
+                                    height: 10.r,
+                                    decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Theme.of(context).scaffoldBackgroundColor,
+                                        width: 1.5.r,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                           SizedBox(width: 16.w),
                           Expanded(

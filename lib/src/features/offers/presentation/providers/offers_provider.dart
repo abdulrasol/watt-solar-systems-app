@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import '../../domain/entities/solar_offer.dart';
@@ -6,6 +7,8 @@ import '../../domain/entities/offers_filter.dart';
 import '../../domain/repositories/offers_repository.dart';
 import 'package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart';
 import 'package:solar_hub/src/features/crm/domain/entities/crm_models.dart';
+import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class OffersState {
   final bool isLoading;
@@ -150,12 +153,13 @@ class OffersState {
 }
 
 final offersProvider = StateNotifierProvider<OffersNotifier, OffersState>(
-  (ref) => OffersNotifier(getIt<OffersRepository>()),
+  (ref) => OffersNotifier(getIt<OffersRepository>(), ref),
 );
 
 class OffersNotifier extends StateNotifier<OffersState> {
   final OffersRepository _repository;
-  OffersNotifier(this._repository)
+  final Ref ref;
+  OffersNotifier(this._repository, this.ref)
     : super(
         OffersState(
           isLoading: false,
@@ -393,15 +397,37 @@ class OffersNotifier extends StateNotifier<OffersState> {
     state = state.copyWith(isLoading: true, error: null);
     final result = await _repository.replyToRequest(requestId, data);
     return result.fold(
-      (failure) {
+      (failure) async {
         state = state.copyWith(isLoading: false, error: failure.toString());
         return false;
       },
-      (offer) {
+      (offer) async {
         state = state.copyWith(
           isLoading: false,
           myOffers: [offer, ...state.myOffers],
         );
+        try {
+          final companyId = ref.read(authProvider).user?.company?.id;
+          if (companyId != null) {
+            final requests = state.availableRequests.where((r) => r.id == requestId).toList();
+            if (requests.isNotEmpty) {
+              final request = requests.first;
+              final customerRequest = CustomerWriteRequest(
+                fullName: request.user?.name ?? 'Marketplace Lead',
+                phoneNumber: request.user?.phone,
+                email: request.user?.email,
+                address: request.city?.name,
+                customerType: 'lead',
+              );
+              await getIt<CrmRepository>().createLead(companyId, customerRequest);
+              dPrint('Successfully auto-created CRM lead for request #$requestId', tag: 'OffersNotifier');
+            } else {
+              dPrint('Request #$requestId not found in availableRequests for auto-lead conversion', tag: 'OffersNotifier');
+            }
+          }
+        } catch (e) {
+          dPrint('Failed to auto-create lead on bid: $e', tag: 'OffersNotifier');
+        }
         return true;
       },
     );

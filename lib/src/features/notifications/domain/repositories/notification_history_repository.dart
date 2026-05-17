@@ -15,4 +15,5 @@ abstract class NotificationHistoryRepository {
     int page = 1,
     int pageSize = 12,
   });
+  Future<void> markAllAsRead();
 }

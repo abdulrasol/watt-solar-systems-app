@@ -15,6 +15,7 @@ class CompanyPermissions {
   final String? mySales;
   final String? analytics;
   final String? subscribers;
+  final String? projects;
 
   const CompanyPermissions({
     this.orders,
@@ -33,6 +34,7 @@ class CompanyPermissions {
     this.mySales,
     this.analytics,
     this.subscribers,
+    this.projects,
   });
 
   factory CompanyPermissions.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class CompanyPermissions {
       mySales: json['my_sales']?.toString(),
       analytics: json['analytics']?.toString(),
       subscribers: json['subscribers']?.toString(),
+      projects: json['projects']?.toString(),
     );
   }
 
@@ -74,6 +77,7 @@ class CompanyPermissions {
       'my_sales': mySales,
       'analytics': analytics,
       'subscribers': subscribers,
+      'projects': projects,
     };
   }
 
@@ -102,6 +106,7 @@ class CompanyPermissions {
     add('my_sales', mySales);
     add('analytics', analytics);
     add('subscribers', subscribers);
+    add('projects', projects);
 
     return result;
   }
@@ -125,6 +130,7 @@ class CompanyPermissions {
     String? mySales,
     String? analytics,
     String? subscribers,
+    String? projects,
   }) {
     return CompanyPermissions(
       orders: orders ?? this.orders,
@@ -143,6 +149,7 @@ class CompanyPermissions {
       mySales: mySales ?? this.mySales,
       analytics: analytics ?? this.analytics,
       subscribers: subscribers ?? this.subscribers,
+      projects: projects ?? this.projects,
     );
   }
 }

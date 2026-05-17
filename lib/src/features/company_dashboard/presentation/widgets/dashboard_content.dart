@@ -122,7 +122,7 @@ class DashboardContent extends ConsumerWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth),
-            child: OverviewContent(state: state, companyId: companyId),
+            child: OverviewContent(companyId: companyId),
           ),
         ),
       );

@@ -136,6 +136,27 @@ class NotificationHistoryController extends Notifier<NotificationHistoryState> {
     state = state.copyWith(page: state.page + 1);
     await fetchHistory();
   }
+
+  Future<void> markAllAsRead() async {
+    try {
+      await _repository.markAllAsRead();
+      final updatedItems = state.items.map((item) {
+        return AppNotificationItem(
+          id: item.id,
+          title: item.title,
+          body: item.body,
+          data: item.data,
+          type: item.type,
+          status: 'read',
+          createdAt: item.createdAt,
+          sentAt: item.sentAt,
+        );
+      }).toList();
+      state = state.copyWith(items: updatedItems);
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
 }
 
 final notificationHistoryProvider =

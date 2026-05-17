@@ -17,16 +17,15 @@ import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/re
 import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
 
 class OverviewContent extends ConsumerWidget {
-  final CompanySummaryState state;
   final int? companyId;
 
-  const OverviewContent({super.key, required this.state, this.companyId});
+  const OverviewContent({super.key, this.companyId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final s = state.summary;
     final user = ref.watch(authProvider).user;
     final company = user?.company;
+    final rawServices = ref.watch(companyServicesProvider);
     final statsGridCount = AppBreakpoints.adaptiveGridCount(
       context,
       mobile: 2,
@@ -40,7 +39,7 @@ class OverviewContent extends ConsumerWidget {
       desktop: 4,
     );
     final l10n = AppLocalizations.of(context)!;
-    final services = [...?s?.services];
+    final services = [...rawServices];
     final hasActiveOffers = services.any(
       (service) =>
           service.serviceCode == 'offers' &&
@@ -100,41 +99,45 @@ class OverviewContent extends ConsumerWidget {
           ),
         ),
         SizedBox(height: 16.h),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: statsGridCount,
-          childAspectRatio: AppBreakpoints.isMobile(context) ? 1.15 : 1.35,
-          crossAxisSpacing: 16.r,
-          mainAxisSpacing: 16.r,
-          children: [
-            StatCard(
-              label: l10n.members,
-              value: '${s?.members ?? 0}',
-              icon: Iconsax.people_bold,
-              color: Colors.blue,
-            ),
-            StatCard(
-              label: l10n.orders,
-              value: '${s?.orders ?? 0}',
-              icon: Iconsax.shopping_cart_bold,
-              color: Colors.green,
-            ),
-            StatCard(
-              label: l10n.offers,
-              value: '${s?.offers ?? 0}',
-              icon: Iconsax.document_bold,
-              color: Colors.orange,
-            ),
-            StatCard(
-              label: l10n.contacts,
-              value: '${s?.contactsCount ?? 0}',
-              icon: Iconsax.call_bold,
-              color: Colors.purple,
-            ),
-          ],
+        Consumer(
+          builder: (context, ref, child) {
+            final stats = ref.watch(companyStatsProvider);
+            return GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: statsGridCount,
+              childAspectRatio: AppBreakpoints.isMobile(context) ? 1.15 : 1.35,
+              crossAxisSpacing: 16.r,
+              mainAxisSpacing: 16.r,
+              children: [
+                StatCard(
+                  label: l10n.members,
+                  value: '${stats?.members ?? 0}',
+                  icon: Iconsax.people_bold,
+                  color: Colors.blue,
+                ),
+                StatCard(
+                  label: l10n.orders,
+                  value: '${stats?.orders ?? 0}',
+                  icon: Iconsax.shopping_cart_bold,
+                  color: Colors.green,
+                ),
+                StatCard(
+                  label: l10n.offers,
+                  value: '${stats?.offers ?? 0}',
+                  icon: Iconsax.document_bold,
+                  color: Colors.orange,
+                ),
+                StatCard(
+                  label: l10n.contacts,
+                  value: '${stats?.contacts ?? 0}',
+                  icon: Iconsax.call_bold,
+                  color: Colors.purple,
+                ),
+              ],
+            );
+          },
         ),
-        SizedBox(height: 30.h),
         SizedBox(height: 30.h),
 
         // Low Stock Alerts

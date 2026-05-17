@@ -94,13 +94,19 @@ class DashboardHeader extends ConsumerWidget {
               ),
               SizedBox(width: 16.w),
             ],
-            IconButton(
-              icon: Badge(
-                label: Text(ref.watch(notificationHistoryProvider).totalCount.toString()),
-                isLabelVisible: ref.watch(notificationHistoryProvider).totalCount > 0,
-                child: const Icon(Iconsax.notification_bing_bold),
-              ),
-              onPressed: () => _showNotifications(context),
+            Builder(
+              builder: (context) {
+                final notificationState = ref.watch(notificationHistoryProvider);
+                final unreadCount = notificationState.items.where((item) => item.status != 'read').length;
+                return IconButton(
+                  icon: Badge(
+                    label: Text(unreadCount.toString()),
+                    isLabelVisible: unreadCount > 0,
+                    child: const Icon(Iconsax.notification_bing_bold),
+                  ),
+                  onPressed: () => _showNotifications(context),
+                );
+              },
             ),
             SizedBox(width: 12.w),
             IconButton(

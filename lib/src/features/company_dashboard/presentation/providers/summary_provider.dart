@@ -3,6 +3,8 @@ import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/usecases/get_company_usecase.dart';
+import 'package:solar_hub/src/shared/domain/company/company_stats.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
 
 class CompanySummaryState {
   final bool isLoading;
@@ -72,3 +74,11 @@ class CompanySummaryNotifier extends Notifier<CompanySummaryState> {
     );
   }
 }
+
+final companyStatsProvider = Provider<CompanyStats?>((ref) {
+  return ref.watch(companySummaryProvider.select((s) => s.summary?.stats));
+});
+
+final companyServicesProvider = Provider<List<CompanyService>>((ref) {
+  return ref.watch(companySummaryProvider.select((s) => s.summary?.services ?? const []));
+});
