@@ -10,8 +10,14 @@ import 'package:solar_hub/src/utils/date_utils.dart';
 class RequestCard extends StatelessWidget {
   final SolarRequest request;
   final VoidCallback onTap;
+  final VoidCallback? onConvertToLead;
 
-  const RequestCard({super.key, required this.request, required this.onTap});
+  const RequestCard({
+    super.key,
+    required this.request,
+    required this.onTap,
+    this.onConvertToLead,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,13 @@ class RequestCard extends StatelessWidget {
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,8 +48,18 @@ class RequestCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 18.r,
                   backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
-                  backgroundImage: request.user?.image != null ? NetworkImage(request.user!.image!) : null,
-                  child: request.user?.image == null ? Icon(Iconsax.user_bold, size: 18.sp, color: AppTheme.primaryColor) : null,
+                  backgroundImage:
+                      request.user?.image != null
+                          ? NetworkImage(request.user!.image!)
+                          : null,
+                  child:
+                      request.user?.image == null
+                          ? Icon(
+                            Iconsax.user_bold,
+                            size: 18.sp,
+                            color: AppTheme.primaryColor,
+                          )
+                          : null,
                 ),
                 SizedBox(width: 10.w),
                 Expanded(
@@ -46,12 +68,18 @@ class RequestCard extends StatelessWidget {
                     children: [
                       Text(
                         request.user?.name ?? l10n.unknown_user,
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: AppTheme.fontFamily,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        request.createdAt != null ? AppDateUtils.timeAgo(request.createdAt!, l10n) : '',
+                        request.createdAt != null
+                            ? AppDateUtils.timeAgo(request.createdAt!, l10n)
+                            : '',
                         style: TextStyle(fontSize: 10.sp, color: Colors.grey),
                       ),
                     ],
@@ -59,10 +87,17 @@ class RequestCard extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                  decoration: BoxDecoration(color: request.status.color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20.r)),
+                  decoration: BoxDecoration(
+                    color: request.status.color.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
                   child: Text(
                     request.status.localizedLabel(l10n),
-                    style: TextStyle(fontSize: 10.sp, color: request.status.color, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      color: request.status.color,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -74,17 +109,26 @@ class RequestCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSpecItem(icon: Iconsax.sun_1_bold, label: l10n.pv_power, value: l10n.unit_watts(request.totalPanelPower), color: Colors.orange),
+                _buildSpecItem(
+                  icon: Iconsax.sun_1_bold,
+                  label: l10n.pv_power,
+                  value: l10n.unit_watts(request.totalPanelPower),
+                  color: Colors.orange,
+                ),
                 _buildSpecItem(
                   icon: Iconsax.battery_charging_bold,
                   label: l10n.battery,
-                  value: l10n.unit_kilowatthours(_formatNumber(request.totalBatteryPower)),
+                  value: l10n.unit_kilowatthours(
+                    _formatNumber(request.totalBatteryPower),
+                  ),
                   color: Colors.green,
                 ),
                 _buildSpecItem(
                   icon: Iconsax.flash_1_bold,
                   label: l10n.inverter_calc,
-                  value: l10n.unit_kilowatts(_formatNumber(request.totalInvertersPower)),
+                  value: l10n.unit_kilowatts(
+                    _formatNumber(request.totalInvertersPower),
+                  ),
                   color: Colors.blue,
                 ),
               ],
@@ -96,20 +140,58 @@ class RequestCard extends StatelessWidget {
                 SizedBox(width: 4.w),
                 Text(
                   l10n.city_label(request.city?.name ?? '-'),
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const Spacer(),
-                if (request.offersCount != null && request.offersCount! > 0)
+                if (onConvertToLead != null)
+                  TextButton.icon(
+                    onPressed: onConvertToLead,
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.primaryColor,
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      minimumSize: Size(0, 32.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        side: BorderSide(
+                          color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                        ),
+                      ),
+                    ),
+                    icon: Icon(Iconsax.user_add_bold, size: 14.sp),
+                    label: Text(
+                      l10n.convert_to_lead,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                else if (request.offersCount != null && request.offersCount! > 0)
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                    decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8.r)),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
                     child: Row(
                       children: [
-                        Icon(Iconsax.document_text_bold, size: 12.sp, color: Colors.blue),
+                        Icon(
+                          Iconsax.document_text_bold,
+                          size: 12.sp,
+                          color: Colors.blue,
+                        ),
                         SizedBox(width: 4.w),
                         Text(
                           l10n.bids_count(request.offersCount!),
-                          style: TextStyle(fontSize: 10.sp, color: Colors.blue, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),

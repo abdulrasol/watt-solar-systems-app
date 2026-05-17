@@ -14,7 +14,8 @@ import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class MembersPage extends ConsumerStatefulWidget {
-  const MembersPage({super.key});
+  final bool embedded;
+  const MembersPage({super.key, this.embedded = false});
 
   @override
   ConsumerState<MembersPage> createState() => _MembersPageState();
@@ -45,6 +46,100 @@ class _MembersPageState extends ConsumerState<MembersPage> {
     final canManageMembers =
         currentRole == MemberRole.admin || currentRole == MemberRole.manager;
 
+    final content = Builder(
+      builder: (context) {
+        if (companyId == null) {
+          return AdminEmptyState(
+            icon: Icons.business_outlined,
+            title: l10n.members,
+            subtitle: l10n.members_company_required,
+          );
+        }
+
+        if (membersState.isLoading && membersState.members.isEmpty) {
+          return const AdminLoadingState(
+            icon: Icons.group_outlined,
+            message: 'Loading members...',
+          );
+        }
+
+        if (membersState.error != null && membersState.members.isEmpty) {
+          return AdminErrorState(
+            error: membersState.error!,
+            onRetry: () => ref
+                .read(membersProvider.notifier)
+                .fetchMembers(companyId, isRefresh: true),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => ref
+              .read(membersProvider.notifier)
+              .fetchMembers(companyId, isRefresh: true),
+          child: membersState.members.isEmpty
+              ? ListView(
+                  children: [
+                    SizedBox(height: 100.h),
+                    AdminEmptyState(
+                      icon: Icons.group_outlined,
+                      title: l10n.members_empty_title,
+                      subtitle: l10n.members_empty_subtitle,
+                    ),
+                  ],
+                )
+              : ListView.separated(
+                  padding: EdgeInsets.all(16.r),
+                  itemCount: membersState.members.length + 1,
+                  separatorBuilder: (context, index) =>
+                      SizedBox(height: 12.h),
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return _MembersHeader(
+                        membersCount: membersState.members.length,
+                        canManageMembers: canManageMembers,
+                        onAddPressed: canManageMembers
+                            ? () => _openAddMemberSheet(context, companyId)
+                            : null,
+                      );
+                    }
+
+                    final member = membersState.members[index - 1];
+                    final canRemove = _canRemoveMember(
+                      currentRole: currentRole,
+                      currentUserId: authState.user?.id,
+                      member: member,
+                    );
+
+                    return MemberCard(
+                      member: member,
+                      canRemove: canRemove,
+                      isRemoving: membersState.removingIds.contains(
+                        member.id,
+                      ),
+                        onRemove: () => _confirmDelete(
+                          context,
+                          companyId: companyId,
+                          member: member,
+                        ),
+                        onRoleUpdate: canManageMembers
+                            ? (newRole) => _handleRoleUpdate(
+                                  context,
+                                  companyId: companyId,
+                                  member: member,
+                                  newRole: newRole,
+                                )
+                            : null,
+                      );
+                  },
+                ),
+        );
+      },
+    );
+
+    if (widget.embedded) {
+      return content;
+    }
+
     return PreScaffold(
       title: l10n.members,
       actions: [
@@ -55,87 +150,7 @@ class _MembersPageState extends ConsumerState<MembersPage> {
             icon: const Icon(Icons.person_add_alt_1_outlined),
           ),
       ],
-      child: Builder(
-        builder: (context) {
-          if (companyId == null) {
-            return AdminEmptyState(
-              icon: Icons.business_outlined,
-              title: l10n.members,
-              subtitle: l10n.members_company_required,
-            );
-          }
-
-          if (membersState.isLoading && membersState.members.isEmpty) {
-            return const AdminLoadingState(
-              icon: Icons.group_outlined,
-              message: 'Loading members...',
-            );
-          }
-
-          if (membersState.error != null && membersState.members.isEmpty) {
-            return AdminErrorState(
-              error: membersState.error!,
-              onRetry: () => ref
-                  .read(membersProvider.notifier)
-                  .fetchMembers(companyId, isRefresh: true),
-            );
-          }
-
-          return RefreshIndicator(
-            onRefresh: () => ref
-                .read(membersProvider.notifier)
-                .fetchMembers(companyId, isRefresh: true),
-            child: membersState.members.isEmpty
-                ? ListView(
-                    children: [
-                      SizedBox(height: 100.h),
-                      AdminEmptyState(
-                        icon: Icons.group_outlined,
-                        title: l10n.members_empty_title,
-                        subtitle: l10n.members_empty_subtitle,
-                      ),
-                    ],
-                  )
-                : ListView.separated(
-                    padding: EdgeInsets.all(16.r),
-                    itemCount: membersState.members.length + 1,
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 12.h),
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return _MembersHeader(
-                          membersCount: membersState.members.length,
-                          canManageMembers: canManageMembers,
-                          onAddPressed: canManageMembers
-                              ? () => _openAddMemberSheet(context, companyId)
-                              : null,
-                        );
-                      }
-
-                      final member = membersState.members[index - 1];
-                      final canRemove = _canRemoveMember(
-                        currentRole: currentRole,
-                        currentUserId: authState.user?.id,
-                        member: member,
-                      );
-
-                      return MemberCard(
-                        member: member,
-                        canRemove: canRemove,
-                        isRemoving: membersState.removingIds.contains(
-                          member.id,
-                        ),
-                        onRemove: () => _confirmDelete(
-                          context,
-                          companyId: companyId,
-                          member: member,
-                        ),
-                      );
-                    },
-                  ),
-          );
-        },
-      ),
+      child: content,
     );
   }
 
@@ -207,6 +222,28 @@ class _MembersPageState extends ConsumerState<MembersPage> {
         context,
         l10n.error,
         ref.read(membersProvider).error ?? l10n.members_remove_failed,
+      );
+    }
+  }
+
+  Future<void> _handleRoleUpdate(
+    BuildContext context, {
+    required int companyId,
+    required CompanyMember member,
+    required MemberRole newRole,
+  }) async {
+    final success = await ref
+        .read(membersProvider.notifier)
+        .updateRole(companyId, member.id, newRole);
+
+    if (!context.mounted) return;
+    if (success) {
+      ToastService.success(context, 'Success', 'Role updated successfully');
+    } else {
+      ToastService.error(
+        context,
+        'Error',
+        ref.read(membersProvider).error ?? 'Failed to update role',
       );
     }
   }

@@ -6,24 +6,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/errors/failure.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/datasources/local_datasource.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/datasources/remote_datasource.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/repositoies/company_summery_repository_impl.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summery.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/data_sources/local_datasource.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/data_sources/remote_datasource.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/repositories/company_summary_repository_impl.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
 void main() {
-  group('CompanySummeryRepositoryImpl', () {
+  group('CompanySummaryRepositoryImpl', () {
     test('returns fresh remote summary and updates cache', () async {
       final fresh = _company(id: 1, name: 'Fresh');
       final remote = _FakeRemoteDataSource(Right(fresh));
       final local = _FakeLocalDataSource();
-      final repository = CompanySummeryRepositoryImpl(
+      final repository = CompanySummaryRepositoryImpl(
         remoteDataSource: remote,
         localDataSource: local,
       );
 
-      final result = await repository.getCompanySummery(1);
+      final result = await repository.getCompanySummary(1);
 
       expect(result.isRight(), isTrue);
       result.fold(
@@ -40,12 +40,12 @@ void main() {
         const Left(NetworkFailure('offline')),
       );
       final local = _FakeLocalDataSource(cachedSummary: cached);
-      final repository = CompanySummeryRepositoryImpl(
+      final repository = CompanySummaryRepositoryImpl(
         remoteDataSource: remote,
         localDataSource: local,
       );
 
-      final result = await repository.getCompanySummery(1);
+      final result = await repository.getCompanySummary(1);
 
       expect(result.isRight(), isTrue);
       result.fold(
@@ -59,12 +59,12 @@ void main() {
       final cached = _company(id: 1, name: 'Cached');
       final remote = _FakeRemoteDataSource(const Left(ServerFailure('server')));
       final local = _FakeLocalDataSource(cachedSummary: cached);
-      final repository = CompanySummeryRepositoryImpl(
+      final repository = CompanySummaryRepositoryImpl(
         remoteDataSource: remote,
         localDataSource: local,
       );
 
-      final result = await repository.getCompanySummery(1);
+      final result = await repository.getCompanySummary(1);
 
       expect(result.isLeft(), isTrue);
       expect(local.getCalls, 0);
@@ -80,9 +80,9 @@ void main() {
       final cache = _FakeCache();
       final local = LocalDataSourceImpl(casheInterface: cache);
       final company = _company(id: 7, name: 'Map Payload');
-      await cache.save('company_summery_7', company.toJson());
+      await cache.save('company_summary_7', company.toJson());
 
-      final result = await local.getCompanySummery(7);
+      final result = await local.getCompanySummary(7);
 
       expect(result.name, 'Map Payload');
     });
@@ -91,17 +91,17 @@ void main() {
       final cache = _FakeCache();
       final local = LocalDataSourceImpl(casheInterface: cache);
       final company = _company(id: 8, name: 'String Payload');
-      await cache.save('company_summery_8', jsonEncode(company.toJson()));
+      await cache.save('company_summary_8', jsonEncode(company.toJson()));
 
-      final result = await local.getCompanySummery(8);
+      final result = await local.getCompanySummary(8);
 
       expect(result.name, 'String Payload');
     });
   });
 }
 
-CompanySummery _company({required int id, required String name}) {
-  return CompanySummery(
+CompanySummary _company({required int id, required String name}) {
+  return CompanySummary(
     id: id,
     name: name,
     allowsB2B: true,
@@ -113,10 +113,10 @@ CompanySummery _company({required int id, required String name}) {
 class _FakeRemoteDataSource implements RemoteDataSource {
   _FakeRemoteDataSource(this.result);
 
-  final Either<Failure, CompanySummery> result;
+  final Either<Failure, CompanySummary> result;
 
   @override
-  Future<Either<Failure, CompanySummery>> getCompanySummery(int id) async {
+  Future<Either<Failure, CompanySummary>> getCompanySummary(int id) async {
     return result;
   }
 }
@@ -124,12 +124,12 @@ class _FakeRemoteDataSource implements RemoteDataSource {
 class _FakeLocalDataSource implements LocalDataSource {
   _FakeLocalDataSource({this.cachedSummary});
 
-  final CompanySummery? cachedSummary;
-  CompanySummery? savedSummary;
+  final CompanySummary? cachedSummary;
+  CompanySummary? savedSummary;
   int getCalls = 0;
 
   @override
-  Future<CompanySummery> getCompanySummery(int id) async {
+  Future<CompanySummary> getCompanySummary(int id) async {
     getCalls += 1;
     final cachedSummary = this.cachedSummary;
     if (cachedSummary == null) {
@@ -139,8 +139,8 @@ class _FakeLocalDataSource implements LocalDataSource {
   }
 
   @override
-  Future<void> saveCompanySummery(int id, CompanySummery summery) async {
-    savedSummary = summery;
+  Future<void> saveCompanySummary(int id, CompanySummary summary) async {
+    savedSummary = summary;
   }
 }
 

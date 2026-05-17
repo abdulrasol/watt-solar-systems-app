@@ -10,10 +10,14 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import '../providers/offers_provider.dart';
 import '../widgets/cards/request_card.dart';
 import '../widgets/cards/offer_card.dart';
+import 'package:solar_hub/src/core/widgets/branded_empty_state.dart';
+import 'package:solar_hub/src/features/offers/domain/entities/solar_request.dart';
+import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import '../widgets/bottomsheets/request_detail_bottom_sheet.dart';
 
 class CompanyOffersHub extends ConsumerStatefulWidget {
-  const CompanyOffersHub({super.key});
+  final bool embedded;
+  const CompanyOffersHub({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyOffersHub> createState() => _CompanyOffersHubState();
@@ -77,6 +81,35 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
     final state = ref.watch(offersProvider);
     final l10n = AppLocalizations.of(context)!;
 
+    final content = Column(
+      children: [
+        if (widget.embedded)
+          TabBar(
+            controller: _tabController,
+            indicatorColor: AppTheme.primaryColor,
+            labelColor: AppTheme.primaryColor,
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              Tab(
+                text: l10n.available_requests,
+                icon: const Icon(Iconsax.radar_bold),
+              ),
+              Tab(text: l10n.my_bids, icon: const Icon(Iconsax.briefcase_bold)),
+            ],
+          ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [_buildAvailableRequests(state), _buildMyOffers(state)],
+          ),
+        ),
+      ],
+    );
+
+    if (widget.embedded) {
+      return content;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.offers_marketplace),
@@ -107,10 +140,7 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [_buildAvailableRequests(state), _buildMyOffers(state)],
-      ),
+      body: content,
     );
   }
 
@@ -124,10 +154,10 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
           child: state.isLoading && state.availableRequests.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : state.availableRequests.isEmpty
-              ? _buildEmptyState(
-                  l10n.no_requests_found,
-                  l10n.new_projects_will_appear_here,
-                  Iconsax.radar_bold,
+              ? BrandedEmptyState(
+                  icon: Iconsax.radar_bold,
+                  title: l10n.no_requests_found,
+                  subtitle: l10n.new_projects_will_appear_here,
                 )
               : RefreshIndicator(
                   onRefresh: () async => ref
@@ -153,6 +183,7 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
                       return RequestCard(
                         request: request,
                         onTap: () => _showRequestDetails(request),
+                        onConvertToLead: () => _handleConvertToLead(request),
                       );
                     },
                   ),
@@ -172,10 +203,10 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
           child: state.isLoading && state.myOffers.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : state.myOffers.isEmpty
-              ? _buildEmptyState(
-                  l10n.no_offers_found,
-                  l10n.browse_requests_to_start_bidding,
-                  Iconsax.briefcase_bold,
+              ? BrandedEmptyState(
+                  icon: Iconsax.briefcase_bold,
+                  title: l10n.no_offers_found,
+                  subtitle: l10n.browse_requests_to_start_bidding,
                 )
               : RefreshIndicator(
                   onRefresh: () async => ref
@@ -314,32 +345,6 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
     );
   }
 
-  Widget _buildEmptyState(String title, String message, IconData icon) {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Container(
-        height: 400.h,
-        padding: EdgeInsets.symmetric(horizontal: 40.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 64.sp, color: Colors.grey.withValues(alpha: 0.2)),
-            SizedBox(height: 16.h),
-            Text(
-              title,
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              message,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   void _showRequestDetails(dynamic request) {
     showModalBottomSheet(
@@ -348,5 +353,23 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
       backgroundColor: Colors.transparent,
       builder: (context) => RequestDetailBottomSheet(request: request),
     );
+  }
+
+  Future<void> _handleConvertToLead(SolarRequest request) async {
+    final companyId = ref.read(authProvider).user?.company?.id;
+    if (companyId == null) return;
+
+    final success = await ref
+        .read(offersProvider.notifier)
+        .convertToLead(companyId, request);
+
+    if (mounted && success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.success),
+          backgroundColor: AppTheme.primaryColor,
+        ),
+      );
+    }
   }
 }

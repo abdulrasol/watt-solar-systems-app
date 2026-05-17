@@ -8,6 +8,7 @@ import 'package:solar_hub/src/features/calculations/presentation/providers/calcu
 import 'package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/system_calculator_wizard.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/battery_calculator_page.dart';
+import 'package:solar_hub/src/features/calculations/presentation/screens/tools/direction_calculator.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/inverter_calculator_page.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/panel_calculator_page.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/pump_calculator.dart';
@@ -173,6 +174,14 @@ class CalculatorLandingPage extends ConsumerWidget {
                   const Color(0xFF5A7D32),
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const StructureDesignScreen())),
                   'structure_hero',
+                ),
+                _buildToolCard(
+                  context,
+                  l10n.orientation_calc,
+                  Iconsax.map_bold,
+                  Colors.deepPurple,
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectionCalculator())),
+                  'direction_hero',
                 ),
               ],
             ),

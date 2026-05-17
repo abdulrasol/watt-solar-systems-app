@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
@@ -52,13 +53,35 @@ class NotificationHistoryController extends Notifier<NotificationHistoryState> {
   NotificationHistoryRepository get _repository =>
       getIt<NotificationHistoryRepository>();
 
+  Timer? _pollingTimer;
+
   @override
   NotificationHistoryState build() {
     final isSigned = ref.watch(authProvider.select((value) => value.isSigned));
     if (isSigned) {
       Future.microtask(() => fetchHistory(isRefresh: true));
+      _startPolling();
+    } else {
+      _stopPolling();
     }
+
+    ref.onDispose(() {
+      _stopPolling();
+    });
+
     return const NotificationHistoryState();
+  }
+
+  void _startPolling() {
+    _pollingTimer?.cancel();
+    _pollingTimer = Timer.periodic(const Duration(minutes: 2), (_) {
+      fetchHistory(isRefresh: true);
+    });
+  }
+
+  void _stopPolling() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
   }
 
   Future<void> fetchHistory({bool isRefresh = false}) async {

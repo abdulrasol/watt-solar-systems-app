@@ -175,6 +175,27 @@ class MembersNotifier extends Notifier<MembersState> {
     }
   }
 
+  Future<bool> updateRole(int companyId, int memberId, MemberRole role) async {
+    state = state.copyWith(isSubmitting: true, clearError: true);
+
+    try {
+      await _repository.updateMemberRole(companyId, memberId, role.value);
+      state = state.copyWith(
+        members: state.members.map((member) {
+          if (member.id == memberId) {
+            return member.copyWith(role: role);
+          }
+          return member;
+        }).toList(),
+        isSubmitting: false,
+      );
+      return true;
+    } catch (e) {
+      state = state.copyWith(isSubmitting: false, error: e.toString());
+      return false;
+    }
+  }
+
   Future<bool> deleteMember(int companyId, int memberId) async {
     final removingIds = {...state.removingIds, memberId};
     state = state.copyWith(removingIds: removingIds, clearError: true);

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,21 +7,24 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_header_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/service_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/stat_card.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/dashboard_charts.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/recent_activity_list.dart';
+import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
 
 class OverviewContent extends ConsumerWidget {
-  final CompanySummeryState state;
+  final CompanySummaryState state;
   final int? companyId;
 
   const OverviewContent({super.key, required this.state, this.companyId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final s = state.summery;
+    final s = state.summary;
     final user = ref.watch(authProvider).user;
     final company = user?.company;
     final statsGridCount = AppBreakpoints.adaptiveGridCount(
@@ -131,6 +135,41 @@ class OverviewContent extends ConsumerWidget {
           ],
         ),
         SizedBox(height: 30.h),
+        SizedBox(height: 30.h),
+
+        // Low Stock Alerts
+        _buildLowStockAlerts(context, ref),
+        SizedBox(height: 30.h),
+
+        // Charts Section
+        Text(
+          l10n.analytics,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w800,
+            fontFamily: AppTheme.fontFamily,
+          ),
+        ),
+        SizedBox(height: 16.h),
+        if (AppBreakpoints.isDesktop(context))
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Expanded(flex: 2, child: RevenueChart()),
+              SizedBox(width: 16.w),
+              const Expanded(flex: 1, child: OrderDistributionChart()),
+            ],
+          )
+        else ...[
+          const RevenueChart(),
+          SizedBox(height: 16.h),
+          const OrderDistributionChart(),
+        ],
+        SizedBox(height: 30.h),
+
+        // Recent Activity
+        const RecentActivityList(),
+        SizedBox(height: 30.h),
 
         // Services Grid
         Text(
@@ -162,6 +201,87 @@ class OverviewContent extends ConsumerWidget {
         // Help Center / Call to action
         _buildCTA(context),
       ],
+    );
+  }
+
+  Widget _buildLowStockAlerts(BuildContext context, WidgetRef ref) {
+    final lowStock = ref.watch(lowStockProductsProvider);
+    if (lowStock.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: EdgeInsets.all(20.r),
+      decoration: BoxDecoration(
+        color: Colors.red.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: Colors.red.withValues(alpha: 0.1)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Iconsax.warning_2_bold, color: Colors.red, size: 24.sp),
+              SizedBox(width: 12.w),
+              Text(
+                'Low Stock Alerts',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.red,
+                  fontFamily: AppTheme.fontFamily,
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Text(
+                  '${lowStock.length} items',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: lowStock.length > 3 ? 3 : lowStock.length,
+            separatorBuilder: (_, index) => Divider(color: Colors.red.withValues(alpha: 0.05)),
+            itemBuilder: (context, index) {
+              final product = lowStock[index];
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  product.name,
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.sp),
+                ),
+                subtitle: Text('Only ${product.stockQuantity} units left'),
+                trailing: TextButton(
+                  onPressed: () {},
+                  child: const Text('Restock'),
+                ),
+              );
+            },
+          ),
+          if (lowStock.length > 3) ...[
+            SizedBox(height: 8.h),
+            Center(
+              child: TextButton(
+                onPressed: () {},
+                child: const Text('View all alerts'),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 

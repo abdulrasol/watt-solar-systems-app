@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
 import 'package:solar_hub/src/features/members/domain/entities/member_role.dart';
+import 'package:solar_hub/src/features/members/presentation/widgets/member_role_dialog.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class MemberCard extends StatelessWidget {
@@ -13,12 +15,14 @@ class MemberCard extends StatelessWidget {
     required this.canRemove,
     required this.isRemoving,
     required this.onRemove,
+    this.onRoleUpdate,
   });
 
   final CompanyMember member;
   final bool canRemove;
   final bool isRemoving;
   final VoidCallback onRemove;
+  final Function(MemberRole)? onRoleUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +94,18 @@ class MemberCard extends StatelessWidget {
               ],
             ),
           ),
+          if (onRoleUpdate != null)
+            IconButton(
+              tooltip: 'Change Role',
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => MemberRoleDialog(
+                  member: member,
+                  onRoleSelected: onRoleUpdate!,
+                ),
+              ),
+              icon: const Icon(Iconsax.edit_2_bold),
+            ),
           if (canRemove)
             IconButton(
               tooltip: l10n.members_remove_member,

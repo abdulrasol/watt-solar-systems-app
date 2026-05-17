@@ -1,83 +1,71 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summery.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/usecases/get_company_usecase.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
 
-class CompanySummeryState {
+class CompanySummaryState {
   final bool isLoading;
-  final CompanySummery? summery;
+  final CompanySummary? summary;
   final bool isError;
   final bool isFromCache;
-  CompanySummeryState({
+  CompanySummaryState({
     required this.isLoading,
-    this.summery,
+    this.summary,
     this.isError = false,
     this.isFromCache = false,
   });
 
-  CompanySummeryState copyWith({
+  CompanySummaryState copyWith({
     bool? isLoading,
-    CompanySummery? summery,
+    CompanySummary? summary,
     bool? isError,
     bool? isFromCache,
   }) {
-    return CompanySummeryState(
+    return CompanySummaryState(
       isLoading: isLoading ?? this.isLoading,
-      summery: summery ?? this.summery,
+      summary: summary ?? this.summary,
       isError: isError ?? this.isError,
       isFromCache: isFromCache ?? this.isFromCache,
     );
   }
 
-  bool isPermisseon(String permission) {
-    return summery?.permissionValue(permission) == 'write';
+  bool isPermission(String permission) {
+    return summary?.permissionValue(permission) == 'write';
   }
 }
 
-final companySummeryProvider =
-    NotifierProvider<CompanySummeryNotifier, CompanySummeryState>(
-      CompanySummeryNotifier.new,
+final companySummaryProvider =
+    NotifierProvider<CompanySummaryNotifier, CompanySummaryState>(
+      CompanySummaryNotifier.new,
     );
 
-class CompanySummeryNotifier extends Notifier<CompanySummeryState> {
+class CompanySummaryNotifier extends Notifier<CompanySummaryState> {
   @override
-  CompanySummeryState build() {
-    return CompanySummeryState(isLoading: false);
+  CompanySummaryState build() {
+    return CompanySummaryState(isLoading: false);
   }
 
-  Future<void> getSummery() async {
+  Future<void> getSummary() async {
     if (!ref.read(authProvider).isSigned ||
         !ref.read(authProvider).isCompanyMember ||
         ref.read(authProvider).user!.company == null) {
       return;
     }
     state = state.copyWith(isLoading: true, isError: false);
-    final result = await getIt<GetCompanySummeryUseCase>().call(
+    final result = await getIt<GetCompanySummaryUseCase>().call(
       ref.read(authProvider).user!.company!.id,
     );
 
     result.fold(
-      (l) {
-        dPrint(l);
-
-        return l;
-      },
-      (r) {
-        dPrint(r);
-        return r;
-      },
-    );
-    result.fold(
       (failure) {
         state = state.copyWith(isLoading: false, isError: true);
       },
-      (summery) {
-        ref.read(authProvider.notifier).updateCompany(summery);
+      (summary) {
+        ref.read(authProvider.notifier).updateCompany(summary);
         state = state.copyWith(
           isLoading: false,
-          summery: summery,
+          summary: summary,
           isError: false,
         );
       },

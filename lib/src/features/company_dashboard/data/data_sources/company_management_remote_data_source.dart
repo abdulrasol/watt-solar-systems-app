@@ -19,6 +19,7 @@ abstract class CompanyManagementRemoteDataSource {
     int companyId, {
     int page = 1,
     int? pageSize,
+    String? search,
   });
 
   Future<CompanyContact> createContact(
@@ -75,11 +76,13 @@ class CompanyManagementRemoteDataSourceImpl
     int companyId, {
     int page = 1,
     int? pageSize,
+    String? search,
   }) async {
     try {
       final queryParameters = <String, dynamic>{
         'page': page,
         'page_size': pageSize,
+        'search': search,
       }..removeWhere((key, value) => value == null);
       final response = await _dioService.getRawMap(
         AppUrls.contacts(companyId),

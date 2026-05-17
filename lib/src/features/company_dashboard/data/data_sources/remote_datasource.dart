@@ -3,12 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/errors/failure.dart';
 import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summery.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 
 abstract class RemoteDataSource {
-  Future<Either<Failure, CompanySummery>> getCompanySummery(int id);
+  Future<Either<Failure, CompanySummary>> getCompanySummary(int id);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -19,13 +19,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, CompanySummery>> getCompanySummery(int id) async {
+  Future<Either<Failure, CompanySummary>> getCompanySummary(int id) async {
     try {
       final response = await dioService.get(AppUrls.companySummary(id));
-      return Right(CompanySummery.fromJson(response.body));
+      return Right(CompanySummary.fromJson(response.body));
     } on DioException catch (e, stackTrace) {
       dPrint(
-        'getCompanySummery DioException: $e',
+        'getCompanySummary DioException: $e',
         stackTrace: stackTrace,
         tag: 'RemoteDataSource',
       );
@@ -40,7 +40,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return Left(ServerFailure(message));
     } catch (e, stackTrace) {
       dPrint(
-        'getCompanySummery error: $e',
+        'getCompanySummary error: $e',
         stackTrace: stackTrace,
         tag: 'RemoteDataSource',
       );

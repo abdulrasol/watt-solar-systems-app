@@ -1,5 +1,11 @@
 {
   "app_name": "Watt",
+  "convert_to_lead": "Convert to Lead",
+  "leads": "Leads",
+  "no_leads_found": "No leads found",
+  "notifications": "Notifications",
+  "no_notifications": "No notifications",
+  "mark_all_read": "Mark all read",
   "version": "Version",
   "view": "View",
 
@@ -1620,5 +1626,18 @@
   "tilt_angle_desc": "Angle from horizontal. Usually equals your Latitude for year-round average.",
   "guide": "Guide",
   "dont_show_again": "Don't show this again",
-  "close_button": "Close"
+  "close_button": "Close",
+  "north": "North",
+  "south": "South",
+  "east": "East",
+  "west": "West",
+  "equator": "Equator",
+  "optimal": "Optimal",
+  "quick_create": "Quick Create",
+  "add_product": "Add Product",
+  "invite_member": "Invite Member",
+  "create_offer": "Create Offer",
+  "start_adding_products_to_inventory": "Start adding products to your inventory to see them here",
+  "search_results_for": "Search results for",
+  "clear": "Clear"
 }

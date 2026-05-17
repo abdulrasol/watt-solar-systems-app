@@ -13,6 +13,7 @@ abstract class ApiServicesInterface {
   Future post(String url, {Map<String, dynamic>? data});
   Future put(String url, {Map<String, dynamic>? data});
   Future delete(String url);
+  Future patch(String url, {Map<String, dynamic>? data});
   Future<Map<String, dynamic>> getRawMap(
     String url, {
     Map<String, dynamic>? queryParameters,
@@ -192,6 +193,20 @@ class DioService implements ApiServicesInterface {
   }) async {
     Response response = await _dio.delete(
       url,
+      queryParameters: queryParameters,
+    );
+    return local.Response.fromJson(response.data);
+  }
+
+  @override
+  Future<local.Response> patch(
+    String url, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    Response response = await _dio.patch(
+      url,
+      data: data,
       queryParameters: queryParameters,
     );
     return local.Response.fromJson(response.data);

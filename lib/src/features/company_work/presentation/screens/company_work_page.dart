@@ -12,7 +12,8 @@ import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/co
 import 'package:solar_hub/src/services/toast_service.dart';
 
 class CompanyWorkPage extends ConsumerStatefulWidget {
-  const CompanyWorkPage({super.key});
+  final bool embedded;
+  const CompanyWorkPage({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyWorkPage> createState() => _CompanyWorkPageState();
@@ -48,6 +49,78 @@ class _CompanyWorkPageState extends ConsumerState<CompanyWorkPage> {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(companyWorkNotifierProvider);
 
+    final content = RefreshIndicator(
+      onRefresh: () => ref
+          .read(companyWorkNotifierProvider.notifier)
+          .fetchWorks(isRefresh: true),
+      child: state.isLoading && state.works.isEmpty
+          ? Center(
+              child: AdminLoadingState(
+                icon: Icons.work_outline_rounded,
+                message: l10n.company_work_loading,
+              ),
+            )
+          : state.error != null && state.works.isEmpty
+          ? Center(
+              child: AdminErrorState(
+                error: state.error!,
+                onRetry: () => ref
+                    .read(companyWorkNotifierProvider.notifier)
+                    .fetchWorks(isRefresh: true),
+              ),
+            )
+          : state.works.isEmpty
+          ? ListView(
+              children: [
+                SizedBox(height: 80.h),
+                AdminEmptyState(
+                  icon: Icons.work_outline_rounded,
+                  title: l10n.company_work_empty_title,
+                  subtitle: l10n.company_work_empty_subtitle,
+                ),
+              ],
+            )
+          : GridView.builder(
+              controller: _scrollController,
+              padding: AppBreakpoints.pagePadding(context),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: AppBreakpoints.adaptiveGridCount(
+                  context,
+                  mobile: 1,
+                  tablet: 2,
+                  desktop: 3,
+                ),
+                crossAxisSpacing: 16.r,
+                mainAxisSpacing: 16.r,
+                childAspectRatio: AppBreakpoints.isMobile(context)
+                    ? 0.95
+                    : 0.84,
+              ),
+              itemCount: state.works.length + (state.hasMore ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == state.works.length) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final work = state.works[index];
+                return CompanyWorkCard(
+                  work: work,
+                  onTap: () =>
+                      context.push('/company-work/${work.id}', extra: work),
+                  onEdit: () => context.push(
+                    '/company-work/edit/${work.id}',
+                    extra: work,
+                  ),
+                  onDelete: () => _deleteWork(context, work.id),
+                );
+              },
+            ),
+    );
+
+    if (widget.embedded) {
+      return content;
+    }
+
     return PreScaffold(
       title: l10n.company_work_title,
       actions: [
@@ -57,73 +130,7 @@ class _CompanyWorkPageState extends ConsumerState<CompanyWorkPage> {
           tooltip: l10n.company_work_add,
         ),
       ],
-      child: RefreshIndicator(
-        onRefresh: () => ref
-            .read(companyWorkNotifierProvider.notifier)
-            .fetchWorks(isRefresh: true),
-        child: state.isLoading && state.works.isEmpty
-            ? Center(
-                child: AdminLoadingState(
-                  icon: Icons.work_outline_rounded,
-                  message: l10n.company_work_loading,
-                ),
-              )
-            : state.error != null && state.works.isEmpty
-            ? Center(
-                child: AdminErrorState(
-                  error: state.error!,
-                  onRetry: () => ref
-                      .read(companyWorkNotifierProvider.notifier)
-                      .fetchWorks(isRefresh: true),
-                ),
-              )
-            : state.works.isEmpty
-            ? ListView(
-                children: [
-                  SizedBox(height: 80.h),
-                  AdminEmptyState(
-                    icon: Icons.work_outline_rounded,
-                    title: l10n.company_work_empty_title,
-                    subtitle: l10n.company_work_empty_subtitle,
-                  ),
-                ],
-              )
-            : GridView.builder(
-                controller: _scrollController,
-                padding: AppBreakpoints.pagePadding(context),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: AppBreakpoints.adaptiveGridCount(
-                    context,
-                    mobile: 1,
-                    tablet: 2,
-                    desktop: 3,
-                  ),
-                  crossAxisSpacing: 16.r,
-                  mainAxisSpacing: 16.r,
-                  childAspectRatio: AppBreakpoints.isMobile(context)
-                      ? 0.95
-                      : 0.84,
-                ),
-                itemCount: state.works.length + (state.hasMore ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == state.works.length) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  final work = state.works[index];
-                  return CompanyWorkCard(
-                    work: work,
-                    onTap: () =>
-                        context.push('/company-work/${work.id}', extra: work),
-                    onEdit: () => context.push(
-                      '/company-work/edit/${work.id}',
-                      extra: work,
-                    ),
-                    onDelete: () => _deleteWork(context, work.id),
-                  );
-                },
-              ),
-      ),
+      child: content,
     );
   }
 

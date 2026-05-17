@@ -12,7 +12,8 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CompanyDashboardServiceTypesScreen extends ConsumerStatefulWidget {
-  const CompanyDashboardServiceTypesScreen({super.key});
+  final bool embedded;
+  const CompanyDashboardServiceTypesScreen({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyDashboardServiceTypesScreen> createState() =>
@@ -58,81 +59,87 @@ class _CompanyDashboardServiceTypesScreenState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return CompanyPageScaffold(
-      child: _isLoading && _items.isEmpty
-          ? AdminLoadingState(
-              icon: Icons.layers_outlined,
-              message: l10n.service_types_loading,
-            )
-          : _error != null && _items.isEmpty
-          ? AdminErrorState(error: _error!, onRetry: _load)
-          : SingleChildScrollView(
-              padding: AppBreakpoints.pagePadding(context),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: AppBreakpoints.contentMaxWidth(context),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.service_types,
-                        style: const TextStyle(
-                          fontFamily: AppTheme.fontFamily,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                        ),
+    final content = _isLoading && _items.isEmpty
+        ? AdminLoadingState(
+            icon: Icons.layers_outlined,
+            message: l10n.service_types_loading,
+          )
+        : _error != null && _items.isEmpty
+        ? AdminErrorState(error: _error!, onRetry: _load)
+        : SingleChildScrollView(
+            padding: AppBreakpoints.pagePadding(context),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: AppBreakpoints.contentMaxWidth(context),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.service_types,
+                      style: const TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        l10n.service_types_company_subtitle,
-                        style: TextStyle(color: Theme.of(context).hintColor),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.service_types_company_subtitle,
+                      style: TextStyle(color: Theme.of(context).hintColor),
+                    ),
+                    const SizedBox(height: 20),
+                    if (_items.isEmpty)
+                      AdminEmptyState(
+                        icon: Icons.layers_outlined,
+                        title: l10n.service_types_empty_title,
+                        subtitle: l10n.service_types_empty_subtitle,
+                      )
+                    else
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final width = constraints.maxWidth;
+                          final columns = width >= 1100
+                              ? 3
+                              : width >= 700
+                              ? 2
+                              : 1;
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: _items.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: columns,
+                                  crossAxisSpacing: 16,
+                                  mainAxisSpacing: 16,
+                                  childAspectRatio: columns == 1 ? 2.7 : 2.0,
+                                ),
+                            itemBuilder: (context, index) {
+                              final item = _items[index];
+                              final isBusy = _busyIds.contains(item.id);
+                              return _CompanyServiceTypeCard(
+                                item: item,
+                                isBusy: isBusy,
+                                onToggle: () => _toggle(item),
+                              );
+                            },
+                          );
+                        },
                       ),
-                      const SizedBox(height: 20),
-                      if (_items.isEmpty)
-                        AdminEmptyState(
-                          icon: Icons.layers_outlined,
-                          title: l10n.service_types_empty_title,
-                          subtitle: l10n.service_types_empty_subtitle,
-                        )
-                      else
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            final width = constraints.maxWidth;
-                            final columns = width >= 1100
-                                ? 3
-                                : width >= 700
-                                ? 2
-                                : 1;
-                            return GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: _items.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: columns,
-                                    crossAxisSpacing: 16,
-                                    mainAxisSpacing: 16,
-                                    childAspectRatio: columns == 1 ? 2.7 : 2.0,
-                                  ),
-                              itemBuilder: (context, index) {
-                                final item = _items[index];
-                                final isBusy = _busyIds.contains(item.id);
-                                return _CompanyServiceTypeCard(
-                                  item: item,
-                                  isBusy: isBusy,
-                                  onToggle: () => _toggle(item),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                    ],
-                  ),
+                  ],
                 ),
               ),
             ),
+          );
+
+    if (widget.embedded) {
+      return content;
+    }
+
+    return CompanyPageScaffold(
+      child: content,
     );
   }
 

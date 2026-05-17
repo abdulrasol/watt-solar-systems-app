@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
@@ -81,7 +82,7 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
           children: [
             const Hero(
               tag: 'direction_hero',
-              child: Icon(Icons.explore, size: 80, color: Colors.teal),
+              child: Icon(Iconsax.map_1_bold, size: 80, color: Colors.teal),
             ),
             const SizedBox(height: 20),
             Text(l10n.align_panels_efficiency, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
@@ -153,35 +154,35 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
                           boxShadow: [BoxShadow(color: isAligned ? Colors.green.withValues(alpha: 0.3) : Colors.black12, blurRadius: 20, spreadRadius: 5)],
                           border: Border.all(color: isAligned ? Colors.green : Colors.grey, width: 4),
                         ),
-                        child: const Stack(
+                        child: Stack(
                           children: [
                             // Markers
                             Align(
                               alignment: Alignment.topCenter,
                               child: Padding(
                                 padding: EdgeInsets.all(8),
-                                child: Text("N", style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text(l10n.north[0], style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                             ),
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Padding(
                                 padding: EdgeInsets.all(8),
-                                child: Text("S", style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text(l10n.south[0], style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                             ),
                             Align(
                               alignment: Alignment.centerRight,
                               child: Padding(
                                 padding: EdgeInsets.all(8),
-                                child: Text("E", style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text(l10n.east[0], style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                             ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(
                                 padding: EdgeInsets.all(8),
-                                child: Text("W", style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text(l10n.west[0], style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],
@@ -195,12 +196,12 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
 
                       Transform.rotate(
                         angle: -currentUserHeadingRad(currentHeading),
-                        child: const Column(
+                        child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.arrow_upward, size: 50, color: Colors.red),
                             Text(
-                              "N",
+                              l10n.north[0],
                               style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 50), // Spacing
@@ -216,8 +217,8 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
                           children: [
                             const Icon(Icons.arrow_upward, size: 50, color: Colors.green),
                             Text(
-                              "Optimal",
-                              style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                              l10n.optimal,
+                              style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 50), // Spacing
                           ],
@@ -269,7 +270,7 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
                                 children: [
                                   Text(l10n.face_direction, style: const TextStyle(color: Colors.white70)),
                                   Text(
-                                    controller.optimalDirection,
+                                    _getLocalizedDirection(controller.optimalDirection, l10n),
                                     style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -281,7 +282,10 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(10)),
                             child: Text(
-                              l10n.best_performance_desc(controller.optimalTilt.toStringAsFixed(1), controller.optimalDirection),
+                              l10n.best_performance_desc(
+                                controller.optimalTilt.toStringAsFixed(1),
+                                _getLocalizedDirection(controller.optimalDirection, l10n),
+                              ),
                               textAlign: TextAlign.center,
                               style: const TextStyle(color: Colors.white),
                             ),
@@ -327,6 +331,19 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
 
   double currentUserHeadingRad(double heading) {
     return heading * (math.pi / 180);
+  }
+
+  String _getLocalizedDirection(String direction, AppLocalizations l10n) {
+    switch (direction) {
+      case "South":
+        return l10n.south;
+      case "North":
+        return l10n.north;
+      case "Equator":
+        return l10n.equator;
+      default:
+        return direction;
+    }
   }
 
   Widget _buildDefinitionRow(String title, String desc) {

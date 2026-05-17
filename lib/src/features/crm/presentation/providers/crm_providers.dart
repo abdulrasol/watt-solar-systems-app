@@ -101,3 +101,37 @@ final suppliersProvider =
       (ref, companyId) =>
           SuppliersController(companyId, getIt<CrmRepository>()),
     );
+
+class LeadsController extends StateNotifier<CrmState<CustomerRecord>> {
+  final int companyId;
+  final CrmRepository _repository;
+
+  LeadsController(this.companyId, this._repository)
+    : super(const CrmState<CustomerRecord>(isLoading: true)) {
+    fetch();
+  }
+
+  Future<void> fetch([CustomerQuery query = const CustomerQuery()]) async {
+    state = state.copyWith(isLoading: true, clearError: true);
+    try {
+      final response = await _repository.listLeads(companyId, query: query);
+      state = state.copyWith(
+        isLoading: false,
+        items: response.items,
+        pagination: response.pagination,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+}
+
+final leadsProvider =
+    StateNotifierProvider.family<
+      LeadsController,
+      CrmState<CustomerRecord>,
+      int
+    >(
+      (ref, companyId) =>
+          LeadsController(companyId, getIt<CrmRepository>()),
+    );

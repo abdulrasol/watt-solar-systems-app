@@ -1,5 +1,5 @@
 import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/crm/data/datasources/crm_remote_data_source.dart';
+import 'package:solar_hub/src/features/crm/data/data_sources/crm_remote_data_source.dart';
 import 'package:solar_hub/src/features/crm/domain/entities/crm_models.dart';
 import 'package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart';
 import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
@@ -62,4 +62,16 @@ class CrmRepositoryImpl implements CrmRepository {
     int supplierId,
     SupplierWriteRequest request,
   ) => _remoteDataSource.updateSupplier(companyId, supplierId, request);
+
+  @override
+  Future<PaginatedItemsResponse<CustomerRecord>> listLeads(
+    int companyId, {
+    CustomerQuery query = const CustomerQuery(),
+  }) => _remoteDataSource.listLeads(companyId, query: query);
+
+  @override
+  Future<CustomerRecord> createLead(
+    int companyId,
+    CustomerWriteRequest request,
+  ) => _remoteDataSource.createLead(companyId, request);
 }

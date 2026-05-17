@@ -12,6 +12,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get app_name => 'Watt';
 
   @override
+  String get convert_to_lead => 'Convert to Lead';
+
+  @override
+  String get leads => 'Leads';
+
+  @override
+  String get no_leads_found => 'No leads found';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get no_notifications => 'No notifications';
+
+  @override
+  String get mark_all_read => 'Mark all read';
+
+  @override
   String get version => 'Version';
 
   @override
@@ -3340,9 +3358,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboard => 'Dashboard';
 
   @override
-  String get notifications => 'Notifications';
-
-  @override
   String get no_notifications_yet => 'No notifications yet';
 
   @override
@@ -4059,4 +4074,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get close_button => 'Close';
+
+  @override
+  String get north => 'North';
+
+  @override
+  String get south => 'South';
+
+  @override
+  String get east => 'East';
+
+  @override
+  String get west => 'West';
+
+  @override
+  String get equator => 'Equator';
+
+  @override
+  String get optimal => 'Optimal';
+
+  @override
+  String get quick_create => 'Quick Create';
+
+  @override
+  String get add_product => 'Add Product';
+
+  @override
+  String get invite_member => 'Invite Member';
+
+  @override
+  String get create_offer => 'Create Offer';
+
+  @override
+  String get start_adding_products_to_inventory =>
+      'Start adding products to your inventory to see them here';
+
+  @override
+  String get search_results_for => 'Search results for';
+
+  @override
+  String get clear => 'Clear';
 }

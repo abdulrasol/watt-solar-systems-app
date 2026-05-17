@@ -1,24 +1,35 @@
-# SolarHub Project TODO List
+# 🏢 SolarHub B2B & Company Dashboard TODO List
 
-This file tracks suggested edits, new features, and technical debt. Mark items as `[x]` when completed.
+This file tracks the evolution of the B2B side of the application. Mark items as `[x]` when completed.
 
-## 🚀 High Priority
-- [x] Standardize API Data Fetching: Remove pagination from Countries and Cities endpoints (Backend & Frontend).
-- [x] UI Localization: Translate hardcoded strings in `direction_calculator.dart`.
-- [x] Admin CRUD: Implement Create, Update, Delete operations for App Configurations in the Admin Dashboard.
-- [x] System Requests: Implement "Submit Request" logic in `system_request_confirmation_sheet.dart`.
+## 🛠️ Phase 1: UI/UX Excellence & Polish (COMPLETED ✅)
+- [x] **Data Visualization**: Add interactive charts (Revenue trends, Stock distribution) to `OverviewContent` using `fl_chart`.
+- [x] **Modern Sidebar**: Refine the `SidebarContent` with better active states, hover effects, and a collapsible "Slim" mode for desktop.
+- [x] **Quick Actions**: Add a "Quick Action" FAB or header menu for (Add Product, Create Offer, Invite Member).
+- [x] **Empty States**: Design beautiful, branded empty states for new companies with no data yet.
+- [x] **Search UI**: Implement a global search UI in the dashboard header.
 
-## ✨ New Features
-- [x] Enable Store: Finalize and enable the store module in `user_dashboard.dart`.
-- [x] Notification Cleanup: Handle `ServiceRequest` references in `notification_content_widget.dart` after module removal.
+## ⚙️ Phase 2: Functional Depth & Search (COMPLETED ✅)
+- [x] **Global Search Logic**: Connect the Search UI to the backend to search across Inventory, Offers, and Contacts.
+- [x] **Inventory Intelligence**: Implement low-stock alerts and bulk inventory import/export (CSV/Excel).
+- [x] **Dynamic Analytics**: Refactor `DashboardCharts` to fetch real data from the `Accounting` and `Orders` providers.
+- [x] **RBAC UI**: Implement a user interface for managing company member roles (Admin, Staff, Viewer).
+- [ ] **Invoicing System**: Generate and download PDF invoices for B2B orders directly from the Accounting module.
 
-## 🛠 Technical Debt & Refactoring
-- [ ] Localization parity: Ensure all language files have parity with `en.dart`.
-- [ ] Test coverage: Update and expand admin shell tests after module refactoring.
+## 🚀 Phase 3: Performance & Advanced CRM
+- [ ] **CRM Lead Linking**: Automatically create CRM leads when a user requests an offer from the company.
+- [ ] **Granular State Management**: Refactor `summery_provider.dart` to allow partial updates without re-triggering the full dashboard animation.
+- [ ] **Notification Center**: Implement the logic for the notification icon in the header (In-app notifications for new offers/orders).
 
-## ✅ Completed Tasks
-- [x] Remove "Service Requests" module from Admin Dashboard.
-- [x] Standardize Countries/Cities API to use non-paginated lists.
-- [x] Enhance Offer Requests: Show user names, avatars, and implement refined lifecycle (offered -> accepted -> closed).
-- [x] Full Localization: Migrate Offer Reply, Solar Request, and Offer Details to `AppLocalizations`.
-- [x] Fix compilation errors in Admin Dashboard screens and controllers.
+---
+
+## ✅ Completed (May 2026)
+- [x] **Full B2B Modularization**: Refactored all management screens (Inventory, Orders, CRM, Accounting, Work, Members, Contacts, Public Services, Categories) to support "embedded" mode.
+- [x] **Unified Dashboard Navigation**: Centralized navigation in `DashboardContent` with dynamic switching and sidebar integration.
+- [x] Standardize API Data Fetching (Non-paginated Countries/Cities).
+- [x] UI Localization for Orientation Calculator.
+- [x] Admin CRUD for App Configurations.
+- [x] Orientation Calculator integration into Landing Page.
+- [x] Store module activation and navigation.
+- [x] Full Localization parity (English/Arabic).
+- [x] Embedded Inventory, Orders, CRM, Accounting, and Company Work.

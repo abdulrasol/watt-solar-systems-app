@@ -7,7 +7,7 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_header_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_service_card.dart';
@@ -19,17 +19,17 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(companySummeryProvider);
+    final state = ref.watch(companySummaryProvider);
     final authState = ref.watch(authProvider);
     final l10n = AppLocalizations.of(context)!;
-    final summary = state.summery;
+    final summary = state.summary;
     final company = authState.company;
 
     return CompanyPageScaffold(
       child: Stack(
         children: [
           if (state.isError && summary == null)
-            AdminErrorState(error: l10n.error_loading_data, onRetry: () => ref.read(companySummeryProvider.notifier).getSummery())
+            AdminErrorState(error: l10n.error_loading_data, onRetry: () => ref.read(companySummaryProvider.notifier).getSummary())
           else if (summary == null && state.isLoading)
             const AdminLoadingState(icon: Iconsax.buildings_2_bold, message: 'Loading company workspace...')
           else

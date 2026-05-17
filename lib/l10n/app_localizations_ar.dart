@@ -12,6 +12,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get app_name => 'واط، احسب منظومتك الشمسية';
 
   @override
+  String get convert_to_lead => 'تحويل إلى مهتم';
+
+  @override
+  String get leads => 'المهتمين';
+
+  @override
+  String get no_leads_found => 'لا يوجد مهتمين بعد';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get no_notifications => 'لا توجد إشعارات حالياً';
+
+  @override
+  String get mark_all_read => 'تحديد الكل كمقروء';
+
+  @override
   String get version => 'الإصدار';
 
   @override
@@ -3319,9 +3337,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dashboard => 'لوحة التحكم';
 
   @override
-  String get notifications => 'الإشعارات';
-
-  @override
   String get no_notifications_yet => 'لا توجد إشعارات بعد';
 
   @override
@@ -4031,4 +4046,44 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get close_button => 'إغلاق';
+
+  @override
+  String get north => 'الشمال';
+
+  @override
+  String get south => 'الجنوب';
+
+  @override
+  String get east => 'الشرق';
+
+  @override
+  String get west => 'الغرب';
+
+  @override
+  String get equator => 'خط الاستواء';
+
+  @override
+  String get optimal => 'الأمثل';
+
+  @override
+  String get quick_create => 'إنشاء سريع';
+
+  @override
+  String get add_product => 'إضافة منتج';
+
+  @override
+  String get invite_member => 'دعوة عضو';
+
+  @override
+  String get create_offer => 'إنشاء عرض';
+
+  @override
+  String get start_adding_products_to_inventory =>
+      'ابدأ بإضافة المنتجات إلى مخزونك لرؤيتها هنا';
+
+  @override
+  String get search_results_for => 'نتائج البحث عن';
+
+  @override
+  String get clear => 'مسح';
 }

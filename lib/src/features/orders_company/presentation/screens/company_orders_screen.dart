@@ -11,73 +11,81 @@ import 'package:solar_hub/src/features/orders_core/domain/entities/order_queries
 import 'package:solar_hub/src/features/orders_core/presentation/widgets/order_widgets.dart';
 
 class CompanyOrdersScreen extends ConsumerWidget {
-  const CompanyOrdersScreen({super.key});
+  final bool embedded;
+  const CompanyOrdersScreen({super.key, this.embedded = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final companyId = ref.watch(authProvider).company?.id;
     final l10n = AppLocalizations.of(context)!;
     if (companyId == null) {
+      if (embedded) return Center(child: Text(l10n.no_company_workspace));
       return CompanyPageScaffold(
         child: Center(child: Text(l10n.no_company_workspace)),
       );
     }
     final state = ref.watch(companyOrdersProvider(companyId));
 
-    return CompanyPageScaffold(
-      child: RefreshIndicator(
-        onRefresh: () =>
-            ref.read(companyOrdersProvider(companyId).notifier).fetchOrders(),
-        child: ListView(
-          padding: AppBreakpoints.pagePadding(context),
-          children: [
-            ResponsiveContent(
-              child: state.isLoading && state.items.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : state.error != null && state.items.isEmpty
-                  ? AdminErrorState(
-                      error: state.error!,
-                      onRetry: () => ref
-                          .read(companyOrdersProvider(companyId).notifier)
-                          .fetchOrders(),
-                    )
-                  : state.items.isEmpty
-                  ? AdminEmptyState(
-                      icon: Icons.receipt_long_outlined,
-                      title: l10n.no_orders_found,
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.orders,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: 16),
-                        _CompanyOrderFilters(
-                          state: state,
-                          onChanged: (query) => ref
-                              .read(companyOrdersProvider(companyId).notifier)
-                              .updateFilters(query),
-                        ),
-                        const SizedBox(height: 16),
-                        ...state.items.map(
-                          (order) => Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: OrderListTile(
-                              order: order,
-                              onTap: () => context.push(
-                                '/companies/dashboard/orders/${order.id}',
-                              ),
+    final content = RefreshIndicator(
+      onRefresh: () =>
+          ref.read(companyOrdersProvider(companyId).notifier).fetchOrders(),
+      child: ListView(
+        padding: AppBreakpoints.pagePadding(context),
+        children: [
+          ResponsiveContent(
+            child: state.isLoading && state.items.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : state.error != null && state.items.isEmpty
+                ? AdminErrorState(
+                    error: state.error!,
+                    onRetry: () => ref
+                        .read(companyOrdersProvider(companyId).notifier)
+                        .fetchOrders(),
+                  )
+                : state.items.isEmpty
+                ? AdminEmptyState(
+                    icon: Icons.receipt_long_outlined,
+                    title: l10n.no_orders_found,
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.orders,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 16),
+                      _CompanyOrderFilters(
+                        state: state,
+                        onChanged: (query) => ref
+                            .read(companyOrdersProvider(companyId).notifier)
+                            .updateFilters(query),
+                      ),
+                      const SizedBox(height: 16),
+                      ...state.items.map(
+                        (order) => Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: OrderListTile(
+                            order: order,
+                            onTap: () => context.push(
+                              '/companies/dashboard/orders/${order.id}',
                             ),
                           ),
                         ),
-                      ],
-                    ),
-            ),
-          ],
-        ),
+                      ),
+                    ],
+                  ),
+          ),
+        ],
       ),
+    );
+
+    if (embedded) {
+      return content;
+    }
+
+    return CompanyPageScaffold(
+      child: content,
     );
   }
 }

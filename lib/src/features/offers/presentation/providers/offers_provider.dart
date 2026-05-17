@@ -4,6 +4,8 @@ import '../../domain/entities/solar_offer.dart';
 import '../../domain/entities/solar_request.dart';
 import '../../domain/entities/offers_filter.dart';
 import '../../domain/repositories/offers_repository.dart';
+import 'package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart';
+import 'package:solar_hub/src/features/crm/domain/entities/crm_models.dart';
 
 class OffersState {
   final bool isLoading;
@@ -546,6 +548,17 @@ class OffersNotifier extends StateNotifier<OffersState> {
     await getAllOffers();
   }
 
+  Future<void> searchAvailableRequests(String query) async {
+    state = state.copyWith(
+      availableRequestsFilter: state.availableRequestsFilter.copyWith(
+        search: query,
+        page: 1,
+      ),
+      availableRequestsHasMore: true,
+    );
+    await getAvailableRequests(isRefresh: true);
+  }
+
   // Filter Updates
   void updateRequestsStatus(String? status) {
     state = state.copyWith(
@@ -597,5 +610,25 @@ class OffersNotifier extends StateNotifier<OffersState> {
       adminOffersHasMore: true,
     );
     getAllOffers(isRefresh: true);
+  }
+
+  Future<bool> convertToLead(int companyId, SolarRequest request) async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    final customerRequest = CustomerWriteRequest(
+      fullName: request.user?.name ?? 'Marketplace Lead',
+      phoneNumber: request.user?.phone,
+      email: request.user?.email,
+      address: request.city?.name,
+      customerType: 'lead',
+    );
+
+    await getIt<CrmRepository>().createLead(
+      companyId,
+      customerRequest,
+    );
+
+    state = state.copyWith(isLoading: false);
+    return true; // Simplified for now
   }
 }

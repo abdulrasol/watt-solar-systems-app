@@ -11,7 +11,7 @@ import 'package:solar_hub/src/features/admin/data/repositories/app_config_reposi
 import 'package:solar_hub/src/features/admin/data/repositories/notification_repository_impl.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/app_config_repository.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/notification_repository.dart';
-import 'package:solar_hub/src/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:solar_hub/src/features/auth/data/data_sources/auth_remote_datasource.dart';
 import 'package:solar_hub/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 // import 'package:solar_hub/src/features/company_dashboard/data/datasource/dashboard_remote_datastore.dart';
@@ -21,13 +21,14 @@ import 'package:solar_hub/src/features/feedback/data/repositories/feedback_repos
 import 'package:solar_hub/src/features/feedback/data/data_sourece/remote_data_source.dart';
 import 'package:solar_hub/src/features/feedback/domain/repositories/feedback_repository.dart';
 import 'package:solar_hub/src/features/splash/domain/repositories/app_init_repository.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/datasources/local_datasource.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/datasources/remote_datasource.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/repositoies/company_summery_repository_impl.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/data_sources/local_datasource.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/data_sources/remote_datasource.dart';
+import 'package:solar_hub/src/features/company_dashboard/data/repositories/company_summary_repository_impl.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/repositories/dashboard_repository.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/usecases/get_company_usecase.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:solar_hub/src/services/pdf_service.dart';
 
 import 'package:solar_hub/src/features/inventory/data/data_sources/inventory_remote_data_source.dart';
 import 'package:solar_hub/src/features/inventory/data/repositories/inventory_repository_impl.dart';
@@ -47,8 +48,8 @@ import 'package:solar_hub/src/features/offers/data/data_sources/offers_remote_da
 import 'package:solar_hub/src/features/offers/data/data_sources/offers_remote_data_source_impl.dart';
 import 'package:solar_hub/src/features/offers/data/repositories/offers_repository_impl.dart';
 import 'package:solar_hub/src/features/offers/domain/repositories/offers_repository.dart';
-import 'package:solar_hub/src/features/splash/data/datasources/app_init_local_data_source.dart';
-import 'package:solar_hub/src/features/splash/data/datasources/app_init_remote_data_source.dart';
+import 'package:solar_hub/src/features/splash/data/data_sources/app_init_local_data_source.dart';
+import 'package:solar_hub/src/features/splash/data/data_sources/app_init_remote_data_source.dart';
 import 'package:solar_hub/src/features/splash/data/repositories/app_init_repository_impl.dart';
 import 'package:solar_hub/src/features/splash/domain/usecases/get_cached_configs_usecase.dart';
 import 'package:solar_hub/src/features/splash/domain/usecases/get_configs_usecase.dart';
@@ -57,23 +58,23 @@ import 'package:solar_hub/src/features/splash/domain/usecases/refresh_configs_us
 import 'package:solar_hub/src/features/admin/data/data_sources/admin_remote_data_source.dart';
 import 'package:solar_hub/src/features/admin/data/repositories/admin_repository_impl.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
-import 'package:solar_hub/src/features/accounting/data/datasources/accounting_remote_data_source.dart';
+import 'package:solar_hub/src/features/accounting/data/data_sources/accounting_remote_data_source.dart';
 import 'package:solar_hub/src/features/accounting/data/repositories/accounting_repository_impl.dart';
 import 'package:solar_hub/src/features/accounting/domain/repositories/accounting_repository.dart';
-import 'package:solar_hub/src/features/crm/data/datasources/crm_remote_data_source.dart';
+import 'package:solar_hub/src/features/crm/data/data_sources/crm_remote_data_source.dart';
 import 'package:solar_hub/src/features/crm/data/repositories/crm_repository_impl.dart';
 import 'package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart';
-import 'package:solar_hub/src/features/orders_buyer/data/datasources/orders_remote_data_source.dart';
+import 'package:solar_hub/src/features/orders_buyer/data/data_sources/orders_remote_data_source.dart';
 import 'package:solar_hub/src/features/orders_buyer/data/repositories/orders_repository_impl.dart';
 import 'package:solar_hub/src/features/orders_buyer/domain/repositories/orders_repository.dart';
-import 'package:solar_hub/src/features/storefront/data/datasources/storefront_remote_data_source.dart';
+import 'package:solar_hub/src/features/storefront/data/data_sources/storefront_remote_data_source.dart';
 import 'package:solar_hub/src/features/storefront/data/repositories/storefront_repository_impl.dart';
 import 'package:solar_hub/src/features/storefront/domain/repositories/storefront_repository.dart';
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
-import 'package:solar_hub/src/features/services/data/datasources/public_services_remote_data_source.dart';
+import 'package:solar_hub/src/features/services/data/data_sources/public_services_remote_data_source.dart';
 import 'package:solar_hub/src/features/services/data/repositories/public_services_repository_impl.dart';
 import 'package:solar_hub/src/features/services/domain/repositories/public_services_repository.dart';
-import 'package:solar_hub/src/features/service_types/data/datasources/service_type_remote_data_source.dart';
+import 'package:solar_hub/src/features/service_types/data/data_sources/service_type_remote_data_source.dart';
 import 'package:solar_hub/src/features/service_types/data/repositories/service_type_repository_impl.dart';
 import 'package:solar_hub/src/features/service_types/domain/repositories/service_type_repository.dart';
 
@@ -87,6 +88,7 @@ void setupDependencies() {
   });
 
   getIt.registerLazySingleton<ToastService>(() => ToastService());
+  getIt.registerLazySingleton<PdfService>(() => PdfService());
 
   getIt.registerLazySingleton<NetworkStatusService>(
     () => NetworkStatusService(),
@@ -225,27 +227,27 @@ void setupDependencies() {
   });
 
   getIt.registerLazySingleton<LocalDataSource>(() {
-    dPrint('init company summery local data source', tag: 'getIt');
+    dPrint('init company summary local data source', tag: 'getIt');
     return LocalDataSourceImpl(casheInterface: getIt<CasheInterface>());
   });
 
   getIt.registerLazySingleton<RemoteDataSource>(() {
-    dPrint('init company summery remote data source', tag: 'getIt');
+    dPrint('init company summary remote data source', tag: 'getIt');
     return RemoteDataSourceImpl();
   });
 
-  getIt.registerLazySingleton<CompanySummeryRepository>(() {
-    dPrint('init company summery repository', tag: 'getIt');
-    return CompanySummeryRepositoryImpl(
+  getIt.registerLazySingleton<CompanySummaryRepository>(() {
+    dPrint('init company summary repository', tag: 'getIt');
+    return CompanySummaryRepositoryImpl(
       remoteDataSource: getIt<RemoteDataSource>(),
       localDataSource: getIt<LocalDataSource>(),
     );
   });
 
-  getIt.registerLazySingleton<GetCompanySummeryUseCase>(() {
-    dPrint('init get company summery usecase', tag: 'getIt');
-    return GetCompanySummeryUseCase(
-      repository: getIt<CompanySummeryRepository>(),
+  getIt.registerLazySingleton<GetCompanySummaryUseCase>(() {
+    dPrint('init get company summary usecase', tag: 'getIt');
+    return GetCompanySummaryUseCase(
+      repository: getIt<CompanySummaryRepository>(),
     );
   });
 

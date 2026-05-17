@@ -8,7 +8,7 @@ import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_modules.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_activation_notice.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
@@ -28,14 +28,14 @@ class _CompanyShellState extends ConsumerState<CompanyShell> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(companySummeryProvider.notifier).getSummery());
+    Future.microtask(() => ref.read(companySummaryProvider.notifier).getSummary());
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final authState = ref.watch(authProvider);
-    final summaryState = ref.watch(companySummeryProvider);
+    final summaryState = ref.watch(companySummaryProvider);
     final company = authState.company;
     final activeModule = CompanyWorkspaceModules.activeForLocation(widget.location, l10n);
     final navItems = CompanyWorkspaceModules.build(l10n, summaryState);

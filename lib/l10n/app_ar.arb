@@ -1,5 +1,11 @@
 {
   "app_name": "واط، احسب منظومتك الشمسية",
+  "convert_to_lead": "تحويل إلى مهتم",
+  "leads": "المهتمين",
+  "no_leads_found": "لا يوجد مهتمين بعد",
+  "notifications": "الإشعارات",
+  "no_notifications": "لا توجد إشعارات حالياً",
+  "mark_all_read": "تحديد الكل كمقروء",
   "version": "الإصدار",
   "view": "عرض",
 
@@ -1590,9 +1596,26 @@
   "perfect_alignment": "محاذاة مثالية! ✅",
   "rotate_phone_align": "قم بتدوير الهاتف لمحاذاة السهم الأخضر",
   "current_heading": "الاتجاه الحالي: {heading}°",
+  "@current_heading": {
+    "placeholders": {
+      "heading": {
+        "type": "String"
+      }
+    }
+  },
   "optimal_tilt": "الميل الأمثل",
   "face_direction": "اتجاه الواجهة",
   "best_performance_desc": "لأفضل أداء على مدار العام، قم بإمالة الألواح بزاوية {tilt}° باتجاه {direction}.",
+  "@best_performance_desc": {
+    "placeholders": {
+      "tilt": {
+        "type": "String"
+      },
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
   "why_orientation_matters": "لماذا يهم التوجيه؟",
   "azimuth_title": "السمت (الاتجاه)",
   "azimuth_desc": "يجب أن تواجه الألواح خط الاستواء (الجنوب في نصف الكرة الشمالي) لالتقاط الشمس طوال اليوم.",
@@ -1600,5 +1623,18 @@
   "tilt_angle_desc": "الزاوية عن الأفق. عادة ما تساوي خط العرض الخاص بك للحصول على متوسط سنوي.",
   "guide": "دليل",
   "dont_show_again": "لا تظهر هذا مرة أخرى",
-  "close_button": "إغلاق"
+  "close_button": "إغلاق",
+  "north": "الشمال",
+  "south": "الجنوب",
+  "east": "الشرق",
+  "west": "الغرب",
+  "equator": "خط الاستواء",
+  "optimal": "الأمثل",
+  "quick_create": "إنشاء سريع",
+  "add_product": "إضافة منتج",
+  "invite_member": "دعوة عضو",
+  "create_offer": "إنشاء عرض",
+  "start_adding_products_to_inventory": "ابدأ بإضافة المنتجات إلى مخزونك لرؤيتها هنا",
+  "search_results_for": "نتائج البحث عن",
+  "clear": "مسح"
 }

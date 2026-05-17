@@ -35,6 +35,15 @@ abstract class CrmRemoteDataSource {
   );
   Future<SupplierRecord> getSupplier(int companyId, int supplierId);
   Future<void> deleteSupplier(int companyId, int supplierId);
+
+  Future<PaginatedItemsResponse<CustomerRecord>> listLeads(
+    int companyId, {
+    CustomerQuery query = const CustomerQuery(),
+  });
+  Future<CustomerRecord> createLead(
+    int companyId,
+    CustomerWriteRequest request,
+  );
 }
 
 class CrmRemoteDataSourceImpl implements CrmRemoteDataSource {
@@ -154,6 +163,35 @@ class CrmRemoteDataSourceImpl implements CrmRemoteDataSource {
       data: request.toJson(),
     );
     return SupplierRecord.fromJson(
+      Map<String, dynamic>.from(response.body as Map),
+    );
+  }
+
+  @override
+  Future<PaginatedItemsResponse<CustomerRecord>> listLeads(
+    int companyId, {
+    CustomerQuery query = const CustomerQuery(),
+  }) async {
+    final response = await _dioService.getRawMap(
+      AppUrls.customers(companyId),
+      queryParameters: query.copyWith(customerType: 'lead').toQueryParameters(),
+    );
+    return PaginatedItemsResponse<CustomerRecord>.fromJson(
+      response,
+      CustomerRecord.fromJson,
+    );
+  }
+
+  @override
+  Future<CustomerRecord> createLead(
+    int companyId,
+    CustomerWriteRequest request,
+  ) async {
+    final response = await _dioService.post(
+      AppUrls.customers(companyId),
+      data: request.toJson()..['customer_type'] = 'lead',
+    );
+    return CustomerRecord.fromJson(
       Map<String, dynamic>.from(response.body as Map),
     );
   }

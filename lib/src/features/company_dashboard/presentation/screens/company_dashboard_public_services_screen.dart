@@ -15,7 +15,8 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CompanyDashboardPublicServicesScreen extends ConsumerStatefulWidget {
-  const CompanyDashboardPublicServicesScreen({super.key});
+  final bool embedded;
+  const CompanyDashboardPublicServicesScreen({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyDashboardPublicServicesScreen> createState() => _CompanyDashboardPublicServicesScreenState();
@@ -43,60 +44,66 @@ class _CompanyDashboardPublicServicesScreenState extends ConsumerState<CompanyDa
     final companyId = company?.id;
     final canManage = company?.canManageWorkspace ?? false;
 
-    return CompanyPageScaffold(
-      child: companyId == null
-          ? AdminEmptyState(icon: Iconsax.briefcase_bold, title: l10n.company_public_services, subtitle: l10n.company_public_services_no_company)
-          : state.isLoading && state.services.isEmpty
-          ? AdminLoadingState(icon: Iconsax.briefcase_bold, message: l10n.company_public_services_loading)
-          : state.error != null && state.services.isEmpty
-          ? AdminErrorState(error: state.error!, onRetry: _load)
-          : SingleChildScrollView(
-              padding: AppBreakpoints.pagePadding(context),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CompanySectionIntro(
-                        title: l10n.company_public_services,
-                        subtitle: l10n.company_public_services_subtitle,
-                        action: FilledButton.icon(
-                          onPressed: canManage ? () => _openForm(context, companyId) : null,
-                          icon: const Icon(Iconsax.add_circle_bold),
-                          label: Text(l10n.company_public_services_add),
-                        ),
+    final content = companyId == null
+        ? AdminEmptyState(icon: Iconsax.briefcase_bold, title: l10n.company_public_services, subtitle: l10n.company_public_services_no_company)
+        : state.isLoading && state.services.isEmpty
+        ? AdminLoadingState(icon: Iconsax.briefcase_bold, message: l10n.company_public_services_loading)
+        : state.error != null && state.services.isEmpty
+        ? AdminErrorState(error: state.error!, onRetry: _load)
+        : SingleChildScrollView(
+            padding: AppBreakpoints.pagePadding(context),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CompanySectionIntro(
+                      title: l10n.company_public_services,
+                      subtitle: l10n.company_public_services_subtitle,
+                      action: FilledButton.icon(
+                        onPressed: canManage ? () => _openForm(context, companyId) : null,
+                        icon: const Icon(Iconsax.add_circle_bold),
+                        label: Text(l10n.company_public_services_add),
                       ),
-                      const SizedBox(height: 20),
-                      if (state.services.isEmpty)
-                        AdminEmptyState(
-                          icon: Iconsax.briefcase_bold,
-                          title: l10n.company_public_services_empty_title,
-                          subtitle: l10n.company_public_services_empty_subtitle,
-                        )
-                      else
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: state.services.length,
-                              itemBuilder: (context, index) {
-                                final service = state.services[index];
-                                return _PublicServiceCard(
-                                  service: service,
-                                  onEdit: canManage ? () => _openForm(context, companyId, service: service) : null,
-                                  onDelete: canManage ? () => _deleteService(context, companyId, service) : null,
-                                );
-                              },
-                            );
-                          },
-                        ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                    if (state.services.isEmpty)
+                      AdminEmptyState(
+                        icon: Iconsax.briefcase_bold,
+                        title: l10n.company_public_services_empty_title,
+                        subtitle: l10n.company_public_services_empty_subtitle,
+                      )
+                    else
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.services.length,
+                            itemBuilder: (context, index) {
+                              final service = state.services[index];
+                              return _PublicServiceCard(
+                                service: service,
+                                onEdit: canManage ? () => _openForm(context, companyId, service: service) : null,
+                                onDelete: canManage ? () => _deleteService(context, companyId, service) : null,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                  ],
                 ),
               ),
             ),
+          );
+
+    if (widget.embedded) {
+      return content;
+    }
+
+    return CompanyPageScaffold(
+      child: content,
     );
   }
 

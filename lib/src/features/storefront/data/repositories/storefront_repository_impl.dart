@@ -1,5 +1,5 @@
 import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/storefront/data/datasources/storefront_remote_data_source.dart';
+import 'package:solar_hub/src/features/storefront/data/data_sources/storefront_remote_data_source.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/domain/repositories/storefront_repository.dart';
 

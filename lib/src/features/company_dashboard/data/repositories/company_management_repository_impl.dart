@@ -26,11 +26,13 @@ class CompanyManagementRepositoryImpl implements CompanyManagementRepository {
     int companyId, {
     int page = 1,
     int? pageSize,
+    String? search,
   }) {
     return _remoteDataSource.listContacts(
       companyId,
       page: page,
       pageSize: pageSize,
+      search: search,
     );
   }
 

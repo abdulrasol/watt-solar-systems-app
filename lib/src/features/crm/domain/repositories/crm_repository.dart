@@ -33,4 +33,14 @@ abstract class CrmRepository {
   );
   Future<SupplierRecord> getSupplier(int companyId, int supplierId);
   Future<void> deleteSupplier(int companyId, int supplierId);
+
+  // Leads
+  Future<PaginatedItemsResponse<CustomerRecord>> listLeads(
+    int companyId, {
+    CustomerQuery query = const CustomerQuery(),
+  });
+  Future<CustomerRecord> createLead(
+    int companyId,
+    CustomerWriteRequest request,
+  );
 }

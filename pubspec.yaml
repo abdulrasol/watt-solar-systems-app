@@ -73,6 +73,7 @@ dev_dependencies:
 
 
 
+  path_provider_platform_interface: any
 flutter:
   generate: true
   uses-material-design: true

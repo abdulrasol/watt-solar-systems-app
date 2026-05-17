@@ -2,7 +2,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 
 class CompanyWorkspaceModules {
   static CompanyWorkspaceItem overview(AppLocalizations l10n) =>
@@ -98,7 +98,7 @@ class CompanyWorkspaceModules {
 
   static List<CompanyWorkspaceItem> build(
     AppLocalizations l10n,
-    CompanySummeryState state,
+    CompanySummaryState state,
   ) {
     final items = <CompanyWorkspaceItem>[
       overview(l10n),
@@ -113,7 +113,7 @@ class CompanyWorkspaceModules {
       categories(l10n),
     ];
 
-    final servicesList = [...?state.summery?.services];
+    final servicesList = [...?state.summary?.services];
     final hasActiveOffers = servicesList.any(
       (service) =>
           service.serviceCode == 'offers' && _isServiceActive(service.status),

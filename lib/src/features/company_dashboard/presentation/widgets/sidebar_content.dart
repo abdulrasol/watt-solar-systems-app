@@ -7,7 +7,10 @@ import 'package:solar_hub/src/features/company_dashboard/presentation/models/nav
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/nav_item_tile.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
-class SidebarContent extends StatelessWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/sidebar_controller.dart';
+
+class SidebarContent extends ConsumerWidget {
   final List<NavItem> navItems;
   final int selectedIndex;
   final Function(int) onItemSelected;
@@ -20,39 +23,61 @@ class SidebarContent extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final isCollapsed = ref.watch(sidebarControllerProvider);
 
     return Column(
       children: [
         SizedBox(height: 50.h),
-        // Branding
+        // Branding & Toggle
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: isCollapsed ? 0 : 20.w),
           child: Row(
+            mainAxisAlignment: isCollapsed
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Icon(
-                  Iconsax.sun_1_bold,
-                  color: AppTheme.primaryColor,
-                  size: 28.sp,
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Text(
-                  'Solar Hub',
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontFamily,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w800,
-                    color: AppTheme.primaryDarkColor,
+              if (!isCollapsed)
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.r),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Icon(
+                          Iconsax.sun_1_bold,
+                          color: AppTheme.primaryColor,
+                          size: 24.sp,
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Text(
+                          'Solar Hub',
+                          style: TextStyle(
+                            fontFamily: AppTheme.fontFamily,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                            color: AppTheme.primaryDarkColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+              IconButton(
+                onPressed: () =>
+                    ref.read(sidebarControllerProvider.notifier).toggle(),
+                icon: Icon(
+                  isCollapsed ? Iconsax.arrow_right_3_bold : Iconsax.arrow_left_2_bold,
+                  size: 20.sp,
+                  color: Colors.grey,
                 ),
               ),
             ],
@@ -69,6 +94,7 @@ class SidebarContent extends StatelessWidget {
                 item: navItems[index],
                 isSelected: selectedIndex == index,
                 onTap: () => onItemSelected(index),
+                isCollapsed: isCollapsed,
               );
             },
           ),
@@ -88,6 +114,9 @@ class SidebarContent extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16.r),
               ),
               child: Row(
+                mainAxisAlignment: isCollapsed
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.start,
                 children: [
                   CircleAvatar(
                     radius: 18.r,
@@ -100,30 +129,35 @@ class SidebarContent extends StatelessWidget {
                       color: AppTheme.primaryColor,
                     ),
                   ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.admin_user,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13.sp,
+                  if (!isCollapsed) ...[
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.admin_user,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13.sp,
+                            ),
                           ),
-                        ),
-                        Text(
-                          l10n.super_admin,
-                          style: TextStyle(color: Colors.grey, fontSize: 11.sp),
-                        ),
-                      ],
+                          Text(
+                            l10n.super_admin,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Icon(
-                    Iconsax.logout_1_bold,
-                    size: 18.sp,
-                    color: Colors.redAccent,
-                  ),
+                    Icon(
+                      Iconsax.logout_1_bold,
+                      size: 18.sp,
+                      color: Colors.redAccent,
+                    ),
+                  ],
                 ],
               ),
             ),

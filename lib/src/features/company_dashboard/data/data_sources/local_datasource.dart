@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summery.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 
 abstract class LocalDataSource {
-  Future<CompanySummery> getCompanySummery(int id);
-  Future<void> saveCompanySummery(int id, CompanySummery summery);
+  Future<CompanySummary> getCompanySummary(int id);
+  Future<void> saveCompanySummary(int id, CompanySummary summary);
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
@@ -14,16 +14,16 @@ class LocalDataSourceImpl implements LocalDataSource {
   LocalDataSourceImpl({required this.casheInterface});
 
   @override
-  Future<CompanySummery> getCompanySummery(int id) async {
+  Future<CompanySummary> getCompanySummary(int id) async {
     try {
-      final cached = casheInterface.get('company_summery_$id');
+      final cached = casheInterface.get('company_summary_$id');
       if (cached == null) {
-        throw Exception('Company summery not found');
+        throw Exception('Company summary not found');
       }
-      return CompanySummery.fromJson(_decodeSummery(cached));
+      return CompanySummary.fromJson(_decodeSummary(cached));
     } catch (e, stackTrace) {
       dPrint(
-        'getCompanySummery error: $e',
+        'getCompanySummary error: $e',
         stackTrace: stackTrace,
         tag: 'LocalDataSourceImpl',
       );
@@ -32,12 +32,12 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<void> saveCompanySummery(int id, CompanySummery summery) async {
+  Future<void> saveCompanySummary(int id, CompanySummary summary) async {
     try {
-      await casheInterface.save('company_summery_$id', summery.toJson());
+      await casheInterface.save('company_summary_$id', summary.toJson());
     } catch (e, stackTrace) {
       dPrint(
-        'saveCompanySummery error: $e',
+        'saveCompanySummary error: $e',
         stackTrace: stackTrace,
         tag: 'LocalDataSourceImpl',
       );
@@ -45,7 +45,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     }
   }
 
-  Map<String, dynamic> _decodeSummery(dynamic cached) {
+  Map<String, dynamic> _decodeSummary(dynamic cached) {
     if (cached is String) {
       final decoded = jsonDecode(cached);
       if (decoded is Map) {
@@ -57,6 +57,6 @@ class LocalDataSourceImpl implements LocalDataSource {
       return Map<String, dynamic>.from(cached);
     }
 
-    throw Exception('Invalid company summery cache payload');
+    throw Exception('Invalid company summary cache payload');
   }
 }

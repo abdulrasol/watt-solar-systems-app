@@ -10,13 +10,15 @@ import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.
 import 'package:solar_hub/src/features/orders_core/presentation/widgets/order_widgets.dart';
 
 class CompanyCustomersScreen extends ConsumerWidget {
-  const CompanyCustomersScreen({super.key});
+  final bool embedded;
+  const CompanyCustomersScreen({super.key, this.embedded = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final companyId = ref.watch(authProvider).company?.id;
     final l10n = AppLocalizations.of(context)!;
     if (companyId == null) {
+      if (embedded) return Center(child: Text(l10n.no_company_workspace));
       return CompanyPageScaffold(
         child: Center(child: Text(l10n.no_company_workspace)),
       );
@@ -26,6 +28,7 @@ class CompanyCustomersScreen extends ConsumerWidget {
       title: l10n.customers,
       state: state,
       emptyTitle: l10n.no_customers_found,
+      embedded: embedded,
       itemBuilder: (item) =>
           _personTile(context, item.fullName, item.phoneNumber, item.balance),
     );
@@ -33,13 +36,15 @@ class CompanyCustomersScreen extends ConsumerWidget {
 }
 
 class CompanySuppliersScreen extends ConsumerWidget {
-  const CompanySuppliersScreen({super.key});
+  final bool embedded;
+  const CompanySuppliersScreen({super.key, this.embedded = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final companyId = ref.watch(authProvider).company?.id;
     final l10n = AppLocalizations.of(context)!;
     if (companyId == null) {
+      if (embedded) return Center(child: Text(l10n.no_company_workspace));
       return CompanyPageScaffold(
         child: Center(child: Text(l10n.no_company_workspace)),
       );
@@ -49,6 +54,33 @@ class CompanySuppliersScreen extends ConsumerWidget {
       title: l10n.suppliers,
       state: state,
       emptyTitle: l10n.no_suppliers_found,
+      embedded: embedded,
+      itemBuilder: (item) =>
+          _personTile(context, item.fullName, item.phoneNumber, item.balance),
+    );
+  }
+}
+
+class CompanyLeadsScreen extends ConsumerWidget {
+  final bool embedded;
+  const CompanyLeadsScreen({super.key, this.embedded = false});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final companyId = ref.watch(authProvider).company?.id;
+    final l10n = AppLocalizations.of(context)!;
+    if (companyId == null) {
+      if (embedded) return Center(child: Text(l10n.no_company_workspace));
+      return CompanyPageScaffold(
+        child: Center(child: Text(l10n.no_company_workspace)),
+      );
+    }
+    final state = ref.watch(leadsProvider(companyId));
+    return _CrmListPage<CustomerRecord>(
+      title: l10n.leads,
+      state: state,
+      emptyTitle: l10n.no_leads_found,
+      embedded: embedded,
       itemBuilder: (item) =>
           _personTile(context, item.fullName, item.phoneNumber, item.balance),
     );
@@ -60,46 +92,54 @@ class _CrmListPage<T> extends StatelessWidget {
   final CrmState<T> state;
   final String emptyTitle;
   final Widget Function(T item) itemBuilder;
+  final bool embedded;
 
   const _CrmListPage({
     required this.title,
     required this.state,
     required this.emptyTitle,
     required this.itemBuilder,
+    this.embedded = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final content = ListView(
+      padding: AppBreakpoints.pagePadding(context),
+      children: [
+        ResponsiveContent(
+          child: state.isLoading && state.items.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : state.error != null && state.items.isEmpty
+              ? AdminErrorState(error: state.error!, onRetry: () {})
+              : state.items.isEmpty
+              ? AdminEmptyState(icon: Icons.people_outline, title: emptyTitle)
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 16),
+                    ...state.items.map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: itemBuilder(item),
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      ],
+    );
+
+    if (embedded) {
+      return content;
+    }
+
     return CompanyPageScaffold(
-      child: ListView(
-        padding: AppBreakpoints.pagePadding(context),
-        children: [
-          ResponsiveContent(
-            child: state.isLoading && state.items.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : state.error != null && state.items.isEmpty
-                ? AdminErrorState(error: state.error!, onRetry: () {})
-                : state.items.isEmpty
-                ? AdminEmptyState(icon: Icons.people_outline, title: emptyTitle)
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const SizedBox(height: 16),
-                      ...state.items.map(
-                        (item) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: itemBuilder(item),
-                        ),
-                      ),
-                    ],
-                  ),
-          ),
-        ],
-      ),
+      child: content,
     );
   }
 }

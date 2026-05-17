@@ -137,4 +137,14 @@ class InventoryProviderNotifier extends Notifier<InventoryState> {
   }
 }
 
-final inventoryNotifierProvider = NotifierProvider<InventoryProviderNotifier, InventoryState>(InventoryProviderNotifier.new);
+final inventoryNotifierProvider =
+    NotifierProvider<InventoryProviderNotifier, InventoryState>(
+      InventoryProviderNotifier.new,
+    );
+
+final lowStockProductsProvider = Provider<List<Product>>((ref) {
+  final inventory = ref.watch(inventoryNotifierProvider);
+  return inventory.products
+      .where((p) => p.stockQuantity <= p.minStockAlert)
+      .toList();
+});

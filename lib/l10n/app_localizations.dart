@@ -104,6 +104,42 @@ abstract class AppLocalizations {
   /// **'Watt'**
   String get app_name;
 
+  /// No description provided for @convert_to_lead.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert to Lead'**
+  String get convert_to_lead;
+
+  /// No description provided for @leads.
+  ///
+  /// In en, this message translates to:
+  /// **'Leads'**
+  String get leads;
+
+  /// No description provided for @no_leads_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No leads found'**
+  String get no_leads_found;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @no_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get no_notifications;
+
+  /// No description provided for @mark_all_read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get mark_all_read;
+
   /// No description provided for @version.
   ///
   /// In en, this message translates to:
@@ -6247,12 +6283,6 @@ abstract class AppLocalizations {
   /// **'Dashboard'**
   String get dashboard;
 
-  /// No description provided for @notifications.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications'**
-  String get notifications;
-
   /// No description provided for @no_notifications_yet.
   ///
   /// In en, this message translates to:
@@ -7560,6 +7590,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get close_button;
+
+  /// No description provided for @north.
+  ///
+  /// In en, this message translates to:
+  /// **'North'**
+  String get north;
+
+  /// No description provided for @south.
+  ///
+  /// In en, this message translates to:
+  /// **'South'**
+  String get south;
+
+  /// No description provided for @east.
+  ///
+  /// In en, this message translates to:
+  /// **'East'**
+  String get east;
+
+  /// No description provided for @west.
+  ///
+  /// In en, this message translates to:
+  /// **'West'**
+  String get west;
+
+  /// No description provided for @equator.
+  ///
+  /// In en, this message translates to:
+  /// **'Equator'**
+  String get equator;
+
+  /// No description provided for @optimal.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal'**
+  String get optimal;
+
+  /// No description provided for @quick_create.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Create'**
+  String get quick_create;
+
+  /// No description provided for @add_product.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Product'**
+  String get add_product;
+
+  /// No description provided for @invite_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Member'**
+  String get invite_member;
+
+  /// No description provided for @create_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Offer'**
+  String get create_offer;
+
+  /// No description provided for @start_adding_products_to_inventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Start adding products to your inventory to see them here'**
+  String get start_adding_products_to_inventory;
+
+  /// No description provided for @search_results_for.
+  ///
+  /// In en, this message translates to:
+  /// **'Search results for'**
+  String get search_results_for;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
 }
 
 class _AppLocalizationsDelegate

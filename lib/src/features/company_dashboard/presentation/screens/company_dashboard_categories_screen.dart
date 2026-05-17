@@ -15,7 +15,8 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CompanyDashboardCategoriesScreen extends ConsumerStatefulWidget {
-  const CompanyDashboardCategoriesScreen({super.key});
+  final bool embedded;
+  const CompanyDashboardCategoriesScreen({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyDashboardCategoriesScreen> createState() => _CompanyDashboardCategoriesScreenState();
@@ -43,47 +44,53 @@ class _CompanyDashboardCategoriesScreenState extends ConsumerState<CompanyDashbo
     final companyId = company?.id;
     final canManage = company?.canManageWorkspace ?? false;
 
-    return CompanyPageScaffold(
-      child: companyId == null
-          ? AdminEmptyState(icon: Iconsax.tag_bold, title: l10n.categories, subtitle: l10n.company_categories_no_company)
-          : state.isLoading && state.categories.isEmpty
-          ? AdminLoadingState(icon: Iconsax.tag_bold, message: l10n.company_categories_loading)
-          : state.error != null && state.categories.isEmpty
-          ? AdminErrorState(error: state.error!, onRetry: _load)
-          : SingleChildScrollView(
-              padding: AppBreakpoints.pagePadding(context),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CompanySectionIntro(
-                        title: l10n.categories,
-                        subtitle: l10n.company_categories_subtitle,
-                        action: FilledButton.icon(
-                          onPressed: canManage ? () => _openCategorySheet(context, companyId) : null,
-                          icon: const Icon(Iconsax.add_circle_bold),
-                          label: Text(l10n.company_categories_add),
-                        ),
+    final content = companyId == null
+        ? AdminEmptyState(icon: Iconsax.tag_bold, title: l10n.categories, subtitle: l10n.company_categories_no_company)
+        : state.isLoading && state.categories.isEmpty
+        ? AdminLoadingState(icon: Iconsax.tag_bold, message: l10n.company_categories_loading)
+        : state.error != null && state.categories.isEmpty
+        ? AdminErrorState(error: state.error!, onRetry: _load)
+        : SingleChildScrollView(
+            padding: AppBreakpoints.pagePadding(context),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CompanySectionIntro(
+                      title: l10n.categories,
+                      subtitle: l10n.company_categories_subtitle,
+                      action: FilledButton.icon(
+                        onPressed: canManage ? () => _openCategorySheet(context, companyId) : null,
+                        icon: const Icon(Iconsax.add_circle_bold),
+                        label: Text(l10n.company_categories_add),
                       ),
-                      const SizedBox(height: 20),
-                      if (state.categories.isEmpty)
-                        AdminEmptyState(icon: Iconsax.tag_bold, title: l10n.company_categories_empty_title, subtitle: l10n.company_categories_empty_subtitle)
-                      else
-                        Wrap(
-                          spacing: 12,
-                          runSpacing: 12,
-                          children: [
-                            for (final category in state.categories)
-                              _CategoryChip(category: category, onDelete: canManage ? () => _deleteCategory(context, companyId, category) : null),
-                          ],
-                        ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                    if (state.categories.isEmpty)
+                      AdminEmptyState(icon: Iconsax.tag_bold, title: l10n.company_categories_empty_title, subtitle: l10n.company_categories_empty_subtitle)
+                    else
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          for (final category in state.categories)
+                            _CategoryChip(category: category, onDelete: canManage ? () => _deleteCategory(context, companyId, category) : null),
+                        ],
+                      ),
+                  ],
                 ),
               ),
             ),
+          );
+
+    if (widget.embedded) {
+      return content;
+    }
+
+    return CompanyPageScaffold(
+      child: content,
     );
   }
 

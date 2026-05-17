@@ -10,7 +10,7 @@ import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_plan.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_subscription_request_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/controllers/company_activation_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:solar_hub/src/utils/app_constants.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -135,7 +135,7 @@ class _CompanyActivationNoticeState extends ConsumerState<CompanyActivationNotic
           final l10n = AppLocalizations.of(context)!;
           try {
             final request = await ref.read(companyActivationProvider.notifier).createSubscriptionRequest(widget.company.id, payload);
-            await ref.read(companySummeryProvider.notifier).getSummery();
+            await ref.read(companySummaryProvider.notifier).getSummary();
             if (!context.mounted) return;
             ToastService.success(
               context,

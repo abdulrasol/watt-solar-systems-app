@@ -14,6 +14,7 @@ abstract class CompanyManagementRepository {
     int companyId, {
     int page = 1,
     int? pageSize,
+    String? search,
   });
 
   Future<CompanyContact> createContact(
