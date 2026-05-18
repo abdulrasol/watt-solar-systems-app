@@ -23,6 +23,13 @@ This file tracks the evolution of the B2B side of the application. Mark items as
 
 ---
 
+## 📈 Phase 4: Financial & Savings Intelligence (UPCOMING)
+- [ ] **Dynamic ROI & Solar Savings Calculator**: Develop a premium savings simulator with interactive input sliders (monthly electric bill, location/solar irradiation factor, and target system size).
+- [ ] **Interactive Visual Analytics**: Integrate custom line and bar charts showing the break-even timeline, payback period (years), and cumulative savings over 25 years.
+- [ ] **Localized Financial Metrics**: Add full English/Arabic localization for utility rate inflation, discount rate parameters, and initial system cost estimations.
+
+---
+
 ## ✅ Completed (May 2026)
 - [x] **Advanced CRM & Performance Suite (Phase 3)**: Automated lead capture triggers on marketplace bids, added value-based value equality to `CompanyStats` for highly optimized granular selector updates, and connected push messaging stream triggers to notification controller for real-time header count and in-app toasts.
 - [x] **Granular Projects Roles & Permissions**: Integrated, secured, and enforced the `'projects'` permission key across workspace grids, sidebars, page actions, and deep-link routing.

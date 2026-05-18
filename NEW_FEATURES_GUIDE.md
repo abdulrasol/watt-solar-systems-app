@@ -68,3 +68,45 @@ Welcome to the **Solar Hub Premium Feature Suite**! We have successfully designe
   2. Receive a foreground notification (e.g., a new offer bid or order).
   3. A beautiful floating Toast appears at the bottom of the screen.
   4. The bell badge count instantly increments in real-time without needing a manual refresh or waiting for the polling timer.
+
+---
+
+## 📐 Phase 4: Visual Roof Grid Layout Simulator with Custom Specifications Configuration & In-App Help System
+
+### 1. Interactive Visual 2D Roof Grid Canvas
+* **Description:** A premium state-of-the-art interactive drawing canvas supporting multi-mode tool painting (**Solar Panels**, **Building Obstacles/ACs**, **Wall Shadows**, **Tree Shading**, and **Eraser**) with dynamic sizing, live metrics dashboard, and smart autofill logic that avoids all obstacles and shadows. It features **non-destructive cell preservation**, keeping your painted layout intact when resizing the roof!
+* **How to Access:**
+  1. Open the app, and navigate to **Calculator Landing Page** (Calculators).
+  2. Under the Quick Tools section, tap **Roof Simulator** (محاكي الأسطح والألواح).
+  3. Draw on the grid cells using the scrollable toolbar containing Panels, Obstacles, Shadows, Trees, and Eraser!
+
+### 2. Custom Mechanical and Electrical Specifications Controls
+* **Description:** Elegant collapsible glassmorphic settings panels allowing users to define physical parameters.
+  * **Roof Dimensions Configuration:** Input the actual physical **Roof Width (m)** and **Roof Length (m)** side-by-side in one row with an `ExplanationButton`. The grid columns and rows will automatically calculate to fit maximum panels!
+  * **Panel Rated Power (Watts):** Customizable via number text input (pre-filled with the default **`620W`**).
+  * **Panel Dimensions (meters):** Side-by-side **Length** and **Width** text fields. It instantly calculates and displays the resulting occupied surface area (pre-filled with the default **`2.20 m × 1.10 m = 2.42 m²`**).
+  * **Structural Weight (kg):** Sleek slider pre-filled with the default **`22 kg`**.
+* **How to Access:** Go to the **Roof Simulator** tool, scroll to the **Roof Dimensions** or **Panel Specifications** cards. Type new dimensions into the side-by-side inputs and see the layout size adapt instantly without losing your drawing!
+
+### 3. Integrated Global Help System
+* **Description:** Seamlessly integrates our premium in-app explanation system. Replaced basic alert popups with the custom **`ExplanationButton`** that summons a premium semi-transparent **`ExplanationDialog`** with custom slide-in animations.
+* **How to Access:** 
+  1. Tap the information/question icon in the top right corner of the **Roof Simulator AppBar** to read how the visual simulator works.
+  2. Tap the help icon next to the **Roof Width and Length** inputs or the **Panel Length and Width** inputs to read the physical sizing guidelines.
+
+### 4. Sunlight Orientation, Shading Buffer Zones, & Shading Loss Simulation
+* **Description:** Real-world physical shadowing and orientation simulation:
+  * **Sunlight Facing & Panel Orientation:** A premium card with a selector for the panel direction: **South** (recommended for Northern hemisphere/Middle East), **North**, **East**, or **West**.
+  * **Smart Shade Buffer Avoidance:** A high-end toggle button. When enabled, **Smart Autofill** calculates the sun's path and leaves a 1-cell buffer zone in the direction opposite the sun (shadow cast area) around trees, structures, and parapets to maximize overall panel efficiency.
+  * **Live Shading Warnings:** If the user manually paints a panel within an active shade zone, the cell visualizer automatically transitions to a slate blue-grey panel style with a warning border and triggers a warning caution overlay icon.
+  * **Dynamic Shading Power Loss:** Shaded panels dynamically experience a **70% power loss** in the metrics engine, causing the peak output value to update in real-time.
+* **How to Access:** Go to the **Roof Simulator**, select **South** or **East** facing, place an obstacle/tree next to your panels, and watch the panel cells dynamically adapt their styling, caution badges, and live system peak output power!
+
+---
+
+## 🛠️ Global Architecture Rules & Conventions (Project Roles)
+* **Explanation / Help Dialog Rule:** To maintain design coherence and provide a consistent premium user experience:
+  * **DO NOT** use default `showDialog` or `AlertDialog` boxes for educational explanations, user help, or glossary descriptors.
+  * **ALWAYS** use the custom **`ExplanationButton`** widget, passing an array of `ExplanationItem` objects. This ensures that help overlays are rendered inside the premium, animated, semi-transparent **`ExplanationDialog`** globally across all screens and calculators in the application.
+  * **Single-Row Dimensional Standard:** Group panel dimensions (such as Length and Width text inputs) in a single horizontal row followed by an `ExplanationButton` for a clean, compact aesthetic.
+
