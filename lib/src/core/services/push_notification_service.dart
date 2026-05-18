@@ -16,6 +16,7 @@ import 'package:solar_hub/src/core/services/dio.dart';
 import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 
 const List<String> _guestNotificationTopics = ['general', 'info'];
 const String _notificationChannelId = 'solar_hub_notifications';
@@ -54,6 +55,8 @@ void notificationTapBackgroundHandler(NotificationResponse response) {
 }
 
 class PushNotificationService {
+  static final StreamController<RemoteMessage> onMessageReceived = StreamController<RemoteMessage>.broadcast();
+
   final CasheInterface _cache = getIt<CasheInterface>();
   final DioService _dioService = getIt<DioService>();
   final NetworkStatusService _networkStatus = getIt<NetworkStatusService>();
@@ -95,6 +98,7 @@ class PushNotificationService {
       _onMessageSubscription?.cancel();
       _onMessageSubscription = FirebaseMessaging.onMessage.listen((message) {
         dPrint('Foreground message received: ${message.messageId} - ${message.notification?.title}', tag: 'fcm');
+        onMessageReceived.add(message);
         unawaited(_showForegroundNotification(message));
       });
 
@@ -354,6 +358,11 @@ class PushNotificationService {
       styleInformation: BigTextStyleInformation(body),
     );
     const iosDetails = DarwinNotificationDetails(presentAlert: true, presentBadge: true, presentSound: true);
+
+    final context = rootNavigatorKey.currentContext;
+    if (context != null) {
+      ToastService.info(context, title, body);
+    }
 
     await _localNotifications.show(
       id: message.messageId.hashCode,

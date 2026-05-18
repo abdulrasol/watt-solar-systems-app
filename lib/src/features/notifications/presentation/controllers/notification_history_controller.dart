@@ -4,6 +4,7 @@ import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/notifications/domain/entities/app_notification.dart';
 import 'package:solar_hub/src/features/notifications/domain/repositories/notification_history_repository.dart';
+import 'package:solar_hub/src/core/services/push_notification_service.dart';
 
 const _notificationHistoryUnset = Object();
 
@@ -54,6 +55,7 @@ class NotificationHistoryController extends Notifier<NotificationHistoryState> {
       getIt<NotificationHistoryRepository>();
 
   Timer? _pollingTimer;
+  StreamSubscription? _foregroundMessageSubscription;
 
   @override
   NotificationHistoryState build() {
@@ -61,12 +63,19 @@ class NotificationHistoryController extends Notifier<NotificationHistoryState> {
     if (isSigned) {
       Future.microtask(() => fetchHistory(isRefresh: true));
       _startPolling();
+      _foregroundMessageSubscription?.cancel();
+      _foregroundMessageSubscription = PushNotificationService.onMessageReceived.stream.listen((message) {
+        fetchHistory(isRefresh: true);
+      });
     } else {
       _stopPolling();
+      _foregroundMessageSubscription?.cancel();
+      _foregroundMessageSubscription = null;
     }
 
     ref.onDispose(() {
       _stopPolling();
+      _foregroundMessageSubscription?.cancel();
     });
 
     return const NotificationHistoryState();

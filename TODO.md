@@ -14,16 +14,18 @@ This file tracks the evolution of the B2B side of the application. Mark items as
 - [x] **Inventory Intelligence**: Implement low-stock alerts and bulk inventory import/export (CSV/Excel).
 - [x] **Dynamic Analytics**: Refactor `DashboardCharts` to fetch real data from the `Accounting` and `Orders` providers.
 - [x] **RBAC UI**: Implement a user interface for managing company member roles (Admin, Staff, Viewer).
-- [ ] **Invoicing System**: Generate and download PDF invoices for B2B orders directly from the Accounting module.
+- [x] **Invoicing System**: Generate and download PDF invoices for B2B orders directly from the Accounting module.
 
-## 🚀 Phase 3: Performance & Advanced CRM
-- [ ] **CRM Lead Linking**: Automatically create CRM leads when a user requests an offer from the company.
-- [ ] **Granular State Management**: Refactor `summery_provider.dart` to allow partial updates without re-triggering the full dashboard animation.
-- [ ] **Notification Center**: Implement the logic for the notification icon in the header (In-app notifications for new offers/orders).
+## 🚀 Phase 3: Performance & Advanced CRM (COMPLETED ✅)
+- [x] **CRM Lead Linking**: Automatically create CRM leads when a user requests an offer from the company.
+- [x] **Granular State Management**: Refactor `summary_provider.dart` to allow partial updates without re-triggering the full dashboard animation.
+- [x] **Notification Center**: Implement the logic for the notification icon in the header (In-app notifications for new offers/orders).
 
 ---
 
 ## ✅ Completed (May 2026)
+- [x] **Advanced CRM & Performance Suite (Phase 3)**: Automated lead capture triggers on marketplace bids, added value-based value equality to `CompanyStats` for highly optimized granular selector updates, and connected push messaging stream triggers to notification controller for real-time header count and in-app toasts.
+- [x] **Granular Projects Roles & Permissions**: Integrated, secured, and enforced the `'projects'` permission key across workspace grids, sidebars, page actions, and deep-link routing.
 - [x] **Full B2B Modularization**: Refactored all management screens (Inventory, Orders, CRM, Accounting, Work, Members, Contacts, Public Services, Categories) to support "embedded" mode.
 - [x] **Unified Dashboard Navigation**: Centralized navigation in `DashboardContent` with dynamic switching and sidebar integration.
 - [x] Standardize API Data Fetching (Non-paginated Countries/Cities).
@@ -33,3 +35,4 @@ This file tracks the evolution of the B2B side of the application. Mark items as
 - [x] Store module activation and navigation.
 - [x] Full Localization parity (English/Arabic).
 - [x] Embedded Inventory, Orders, CRM, Accounting, and Company Work.
+- [x] **Invoicing System**: Implemented PDF receipt generation and system invoice download integration via `PdfService` and `printing`.
