@@ -236,7 +236,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen> w
         title: l10n.structure_design_title,
         actions: [
           IconButton(
-            key: const Key('recent_structures_button'),
+            key: const Key('open_watt_drawing_button'),
             onPressed: _openWattDrawing,
             icon: const Icon(Icons.history_rounded),
             tooltip: l10n.structure_recents_tooltip,

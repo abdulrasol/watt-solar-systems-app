@@ -143,6 +143,39 @@ class ResultsStep extends ConsumerWidget {
                   label: l10n.structure_rear_leg_height,
                   value: _meters(result.rearLegHeightMeters),
                 ),
+                if (result.rowMode == RowMode.stepped) ...[
+                  Column(
+                    key: const Key('stepped_row_results'),
+                    children: [
+                      MetricRow(
+                        label: l10n.structure_min_front_leg,
+                        value: _meters(result.minFrontLegHeightMeters),
+                      ),
+                      MetricRow(
+                        label: l10n.structure_max_front_leg,
+                        value: _meters(result.maxFrontLegHeightMeters),
+                      ),
+                      MetricRow(
+                        label: l10n.structure_min_rear_leg,
+                        value: _meters(result.minRearLegHeightMeters),
+                      ),
+                      MetricRow(
+                        label: l10n.structure_max_rear_leg,
+                        value: _meters(result.maxRearLegHeightMeters),
+                      ),
+                    ],
+                  ),
+                ],
+              ],
+            ),
+          ),
+          SizedBox(height: 16.h),
+          SectionCard(
+            icon: Icons.assignment_outlined,
+            title: l10n.structure_bom_title,
+            explanation: explanations[8],
+            child: Column(
+              children: [
                 MetricRow(
                   label: l10n.structure_rail_length,
                   value: _meters(result.railLengthMeters),
@@ -166,24 +199,6 @@ class ResultsStep extends ConsumerWidget {
                   key: const Key('main_total_steel_breakdown'),
                   style: theme.textTheme.bodySmall,
                 ),
-                if (result.rowMode == RowMode.stepped) ...[
-                  MetricRow(
-                    label: l10n.structure_min_front_leg,
-                    value: _meters(result.minFrontLegHeightMeters),
-                  ),
-                  MetricRow(
-                    label: l10n.structure_min_front_leg,
-                    value: _meters(result.minFrontLegHeightMeters),
-                  ),
-                  MetricRow(
-                    label: l10n.structure_min_rear_leg,
-                    value: _meters(result.minRearLegHeightMeters),
-                  ),
-                  MetricRow(
-                    label: l10n.structure_max_rear_leg,
-                    value: _meters(result.maxRearLegHeightMeters),
-                  ),
-                ],
               ],
             ),
           ),

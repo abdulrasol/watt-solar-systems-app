@@ -7,9 +7,9 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 
-enum CellType { empty, panel, obstacle, shadow, tree }
+enum CellType { empty, panel, obstacle, shadow, tree, excluded }
 
-enum ToolMode { placePanel, placeObstacle, placeShadow, placeTree, erase }
+enum ToolMode { placePanel, placeObstacle, placeShadow, placeTree, excludeRoof, erase }
 
 class RoofSimulatorPage extends ConsumerStatefulWidget {
   const RoofSimulatorPage({super.key});
@@ -75,6 +75,11 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
 
   // Selected tool mode
   ToolMode _activeTool = ToolMode.placePanel;
+  bool _isSafeOverlayActive = false;
+
+  // Custom polygon sketching variables
+  final List<Offset> _polygonVertices = [];
+  bool _isPolygonSketchMode = false;
 
   // Grid representation (row-major list)
   List<CellType> _grid = List.filled(27, CellType.empty);
@@ -417,10 +422,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     bool nearTop = distTop < _wallSetbackM;
     bool nearBottom = distBottom < _wallSetbackM;
 
-    return (_hasWestWall && nearLeft) ||
-        (_hasEastWall && nearRight) ||
-        (_hasNorthWall && nearTop) ||
-        (_hasSouthWall && nearBottom);
+    return (_hasWestWall && nearLeft) || (_hasEastWall && nearRight) || (_hasNorthWall && nearTop) || (_hasSouthWall && nearBottom);
   }
 
   void _recreateGrid({int? oldCols, int? oldRows}) {
@@ -550,8 +552,6 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
   double get _totalArea => _panelsCount * _panelAreaM2;
   double get _totalWeight => _panelsCount * _panelWeightKg;
 
-
-
   void _clearAll() {
     setState(() {
       _grid.fillRange(0, _grid.length, CellType.empty);
@@ -579,6 +579,201 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
       context,
       _tr(context, 'Autofill Complete', 'اكتمل الملء التلقائي'),
       _tr(context, 'Successfully populated all available space with panels.', 'تم ملء جميع المساحات المتاحة بالألواح بنجاح.'),
+    );
+  }
+
+  void _autofillSafeSpacesOnly() {
+    _saveStateToHistory();
+    int addedCount = 0;
+    setState(() {
+      for (int i = 0; i < _grid.length; i++) {
+        if (_grid[i] == CellType.empty) {
+          final int r = i ~/ _cols;
+          final int c = i % _cols;
+          if (_isInSetbackZone(r, c)) {
+            continue; // Skip wall setback zone!
+          }
+          if (_isCellShaded(i)) {
+            continue; // Skip shaded cells!
+          }
+          _grid[i] = CellType.panel;
+          addedCount++;
+        }
+      }
+    });
+
+    if (addedCount > 0) {
+      ToastService.success(
+        context,
+        _tr(context, 'Safe Autofill Complete', 'اكتمل الملء التلقائي الآمن'),
+        _tr(
+          context,
+          'Placed $addedCount panels exclusively in verified shade-free safe zones.',
+          'تم وضع $addedCount ألواح حصرياً في المناطق الآمنة الخالية من الظلال.',
+        ),
+      );
+    } else {
+      ToastService.warning(
+        context,
+        _tr(context, 'No Safe Spaces Available', 'لا توجد مساحات آمنة متاحة'),
+        _tr(
+          context,
+          'Could not find any empty shade-free zones on the current layout.',
+          'لم نتمكن من العثور على أي مناطق فارغة خالية من الظلال في المخطط الحالي.',
+        ),
+      );
+    }
+  }
+
+  void _rotateGrid90Clockwise() {
+    _saveStateToHistory();
+    final int oldRows = _rows;
+    final int oldCols = _cols;
+    final int newRows = oldCols;
+    final int newCols = oldRows;
+
+    final List<CellType> newGrid = List.filled(newRows * newCols, CellType.empty);
+
+    for (int r = 0; r < oldRows; r++) {
+      for (int c = 0; c < oldCols; c++) {
+        final oldIndex = r * oldCols + c;
+        final newRow = c;
+        final newCol = oldRows - 1 - r;
+        final newIndex = newRow * newCols + newCol;
+        newGrid[newIndex] = _grid[oldIndex];
+      }
+    }
+
+    // Rotate border walls configuration clockwise:
+    // Old West (left) -> New North (top)
+    // Old North (top) -> New East (right)
+    // Old East (right) -> New South (bottom)
+    // Old South (bottom) -> New West (left)
+    final bool newHasNorth = _hasWestWall;
+    final bool newHasEast = _hasNorthWall;
+    final bool newHasSouth = _hasEastWall;
+    final bool newHasWest = _hasSouthWall;
+
+    final String oldNorthHeight = _northWallController.text;
+    final String oldEastHeight = _eastWallController.text;
+    final String oldSouthHeight = _southWallController.text;
+    final String oldWestHeight = _westWallController.text;
+
+    setState(() {
+      _rows = newRows;
+      _cols = newCols;
+      _grid = newGrid;
+
+      _hasNorthWall = newHasNorth;
+      _hasEastWall = newHasEast;
+      _hasSouthWall = newHasSouth;
+      _hasWestWall = newHasWest;
+
+      _northWallController.text = oldWestHeight;
+      _eastWallController.text = oldNorthHeight;
+      _southWallController.text = oldEastHeight;
+      _westWallController.text = oldSouthHeight;
+
+      // Update actual doubles from controllers
+      _northWallHeight = double.tryParse(oldWestHeight) ?? 0.0;
+      _eastWallHeight = double.tryParse(oldNorthHeight) ?? 0.0;
+      _southWallHeight = double.tryParse(oldEastHeight) ?? 0.0;
+      _westWallHeight = double.tryParse(oldSouthHeight) ?? 0.0;
+    });
+
+    ToastService.success(
+      context,
+      _tr(context, 'Layout Rotated 90°', 'تم تدوير المخطط 90 درجة'),
+      _tr(context, 'Entire roof grid rotated. Sun ray reflections updated!', 'تم تدوير شبكة السطح بأكملها. تم تحديث انعكاسات أشعة الشمس!'),
+    );
+  }
+
+  bool _isPointInPolygon(double x, double y, List<Offset> polygon) {
+    if (polygon.length < 3) return false;
+    bool inside = false;
+    int j = polygon.length - 1;
+    for (int i = 0; i < polygon.length; i++) {
+      if ((polygon[i].dy > y) != (polygon[j].dy > y) &&
+          (x < (polygon[j].dx - polygon[i].dx) * (y - polygon[i].dy) / (polygon[j].dy - polygon[i].dy) + polygon[i].dx)) {
+        inside = !inside;
+      }
+      j = i;
+    }
+    return inside;
+  }
+
+  void _applyPolygonSketch() {
+    if (_polygonVertices.length < 3) {
+      ToastService.warning(
+        context,
+        _tr(context, 'Incomplete Polygon', 'مضلع غير مكتمل'),
+        _tr(context, 'Please sketch at least 3 vertices to define a closed custom roof perimeter.', 'يرجى تحديد 3 نقاط على الأقل لتشكيل حدود سطح مغلقة.'),
+      );
+      return;
+    }
+
+    _saveStateToHistory();
+
+    setState(() {
+      for (int r = 0; r < _rows; r++) {
+        for (int c = 0; c < _cols; c++) {
+          final index = r * _cols + c;
+          final inside = _isPointInPolygon(c.toDouble(), r.toDouble(), _polygonVertices);
+          if (!inside) {
+            _grid[index] = CellType.excluded;
+          } else {
+            if (_grid[index] == CellType.excluded) {
+              _grid[index] = CellType.empty;
+            }
+          }
+        }
+      }
+      _isPolygonSketchMode = false;
+      _polygonVertices.clear();
+    });
+
+    ToastService.success(
+      context,
+      _tr(context, 'Polygon Perimeter Applied', 'تم تطبيق حدود المضلع'),
+      _tr(
+        context,
+        'Custom roof boundary applied! All cells outside your sketched area have been excluded.',
+        'تم تطبيق حدود السطح المخصصة! تم استبعاد جميع الخلايا خارج المنطقة المرسومة.',
+      ),
+    );
+  }
+
+  void _clearPolygonSketch() {
+    setState(() {
+      _polygonVertices.clear();
+    });
+    ToastService.info(
+      context,
+      _tr(context, 'Sketch Cleared', 'تم مسح الرسم'),
+      _tr(context, 'All sketched vertices have been cleared.', 'تم مسح جميع النقاط المرسومة.'),
+    );
+  }
+
+  void _cancelPolygonSketchMode() {
+    setState(() {
+      _isPolygonSketchMode = false;
+      _polygonVertices.clear();
+    });
+  }
+
+  void _alignLayoutToSouth() {
+    _saveStateToHistory();
+    setState(() {
+      _panelOrientation = 'South';
+    });
+    ToastService.success(
+      context,
+      _tr(context, 'Oriented to Solar South', 'تم التوجيه نحو الجنوب الشمسي'),
+      _tr(
+        context,
+        'Panel facing direction optimized to true South! Sun ray angles and shadows updated.',
+        'تم تحسين اتجاه الألواح نحو الجنوب الحقيقي! تم تحديث زوايا أشعة الشمس والظلال.',
+      ),
     );
   }
 
@@ -1082,7 +1277,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
 
   Widget _buildBoundaryWallsControl() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     Widget buildWallItem({
       required String titleEn,
       required String titleAr,
@@ -1097,12 +1292,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF7F9F8),
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(
-            color: hasWall 
-                ? AppTheme.primaryColor.withValues(alpha: 0.3) 
-                : Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12),
-            width: 1.2,
-          ),
+          border: Border.all(color: hasWall ? AppTheme.primaryColor.withValues(alpha: 0.3) : Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12), width: 1.2),
         ),
         child: Row(
           children: [
@@ -1127,11 +1317,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                   SizedBox(height: 2.h),
                   Text(
                     hasWall ? _tr(context, 'Active & Shading', 'نشط ومظلل') : _tr(context, 'No Wall / Flush mount', 'بدون جدار / تركيب مسطح'),
-                    style: TextStyle(
-                      fontSize: 9.sp,
-                      color: hasWall ? Colors.amber : Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 9.sp, color: hasWall ? Colors.amber : Colors.grey, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -1146,11 +1332,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 onSubmitted: (_) => _applyFieldValue(controller, type),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: hasWall ? (isDark ? Colors.white : Colors.black87) : Colors.grey,
-                ),
+                style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: hasWall ? (isDark ? Colors.white : Colors.black87) : Colors.grey),
                 decoration: InputDecoration(
                   labelText: _tr(context, 'Height', 'الارتفاع'),
                   labelStyle: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.bold),
@@ -1198,7 +1380,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             ],
           ),
           SizedBox(height: 12.h),
-          
+
           Column(
             children: [
               buildWallItem(
@@ -1438,25 +1620,15 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 8.h),
                           decoration: BoxDecoration(
-                            color: _isPortrait
-                                ? AppTheme.primaryColor
-                                : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4)),
+                            color: _isPortrait ? AppTheme.primaryColor : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4)),
                             borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: _isPortrait
-                                  ? AppTheme.primaryColor
-                                  : Colors.grey.withValues(alpha: 0.1),
-                            ),
+                            border: Border.all(color: _isPortrait ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.1)),
                           ),
                           child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Iconsax.document_bold,
-                                  color: _isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87),
-                                  size: 13.sp,
-                                ),
+                                Icon(Iconsax.document_bold, color: _isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87), size: 13.sp),
                                 SizedBox(width: 6.w),
                                 Text(
                                   _tr(context, 'Portrait (Vertical)', 'رأسي (طولي)'),
@@ -1488,15 +1660,9 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 8.h),
                           decoration: BoxDecoration(
-                            color: !_isPortrait
-                                ? AppTheme.primaryColor
-                                : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4)),
+                            color: !_isPortrait ? AppTheme.primaryColor : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4)),
                             borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: !_isPortrait
-                                  ? AppTheme.primaryColor
-                                  : Colors.grey.withValues(alpha: 0.1),
-                            ),
+                            border: Border.all(color: !_isPortrait ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.1)),
                           ),
                           child: Center(
                             child: Row(
@@ -1504,11 +1670,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                               children: [
                                 RotatedBox(
                                   quarterTurns: 1,
-                                  child: Icon(
-                                    Iconsax.document_bold,
-                                    color: !_isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87),
-                                    size: 13.sp,
-                                  ),
+                                  child: Icon(Iconsax.document_bold, color: !_isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87), size: 13.sp),
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
@@ -1742,6 +1904,16 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             SizedBox(
               width: 90.w,
               child: _buildToolChip(
+                mode: ToolMode.excludeRoof,
+                label: _tr(context, 'Exclude', 'حدود السقف'),
+                icon: Icons.grid_off_rounded,
+                activeColor: Colors.redAccent,
+              ),
+            ),
+            SizedBox(width: 4.w),
+            SizedBox(
+              width: 90.w,
+              child: _buildToolChip(
                 mode: ToolMode.erase,
                 label: _tr(context, 'Eraser', 'ممحاة'),
                 icon: Icons.cleaning_services_rounded,
@@ -1811,39 +1983,140 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
       children: [
         // Elegant Canvas control strip with Undo, Redo, and instructions
         Padding(
-          padding: EdgeInsets.only(bottom: 6.h, left: 4.w, right: 4.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: EdgeInsets.only(bottom: 8.h, left: 4.w, right: 4.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     _tr(context, 'Solar Roof Layout', 'رسم مخطط السطح'),
                     style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13.sp),
                   ),
-                  SizedBox(width: 8.w),
                   _buildCompassOverlayInline(),
                 ],
               ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.undo_rounded, size: 18.sp),
-                    tooltip: _tr(context, 'Undo', 'تراجع'),
-                    color: canUndo ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.4),
-                    onPressed: canUndo ? _undo : null,
+              SizedBox(height: 8.h),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF7F9F8),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06),
+                    width: 1.0,
                   ),
-                  IconButton(
-                    icon: Icon(Icons.redo_rounded, size: 18.sp),
-                    tooltip: _tr(context, 'Redo', 'إعادة'),
-                    color: canRedo ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.4),
-                    onPressed: canRedo ? _redo : null,
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.draw_rounded, size: 18.sp, color: _isPolygonSketchMode ? Colors.blueAccent : null),
+                        tooltip: _tr(context, 'Sketch Custom Roof', 'رسم سقف مخصص'),
+                        onPressed: () {
+                          setState(() {
+                            _isPolygonSketchMode = !_isPolygonSketchMode;
+                            if (_isPolygonSketchMode) {
+                              _polygonVertices.clear();
+                            }
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.explore_rounded, size: 18.sp, color: _panelOrientation == 'South' ? Colors.orangeAccent : null),
+                        tooltip: _tr(context, 'Orient South', 'توجيه للجنوب'),
+                        onPressed: _alignLayoutToSouth,
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          _isSafeOverlayActive ? Icons.wb_sunny_rounded : Icons.wb_sunny_outlined,
+                          size: 18.sp,
+                          color: _isSafeOverlayActive ? Colors.green : (isDark ? Colors.white60 : Colors.grey[700]),
+                        ),
+                        tooltip: _tr(context, 'Toggle Safety Heatmap', 'تفعيل خريطة المناطق الآمنة'),
+                        onPressed: () {
+                          setState(() {
+                            _isSafeOverlayActive = !_isSafeOverlayActive;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.rotate_90_degrees_cw_rounded, size: 18.sp),
+                        tooltip: _tr(context, 'Rotate Layout 90°', 'تدوير المخطط 90 درجة'),
+                        onPressed: _rotateGrid90Clockwise,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.undo_rounded, size: 18.sp),
+                        tooltip: _tr(context, 'Undo', 'تراجع'),
+                        color: canUndo ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.4),
+                        onPressed: canUndo ? _undo : null,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.redo_rounded, size: 18.sp),
+                        tooltip: _tr(context, 'Redo', 'إعادة'),
+                        color: canRedo ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.4),
+                        onPressed: canRedo ? _redo : null,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ],
           ),
         ),
+
+        if (_isPolygonSketchMode)
+          Container(
+            margin: EdgeInsets.only(bottom: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: Colors.blueAccent.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(color: Colors.blueAccent.withValues(alpha: 0.3)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    _tr(context, '📌 Polygon Sketch: Tap cells to place vertices.', '📌 رسم المضلع: اضغط على الخلايا لتحديد الزوايا.'),
+                    style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                  ),
+                ),
+                Row(
+                  children: [
+                    TextButton.icon(
+                      onPressed: _applyPolygonSketch,
+                      icon: Icon(Icons.check_circle_rounded, size: 14.sp, color: Colors.green),
+                      label: Text(
+                        _tr(context, 'Apply', 'تطبيق'),
+                        style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green),
+                      ),
+                    ),
+                    TextButton.icon(
+                      onPressed: _clearPolygonSketch,
+                      icon: Icon(Icons.refresh_rounded, size: 14.sp, color: Colors.orange),
+                      label: Text(
+                        _tr(context, 'Reset', 'إعادة'),
+                        style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.orange),
+                      ),
+                    ),
+                    TextButton.icon(
+                      onPressed: _cancelPolygonSketchMode,
+                      icon: Icon(Icons.cancel_rounded, size: 14.sp, color: Colors.red),
+                      label: Text(
+                        _tr(context, 'Cancel', 'إلغاء'),
+                        style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
 
         // Interactive Visual Drawing Canvas
         GestureDetector(
@@ -1859,26 +2132,94 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
               boxShadow: const [BoxShadow(color: Color(0x06000000), blurRadius: 16, offset: Offset(0, 8))],
               border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12), width: 1.4),
             ),
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: _cols,
-                crossAxisSpacing: 6.r,
-                mainAxisSpacing: 6.r,
-                childAspectRatio: childAspectRatio,
-              ),
-              itemCount: _cols * _rows,
-              itemBuilder: (context, index) {
-                final cell = _grid[index];
-                return GestureDetector(
-                  onTap: () => _handleCellTap(index),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    decoration: _buildCellDecoration(cell, index),
-                    child: Center(child: _buildCellIcon(cell, index)),
+            child: Stack(
+              children: [
+                GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: _cols,
+                    crossAxisSpacing: 6.r,
+                    mainAxisSpacing: 6.r,
+                    childAspectRatio: childAspectRatio,
                   ),
-                );
-              },
+                  itemCount: _cols * _rows,
+                  itemBuilder: (context, index) {
+                    final cell = _grid[index];
+                    final r = index ~/ _cols;
+                    final c = index % _cols;
+
+                    // Safety space heatmap calculation
+                    Widget? safetyOverlay;
+                    if (_isSafeOverlayActive) {
+                      final bool isExcluded = cell == CellType.excluded;
+                      final bool isObstacle = cell == CellType.obstacle || cell == CellType.tree;
+                      final bool isShaded = _isCellShaded(index);
+                      final bool inSetback = _isInSetbackZone(r, c);
+
+                      if (isExcluded) {
+                        safetyOverlay = Container(
+                          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(8.r)),
+                          child: Center(
+                            child: Icon(Icons.close_rounded, color: Colors.white70, size: (120.w / _cols).clamp(8.0, 16.0)),
+                          ),
+                        );
+                      } else if (isObstacle) {
+                        safetyOverlay = Container(
+                          decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
+                          child: Center(
+                            child: Icon(Icons.error_outline_rounded, color: Colors.white, size: (120.w / _cols).clamp(8.0, 16.0)),
+                          ),
+                        );
+                      } else if (isShaded) {
+                        safetyOverlay = Container(
+                          decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
+                          child: Center(
+                            child: Icon(Icons.wb_cloudy_rounded, color: Colors.white, size: (120.w / _cols).clamp(8.0, 16.0)),
+                          ),
+                        );
+                      } else if (inSetback) {
+                        safetyOverlay = Container(
+                          decoration: BoxDecoration(color: Colors.amber.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
+                          child: Center(
+                            child: Icon(Icons.space_bar_rounded, color: Colors.white, size: (120.w / _cols).clamp(8.0, 16.0)),
+                          ),
+                        );
+                      } else {
+                        safetyOverlay = Container(
+                          decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
+                          child: Center(
+                            child: Icon(Icons.check_circle_rounded, color: Colors.white, size: (120.w / _cols).clamp(8.0, 16.0)),
+                          ),
+                        );
+                      }
+                    }
+
+                    return GestureDetector(
+                      onTap: () => _handleCellTap(index),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              decoration: _buildCellDecoration(cell, index),
+                              child: Center(child: _buildCellIcon(cell, index)),
+                            ),
+                          ),
+                          if (safetyOverlay != null) Positioned.fill(child: safetyOverlay),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                if (_isPolygonSketchMode || _polygonVertices.isNotEmpty)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: CustomPaint(
+                        painter: _PolygonSketchPainter(vertices: _polygonVertices, rows: _rows, cols: _cols),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
@@ -1887,12 +2228,14 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
   }
 
   void _handlePanStart(Offset localPosition, double containerWidth, double containerHeight) {
+    if (_isPolygonSketchMode) return;
     _draggedIndices.clear();
     _saveStateToHistory(); // Save the state ONCE at the start of the drag stroke!
     _handlePanPaint(localPosition, containerWidth, containerHeight, isStart: true);
   }
 
   void _handlePanUpdate(Offset localPosition, double containerWidth, double containerHeight) {
+    if (_isPolygonSketchMode) return;
     _handlePanPaint(localPosition, containerWidth, containerHeight, isStart: false);
   }
 
@@ -1918,10 +2261,10 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     _draggedIndices.add(index);
 
     final currentType = _grid[index];
-    CellType targetType;
+    CellType targetType = currentType;
     switch (_activeTool) {
       case ToolMode.placePanel:
-        if (currentType == CellType.obstacle || currentType == CellType.shadow || currentType == CellType.tree) {
+        if (currentType == CellType.obstacle || currentType == CellType.shadow || currentType == CellType.tree || currentType == CellType.excluded) {
           return;
         }
         targetType = CellType.panel;
@@ -1934,6 +2277,9 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
         break;
       case ToolMode.placeTree:
         targetType = CellType.tree;
+        break;
+      case ToolMode.excludeRoof:
+        targetType = CellType.excluded;
         break;
       case ToolMode.erase:
         targetType = CellType.empty;
@@ -2019,6 +2365,12 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(color: Colors.green.withValues(alpha: 0.4), width: 1.5),
         );
+      case CellType.excluded:
+        return BoxDecoration(
+          color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFF5F5F5),
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(color: Colors.redAccent.withValues(alpha: 0.15), width: 1.0),
+        );
     }
   }
 
@@ -2060,6 +2412,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
         return Icon(Icons.nights_stay_rounded, color: Colors.blueGrey, size: (180.w / _cols).clamp(12.0, 24.0));
       case CellType.tree:
         return Icon(Icons.park_rounded, color: Colors.green, size: (180.w / _cols).clamp(12.0, 24.0));
+      case CellType.excluded:
+        return Icon(Icons.close_rounded, color: Colors.redAccent.withValues(alpha: 0.5), size: (180.w / _cols).clamp(12.0, 24.0));
     }
   }
 
@@ -2088,17 +2442,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E2624) : Colors.white,
         shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.amber.withValues(alpha: isDark ? 0.1 : 0.2),
-            blurRadius: 6,
-            spreadRadius: 1,
-          ),
-        ],
-        border: Border.all(
-          color: AppTheme.primaryColor.withValues(alpha: 0.3),
-          width: 1.2,
-        ),
+        boxShadow: [BoxShadow(color: Colors.amber.withValues(alpha: isDark ? 0.1 : 0.2), blurRadius: 6, spreadRadius: 1)],
+        border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3), width: 1.2),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -2108,44 +2453,28 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             top: 2.r,
             child: Text(
               'N',
-              style: TextStyle(
-                fontSize: 6.sp,
-                fontWeight: FontWeight.w900,
-                color: Colors.redAccent,
-              ),
+              style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w900, color: Colors.redAccent),
             ),
           ),
           Positioned(
             bottom: 2.r,
             child: Text(
               'S',
-              style: TextStyle(
-                fontSize: 6.sp,
-                fontWeight: FontWeight.w900,
-                color: isDark ? Colors.white70 : Colors.black87,
-              ),
+              style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w900, color: isDark ? Colors.white70 : Colors.black87),
             ),
           ),
           Positioned(
             left: 3.r,
             child: Text(
               'W',
-              style: TextStyle(
-                fontSize: 6.sp,
-                fontWeight: FontWeight.w900,
-                color: isDark ? Colors.white70 : Colors.black87,
-              ),
+              style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w900, color: isDark ? Colors.white70 : Colors.black87),
             ),
           ),
           Positioned(
             right: 3.r,
             child: Text(
               'E',
-              style: TextStyle(
-                fontSize: 6.sp,
-                fontWeight: FontWeight.w900,
-                color: isDark ? Colors.white70 : Colors.black87,
-              ),
+              style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w900, color: isDark ? Colors.white70 : Colors.black87),
             ),
           ),
 
@@ -2155,34 +2484,40 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.arrow_upward_rounded,
-                  color: Colors.amber,
-                  size: 10.sp,
-                ),
+                Icon(Icons.arrow_upward_rounded, color: Colors.amber, size: 10.sp),
                 SizedBox(height: 6.h),
               ],
             ),
           ),
 
           // Sun glowing center
-          Icon(
-            Iconsax.sun_1_bold,
-            color: Colors.amber,
-            size: 9.sp,
-          ),
+          Icon(Iconsax.sun_1_bold, color: Colors.amber, size: 9.sp),
         ],
       ),
     );
   }
 
   void _handleCellTap(int index) {
+    if (_isPolygonSketchMode) {
+      final r = index ~/ _cols;
+      final c = index % _cols;
+      final vertex = Offset(c.toDouble(), r.toDouble());
+      setState(() {
+        if (_polygonVertices.contains(vertex)) {
+          _polygonVertices.remove(vertex);
+        } else {
+          _polygonVertices.add(vertex);
+        }
+      });
+      return;
+    }
+
     _saveStateToHistory();
     final currentType = _grid[index];
-    CellType targetType;
+    CellType targetType = currentType;
     switch (_activeTool) {
       case ToolMode.placePanel:
-        if (currentType == CellType.obstacle || currentType == CellType.shadow || currentType == CellType.tree) {
+        if (currentType == CellType.obstacle || currentType == CellType.shadow || currentType == CellType.tree || currentType == CellType.excluded) {
           return;
         }
         if (currentType == CellType.panel) {
@@ -2210,6 +2545,13 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           targetType = CellType.empty;
         } else {
           targetType = CellType.tree;
+        }
+        break;
+      case ToolMode.excludeRoof:
+        if (currentType == CellType.excluded) {
+          targetType = CellType.empty;
+        } else {
+          targetType = CellType.excluded;
         }
         break;
       case ToolMode.erase:
@@ -2298,11 +2640,17 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     int maxRow = -1;
     int shadedPanelsCount = 0;
     int setbackPanelsCount = 0;
+    int excludedCellsCount = 0;
+    int obstacleCellsCount = 0;
+    int treeCellsCount = 0;
+    int safeSpacesCount = 0;
 
     for (int r = 0; r < _rows; r++) {
       for (int c = 0; c < _cols; c++) {
         final index = r * _cols + c;
-        if (_grid[index] == CellType.panel) {
+        final cell = _grid[index];
+
+        if (cell == CellType.panel) {
           if (c < minCol) minCol = c;
           if (c > maxCol) maxCol = c;
           if (r < minRow) minRow = r;
@@ -2315,6 +2663,21 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           // Check if this panel cell resides in the safe setback clearance zone
           if (_isInSetbackZone(r, c)) {
             setbackPanelsCount++;
+          }
+        } else if (cell == CellType.excluded) {
+          excludedCellsCount++;
+        } else if (cell == CellType.obstacle) {
+          obstacleCellsCount++;
+        } else if (cell == CellType.tree) {
+          treeCellsCount++;
+        }
+
+        // Calculate potential safe space
+        if (cell == CellType.empty) {
+          final bool inSetback = _isInSetbackZone(r, c);
+          final bool isShaded = _isCellShaded(index);
+          if (!inSetback && !isShaded) {
+            safeSpacesCount++;
           }
         }
       }
@@ -2330,6 +2693,9 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
         'rowsCount': 0,
         'shadedCount': 0,
         'setbackCount': 0,
+        'excludedCount': excludedCellsCount,
+        'obstacleCount': obstacleCellsCount + treeCellsCount,
+        'safeSpacesCount': safeSpacesCount,
       };
     }
 
@@ -2350,6 +2716,9 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
       'rowsCount': rowsCount,
       'shadedCount': shadedPanelsCount,
       'setbackCount': setbackPanelsCount,
+      'excludedCount': excludedCellsCount,
+      'obstacleCount': obstacleCellsCount + treeCellsCount,
+      'safeSpacesCount': safeSpacesCount,
     };
   }
 
@@ -2395,11 +2764,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                   Icon(Iconsax.info_circle_bold, color: Colors.orangeAccent, size: 24.sp),
                   SizedBox(height: 6.h),
                   Text(
-                    _tr(
-                      context,
-                      'No Active Solar Panels Placed Yet',
-                      'لم يتم وضع ألواح شمسية نشطة بعد',
-                    ),
+                    _tr(context, 'No Active Solar Panels Placed Yet', 'لم يتم وضع ألواح شمسية نشطة بعد'),
                     style: TextStyle(fontSize: 11.5.sp, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 4.h),
@@ -2446,16 +2811,12 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                             child: Center(
                               child: Text(
                                 '${stats['colsCount']} × ${stats['rowsCount']}',
-                                style: TextStyle(
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.w900,
-                                  color: AppTheme.primaryColor,
-                                ),
+                                style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
                               ),
                             ),
                           ),
                         ),
-                        
+
                         // Dimensions label pointers
                         // Width label (horizontal, top)
                         Align(
@@ -2506,15 +2867,11 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                         padding: EdgeInsets.all(10.r),
                         height: 110.h,
                         decoration: BoxDecoration(
-                          color: isSafe 
+                          color: isSafe
                               ? (isDark ? const Color(0xFF13251E) : const Color(0xFFEDF7F3))
                               : (isDark ? const Color(0xFF281E15) : const Color(0xFFFDF6ED)),
                           borderRadius: BorderRadius.circular(16.r),
-                          border: Border.all(
-                            color: isSafe 
-                                ? Colors.green.withValues(alpha: 0.3)
-                                : Colors.amber.withValues(alpha: 0.3),
-                          ),
+                          border: Border.all(color: isSafe ? Colors.green.withValues(alpha: 0.3) : Colors.amber.withValues(alpha: 0.3)),
                         ),
                         child: SingleChildScrollView(
                           child: Column(
@@ -2522,22 +2879,14 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                             children: [
                               Row(
                                 children: [
-                                  Icon(
-                                    isSafe ? Icons.check_circle_rounded : Icons.warning_rounded,
-                                    color: isSafe ? Colors.green : Colors.amber,
-                                    size: 14.sp,
-                                  ),
+                                  Icon(isSafe ? Icons.check_circle_rounded : Icons.warning_rounded, color: isSafe ? Colors.green : Colors.amber, size: 14.sp),
                                   SizedBox(width: 4.w),
                                   Expanded(
                                     child: Text(
-                                      isSafe 
+                                      isSafe
                                           ? _tr(context, 'Optimal & Safe Layout', 'تخطيط آمن ومثالي')
                                           : _tr(context, 'Safety Warnings Found', 'تم العثور على تنبيهات أمان'),
-                                      style: TextStyle(
-                                        fontSize: 10.5.sp, 
-                                        fontWeight: FontWeight.bold,
-                                        color: isSafe ? Colors.green : Colors.amber[800],
-                                      ),
+                                      style: TextStyle(fontSize: 10.5.sp, fontWeight: FontWeight.bold, color: isSafe ? Colors.green : Colors.amber[800]),
                                     ),
                                   ),
                                 ],
@@ -2555,22 +2904,14 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                               ] else ...[
                                 if (shaded > 0) ...[
                                   Text(
-                                    '⚠️ ${_tr(
-                                      context,
-                                      '$shaded panels in high shadow zones (suffer 75% power loss).',
-                                      '$shaded من الألواح في مناطق ظل كثيفة (تخسر 75% من الطاقة).',
-                                    )}',
+                                    '⚠️ ${_tr(context, '$shaded panels in high shadow zones (suffer 75% power loss).', '$shaded من الألواح في مناطق ظل كثيفة (تخسر 75% من الطاقة).')}',
                                     style: TextStyle(fontSize: 8.sp, height: 1.3, color: isDark ? Colors.white70 : Colors.black87, fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(height: 3.h),
                                 ],
                                 if (setback > 0) ...[
                                   Text(
-                                    '⚠️ ${_tr(
-                                      context,
-                                      '$setback panels are too close to roof edges/active walls.',
-                                      '$setback من الألواح قريبة جدًا من حواف السطح/الجدران.',
-                                    )}',
+                                    '⚠️ ${_tr(context, '$setback panels are too close to roof edges/active walls.', '$setback من الألواح قريبة جدًا من حواف السطح/الجدران.')}',
                                     style: TextStyle(fontSize: 8.sp, height: 1.3, color: isDark ? Colors.white70 : Colors.black87, fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -2584,9 +2925,286 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 ),
               ],
             ),
+
+            SizedBox(height: 12.h),
+
+            // Metrics row breakdown
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF13201B) : const Color(0xFFEDF7F3),
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(color: Colors.green.withValues(alpha: 0.15)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _tr(context, 'Safe Spaces Available', 'المساحات الآمنة المتاحة'),
+                          style: TextStyle(fontSize: 8.5.sp, color: Colors.grey[500], fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          '${stats['safeSpacesCount']} ${_tr(context, 'cells', 'خلايا')}',
+                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF261D1D) : const Color(0xFFFDF2F2),
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(color: Colors.redAccent.withValues(alpha: 0.15)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _tr(context, 'Excluded Boundaries', 'الحدود المستبعدة'),
+                          style: TextStyle(fontSize: 8.5.sp, color: Colors.grey[500], fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          '${stats['excludedCount']} ${_tr(context, 'cells', 'خلايا')}',
+                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.redAccent),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            // Yield Index & Safety Analytics Card
+            Builder(
+              builder: (context) {
+                final int totalCells = _rows * _cols;
+                final int excluded = stats['excludedCount'] as int;
+                final int usableCells = totalCells - excluded;
+                final int safeSpaces = stats['safeSpacesCount'] as int;
+
+                final double cellW = _isPortrait ? _panelWidthM : _panelLengthM;
+                final double cellH = _isPortrait ? _panelLengthM : _panelWidthM;
+                final double cellArea = cellW * cellH;
+
+                final double usableArea = usableCells * cellArea;
+                final double safeArea = safeSpaces * cellArea;
+
+                final double yieldPercentage = usableCells > 0 ? (safeSpaces / usableCells) * 100 : 0.0;
+
+                Color yieldColor = Colors.redAccent;
+                if (yieldPercentage >= 75) {
+                  yieldColor = Colors.green;
+                } else if (yieldPercentage >= 40) {
+                  yieldColor = Colors.orangeAccent;
+                }
+
+                return Container(
+                  margin: EdgeInsets.only(top: 10.h, bottom: 4.h),
+                  padding: EdgeInsets.all(12.r),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF4F7F6),
+                    borderRadius: BorderRadius.circular(16.r),
+                    border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.15)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _tr(context, 'Net Effective Roof Space', 'مساحة السطح الفعالة الصافية'),
+                            style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                            decoration: BoxDecoration(color: yieldColor.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8.r)),
+                            child: Text(
+                              '${yieldPercentage.toStringAsFixed(0)}% ${_tr(context, 'Yield', 'إنتاجية')}',
+                              style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w900, color: yieldColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      // Progress/Yield Bar
+                      Stack(
+                        children: [
+                          Container(
+                            height: 6.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(color: isDark ? Colors.white10 : Colors.grey[300], borderRadius: BorderRadius.circular(3.r)),
+                          ),
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 500),
+                                height: 6.h,
+                                width: constraints.maxWidth * (yieldPercentage / 100),
+                                decoration: BoxDecoration(color: yieldColor, borderRadius: BorderRadius.circular(3.r)),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _tr(context, 'Sketched Usable Roof', 'السطح الصالح للاستخدام'),
+                                style: TextStyle(fontSize: 8.5.sp, color: Colors.grey[500]),
+                              ),
+                              SizedBox(height: 2.h),
+                              Text(
+                                '${usableArea.toStringAsFixed(1)}m² ($usableCells ${_tr(context, 'cells', 'خلايا')})',
+                                style: TextStyle(fontSize: 10.5.sp, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                _tr(context, 'Shade-Free Safe Zone', 'المنطقة الآمنة الخالية من الظلال'),
+                                style: TextStyle(fontSize: 8.5.sp, color: Colors.grey[500]),
+                              ),
+                              SizedBox(height: 2.h),
+                              Text(
+                                '${safeArea.toStringAsFixed(1)}m² ($safeSpaces ${_tr(context, 'cells', 'خلايا')})',
+                                style: TextStyle(fontSize: 10.5.sp, fontWeight: FontWeight.bold, color: Colors.green),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+
+            SizedBox(height: 12.h),
+
+            // Smart Autofill Safe Zones Only Trigger
+            SizedBox(
+              width: double.infinity,
+              height: 38.h,
+              child: ElevatedButton.icon(
+                onPressed: _autofillSafeSpacesOnly,
+                icon: Icon(Icons.verified_user_rounded, size: 16.sp, color: Colors.white),
+                label: Text(
+                  _tr(context, 'Autofill Safe Zones Only', 'ملء المناطق الآمنة فقط'),
+                  style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1B5E20),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+                  elevation: 0,
+                ),
+              ),
+            ),
           ],
         ],
       ),
     );
+  }
+}
+
+class _PolygonSketchPainter extends CustomPainter {
+  final List<Offset> vertices;
+  final int rows;
+  final int cols;
+
+  _PolygonSketchPainter({required this.vertices, required this.rows, required this.cols});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (vertices.isEmpty) return;
+
+    final colWidth = size.width / cols;
+    final rowHeight = size.height / rows;
+
+    final paintLine = Paint()
+      ..color = Colors.blueAccent.withValues(alpha: 0.9)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0
+      ..strokeCap = StrokeCap.round;
+
+    final paintLineClosed = Paint()
+      ..color = Colors.blueAccent.withValues(alpha: 0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
+      ..strokeCap = StrokeCap.round;
+
+    // Create Path of vertices
+    final path = Path();
+    for (int i = 0; i < vertices.length; i++) {
+      final c = vertices[i].dx;
+      final r = vertices[i].dy;
+      final point = Offset((c + 0.5) * colWidth, (r + 0.5) * rowHeight);
+      if (i == 0) {
+        path.moveTo(point.dx, point.dy);
+      } else {
+        path.lineTo(point.dx, point.dy);
+      }
+    }
+
+    canvas.drawPath(path, paintLine);
+
+    // Draw closed dashed/dotted line back to start
+    if (vertices.length > 2) {
+      final start = Offset((vertices[0].dx + 0.5) * colWidth, (vertices[0].dy + 0.5) * rowHeight);
+      final end = Offset((vertices.last.dx + 0.5) * colWidth, (vertices.last.dy + 0.5) * rowHeight);
+      canvas.drawLine(start, end, paintLineClosed);
+    }
+
+    // Draw vertex handles
+    final paintVertex = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.fill;
+
+    final paintVertexGlow = Paint()
+      ..color = Colors.blue.withValues(alpha: 0.3)
+      ..style = PaintingStyle.fill;
+
+    for (int i = 0; i < vertices.length; i++) {
+      final c = vertices[i].dx;
+      final r = vertices[i].dy;
+      final point = Offset((c + 0.5) * colWidth, (r + 0.5) * rowHeight);
+
+      // Draw glowing background for each vertex
+      canvas.drawCircle(point, 10.0, paintVertexGlow);
+      // Draw inner solid circle
+      canvas.drawCircle(point, 5.0, paintVertex);
+
+      // Draw text overlay index
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: '${i + 1}',
+          style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      textPainter.paint(canvas, point - Offset(textPainter.width / 2, textPainter.height / 2));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _PolygonSketchPainter oldDelegate) {
+    return oldDelegate.vertices != vertices || oldDelegate.rows != rows || oldDelegate.cols != cols;
   }
 }

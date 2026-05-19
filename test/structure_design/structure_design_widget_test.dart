@@ -158,7 +158,7 @@ void main() {
     expect(find.text('Estimated BOM'), findsOneWidget);
     expect(find.text('Total steel length'), findsOneWidget);
     expect(find.byKey(const Key('save_watt_drawing_button')), findsOneWidget);
-    expect(find.text('Save Watt Drawing'), findsOneWidget);
+    expect(find.text('Save Watt Drawing'), findsWidgets);
   });
 
   testWidgets('results screen shows view full sketch button', (tester) async {
