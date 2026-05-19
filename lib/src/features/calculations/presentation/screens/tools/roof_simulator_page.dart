@@ -33,11 +33,45 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
   double _panelWidthM = 1.1;
   double _panelWeightKg = 22.0;
 
+  // Setback and orientation specifications
+  bool _isPortrait = true;
+  double _wallSetbackM = 0.5;
+
+  // Optional Boundary Walls config
+  bool _hasNorthWall = false;
+  bool _hasSouthWall = false;
+  bool _hasEastWall = false;
+  bool _hasWestWall = false;
+
+  double _northWallHeight = 1.0;
+  double _southWallHeight = 1.0;
+  double _eastWallHeight = 1.0;
+  double _westWallHeight = 1.0;
+
   late final TextEditingController _powerController;
   late final TextEditingController _lengthController;
   late final TextEditingController _widthController;
   late final TextEditingController _roofWidthController;
   late final TextEditingController _roofLengthController;
+  late final TextEditingController _setbackController;
+
+  late final TextEditingController _northWallController;
+  late final TextEditingController _southWallController;
+  late final TextEditingController _eastWallController;
+  late final TextEditingController _westWallController;
+
+  // FocusNodes for input fields to implement validation guardrails on Focus-Out
+  late final FocusNode _powerFocus;
+  late final FocusNode _lengthFocus;
+  late final FocusNode _widthFocus;
+  late final FocusNode _roofWidthFocus;
+  late final FocusNode _roofLengthFocus;
+  late final FocusNode _setbackFocus;
+
+  late final FocusNode _northWallFocus;
+  late final FocusNode _southWallFocus;
+  late final FocusNode _eastWallFocus;
+  late final FocusNode _westWallFocus;
 
   // Selected tool mode
   ToolMode _activeTool = ToolMode.placePanel;
@@ -49,53 +83,53 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
   String _panelOrientation = 'South';
   bool _shadeBufferAvoidance = true;
 
+  // History stacks for Undo & Redo transaction tracking
+  final List<List<CellType>> _undoStack = [];
+  final List<List<CellType>> _redoStack = [];
+
+  // Track processed indices during a single swipe gesture
+  final Set<int> _draggedIndices = {};
+
   @override
   void initState() {
     super.initState();
-    
+
     _powerController = TextEditingController(text: '620');
-    _powerController.addListener(() {
-      final val = double.tryParse(_powerController.text) ?? 620.0;
-      setState(() {
-        _panelPowerW = val;
-      });
-    });
-
     _lengthController = TextEditingController(text: '2.2');
-    _lengthController.addListener(() {
-      final val = double.tryParse(_lengthController.text) ?? 2.2;
-      setState(() {
-        _panelLengthM = val;
-        _updateGridFromDimensions();
-      });
-    });
-
     _widthController = TextEditingController(text: '1.1');
-    _widthController.addListener(() {
-      final val = double.tryParse(_widthController.text) ?? 1.1;
-      setState(() {
-        _panelWidthM = val;
-        _updateGridFromDimensions();
-      });
-    });
-
     _roofWidthController = TextEditingController(text: '10.0');
-    _roofWidthController.addListener(() {
-      final val = double.tryParse(_roofWidthController.text) ?? 10.0;
-      setState(() {
-        _roofWidthM = val;
-        _updateGridFromDimensions();
-      });
-    });
-
     _roofLengthController = TextEditingController(text: '8.0');
-    _roofLengthController.addListener(() {
-      final val = double.tryParse(_roofLengthController.text) ?? 8.0;
-      setState(() {
-        _roofLengthM = val;
-        _updateGridFromDimensions();
-      });
-    });
+    _setbackController = TextEditingController(text: '0.5');
+
+    _northWallController = TextEditingController(text: '1.0');
+    _southWallController = TextEditingController(text: '1.0');
+    _eastWallController = TextEditingController(text: '1.0');
+    _westWallController = TextEditingController(text: '1.0');
+
+    _powerFocus = FocusNode();
+    _lengthFocus = FocusNode();
+    _widthFocus = FocusNode();
+    _roofWidthFocus = FocusNode();
+    _roofLengthFocus = FocusNode();
+    _setbackFocus = FocusNode();
+
+    _northWallFocus = FocusNode();
+    _southWallFocus = FocusNode();
+    _eastWallFocus = FocusNode();
+    _westWallFocus = FocusNode();
+
+    // Attach Focus-Out listeners
+    _powerFocus.addListener(() => _onFieldFocusChanged(_powerFocus, _powerController, 'power'));
+    _lengthFocus.addListener(() => _onFieldFocusChanged(_lengthFocus, _lengthController, 'length'));
+    _widthFocus.addListener(() => _onFieldFocusChanged(_widthFocus, _widthController, 'width'));
+    _roofWidthFocus.addListener(() => _onFieldFocusChanged(_roofWidthFocus, _roofWidthController, 'roofWidth'));
+    _roofLengthFocus.addListener(() => _onFieldFocusChanged(_roofLengthFocus, _roofLengthController, 'roofLength'));
+    _setbackFocus.addListener(() => _onFieldFocusChanged(_setbackFocus, _setbackController, 'setback'));
+
+    _northWallFocus.addListener(() => _onFieldFocusChanged(_northWallFocus, _northWallController, 'northWall'));
+    _southWallFocus.addListener(() => _onFieldFocusChanged(_southWallFocus, _southWallController, 'southWall'));
+    _eastWallFocus.addListener(() => _onFieldFocusChanged(_eastWallFocus, _eastWallController, 'eastWall'));
+    _westWallFocus.addListener(() => _onFieldFocusChanged(_westWallFocus, _westWallController, 'westWall'));
 
     // Make sure we have initial computed layout
     _updateGridFromDimensions();
@@ -108,12 +142,257 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     _widthController.dispose();
     _roofWidthController.dispose();
     _roofLengthController.dispose();
+    _setbackController.dispose();
+
+    _northWallController.dispose();
+    _southWallController.dispose();
+    _eastWallController.dispose();
+    _westWallController.dispose();
+
+    _powerFocus.dispose();
+    _lengthFocus.dispose();
+    _widthFocus.dispose();
+    _roofWidthFocus.dispose();
+    _roofLengthFocus.dispose();
+    _setbackFocus.dispose();
+
+    _northWallFocus.dispose();
+    _southWallFocus.dispose();
+    _eastWallFocus.dispose();
+    _westWallFocus.dispose();
     super.dispose();
   }
 
+  void _onFieldFocusChanged(FocusNode focusNode, TextEditingController controller, String type) {
+    if (!focusNode.hasFocus) {
+      _applyFieldValue(controller, type);
+    }
+  }
+
+  void _applyFieldValue(TextEditingController controller, String type) {
+    final text = controller.text.trim();
+    final parsed = double.tryParse(text);
+
+    if (parsed == null || parsed < 0 || (parsed == 0 && type != 'setback' && !type.endsWith('Wall'))) {
+      double oldVal = 0.0;
+      switch (type) {
+        case 'power':
+          oldVal = _panelPowerW;
+          break;
+        case 'length':
+          oldVal = _panelLengthM;
+          break;
+        case 'width':
+          oldVal = _panelWidthM;
+          break;
+        case 'roofWidth':
+          oldVal = _roofWidthM;
+          break;
+        case 'roofLength':
+          oldVal = _roofLengthM;
+          break;
+        case 'setback':
+          oldVal = _wallSetbackM;
+          break;
+        case 'northWall':
+          oldVal = _northWallHeight;
+          break;
+        case 'southWall':
+          oldVal = _southWallHeight;
+          break;
+        case 'eastWall':
+          oldVal = _eastWallHeight;
+          break;
+        case 'westWall':
+          oldVal = _westWallHeight;
+          break;
+      }
+      controller.text = oldVal.toString();
+      ToastService.warning(
+        context,
+        _tr(context, 'Invalid Input', 'مدخل غير صالح'),
+        _tr(context, 'Please enter a valid positive number.', 'يرجى إدخال رقم موجب صالح.'),
+      );
+      return;
+    }
+
+    bool isValid = true;
+    String errorMsgEn = '';
+    String errorMsgAr = '';
+
+    switch (type) {
+      case 'power':
+        if (parsed < 10 || parsed > 2000) {
+          isValid = false;
+          errorMsgEn = 'Power must be between 10W and 2000W.';
+          errorMsgAr = 'يجب أن تكون القدرة بين 10 واط و 2000 واط.';
+        }
+        break;
+      case 'length':
+        if (parsed < 0.2 || parsed > 5.0) {
+          isValid = false;
+          errorMsgEn = 'Panel length must be between 0.2m and 5.0m.';
+          errorMsgAr = 'يجب أن يكون طول اللوح بين 0.2م و 5.0م.';
+        }
+        break;
+      case 'width':
+        if (parsed < 0.2 || parsed > 5.0) {
+          isValid = false;
+          errorMsgEn = 'Panel width must be between 0.2m and 5.0m.';
+          errorMsgAr = 'يجب أن يكون عرض اللوح بين 0.2م و 5.0م.';
+        }
+        break;
+      case 'roofWidth':
+        if (parsed < 1.0 || parsed > 100.0) {
+          isValid = false;
+          errorMsgEn = 'Roof width must be between 1.0m and 100.0m.';
+          errorMsgAr = 'يجب أن يكون عرض السطح بين 1.0م و 100.0م.';
+        }
+        break;
+      case 'roofLength':
+        if (parsed < 1.0 || parsed > 100.0) {
+          isValid = false;
+          errorMsgEn = 'Roof length must be between 1.0m and 100.0m.';
+          errorMsgAr = 'يجب أن يكون طول السطح بين 1.0م و 100.0م.';
+        }
+        break;
+      case 'setback':
+        if (parsed < 0.0 || parsed > 5.0) {
+          isValid = false;
+          errorMsgEn = 'Safe setback must be between 0.0m and 5.0m.';
+          errorMsgAr = 'يجب أن تكون مسافة الأمان بين 0.0م و 5.0م.';
+        }
+        break;
+      case 'northWall':
+      case 'southWall':
+      case 'eastWall':
+      case 'westWall':
+        if (parsed < 0.0 || parsed > 10.0) {
+          isValid = false;
+          errorMsgEn = 'Wall height must be between 0.0m and 10.0m.';
+          errorMsgAr = 'يجب أن يكون ارتفاع الجدار بين 0.0م و 10.0م.';
+        }
+        break;
+    }
+
+    if (!isValid) {
+      double oldVal = 0.0;
+      switch (type) {
+        case 'power':
+          oldVal = _panelPowerW;
+          break;
+        case 'length':
+          oldVal = _panelLengthM;
+          break;
+        case 'width':
+          oldVal = _panelWidthM;
+          break;
+        case 'roofWidth':
+          oldVal = _roofWidthM;
+          break;
+        case 'roofLength':
+          oldVal = _roofLengthM;
+          break;
+        case 'setback':
+          oldVal = _wallSetbackM;
+          break;
+        case 'northWall':
+          oldVal = _northWallHeight;
+          break;
+        case 'southWall':
+          oldVal = _southWallHeight;
+          break;
+        case 'eastWall':
+          oldVal = _eastWallHeight;
+          break;
+        case 'westWall':
+          oldVal = _westWallHeight;
+          break;
+      }
+      controller.text = oldVal.toString();
+      ToastService.warning(context, _tr(context, 'Out of Bounds', 'خارج الحدود المسموحة'), _tr(context, errorMsgEn, errorMsgAr));
+      return;
+    }
+
+    setState(() {
+      _saveStateToHistory(); // Save before mutating layout dimensions!
+      switch (type) {
+        case 'power':
+          _panelPowerW = parsed;
+          break;
+        case 'length':
+          _panelLengthM = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'width':
+          _panelWidthM = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'roofWidth':
+          _roofWidthM = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'roofLength':
+          _roofLengthM = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'setback':
+          _wallSetbackM = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'northWall':
+          _northWallHeight = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'southWall':
+          _southWallHeight = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'eastWall':
+          _eastWallHeight = parsed;
+          _updateGridFromDimensions();
+          break;
+        case 'westWall':
+          _westWallHeight = parsed;
+          _updateGridFromDimensions();
+          break;
+      }
+    });
+  }
+
+  void _saveStateToHistory() {
+    _undoStack.add(List.from(_grid));
+    _redoStack.clear(); // Clear redo on any new stroke/action
+    if (_undoStack.length > 25) {
+      _undoStack.removeAt(0); // Cap history at 25 moves
+    }
+  }
+
+  void _undo() {
+    if (_undoStack.isNotEmpty) {
+      final prev = _undoStack.removeLast();
+      setState(() {
+        _redoStack.add(List.from(_grid));
+        _grid = prev;
+      });
+    }
+  }
+
+  void _redo() {
+    if (_redoStack.isNotEmpty) {
+      final next = _redoStack.removeLast();
+      setState(() {
+        _undoStack.add(List.from(_grid));
+        _grid = next;
+      });
+    }
+  }
+
   void _updateGridFromDimensions() {
-    final computedCols = (_roofWidthM / _panelWidthM).floor().clamp(2, 18);
-    final computedRows = (_roofLengthM / _panelLengthM).floor().clamp(2, 18);
+    final double cellW = _isPortrait ? _panelWidthM : _panelLengthM;
+    final double cellH = _isPortrait ? _panelLengthM : _panelWidthM;
+    final computedCols = (_roofWidthM / cellW).floor().clamp(2, 25);
+    final computedRows = (_roofLengthM / cellH).floor().clamp(2, 25);
     if (computedCols != _cols || computedRows != _rows) {
       final oldCols = _cols;
       final oldRows = _rows;
@@ -121,6 +400,27 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
       _rows = computedRows;
       _recreateGrid(oldCols: oldCols, oldRows: oldRows);
     }
+  }
+
+  bool _isInSetbackZone(int r, int c) {
+    if (_wallSetbackM <= 0) return false;
+    final double cellW = _isPortrait ? _panelWidthM : _panelLengthM;
+    final double cellH = _isPortrait ? _panelLengthM : _panelWidthM;
+
+    final double distLeft = c * cellW;
+    final double distRight = (_cols - 1 - c) * cellW;
+    final double distTop = r * cellH;
+    final double distBottom = (_rows - 1 - r) * cellH;
+
+    bool nearLeft = distLeft < _wallSetbackM;
+    bool nearRight = distRight < _wallSetbackM;
+    bool nearTop = distTop < _wallSetbackM;
+    bool nearBottom = distBottom < _wallSetbackM;
+
+    return (_hasWestWall && nearLeft) ||
+        (_hasEastWall && nearRight) ||
+        (_hasNorthWall && nearTop) ||
+        (_hasSouthWall && nearBottom);
   }
 
   void _recreateGrid({int? oldCols, int? oldRows}) {
@@ -160,8 +460,17 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     double total = 0.0;
     for (int i = 0; i < _grid.length; i++) {
       if (_grid[i] == CellType.panel) {
-        if (_isCellShaded(i)) {
-          total += (_panelPowerW * 0.3) / 1000.0; // 70% shading loss!
+        final shadeSource = _shadingSourceCell(i);
+        if (shadeSource != null) {
+          double factor = 1.0;
+          if (shadeSource == CellType.tree) {
+            factor = 0.60; // 40% yield loss
+          } else if (shadeSource == CellType.shadow) {
+            factor = 0.25; // 75% yield loss
+          } else if (shadeSource == CellType.obstacle) {
+            factor = 0.10; // 90% yield loss
+          }
+          total += (_panelPowerW * factor) / 1000.0;
         } else {
           total += _panelPowerW / 1000.0;
         }
@@ -170,64 +479,78 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     return total;
   }
 
-  bool _isCellShaded(int index) {
+  CellType? _shadingSourceCell(int index) {
     int row = index ~/ _cols;
     int col = index % _cols;
 
-    bool isBlocker(int r, int c) {
-      if (r < 0 || r >= _rows || c < 0 || c >= _cols) return false;
+    // 1. Calculate physical wall shadows based on active walls, heights, and panel orientation
+    final double cellW = _isPortrait ? _panelWidthM : _panelLengthM;
+    final double cellH = _isPortrait ? _panelLengthM : _panelWidthM;
+
+    final double distToNorth = (row + 0.5) * cellH;
+    final double distToSouth = (_rows - 0.5 - row) * cellH;
+    final double distToWest = (col + 0.5) * cellW;
+    final double distToEast = (_cols - 0.5 - col) * cellW;
+
+    bool isShadedByWall = false;
+
+    // Shadow factor: standard multiplier for low-altitude sun angles is 1.25
+    if (_panelOrientation == 'South') {
+      // South wall is in the front (blocks sun); North wall is in the back (does not shade panels)
+      if (_hasSouthWall && distToSouth < _southWallHeight * 1.25) isShadedByWall = true;
+      if (_hasEastWall && distToEast < _eastWallHeight * 1.25) isShadedByWall = true;
+      if (_hasWestWall && distToWest < _westWallHeight * 1.25) isShadedByWall = true;
+    } else if (_panelOrientation == 'North') {
+      // North wall is in the front (blocks sun); South wall is in the back (does not shade panels)
+      if (_hasNorthWall && distToNorth < _northWallHeight * 1.25) isShadedByWall = true;
+      if (_hasEastWall && distToEast < _eastWallHeight * 1.25) isShadedByWall = true;
+      if (_hasWestWall && distToWest < _westWallHeight * 1.25) isShadedByWall = true;
+    } else if (_panelOrientation == 'East') {
+      // East wall is in the front; West wall is in the back
+      if (_hasEastWall && distToEast < _eastWallHeight * 1.25) isShadedByWall = true;
+      if (_hasNorthWall && distToNorth < _northWallHeight * 1.25) isShadedByWall = true;
+      if (_hasSouthWall && distToSouth < _southWallHeight * 1.25) isShadedByWall = true;
+    } else if (_panelOrientation == 'West') {
+      // West wall is in the front; East wall is in the back
+      if (_hasWestWall && distToWest < _westWallHeight * 1.25) isShadedByWall = true;
+      if (_hasNorthWall && distToNorth < _northWallHeight * 1.25) isShadedByWall = true;
+      if (_hasSouthWall && distToSouth < _southWallHeight * 1.25) isShadedByWall = true;
+    }
+
+    if (isShadedByWall) {
+      return CellType.shadow;
+    }
+
+    // 2. Calculate shading from adjacent custom objects (trees, chimneys, etc.)
+    CellType? getBlockerType(int r, int c) {
+      if (r < 0 || r >= _rows || c < 0 || c >= _cols) return null;
       final type = _grid[r * _cols + c];
-      return type == CellType.obstacle || type == CellType.shadow || type == CellType.tree;
+      if (type == CellType.obstacle || type == CellType.shadow || type == CellType.tree) {
+        return type;
+      }
+      return null;
     }
 
     if (_panelOrientation == 'South') {
-      // Check cells directly South, South-East, South-West
-      return isBlocker(row + 1, col) || isBlocker(row + 1, col - 1) || isBlocker(row + 1, col + 1);
+      return getBlockerType(row + 1, col) ?? getBlockerType(row + 1, col - 1) ?? getBlockerType(row + 1, col + 1);
     } else if (_panelOrientation == 'North') {
-      // Check cells directly North, North-East, North-West
-      return isBlocker(row - 1, col) || isBlocker(row - 1, col - 1) || isBlocker(row - 1, col + 1);
+      return getBlockerType(row - 1, col) ?? getBlockerType(row - 1, col - 1) ?? getBlockerType(row - 1, col + 1);
     } else if (_panelOrientation == 'East') {
-      // Check cells directly East, North-East, South-East
-      return isBlocker(row, col + 1) || isBlocker(row - 1, col + 1) || isBlocker(row + 1, col + 1);
+      return getBlockerType(row, col + 1) ?? getBlockerType(row - 1, col + 1) ?? getBlockerType(row + 1, col + 1);
     } else if (_panelOrientation == 'West') {
-      // Check cells directly West, North-West, South-West
-      return isBlocker(row, col - 1) || isBlocker(row - 1, col - 1) || isBlocker(row + 1, col - 1);
+      return getBlockerType(row, col - 1) ?? getBlockerType(row - 1, col - 1) ?? getBlockerType(row + 1, col - 1);
     }
-    return false;
+    return null;
+  }
+
+  bool _isCellShaded(int index) {
+    return _shadingSourceCell(index) != null;
   }
 
   double get _totalArea => _panelsCount * _panelAreaM2;
   double get _totalWeight => _panelsCount * _panelWeightKg;
 
-  void _onCellTapped(int index) {
-    setState(() {
-      switch (_activeTool) {
-        case ToolMode.placePanel:
-          if (_grid[index] == CellType.obstacle || _grid[index] == CellType.shadow || _grid[index] == CellType.tree) {
-            ToastService.warning(
-              context,
-              _tr(context, 'Blocked Area', 'منطقة محجوبة'),
-              _tr(context, 'Cannot place a panel on obstacles or shaded areas!', 'لا يمكن وضع لوح شمسي على عوائق أو مناطق مظللة!'),
-            );
-          } else {
-            _grid[index] = CellType.panel;
-          }
-          break;
-        case ToolMode.placeObstacle:
-          _grid[index] = CellType.obstacle;
-          break;
-        case ToolMode.placeShadow:
-          _grid[index] = CellType.shadow;
-          break;
-        case ToolMode.placeTree:
-          _grid[index] = CellType.tree;
-          break;
-        case ToolMode.erase:
-          _grid[index] = CellType.empty;
-          break;
-      }
-    });
-  }
+
 
   void _clearAll() {
     setState(() {
@@ -240,6 +563,11 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     setState(() {
       for (int i = 0; i < _grid.length; i++) {
         if (_grid[i] == CellType.empty) {
+          final int r = i ~/ _cols;
+          final int c = i % _cols;
+          if (_isInSetbackZone(r, c)) {
+            continue; // Skip wall setback zone during autofill!
+          }
           if (_shadeBufferAvoidance && _isCellShaded(i)) {
             continue; // Keep panels away from shaded cells!
           }
@@ -479,49 +807,61 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           SizedBox(width: 8.w),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Live statistics row
-            _buildLiveStatsRow(),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildLiveStatsRow(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  child: Column(
+                    children: [
+                      // Grid dimensions controller
+                      _buildDimensionsControl(),
 
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                child: Column(
-                  children: [
-                    // Grid dimensions controller
-                    _buildDimensionsControl(),
+                      SizedBox(height: 14.h),
 
-                    SizedBox(height: 14.h),
+                      // Boundary Walls & Shading simulation
+                      _buildBoundaryWallsControl(),
 
-                    // Panel Specifications Configuration
-                    _buildPanelSpecsControl(),
+                      SizedBox(height: 14.h),
 
-                    SizedBox(height: 14.h),
+                      // Panel Specifications Configuration
+                      _buildPanelSpecsControl(),
 
-                    // Sunlight Facing & Smart Shading Card
-                    _buildShadingSpecsControl(),
+                      SizedBox(height: 14.h),
 
-                    SizedBox(height: 14.h),
+                      // Sunlight Facing & Smart Shading Card
+                      _buildShadingSpecsControl(),
 
-                    // Active Tools bar
-                    _buildToolSelectionBar(),
+                      SizedBox(height: 14.h),
 
-                    SizedBox(height: 18.h),
+                      // Active Tools bar
+                      _buildToolSelectionBar(),
 
-                    // Interactive Grid Visual Canvas
-                    _buildVisualGridCanvas(),
+                      SizedBox(height: 18.h),
 
-                    SizedBox(height: 20.h),
+                      // Interactive Grid Visual Canvas
+                      _buildVisualGridCanvas(),
 
-                    // Primary Action Buttons
-                    _buildActionButtons(),
-                  ],
+                      SizedBox(height: 14.h),
+
+                      // Premium Layout Sketch & Shading Safety Card
+                      _buildLayoutSketchCard(),
+
+                      SizedBox(height: 20.h),
+
+                      // Primary Action Buttons
+                      _buildActionButtons(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -623,6 +963,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 Expanded(
                   child: TextField(
                     controller: _roofWidthController,
+                    focusNode: _roofWidthFocus,
+                    onSubmitted: (_) => _applyFieldValue(_roofWidthController, 'roofWidth'),
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -638,6 +980,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 Expanded(
                   child: TextField(
                     controller: _roofLengthController,
+                    focusNode: _roofLengthFocus,
+                    onSubmitted: (_) => _applyFieldValue(_roofLengthController, 'roofLength'),
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -666,16 +1010,54 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             ),
           ),
 
+          SizedBox(height: 8.h),
+
+          // Safe Wall Setback clearance boundary input row
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 4.h),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _setbackController,
+                    focusNode: _setbackFocus,
+                    onSubmitted: (_) => _applyFieldValue(_setbackController, 'setback'),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
+                    decoration: InputDecoration(
+                      labelText: _tr(context, 'Wall Safe Setback (meters)', 'مسافة الأمان عن الجدار (متر)'),
+                      labelStyle: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                      suffixText: 'm',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                ExplanationButton(
+                  explanations: [
+                    ExplanationItem(
+                      title: _tr(context, 'Safe Distance from Roof Borders', 'مسافة الأمان عن أطراف السطح'),
+                      description: _tr(
+                        context,
+                        'Define a safe offset distance (e.g., 0.5m) to keep solar panels away from the roof walls or edges. This safe border zone is highlighted in light amber on the simulator, and the autofill tool will automatically avoid placing panels inside this area to ensure safe maintenance access and prevent high wind loads near parapets.',
+                        'حدد مسافة أمان (مثال: 0.5م) لإبقاء الألواح الشمسية بعيدة عن جدران أو حواف السطح. تظهر هذه المنطقة بلون أصفر خفيف في المحاكاة، وسيقوم الملء التلقائي بتجنب وضع ألواح بداخلها لضمان سهولة الصيانة وحماية الألواح من الرياح العاتية.',
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
           SizedBox(height: 10.h),
 
           // Computed Layout Feedback Box
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4),
-              borderRadius: BorderRadius.circular(10.r),
-            ),
+            decoration: BoxDecoration(color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4), borderRadius: BorderRadius.circular(10.r)),
             child: Row(
               children: [
                 Icon(Iconsax.info_circle_bold, color: AppTheme.primaryColor, size: 14.sp),
@@ -692,6 +1074,193 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBoundaryWallsControl() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    Widget buildWallItem({
+      required String titleEn,
+      required String titleAr,
+      required bool hasWall,
+      required ValueChanged<bool?> onToggle,
+      required TextEditingController controller,
+      required FocusNode focusNode,
+      required String type,
+    }) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF7F9F8),
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(
+            color: hasWall 
+                ? AppTheme.primaryColor.withValues(alpha: 0.3) 
+                : Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12),
+            width: 1.2,
+          ),
+        ),
+        child: Row(
+          children: [
+            Checkbox(
+              value: hasWall,
+              activeColor: AppTheme.primaryColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
+              onChanged: onToggle,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _tr(context, titleEn, titleAr),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11.5.sp,
+                      color: hasWall ? AppTheme.primaryColor : (isDark ? Colors.white70 : Colors.black87),
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    hasWall ? _tr(context, 'Active & Shading', 'نشط ومظلل') : _tr(context, 'No Wall / Flush mount', 'بدون جدار / تركيب مسطح'),
+                    style: TextStyle(
+                      fontSize: 9.sp,
+                      color: hasWall ? Colors.amber : Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 8.w),
+            SizedBox(
+              width: 75.w,
+              child: TextField(
+                enabled: hasWall,
+                controller: controller,
+                focusNode: focusNode,
+                onSubmitted: (_) => _applyFieldValue(controller, type),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                  color: hasWall ? (isDark ? Colors.white : Colors.black87) : Colors.grey,
+                ),
+                decoration: InputDecoration(
+                  labelText: _tr(context, 'Height', 'الارتفاع'),
+                  labelStyle: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.bold),
+                  suffixText: 'm',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.h),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: EdgeInsets.all(14.r),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161E1C) : Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: const [BoxShadow(color: Color(0x04000000), blurRadius: 12, offset: Offset(0, 6))],
+        border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _tr(context, 'Roof Boundary Walls & Shading Simulation', 'جدران السطح ومحاكاة الظلال'),
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13.sp),
+              ),
+              ExplanationButton(
+                explanations: [
+                  ExplanationItem(
+                    title: _tr(context, 'Optional Walls & Solar Shading', 'الجدران الاختيارية وظلال الشمس'),
+                    description: _tr(
+                      context,
+                      'Toggle boundary walls (North, South, East, West) depending on your roof. Unchecked boundaries will have 0.0 setback clearance (for houses with flush roof mounts). Checked walls simulate physical shadows depending on their height and the panel orientation. Front walls block sun striking face, while back walls cast shadows behind panels and are ignored.',
+                      'قم بتفعيل جدران السطح (شمال، جنوب، شرق، غرب) حسب الرغبة. سيتم تطبيق مسافة أمان قدرها 0.0م للحدود غير المفعلة (للمنازل ذات تركيب الألواح المسطح). تحاكي الجدران المفعلة الظلال الفيزيائية للسطح بناءً على ارتفاعها واتجاه الألواح. تحجب الجدران الأمامية أشعة الشمس، بينما تسقط الجدران الخلفية ظلالها خلف الألواح ويتم تجاهلها.',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          
+          Column(
+            children: [
+              buildWallItem(
+                titleEn: 'North Wall (Top Edge)',
+                titleAr: 'الجدار الشمالي (الحافة العلوية)',
+                hasWall: _hasNorthWall,
+                onToggle: (val) {
+                  setState(() {
+                    _hasNorthWall = val ?? false;
+                    _updateGridFromDimensions();
+                  });
+                },
+                controller: _northWallController,
+                focusNode: _northWallFocus,
+                type: 'northWall',
+              ),
+              SizedBox(height: 8.h),
+              buildWallItem(
+                titleEn: 'South Wall (Bottom Edge)',
+                titleAr: 'الجدار الجنوبي (الحافة السفلية)',
+                hasWall: _hasSouthWall,
+                onToggle: (val) {
+                  setState(() {
+                    _hasSouthWall = val ?? false;
+                    _updateGridFromDimensions();
+                  });
+                },
+                controller: _southWallController,
+                focusNode: _southWallFocus,
+                type: 'southWall',
+              ),
+              SizedBox(height: 8.h),
+              buildWallItem(
+                titleEn: 'East Wall (Right Edge)',
+                titleAr: 'الجدار الشرقي (الحافة اليمنى)',
+                hasWall: _hasEastWall,
+                onToggle: (val) {
+                  setState(() {
+                    _hasEastWall = val ?? false;
+                    _updateGridFromDimensions();
+                  });
+                },
+                controller: _eastWallController,
+                focusNode: _eastWallFocus,
+                type: 'eastWall',
+              ),
+              SizedBox(height: 8.h),
+              buildWallItem(
+                titleEn: 'West Wall (Left Edge)',
+                titleAr: 'الجدار الغربي (الحافة اليسرى)',
+                hasWall: _hasWestWall,
+                onToggle: (val) {
+                  setState(() {
+                    _hasWestWall = val ?? false;
+                    _updateGridFromDimensions();
+                  });
+                },
+                controller: _westWallController,
+                focusNode: _westWallFocus,
+                type: 'westWall',
+              ),
+            ],
           ),
         ],
       ),
@@ -728,6 +1297,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             padding: EdgeInsets.symmetric(vertical: 8.h),
             child: TextField(
               controller: _powerController,
+              focusNode: _powerFocus,
+              onSubmitted: (_) => _applyFieldValue(_powerController, 'power'),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
               decoration: InputDecoration(
@@ -752,6 +1323,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 Expanded(
                   child: TextField(
                     controller: _lengthController,
+                    focusNode: _lengthFocus,
+                    onSubmitted: (_) => _applyFieldValue(_lengthController, 'length'),
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -767,6 +1340,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 Expanded(
                   child: TextField(
                     controller: _widthController,
+                    focusNode: _widthFocus,
+                    onSubmitted: (_) => _applyFieldValue(_widthController, 'width'),
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -813,6 +1388,144 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 Text(
                   '${_panelAreaM2.toStringAsFixed(2)} m²',
                   style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
+                ),
+              ],
+            ),
+          ),
+
+          // Panel Orientation Segmented Switch
+          Padding(
+            padding: EdgeInsets.only(bottom: 12.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      _tr(context, 'Panel Placement Orientation', 'اتجاه ترتيب الألواح'),
+                      style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 4.w),
+                    ExplanationButton(
+                      explanations: [
+                        ExplanationItem(
+                          title: _tr(context, 'Panel Layout Placement', 'اتجاه ترتيب الألواح'),
+                          description: _tr(
+                            context,
+                            'Choose how panels are oriented on the roof:\n• Portrait (Vertical): Default vertical orientation.\n• Landscape (Horizontal): Swaps width and height on the grid, perfect to maximize usage of specific roof layouts.',
+                            'اختر كيفية توجيه الألواح على السطح:\n• رأسي (Portrait): التوجيه الرأسي الافتراضي.\n• أفقي (Landscape): يعكس العرض والارتفاع على الشبكة، وهو مثالي للاستفادة القصوى من بعض أبعاد الأسطح.',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 6.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          if (!_isPortrait) {
+                            setState(() {
+                              _saveStateToHistory();
+                              _isPortrait = true;
+                              _updateGridFromDimensions();
+                            });
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(10.r),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          decoration: BoxDecoration(
+                            color: _isPortrait
+                                ? AppTheme.primaryColor
+                                : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4)),
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(
+                              color: _isPortrait
+                                  ? AppTheme.primaryColor
+                                  : Colors.grey.withValues(alpha: 0.1),
+                            ),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Iconsax.document_bold,
+                                  color: _isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87),
+                                  size: 13.sp,
+                                ),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  _tr(context, 'Portrait (Vertical)', 'رأسي (طولي)'),
+                                  style: TextStyle(
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: _isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          if (_isPortrait) {
+                            setState(() {
+                              _saveStateToHistory();
+                              _isPortrait = false;
+                              _updateGridFromDimensions();
+                            });
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(10.r),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          decoration: BoxDecoration(
+                            color: !_isPortrait
+                                ? AppTheme.primaryColor
+                                : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F7F4)),
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(
+                              color: !_isPortrait
+                                  ? AppTheme.primaryColor
+                                  : Colors.grey.withValues(alpha: 0.1),
+                            ),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RotatedBox(
+                                  quarterTurns: 1,
+                                  child: Icon(
+                                    Iconsax.document_bold,
+                                    color: !_isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87),
+                                    size: 13.sp,
+                                  ),
+                                ),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  _tr(context, 'Landscape (Horizontal)', 'أفقي (عرضي)'),
+                                  style: TextStyle(
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: !_isPortrait ? Colors.white : (isDark ? Colors.grey : Colors.black87),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -880,7 +1593,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _panelOrientation,
+                  isExpanded: true,
+                  initialValue: _panelOrientation,
                   dropdownColor: isDark ? const Color(0xFF1E2624) : Colors.white,
                   decoration: InputDecoration(
                     labelText: _tr(context, 'Panel Facing Direction', 'اتجاه وجه الألواح'),
@@ -894,6 +1608,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                       child: Text(
                         _tr(context, 'South (الجنوب) [Best]', 'الجنوب [موصى به]'),
                         style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                     DropdownMenuItem(
@@ -901,6 +1617,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                       child: Text(
                         _tr(context, 'North (الشمال)', 'الشمال'),
                         style: TextStyle(fontSize: 11.sp),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                     DropdownMenuItem(
@@ -908,6 +1626,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                       child: Text(
                         _tr(context, 'East (الشرق)', 'الشرق'),
                         style: TextStyle(fontSize: 11.sp),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                     DropdownMenuItem(
@@ -915,6 +1635,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                       child: Text(
                         _tr(context, 'West (الغرب)', 'الغرب'),
                         style: TextStyle(fontSize: 11.sp),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                   ],
@@ -942,7 +1664,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                     ),
                     Switch(
                       value: _shadeBufferAvoidance,
-                      activeColor: AppTheme.primaryColor,
+                      activeThumbColor: AppTheme.primaryColor,
                       onChanged: (val) {
                         setState(() {
                           _shadeBufferAvoidance = val;
@@ -1014,12 +1736,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             SizedBox(width: 4.w),
             SizedBox(
               width: 90.w,
-              child: _buildToolChip(
-                mode: ToolMode.placeTree,
-                label: _tr(context, 'Tree', 'أشجار'),
-                icon: Icons.park_rounded,
-                activeColor: Colors.green,
-              ),
+              child: _buildToolChip(mode: ToolMode.placeTree, label: _tr(context, 'Tree', 'أشجار'), icon: Icons.park_rounded, activeColor: Colors.green),
             ),
             SizedBox(width: 4.w),
             SizedBox(
@@ -1077,39 +1794,177 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width - 32;
 
-    return Container(
-      width: screenWidth,
-      height: screenWidth,
-      padding: EdgeInsets.all(12.r),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161E1C) : Colors.white,
-        borderRadius: BorderRadius.circular(24.r),
-        boxShadow: const [BoxShadow(color: Color(0x06000000), blurRadius: 16, offset: Offset(0, 8))],
-        border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12), width: 1.4),
-      ),
-      child: GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: _cols, crossAxisSpacing: 6.r, mainAxisSpacing: 6.r),
-        itemCount: _cols * _rows,
-        itemBuilder: (context, index) {
-          final cell = _grid[index];
-          return GestureDetector(
-            onTap: () => _onCellTapped(index),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              decoration: _buildCellDecoration(cell, index),
-              child: Center(child: _buildCellIcon(cell, index)),
+    // Calculate actual aspect ratio
+    final aspect = _roofLengthM / _roofWidthM;
+    final clampedAspect = aspect.clamp(0.4, 1.5);
+    final canvasHeight = screenWidth * clampedAspect;
+
+    final gridWidth = screenWidth - 24.r;
+    final gridHeight = canvasHeight - 24.r;
+    final childAspectRatio = (gridWidth * _rows) / (gridHeight * _cols);
+
+    final canUndo = _undoStack.isNotEmpty;
+    final canRedo = _redoStack.isNotEmpty;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Elegant Canvas control strip with Undo, Redo, and instructions
+        Padding(
+          padding: EdgeInsets.only(bottom: 6.h, left: 4.w, right: 4.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    _tr(context, 'Solar Roof Layout', 'رسم مخطط السطح'),
+                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13.sp),
+                  ),
+                  SizedBox(width: 8.w),
+                  _buildCompassOverlayInline(),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.undo_rounded, size: 18.sp),
+                    tooltip: _tr(context, 'Undo', 'تراجع'),
+                    color: canUndo ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.4),
+                    onPressed: canUndo ? _undo : null,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.redo_rounded, size: 18.sp),
+                    tooltip: _tr(context, 'Redo', 'إعادة'),
+                    color: canRedo ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.4),
+                    onPressed: canRedo ? _redo : null,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        // Interactive Visual Drawing Canvas
+        GestureDetector(
+          onPanStart: (details) => _handlePanStart(details.localPosition, screenWidth, canvasHeight),
+          onPanUpdate: (details) => _handlePanUpdate(details.localPosition, screenWidth, canvasHeight),
+          child: Container(
+            width: screenWidth,
+            height: canvasHeight,
+            padding: EdgeInsets.all(12.r),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF161E1C) : Colors.white,
+              borderRadius: BorderRadius.circular(24.r),
+              boxShadow: const [BoxShadow(color: Color(0x06000000), blurRadius: 16, offset: Offset(0, 8))],
+              border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12), width: 1.4),
             ),
-          );
-        },
-      ),
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: _cols,
+                crossAxisSpacing: 6.r,
+                mainAxisSpacing: 6.r,
+                childAspectRatio: childAspectRatio,
+              ),
+              itemCount: _cols * _rows,
+              itemBuilder: (context, index) {
+                final cell = _grid[index];
+                return GestureDetector(
+                  onTap: () => _handleCellTap(index),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    decoration: _buildCellDecoration(cell, index),
+                    child: Center(child: _buildCellIcon(cell, index)),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  void _handlePanStart(Offset localPosition, double containerWidth, double containerHeight) {
+    _draggedIndices.clear();
+    _saveStateToHistory(); // Save the state ONCE at the start of the drag stroke!
+    _handlePanPaint(localPosition, containerWidth, containerHeight, isStart: true);
+  }
+
+  void _handlePanUpdate(Offset localPosition, double containerWidth, double containerHeight) {
+    _handlePanPaint(localPosition, containerWidth, containerHeight, isStart: false);
+  }
+
+  void _handlePanPaint(Offset localPosition, double containerWidth, double containerHeight, {required bool isStart}) {
+    final padding = 12.r;
+    final gridWidth = containerWidth - padding * 2;
+    final gridHeight = containerHeight - padding * 2;
+
+    final x = localPosition.dx - padding;
+    final y = localPosition.dy - padding;
+
+    // Boundary check
+    if (x < 0 || x > gridWidth || y < 0 || y > gridHeight) return;
+
+    final cellWidth = gridWidth / _cols;
+    final cellHeight = gridHeight / _rows;
+
+    final col = (x / cellWidth).floor().clamp(0, _cols - 1);
+    final row = (y / cellHeight).floor().clamp(0, _rows - 1);
+    final index = row * _cols + col;
+
+    if (_draggedIndices.contains(index)) return; // Already processed this cell in this stroke!
+    _draggedIndices.add(index);
+
+    final currentType = _grid[index];
+    CellType targetType;
+    switch (_activeTool) {
+      case ToolMode.placePanel:
+        if (currentType == CellType.obstacle || currentType == CellType.shadow || currentType == CellType.tree) {
+          return;
+        }
+        targetType = CellType.panel;
+        break;
+      case ToolMode.placeObstacle:
+        targetType = CellType.obstacle;
+        break;
+      case ToolMode.placeShadow:
+        targetType = CellType.shadow;
+        break;
+      case ToolMode.placeTree:
+        targetType = CellType.tree;
+        break;
+      case ToolMode.erase:
+        targetType = CellType.empty;
+        break;
+    }
+
+    if (currentType != targetType) {
+      setState(() {
+        _grid[index] = targetType;
+      });
+    }
   }
 
   BoxDecoration _buildCellDecoration(CellType type, int index) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     switch (type) {
       case CellType.empty:
+        final r = index ~/ _cols;
+        final c = index % _cols;
+        final inSetback = _isInSetbackZone(r, c);
+        if (inSetback) {
+          return BoxDecoration(
+            color: isDark ? const Color(0xFF2C2415) : const Color(0xFFFEF9EB),
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(
+              color: Colors.amber.withValues(alpha: isDark ? 0.35 : 0.5),
+              width: 1,
+              style: BorderStyle.solid,
+            ),
+          );
+        }
         return BoxDecoration(
           color: isDark ? Colors.grey[900]?.withValues(alpha: 0.4) : Colors.grey[50],
           borderRadius: BorderRadius.circular(8.r),
@@ -1120,6 +1975,9 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           ),
         );
       case CellType.panel:
+        final r = index ~/ _cols;
+        final c = index % _cols;
+        final inSetback = _isInSetbackZone(r, c);
         final isShaded = _isCellShaded(index);
         if (isShaded) {
           return BoxDecoration(
@@ -1127,6 +1985,14 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             borderRadius: BorderRadius.circular(8.r),
             boxShadow: [BoxShadow(color: Colors.orange.withValues(alpha: 0.25), blurRadius: 6, offset: const Offset(0, 2))],
             border: Border.all(color: Colors.orange, width: 2.0),
+          );
+        }
+        if (inSetback) {
+          return BoxDecoration(
+            gradient: const LinearGradient(colors: [Color(0xFFFFE082), Color(0xFFFFB300)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            borderRadius: BorderRadius.circular(8.r),
+            boxShadow: [BoxShadow(color: Colors.amber.withValues(alpha: 0.25), blurRadius: 6, offset: const Offset(0, 2))],
+            border: Border.all(color: Colors.orangeAccent, width: 2.0),
           );
         }
         return BoxDecoration(
@@ -1162,12 +2028,28 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
         return null;
       case CellType.panel:
         final isShaded = _isCellShaded(index);
+        final r = index ~/ _cols;
+        final c = index % _cols;
+        final inSetback = _isInSetbackZone(r, c);
         if (isShaded) {
           return Stack(
             alignment: Alignment.center,
             children: [
               Icon(Iconsax.sun_1_bold, color: Colors.white.withValues(alpha: 0.4), size: (180.w / _cols).clamp(12.0, 24.0)),
               Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: (180.w / _cols).clamp(10.0, 20.0)),
+            ],
+          );
+        }
+        if (inSetback) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              Icon(Iconsax.sun_1_bold, color: Colors.white, size: (180.w / _cols).clamp(12.0, 24.0)),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Icon(Icons.warning_amber_rounded, color: Colors.deepOrangeAccent, size: (180.w / _cols).clamp(8.0, 14.0)),
+              ),
             ],
           );
         }
@@ -1178,6 +2060,167 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
         return Icon(Icons.nights_stay_rounded, color: Colors.blueGrey, size: (180.w / _cols).clamp(12.0, 24.0));
       case CellType.tree:
         return Icon(Icons.park_rounded, color: Colors.green, size: (180.w / _cols).clamp(12.0, 24.0));
+    }
+  }
+
+  double _getCompassAngle() {
+    switch (_panelOrientation) {
+      case 'North':
+        return 0.0;
+      case 'East':
+        return 3.141592653589793 / 2.0;
+      case 'South':
+        return 3.141592653589793;
+      case 'West':
+        return 3.141592653589793 * 1.5;
+      default:
+        return 3.141592653589793; // Default South
+    }
+  }
+
+  Widget _buildCompassOverlayInline() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final double angle = _getCompassAngle();
+
+    return Container(
+      width: 42.r,
+      height: 42.r,
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2624) : Colors.white,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.amber.withValues(alpha: isDark ? 0.1 : 0.2),
+            blurRadius: 6,
+            spreadRadius: 1,
+          ),
+        ],
+        border: Border.all(
+          color: AppTheme.primaryColor.withValues(alpha: 0.3),
+          width: 1.2,
+        ),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Direction indicators (N, S, E, W)
+          Positioned(
+            top: 2.r,
+            child: Text(
+              'N',
+              style: TextStyle(
+                fontSize: 6.sp,
+                fontWeight: FontWeight.w900,
+                color: Colors.redAccent,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 2.r,
+            child: Text(
+              'S',
+              style: TextStyle(
+                fontSize: 6.sp,
+                fontWeight: FontWeight.w900,
+                color: isDark ? Colors.white70 : Colors.black87,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 3.r,
+            child: Text(
+              'W',
+              style: TextStyle(
+                fontSize: 6.sp,
+                fontWeight: FontWeight.w900,
+                color: isDark ? Colors.white70 : Colors.black87,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 3.r,
+            child: Text(
+              'E',
+              style: TextStyle(
+                fontSize: 6.sp,
+                fontWeight: FontWeight.w900,
+                color: isDark ? Colors.white70 : Colors.black87,
+              ),
+            ),
+          ),
+
+          // Rotating active Sunlight Ray pointer arrow
+          Transform.rotate(
+            angle: angle,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.arrow_upward_rounded,
+                  color: Colors.amber,
+                  size: 10.sp,
+                ),
+                SizedBox(height: 6.h),
+              ],
+            ),
+          ),
+
+          // Sun glowing center
+          Icon(
+            Iconsax.sun_1_bold,
+            color: Colors.amber,
+            size: 9.sp,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleCellTap(int index) {
+    _saveStateToHistory();
+    final currentType = _grid[index];
+    CellType targetType;
+    switch (_activeTool) {
+      case ToolMode.placePanel:
+        if (currentType == CellType.obstacle || currentType == CellType.shadow || currentType == CellType.tree) {
+          return;
+        }
+        if (currentType == CellType.panel) {
+          targetType = CellType.empty;
+        } else {
+          targetType = CellType.panel;
+        }
+        break;
+      case ToolMode.placeObstacle:
+        if (currentType == CellType.obstacle) {
+          targetType = CellType.empty;
+        } else {
+          targetType = CellType.obstacle;
+        }
+        break;
+      case ToolMode.placeShadow:
+        if (currentType == CellType.shadow) {
+          targetType = CellType.empty;
+        } else {
+          targetType = CellType.shadow;
+        }
+        break;
+      case ToolMode.placeTree:
+        if (currentType == CellType.tree) {
+          targetType = CellType.empty;
+        } else {
+          targetType = CellType.tree;
+        }
+        break;
+      case ToolMode.erase:
+        targetType = CellType.empty;
+        break;
+    }
+
+    if (currentType != targetType) {
+      setState(() {
+        _grid[index] = targetType;
+      });
     }
   }
 
@@ -1245,6 +2288,305 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Map<String, dynamic> _getFilledArrayStats() {
+    int minCol = _cols;
+    int maxCol = -1;
+    int minRow = _rows;
+    int maxRow = -1;
+    int shadedPanelsCount = 0;
+    int setbackPanelsCount = 0;
+
+    for (int r = 0; r < _rows; r++) {
+      for (int c = 0; c < _cols; c++) {
+        final index = r * _cols + c;
+        if (_grid[index] == CellType.panel) {
+          if (c < minCol) minCol = c;
+          if (c > maxCol) maxCol = c;
+          if (r < minRow) minRow = r;
+          if (r > maxRow) maxRow = r;
+
+          // Check if this panel cell is shaded
+          if (_isCellShaded(index)) {
+            shadedPanelsCount++;
+          }
+          // Check if this panel cell resides in the safe setback clearance zone
+          if (_isInSetbackZone(r, c)) {
+            setbackPanelsCount++;
+          }
+        }
+      }
+    }
+
+    if (maxCol == -1 || maxRow == -1) {
+      return {
+        'hasPanels': false,
+        'width': 0.0,
+        'length': 0.0,
+        'area': 0.0,
+        'colsCount': 0,
+        'rowsCount': 0,
+        'shadedCount': 0,
+        'setbackCount': 0,
+      };
+    }
+
+    final double cellW = _isPortrait ? _panelWidthM : _panelLengthM;
+    final double cellH = _isPortrait ? _panelLengthM : _panelWidthM;
+
+    final int colsCount = maxCol - minCol + 1;
+    final int rowsCount = maxRow - minRow + 1;
+    final double width = colsCount * cellW;
+    final double length = rowsCount * cellH;
+
+    return {
+      'hasPanels': true,
+      'width': width,
+      'length': length,
+      'area': width * length,
+      'colsCount': colsCount,
+      'rowsCount': rowsCount,
+      'shadedCount': shadedPanelsCount,
+      'setbackCount': setbackPanelsCount,
+    };
+  }
+
+  Widget _buildLayoutSketchCard() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final stats = _getFilledArrayStats();
+    final bool hasPanels = stats['hasPanels'] as bool;
+
+    return Container(
+      padding: EdgeInsets.all(14.r),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161E1C) : Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: const [BoxShadow(color: Color(0x04000000), blurRadius: 12, offset: Offset(0, 6))],
+        border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _tr(context, 'Filled Area Sketch & Safety Inspector', 'مخطط مساحة الألواح وفاحص الأمان'),
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13.sp),
+              ),
+              Icon(Iconsax.map_1_bold, color: AppTheme.primaryColor, size: 16.sp),
+            ],
+          ),
+          SizedBox(height: 12.h),
+
+          if (!hasPanels) ...[
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(12.r),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF7F9F8),
+                borderRadius: BorderRadius.circular(16.r),
+                border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12)),
+              ),
+              child: Column(
+                children: [
+                  Icon(Iconsax.info_circle_bold, color: Colors.orangeAccent, size: 24.sp),
+                  SizedBox(height: 6.h),
+                  Text(
+                    _tr(
+                      context,
+                      'No Active Solar Panels Placed Yet',
+                      'لم يتم وضع ألواح شمسية نشطة بعد',
+                    ),
+                    style: TextStyle(fontSize: 11.5.sp, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    _tr(
+                      context,
+                      'Draw or tap panels on the roof grid above. The simulator will automatically sketch the physical array dimensions and audit safety from shadows.',
+                      'قم بالرسم أو الضغط على الألواح في شبكة السطح أعلاه. سيقوم المحاكي تلقائيًا بتخطيط أبعاد الألواح المادية وفحص السلامة من الظلال.',
+                    ),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 9.5.sp, color: Colors.grey[500]),
+                  ),
+                ],
+              ),
+            ),
+          ] else ...[
+            // Sketch Dimension Layout
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Sketch graphic of the array
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: EdgeInsets.all(10.r),
+                    height: 110.h,
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF1B2422) : const Color(0xFFF0F5F2),
+                      borderRadius: BorderRadius.circular(16.r),
+                      border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.2)),
+                    ),
+                    child: Stack(
+                      children: [
+                        // Bounding Box visual representation
+                        Center(
+                          child: Container(
+                            width: 80.w,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryColor.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(8.r),
+                              border: Border.all(color: AppTheme.primaryColor, width: 1.5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${stats['colsCount']} × ${stats['rowsCount']}',
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w900,
+                                  color: AppTheme.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        
+                        // Dimensions label pointers
+                        // Width label (horizontal, top)
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 2.h),
+                            child: Text(
+                              'W: ${(stats['width'] as double).toStringAsFixed(1)}m',
+                              style: TextStyle(fontSize: 9.5.sp, fontWeight: FontWeight.w900, color: Colors.grey[600]),
+                            ),
+                          ),
+                        ),
+                        // Length label (vertical, left)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 2.w),
+                            child: Text(
+                              'L: ${(stats['length'] as double).toStringAsFixed(1)}m',
+                              style: TextStyle(fontSize: 9.5.sp, fontWeight: FontWeight.w900, color: Colors.grey[600]),
+                            ),
+                          ),
+                        ),
+                        // Area label (bottom)
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Text(
+                            'Area: ${(stats['area'] as double).toStringAsFixed(1)}m²',
+                            style: TextStyle(fontSize: 9.5.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+
+                // Safety Inspector Audit results
+                Expanded(
+                  flex: 6,
+                  child: Builder(
+                    builder: (context) {
+                      final int shaded = stats['shadedCount'] as int;
+                      final int setback = stats['setbackCount'] as int;
+                      final bool isSafe = shaded == 0 && setback == 0;
+
+                      return Container(
+                        padding: EdgeInsets.all(10.r),
+                        height: 110.h,
+                        decoration: BoxDecoration(
+                          color: isSafe 
+                              ? (isDark ? const Color(0xFF13251E) : const Color(0xFFEDF7F3))
+                              : (isDark ? const Color(0xFF281E15) : const Color(0xFFFDF6ED)),
+                          borderRadius: BorderRadius.circular(16.r),
+                          border: Border.all(
+                            color: isSafe 
+                                ? Colors.green.withValues(alpha: 0.3)
+                                : Colors.amber.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    isSafe ? Icons.check_circle_rounded : Icons.warning_rounded,
+                                    color: isSafe ? Colors.green : Colors.amber,
+                                    size: 14.sp,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Expanded(
+                                    child: Text(
+                                      isSafe 
+                                          ? _tr(context, 'Optimal & Safe Layout', 'تخطيط آمن ومثالي')
+                                          : _tr(context, 'Safety Warnings Found', 'تم العثور على تنبيهات أمان'),
+                                      style: TextStyle(
+                                        fontSize: 10.5.sp, 
+                                        fontWeight: FontWeight.bold,
+                                        color: isSafe ? Colors.green : Colors.amber[800],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 6.h),
+                              if (isSafe) ...[
+                                Text(
+                                  _tr(
+                                    context,
+                                    '100% safe from wall shading & roof edges. Performance yield is maximized!',
+                                    'آمن 100% من ظلال الجدران وحواف السطح. تم تعظيم كفاءة الإنتاج!',
+                                  ),
+                                  style: TextStyle(fontSize: 8.5.sp, height: 1.3, color: isDark ? Colors.white70 : Colors.black87),
+                                ),
+                              ] else ...[
+                                if (shaded > 0) ...[
+                                  Text(
+                                    '⚠️ ${_tr(
+                                      context,
+                                      '$shaded panels in high shadow zones (suffer 75% power loss).',
+                                      '$shaded من الألواح في مناطق ظل كثيفة (تخسر 75% من الطاقة).',
+                                    )}',
+                                    style: TextStyle(fontSize: 8.sp, height: 1.3, color: isDark ? Colors.white70 : Colors.black87, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 3.h),
+                                ],
+                                if (setback > 0) ...[
+                                  Text(
+                                    '⚠️ ${_tr(
+                                      context,
+                                      '$setback panels are too close to roof edges/active walls.',
+                                      '$setback من الألواح قريبة جدًا من حواف السطح/الجدران.',
+                                    )}',
+                                    style: TextStyle(fontSize: 8.sp, height: 1.3, color: isDark ? Colors.white70 : Colors.black87, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ],
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
