@@ -24,39 +24,43 @@ final wattDrawingFileServiceProvider = Provider<WattDrawingFileService>((ref) {
   return WattDrawingFileService();
 });
 
-final structureDesignControllerProvider = ChangeNotifierProvider.autoDispose<StructureDesignController>((ref) {
-  return StructureDesignController(calculator: ref.read(structureDesignCalculatorProvider), locationService: ref.read(structureLocationServiceProvider));
+final structureDesignControllerProvider = ChangeNotifierProvider.autoDispose.family<StructureDesignController, StructureDesignInput?>((ref, initialInput) {
+  return StructureDesignController(
+    calculator: ref.read(structureDesignCalculatorProvider),
+    locationService: ref.read(structureLocationServiceProvider),
+    initialInput: initialInput,
+  );
 });
 
 class StructureDesignController extends ChangeNotifier {
-  StructureDesignController({
-    required StructureDesignCalculator calculator,
-    required LocationService locationService,
-  }) : _calculator = calculator,
-       _locationService = locationService,
-       _input = const StructureDesignInput(
-         siteWidthMeters: 10,
-         siteDepthMeters: 8,
-         latitude: 33.3,
-         facingPreference: FacingDirectionPreference.any,
-         mountType: MountType.ground,
-         frontClearanceMeters: 0.5,
-         rearClearanceMeters: 0.5,
-         sideClearanceMeters: 0.3,
-         frontLegClearanceMeters: 0.5,
-         interRowGapMeters: 0.5,
-         rowMode: RowMode.independent,
-         rowBaseOffsetsMeters: <double>[0.0],
-         panelSpec: PanelSpec(
-           lengthMeters: 2.28,
-           widthMeters: 1.13,
-           thicknessMeters: 0.035,
-           orientation: PanelOrientation.portrait,
-           horizontalGapMeters: 0.03,
-           verticalGapMeters: 0.03,
-         ),
-       ),
-       _debouncer = Debouncer(milliseconds: 300) {
+  StructureDesignController({required StructureDesignCalculator calculator, required LocationService locationService, StructureDesignInput? initialInput})
+    : _calculator = calculator,
+      _locationService = locationService,
+      _input =
+          initialInput ??
+          const StructureDesignInput(
+            siteWidthMeters: 10,
+            siteDepthMeters: 8,
+            latitude: 33.3,
+            facingPreference: FacingDirectionPreference.any,
+            mountType: MountType.ground,
+            frontClearanceMeters: 0.5,
+            rearClearanceMeters: 0.5,
+            sideClearanceMeters: 0.3,
+            frontLegClearanceMeters: 0.5,
+            interRowGapMeters: 0.5,
+            rowMode: RowMode.independent,
+            rowBaseOffsetsMeters: <double>[0.0],
+            panelSpec: PanelSpec(
+              lengthMeters: 2.28,
+              widthMeters: 1.13,
+              thicknessMeters: 0.035,
+              orientation: PanelOrientation.portrait,
+              horizontalGapMeters: 0.03,
+              verticalGapMeters: 0.03,
+            ),
+          ),
+      _debouncer = Debouncer(milliseconds: 300) {
     recalculate();
   }
 
@@ -267,10 +271,7 @@ class StructureDesignController extends ChangeNotifier {
   }
 
   void _syncRowOffsetsBeforeCalculation() {
-    final desiredCount = (_input.manualRows ?? _result?.rows ?? 1).clamp(
-      1,
-      999,
-    );
+    final desiredCount = (_input.manualRows ?? _result?.rows ?? 1).clamp(1, 999);
     final offsets = List<double>.from(_input.rowBaseOffsetsMeters);
     if (offsets.length == desiredCount) {
       return;

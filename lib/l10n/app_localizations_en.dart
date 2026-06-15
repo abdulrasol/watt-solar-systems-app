@@ -4114,4 +4114,190 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clear => 'Clear';
+
+  @override
+  String get pv_system_designer_title => 'PV System Designer';
+
+  @override
+  String get pv_system_designer_desc =>
+      'Design a complete PV installation: roof layout, shadows, structure, and energy output.';
+
+  @override
+  String get pv_design_step_site => 'Site';
+
+  @override
+  String get pv_design_step_roof => 'Roof';
+
+  @override
+  String get pv_design_step_panels => 'Panels';
+
+  @override
+  String get pv_design_step_shadows => 'Shadows';
+
+  @override
+  String get pv_design_step_structure => 'Structure';
+
+  @override
+  String get pv_design_step_proposal => 'Proposal';
+
+  @override
+  String get pv_design_site_location => 'Site Location';
+
+  @override
+  String get pv_design_location_name => 'Location name';
+
+  @override
+  String get pv_design_latitude => 'Latitude';
+
+  @override
+  String get pv_design_longitude => 'Longitude';
+
+  @override
+  String get pv_design_use_location => 'Use current location';
+
+  @override
+  String get pv_design_roof_dimensions => 'Roof / Site Dimensions';
+
+  @override
+  String get pv_design_width => 'Width';
+
+  @override
+  String get pv_design_length => 'Length';
+
+  @override
+  String get pv_design_tilt_azimuth => 'Tilt & Azimuth';
+
+  @override
+  String get pv_design_pitch => 'Pitch';
+
+  @override
+  String get pv_design_azimuth => 'Azimuth';
+
+  @override
+  String get pv_design_clearances => 'Clearances';
+
+  @override
+  String get pv_design_setback => 'Wall setback';
+
+  @override
+  String get pv_design_front_clearance => 'Front';
+
+  @override
+  String get pv_design_rear_clearance => 'Rear';
+
+  @override
+  String get pv_design_side_clearance => 'Side';
+
+  @override
+  String get pv_design_leg_clearance => 'Leg clearance';
+
+  @override
+  String get pv_design_row_gap => 'Row gap';
+
+  @override
+  String get pv_design_economics => 'Economics';
+
+  @override
+  String get pv_design_tariff => 'Electricity tariff';
+
+  @override
+  String get pv_design_panel_power => 'Panel power';
+
+  @override
+  String get pv_design_panel_length => 'Panel length';
+
+  @override
+  String get pv_design_panel_width => 'Panel width';
+
+  @override
+  String get pv_design_panel_weight => 'Panel weight';
+
+  @override
+  String get pv_design_auto_place => 'Auto-place panels';
+
+  @override
+  String get pv_design_clear_panels => 'Clear panels';
+
+  @override
+  String pv_design_shadow_time(Object time) {
+    return 'Time: $time';
+  }
+
+  @override
+  String get pv_design_winter_solstice => 'Winter';
+
+  @override
+  String get pv_design_summer_solstice => 'Summer';
+
+  @override
+  String get pv_design_calculating_structure => 'Calculating structure...';
+
+  @override
+  String get pv_design_layout_summary => 'Layout Summary';
+
+  @override
+  String get pv_design_rows => 'Rows';
+
+  @override
+  String get pv_design_columns => 'Columns';
+
+  @override
+  String get pv_design_frame_width => 'Frame width';
+
+  @override
+  String get pv_design_row_spacing => 'Row spacing';
+
+  @override
+  String get pv_design_leg_heights => 'Leg Heights';
+
+  @override
+  String get pv_design_front_leg => 'Front leg';
+
+  @override
+  String get pv_design_rear_leg => 'Rear leg';
+
+  @override
+  String get pv_design_bom => 'Bill of Materials';
+
+  @override
+  String get pv_design_system_summary => 'System Summary';
+
+  @override
+  String get pv_design_peak_power => 'Peak power';
+
+  @override
+  String get pv_design_total_area => 'Total area';
+
+  @override
+  String get pv_design_total_weight => 'Total weight';
+
+  @override
+  String get pv_design_energy_estimate => 'Energy Estimate';
+
+  @override
+  String get pv_design_yearly_energy => 'Yearly energy';
+
+  @override
+  String get pv_design_capacity_factor => 'Capacity factor';
+
+  @override
+  String get pv_design_co2_offset => 'CO₂ offset';
+
+  @override
+  String get pv_design_estimated_savings => 'Estimated savings';
+
+  @override
+  String get pv_design_data_source => 'Data source';
+
+  @override
+  String get pv_design_monthly_energy => 'Monthly Energy';
+
+  @override
+  String get pv_design_save_project => 'Save project';
+
+  @override
+  String get pv_design_finish => 'Finish';
+
+  @override
+  String get pv_design_panel_count => 'Panel count';
 }

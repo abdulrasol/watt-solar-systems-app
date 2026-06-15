@@ -22,7 +22,9 @@ import 'package:solar_hub/src/features/structure_design/presentation/widgets/wiz
 import 'package:solar_hub/src/utils/app_explanations.dart';
 
 class StructureDesignScreen extends ConsumerStatefulWidget {
-  const StructureDesignScreen({super.key});
+  const StructureDesignScreen({super.key, this.initialInput});
+
+  final StructureDesignInput? initialInput;
 
   @override
   ConsumerState<StructureDesignScreen> createState() => _StructureDesignScreenState();
@@ -53,7 +55,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen> w
   @override
   void initState() {
     super.initState();
-    final input = ref.read(structureDesignControllerProvider).input;
+    final input = ref.read(structureDesignControllerProvider(widget.initialInput)).input;
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_onTabChanged);
     _siteWidthController = TextEditingController(text: input.siteWidthMeters.toString());
@@ -128,7 +130,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen> w
       return;
     }
     if (_tabController.index == 1) {
-      ref.read(structureDesignControllerProvider).recalculate();
+      ref.read(structureDesignControllerProvider(widget.initialInput)).recalculate();
     }
     if (_tabController.index < 2) {
       _tabController.animateTo(_tabController.index + 1);
@@ -154,7 +156,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen> w
       if (document == null) {
         return;
       }
-      ref.read(structureDesignControllerProvider).loadWattDrawing(document);
+      ref.read(structureDesignControllerProvider(widget.initialInput)).loadWattDrawing(document);
       _syncControllersFromInput(document.input);
       _tabController.animateTo(2);
       if (!mounted) {
@@ -176,7 +178,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen> w
 
   Future<void> _saveWattDrawing() async {
     final l10n = AppLocalizations.of(context)!;
-    final controller = ref.read(structureDesignControllerProvider);
+    final controller = ref.read(structureDesignControllerProvider(widget.initialInput));
     final result = controller.result;
     if (result == null) {
       return;
@@ -216,7 +218,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen> w
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(structureDesignControllerProvider);
+    final controller = ref.watch(structureDesignControllerProvider(widget.initialInput));
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final explanations = AppExplanations(context).getStructureDesignExplanations();
@@ -428,7 +430,7 @@ class _StructureDesignScreenState extends ConsumerState<StructureDesignScreen> w
   }
 
   void _onUseLocation() {
-    ref.read(structureDesignControllerProvider).useCurrentLocation();
+    ref.read(structureDesignControllerProvider(widget.initialInput)).useCurrentLocation();
   }
 
   String _getFacingDirectionLabel(AppLocalizations l10n, FacingDirectionPreference value) {

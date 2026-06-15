@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
@@ -19,12 +20,11 @@ class VisualGridCanvas extends ConsumerStatefulWidget {
 class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
   // Local state to track indices touched in a single drag paint stroke
   final Set<int> _draggedIndices = {};
-  
+
   // Track which polygon vertex index is currently being dragged
   int? _draggedVertexIndex;
 
-  bool _isArabic(BuildContext context) =>
-      Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
+  bool _isArabic(BuildContext context) => Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
 
   String _tr(BuildContext context, String en, String ar) {
     return _isArabic(context) ? ar : en;
@@ -54,10 +54,7 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF0F4F2),
         shape: BoxShape.circle,
-        border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.08),
-          width: 1.5,
-        ),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.08), width: 1.5),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -65,33 +62,21 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
           // Rotating arrow indicator
           Transform.rotate(
             angle: angle,
-            child: Icon(
-              Icons.navigation_rounded,
-              color: Colors.orangeAccent,
-              size: 16.sp,
-            ),
+            child: Icon(Icons.navigation_rounded, color: Colors.orangeAccent, size: 16.sp),
           ),
           // Subtle cardinal markers
           Positioned(
             top: 2.h,
             child: Text(
               'N',
-              style: TextStyle(
-                fontSize: 7.sp,
-                fontWeight: FontWeight.w900,
-                color: isDark ? Colors.white54 : Colors.black54,
-              ),
+              style: TextStyle(fontSize: 7.sp, fontWeight: FontWeight.w900, color: isDark ? Colors.white54 : Colors.black54),
             ),
           ),
           Positioned(
             bottom: 2.h,
             child: Text(
               'S',
-              style: TextStyle(
-                fontSize: 7.sp,
-                fontWeight: FontWeight.w900,
-                color: isDark ? Colors.white54 : Colors.black54,
-              ),
+              style: TextStyle(fontSize: 7.sp, fontWeight: FontWeight.w900, color: isDark ? Colors.white54 : Colors.black54),
             ),
           ),
         ],
@@ -109,19 +94,13 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
           return BoxDecoration(
             color: isDark ? const Color(0xFF2C2415) : const Color(0xFFFEF9EB),
             borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: Colors.amber.withValues(alpha: isDark ? 0.35 : 0.5),
-              width: 1,
-            ),
+            border: Border.all(color: Colors.amber.withValues(alpha: isDark ? 0.35 : 0.5), width: 1),
           );
         }
         return BoxDecoration(
           color: isDark ? Colors.grey[900]?.withValues(alpha: 0.4) : Colors.grey[50],
           borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(
-            color: Colors.grey.withValues(alpha: isDark ? 0.15 : 0.25),
-            width: 1,
-          ),
+          border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.15 : 0.25), width: 1),
         );
       case CellType.panel:
         final r = index ~/ simulator.cols;
@@ -130,54 +109,24 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
         final isShaded = controller.isCellShaded(index);
         if (isShaded) {
           return BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF90A4AE), Color(0xFF607D8B)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            gradient: const LinearGradient(colors: [Color(0xFF90A4AE), Color(0xFF607D8B)], begin: Alignment.topLeft, end: Alignment.bottomRight),
             borderRadius: BorderRadius.circular(8.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.orange.withValues(alpha: 0.25),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              )
-            ],
+            boxShadow: [BoxShadow(color: Colors.orange.withValues(alpha: 0.25), blurRadius: 6, offset: const Offset(0, 2))],
             border: Border.all(color: Colors.orange, width: 2.0),
           );
         }
         if (inSetback) {
           return BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFFFE082), Color(0xFFFFB300)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            gradient: const LinearGradient(colors: [Color(0xFFFFE082), Color(0xFFFFB300)], begin: Alignment.topLeft, end: Alignment.bottomRight),
             borderRadius: BorderRadius.circular(8.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.amber.withValues(alpha: 0.25),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              )
-            ],
+            boxShadow: [BoxShadow(color: Colors.amber.withValues(alpha: 0.25), blurRadius: 6, offset: const Offset(0, 2))],
             border: Border.all(color: Colors.orangeAccent, width: 2.0),
           );
         }
         return BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFFFFD54F), Color(0xFFFFB300)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: const LinearGradient(colors: [Color(0xFFFFD54F), Color(0xFFFFB300)], begin: Alignment.topLeft, end: Alignment.bottomRight),
           borderRadius: BorderRadius.circular(8.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.amber.withValues(alpha: 0.3),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            )
-          ],
+          boxShadow: [BoxShadow(color: Colors.amber.withValues(alpha: 0.3), blurRadius: 6, offset: const Offset(0, 2))],
           border: Border.all(color: const Color(0xFFFFA000), width: 1.5),
         );
       case CellType.obstacle:
@@ -220,16 +169,8 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
           return Stack(
             alignment: Alignment.center,
             children: [
-              Icon(
-                Iconsax.sun_1_bold,
-                color: Colors.white.withValues(alpha: 0.4),
-                size: (180.w / simulator.cols).clamp(12.0, 24.0),
-              ),
-              Icon(
-                Icons.warning_amber_rounded,
-                color: Colors.orangeAccent,
-                size: (180.w / simulator.cols).clamp(10.0, 20.0),
-              ),
+              Icon(Iconsax.sun_1_bold, color: Colors.white.withValues(alpha: 0.4), size: (180.w / simulator.cols).clamp(12.0, 24.0)),
+              Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: (180.w / simulator.cols).clamp(10.0, 20.0)),
             ],
           );
         }
@@ -237,52 +178,24 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
           return Stack(
             alignment: Alignment.center,
             children: [
-              Icon(
-                Iconsax.sun_1_bold,
-                color: Colors.white,
-                size: (180.w / simulator.cols).clamp(12.0, 24.0),
-              ),
+              Icon(Iconsax.sun_1_bold, color: Colors.white, size: (180.w / simulator.cols).clamp(12.0, 24.0)),
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: Icon(
-                  Icons.warning_amber_rounded,
-                  color: Colors.deepOrangeAccent,
-                  size: (180.w / simulator.cols).clamp(8.0, 14.0),
-                ),
+                child: Icon(Icons.warning_amber_rounded, color: Colors.deepOrangeAccent, size: (180.w / simulator.cols).clamp(8.0, 14.0)),
               ),
             ],
           );
         }
-        return Icon(
-          Iconsax.sun_1_bold,
-          color: Colors.white,
-          size: (180.w / simulator.cols).clamp(12.0, 24.0),
-        );
+        return Icon(Iconsax.sun_1_bold, color: Colors.white, size: (180.w / simulator.cols).clamp(12.0, 24.0));
       case CellType.obstacle:
-        return Icon(
-          Icons.warning_amber_rounded,
-          color: Colors.redAccent,
-          size: (180.w / simulator.cols).clamp(12.0, 24.0),
-        );
+        return Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: (180.w / simulator.cols).clamp(12.0, 24.0));
       case CellType.shadow:
-        return Icon(
-          Icons.nights_stay_rounded,
-          color: Colors.blueGrey,
-          size: (180.w / simulator.cols).clamp(12.0, 24.0),
-        );
+        return Icon(Icons.nights_stay_rounded, color: Colors.blueGrey, size: (180.w / simulator.cols).clamp(12.0, 24.0));
       case CellType.tree:
-        return Icon(
-          Icons.park_rounded,
-          color: Colors.green,
-          size: (180.w / simulator.cols).clamp(12.0, 24.0),
-        );
+        return Icon(Icons.park_rounded, color: Colors.green, size: (180.w / simulator.cols).clamp(12.0, 24.0));
       case CellType.excluded:
-        return Icon(
-          Icons.close_rounded,
-          color: Colors.redAccent.withValues(alpha: 0.5),
-          size: (180.w / simulator.cols).clamp(12.0, 24.0),
-        );
+        return Icon(Icons.close_rounded, color: Colors.redAccent.withValues(alpha: 0.5), size: (180.w / simulator.cols).clamp(12.0, 24.0));
     }
   }
 
@@ -332,10 +245,7 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
         final double y = localPosition.dy - padding;
         final double c = (x / cellWidth) - 0.5;
         final double r = (y / cellHeight) - 0.5;
-        controller.updatePolygonVertex(
-          _draggedVertexIndex!,
-          Offset(c.clamp(0.0, simulator.cols - 1.0), r.clamp(0.0, simulator.rows - 1.0)),
-        );
+        controller.updatePolygonVertex(_draggedVertexIndex!, Offset(c.clamp(0.0, simulator.cols - 1.0), r.clamp(0.0, simulator.rows - 1.0)));
       }
       return;
     }
@@ -373,10 +283,7 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
 
     switch (simulator.activeTool) {
       case ToolMode.placePanel:
-        if (currentType == CellType.obstacle ||
-            currentType == CellType.shadow ||
-            currentType == CellType.tree ||
-            currentType == CellType.excluded) {
+        if (currentType == CellType.obstacle || currentType == CellType.shadow || currentType == CellType.tree || currentType == CellType.excluded) {
           return;
         }
         targetType = CellType.panel;
@@ -403,6 +310,164 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
       updatedGrid[index] = targetType;
       ref.read(roofSimulatorProvider.notifier).updateGrid(updatedGrid);
     }
+  }
+
+  void _showSavedDesignsDialog(BuildContext context, RoofSimulatorController controller) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final savedDesigns = controller.getSavedDesigns();
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+          backgroundColor: isDark ? const Color(0xFF161E1C) : Colors.white,
+          title: Text(
+            _tr(context, 'Saved Designs', 'تصاميم محفوظة'),
+            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.sp),
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: savedDesigns.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.r),
+                      child: Text(
+                        _tr(context, 'No saved designs', 'لا توجد تصاميم محفوظة'),
+                        style: TextStyle(fontSize: 14.sp, color: isDark ? Colors.white54 : Colors.grey[600]),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: savedDesigns.length,
+                    itemBuilder: (context, index) {
+                      final design = savedDesigns[index];
+                      return Card(
+                        color: isDark ? const Color(0xFF1E2624) : Colors.grey[50],
+                        margin: EdgeInsets.symmetric(vertical: 6.r, horizontal: 2.r),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                        child: ListTile(
+                          title: Text(
+                            design['name'],
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+                          ),
+                          subtitle: Text(
+                            _formatDate(DateTime.parse(design['date'])),
+                            style: TextStyle(fontSize: 11.sp, color: isDark ? Colors.white54 : Colors.grey[600]),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete_rounded, color: Colors.redAccent),
+                            onPressed: () {
+                              // Delete design
+                              final allDesigns = controller.getSavedDesigns();
+                              allDesigns.removeAt(index);
+                              final box = GetStorage();
+                              box.write('saved_roof_designs', allDesigns);
+                              setDialogState(() {});
+                              ToastService.success(
+                                context,
+                                _tr(context, 'Design Deleted', 'تم حذف التصميم'),
+                                _tr(context, 'Design was removed from saved items', 'تمت إزالة التصميم من العناصر المحفوظة'),
+                              );
+                            },
+                          ),
+                          onTap: () {
+                            // Load design
+                            controller.loadDesign(design);
+                            Navigator.pop(context);
+                            ToastService.success(
+                              context,
+                              _tr(context, 'Design Loaded', 'تم تحميل التصميم'),
+                              _tr(context, 'Your saved design is now active', 'التصميم المحفوظ أصبح نشطًا الآن'),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: Text(_tr(context, 'Close', 'إغلاق'))),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                _showSaveDesignDialog(context, controller);
+              },
+              icon: Icon(Icons.save_rounded),
+              label: Text(_tr(context, 'Save Current', 'حفظ الحالي')),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showSaveDesignDialog(BuildContext context, RoofSimulatorController controller) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final nameController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+        backgroundColor: isDark ? const Color(0xFF161E1C) : Colors.white,
+        title: Text(
+          _tr(context, 'Save Design', 'حفظ التصميم'),
+          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.sp),
+        ),
+        content: Form(
+          key: formKey,
+          child: TextFormField(
+            controller: nameController,
+            decoration: InputDecoration(
+              labelText: _tr(context, 'Design Name', 'اسم التصميم'),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+              prefixIcon: Icon(Icons.label_rounded),
+            ),
+            validator: (value) {
+              if (value?.trim().isEmpty ?? true) {
+                return _tr(context, 'Please enter a name', 'يرجى إدخال اسم');
+              }
+              return null;
+            },
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(_tr(context, 'Cancel', 'إلغاء'))),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+            ),
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                controller.saveDesign(nameController.text.trim());
+                Navigator.pop(context);
+                ToastService.success(
+                  context,
+                  _tr(context, 'Design Saved', 'تم حفظ التصميم'),
+                  _tr(context, 'Your design was saved successfully', 'تم حفظ تصميمك بنجاح'),
+                );
+              }
+            },
+            child: Text(_tr(context, 'Save', 'حفظ')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    // Simple date formatter
+    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -449,10 +514,7 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
                 decoration: BoxDecoration(
                   color: isDark ? const Color(0xFF1E2624) : const Color(0xFFF7F9F8),
                   borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06),
-                    width: 1.0,
-                  ),
+                  border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06), width: 1.0),
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -460,11 +522,7 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(
-                          Icons.draw_rounded,
-                          size: 18.sp,
-                          color: simulator.isPolygonSketchMode ? Colors.blueAccent : null,
-                        ),
+                        icon: Icon(Icons.draw_rounded, size: 18.sp, color: simulator.isPolygonSketchMode ? Colors.blueAccent : null),
                         tooltip: _tr(context, 'Sketch Custom Roof', 'رسم سقف مخصص'),
                         onPressed: () {
                           controller.togglePolygonSketchMode();
@@ -478,11 +536,7 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(
-                          Icons.explore_rounded,
-                          size: 18.sp,
-                          color: simulator.panelOrientation == 'South' ? Colors.orangeAccent : null,
-                        ),
+                        icon: Icon(Icons.explore_rounded, size: 18.sp, color: simulator.panelOrientation == 'South' ? Colors.orangeAccent : null),
                         tooltip: _tr(context, 'Orient South', 'توجيه للجنوب'),
                         onPressed: () {
                           controller.alignLayoutToSouth();
@@ -528,6 +582,13 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
                         color: canRedo ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.4),
                         onPressed: canRedo ? () => controller.redo() : null,
                       ),
+                      IconButton(
+                        icon: Icon(Icons.save_rounded, size: 18.sp),
+                        tooltip: _tr(context, 'Saved Designs', 'تصاميم محفوظة'),
+                        onPressed: () {
+                          _showSavedDesignsDialog(context, controller);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -551,16 +612,8 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
               children: [
                 Expanded(
                   child: Text(
-                    _tr(
-                      context,
-                      '📌 Polygon: Tap to place vertices. Drag nodes to reshape.',
-                      '📌 المضلع: انقر لتحديد الزوايا. اسحب النقاط لتغيير الشكل.',
-                    ),
-                    style: TextStyle(
-                      fontSize: 9.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                    ),
+                    _tr(context, '📌 Polygon: Tap to place vertices. Drag nodes to reshape.', '📌 المضلع: انقر لتحديد الزوايا. اسحب النقاط لتغيير الشكل.'),
+                    style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.bold, color: Colors.blueAccent),
                   ),
                 ),
                 Row(
@@ -613,20 +666,8 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
           maxScale: 4.0,
           child: RepaintBoundary(
             child: GestureDetector(
-              onPanStart: (details) => _handlePanStart(
-                details.localPosition,
-                screenWidth,
-                canvasHeight,
-                simulator,
-                controller,
-              ),
-              onPanUpdate: (details) => _handlePanUpdate(
-                details.localPosition,
-                screenWidth,
-                canvasHeight,
-                simulator,
-                controller,
-              ),
+              onPanStart: (details) => _handlePanStart(details.localPosition, screenWidth, canvasHeight, simulator, controller),
+              onPanUpdate: (details) => _handlePanUpdate(details.localPosition, screenWidth, canvasHeight, simulator, controller),
               onPanEnd: (_) => _handlePanEnd(),
               onTapUp: (details) {
                 if (simulator.isPolygonSketchMode) {
@@ -652,13 +693,8 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
                 decoration: BoxDecoration(
                   color: isDark ? const Color(0xFF161E1C) : Colors.white,
                   borderRadius: BorderRadius.circular(24.r),
-                  boxShadow: const [
-                    BoxShadow(color: Color(0x06000000), blurRadius: 16, offset: Offset(0, 8))
-                  ],
-                  border: Border.all(
-                    color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12),
-                    width: 1.4,
-                  ),
+                  boxShadow: const [BoxShadow(color: Color(0x06000000), blurRadius: 16, offset: Offset(0, 8))],
+                  border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12), width: 1.4),
                 ),
                 child: Stack(
                   children: [
@@ -686,72 +722,37 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
 
                           if (isExcluded) {
                             safetyOverlay = Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.45),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
+                              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(8.r)),
                               child: Center(
-                                child: Icon(
-                                  Icons.close_rounded,
-                                  color: Colors.white70,
-                                  size: (120.w / simulator.cols).clamp(8.0, 16.0),
-                                ),
+                                child: Icon(Icons.close_rounded, color: Colors.white70, size: (120.w / simulator.cols).clamp(8.0, 16.0)),
                               ),
                             );
                           } else if (isObstacle) {
                             safetyOverlay = Container(
-                              decoration: BoxDecoration(
-                                color: Colors.red.withValues(alpha: 0.35),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
+                              decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
                               child: Center(
-                                child: Icon(
-                                  Icons.error_outline_rounded,
-                                  color: Colors.white,
-                                  size: (120.w / simulator.cols).clamp(8.0, 16.0),
-                                ),
+                                child: Icon(Icons.error_outline_rounded, color: Colors.white, size: (120.w / simulator.cols).clamp(8.0, 16.0)),
                               ),
                             );
                           } else if (isShaded) {
                             safetyOverlay = Container(
-                              decoration: BoxDecoration(
-                                color: Colors.orange.withValues(alpha: 0.35),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
+                              decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
                               child: Center(
-                                child: Icon(
-                                  Icons.wb_cloudy_rounded,
-                                  color: Colors.white,
-                                  size: (120.w / simulator.cols).clamp(8.0, 16.0),
-                                ),
+                                child: Icon(Icons.wb_cloudy_rounded, color: Colors.white, size: (120.w / simulator.cols).clamp(8.0, 16.0)),
                               ),
                             );
                           } else if (inSetback) {
                             safetyOverlay = Container(
-                              decoration: BoxDecoration(
-                                color: Colors.amber.withValues(alpha: 0.35),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
+                              decoration: BoxDecoration(color: Colors.amber.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
                               child: Center(
-                                child: Icon(
-                                  Icons.space_bar_rounded,
-                                  color: Colors.white,
-                                  size: (120.w / simulator.cols).clamp(8.0, 16.0),
-                                ),
+                                child: Icon(Icons.space_bar_rounded, color: Colors.white, size: (120.w / simulator.cols).clamp(8.0, 16.0)),
                               ),
                             );
                           } else {
                             safetyOverlay = Container(
-                              decoration: BoxDecoration(
-                                color: Colors.green.withValues(alpha: 0.35),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
+                              decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(8.r)),
                               child: Center(
-                                child: Icon(
-                                  Icons.check_circle_rounded,
-                                  color: Colors.white,
-                                  size: (120.w / simulator.cols).clamp(8.0, 16.0),
-                                ),
+                                child: Icon(Icons.check_circle_rounded, color: Colors.white, size: (120.w / simulator.cols).clamp(8.0, 16.0)),
                               ),
                             );
                           }
@@ -768,16 +769,8 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
                               Positioned.fill(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 180),
-                                  decoration: _buildCellDecoration(
-                                    cell,
-                                    index,
-                                    simulator,
-                                    controller,
-                                    isDark,
-                                  ),
-                                  child: Center(
-                                    child: _buildCellIcon(cell, index, simulator, controller),
-                                  ),
+                                  decoration: _buildCellDecoration(cell, index, simulator, controller, isDark),
+                                  child: Center(child: _buildCellIcon(cell, index, simulator, controller)),
                                 ),
                               ),
                               if (safetyOverlay != null) Positioned.fill(child: safetyOverlay),
@@ -792,11 +785,7 @@ class _VisualGridCanvasState extends ConsumerState<VisualGridCanvas> {
                       Positioned.fill(
                         child: IgnorePointer(
                           child: CustomPaint(
-                            painter: CustomPolygonPainter(
-                              vertices: simulator.polygonVertices,
-                              rows: simulator.rows,
-                              cols: simulator.cols,
-                            ),
+                            painter: CustomPolygonPainter(vertices: simulator.polygonVertices, rows: simulator.rows, cols: simulator.cols),
                           ),
                         ),
                       ),

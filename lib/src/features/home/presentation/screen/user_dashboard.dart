@@ -75,6 +75,14 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
           );
         },
       ),
+      _DashboardAction(
+        title: l10n.pv_system_designer_title,
+        subtitle: l10n.pv_system_designer_desc,
+        icon: Iconsax.sun_1_bold,
+        accent: const Color(0xFF0BAA9D),
+        gradient: const [Color(0xFFE8FCF8), Color(0xFFF7FFFD)],
+        onTap: () => context.push('/pv-system-designer'),
+      ),
       if (ref.watch(isOffersEnabled))
         _DashboardAction(
           title: l10n.dashboard_offer_wizard,

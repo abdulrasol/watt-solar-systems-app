@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
@@ -11,6 +12,8 @@ import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/simul
 import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/parameter_inputs_card.dart';
 import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/boundary_walls_card.dart';
 import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/metrics_panel.dart';
+import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
 
 class RoofSimulatorPage extends ConsumerStatefulWidget {
   const RoofSimulatorPage({super.key});
@@ -20,8 +23,7 @@ class RoofSimulatorPage extends ConsumerStatefulWidget {
 }
 
 class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
-  bool _isArabic(BuildContext context) =>
-      Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
+  bool _isArabic(BuildContext context) => Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
 
   String _tr(BuildContext context, String en, String ar) {
     return _isArabic(context) ? ar : en;
@@ -31,10 +33,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(
-          _tr(context, 'Reset Layout Canvas', 'إعادة تعيين اللوحة'),
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text(_tr(context, 'Reset Layout Canvas', 'إعادة تعيين اللوحة'), style: const TextStyle(fontWeight: FontWeight.bold)),
         content: Text(
           _tr(
             context,
@@ -43,10 +42,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(_tr(context, 'Cancel', 'إلغاء')),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(_tr(context, 'Cancel', 'إلغاء'))),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, foregroundColor: Colors.white),
             onPressed: () {
@@ -94,19 +90,42 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildHelpRow('1', _tr(context, 'Set Dimensions:', 'تحديد الأبعاد:'), _tr(context, 'Enter your roof length, width, and desired safety setback margin.', 'أدخل طول وعرض السقف وهامش ارتداد السلامة المطلوب.')),
-              _buildHelpRow('2', _tr(context, 'Select Active Tool:', 'اختيار الأداة:'), _tr(context, 'Tap a tool below (Panel, Obstacle, Tree, Excluded) to start drawing on cells.', 'اختر أداة من شريط الأدوات (لوح، عائق، شجرة، مستبعد) للبدء في الرسم على الشبكة.')),
-              _buildHelpRow('3', _tr(context, 'Draw Custom Outlines:', 'رسم حدود مخصصة:'), _tr(context, 'Tap "Sketch Perimeter" to plot any custom polygon roof shapes or angles.', 'انقر على "رسم حدود السقف" لتحديد أي زوايا أو أشكال مضلعة غير منتظمة.')),
-              _buildHelpRow('4', _tr(context, 'Time Shadow Sweeper:', 'محاكي حركة الظل:'), _tr(context, 'Slide the daytime hour slider to watch shadow Sweeps from chimneys/walls.', 'اسحب منزلق الساعات لمشاهدة امتداد الظلال من جدران السطح والعوائق.')),
+              _buildHelpRow(
+                '1',
+                _tr(context, 'Set Dimensions:', 'تحديد الأبعاد:'),
+                _tr(context, 'Enter your roof length, width, and desired safety setback margin.', 'أدخل طول وعرض السقف وهامش ارتداد السلامة المطلوب.'),
+              ),
+              _buildHelpRow(
+                '2',
+                _tr(context, 'Select Active Tool:', 'اختيار الأداة:'),
+                _tr(
+                  context,
+                  'Tap a tool below (Panel, Obstacle, Tree, Excluded) to start drawing on cells.',
+                  'اختر أداة من شريط الأدوات (لوح، عائق، شجرة، مستبعد) للبدء في الرسم على الشبكة.',
+                ),
+              ),
+              _buildHelpRow(
+                '3',
+                _tr(context, 'Draw Custom Outlines:', 'رسم حدود مخصصة:'),
+                _tr(
+                  context,
+                  'Tap "Sketch Perimeter" to plot any custom polygon roof shapes or angles.',
+                  'انقر على "رسم حدود السقف" لتحديد أي زوايا أو أشكال مضلعة غير منتظمة.',
+                ),
+              ),
+              _buildHelpRow(
+                '4',
+                _tr(context, 'Time Shadow Sweeper:', 'محاكي حركة الظل:'),
+                _tr(
+                  context,
+                  'Slide the daytime hour slider to watch shadow Sweeps from chimneys/walls.',
+                  'اسحب منزلق الساعات لمشاهدة امتداد الظلال من جدران السطح والعوائق.',
+                ),
+              ),
             ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(_tr(context, 'Got it', 'فهمت')),
-          ),
-        ],
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text(_tr(context, 'Got it', 'فهمت')))],
       ),
     );
   }
@@ -120,22 +139,63 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           CircleAvatar(
             radius: 9.r,
             backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.15),
-            child: Text(index, style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
+            child: Text(
+              index,
+              style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+            ),
           ),
           SizedBox(width: 8.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11.5.sp)),
+                Text(
+                  title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11.5.sp),
+                ),
                 SizedBox(height: 2.h),
-                Text(description, style: TextStyle(fontSize: 10.5.sp, height: 1.4, color: Colors.grey[700])),
+                Text(
+                  description,
+                  style: TextStyle(fontSize: 10.5.sp, height: 1.4, color: Colors.grey[700]),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _navigateToStructureDesign() {
+    final state = ref.read(roofSimulatorProvider);
+    final controller = ref.read(roofSimulatorProvider.notifier);
+    final panelsCount = controller.panelsCount;
+
+    final input = StructureDesignInput(
+      siteWidthMeters: state.roofWidthM,
+      siteDepthMeters: state.roofLengthM,
+      latitude: 33.3, // Default latitude
+      facingPreference: FacingDirectionPreference.any,
+      mountType: MountType.flatRoof,
+      frontClearanceMeters: 0.5,
+      rearClearanceMeters: 0.5,
+      sideClearanceMeters: 0.3,
+      frontLegClearanceMeters: 0.5,
+      interRowGapMeters: 0.5,
+      panelSpec: PanelSpec(
+        lengthMeters: state.panelLengthM,
+        widthMeters: state.panelWidthM,
+        thicknessMeters: 0.035,
+        orientation: state.isPortrait ? PanelOrientation.portrait : PanelOrientation.landscape,
+        horizontalGapMeters: 0.03,
+        verticalGapMeters: 0.03,
+      ),
+      rowMode: RowMode.independent,
+      rowBaseOffsetsMeters: [0.0],
+      targetPanelCount: panelsCount > 0 ? panelsCount : null,
+    );
+
+    context.push('/calculator/structure-design', extra: input);
   }
 
   void _showExportDialog() {
@@ -250,40 +310,51 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
+                    foregroundColor: AppTheme.primaryColor,
                     padding: EdgeInsets.symmetric(vertical: 12.h),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    ToastService.success(
-                      context,
-                      _tr(context, 'Proposal Submitted', 'تم إرسال المقترح'),
-                      _tr(
-                        context,
-                        'Your roof visual proposal has been sent to partner suppliers.',
-                        'تمت مشاركة مقترح السطح البصري الخاص بك مع الشركات المزودة للخدمة.',
-                      ),
-                    );
+                    _navigateToStructureDesign();
                   },
-                  child: Text(_tr(context, 'Share & Quote', 'طلب عروض')),
+                  child: Text(_tr(context, 'Design Structure', 'تصميم الهيكل')),
                 ),
               ),
             ],
+          ),
+          SizedBox(height: 8.h),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 12.h),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                ToastService.success(
+                  context,
+                  _tr(context, 'Proposal Submitted', 'تم إرسال المقترح'),
+                  _tr(
+                    context,
+                    'Your roof visual proposal has been sent to partner suppliers.',
+                    'تمت مشاركة مقترح السطح البصري الخاص بك مع الشركات المزودة للخدمة.',
+                  ),
+                );
+              },
+              child: Text(_tr(context, 'Share & Quote', 'طلب عروض')),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDialogStatRow(
-    BuildContext context, {
-    required String label,
-    required String value,
-    required IconData icon,
-    required Color iconColor,
-  }) {
+  Widget _buildDialogStatRow(BuildContext context, {required String label, required String value, required IconData icon, required Color iconColor}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(
@@ -327,16 +398,9 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected
-              ? color.withValues(alpha: 0.15)
-              : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF7F9F8)),
+          color: isSelected ? color.withValues(alpha: 0.15) : (isDark ? const Color(0xFF1E2624) : const Color(0xFFF7F9F8)),
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(
-            color: isSelected
-                ? color
-                : Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12),
-            width: 1.2,
-          ),
+          border: Border.all(color: isSelected ? color : Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12), width: 1.2),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -345,11 +409,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             SizedBox(width: 6.w),
             Text(
               _tr(context, titleEn, titleAr),
-              style: TextStyle(
-                fontSize: 10.5.sp,
-                fontWeight: FontWeight.bold,
-                color: isSelected ? color : (isDark ? Colors.white70 : Colors.black87),
-              ),
+              style: TextStyle(fontSize: 10.5.sp, fontWeight: FontWeight.bold, color: isSelected ? color : (isDark ? Colors.white70 : Colors.black87)),
             ),
           ],
         ),
@@ -371,14 +431,8 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
           style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.sp),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline_rounded),
-            onPressed: _showHelpDialog,
-          ),
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded),
-            onPressed: _clearAll,
-          ),
+          IconButton(icon: const Icon(Icons.help_outline_rounded), onPressed: _showHelpDialog),
+          IconButton(icon: const Icon(Icons.refresh_rounded), onPressed: _clearAll),
         ],
       ),
       body: Column(
@@ -512,6 +566,25 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(height: 12.h),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF5A7D32),
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.r)),
+                        elevation: 4,
+                      ),
+                      onPressed: _navigateToStructureDesign,
+                      icon: const Icon(Icons.straighten),
+                      label: Text(
+                        _tr(context, 'Design Mounting Structure', 'تصميم هيكل التركيب'),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 12.h),
                   SizedBox(

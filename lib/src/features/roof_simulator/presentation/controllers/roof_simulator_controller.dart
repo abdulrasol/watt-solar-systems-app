@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
 
 class RoofSimulatorController extends Notifier<RoofSimulatorState> {
@@ -14,9 +15,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
 
   void saveStateToHistory() {
     final List<CellType> gridCopy = List<CellType>.from(state.grid);
-    final List<List<CellType>> updatedUndo = List<List<CellType>>.from(
-      state.undoStack.map((l) => List<CellType>.from(l)),
-    );
+    final List<List<CellType>> updatedUndo = List<List<CellType>>.from(state.undoStack.map((l) => List<CellType>.from(l)));
     updatedUndo.add(gridCopy);
 
     state = state.copyWith(
@@ -28,41 +27,25 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
   void undo() {
     if (state.undoStack.isEmpty) return;
 
-    final updatedUndo = List<List<CellType>>.from(
-      state.undoStack.map((l) => List<CellType>.from(l)),
-    );
+    final updatedUndo = List<List<CellType>>.from(state.undoStack.map((l) => List<CellType>.from(l)));
     final prev = updatedUndo.removeLast();
 
-    final updatedRedo = List<List<CellType>>.from(
-      state.redoStack.map((l) => List<CellType>.from(l)),
-    );
+    final updatedRedo = List<List<CellType>>.from(state.redoStack.map((l) => List<CellType>.from(l)));
     updatedRedo.add(List<CellType>.from(state.grid));
 
-    state = state.copyWith(
-      grid: prev,
-      undoStack: updatedUndo,
-      redoStack: updatedRedo,
-    );
+    state = state.copyWith(grid: prev, undoStack: updatedUndo, redoStack: updatedRedo);
   }
 
   void redo() {
     if (state.redoStack.isEmpty) return;
 
-    final updatedRedo = List<List<CellType>>.from(
-      state.redoStack.map((l) => List<CellType>.from(l)),
-    );
+    final updatedRedo = List<List<CellType>>.from(state.redoStack.map((l) => List<CellType>.from(l)));
     final next = updatedRedo.removeLast();
 
-    final updatedUndo = List<List<CellType>>.from(
-      state.undoStack.map((l) => List<CellType>.from(l)),
-    );
+    final updatedUndo = List<List<CellType>>.from(state.undoStack.map((l) => List<CellType>.from(l)));
     updatedUndo.add(List<CellType>.from(state.grid));
 
-    state = state.copyWith(
-      grid: next,
-      undoStack: updatedUndo,
-      redoStack: updatedRedo,
-    );
+    state = state.copyWith(grid: next, undoStack: updatedUndo, redoStack: updatedRedo);
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -74,12 +57,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
     updateGridFromDimensions();
   }
 
-  void updatePanelSpecifications({
-    double? powerW,
-    double? lengthM,
-    double? widthM,
-    double? weightKg,
-  }) {
+  void updatePanelSpecifications({double? powerW, double? lengthM, double? widthM, double? weightKg}) {
     state = state.copyWith(
       panelPowerW: powerW ?? state.panelPowerW,
       panelLengthM: lengthM ?? state.panelLengthM,
@@ -98,12 +76,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
     state = state.copyWith(wallSetbackM: setback);
   }
 
-  void updateWallToggles({
-    bool? north,
-    bool? south,
-    bool? east,
-    bool? west,
-  }) {
+  void updateWallToggles({bool? north, bool? south, bool? east, bool? west}) {
     state = state.copyWith(
       hasNorthWall: north ?? state.hasNorthWall,
       hasSouthWall: south ?? state.hasSouthWall,
@@ -112,12 +85,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
     );
   }
 
-  void updateWallHeights({
-    double? north,
-    double? south,
-    double? east,
-    double? west,
-  }) {
+  void updateWallHeights({double? north, double? south, double? east, double? west}) {
     state = state.copyWith(
       northWallHeight: north ?? state.northWallHeight,
       southWallHeight: south ?? state.southWallHeight,
@@ -135,7 +103,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
     if (computedCols != state.cols || computedRows != state.rows) {
       final oldCols = state.cols;
       final oldRows = state.rows;
-      
+
       final newGrid = List<CellType>.filled(computedCols * computedRows, CellType.empty);
       for (int r = 0; r < computedRows; r++) {
         for (int c = 0; c < computedCols; c++) {
@@ -145,11 +113,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
         }
       }
 
-      state = state.copyWith(
-        cols: computedCols,
-        rows: computedRows,
-        grid: newGrid,
-      );
+      state = state.copyWith(cols: computedCols, rows: computedRows, grid: newGrid);
     }
   }
 
@@ -189,9 +153,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
 
   void clearGrid() {
     saveStateToHistory();
-    state = state.copyWith(
-      grid: List<CellType>.filled(state.cols * state.rows, CellType.empty),
-    );
+    state = state.copyWith(grid: List<CellType>.filled(state.cols * state.rows, CellType.empty));
   }
 
   void autofillRoof({bool avoidShade = true}) {
@@ -272,10 +234,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
   // ───────────────────────────────────────────────────────────────────────────
 
   void togglePolygonSketchMode() {
-    state = state.copyWith(
-      isPolygonSketchMode: !state.isPolygonSketchMode,
-      polygonVertices: const [],
-    );
+    state = state.copyWith(isPolygonSketchMode: !state.isPolygonSketchMode, polygonVertices: const []);
   }
 
   void addPolygonVertex(Offset vertex) {
@@ -321,11 +280,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
       }
     }
 
-    state = state.copyWith(
-      grid: newGrid,
-      isPolygonSketchMode: false,
-      polygonVertices: const [],
-    );
+    state = state.copyWith(grid: newGrid, isPolygonSketchMode: false, polygonVertices: const []);
   }
 
   bool isPointInPolygon(double x, double y, List<Offset> polygon) {
@@ -367,6 +322,39 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
     state = state.copyWith(grid: newGrid);
   }
 
+  Future<void> saveDesign(String name) async {
+    final box = GetStorage();
+    final data = {'name': name, 'date': DateTime.now().toIso8601String(), 'state': state.toJson()};
+    List<Map<String, dynamic>> savedDesigns = [];
+    final existing = box.read('saved_roof_designs');
+    if (existing != null) {
+      savedDesigns = List<Map<String, dynamic>>.from(existing);
+    }
+    savedDesigns.add(data);
+    await box.write('saved_roof_designs', savedDesigns);
+  }
+
+  List<Map<String, dynamic>> getSavedDesigns() {
+    final box = GetStorage();
+    final existing = box.read('saved_roof_designs');
+    if (existing != null) {
+      return List<Map<String, dynamic>>.from(existing);
+    }
+    return [];
+  }
+
+  void loadDesign(Map<String, dynamic> design) {
+    final stateJson = design['state'] as Map<String, dynamic>;
+    loadState(RoofSimulatorState.fromJson(stateJson));
+  }
+
+  Future<void> deleteDesign(String key) async {
+    final box = GetStorage();
+    List<Map<String, dynamic>> savedDesigns = getSavedDesigns();
+    savedDesigns.removeWhere((d) => d['state'].toString() == key);
+    await box.write('saved_roof_designs', savedDesigns);
+  }
+
   /// Dynamic shadow multiplier based on diurnal hours (8 AM to 5 PM)
   double get shadowMultiplier {
     // Hour 12.0 is Noon (multiplier = 0.5)
@@ -390,10 +378,7 @@ class RoofSimulatorController extends Notifier<RoofSimulatorState> {
     bool nearTop = distTop < state.wallSetbackM;
     bool nearBottom = distBottom < state.wallSetbackM;
 
-    return (state.hasWestWall && nearLeft) ||
-        (state.hasEastWall && nearRight) ||
-        (state.hasNorthWall && nearTop) ||
-        (state.hasSouthWall && nearBottom);
+    return (state.hasWestWall && nearLeft) || (state.hasEastWall && nearRight) || (state.hasNorthWall && nearTop) || (state.hasSouthWall && nearBottom);
   }
 
   CellType? shadingSourceCell(int index) {

@@ -59,7 +59,10 @@ import 'package:solar_hub/src/features/company_work/presentation/screens/company
 import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_page.dart';
 import 'package:solar_hub/src/features/crm/presentation/screens/crm_screens.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/offer_request_wizard.dart';
+import 'package:solar_hub/src/features/pv_system_designer/presentation/screens/pv_system_designer_screen.dart';
+import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
 import 'package:solar_hub/src/features/structure_design/presentation/screens/structure_design_screen.dart';
+import 'package:solar_hub/src/features/roof_simulator/presentation/screens/roof_simulator_page.dart';
 import 'package:solar_hub/src/features/orders_buyer/presentation/screens/buyer_orders_screen.dart';
 import 'package:solar_hub/src/features/orders_buyer/presentation/screens/order_checkout_result_screen.dart';
 import 'package:solar_hub/src/features/orders_company/presentation/screens/company_orders_screen.dart';
@@ -218,17 +221,9 @@ final routerProvider = Provider<GoRouter>((ref) {
               final authState = ref.read(authProvider);
               final id = int.tryParse(state.pathParameters['id'] ?? '');
               if (id == null || authState.company?.id == null) {
-                return const _RouteRequirementPage(
-                  title: 'Order Unavailable',
-                  message:
-                      'This order link is invalid or requires a company workspace session.',
-                );
+                return const _RouteRequirementPage(title: 'Order Unavailable', message: 'This order link is invalid or requires a company workspace session.');
               }
-              return OrderDetailScreen(
-                orderId: id,
-                companyId: authState.company?.id,
-                sellerView: true,
-              );
+              return OrderDetailScreen(orderId: id, companyId: authState.company?.id, sellerView: true);
             },
           ),
           GoRoute(
@@ -256,11 +251,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const InventoryPage(),
         routes: [
           GoRoute(path: 'add', builder: (context, state) => const AddProductPage()),
-          GoRoute(
-            path: 'product/:id',
-            builder: (BuildContext context, GoRouterState state) =>
-                buildInventoryProductRoute(state),
-          ),
+          GoRoute(path: 'product/:id', builder: (BuildContext context, GoRouterState state) => buildInventoryProductRoute(state)),
           GoRoute(
             path: 'edit/:id',
             builder: (BuildContext context, GoRouterState state) {
@@ -268,8 +259,7 @@ final routerProvider = Provider<GoRouter>((ref) {
               if (product == null) {
                 return const _RouteRequirementPage(
                   title: 'Product Edit Unavailable',
-                  message:
-                      'Open product editing from the inventory list or product details page.',
+                  message: 'Open product editing from the inventory list or product details page.',
                 );
               }
               return AddProductPage(product: product);
@@ -312,18 +302,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           final audience = state.pathParameters['audience'] == 'b2b' ? OrderAudience.b2b : OrderAudience.b2c;
           final id = int.tryParse(state.pathParameters['id'] ?? '');
           if (id == null) {
-            return const _RouteRequirementPage(
-              title: 'Order Unavailable',
-              message: 'This order link is invalid.',
-            );
+            return const _RouteRequirementPage(title: 'Order Unavailable', message: 'This order link is invalid.');
           }
           return OrderDetailScreen(orderId: id, audience: audience);
         },
       ),
-      GoRoute(
-        path: '/storefront/order-result',
-        builder: (context, state) => buildOrderResultRoute(state),
-      ),
+      GoRoute(path: '/storefront/order-result', builder: (context, state) => buildOrderResultRoute(state)),
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
           return AdminShell(location: state.uri.path, child: child);
@@ -442,12 +426,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           return SolarRequestForm(prefill: prefill);
         },
       ),
+      GoRoute(path: '/calculator/request-offer-wizard', builder: (context, state) => const OfferRequestWizard()),
       GoRoute(
-        path: '/calculator/request-offer-wizard',
-        builder: (context, state) => const OfferRequestWizard(),
+        path: '/calculator/structure-design',
+        builder: (context, state) => StructureDesignScreen(initialInput: state.extra as StructureDesignInput?),
       ),
-      GoRoute(path: '/calculator/structure-design', builder: (context, state) => const StructureDesignScreen()),
+      GoRoute(path: '/calculator/roof-simulator', builder: (context, state) => const RoofSimulatorPage()),
       GoRoute(path: '/calculator/fast-calculator', builder: (context, state) => const FastCalculator()),
+      GoRoute(path: '/pv-system-designer', builder: (context, state) => const PvSystemDesignerScreen()),
       GoRoute(path: '/members', builder: (context, state) => const MembersPage()),
       GoRoute(path: '/offers', builder: (context, state) => const CompanyOffersHub()),
       GoRoute(path: '/offers/catalog', builder: (context, state) => const InvolvesCatalogScreen()),
@@ -531,8 +517,7 @@ String? appRedirectForRoute(String path, AuthState authState) {
       return '/home';
     }
 
-    if ((path == '/company-work/add' || path.startsWith('/company-work/edit/')) &&
-        projectsValue != 'write') {
+    if ((path == '/company-work/add' || path.startsWith('/company-work/edit/')) && projectsValue != 'write') {
       return '/company-work';
     }
   }
@@ -544,8 +529,7 @@ String? appRedirectForRoute(String path, AuthState authState) {
   return null;
 }
 
-bool routeRequiresAdmin(String path) =>
-    path == '/admin' || path.startsWith('/admin/');
+bool routeRequiresAdmin(String path) => path == '/admin' || path.startsWith('/admin/');
 
 bool routeRequiresCompanyMember(String path) {
   return path.startsWith('/companies/dashboard') ||
@@ -569,12 +553,7 @@ bool routeRequiresAuthenticatedUser(String path) {
 }
 
 class _RouteRequirementPage extends StatelessWidget {
-  const _RouteRequirementPage({
-    required this.title,
-    required this.message,
-    this.actionLabel,
-    this.onAction,
-  });
+  const _RouteRequirementPage({required this.title, required this.message, this.actionLabel, this.onAction});
 
   final String title;
   final String message;
@@ -595,22 +574,12 @@ class _RouteRequirementPage extends StatelessWidget {
               children: [
                 const Icon(Icons.info_outline, size: 56),
                 const SizedBox(height: 16),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
-                ),
+                Text(title, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
                 const SizedBox(height: 12),
-                Text(
-                  message,
-                  textAlign: TextAlign.center,
-                ),
+                Text(message, textAlign: TextAlign.center),
                 if (actionLabel != null && onAction != null) ...[
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => onAction!(context),
-                    child: Text(actionLabel!),
-                  ),
+                  ElevatedButton(onPressed: () => onAction!(context), child: Text(actionLabel!)),
                 ],
               ],
             ),
@@ -624,11 +593,7 @@ class _RouteRequirementPage extends StatelessWidget {
 Widget buildInventoryProductRoute(GoRouterState state) {
   final product = state.extra is Product ? state.extra as Product : null;
   if (product == null) {
-    return const _RouteRequirementPage(
-      title: 'Product Unavailable',
-      message:
-          'Open this page from the inventory list so the product can be loaded safely.',
-    );
+    return const _RouteRequirementPage(title: 'Product Unavailable', message: 'Open this page from the inventory list so the product can be loaded safely.');
   }
   return ProductDetailsPage(product: product);
 }
@@ -636,17 +601,12 @@ Widget buildInventoryProductRoute(GoRouterState state) {
 Widget buildOrderResultRoute(GoRouterState state) {
   final order = state.extra is OrderRecord ? state.extra as OrderRecord : null;
   if (order == null) {
-    final audience = storefrontAudienceFromQuery(
-      state.uri.queryParameters['audience'],
-    );
+    final audience = storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
     return _RouteRequirementPage(
       title: 'Order Result Unavailable',
-      message:
-          'The checkout result is only available immediately after placing an order.',
+      message: 'The checkout result is only available immediately after placing an order.',
       actionLabel: 'Open My Orders',
-      onAction: (context) => context.go(
-        '/storefront/${audience == StorefrontAudience.b2b ? 'b2b' : 'b2c'}/orders',
-      ),
+      onAction: (context) => context.go('/storefront/${audience == StorefrontAudience.b2b ? 'b2b' : 'b2c'}/orders'),
     );
   }
   return OrderCheckoutResultScreen(order: order);
