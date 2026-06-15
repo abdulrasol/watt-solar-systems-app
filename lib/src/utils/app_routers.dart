@@ -59,7 +59,6 @@ import 'package:solar_hub/src/features/company_work/presentation/screens/company
 import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_page.dart';
 import 'package:solar_hub/src/features/crm/presentation/screens/crm_screens.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/offer_request_wizard.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/screens/pv_system_designer_screen.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
 import 'package:solar_hub/src/features/structure_design/presentation/screens/structure_design_screen.dart';
 import 'package:solar_hub/src/features/roof_simulator/presentation/screens/roof_simulator_page.dart';
@@ -433,7 +432,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/calculator/roof-simulator', builder: (context, state) => const RoofSimulatorPage()),
       GoRoute(path: '/calculator/fast-calculator', builder: (context, state) => const FastCalculator()),
-      GoRoute(path: '/pv-system-designer', builder: (context, state) => const PvSystemDesignerScreen()),
       GoRoute(path: '/members', builder: (context, state) => const MembersPage()),
       GoRoute(path: '/offers', builder: (context, state) => const CompanyOffersHub()),
       GoRoute(path: '/offers/catalog', builder: (context, state) => const InvolvesCatalogScreen()),
