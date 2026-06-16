@@ -15,6 +15,7 @@ import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/metri
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
 
+@Deprecated('Use PvSystemDesignerScreen instead. This feature has been merged into the unified PV System Designer.')
 class RoofSimulatorPage extends ConsumerStatefulWidget {
   const RoofSimulatorPage({super.key});
 

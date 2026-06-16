@@ -21,6 +21,7 @@ import 'package:solar_hub/src/features/structure_design/presentation/widgets/wiz
 import 'package:solar_hub/src/features/structure_design/presentation/widgets/wizard/wizard_scroll.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
 
+@Deprecated('Use PvSystemDesignerScreen instead. This feature has been merged into the unified PV System Designer.')
 class StructureDesignScreen extends ConsumerStatefulWidget {
   const StructureDesignScreen({super.key, this.initialInput});
 

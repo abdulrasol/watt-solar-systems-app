@@ -13,6 +13,7 @@ import 'package:solar_hub/src/features/calculations/presentation/screens/tools/i
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/panel_calculator_page.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/pump_calculator.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/tools/wires_calculator_page.dart';
+import 'package:solar_hub/src/features/pv_system_designer/presentation/screens/pv_system_designer_screen.dart';
 import 'package:solar_hub/src/features/roof_simulator/presentation/screens/roof_simulator_page.dart';
 import 'package:solar_hub/src/features/structure_design/presentation/screens/structure_design_screen.dart';
 import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
@@ -191,6 +192,14 @@ class CalculatorLandingPage extends ConsumerWidget {
                   Colors.teal,
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RoofSimulatorPage())),
                   'roof_simulator_hero',
+                ),
+                _buildToolCard(
+                  context,
+                  _tr(context, 'PV System Designer', 'مصمم النظام الشمسي'),
+                  Iconsax.category_bold,
+                  const Color(0xFFFF6B35),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PvSystemDesignerScreen())),
+                  'pv_designer_hero',
                 ),
               ],
             ),
