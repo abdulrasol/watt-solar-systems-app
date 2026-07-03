@@ -87,4 +87,38 @@ class CompanyStats {
       products: products ?? this.products,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CompanyStats &&
+        other.members == members &&
+        other.orders == orders &&
+        other.myPurchases == myPurchases &&
+        other.offers == offers &&
+        other.customers == customers &&
+        other.systems == systems &&
+        other.contacts == contacts &&
+        other.financialTransactions == financialTransactions &&
+        other.deliveryOptions == deliveryOptions &&
+        other.expenses == expenses &&
+        other.products == products;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      members,
+      orders,
+      myPurchases,
+      offers,
+      customers,
+      systems,
+      contacts,
+      financialTransactions,
+      deliveryOptions,
+      expenses,
+      products,
+    );
+  }
 }

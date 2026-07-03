@@ -1,14 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
+import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
+import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/core/enums/system_status.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
 
 class SystemsState {
   final List<SystemModel> savedSystems;
   final List<SystemModel> installedSystems;
   final bool isLoading;
 
-  SystemsState({
+  const SystemsState({
     this.savedSystems = const [],
     this.installedSystems = const [],
     this.isLoading = false,
@@ -28,11 +31,23 @@ class SystemsState {
 }
 
 class SystemsProvider extends Notifier<SystemsState> {
+  static const String _savedSystemsKey = 'saved_system_models';
+
   @override
   SystemsState build() {
-    // Initial fetch
-    Future.microtask(() => fetchSystems());
-    return SystemsState();
+    final authState = ref.read(authProvider);
+    final persistedSystems = _loadPersistedSystems();
+    final visibleSystems = _filterSystemsForUser(
+      persistedSystems,
+      authState.user?.id,
+    );
+
+    return SystemsState(
+      savedSystems: visibleSystems,
+      installedSystems: visibleSystems
+          .where((system) => system.installedByCompanyId != null)
+          .toList(),
+    );
   }
 
   Future<void> fetchSystems() async {
@@ -40,18 +55,19 @@ class SystemsProvider extends Notifier<SystemsState> {
     try {
       final authState = ref.read(authProvider);
       if (authState.user == null) {
-        state = state.copyWith(isLoading: false);
+        state = const SystemsState();
         return;
       }
 
-      // TODO: Replace with actual API call
-      // Mocking fetch for now since Supabase was removed
-      final fetched = <SystemModel>[];
+      final visibleSystems = _filterSystemsForUser(
+        _loadPersistedSystems(),
+        authState.user?.id,
+      );
 
       state = state.copyWith(
-        savedSystems: fetched,
-        installedSystems: fetched
-            .where((s) => s.installedByCompanyId != null)
+        savedSystems: visibleSystems,
+        installedSystems: visibleSystems
+            .where((system) => system.installedByCompanyId != null)
             .toList(),
       );
     } catch (e) {
@@ -70,24 +86,47 @@ class SystemsProvider extends Notifier<SystemsState> {
   }) async {
     try {
       final authState = ref.read(authProvider);
-      if (authState.user == null) return;
+      final user = authState.user;
+      if (user == null) return;
 
-      Map<String, dynamic> newSpecs = existingSystem?.specs != null
+      final systems = _loadPersistedSystems();
+      final newSpecs = existingSystem?.specs != null
           ? Map<String, dynamic>.from(existingSystem!.specs)
-          : {};
-
+          : <String, dynamic>{};
       newSpecs[partName] = data;
 
       if (existingSystem != null) {
-        // TODO: Implement API Update Call
-        debugPrint(
-          'TODO: Update system part "$partName" with new data for system ID ${existingSystem.id}',
+        final index = systems.indexWhere((system) => system.id == existingSystem.id);
+        if (index == -1) {
+          return;
+        }
+        systems[index] = _mergeSystem(
+          systems[index],
+          specs: newSpecs,
+          installedByCompanyId: companyId ?? systems[index].installedByCompanyId,
         );
       } else {
-        // TODO: Implement API Create Call
-        debugPrint('TODO: Create new system with part "$partName"');
+        final displayName = user.fullName.trim().isNotEmpty
+            ? user.fullName.trim()
+            : user.username;
+        systems.add(
+          SystemModel(
+            id: DateTime.now().microsecondsSinceEpoch.toString(),
+            ownerId: user.id.toString(),
+            installedByCompanyId: companyId,
+            verificationStatus: SystemStatus.pendingVerification,
+            systemName: newSystemName?.trim().isNotEmpty == true
+                ? newSystemName!.trim()
+                : 'Saved System',
+            specs: newSpecs,
+            createdAt: DateTime.now(),
+            userName: displayName,
+            installer: '',
+          ),
+        );
       }
 
+      await _persistSystems(systems);
       await fetchSystems();
     } catch (e) {
       debugPrint('Error saving system part: $e');
@@ -96,8 +135,9 @@ class SystemsProvider extends Notifier<SystemsState> {
 
   Future<void> deleteSavedSystem(String id) async {
     try {
-      // TODO: Implement API Delete Call
-      debugPrint('TODO: Delete system $id');
+      final systems = _loadPersistedSystems();
+      systems.removeWhere((system) => system.id == id);
+      await _persistSystems(systems);
       await fetchSystems();
     } catch (e) {
       debugPrint('Error deleting system: $e');
@@ -106,8 +146,17 @@ class SystemsProvider extends Notifier<SystemsState> {
 
   Future<void> updateSystemStatus(String id, String status) async {
     try {
-      // TODO: Implement API Status Update Call
-      debugPrint('TODO: Update system $id status to $status');
+      final systems = _loadPersistedSystems();
+      final index = systems.indexWhere((system) => system.id == id);
+      if (index == -1) {
+        return;
+      }
+
+      systems[index] = _mergeSystem(
+        systems[index],
+        verificationStatus: _statusFromString(status),
+      );
+      await _persistSystems(systems);
       await fetchSystems();
     } catch (e) {
       debugPrint('Error updating system status: $e');
@@ -115,15 +164,7 @@ class SystemsProvider extends Notifier<SystemsState> {
   }
 
   Future<List<Map<String, dynamic>>> searchCompanies(String query) async {
-    try {
-      if (query.length < 3) return [];
-      // TODO: Implement API Search Call
-      debugPrint('TODO: Search companies for query: $query');
-      return [];
-    } catch (e) {
-      debugPrint('Error searching companies: $e');
-      return [];
-    }
+    return const <Map<String, dynamic>>[];
   }
 
   Future<void> requestOffers(SystemModel system, {String? notes}) async {
@@ -131,11 +172,92 @@ class SystemsProvider extends Notifier<SystemsState> {
       final authState = ref.read(authProvider);
       if (authState.user == null) return;
 
-      // TODO: Implement API Request Offers Call
-      debugPrint('TODO: Request offers for system ${system.id}');
+      final systems = _loadPersistedSystems();
+      final index = systems.indexWhere((savedSystem) => savedSystem.id == system.id);
+      if (index == -1) {
+        return;
+      }
+
+      final specs = Map<String, dynamic>.from(systems[index].specs);
+      specs['offer_request'] = <String, dynamic>{
+        'requested_at': DateTime.now().toIso8601String(),
+        'notes': notes,
+        'status': 'pending_submission',
+      };
+
+      systems[index] = _mergeSystem(systems[index], specs: specs);
+      await _persistSystems(systems);
+      await fetchSystems();
     } catch (e) {
       debugPrint('Error requesting offers: $e');
     }
+  }
+
+  List<SystemModel> _loadPersistedSystems() {
+    final raw = getIt<CasheInterface>().get(_savedSystemsKey);
+    if (raw is! List) {
+      return <SystemModel>[];
+    }
+
+    return raw
+        .whereType<Map>()
+        .map((item) => SystemModel.fromJson(Map<String, dynamic>.from(item)))
+        .toList();
+  }
+
+  List<SystemModel> _filterSystemsForUser(List<SystemModel> systems, int? userId) {
+    if (userId == null) {
+      return <SystemModel>[];
+    }
+
+    final ownerId = userId.toString();
+    final filtered = systems.where((system) => system.ownerId == ownerId).toList();
+    filtered.sort(
+      (a, b) => (b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)).compareTo(
+        a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0),
+      ),
+    );
+    return filtered;
+  }
+
+  Future<void> _persistSystems(List<SystemModel> systems) {
+    return getIt<CasheInterface>().save(
+      _savedSystemsKey,
+      systems.map((system) => system.toJson()).toList(),
+    );
+  }
+
+  SystemModel _mergeSystem(
+    SystemModel original, {
+    Map<String, dynamic>? specs,
+    String? installedByCompanyId,
+    SystemStatus? verificationStatus,
+  }) {
+    return SystemModel(
+      id: original.id,
+      ownerId: original.ownerId,
+      installedByCompanyId: installedByCompanyId ?? original.installedByCompanyId,
+      verificationStatus: verificationStatus ?? original.verificationStatus,
+      systemName: original.systemName,
+      locationCoordinates: original.locationCoordinates,
+      totalCapacityKw: original.totalCapacityKw,
+      imageUrl: original.imageUrl,
+      specs: specs ?? original.specs,
+      notes: original.notes,
+      installDate: original.installDate,
+      createdAt: original.createdAt,
+      userName: original.userName,
+      installer: original.installer,
+    );
+  }
+
+  SystemStatus _statusFromString(String status) {
+    for (final value in SystemStatus.values) {
+      if (value.name == status) {
+        return value;
+      }
+    }
+    return SystemStatus.pendingVerification;
   }
 }
 

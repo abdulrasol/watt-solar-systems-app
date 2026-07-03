@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
@@ -17,6 +17,7 @@ class CalculatedSystemsPage extends ConsumerStatefulWidget {
 }
 
 class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
+  static const String _savedCalculatedSystemsKey = 'saved_calculated_systems';
   List<CalculatedSystem> savedSystems = [];
 
   @override
@@ -27,12 +28,10 @@ class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
 
   void _loadSavedSystems() {
     try {
-      final cached = getIt<CasheInterface>().get('saved_calculated_systems');
+      final cached = getIt<CasheInterface>().get(_savedCalculatedSystemsKey);
       if (cached != null) {
         setState(() {
-          savedSystems = List<dynamic>.from(cached)
-              .map((e) => CalculatedSystem.fromJson(e as Map<String, dynamic>))
-              .toList().reversed.toList();
+          savedSystems = parseCalculatedSystems(cached).reversed.toList();
         });
       }
     } catch (e) {
@@ -43,13 +42,11 @@ class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
   Future<void> _deleteSystem(String id) async {
     try {
       final cache = getIt<CasheInterface>();
-      final existingData = cache.get('saved_calculated_systems');
+      final existingData = cache.get(_savedCalculatedSystemsKey);
       if (existingData != null) {
-        List<CalculatedSystem> systems = List<dynamic>.from(existingData)
-            .map((e) => CalculatedSystem.fromJson(e as Map<String, dynamic>))
-            .toList();
+        final systems = parseCalculatedSystems(existingData);
         systems.removeWhere((s) => s.id == id);
-        await cache.save('saved_calculated_systems', systems.map((e) => e.toJson()).toList());
+        await cache.save(_savedCalculatedSystemsKey, systems.map((e) => e.toJson()).toList());
         _loadSavedSystems();
       }
     } catch (e) {
@@ -61,15 +58,13 @@ class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.my_systems),
-      ),
+      appBar: AppBar(title: Text(l10n.my_systems)),
       body: savedSystems.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Iconsax.folder_open_outline, size: 64, color: Colors.grey.shade400),
+                  Icon(Iconsax.folder_open, size: 64, color: Colors.grey.shade400),
                   const SizedBox(height: 16),
                   Text(l10n.no_saved_systems_found, style: TextStyle(color: Colors.grey.shade600)),
                 ],
@@ -107,11 +102,8 @@ class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
             children: [
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Iconsax.flash_bold, color: Colors.green),
+                decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.1), shape: BoxShape.circle),
+                child: const Icon(Iconsax.flash, color: Colors.green),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -130,15 +122,12 @@ class _CalculatedSystemsPageState extends ConsumerState<CalculatedSystemsPage> {
                       style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      DateFormat.yMMMd().add_jm().format(system.date),
-                      style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
-                    ),
+                    Text(DateFormat.yMMMd().add_jm().format(system.date), style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
                   ],
                 ),
               ),
               IconButton(
-                icon: const Icon(Iconsax.trash_outline, color: Colors.red),
+                icon: const Icon(Iconsax.trash, color: Colors.red),
                 onPressed: () => _showDeleteConfirmation(context, system),
               ),
               const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),

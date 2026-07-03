@@ -53,6 +53,17 @@ class CompanyContactsController extends Notifier<CompanyContactsState> {
     }
   }
 
+  Future<void> search(int companyId, String query) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final contacts =
+          await _repository.listContacts(companyId, page: 1, search: query);
+      state = state.copyWith(isLoading: false, contacts: contacts);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
   Future<void> createContact(
     int companyId,
     CompanyContactFormModel payload,

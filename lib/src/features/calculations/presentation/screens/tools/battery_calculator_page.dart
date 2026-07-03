@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/calculator_widgets.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart';
@@ -68,7 +68,7 @@ class _BatteryCalculatorPageState extends ConsumerState<BatteryCalculatorPage> {
         children: [
           Hero(
             tag: 'battery_hero',
-            child: Icon(Iconsax.battery_charging_bold, size: 70.sp, color: Colors.green),
+            child: Icon(Iconsax.battery_charging, size: 70.sp, color: Colors.green),
           ),
           const SizedBox(height: 20),
           Text(AppLocalizations.of(context)!.how_many_batteries_need, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
@@ -120,7 +120,7 @@ class _BatteryCalculatorPageState extends ConsumerState<BatteryCalculatorPage> {
                 child: CalcInputRow(
                   label: AppLocalizations.of(context)!.required_backup_time,
                   suffix: AppLocalizations.of(context)!.hours,
-                  hint: "e.g. 5", // TODO: translate
+                  hint: AppLocalizations.of(context)!.example_5,
                   onChanged: (v) {
                     controller.batteryCalcHours = double.tryParse(v) ?? 0;
                     _recalc();
@@ -145,7 +145,7 @@ class _BatteryCalculatorPageState extends ConsumerState<BatteryCalculatorPage> {
             title: AppLocalizations.of(context)!.required_batteries,
             value: AppLocalizations.of(context)!.batteries_count_value(controller.batteryCalcResult),
             subtitle: AppLocalizations.of(context)!.battery_for_spec(controller.batteryCalcAmp.toInt(), controller.batteryCalcVoltage.toInt()),
-            icon: Iconsax.battery_charging_bold,
+            icon: Iconsax.battery_charging,
             color: Colors.green,
           ),
 
@@ -163,7 +163,7 @@ class _BatteryCalculatorPageState extends ConsumerState<BatteryCalculatorPage> {
         children: [
           Hero(
             tag: 'battery_hero',
-            child: Icon(Iconsax.timer_1_bold, size: 70.sp, color: Colors.blue),
+            child: Icon(Iconsax.timer_1, size: 70.sp, color: Colors.blue),
           ),
           const SizedBox(height: 20),
           Text(AppLocalizations.of(context)!.how_long_batteries_last, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
@@ -244,7 +244,7 @@ class _BatteryCalculatorPageState extends ConsumerState<BatteryCalculatorPage> {
           ResultCard(
             title: AppLocalizations.of(context)!.estimated_runtime,
             value: AppLocalizations.of(context)!.runtime_hours_value(controller.batteryCalcRuntimeResult.toStringAsFixed(1)),
-            icon: Iconsax.timer_1_bold,
+            icon: Iconsax.timer_1,
             color: Colors.blue,
           ),
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
+import 'package:solar_hub/src/features/offers/presentation/providers/offers_provider.dart';
+import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:toastification/toastification.dart';
 
 class SystemRequestConfirmationSheet extends ConsumerWidget {
   const SystemRequestConfirmationSheet({super.key});
@@ -10,7 +13,9 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(calculatorProvider);
+    final authState = ref.watch(authProvider);
     final l10n = AppLocalizations.of(context)!;
+    
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -39,16 +44,16 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
           const SizedBox(height: 16),
 
           _buildSummaryRow(
-            l10n.panels_calc,
-            "${controller.panelCount}x ${controller.selectedPanelWattage.toDouble()}W",
+            l10n.total_pv_power,
+            "${(controller.panelCount * controller.selectedPanelWattage / 1000).toStringAsFixed(1)} kW",
           ),
           _buildSummaryRow(
-            l10n.inverter_calc,
-            "${controller.inverterCount}x ${controller.selectedInverterKva}kW",
+            l10n.total_inverters_power_label,
+            "${(controller.inverterCount * controller.selectedInverterKva).toStringAsFixed(1)} kW",
           ),
           _buildSummaryRow(
-            l10n.battery_calc,
-            "${controller.batteryCount}x ${controller.selectedBatteryAmp}Ah",
+            l10n.total_battery,
+            "${(controller.batteryCount * controller.selectedBatteryAmp).toStringAsFixed(0)} Ah",
           ),
 
           const SizedBox(height: 16),
@@ -56,7 +61,7 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
             onChanged: (val) => controller.requestNotes = val,
             maxLines: 3,
             decoration: InputDecoration(
-              hintText: l10n.add_notes_constraints,
+              hintText: l10n.request_notes_hint,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -69,10 +74,39 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context); // Close sheet
-                //   controller.submitRequest();  // TODO: Implement submit request
-              },
+              onPressed: controller.isSubmitting 
+                ? null 
+                : () async {
+                  controller.updateField(() => controller.isSubmitting = true);
+                  
+                  final cityId = authState.user?.city?.id;
+                  final data = controller.toRequestMap(cityId: cityId);
+                  
+                  final success = await ref.read(offersProvider.notifier).createRequest(data);
+                  
+                  controller.updateField(() => controller.isSubmitting = false);
+
+                  if (context.mounted) {
+                    if (success) {
+                      toastification.show(
+                        context: context,
+                        type: ToastificationType.success,
+                        style: ToastificationStyle.flatColored,
+                        title: Text(l10n.request_submitted_success),
+                        autoCloseDuration: const Duration(seconds: 3),
+                      );
+                      Navigator.pop(context);
+                    } else {
+                      toastification.show(
+                        context: context,
+                        type: ToastificationType.error,
+                        style: ToastificationStyle.flatColored,
+                        title: Text(l10n.request_failed),
+                        autoCloseDuration: const Duration(seconds: 3),
+                      );
+                    }
+                  }
+                },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
                 foregroundColor: Colors.white,
@@ -81,7 +115,16 @@ class SystemRequestConfirmationSheet extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: Text(l10n.confirm_submit),
+              child: controller.isSubmitting
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : Text(l10n.submit_request),
             ),
           ),
         ],

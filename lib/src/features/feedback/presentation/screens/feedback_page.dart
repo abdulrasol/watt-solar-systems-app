@@ -3,7 +3,7 @@ import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/feedback/presentation/controllers/feedback_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -93,7 +93,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(10)),
-            child: Icon(Iconsax.message_text_bold, color: AppTheme.primaryColor, size: 24),
+            child: Icon(Iconsax.message_text, color: AppTheme.primaryColor, size: 24),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -117,7 +117,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
       decoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.name,
         hintText: AppLocalizations.of(context)!.name_hint,
-        prefixIcon: const Icon(Iconsax.user_bold),
+        prefixIcon: const Icon(Iconsax.user),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -145,7 +145,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
       decoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.phone_number,
         hintText: AppLocalizations.of(context)!.phone_hint,
-        prefixIcon: const Icon(Iconsax.call_calling_bold),
+        prefixIcon: const Icon(Iconsax.call_calling),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -167,7 +167,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
       decoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.message,
         hintText: AppLocalizations.of(context)!.feedback_hint,
-        prefixIcon: const Icon(Iconsax.message_text_1_bold),
+        prefixIcon: const Icon(Iconsax.message_text_1),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -205,7 +205,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
                     _formKey.currentState?.reset();
                   });
                 },
-                icon: const Icon(Iconsax.trade_bold, size: 18),
+                icon: const Icon(Iconsax.trade, size: 18),
                 label: Text(AppLocalizations.of(context)!.remove),
                 style: TextButton.styleFrom(foregroundColor: Colors.red),
               ),
@@ -225,7 +225,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Iconsax.gallery_add_bold, size: 48, color: Colors.grey.shade400),
+                      Icon(Iconsax.gallery_add, size: 48, color: Colors.grey.shade400),
                       const SizedBox(height: 12),
                       Text(AppLocalizations.of(context)!.tap_to_select_image, style: TextStyle(color: Colors.grey.shade500)),
                     ],
@@ -266,7 +266,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
           ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)))
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [const Icon(Iconsax.send_2_bold, size: 20), const SizedBox(width: 8), Text(AppLocalizations.of(context)!.send_feedback)],
+              children: [const Icon(Iconsax.send_2, size: 20), const SizedBox(width: 8), Text(AppLocalizations.of(context)!.send_feedback)],
             ),
     ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1);
   }
@@ -293,7 +293,7 @@ class _FeedbackPageState extends ConsumerState<FeedbackPage> {
       ),
       child: Row(
         children: [
-          const Icon(Iconsax.info_circle_bold, color: Colors.red, size: 20),
+          const Icon(Iconsax.info_circle, color: Colors.red, size: 20),
           const SizedBox(width: 8),
           Expanded(
             child: Text(error, style: const TextStyle(color: Colors.red, fontSize: 13)),

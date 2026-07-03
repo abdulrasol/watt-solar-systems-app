@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/input_text.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/save_to_system_dialog.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/text_helper_card.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_constants.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
 import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
@@ -84,10 +85,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
     final timeInput = num.tryParse(time.text) ?? 0;
     final dod = depthOfDischarge;
     num dailyUsageKWh = ampereInput * systemVoltage * timeInput;
-    if (dailyUsageKWh > 0 &&
-        voltageInput > 0 &&
-        currentInput > 0 &&
-        timeInput > 0) {
+    if (dailyUsageKWh > 0 && voltageInput > 0 && currentInput > 0 && timeInput > 0) {
       Map batterybank = HomeSolarSystemCalculator.calculateBatteryBank(
         dailyUsageKWh: dailyUsageKWh.toDouble(),
         batteryVoltage: voltageInput.toDouble(),
@@ -114,10 +112,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
 
   Future<void> _saveSystem() async {
     final controller = ref.read(systemsProvider.notifier);
-    final dialogResult = await showDialog(
-      context: context,
-      builder: (context) => const SaveToSystemDialog(),
-    );
+    final dialogResult = await showDialog(context: context, builder: (context) => const SaveToSystemDialog());
 
     if (dialogResult != null && dialogResult is Map) {
       final isNew = dialogResult['isNew'] as bool;
@@ -134,12 +129,9 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
           'count': batteryCount,
           'capacity_ah': double.tryParse(batteryCurrent.text) ?? 0,
           'voltage': double.tryParse(batteryVoltage.text) ?? 0,
-          'type': depthOfDischarge >= 50
-              ? "Gel/AGM"
-              : "Lithium/Tubular", // Simple heuristic based on helper text
+          'type': depthOfDischarge >= 50 ? 'Gel/AGM' : 'Lithium/Tubular',
           'brand': 'Unknown',
-          'notes':
-              'DoD: ${depthOfDischarge.toInt()}%, System Voltage: $systemVoltage V',
+          'notes': 'DoD: ${depthOfDischarge.toInt()}%, System Voltage: $systemVoltage V',
         },
       );
     }
@@ -147,6 +139,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
 
   @override
   Widget build(BuildContext context) {
+    final systemsEnabled = ref.watch(isSystemsEnabled);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: Stack(
@@ -157,10 +150,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
                 children: [
                   // Hero(tag: '/battery', child: Image.asset('assets/png/cards/battery.png', height: 180)),
                   verSpace(),
-                  ..._buildFormFields()
-                      .animate(interval: 100.ms)
-                      .fadeIn()
-                      .slideY(),
+                  ..._buildFormFields().animate(interval: 100.ms).fadeIn().slideY(),
                   verSpace(space: 65),
                 ],
               ),
@@ -177,23 +167,16 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
                   children: [
                     Expanded(
                       child: Text(
-                        AppLocalizations.of(
-                          context,
-                        )!.batteries_count_value(batteryCount),
-                        style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(
-                              // fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                        AppLocalizations.of(context)!.batteries_count_value(batteryCount),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          // fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    if (batteryCount > 0)
-                      IconButton(
-                        onPressed: () => _saveSystem(),
-                        icon: const Icon(Iconsax.save_2_bold),
-                        tooltip: AppLocalizations.of(context)!.save_to_system,
-                      ),
+                    if (systemsEnabled && batteryCount > 0)
+                      IconButton(onPressed: () => _saveSystem(), icon: const Icon(Iconsax.save_2), tooltip: AppLocalizations.of(context)!.save_to_system),
                   ],
                 ),
               ),
@@ -214,7 +197,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         context: context,
         label: AppLocalizations.of(context)!.your_load_ampere,
         hintText: AppLocalizations.of(context)!.example_10,
-        icon: FontAwesome.bolt_solid,
+        icon: Iconsax.flash,
         controller: current,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -224,17 +207,14 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
       ),
       _buildSystemVoltageSelector(context),
       divider,
-      textHelperCard(
-        context,
-        text: AppLocalizations.of(context)!.load_ampere_helper,
-      ),
+      textHelperCard(context, text: AppLocalizations.of(context)!.load_ampere_helper),
       divider,
       inputField(
         context: context,
         null,
         label: AppLocalizations.of(context)!.battery_amperes,
         hintText: AppLocalizations.of(context)!.example_100_or_200,
-        icon: FontAwesome.i_solid,
+        icon: Icons.electric_bolt,
         controller: batteryCurrent,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -247,7 +227,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         null,
         label: AppLocalizations.of(context)!.battery_voltage_label,
         hintText: AppLocalizations.of(context)!.example_12_24_48_512,
-        icon: FontAwesome.v_solid,
+        icon: Icons.electric_bolt,
         controller: batteryVoltage,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -261,7 +241,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         AppLocalizations.of(context)!.runtime_question,
         label: AppLocalizations.of(context)!.required_runtime_hours,
         hintText: AppLocalizations.of(context)!.example_5_or_8,
-        icon: IonIcons.timer,
+        icon: Iconsax.timer,
         controller: time,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -270,15 +250,10 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         onChanged: _updateBatteryCount,
       ),
       verSpace(),
-      textHelperCard(
-        context,
-        text: AppLocalizations.of(context)!.battery_count_explanation,
-      ),
+      textHelperCard(context, text: AppLocalizations.of(context)!.battery_count_explanation),
       divider,
       Text(
-        AppLocalizations.of(
-          context,
-        )!.depth_of_discharge_with_value(depthOfDischarge.toStringAsFixed(0)),
+        AppLocalizations.of(context)!.depth_of_discharge_with_value(depthOfDischarge.toStringAsFixed(0)),
         style: Theme.of(context).textTheme.titleMedium,
         textAlign: TextAlign.start,
       ),
@@ -306,26 +281,14 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
       initialValue: systemVoltage,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 10,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         labelText: AppLocalizations.of(context)!.ac_system_voltage,
         prefixIcon: const Icon(Icons.electrical_services_rounded),
       ),
       items: [
-        DropdownMenuItem(
-          value: 110,
-          child: Text(AppLocalizations.of(context)!.voltage_110),
-        ),
-        DropdownMenuItem(
-          value: 230,
-          child: Text(AppLocalizations.of(context)!.voltage_230),
-        ),
-        DropdownMenuItem(
-          value: 380,
-          child: Text(AppLocalizations.of(context)!.voltage_380_three_phase),
-        ),
+        DropdownMenuItem(value: 110, child: Text(AppLocalizations.of(context)!.voltage_110)),
+        DropdownMenuItem(value: 230, child: Text(AppLocalizations.of(context)!.voltage_230)),
+        DropdownMenuItem(value: 380, child: Text(AppLocalizations.of(context)!.voltage_380_three_phase)),
       ],
       onChanged: (value) {
         setState(() {

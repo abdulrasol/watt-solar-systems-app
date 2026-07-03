@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
@@ -22,13 +22,7 @@ class CompanyCard extends StatelessWidget {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(22.r),
         border: Border.all(color: onSurface.withValues(alpha: 0.08)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 16, offset: const Offset(0, 10))],
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(22.r),
@@ -51,31 +45,16 @@ class CompanyCard extends StatelessWidget {
                           company.name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w800,
-                          ),
+                          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w800),
                         ),
                         SizedBox(height: 6.h),
                         if ((company.typeLabel ?? '').isNotEmpty)
                           Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                              vertical: 4.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor.withValues(
-                                alpha: 0.1,
-                              ),
-                              borderRadius: BorderRadius.circular(999.r),
-                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(999.r)),
                             child: Text(
                               company.typeLabel!,
-                              style: TextStyle(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w700,
-                                color: AppTheme.primaryColor,
-                              ),
+                              style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w700, color: AppTheme.primaryColor),
                             ),
                           ),
                       ],
@@ -96,21 +75,10 @@ class CompanyCard extends StatelessWidget {
                 spacing: 8.w,
                 children: [
                   Flexible(
-                    child: _InfoRow(
-                      icon: Iconsax.location_bold,
-                      label:
-                          company.city?.name ??
-                          company.address ??
-                          l10n.services_no_address,
-                    ),
+                    child: _InfoRow(icon: Iconsax.location, label: company.city?.name ?? company.address ?? l10n.services_no_address),
                   ),
                   Flexible(
-                    child: _InfoRow(
-                      icon: Iconsax.call_bold,
-                      label: company.phone?.trim().isNotEmpty == true
-                          ? company.phone!
-                          : l10n.services_no_phone,
-                    ),
+                    child: _InfoRow(icon: Iconsax.call, label: company.phone?.trim().isNotEmpty == true ? company.phone! : l10n.services_no_phone),
                   ),
                 ],
               ),
@@ -119,22 +87,9 @@ class CompanyCard extends StatelessWidget {
                 spacing: 8.w,
                 runSpacing: 8.h,
                 children: [
-                  _Badge(
-                    label: company.allowsB2C == true
-                        ? 'B2C'
-                        : l10n.services_public_badge,
-                  ),
-                  _Badge(
-                    label: l10n.services_services_count(
-                      company.publicServices.length,
-                    ),
-                  ),
-                  if (company.contacts.isNotEmpty)
-                    _Badge(
-                      label: l10n.services_contacts_count(
-                        company.contacts.length,
-                      ),
-                    ),
+                  _Badge(label: company.allowsB2C == true ? 'B2C' : l10n.services_public_badge),
+                  _Badge(label: l10n.services_services_count(company.publicServices.length)),
+                  if (company.contacts.isNotEmpty) _Badge(label: l10n.services_contacts_count(company.contacts.length)),
                 ],
               ),
             ],
@@ -159,15 +114,11 @@ class _Logo extends StatelessWidget {
         height: 64.r,
         color: AppTheme.primaryColor.withValues(alpha: 0.08),
         child: logo == null || logo!.isEmpty
-            ? Icon(
-                Iconsax.building_bold,
-                color: AppTheme.primaryColor,
-                size: 28.sp,
-              )
+            ? Icon(Iconsax.building, color: AppTheme.primaryColor, size: 28.sp)
             : WdImagePreview(
                 imageUrl: logo!,
                 // fit: BoxFit.cover,
-                // errorWidget: (context, url, error) => Icon(Iconsax.building_bold, color: AppTheme.primaryColor, size: 28.sp),
+                // errorWidget: (context, url, error) => Icon(Iconsax.building, color: AppTheme.primaryColor, size: 28.sp),
               ),
       ),
     );
@@ -193,10 +144,7 @@ class _InfoRow extends StatelessWidget {
             label,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: onSurface.withValues(alpha: 0.74),
-            ),
+            style: TextStyle(fontSize: 12.sp, color: onSurface.withValues(alpha: 0.74)),
           ),
         ),
       ],
@@ -213,10 +161,7 @@ class _Badge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(999.r),
-      ),
+      decoration: BoxDecoration(color: Colors.grey.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(999.r)),
       child: Text(
         label,
         style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w700),

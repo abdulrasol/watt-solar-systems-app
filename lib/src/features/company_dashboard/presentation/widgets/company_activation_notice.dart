@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_plan.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_subscription_request_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/controllers/company_activation_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:solar_hub/src/utils/app_constants.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -103,7 +103,7 @@ class _CompanyActivationNoticeState extends ConsumerState<CompanyActivationNotic
       return l10n.company_pending_activation_message;
     }
     if (widget.company.requiresSubscriptionRenewal) {
-      if (state.subscriptionRequest != null) {
+      if (state.subscriptionRequest?.isPending == true) {
         return l10n.company_subscription_request_pending_message(state.subscriptionRequest!.subscriptionPlanName);
       }
       return l10n.company_subscription_required_message;
@@ -134,10 +134,10 @@ class _CompanyActivationNoticeState extends ConsumerState<CompanyActivationNotic
         onSubmit: (payload) async {
           final l10n = AppLocalizations.of(context)!;
           try {
-            await ref.read(companyActivationProvider.notifier).createSubscriptionRequest(widget.company.id, payload);
-            await ref.read(companySummeryProvider.notifier).getSummery();
+            final request = await ref.read(companyActivationProvider.notifier).createSubscriptionRequest(widget.company.id, payload);
+            await ref.read(companySummaryProvider.notifier).getSummary();
             if (!context.mounted) return;
-            ToastService.success(context, l10n.success, l10n.company_subscription_request_submitted);
+            ToastService.success(context, l10n.success, request.isPending ? l10n.company_subscription_request_submitted : l10n.company_updated_successfully);
           } catch (e) {
             if (!context.mounted) return;
             ToastService.error(context, l10n.error, e.toString());
@@ -188,7 +188,7 @@ class _Header extends StatelessWidget {
           width: 44,
           height: 44,
           decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(14)),
-          child: const Icon(Iconsax.warning_2_bold, color: Colors.orange),
+          child: const Icon(Iconsax.warning_2, color: Colors.orange),
         ),
         const SizedBox(width: 14),
         Expanded(
@@ -243,7 +243,7 @@ class _PendingCompanyContent extends StatelessWidget {
       onPressed: state.isSendingReminder ? null : onSendReminder,
       icon: state.isSendingReminder
           ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
-          : const Icon(Iconsax.notification_bing_bold),
+          : const Icon(Iconsax.notification_bing),
       label: Text(state.isSendingReminder ? l10n.loading : l10n.company_send_activation_reminder),
     );
   }
@@ -262,14 +262,14 @@ class _SubscriptionContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    if (state.subscriptionRequest != null) {
+    if (state.subscriptionRequest?.isPending == true) {
       return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.55), borderRadius: BorderRadius.circular(18)),
         child: Row(
           children: [
-            const Icon(Iconsax.clock_bold, color: Colors.orange),
+            const Icon(Iconsax.clock, color: Colors.orange),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -298,7 +298,7 @@ class _SubscriptionContent extends StatelessWidget {
             style: const TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 12),
-          OutlinedButton.icon(onPressed: onRetry, icon: const Icon(Iconsax.refresh_bold), label: Text(l10n.retry)),
+          OutlinedButton.icon(onPressed: onRetry, icon: const Icon(Iconsax.refresh), label: Text(l10n.retry)),
         ],
       );
     }
@@ -324,11 +324,7 @@ class _SubscriptionContent extends StatelessWidget {
           const SizedBox(height: 10),
         ],
         const SizedBox(height: 4),
-        FilledButton.icon(
-          onPressed: () => onOpenRequest(selectedPlan),
-          icon: const Icon(Iconsax.card_pos_bold),
-          label: Text(l10n.company_subscription_request_cta),
-        ),
+        FilledButton.icon(onPressed: () => onOpenRequest(selectedPlan), icon: const Icon(Iconsax.card_pos), label: Text(l10n.company_subscription_request_cta)),
       ],
     );
   }
@@ -366,7 +362,7 @@ class _PlanCard extends StatelessWidget {
                     style: const TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w800),
                   ),
                 ),
-                if (selected) const Icon(Iconsax.tick_circle_bold, color: AppTheme.primaryColor),
+                if (selected) const Icon(Iconsax.tick_circle, color: AppTheme.primaryColor),
               ],
             ),
             const SizedBox(height: 8),
@@ -403,9 +399,9 @@ class _ContactActionButton extends StatelessWidget {
       AdminSupportChannelType.chat => l10n.company_chat_admin_coming_soon,
     };
     final icon = switch (channel.type) {
-      AdminSupportChannelType.phone => Iconsax.call_bold,
-      AdminSupportChannelType.email => Iconsax.sms_bold,
-      AdminSupportChannelType.chat => Iconsax.message_bold,
+      AdminSupportChannelType.phone => Iconsax.call,
+      AdminSupportChannelType.email => Iconsax.sms,
+      AdminSupportChannelType.chat => Iconsax.message,
     };
 
     return OutlinedButton.icon(onPressed: onPressed, icon: Icon(icon), label: Text(label));
@@ -451,7 +447,7 @@ class _SubscriptionRequestBottomSheetState extends State<_SubscriptionRequestBot
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Iconsax.image_bold),
+              leading: const Icon(Iconsax.image),
               title: Text(l10n.gallery),
               onTap: () {
                 Navigator.of(context).pop();
@@ -459,7 +455,7 @@ class _SubscriptionRequestBottomSheetState extends State<_SubscriptionRequestBot
               },
             ),
             ListTile(
-              leading: const Icon(Iconsax.camera_bold),
+              leading: const Icon(Iconsax.camera),
               title: Text(l10n.camera),
               onTap: () {
                 Navigator.of(context).pop();
@@ -540,7 +536,7 @@ class _SubscriptionRequestBottomSheetState extends State<_SubscriptionRequestBot
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Iconsax.image_bold, size: 34.sp, color: Colors.grey),
+                          Icon(Iconsax.image, size: 34.sp, color: Colors.grey),
                           SizedBox(height: 8.h),
                           Text(l10n.upload_logo),
                         ],
@@ -556,7 +552,7 @@ class _SubscriptionRequestBottomSheetState extends State<_SubscriptionRequestBot
               width: double.infinity,
               child: FilledButton.icon(
                 onPressed: isSubmitting ? null : _submit,
-                icon: isSubmitting ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Iconsax.send_1_bold),
+                icon: isSubmitting ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Iconsax.send_1),
                 label: Text(isSubmitting ? l10n.loading : l10n.company_subscription_submit),
               ),
             ),

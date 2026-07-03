@@ -8,22 +8,29 @@ import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_company_details.dart';
 import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
-import 'package:solar_hub/src/features/admin/domain/models/service_request.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_city.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_country.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_currency.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_global_category.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_plan.dart';
+import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
 import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_dashboard.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/admin_dashboard_card.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_shell.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/company.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
-class _FakeBox {
-  void listenKey(String key, void Function(dynamic) listener) {}
+class _FakeBox implements CacheBox {
+  @override
+  VoidCallback listenKey(String key, void Function(dynamic) listener) => () {};
 }
 
 class _FakeCache implements CasheInterface {
   @override
-  dynamic box = _FakeBox();
+  CacheBox box = _FakeBox();
 
   final Map<String, dynamic> _values = <String, dynamic>{};
 
@@ -32,6 +39,11 @@ class _FakeCache implements CasheInterface {
 
   @override
   Future<void> delete(String key) async => _values.remove(key);
+
+  @override
+  Future<void> deleteByPrefix(String prefix) async {
+    _values.removeWhere((key, value) => key.startsWith(prefix));
+  }
 
   @override
   dynamic get(String key) => _values[key];
@@ -103,11 +115,6 @@ class _FakeAdminRepository implements AdminRepository {
   @override
   Future<List<ServiceCatalogItem>> listServiceCatalog() async => [];
 
-  @override
-  Future<List<ServiceRequest>> listServiceRequests({
-    int page = 1,
-    int pageSize = 20,
-  }) async => [];
 
   @override
   Future<ServiceCatalogItem> createServiceCatalogEntry(
@@ -119,20 +126,8 @@ class _FakeAdminRepository implements AdminRepository {
   @override
   Future<void> deleteServiceCatalogEntry(String serviceCode) async {}
 
-  @override
-  Future<void> reviewServiceRequest(
-    int companyId,
-    String serviceCode,
-    Map<String, dynamic> data,
-  ) async {}
 
-  @override
-  Future<void> toggleCompanyService(
-    int companyId,
-    String serviceCode,
-    Map<String, dynamic> data,
-  ) async {}
-
+ 
   @override
   Future<ServiceCatalogItem> updateServiceCatalogEntry(
     String serviceCode,
@@ -143,6 +138,56 @@ class _FakeAdminRepository implements AdminRepository {
 
   @override
   Future<void> updateCompanyStatus(int companyId, String status) async {}
+
+  @override
+  Future<List<AdminCurrency>> listCurrencies({int page = 1, int pageSize = 12}) async => [];
+  @override
+  Future<AdminCurrency> createCurrency(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminCurrency> updateCurrency(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteCurrency(int id) async {}
+
+  @override
+  Future<List<AdminCountry>> listCountries() async => [];
+  @override
+  Future<AdminCountry> createCountry(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminCountry> updateCountry(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteCountry(int id) async {}
+
+  @override
+  Future<List<AdminCity>> listCities({int? countryId}) async => [];
+  @override
+  Future<AdminCity> createCity(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminCity> updateCity(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteCity(int id) async {}
+
+  @override
+  Future<List<AdminGlobalCategory>> listGlobalCategories({int page = 1, int pageSize = 12}) async => [];
+  @override
+  Future<AdminGlobalCategory> createGlobalCategory(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminGlobalCategory> updateGlobalCategory(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteGlobalCategory(int id) async {}
+
+  @override
+  Future<List<AdminUser>> listUsers({int page = 1, int pageSize = 12}) async => [];
+  @override
+  Future<void> promoteUser(String username, bool promote) async {}
+
+  @override
+  Future<List<AdminSubscriptionPlan>> listSubscriptionPlans({int page = 1, int pageSize = 12}) async => [];
+  @override
+  Future<AdminSubscriptionPlan> createSubscriptionPlan(Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<AdminSubscriptionPlan> updateSubscriptionPlan(int id, Map<String, dynamic> data) => throw UnimplementedError();
+  @override
+  Future<void> deleteSubscriptionPlan(int id) async {}
 }
 
 void main() {
@@ -190,9 +235,7 @@ void main() {
     await tester.pumpWidget(
       ScreenUtilInit(
         designSize: const Size(390, 844),
-        child: ProviderScope(
-          child: MaterialApp.router(routerConfig: router),
-        ),
+        child: ProviderScope(child: MaterialApp.router(routerConfig: router)),
       ),
     );
     await tester.pumpAndSettle();
@@ -207,7 +250,8 @@ void main() {
       size: const Size(390, 844),
     );
 
-    expect(find.text('Admin Dashboard'), findsOneWidget);
+    expect(find.byType(AdminDashboard), findsOneWidget);
+    expect(find.byType(AdminDashboardCard), findsWidgets);
     expect(find.text('Open section'), findsWidgets);
     expect(repository.listCompaniesCalls, 0);
   });

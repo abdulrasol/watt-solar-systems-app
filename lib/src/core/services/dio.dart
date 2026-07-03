@@ -3,6 +3,7 @@ import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/models/response.dart' as local;
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
+import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
@@ -12,7 +13,11 @@ abstract class ApiServicesInterface {
   Future post(String url, {Map<String, dynamic>? data});
   Future put(String url, {Map<String, dynamic>? data});
   Future delete(String url);
-  Future<Map<String, dynamic>> getRawMap(String url, {Map<String, dynamic>? queryParameters});
+  Future patch(String url, {Map<String, dynamic>? data});
+  Future<Map<String, dynamic>> getRawMap(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+  });
   Future multipartRequest(
     String url, {
     required FormData file,
@@ -27,6 +32,7 @@ abstract class ApiServicesInterface {
 
 class DioService implements ApiServicesInterface {
   final Dio _dio = Dio();
+  final NetworkStatusService _networkStatus = getIt<NetworkStatusService>();
 
   DioService() {
     _dio.options.baseUrl = AppUrls.baseUrl;
@@ -57,22 +63,38 @@ class DioService implements ApiServicesInterface {
           return handler.next(options);
         },
         onResponse: (response, handler) {
+          _networkStatus.markOnline();
           return handler.next(response);
         },
 
         onError: (error, handler) {
+          final isConnectivityIssue = _networkStatus.isConnectivityError(error);
+          if (isConnectivityIssue) {
+            _networkStatus.markOffline(
+              'Remote data is unavailable while your device is offline.',
+            );
+            dPrint(
+              error.response?.data.toString(),
+              tag: 'error',
+              stackTrace: error.stackTrace,
+            );
+            return handler.next(error);
+          }
           final context = rootNavigatorKey.currentContext;
           if (context != null) {
             String title = 'Server Error';
             String message = 'An unexpected error occurred';
             dynamic detail = error.response?.data ?? error.message;
 
-            if (error.type == DioExceptionType.connectionTimeout || error.type == DioExceptionType.receiveTimeout) {
+            if (error.type == DioExceptionType.connectionTimeout ||
+                error.type == DioExceptionType.receiveTimeout) {
               title = 'Connection Timeout';
-              message = 'The server is taking too long to respond. Please check your internet connection.';
+              message =
+                  'The server is taking too long to respond. Please check your internet connection.';
             } else if (error.type == DioExceptionType.connectionError) {
               title = 'Connection Error';
-              message = 'Could not connect to the server. Please check your internet connection.';
+              message =
+                  'Could not connect to the server. Please check your internet connection.';
             } else if (error.response?.statusCode == 401) {
               title = 'Unauthorized';
               message = 'Your session has expired. Please login again.';
@@ -81,7 +103,8 @@ class DioService implements ApiServicesInterface {
               if (data is Map) {
                 if (data.containsKey('message') && data['message'] != null) {
                   message = data['message'].toString();
-                } else if (data.containsKey('detail') && data['detail'] != null) {
+                } else if (data.containsKey('detail') &&
+                    data['detail'] != null) {
                   final d = data['detail'];
                   if (d is String) {
                     message = d;
@@ -97,10 +120,19 @@ class DioService implements ApiServicesInterface {
               }
             }
 
-            ToastService.showErrorWithDetail(context, title: title, message: message, detail: detail);
+            ToastService.showErrorWithDetail(
+              context,
+              title: title,
+              message: message,
+              detail: detail,
+            );
           }
 
-          dPrint(error.response?.data.toString(), tag: 'error', stackTrace: error.stackTrace);
+          dPrint(
+            error.response?.data.toString(),
+            tag: 'error',
+            stackTrace: error.stackTrace,
+          );
           handler.next(error);
         },
       ),
@@ -108,8 +140,15 @@ class DioService implements ApiServicesInterface {
   }
 
   @override
-  Future<local.BaseResponse> get(String url, {Map<String, dynamic>? queryParameters, bool isPagination = false, bool isList = false}) async {
+  Future<local.BaseResponse> get(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+    bool isPagination = false,
+    bool isList = false,
+  }) async {
     Response response = await _dio.get(url, queryParameters: queryParameters);
+  
+  
     if (isList) {
       return local.ListResponse.fromList(response.data as List);
     } else if (isPagination) {
@@ -120,25 +159,64 @@ class DioService implements ApiServicesInterface {
   }
 
   @override
-  Future<local.Response> post(String url, {Map<String, dynamic>? data, Map<String, dynamic>? queryParameters}) async {
-    final response = await _dio.post(url, data: data, queryParameters: queryParameters);
+  Future<local.Response> post(
+    String url, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    final response = await _dio.post(
+      url,
+      data: data,
+      queryParameters: queryParameters,
+    );
     return local.Response.fromJson(response.data);
   }
 
   @override
-  Future<local.Response> put(String url, {Map<String, dynamic>? data, Map<String, dynamic>? queryParameters}) async {
-    Response response = await _dio.put(url, data: data, queryParameters: queryParameters);
+  Future<local.Response> put(
+    String url, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    Response response = await _dio.put(
+      url,
+      data: data,
+      queryParameters: queryParameters,
+    );
     return local.Response.fromJson(response.data);
   }
 
   @override
-  Future<local.Response> delete(String url, {Map<String, dynamic>? queryParameters}) async {
-    Response response = await _dio.delete(url, queryParameters: queryParameters);
+  Future<local.Response> delete(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    Response response = await _dio.delete(
+      url,
+      queryParameters: queryParameters,
+    );
     return local.Response.fromJson(response.data);
   }
 
   @override
-  Future<Map<String, dynamic>> getRawMap(String url, {Map<String, dynamic>? queryParameters}) async {
+  Future<local.Response> patch(
+    String url, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    Response response = await _dio.patch(
+      url,
+      data: data,
+      queryParameters: queryParameters,
+    );
+    return local.Response.fromJson(response.data);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRawMap(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     final response = await _dio.get(url, queryParameters: queryParameters);
     return Map<String, dynamic>.from(response.data as Map);
   }
@@ -154,11 +232,26 @@ class DioService implements ApiServicesInterface {
     Map<String, dynamic>? headers,
     bool isPut = false,
   }) async {
-    final options = Options(headers: headers, sendTimeout: sendTimeout, receiveTimeout: receiveTimeout);
+    final options = Options(
+      headers: headers,
+      sendTimeout: sendTimeout,
+      receiveTimeout: receiveTimeout,
+    );
     final response = isPut
-        ? await _dio.put(url, data: file, onSendProgress: onSendProgress, queryParameters: queryParameters, options: options)
-        : await _dio.post(url, data: file, onSendProgress: onSendProgress, queryParameters: queryParameters, options: options);
+        ? await _dio.put(
+            url,
+            data: file,
+            onSendProgress: onSendProgress,
+            queryParameters: queryParameters,
+            options: options,
+          )
+        : await _dio.post(
+            url,
+            data: file,
+            onSendProgress: onSendProgress,
+            queryParameters: queryParameters,
+            options: options,
+          );
     return local.Response.fromJson(response.data);
   }
 }
-

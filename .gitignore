@@ -62,3 +62,6 @@ old files/
 key.properties
 *.jks
 *.keystore
+
+# Graphify-out
+graphify-out/

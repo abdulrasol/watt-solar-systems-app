@@ -1,15 +1,16 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/widgets/offline_status_banner.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/calculator_landing_page.dart';
 import 'package:solar_hub/src/features/home/presentation/providers/home_page_provider.dart';
 import 'package:solar_hub/src/features/home/presentation/screen/user_dashboard.dart';
 import 'package:solar_hub/src/features/home/presentation/widgets/drawer.dart';
 import 'package:solar_hub/src/features/notifications/presentation/controllers/notification_history_controller.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_cart_screen.dart';
@@ -17,69 +18,68 @@ import 'package:solar_hub/src/features/storefront/presentation/screens/storefron
 import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_page_route.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/services_explorer_screen.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final index = ref.watch(homePageIndexProvider);
-    final bool hasCommunity = isEnabled(ref, 'community');
-    final bool hasStore = isEnabled(ref, 'store', defaultValue: false);
-    final bool hasServices = isEnabled(ref, 'services', defaultValue: true);
+    final selectedIndex = ref.watch(homePageIndexProvider);
+    final navigation = ref.watch(homeNavigationProvider);
+    final effectiveIndex = navigation.sanitizeIndex(selectedIndex);
 
-    final availableIndices = [0, 1];
-    if (hasServices) availableIndices.add(2);
-    if (hasStore) availableIndices.add(3);
-    if (hasCommunity) availableIndices.add(4);
+    if (selectedIndex != effectiveIndex) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
+        ref.read(homePageIndexProvider.notifier).state = effectiveIndex;
+      });
+    }
 
-    int navIndex = availableIndices.indexOf(index);
-    if (navIndex == -1) navIndex = 0; // fallback if state is out of sync
-
-    // List pages = [const UserDashboard(), const CalculatorLandingPage(), const CommunityFeedPage(), const Store()];
-    List<Widget> pages = [
+    final pages = <Widget>[
       const UserDashboard(),
       const CalculatorLandingPage(showAppBar: false),
       const ServicesExplorerScreen(embedded: true),
       const StorefrontScreen(audience: StorefrontAudience.b2c),
-      const UserDashboard(),
     ];
-
-    List<CrystalNavigationBarItem> navItems = [
-      /// Dashboard
-      CrystalNavigationBarItem(icon: Iconsax.home_bold, unselectedIcon: Iconsax.home_outline, selectedColor: Theme.of(context).primaryColor),
-
-      /// Calculator
-      CrystalNavigationBarItem(icon: FontAwesome.calculator_solid, unselectedIcon: FontAwesome.calculator_solid, selectedColor: Theme.of(context).primaryColor),
-    ];
-
-    if (hasCommunity) {
-      navItems.add(
-        /// Hub
-        CrystalNavigationBarItem(icon: Icons.hub_outlined, unselectedIcon: Icons.hub_outlined, selectedColor: Theme.of(context).primaryColor),
-      );
-    }
-    if (hasServices) {
-      navItems.add(
-        CrystalNavigationBarItem(icon: Iconsax.category_2_bold, unselectedIcon: Iconsax.category_2_outline, selectedColor: Theme.of(context).primaryColor),
-      );
-    }
-
-    if (hasStore) {
-      navItems.add(CrystalNavigationBarItem(icon: Iconsax.shop_bold, unselectedIcon: Iconsax.shop_outline, selectedColor: Theme.of(context).primaryColor));
-    }
+    final navItems = navigation.visibleTabs.map((tab) => _buildNavItem(tab, context)).toList();
+    final navIndex = navigation.navIndexFor(effectiveIndex);
 
     return Scaffold(
       extendBody: true,
       appBar: PreferredSize(preferredSize: const Size.fromHeight(kToolbarHeight), child: _appBar(context, ref)),
-      body: IndexedStack(index: index, children: pages),
-      bottomNavigationBar: _navbar(navItems, context, navIndex, ref, availableIndices),
+      body: Column(
+        children: [
+          const OfflineStatusBanner(),
+          Expanded(
+            child: IndexedStack(index: effectiveIndex, children: pages),
+          ),
+        ],
+      ),
+      bottomNavigationBar: _navbar(navItems, context, navIndex, ref, navigation),
       drawer: const AppDrawer(),
     );
   }
 
-  Padding _navbar(List<CrystalNavigationBarItem> navItems, BuildContext context, int navIndex, WidgetRef ref, List<int> availableIndices) {
+  CrystalNavigationBarItem _buildNavItem(HomeTab tab, BuildContext context) {
+    switch (tab) {
+      case HomeTab.dashboard:
+        return CrystalNavigationBarItem(icon: Iconsax.home, unselectedIcon: Iconsax.home, selectedColor: Theme.of(context).primaryColor);
+      case HomeTab.calculator:
+        return CrystalNavigationBarItem(
+          icon: Iconsax.calculator,
+          unselectedIcon: Iconsax.calculator,
+          selectedColor: Theme.of(context).primaryColor,
+        );
+      case HomeTab.services:
+        return CrystalNavigationBarItem(icon: Iconsax.category_2, unselectedIcon: Iconsax.category_2, selectedColor: Theme.of(context).primaryColor);
+      case HomeTab.store:
+        return CrystalNavigationBarItem(icon: Iconsax.shop, unselectedIcon: Iconsax.shop, selectedColor: Theme.of(context).primaryColor);
+      case HomeTab.community:
+        return CrystalNavigationBarItem(icon: Icons.hub_outlined, unselectedIcon: Icons.hub_outlined, selectedColor: Theme.of(context).primaryColor);
+    }
+  }
+
+  Padding _navbar(List<CrystalNavigationBarItem> navItems, BuildContext context, int navIndex, WidgetRef ref, HomeNavigationState navigation) {
     return Padding(
       padding: navItems.length <= 2
           ? EdgeInsets.only(left: MediaQuery.sizeOf(context).width * 0.22, right: MediaQuery.sizeOf(context).width * 0.22, bottom: 10)
@@ -90,40 +90,44 @@ class Home extends ConsumerWidget {
         unselectedItemColor: Colors.white70,
         backgroundColor: Colors.black.withValues(alpha: 0.1),
         onTap: (int index) {
-          ref.read(homePageIndexProvider.notifier).state = availableIndices[index];
+          selectHomeTab(ref, navigation.visibleTabAt(index));
         },
         items: navItems,
       ),
     );
   }
 
-  String _getTitle(int index, BuildContext context) {
-    return index == 0
-        ? AppLocalizations.of(context)!.home
-        : index == 1
-        ? AppLocalizations.of(context)!.calculator
-        : index == 2
-        ? AppLocalizations.of(context)!.services
-        : index == 3
-        ? AppLocalizations.of(context)!.store
-        : 'community';
+  String _getTitle(HomeTab tab, BuildContext context) {
+    switch (tab) {
+      case HomeTab.dashboard:
+        return AppLocalizations.of(context)!.home;
+      case HomeTab.calculator:
+        return AppLocalizations.of(context)!.calculator;
+      case HomeTab.services:
+        return AppLocalizations.of(context)!.services;
+      case HomeTab.store:
+        return AppLocalizations.of(context)!.store;
+      case HomeTab.community:
+        return AppLocalizations.of(context)!.home;
+    }
   }
 
   AppBar _appBar(BuildContext context, WidgetRef ref) {
-    int index = ref.watch(homePageIndexProvider);
-    final notificationCount = ref.watch(notificationHistoryProvider).items.length;
+    final navigation = ref.watch(homeNavigationProvider);
+    final selectedIndex = ref.watch(homePageIndexProvider);
+    final currentTab = HomeTab.fromIndex(navigation.sanitizeIndex(selectedIndex));
 
     return AppBar(
-      title: Text(_getTitle(index, context)),
+      title: Text(_getTitle(currentTab, context)),
       actions: [
         Row(
           children: [
             // Cart Icon (Only in Store)
-            if (index == 3)
+            if (currentTab == HomeTab.store)
               ListenableBuilder(
                 listenable: storefrontCart,
                 builder: (context, _) {
-                  final count = storefrontCart.totalItems(StorefrontAudience.b2c);
+                  final count = storefrontCart.totalItemsAll();
                   return Stack(
                     children: [
                       IconButton(
@@ -135,7 +139,7 @@ class Home extends ConsumerWidget {
                             ),
                           );
                         },
-                        icon: const Icon(FontAwesome.cart_shopping_solid, size: 20),
+                        icon: const Icon(Iconsax.shopping_cart, size: 20),
                       ),
                       if (count > 0)
                         Positioned(
@@ -156,31 +160,40 @@ class Home extends ConsumerWidget {
               ),
 
             // Notification Icon with Badge
-            if (ref.watch(authProvider).isSigned)
-              InkWell(
-                onTap: () => context.push('/notifications'),
-                child: Stack(
-                  children: [
-                    IconButton(
-                      onPressed: () => context.push('/notifications'),
-                      icon: const Icon(Iconsax.notification_bing_bold, color: AppTheme.primaryColor),
-                    ),
-                    if (notificationCount > 0)
-                      Positioned(
-                        right: 8,
-                        top: 8,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                          child: Text(
-                            notificationCount > 9 ? '9+' : '$notificationCount',
-                            style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+            Consumer(
+              builder: (context, ref, _) {
+                final isSigned = ref.watch(authProvider.select((auth) => auth.isSigned));
+                final notificationsEnabled = ref.watch(isNotificationsEnabled);
+                if (!isSigned || !notificationsEnabled) {
+                  return const SizedBox.shrink();
+                }
+                final notificationCount = ref.watch(notificationHistoryProvider.select((state) => state.totalCount));
+                return InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/notifications'),
+                  child: Stack(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.of(context).pushNamed('/notifications'),
+                        icon: const Icon(Iconsax.notification_bing, color: AppTheme.primaryColor),
+                      ),
+                      if (notificationCount > 0)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                            child: Text(
+                              notificationCount > 9 ? '9+' : '$notificationCount',
+                              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                      ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+              },
+            ),
             const SizedBox(width: 8),
           ],
         ),

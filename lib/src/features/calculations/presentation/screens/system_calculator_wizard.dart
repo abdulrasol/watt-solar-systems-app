@@ -103,6 +103,7 @@ class _SystemCalculatorWizardState extends ConsumerState<SystemCalculatorWizard>
         //     ),
         //   ],
         // ),
+        // ignore: sort_child_properties_last
         child: Column(
           children: [
             // ── Simple Checkout Stepper ───────────────────────────────────────

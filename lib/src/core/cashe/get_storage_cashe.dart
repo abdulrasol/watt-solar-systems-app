@@ -1,40 +1,52 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
 import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
 
 class GetStorageCashe implements CasheInterface {
+  late final GetStorage _storage;
+
   @override
-  late final box;
+  late final CacheBox box;
 
   GetStorageCashe() {
-    box = GetStorage();
+    _storage = GetStorage();
+    box = _GetStorageBoxAdapter(_storage);
   }
 
   @override
   Future<void> save(String key, dynamic value) async {
-    await box.write(key, value);
-    box.save();
+    await _storage.write(key, value);
+    await _storage.save();
   }
 
   @override
   dynamic get(String key) {
-    return box.read(key);
+    return _storage.read(key);
   }
 
   @override
   Future<void> delete(String key) async {
-    await box.remove(key);
+    await _storage.remove(key);
+  }
+
+  @override
+  Future<void> deleteByPrefix(String prefix) async {
+    final keys = List<String>.from(_storage.getKeys<Iterable<dynamic>>());
+    for (final key in keys.where((key) => key.startsWith(prefix))) {
+      await _storage.remove(key);
+    }
   }
 
   @override
   Future<void> clear() async {
-    await box.erase();
+    await _storage.erase();
   }
 
   @override
   User? user() {
-    final userJson = box.read('user');
+    final userJson = _storage.read('user');
     if (userJson == null) {
       return null;
     }
@@ -43,19 +55,19 @@ class GetStorageCashe implements CasheInterface {
 
   @override
   Future<void> saveUser(User user) async {
-    await box.write('user', user.toJson());
-    box.save();
+    await _storage.write('user', user.toJson());
+    await _storage.save();
   }
 
   @override
   Future<void> saveToken(String token) async {
-    await box.write('token', token);
-    box.save();
+    await _storage.write('token', token);
+    await _storage.save();
   }
 
   @override
   String? token() {
-    final token = box.read('token');
+    final token = _storage.read('token');
     if (token == null) {
       return null;
     }
@@ -64,16 +76,34 @@ class GetStorageCashe implements CasheInterface {
 
   @override
   Future<void> saveSettings(Settings settings) async {
-    await box.write('settings', settings);
-    box.save();
+    await _storage.write('settings', settings);
+    await _storage.save();
   }
 
   @override
   Settings settings() {
-    final Map<String, dynamic>? settingsMap = box.read<Map<String, dynamic>>('settings');
+    final Map<String, dynamic>? settingsMap = _storage
+        .read<Map<String, dynamic>>('settings');
     if (settingsMap == null) {
-      return Settings(isDark: false, isNotificationEnabled: false, language: 'ar', saveRolePageSelection: false, saveRolePageSelectionRoute: null);
+      return Settings(
+        isDark: false,
+        isNotificationEnabled: false,
+        language: 'ar',
+        saveRolePageSelection: false,
+        saveRolePageSelectionRoute: null,
+      );
     }
     return Settings.fromJson(settingsMap);
+  }
+}
+
+class _GetStorageBoxAdapter implements CacheBox {
+  const _GetStorageBoxAdapter(this._storage);
+
+  final GetStorage _storage;
+
+  @override
+  VoidCallback listenKey(String key, void Function(dynamic value) callback) {
+    return _storage.listenKey(key, callback);
   }
 }

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
+import 'package:solar_hub/src/utils/app_constants.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
@@ -32,18 +34,11 @@ class ServiceStatusPage extends StatelessWidget {
 
     if (status == null || status == 'null' || status!.isEmpty) {
       title = l10n.ready_to_scale_title;
-      description = l10n.service_not_requested(serviceName);
-      subDescription = l10n.service_unlock_description;
-      fallbackIcon = Iconsax.add_square_bold;
+      description = l10n.status_unavailable;
+      subDescription = l10n.company_activation_required_message;
+      fallbackIcon = Iconsax.add_square;
       statusColor = AppTheme.primaryColor;
-      actionButton = ElevatedButton.icon(
-        onPressed: () {
-          // TODO: Implement Request Access logic
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.access_requested_successfully)));
-        },
-        icon: const Icon(Iconsax.flash_1_bold),
-        label: Text(l10n.request_access_now),
-      );
+      actionButton = ElevatedButton(onPressed: () => context.pop(), child: Text(l10n.back_to_dashboard));
     } else {
       statusColor = state.color;
       fallbackIcon = state.icon;
@@ -52,20 +47,20 @@ class ServiceStatusPage extends StatelessWidget {
         case ServiceStatus.pending:
           title = l10n.awaiting_approval;
           description = l10n.service_under_review(serviceName);
-          subDescription = l10n.service_pending_help;
+          subDescription = l10n.company_activation_required_message;
           actionButton = OutlinedButton.icon(
             onPressed: () => _contactSupport(context),
-            icon: const Icon(Iconsax.message_question_bold),
+            icon: const Icon(Iconsax.message_question),
             label: Text(l10n.contact_support),
           );
           break;
         case ServiceStatus.rejected:
           title = l10n.request_denied;
-          description = l10n.service_request_rejected(serviceName);
+          description = l10n.status_unavailable;
           subDescription = l10n.service_rejected_help;
           actionButton = ElevatedButton.icon(
             onPressed: () => _contactSupport(context),
-            icon: const Icon(Iconsax.message_question_bold),
+            icon: const Icon(Iconsax.message_question),
             label: Text(l10n.appeal_decision),
           );
           break;
@@ -76,7 +71,7 @@ class ServiceStatusPage extends StatelessWidget {
           subDescription = l10n.service_accounts_help;
           actionButton = ElevatedButton.icon(
             onPressed: () => _contactSupport(context),
-            icon: const Icon(Iconsax.call_calling_bold),
+            icon: const Icon(Iconsax.call_calling),
             label: Text(l10n.contact_accounts),
           );
           break;
@@ -91,7 +86,7 @@ class ServiceStatusPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(serviceName),
-        leading: IconButton(icon: const Icon(Iconsax.arrow_left_1_bold), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(Iconsax.arrow_left_1), onPressed: () => context.pop()),
       ),
       body: Center(
         child: Padding(
@@ -166,13 +161,12 @@ class ServiceStatusPage extends StatelessWidget {
     );
   }
 
-  void _contactSupport(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    // Placeholder for support action
+  void _contactSupport(BuildContext pageContext) {
+    final l10n = AppLocalizations.of(pageContext)!;
     showModalBottomSheet(
-      context: context,
+      context: pageContext,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))),
-      builder: (context) => Padding(
+      builder: (sheetContext) => Padding(
         padding: EdgeInsets.all(24.r),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -183,18 +177,40 @@ class ServiceStatusPage extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             ListTile(
-              leading: const Icon(Iconsax.direct_right_bold, color: Colors.blue),
+              leading: const Icon(Iconsax.direct_right, color: Colors.blue),
               title: Text(l10n.email_support),
-              onTap: () => Navigator.pop(context),
+              subtitle: const Text(adminSupportEmail),
+              onTap: () {
+                Navigator.pop(sheetContext);
+                _launchSupportChannel(pageContext, Uri(scheme: 'mailto', path: adminSupportEmail, queryParameters: <String, String>{'subject': serviceName}));
+              },
             ),
             ListTile(
-              leading: const Icon(Iconsax.whatsapp_bold, color: Colors.green),
+              leading: const Icon(Iconsax.whatsapp, color: Colors.green),
               title: Text(l10n.chat_on_whatsapp),
-              onTap: () => Navigator.pop(context),
+              subtitle: const Text(adminSupportPhone),
+              onTap: () {
+                Navigator.pop(sheetContext);
+                _launchSupportChannel(pageContext, Uri.parse('https://wa.me/${_normalizedPhone(adminSupportPhone)}'));
+              },
             ),
           ],
         ),
       ),
     );
   }
+
+  // Uses the page's own context (not the bottom sheet's, which is already
+  // popped and unmounted by the time this async call resolves) so the
+  // "couldn't open" fallback SnackBar has a valid, still-mounted Scaffold
+  // to attach to.
+  Future<void> _launchSupportChannel(BuildContext pageContext, Uri uri) async {
+    final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!launched && pageContext.mounted) {
+      final l10n = AppLocalizations.of(pageContext)!;
+      ScaffoldMessenger.of(pageContext).showSnackBar(SnackBar(content: Text(l10n.error)));
+    }
+  }
+
+  String _normalizedPhone(String phone) => phone.replaceAll(RegExp(r'[^0-9+]'), '');
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/section_card.dart';
@@ -16,8 +16,7 @@ class SystemPreferencesTab extends ConsumerStatefulWidget {
   final CalculatorNotifier controller;
 
   @override
-  ConsumerState<SystemPreferencesTab> createState() =>
-      _SystemPreferencesTabState();
+  ConsumerState<SystemPreferencesTab> createState() => _SystemPreferencesTabState();
 }
 
 class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
@@ -56,38 +55,14 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
   }
 
   void _syncControllers(CalculatorNotifier controller, {bool force = false}) {
-    _syncText(
-      _directLoadController,
-      _formatEditable(controller.directAcLoadInput),
-      force: force,
-    );
-    _syncText(
-      _gridOnController,
-      _formatEditable(controller.gridOnHours),
-      force: force,
-    );
-    _syncText(
-      _gridOffController,
-      _formatEditable(controller.gridOffHours),
-      force: force,
-    );
-    _syncText(
-      _panelWattController,
-      controller.selectedPanelWattage.toString(),
-      force: force,
-    );
-    _syncText(
-      _batteryAhController,
-      _formatEditable(controller.batteryUnitCapacityAh),
-      force: force,
-    );
+    _syncText(_directLoadController, _formatEditable(controller.directAcLoadInput), force: force);
+    _syncText(_gridOnController, _formatEditable(controller.gridOnHours), force: force);
+    _syncText(_gridOffController, _formatEditable(controller.gridOffHours), force: force);
+    _syncText(_panelWattController, controller.selectedPanelWattage.toString(), force: force);
+    _syncText(_batteryAhController, _formatEditable(controller.batteryUnitCapacityAh), force: force);
   }
 
-  void _syncText(
-    TextEditingController controller,
-    String value, {
-    bool force = false,
-  }) {
+  void _syncText(TextEditingController controller, String value, {bool force = false}) {
     if (controller.text == value) return;
     controller.value = TextEditingValue(
       text: value,
@@ -139,17 +114,11 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
             decoration: BoxDecoration(
               color: AppTheme.accentColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: AppTheme.accentColor.withValues(alpha: 0.3),
-              ),
+              border: Border.all(color: AppTheme.accentColor.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.info_outline_rounded,
-                  color: AppTheme.accentColor,
-                  size: 18,
-                ),
+                const Icon(Icons.info_outline_rounded, color: AppTheme.accentColor, size: 18),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -164,11 +133,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                             'Full energy mode uses your appliance list and extends it with grid timing to reduce battery and PV sizing.',
                             'وضع الطاقة الكامل يعتمد على قائمة الأجهزة ويضيف توقيت الشبكة لتقليل حجم البطاريات والألواح.',
                           ),
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: isDark ? Colors.white70 : Colors.grey.shade700,
-                      height: 1.4,
-                    ),
+                    style: TextStyle(fontSize: 13, color: isDark ? Colors.white70 : Colors.grey.shade700, height: 1.4),
                   ),
                 ),
               ],
@@ -176,7 +141,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
           ),
           const SizedBox(height: 20),
           SectionCard(
-            icon: Iconsax.chart_2_bold,
+            icon: Iconsax.chart_2,
             title: _tr(context, 'Calculation mode', 'وضع الحساب'),
             explanation: explanations[6],
             child: Wrap(
@@ -185,9 +150,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
               children: [
                 ChoiceChip(
                   label: Text(_tr(context, 'Practical Hybrid', 'هجين عملي')),
-                  selected:
-                      controller.calculationMode ==
-                      SystemCalculationMode.practicalHybrid,
+                  selected: controller.calculationMode == SystemCalculationMode.practicalHybrid,
                   onSelected: (_) {
                     _update((c) {
                       c.calculationMode = SystemCalculationMode.practicalHybrid;
@@ -196,9 +159,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                 ),
                 ChoiceChip(
                   label: Text(_tr(context, 'Full Energy', 'طاقة كاملة')),
-                  selected:
-                      controller.calculationMode ==
-                      SystemCalculationMode.fullEnergy,
+                  selected: controller.calculationMode == SystemCalculationMode.fullEnergy,
                   onSelected: (_) {
                     _update((c) {
                       c.calculationMode = SystemCalculationMode.fullEnergy;
@@ -211,7 +172,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
           const SizedBox(height: 16),
           if (controller.isPracticalHybridMode) ...[
             SectionCard(
-              icon: Iconsax.flash_1_bold,
+              icon: Iconsax.flash_1,
               title: _tr(context, 'Direct AC load', 'الحمل المتناوب المباشر'),
               explanation: explanations[7],
               child: Column(
@@ -223,9 +184,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                     children: [
                       ChoiceChip(
                         label: Text(_tr(context, 'Ampere', 'أمبير')),
-                        selected:
-                            controller.loadInputUnit ==
-                            SystemLoadInputUnit.ampere,
+                        selected: controller.loadInputUnit == SystemLoadInputUnit.ampere,
                         onSelected: (_) {
                           _update((c) {
                             c.loadInputUnit = SystemLoadInputUnit.ampere;
@@ -234,9 +193,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                       ),
                       ChoiceChip(
                         label: Text(_tr(context, 'Watt', 'واط')),
-                        selected:
-                            controller.loadInputUnit ==
-                            SystemLoadInputUnit.watt,
+                        selected: controller.loadInputUnit == SystemLoadInputUnit.watt,
                         onSelected: (_) {
                           _update((c) {
                             c.loadInputUnit = SystemLoadInputUnit.watt;
@@ -248,25 +205,12 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _directLoadController,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
-                      suffixText:
-                          controller.loadInputUnit == SystemLoadInputUnit.ampere
-                          ? _tr(context, 'A', 'أمبير')
-                          : _tr(context, 'W', 'واط'),
-                      hintText:
-                          controller.loadInputUnit == SystemLoadInputUnit.ampere
-                          ? '10'
-                          : '2300',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
+                      suffixText: controller.loadInputUnit == SystemLoadInputUnit.ampere ? _tr(context, 'A', 'أمبير') : _tr(context, 'W', 'واط'),
+                      hintText: controller.loadInputUnit == SystemLoadInputUnit.ampere ? '10' : '2300',
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     ),
                     onChanged: (value) {
                       final parsed = double.tryParse(value);
@@ -284,12 +228,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                       'This value is used directly for PV, inverter, and battery sizing in practical mode.',
                       'تستخدم هذه القيمة مباشرةً في حساب الألواح والعاكس والبطارية في الوضع العملي.',
                     ),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: theme.colorScheme.onSurface.withValues(
-                        alpha: 0.55,
-                      ),
-                    ),
+                    style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.55)),
                   ),
                 ],
               ),
@@ -325,9 +264,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withValues(alpha: 0.06),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.18),
-                    ),
+                    border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.18)),
                   ),
                   child: Text(
                     controller.isThreePhase
@@ -341,11 +278,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                             '110V and 230V are handled as single-phase and current uses P / V.',
                             'يتم التعامل مع 110 و230 فولت كنظام أحادي الطور والتيار يحسب بمعادلة P / V.',
                           ),
-                    style: TextStyle(
-                      fontSize: 12,
-                      height: 1.45,
-                      color: isDark ? Colors.white70 : Colors.grey.shade700,
-                    ),
+                    style: TextStyle(fontSize: 12, height: 1.45, color: isDark ? Colors.white70 : Colors.grey.shade700),
                   ),
                 ),
               ],
@@ -353,7 +286,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
           ),
           const SizedBox(height: 16),
           SectionCard(
-            icon: Iconsax.timer_bold,
+            icon: Iconsax.timer,
             title: _tr(context, 'Grid cycle', 'دورة الشبكة'),
             explanation: explanations[9],
             child: Column(
@@ -363,15 +296,11 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                     Expanded(
                       child: TextFormField(
                         controller: _gridOnController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           labelText: _tr(context, 'Grid on', 'تشغيل الشبكة'),
                           suffixText: _tr(context, 'h', 'ساعة'),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         onChanged: (value) {
                           final parsed = double.tryParse(value);
@@ -387,15 +316,11 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                     Expanded(
                       child: TextFormField(
                         controller: _gridOffController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           labelText: _tr(context, 'Grid off', 'انقطاع الشبكة'),
                           suffixText: _tr(context, 'h', 'ساعة'),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         onChanged: (value) {
                           final parsed = double.tryParse(value);
@@ -416,28 +341,21 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                     'Example: 2h on / 4h off. In practical mode, battery sizing is based on the off block.',
                     'مثال: ساعتان تشغيل / 4 ساعات انقطاع. في الوضع العملي يتم حساب البطارية على زمن الانقطاع.',
                   ),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
-                  ),
+                  style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.55)),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
           SectionCard(
-            icon: Iconsax.battery_full_bold,
+            icon: Iconsax.battery_full,
             title: _tr(context, 'Recharge percentage', 'نسبة إعادة الشحن'),
             explanation: explanations[10],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SliderTile(
-                  label: _tr(
-                    context,
-                    'Grid/PV recharge during on-time',
-                    'إعادة الشحن أثناء وقت تشغيل الشبكة',
-                  ),
+                  label: _tr(context, 'Grid/PV recharge during on-time', 'إعادة الشحن أثناء وقت تشغيل الشبكة'),
                   value: controller.rechargePercentage,
                   min: 0,
                   max: 100,
@@ -455,10 +373,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                     'Keep about 20% battery reserve to reduce damage and improve lifetime.',
                     'احتفظ بحوالي 20% داخل البطارية لتقليل الضرر وإطالة العمر.',
                   ),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
-                  ),
+                  style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.55)),
                 ),
               ],
             ),
@@ -505,7 +420,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
             const SizedBox(height: 16),
           ],
           SectionCard(
-            icon: Iconsax.sun_1_bold,
+            icon: Iconsax.sun_1,
             title: l10n.panel_wattage,
             explanation: explanations[3],
             child: TextFormField(
@@ -514,13 +429,8 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
               decoration: InputDecoration(
                 suffixText: 'W',
                 hintText: '600',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
               onChanged: (val) {
                 final parsed = int.tryParse(val);
@@ -534,7 +444,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
           ),
           const SizedBox(height: 16),
           SectionCard(
-            icon: Iconsax.battery_charging_bold,
+            icon: Iconsax.battery_charging,
             title: l10n.single_battery_voltage,
             explanation: explanations[4],
             child: Column(
@@ -552,36 +462,23 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
                   },
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  l10n.battery_type_hint,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                  ),
-                ),
+                Text(l10n.battery_type_hint, style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.5))),
               ],
             ),
           ),
           const SizedBox(height: 16),
           SectionCard(
-            icon: Iconsax.battery_full_bold,
+            icon: Iconsax.battery_full,
             title: l10n.battery_capacity_ah,
             explanation: explanations[11],
             child: TextFormField(
               controller: _batteryAhController,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-              ),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 suffixText: 'Ah',
                 hintText: '200',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
               onChanged: (val) {
                 final parsed = double.tryParse(val);
@@ -595,38 +492,24 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
           ),
           const SizedBox(height: 16),
           SectionCard(
-            icon: Iconsax.box_bold,
+            icon: Iconsax.box,
             title: l10n.battery_type_label,
             explanation: explanations[12],
             child: DropdownButtonFormField<BatteryType>(
               initialValue: controller.systemBatteryType,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
               items: [
-                DropdownMenuItem(
-                  value: BatteryType.lithium,
-                  child: Text(BatteryType.lithium.localizedLabel(l10n)),
-                ),
-                DropdownMenuItem(
-                  value: BatteryType.gel,
-                  child: Text(
-                    _tr(context, 'Gel / Lead-Acid', 'جل / رصاص حمضي'),
-                  ),
-                ),
+                DropdownMenuItem(value: BatteryType.lithium, child: Text(BatteryType.lithium.localizedLabel(l10n))),
+                DropdownMenuItem(value: BatteryType.gel, child: Text(_tr(context, 'Gel / Lead-Acid', 'جل / رصاص حمضي'))),
               ],
               onChanged: (value) {
                 if (value == null) return;
                 _update((c) {
                   c.systemBatteryType = value;
-                  if (value == BatteryType.gel &&
-                      c.systemCalcSingleBatteryVoltage != 12.0) {
+                  if (value == BatteryType.gel && c.systemCalcSingleBatteryVoltage != 12.0) {
                     c.systemCalcSingleBatteryVoltage = 12.0;
                   }
                 });
@@ -651,15 +534,11 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
           const SizedBox(height: 16),
           if (!controller.isPracticalHybridMode) ...[
             SectionCard(
-              icon: Iconsax.sun_fog_bold,
+              icon: Iconsax.sun_fog,
               title: _tr(context, 'PV Derating', 'معامل فواقد المنظومة'),
               explanation: explanations[13],
               child: SliderTile(
-                label: _tr(
-                  context,
-                  'Effective PV performance',
-                  'الأداء الفعلي للألواح',
-                ),
+                label: _tr(context, 'Effective PV performance', 'الأداء الفعلي للألواح'),
                 value: controller.pvDerating,
                 min: 0.55,
                 max: 0.95,
@@ -675,7 +554,7 @@ class _SystemPreferencesTabState extends ConsumerState<SystemPreferencesTab> {
             const SizedBox(height: 16),
           ],
           SectionCard(
-            icon: Iconsax.flash_bold,
+            icon: Iconsax.flash,
             title: _tr(context, 'Inverter Reserve', 'هامش أمان العاكس'),
             explanation: explanations[14],
             child: SliderTile(

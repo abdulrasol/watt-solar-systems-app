@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:solar_hub/src/core/errors/failure.dart';
-import 'package:solar_hub/src/features/splash/data/datasources/app_init_remote_data_source.dart';
-import 'package:solar_hub/src/features/splash/data/datasources/app_init_local_data_source.dart';
+import 'package:solar_hub/src/features/splash/data/data_sources/app_init_remote_data_source.dart';
+import 'package:solar_hub/src/features/splash/data/data_sources/app_init_local_data_source.dart';
 import 'package:solar_hub/src/features/splash/domain/entities/config_snapshot.dart';
 import 'package:solar_hub/src/features/splash/domain/repositories/app_init_repository.dart';
 
@@ -32,7 +33,26 @@ class AppInitRepositoryImpl implements AppInitRepository {
       final cachedSnapshot = await localDataSource.getCachedConfigs();
       return Right(cachedSnapshot.copyWith(isFromCache: false));
     } catch (e) {
+      if (_isConnectivityError(e)) {
+        try {
+          final cachedConfigs = await localDataSource.getCachedConfigs();
+          return Right(cachedConfigs);
+        } catch (_) {
+          return Left(NetworkFailure(e.toString()));
+        }
+      }
+
       return Left(ServerFailure(e.toString()));
     }
+  }
+
+  bool _isConnectivityError(Object error) {
+    if (error is DioException) {
+      return error.type == DioExceptionType.connectionError ||
+          error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.receiveTimeout ||
+          error.type == DioExceptionType.sendTimeout;
+    }
+    return false;
   }
 }

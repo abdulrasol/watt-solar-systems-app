@@ -88,8 +88,16 @@ class CompanyActivationController extends Notifier<CompanyActivationState> {
       state = CompanyActivationState(companyId: company.id);
     }
 
-    if (!company.requiresSubscriptionRenewal ||
-        state.subscriptionRequest != null) {
+    if (!company.requiresSubscriptionRenewal) {
+      state = state.copyWith(
+        subscriptionRequest: null,
+        plansError: null,
+      );
+      return;
+    }
+
+    if (state.subscriptionRequest != null &&
+        state.subscriptionRequest!.isPending) {
       return;
     }
 
@@ -127,7 +135,7 @@ class CompanyActivationController extends Notifier<CompanyActivationState> {
       );
       state = state.copyWith(
         isSubmittingSubscription: false,
-        subscriptionRequest: request,
+        subscriptionRequest: request.isPending ? request : null,
       );
       return request;
     } catch (e) {

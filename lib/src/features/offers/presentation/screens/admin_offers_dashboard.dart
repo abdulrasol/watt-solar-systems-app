@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import '../providers/offers_provider.dart';
 import '../widgets/cards/request_card.dart';
 import '../widgets/cards/offer_card.dart';
+import '../../domain/entities/solar_request.dart';
+import '../../domain/entities/solar_offer.dart';
 
 class AdminOffersDashboard extends ConsumerStatefulWidget {
   const AdminOffersDashboard({super.key});
@@ -78,8 +80,8 @@ class _AdminOffersDashboardState extends ConsumerState<AdminOffersDashboard> wit
           controller: _tabController,
           indicatorColor: AppTheme.primaryColor,
           tabs: [
-            Tab(text: l10n.all_requests, icon: const Icon(Iconsax.document_text_bold)),
-            Tab(text: l10n.all_offers, icon: const Icon(Iconsax.receipt_2_bold)),
+            Tab(text: l10n.all_requests, icon: const Icon(Iconsax.document_text)),
+            Tab(text: l10n.all_offers, icon: const Icon(Iconsax.receipt_2)),
           ],
         ),
       ),
@@ -170,7 +172,7 @@ class _AdminOffersDashboardState extends ConsumerState<AdminOffersDashboard> wit
             );
           }
           final request = state.adminRequests[index];
-          return RequestCard(request: request, onTap: () {});
+          return RequestCard(request: request, onTap: () => _showRequestDetail(context, request));
         },
       ),
     );
@@ -198,7 +200,7 @@ class _AdminOffersDashboardState extends ConsumerState<AdminOffersDashboard> wit
             );
           }
           final offer = state.adminOffers[index];
-          return OfferCard(offer: offer, onTap: () {});
+          return OfferCard(offer: offer, onTap: () => _showOfferDetail(context, offer));
         },
       ),
     );
@@ -209,12 +211,105 @@ class _AdminOffersDashboardState extends ConsumerState<AdminOffersDashboard> wit
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Iconsax.search_status_bold, size: 64, color: Colors.grey),
+          const Icon(Iconsax.search_status, size: 64, color: Colors.grey),
           SizedBox(height: 16.h),
           Text(
             title,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.grey),
           ),
+        ],
+      ),
+    );
+  }
+
+  // Previously these cards were tappable but did nothing (`onTap: () {}`).
+  // This is a read-only oversight view — deliberately NOT reusing
+  // `RequestDetailBottomSheet` (it always shows a "Send Offer" button meant
+  // for a company replying to a request, which doesn't make sense for an
+  // admin browsing the whole marketplace).
+  void _showRequestDetail(BuildContext context, SolarRequest request) {
+    final l10n = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) => Padding(
+        padding: EdgeInsets.all(24.r),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.solar_request_details, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily)),
+              SizedBox(height: 16.h),
+              _detailRow(l10n.requester_info, request.user?.name ?? l10n.unknown_user),
+              _detailRow(l10n.city_label(request.city?.name ?? '-'), ''),
+              _detailRow(l10n.pv_power, l10n.unit_watts(request.totalPanelPower)),
+              _detailRow(l10n.battery_power, l10n.unit_kilowatthours(request.totalBatteryPower.toStringAsFixed(1))),
+              _detailRow(l10n.inverter_calc, l10n.unit_kilowatts(request.totalInvertersPower.toStringAsFixed(1))),
+              if ((request.note ?? '').isNotEmpty) _detailRow(l10n.technical_notes, request.note!),
+              SizedBox(height: 12.h),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showOfferDetail(BuildContext context, SolarOffer offer) {
+    final l10n = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (context) => Padding(
+        padding: EdgeInsets.all(24.r),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(offer.company.name, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily)),
+              SizedBox(height: 16.h),
+              _detailRow(l10n.total_project_quote, '\$${offer.price.toStringAsFixed(2)}'),
+              _detailRow(l10n.pv_power, l10n.unit_watts(offer.totalPanelPower)),
+              _detailRow(l10n.battery_power, l10n.unit_kilowatthours(offer.totalBatteryPower.toStringAsFixed(1))),
+              _detailRow(l10n.inverter_calc, l10n.unit_kilowatts(offer.totalInvertersPower.toStringAsFixed(1))),
+              if ((offer.note ?? '').isNotEmpty) _detailRow(l10n.technical_notes, offer.note!),
+              if (offer.involves != null && offer.involves!.isNotEmpty) ...[
+                SizedBox(height: 8.h),
+                Divider(color: Colors.grey.withValues(alpha: 0.2)),
+                ...offer.involves!.map(
+                  (item) => _detailRow(item.name, '${item.quantity ?? 1} × ${item.cost}'),
+                ),
+              ],
+              SizedBox(height: 12.h),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _detailRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: Text(label, style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontWeight: FontWeight.w600))),
+          if (value.isNotEmpty)
+            Expanded(
+              child: Text(value, style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700), textAlign: TextAlign.end),
+            ),
         ],
       ),
     );

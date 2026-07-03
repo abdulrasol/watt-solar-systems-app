@@ -1,11 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:solar_hub/src/core/services/dio.dart';
 import 'package:solar_hub/src/core/models/response.dart' as api;
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
 
 abstract class AdminRemoteDataSource {
-  Future<api.PaginationResponse> listCompanies({String? status, int page = 1, int pageSize = 20});
+  Future<api.PaginationResponse> listCompanies({String? status, int page = 1, int pageSize = 12});
   Future<api.Response> updateCompanyStatus(int companyId, String status);
   Future<api.PaginationResponse> listServiceCatalog();
   Future<api.Response> createServiceCatalogEntry(ServiceCatalogItem item);
@@ -13,8 +13,70 @@ abstract class AdminRemoteDataSource {
   Future<api.Response> deleteServiceCatalogEntry(String serviceCode);
   Future<api.PaginationResponse> listCompanyServices(int companyId);
   Future<api.Response> getCompanyDetails(int companyId);
-  Future<api.PaginationResponse> listServiceRequests({int page = 1, int pageSize = 20});
-  Future<api.Response> reviewServiceRequest(int companyId, String serviceCode, Map<String, dynamic> data);
+
+  // Currencies
+  Future<api.PaginationResponse> listCurrencies({int page = 1, int pageSize = 12});
+  Future<api.Response> createCurrency(Map<String, dynamic> data);
+  Future<api.Response> updateCurrency(int id, Map<String, dynamic> data);
+  Future<api.Response> deleteCurrency(int id);
+
+  // Countries
+  Future<api.ListResponse> listCountries();
+  Future<api.Response> createCountry(Map<String, dynamic> data);
+  Future<api.Response> updateCountry(int id, Map<String, dynamic> data);
+  Future<api.Response> deleteCountry(int id);
+
+  // Cities
+  Future<api.ListResponse> listCities({int? countryId});
+  Future<api.Response> createCity(Map<String, dynamic> data);
+  Future<api.Response> updateCity(int id, Map<String, dynamic> data);
+  Future<api.Response> deleteCity(int id);
+
+  // Global Categories
+  Future<api.PaginationResponse> listGlobalCategories({int page = 1, int pageSize = 12});
+  Future<api.Response> createGlobalCategory(Map<String, dynamic> data);
+  Future<api.Response> updateGlobalCategory(int id, Map<String, dynamic> data);
+  Future<api.Response> deleteGlobalCategory(int id);
+
+  // Users
+  Future<api.PaginationResponse> listUsers({int page = 1, int pageSize = 12});
+  Future<api.Response> promoteUser(String username, bool promote);
+
+  // Subscriptions
+  Future<api.PaginationResponse> listSubscriptionPlans({int page = 1, int pageSize = 12});
+  Future<api.Response> createSubscriptionPlan(Map<String, dynamic> data);
+  Future<api.Response> updateSubscriptionPlan(int id, Map<String, dynamic> data);
+  Future<api.Response> deleteSubscriptionPlan(int id);
+  
+  // Feedbacks
+  Future<api.PaginationResponse> listFeedbacks({int page = 1, int pageSize = 12});
+  Future<api.Response> updateFeedbackStatus(int id, bool isRead);
+  Future<api.Response> deleteFeedback(int id);
+
+  // Notifications
+  Future<api.PaginationResponse> listNotifications({int page = 1, int pageSize = 12});
+
+  // Products
+  Future<api.PaginationResponse> listAdminProducts({int page = 1, int pageSize = 12});
+
+  /// [payload] is the JSON-encoded `AdminProductCreateSchema` body
+  /// (includes `company_id`); [imagePaths] are local file paths to upload
+  /// as the multipart `images` field, matching `POST /admin/shop/products`.
+  Future<api.Response> createAdminProduct(String payload, {List<String> imagePaths = const []});
+
+  /// [payload] is the JSON-encoded `AdminProductUpdateSchema` body
+  /// (`company_id` optional — only send it to reassign the product to a
+  /// different company).
+  Future<api.Response> updateAdminProduct(int productId, String payload, {List<String> imagePaths = const []});
+
+  Future<api.Response> deleteAdminProduct(int productId);
+
+  // Systems
+  Future<api.PaginationResponse> listAdminSystems({int page = 1, int pageSize = 12});
+
+  /// Either field may be omitted — the backend only updates whichever of
+  /// `user_status`/`company_status` is supplied, leaving the other as-is.
+  Future<api.Response> updateAdminSystemStatus(int systemId, {String? userStatus, String? companyStatus});
 }
 
 class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
@@ -23,17 +85,14 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   AdminRemoteDataSourceImpl(this._dioService);
 
   @override
-  Future<api.PaginationResponse> listCompanies({String? status, int page = 1, int pageSize = 20}) async {
+  Future<api.PaginationResponse> listCompanies({String? status, int page = 1, int pageSize = 12}) async {
     try {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
       if (status != null) queryParameters['status'] = status;
 
-      dPrint('listCompanies query: $queryParameters', tag: 'AdminDataSource');
       final response = await _dioService.get(AppUrls.companies, queryParameters: queryParameters, isPagination: true);
-      dPrint('listCompanies response body type: ${response.body.runtimeType}', tag: 'AdminDataSource');
       return response as api.PaginationResponse;
-  } catch (e, stackTrace) {
-      dPrint('listCompanies error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+  } catch (e) {
       rethrow;
     }
   }
@@ -41,10 +100,8 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   @override
   Future<api.Response> updateCompanyStatus(int companyId, String status) async {
     try {
-      final response = await _dioService.post(AppUrls.updateCompanyStatus(companyId), data: {'status': status});
-      return response;
-  } catch (e, stackTrace) {
-      dPrint('updateCompanyStatus error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+      return await _dioService.post(AppUrls.updateCompanyStatus(companyId), data: {'status': status});
+  } catch (e) {
       rethrow;
     }
   }
@@ -54,8 +111,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     try {
       final response = await _dioService.get(AppUrls.adminServiceCatalog, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e, stackTrace) {
-      dPrint('listServiceCatalog error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+  } catch (e) {
       rethrow;
     }
   }
@@ -63,10 +119,8 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   @override
   Future<api.Response> createServiceCatalogEntry(ServiceCatalogItem item) async {
     try {
-      final response = await _dioService.post(AppUrls.adminServiceCatalog, data: item.toJson(includeCode: true));
-      return response;
-  } catch (e, stackTrace) {
-      dPrint('createServiceCatalogEntry error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+      return await _dioService.post(AppUrls.adminServiceCatalog, data: item.toJson(includeCode: true));
+  } catch (e) {
       rethrow;
     }
   }
@@ -74,10 +128,8 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   @override
   Future<api.Response> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data) async {
     try {
-      final response = await _dioService.put(AppUrls.adminServiceCatalogItem(serviceCode), data: data);
-      return response;
-  } catch (e, stackTrace) {
-      dPrint('updateServiceCatalogEntry error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+      return await _dioService.put(AppUrls.adminServiceCatalogItem(serviceCode), data: data);
+  } catch (e) {
       rethrow;
     }
   }
@@ -85,10 +137,8 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   @override
   Future<api.Response> deleteServiceCatalogEntry(String serviceCode) async {
     try {
-      final response = await _dioService.delete(AppUrls.adminServiceCatalogItem(serviceCode));
-      return response;
-  } catch (e, stackTrace) {
-      dPrint('deleteServiceCatalogEntry error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+      return await _dioService.delete(AppUrls.adminServiceCatalogItem(serviceCode));
+  } catch (e) {
       rethrow;
     }
   }
@@ -98,8 +148,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     try {
       final response = await _dioService.get(AppUrls.companyAdminServices(companyId), isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e, stackTrace) {
-      dPrint('listCompanyServices error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+  } catch (e) {
       rethrow;
     }
   }
@@ -107,33 +156,340 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   @override
   Future<api.Response> getCompanyDetails(int companyId) async {
     try {
-      final response = await _dioService.get(AppUrls.companyAdminDetails(companyId));
-      return response as api.Response;
-  } catch (e, stackTrace) {
-      dPrint('getCompanyDetails error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+      return await _dioService.get(AppUrls.companyAdminDetails(companyId)) as api.Response;
+  } catch (e) {
       rethrow;
     }
   }
 
+
+  // Currencies
   @override
-  Future<api.PaginationResponse> listServiceRequests({int page = 1, int pageSize = 20}) async {
+  Future<api.PaginationResponse> listCurrencies({int page = 1, int pageSize = 12}) async {
     try {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
-      final response = await _dioService.get(AppUrls.adminServiceRequests, queryParameters: queryParameters, isPagination: true);
+      final response = await _dioService.get(AppUrls.currencies, queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e, stackTrace) {
-      dPrint('listServiceRequests error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+  } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<api.Response> reviewServiceRequest(int companyId, String serviceCode, Map<String, dynamic> data) async {
+  Future<api.Response> createCurrency(Map<String, dynamic> data) async {
     try {
-      final response = await _dioService.post(AppUrls.reviewCompanyService(companyId, serviceCode), data: data);
-      return response;
-  } catch (e, stackTrace) {
-      dPrint('reviewServiceRequest error: $e', stackTrace: stackTrace, tag: 'AdminRemoteDataSourceImpl');
+      return await _dioService.post(AppUrls.currencies, data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateCurrency(int id, Map<String, dynamic> data) async {
+    try {
+      return await _dioService.put(AppUrls.currency(id), data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteCurrency(int id) async {
+    try {
+      return await _dioService.delete(AppUrls.currency(id));
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Countries
+  @override
+  Future<api.ListResponse> listCountries() async {
+    try {
+      final response = await _dioService.get(AppUrls.countries, isList: true);
+      return response as api.ListResponse;
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> createCountry(Map<String, dynamic> data) async {
+    try {
+      return await _dioService.post(AppUrls.countries, data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateCountry(int id, Map<String, dynamic> data) async {
+    try {
+      return await _dioService.put(AppUrls.country(id), data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteCountry(int id) async {
+    try {
+      return await _dioService.delete(AppUrls.country(id));
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Cities
+  @override
+  Future<api.ListResponse> listCities({int? countryId}) async {
+    try {
+      final queryParameters = <String, dynamic>{};
+      if (countryId != null) queryParameters['country_id'] = countryId;
+      final response = await _dioService.get(AppUrls.cities, queryParameters: queryParameters, isList: true);
+      return response as api.ListResponse;
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> createCity(Map<String, dynamic> data) async {
+    try {
+      return await _dioService.post(AppUrls.cities, data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateCity(int id, Map<String, dynamic> data) async {
+    try {
+      return await _dioService.put(AppUrls.city(id), data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteCity(int id) async {
+    try {
+      return await _dioService.delete(AppUrls.city(id));
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Global Categories
+  @override
+  Future<api.PaginationResponse> listGlobalCategories({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.globalCategories, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> createGlobalCategory(Map<String, dynamic> data) async {
+    try {
+      return await _dioService.post(AppUrls.globalCategories, data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateGlobalCategory(int id, Map<String, dynamic> data) async {
+    try {
+      return await _dioService.put(AppUrls.globalCategory(id), data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteGlobalCategory(int id) async {
+    try {
+      return await _dioService.delete(AppUrls.globalCategory(id));
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Users
+  @override
+  Future<api.PaginationResponse> listUsers({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.allUsers, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> promoteUser(String username, bool promote) async {
+    try {
+      return await _dioService.post(AppUrls.promoteUser(username), data: {'promote': promote});
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Subscriptions
+  @override
+  Future<api.PaginationResponse> listSubscriptionPlans({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.adminSubscriptions, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> createSubscriptionPlan(Map<String, dynamic> data) async {
+    try {
+      return await _dioService.post(AppUrls.adminSubscriptions, data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateSubscriptionPlan(int id, Map<String, dynamic> data) async {
+    try {
+      return await _dioService.put(AppUrls.adminSubscription(id), data: data);
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteSubscriptionPlan(int id) async {
+    try {
+      return await _dioService.delete(AppUrls.adminSubscription(id));
+  } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Feedbacks
+  @override
+  Future<api.PaginationResponse> listFeedbacks({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.feedbacks, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateFeedbackStatus(int id, bool isRead) async {
+    try {
+      return await _dioService.put(AppUrls.feedbackStatus(id), data: {'is_read': isRead});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteFeedback(int id) async {
+    try {
+      return await _dioService.delete(AppUrls.feedback(id));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Notifications
+  @override
+  Future<api.PaginationResponse> listNotifications({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get('${AppUrls.adminBaseUrl}/notifications', queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Products
+  @override
+  Future<api.PaginationResponse> listAdminProducts({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.adminProducts, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> createAdminProduct(String payload, {List<String> imagePaths = const []}) async {
+    try {
+      final formData = FormData();
+      formData.fields.add(MapEntry('payload', payload));
+      for (final path in imagePaths) {
+        formData.files.add(MapEntry('images', await MultipartFile.fromFile(path, filename: path.split('/').last)));
+      }
+      return await _dioService.multipartRequest(AppUrls.adminProducts, file: formData);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateAdminProduct(int productId, String payload, {List<String> imagePaths = const []}) async {
+    try {
+      final formData = FormData();
+      formData.fields.add(MapEntry('payload', payload));
+      for (final path in imagePaths) {
+        formData.files.add(MapEntry('images', await MultipartFile.fromFile(path, filename: path.split('/').last)));
+      }
+      return await _dioService.multipartRequest(AppUrls.adminProduct(productId), file: formData, isPut: true);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteAdminProduct(int productId) async {
+    try {
+      return await _dioService.delete(AppUrls.adminProduct(productId));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Systems
+  @override
+  Future<api.PaginationResponse> listAdminSystems({int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
+      final response = await _dioService.get(AppUrls.adminSystems, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateAdminSystemStatus(int systemId, {String? userStatus, String? companyStatus}) async {
+    try {
+      final data = <String, dynamic>{};
+      if (userStatus != null) data['user_status'] = userStatus;
+      if (companyStatus != null) data['company_status'] = companyStatus;
+      return await _dioService.put(AppUrls.adminSystemStatus(systemId), data: data);
+    } catch (e) {
       rethrow;
     }
   }

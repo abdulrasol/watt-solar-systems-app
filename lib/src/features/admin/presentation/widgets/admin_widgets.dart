@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+
+import 'package:solar_hub/src/core/widgets/branded_empty_state.dart';
 
 class AdminEmptyState extends StatelessWidget {
   const AdminEmptyState({super.key, required this.icon, required this.title, this.subtitle});
@@ -13,26 +15,7 @@ class AdminEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withValues(alpha: 0.3)),
-          SizedBox(height: 24.h),
-          Text(
-            title,
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily, color: Colors.grey),
-          ),
-          if (subtitle != null) ...[
-            SizedBox(height: 8.h),
-            Text(
-              subtitle!,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey.withValues(alpha: 0.7), fontFamily: AppTheme.fontFamily),
-            ),
-          ],
-        ],
-      ),
-    );
+    return BrandedEmptyState(icon: icon, title: title, subtitle: subtitle);
   }
 }
 
@@ -45,44 +28,51 @@ class AdminErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error_outline, size: 80.sp, color: AppTheme.errorColor.withValues(alpha: 0.5)),
-          SizedBox(height: 24.h),
-          Text(
-            'Failed to load',
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            error,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 24.h),
-          ElevatedButton.icon(
-            onPressed: onRetry,
-            icon: Icon(Iconsax.refresh_bold, size: 20.sp),
-            label: Text('Retry', style: TextStyle(fontSize: 14.sp)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      child: Padding(
+        padding: EdgeInsets.all(24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(20.w),
+              decoration: BoxDecoration(color: AppTheme.errorColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+              child: Icon(Iconsax.warning_2, size: 48.sp, color: AppTheme.errorColor),
             ),
-          ),
-        ],
+            SizedBox(height: 24.h),
+            Text(
+              'Oops! Something went wrong',
+              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              error,
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 32.h),
+            ElevatedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Iconsax.refresh, color: Colors.white),
+              label: const Text('Retry', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                elevation: 0,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class AdminLoadingState extends StatelessWidget {
-  const AdminLoadingState({super.key, this.icon = Icons.admin_panel_settings, this.message = 'Loading...'});
+  const AdminLoadingState({super.key, this.message = 'Loading...', this.icon});
 
-  final IconData icon;
   final String message;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +80,18 @@ class AdminLoadingState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LoadingWidget(size: 80.sp),
-          // Icon(icon, size: 80.sp, color: AppTheme.primaryColor.withValues(alpha: 0.3)),
-          SizedBox(height: 24.h),
+          if (icon != null) ...[
+            Container(
+              padding: EdgeInsets.all(20.r),
+              decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+              child: Icon(icon, size: 40.sp, color: AppTheme.primaryColor),
+            ),
+            SizedBox(height: 24.h),
+          ] else
+            LoadingWidget(size: 80.sp),
           Text(
             message,
-            style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily, letterSpacing: 0.5),
           ),
         ],
       ),
@@ -208,7 +204,7 @@ class AdminActionTile extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Iconsax.arrow_right_bold, color: isDark ? Colors.grey[400] : Colors.grey[600], size: 20.sp),
+            Icon(Iconsax.arrow_right, color: isDark ? Colors.grey[400] : Colors.grey[600], size: 20.sp),
           ],
         ),
       ),

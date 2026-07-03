@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
@@ -26,6 +27,7 @@ class AuthState {
 
 class AuthController extends Notifier<AuthState> {
   late CasheInterface cashe;
+  VoidCallback? _removeUserListener;
 
   @override
   AuthState build() {
@@ -34,14 +36,19 @@ class AuthController extends Notifier<AuthState> {
     final initialUser = cashe.user();
     final initialIsSigned = cashe.get('token') != null && initialUser != null;
 
-    cashe.box.listenKey('user', (value) {
+    _removeUserListener ??= cashe.box.listenKey('user', (value) {
       if (value != null) {
-        state = state.copyWith(
+        state = AuthState(
           user: User.fromJson(Map<String, dynamic>.from(value)),
+          isSigned: cashe.get('token') != null,
         );
       } else {
-        state = AuthState(user: null, isSigned: state.isSigned);
+        state = AuthState(user: null, isSigned: false);
       }
+    });
+    ref.onDispose(() {
+      _removeUserListener?.call();
+      _removeUserListener = null;
     });
 
     return AuthState(user: initialUser, isSigned: initialIsSigned);

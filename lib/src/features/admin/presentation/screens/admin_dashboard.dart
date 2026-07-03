@@ -24,7 +24,7 @@ class AdminDashboard extends StatelessWidget {
               crossAxisCount: columns,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
-              childAspectRatio: columns == 2 ? 0.7 : 1.1,
+              childAspectRatio: columns == 2 ? 0.62 : 1.1,
             ),
             itemBuilder: (context, index) {
               return AdminDashboardCard(module: AdminModules.dashboardCards[index]);

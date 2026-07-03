@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart' show isEnabled;
 
 class WizardBottomBar extends ConsumerWidget {
   const WizardBottomBar({
@@ -75,7 +75,7 @@ class WizardBottomBar extends ConsumerWidget {
                       width: double.infinity,
                       child: FilledButton.icon(
                         onPressed: onNext,
-                        icon: Icon(tabIndex == 1 ? Iconsax.calculator_bold : Icons.arrow_forward_rounded, size: 18),
+                        icon: Icon(tabIndex == 1 ? Iconsax.calculator : Icons.arrow_forward_rounded, size: 18),
                         label: Text(tabIndex == 1 ? l10n.calculate : l10n.next),
                         style: FilledButton.styleFrom(
                           backgroundColor: AppTheme.primaryColor,
@@ -86,13 +86,13 @@ class WizardBottomBar extends ConsumerWidget {
                         ),
                       ),
                     )
-                  : isEnabled(ref, 'offers')
+                  : ref.watch(isOffersEnabled)
                   ? SizedBox(
                       key: const ValueKey('nav_request'),
                       width: double.infinity,
                       child: FilledButton.icon(
                         onPressed: onRequest,
-                        icon: const Icon(Iconsax.send_2_bold, size: 18),
+                        icon: const Icon(Iconsax.send_2, size: 18),
                         label: Text(l10n.request_this_system),
                         style: FilledButton.styleFrom(
                           backgroundColor: AppTheme.primaryColor,

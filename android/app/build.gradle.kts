@@ -1,5 +1,6 @@
 import java.util.Properties
 import java.io.FileInputStream
+import org.gradle.api.GradleException
 
 val keystorePropertiesFile = file("/Users/rasol/MEGA/Dot.IT/App Dev /watt/key.properties")
 val keystoreProperties = Properties()
@@ -8,6 +9,16 @@ if (keystorePropertiesFile.exists()) {
 }
 else {
     println("key.properties not found")
+}
+
+val isReleaseTaskRequested = gradle.startParameter.taskNames.any {
+    it.contains("release", ignoreCase = true)
+}
+
+if (isReleaseTaskRequested && !keystorePropertiesFile.exists()) {
+    throw GradleException(
+        "Release signing requires the Play Store key at ${keystorePropertiesFile.path}"
+    )
 }
 
 plugins {

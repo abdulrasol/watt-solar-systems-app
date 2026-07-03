@@ -10,6 +10,10 @@ class CompanySubscriptionRequest {
     this.notes,
     this.image,
     this.createdAt,
+    this.autoApproved = false,
+    this.effectiveStart,
+    this.resultingExpiry,
+    this.companySubscriptionPlanId,
   });
 
   final int id;
@@ -22,6 +26,14 @@ class CompanySubscriptionRequest {
   final String? notes;
   final String? image;
   final DateTime? createdAt;
+  final bool autoApproved;
+  final DateTime? effectiveStart;
+  final DateTime? resultingExpiry;
+  final int? companySubscriptionPlanId;
+
+  bool get isPending => status.toLowerCase() == 'pending';
+  bool get isActive => status.toLowerCase() == 'active';
+  bool get isAutoActivated => autoApproved || isActive;
 
   factory CompanySubscriptionRequest.fromJson(Map<String, dynamic> json) {
     return CompanySubscriptionRequest(
@@ -38,6 +50,15 @@ class CompanySubscriptionRequest {
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'].toString())
           : null,
+      autoApproved: json['auto_approved'] == true,
+      effectiveStart: json['effective_start'] != null
+          ? DateTime.tryParse(json['effective_start'].toString())
+          : null,
+      resultingExpiry: json['resulting_expiry'] != null
+          ? DateTime.tryParse(json['resulting_expiry'].toString())
+          : null,
+      companySubscriptionPlanId:
+          int.tryParse(json['company_subscription_plan_id']?.toString() ?? ''),
     );
   }
 }

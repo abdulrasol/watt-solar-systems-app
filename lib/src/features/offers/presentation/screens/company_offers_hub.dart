@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/involves_catalog_screen.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/offer_details_screen.dart';
@@ -10,17 +10,20 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import '../providers/offers_provider.dart';
 import '../widgets/cards/request_card.dart';
 import '../widgets/cards/offer_card.dart';
+import 'package:solar_hub/src/core/widgets/branded_empty_state.dart';
+import 'package:solar_hub/src/features/offers/domain/entities/solar_request.dart';
+import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import '../widgets/bottomsheets/request_detail_bottom_sheet.dart';
 
 class CompanyOffersHub extends ConsumerStatefulWidget {
-  const CompanyOffersHub({super.key});
+  final bool embedded;
+  const CompanyOffersHub({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyOffersHub> createState() => _CompanyOffersHubState();
 }
 
-class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
-    with SingleTickerProviderStateMixin {
+class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final ScrollController _availableScrollController = ScrollController();
   final ScrollController _myOffersScrollController = ScrollController();
@@ -40,15 +43,13 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
     });
 
     _availableScrollController.addListener(() {
-      if (_availableScrollController.position.pixels >=
-          _availableScrollController.position.maxScrollExtent - 200) {
+      if (_availableScrollController.position.pixels >= _availableScrollController.position.maxScrollExtent - 200) {
         ref.read(offersProvider.notifier).availableRequestsNextPage();
       }
     });
 
     _myOffersScrollController.addListener(() {
-      if (_myOffersScrollController.position.pixels >=
-          _myOffersScrollController.position.maxScrollExtent - 200) {
+      if (_myOffersScrollController.position.pixels >= _myOffersScrollController.position.maxScrollExtent - 200) {
         ref.read(offersProvider.notifier).myOffersNextPage();
       }
     });
@@ -77,20 +78,39 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
     final state = ref.watch(offersProvider);
     final l10n = AppLocalizations.of(context)!;
 
+    final content = Column(
+      children: [
+        if (widget.embedded)
+          TabBar(
+            controller: _tabController,
+            indicatorColor: AppTheme.primaryColor,
+            labelColor: AppTheme.primaryColor,
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              Tab(text: l10n.available_requests, icon: const Icon(Iconsax.radar)),
+              Tab(text: l10n.my_bids, icon: const Icon(Iconsax.briefcase)),
+            ],
+          ),
+        Expanded(
+          child: TabBarView(controller: _tabController, children: [_buildAvailableRequests(state), _buildMyOffers(state)]),
+        ),
+      ],
+    );
+
+    if (widget.embedded) {
+      return content;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.offers_marketplace),
         actions: [
           IconButton(
-            tooltip: 'Catalog',
+            tooltip: l10n.catalog_tooltip,
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const InvolvesCatalogScreen(),
-                ),
-              );
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const InvolvesCatalogScreen()));
             },
-            icon: const Icon(Iconsax.receipt_item_bold),
+            icon: const Icon(Iconsax.receipt_item),
           ),
         ],
         bottom: TabBar(
@@ -99,18 +119,12 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
           labelColor: AppTheme.primaryColor,
           unselectedLabelColor: Colors.grey,
           tabs: [
-            Tab(
-              text: l10n.available_requests,
-              icon: const Icon(Iconsax.radar_bold),
-            ),
-            Tab(text: l10n.my_bids, icon: const Icon(Iconsax.briefcase_bold)),
+            Tab(text: l10n.available_requests, icon: const Icon(Iconsax.radar)),
+            Tab(text: l10n.my_bids, icon: const Icon(Iconsax.briefcase)),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [_buildAvailableRequests(state), _buildMyOffers(state)],
-      ),
+      body: content,
     );
   }
 
@@ -124,36 +138,22 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
           child: state.isLoading && state.availableRequests.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : state.availableRequests.isEmpty
-              ? _buildEmptyState(
-                  l10n.no_requests_found,
-                  l10n.new_projects_will_appear_here,
-                  Iconsax.radar_bold,
-                )
+              ? BrandedEmptyState(icon: Iconsax.radar, title: l10n.no_requests_found, subtitle: l10n.new_projects_will_appear_here)
               : RefreshIndicator(
-                  onRefresh: () async => ref
-                      .read(offersProvider.notifier)
-                      .getAvailableRequests(isRefresh: true),
+                  onRefresh: () async => ref.read(offersProvider.notifier).getAvailableRequests(isRefresh: true),
                   child: ListView.separated(
                     controller: _availableScrollController,
                     padding: EdgeInsets.all(20.r),
-                    itemCount:
-                        state.availableRequests.length +
-                        (state.availableRequestsHasMore ? 1 : 0),
+                    itemCount: state.availableRequests.length + (state.availableRequestsHasMore ? 1 : 0),
                     separatorBuilder: (c, i) => SizedBox(height: 16.h),
                     itemBuilder: (context, index) {
                       if (index == state.availableRequests.length) {
                         return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: CircularProgressIndicator(),
-                          ),
+                          child: Padding(padding: EdgeInsets.all(16.0), child: CircularProgressIndicator()),
                         );
                       }
                       final request = state.availableRequests[index];
-                      return RequestCard(
-                        request: request,
-                        onTap: () => _showRequestDetails(request),
-                      );
+                      return RequestCard(request: request, onTap: () => _showRequestDetails(request), onConvertToLead: () => _handleConvertToLead(request));
                     },
                   ),
                 ),
@@ -172,41 +172,24 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
           child: state.isLoading && state.myOffers.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : state.myOffers.isEmpty
-              ? _buildEmptyState(
-                  l10n.no_offers_found,
-                  l10n.browse_requests_to_start_bidding,
-                  Iconsax.briefcase_bold,
-                )
+              ? BrandedEmptyState(icon: Iconsax.briefcase, title: l10n.no_offers_found, subtitle: l10n.browse_requests_to_start_bidding)
               : RefreshIndicator(
-                  onRefresh: () async => ref
-                      .read(offersProvider.notifier)
-                      .getMyOffers(isRefresh: true),
+                  onRefresh: () async => ref.read(offersProvider.notifier).getMyOffers(isRefresh: true),
                   child: ListView.separated(
                     controller: _myOffersScrollController,
                     padding: EdgeInsets.all(20.r),
-                    itemCount:
-                        state.myOffers.length + (state.myOffersHasMore ? 1 : 0),
+                    itemCount: state.myOffers.length + (state.myOffersHasMore ? 1 : 0),
                     separatorBuilder: (c, i) => SizedBox(height: 16.h),
                     itemBuilder: (context, index) {
                       if (index == state.myOffers.length) {
                         return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: CircularProgressIndicator(),
-                          ),
+                          child: Padding(padding: EdgeInsets.all(16.0), child: CircularProgressIndicator()),
                         );
                       }
                       final offer = state.myOffers[index];
                       return OfferCard(
                         offer: offer,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => OfferDetailsScreen(
-                              offer: offer,
-                              isCompanyView: true,
-                            ),
-                          ),
-                        ),
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => OfferDetailsScreen(offer: offer, isCompanyView: true))),
                       );
                     },
                   ),
@@ -231,40 +214,18 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
                 children: isRequestTab
                     ? RequestStatus.values
                           .map(
-                            (s) => _buildFilterChip(
-                              s.localizedLabel(AppLocalizations.of(context)!),
-                              _requestFilter == s,
-                              () {
-                                setState(
-                                  () => _requestFilter = _requestFilter == s
-                                      ? null
-                                      : s,
-                                );
-                                ref
-                                    .read(offersProvider.notifier)
-                                    .updateAvailableRequestsStatus(
-                                      _requestFilter?.name,
-                                    );
-                              },
-                            ),
+                            (s) => _buildFilterChip(s.localizedLabel(AppLocalizations.of(context)!), _requestFilter == s, () {
+                              setState(() => _requestFilter = _requestFilter == s ? null : s);
+                              ref.read(offersProvider.notifier).updateAvailableRequestsStatus(_requestFilter?.name);
+                            }),
                           )
                           .toList()
                     : OfferStatus.values
                           .map(
-                            (s) => _buildFilterChip(
-                              s.localizedLabel(AppLocalizations.of(context)!),
-                              _offerFilter == s,
-                              () {
-                                setState(
-                                  () => _offerFilter = _offerFilter == s
-                                      ? null
-                                      : s,
-                                );
-                                ref
-                                    .read(offersProvider.notifier)
-                                    .updateMyOffersStatus(_offerFilter?.name);
-                              },
-                            ),
+                            (s) => _buildFilterChip(s.localizedLabel(AppLocalizations.of(context)!), _offerFilter == s, () {
+                              setState(() => _offerFilter = _offerFilter == s ? null : s);
+                              ref.read(offersProvider.notifier).updateMyOffersStatus(_offerFilter?.name);
+                            }),
                           )
                           .toList(),
               ),
@@ -275,11 +236,7 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
     );
   }
 
-  Widget _buildFilterChip(
-    String label,
-    bool isSelected,
-    VoidCallback onSelected,
-  ) {
+  Widget _buildFilterChip(String label, bool isSelected, VoidCallback onSelected) {
     final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.only(right: 8.w),
@@ -292,50 +249,17 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
           decoration: BoxDecoration(
             color: isSelected ? AppTheme.primaryColor : theme.cardColor,
             borderRadius: BorderRadius.circular(999.r),
-            border: Border.all(
-              color: isSelected
-                  ? AppTheme.primaryColor
-                  : theme.colorScheme.onSurface.withValues(alpha: 0.08),
-            ),
+            border: Border.all(color: isSelected ? AppTheme.primaryColor : theme.colorScheme.onSurface.withValues(alpha: 0.08)),
           ),
           child: Text(
             label,
             style: TextStyle(
               fontSize: 12.sp,
-              color: isSelected
-                  ? Colors.white
-                  : theme.colorScheme.onSurface.withValues(alpha: 0.78),
+              color: isSelected ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.78),
               fontFamily: AppTheme.fontFamily,
               fontWeight: FontWeight.w700,
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEmptyState(String title, String message, IconData icon) {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Container(
-        height: 400.h,
-        padding: EdgeInsets.symmetric(horizontal: 40.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 64.sp, color: Colors.grey.withValues(alpha: 0.2)),
-            SizedBox(height: 16.h),
-            Text(
-              title,
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              message,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ],
         ),
       ),
     );
@@ -348,5 +272,16 @@ class _CompanyOffersHubState extends ConsumerState<CompanyOffersHub>
       backgroundColor: Colors.transparent,
       builder: (context) => RequestDetailBottomSheet(request: request),
     );
+  }
+
+  Future<void> _handleConvertToLead(SolarRequest request) async {
+    final companyId = ref.read(authProvider).user?.company?.id;
+    if (companyId == null) return;
+
+    final success = await ref.read(offersProvider.notifier).convertToLead(companyId, request);
+
+    if (mounted && success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.success), backgroundColor: AppTheme.primaryColor));
+    }
   }
 }

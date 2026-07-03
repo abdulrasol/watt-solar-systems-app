@@ -14,4 +14,20 @@ class CompanyMember {
     required this.role,
     this.joinedAt,
   });
+
+  CompanyMember copyWith({
+    int? id,
+    String? username,
+    String? email,
+    MemberRole? role,
+    DateTime? joinedAt,
+  }) {
+    return CompanyMember(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      role: role ?? this.role,
+      joinedAt: joinedAt ?? this.joinedAt,
+    );
+  }
 }

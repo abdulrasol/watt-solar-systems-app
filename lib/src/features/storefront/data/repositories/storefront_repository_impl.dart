@@ -1,5 +1,5 @@
 import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/storefront/data/datasources/storefront_remote_data_source.dart';
+import 'package:solar_hub/src/features/storefront/data/data_sources/storefront_remote_data_source.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/domain/repositories/storefront_repository.dart';
 
@@ -8,22 +8,8 @@ class StorefrontRepositoryImpl implements StorefrontRepository {
 
   StorefrontRepositoryImpl(this._remoteDataSource);
 
-  StorefrontMeta? _metaCache;
-  DateTime? _lastCacheTime;
-
   @override
-  Future<StorefrontMeta> getMeta() async {
-    final now = DateTime.now();
-    if (_metaCache != null &&
-        _lastCacheTime != null &&
-        now.difference(_lastCacheTime!) < const Duration(minutes: 30)) {
-      return _metaCache!;
-    }
-
-    _metaCache = await _remoteDataSource.getMeta();
-    _lastCacheTime = now;
-    return _metaCache!;
-  }
+  Future<StorefrontMeta> getMeta() => _remoteDataSource.getMeta();
 
   @override
   Future<PaginatedItemsResponse<StorefrontCompanyListItem>> getCompanies({

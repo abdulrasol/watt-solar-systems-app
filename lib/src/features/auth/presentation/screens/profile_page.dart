@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
@@ -36,17 +36,13 @@ class ProfilePage extends ConsumerWidget {
         actions: [
           if (authController.isSigned)
             IconButton(
-              icon: const Icon(Iconsax.edit_2_bold),
+              icon: const Icon(Iconsax.edit_2),
               onPressed: () async {
                 final result = await context.push('/auth/edit_profile');
                 if (result == true && context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l10n.profile_updated_success),
-                      backgroundColor: Colors.green,
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(l10n.profile_updated_success), backgroundColor: Colors.green, behavior: SnackBarBehavior.floating));
                   // Refresh profile data
                   //  profileController.fetchProfile(user?.id ?? '');
                 }
@@ -68,29 +64,19 @@ class ProfilePage extends ConsumerWidget {
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppTheme.primaryColor,
-                        width: 2,
-                      ),
+                      border: Border.all(color: AppTheme.primaryColor, width: 2),
                     ),
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: isDark
-                          ? Colors.grey[800]
-                          : Colors.grey[200],
+                      backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
                       child: (user?.image == null || user!.image!.isEmpty)
                           ? Text(
-                              (user?.firstName != null &&
-                                      user!.firstName!.isNotEmpty)
+                              (user?.firstName != null && user!.firstName!.isNotEmpty)
                                   ? user.firstName![0].toUpperCase()
-                                  : (user?.email != null &&
-                                        user!.email!.isNotEmpty)
+                                  : (user?.email != null && user!.email!.isNotEmpty)
                                   ? user.email![0].toUpperCase()
                                   : 'S',
-                              style: const TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                             )
                           : WdImagePreview(imageUrl: user.image!),
                     ),
@@ -103,34 +89,20 @@ class ProfilePage extends ConsumerWidget {
             // Name and Phone
             Column(
               children: [
-                Text(
-                  user?.firstName ?? user?.email ?? l10n.guest_user,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (user?.phone != null && user!.phone!.isNotEmpty)
-                  Text(user.phone!, style: TextStyle(color: Colors.grey[600])),
-                if (user?.id != null)
-                  Text(
-                    l10n.profile_id_short(user!.id),
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
+                Text(user?.firstName ?? user?.email ?? l10n.guest_user, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                if (user?.phone != null && user!.phone!.isNotEmpty) Text(user.phone!, style: TextStyle(color: Colors.grey[600])),
+                if (user?.id != null) Text(l10n.profile_id_short(user!.id), style: TextStyle(color: Colors.grey[600])),
               ],
             ),
             const SizedBox(height: 32),
 
-            //   _buildProfileItem(icon: Iconsax.box_bold, title: 'My Orders', onTap: () => Get.toNamed('/my-orders')),
-            //   _buildProfileItem(icon: Iconsax.setting_2_bold, title: 'My Systems', onTap: () => Get.toNamed('/my-systems')),
-            //   _buildProfileItem(icon: Iconsax.setting_4_bold, title: 'Settings', onTap: () => Get.toNamed('/settings')),
+            //   _buildProfileItem(icon: Iconsax.box, title: 'My Orders', onTap: () => Get.toNamed('/my-orders')),
+            //   _buildProfileItem(icon: Iconsax.setting_2, title: 'My Systems', onTap: () => Get.toNamed('/my-systems')),
+            //   _buildProfileItem(icon: Iconsax.setting_4, title: 'Settings', onTap: () => Get.toNamed('/settings')),
             const SizedBox(height: 24),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                l10n.my_posts,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+              child: Text(l10n.my_posts, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 12),
 
@@ -157,7 +129,7 @@ class ProfilePage extends ConsumerWidget {
             //             child: ListTile(
             //               title: Text(post.content, maxLines: 1, overflow: TextOverflow.ellipsis),
             //               subtitle: Text(post.createdAt.toString().substring(0, 10), style: const TextStyle(fontSize: 12)),
-            //               leading: const Icon(Iconsax.document_text_bold),
+            //               leading: const Icon(Iconsax.document_text),
             //             ),
             //           ),
             //         )
@@ -174,23 +146,17 @@ class ProfilePage extends ConsumerWidget {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                       builder: (_) => const DeleteAccountSheet(),
                     );
                   },
-                  icon: const Icon(Iconsax.trash_bold),
+                  icon: const Icon(Iconsax.trash),
                   label: Text(l10n.delete_account),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red,
                     side: const BorderSide(color: Colors.red),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
               ),
@@ -203,15 +169,13 @@ class ProfilePage extends ConsumerWidget {
                     ref.read(authProvider.notifier).logout();
                     if (context.mounted) context.go('/home');
                   },
-                  icon: const Icon(Iconsax.logout_bold),
+                  icon: const Icon(Iconsax.logout),
                   label: Text(AppLocalizations.of(context)!.sign_out),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red.withValues(alpha: 0.1),
                     foregroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
               ),
@@ -223,13 +187,11 @@ class ProfilePage extends ConsumerWidget {
                   onPressed: () {
                     //  Get.toNamed('/auth');
                   },
-                  icon: const Icon(Iconsax.login_bold),
+                  icon: const Icon(Iconsax.login),
                   label: Text(AppLocalizations.of(context)!.sign_in),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
               ),

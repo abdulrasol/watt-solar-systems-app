@@ -1,81 +1,91 @@
 import 'package:flutter/foundation.dart';
 
 class AppUrls {
-  // Base URL - Automatically switches based on build mode
-  static const String baseUrl = kDebugMode
-      ? 'http://127.0.0.1:8000/api/v1'
-      : 'https://abdulrasol.pythonanywhere.com/api/v1';
+  // Base URL - Automatically switches based on build mode and platform
+  static String get baseUrl {
+    if (kReleaseMode) {
+      return 'https://abdulrasol.pythonanywhere.com/api/v1';
+    }
+    // For Debug Mode:
+    // 10.0.2.2 is the special alias to your host loopback interface in Android Emulator
+    try {
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        return 'http://10.0.2.2:8000/api/v1';
+      }
+    } catch (_) {}
+    return 'http://127.0.0.1:8000/api/v1';
+  }
 
   // ==================== AUTH & USERS ====================
-  static const String authBaseUrl = '$baseUrl/users';
-  static const String login = '$authBaseUrl/login';
-  static const String register = '$authBaseUrl/register';
-  static const String profile = '$authBaseUrl/profile';
-  static const String passwordReset = '$authBaseUrl/password-reset';
-  static const String passwordResetValidateToken =
+  static String get authBaseUrl => '$baseUrl/users';
+  static String get login => '$authBaseUrl/login';
+  static String get register => '$authBaseUrl/register';
+  static String get profile => '$authBaseUrl/profile';
+  static String get passwordReset => '$authBaseUrl/password-reset';
+  static String get passwordResetValidateToken =>
       '$authBaseUrl/password-reset/validate-token';
-  static const String passwordResetConfirm =
+  static String get passwordResetConfirm =>
       '$authBaseUrl/password-reset/confirm';
-  static const String deleteAccount = '$authBaseUrl/delete-account';
-  static const String updateLanguage = '$authBaseUrl/language';
+  static String get deleteAccount => '$authBaseUrl/delete-account';
+  static String get updateLanguage => '$authBaseUrl/language';
   static String userProfile(String username) => '$authBaseUrl/$username';
-  static const String allUsers = authBaseUrl; // Admin only
+  static String get allUsers => authBaseUrl; // Admin only
   static String promoteUser(String username) =>
       '$authBaseUrl/promote/$username';
 
   // ==================== ADMIN ====================
-  static const String adminBaseUrl = '$baseUrl/admin';
-  static const String feedbacks = '$adminBaseUrl/feedbacks';
+  static String get adminBaseUrl => '$baseUrl/admin';
+  static String get feedbacks => '$adminBaseUrl/feedbacks';
   static String feedbackStatus(int id) => '$adminBaseUrl/feedback/s$id';
   static String feedback(int id) => '$adminBaseUrl/feedback/$id';
-  static const String appConfigs = '$adminBaseUrl/config';
-  static const String currency = '$adminBaseUrl/currency';
-  static const String currencies = '$adminBaseUrl/currency'; // Get all
-  static String currencyItem(int id) => '$currencies/$id';
+  static String get appConfigs => '$adminBaseUrl/config';
+  static String get currencies => '$adminBaseUrl/currencies';
+  static String currency(int id) => '$currencies/$id';
+  static String get globalCategories => '$adminBaseUrl/categories';
+  static String globalCategory(int id) => '$globalCategories/$id';
+  static String get adminSubscriptions => '$adminBaseUrl/subscriptions';
+  static String adminSubscription(int id) => '$adminSubscriptions/$id';
+  static String get adminProducts => '$adminBaseUrl/shop/products';
+  static String adminProduct(int id) => '$adminProducts/$id';
+  static String get adminSystems => '$adminBaseUrl/systems';
+  static String adminSystemStatus(int id) => '$adminSystems/$id/status';
 
   // Cities & Countries
-  static const String countries = '$adminBaseUrl/countries';
-  static const String cities = '$adminBaseUrl/cities';
+  static String get countries => '$adminBaseUrl/countries';
+  static String get cities => '$adminBaseUrl/cities';
   static String country(int id) => '$countries/$id';
   static String city(int id) => '$cities/$id';
 
   // Companies (Admin)
-  static const String companies = '$adminBaseUrl/companies';
+  static String get companies => '$adminBaseUrl/companies';
   static String companyAdmin(int id) => '$companies/$id';
   static String companyAdminDetails(int id) => '$companies/$id/details';
   static String updateCompanyStatus(int id) => '$companies/$id/status';
   static String companyAdminServices(int id) => '$companies/$id/services';
-  static String reviewCompanyService(int companyId, String serviceCode) =>
-      '$companies/$companyId/services/$serviceCode/review';
 
   // Service Catalog (Admin)
-  static const String adminServiceCatalog =
+  static String get adminServiceCatalog =>
       '$adminBaseUrl/companies/catalog/services';
   static String adminServiceCatalogItem(String serviceCode) =>
       '$adminServiceCatalog/$serviceCode';
 
-  // Service Requests (Admin)
-  static const String adminServiceRequests =
-      '$adminBaseUrl/companies/service-requests';
 
   // ==================== COMPANIES ====================
-  static const String companiesBaseUrl = '$baseUrl/companies';
-  static const String registerCompany = '$companiesBaseUrl/register';
-  static const String companyTypes = '$companiesBaseUrl/types';
-  static const String companySubscriptions = '$companiesBaseUrl/subscriptions';
-  static const String companiesCatalogServices =
-      '$companiesBaseUrl/catalog/services';
-  static const String publicCompanies = '$baseUrl/public/companies';
+  static String get companiesBaseUrl => '$baseUrl/companies';
+  static String get registerCompany => '$companiesBaseUrl/register';
+  static String get companyTypes => '$companiesBaseUrl/types';
+  static String get serviceTypes => '$baseUrl/service-types';
+  static String get serviceTypesPublic => '$serviceTypes/public';
+  static String serviceType(int id) => '$serviceTypes/$id';
+  static String toggleServiceType(int id) => '${serviceType(id)}/toggle';
+  static String get companySubscriptions => '$companiesBaseUrl/subscriptions';
+  static String get publicCompanies => '$baseUrl/public/companies';
   static String publicCompany(int id) => '$publicCompanies/$id';
 
   static String company(int id) => '$companiesBaseUrl/$id';
   static String updateCompany(int id) => company(id);
   static String companySummary(int id) => '${company(id)}/summary';
   static String companyServices(int id) => '${company(id)}/services';
-  static String companyServiceRequests(int id) =>
-      '${company(id)}/service-requests';
-  static String createCompanyServiceRequest(int id) =>
-      companyServiceRequests(id);
   static String companySubscriptionRequest(int id) =>
       '${company(id)}/subscription-request';
   static String companyActivationReminder(int id) =>
@@ -88,6 +98,8 @@ class AppUrls {
       '${companyMembers(companyId)}/create';
   static String deleteMember(int companyId, int memberId) =>
       '${companyMembers(companyId)}/$memberId';
+  static String companyActivity(int companyId) =>
+      '${company(companyId)}/activity';
 
   // Company Products
   static String products(int companyId) => '${company(companyId)}/products';
@@ -119,7 +131,11 @@ class AppUrls {
       '${deliveryOptions(companyId)}/$optionId';
 
   // Company Expenses
-  static String expenses(int companyId) => '${company(companyId)}/expenses';
+  // NOTE: backend route is singular `/expense` (see companies/api.py
+  // `api_list_expense`/`api_create_expense`/`api_delete_expense`) — this
+  // helper previously pointed at `/expenses` (plural), which would 404
+  // against the real API. Fixed to match the backend exactly.
+  static String expenses(int companyId) => '${company(companyId)}/expense';
   static String deleteExpense(int companyId, int expenseId) =>
       '${expenses(companyId)}/$expenseId';
 
@@ -148,31 +164,40 @@ class AppUrls {
   static String companyOffers(int companyId) => '${company(companyId)}/offers';
   static String createOfferReply(int companyId, int requestId) =>
       '${companyOfferRequests(companyId)}/$requestId/reply';
+  static String companyWorks(int companyId) => '${company(companyId)}/works';
+  static String companyWork(int companyId, int workId) =>
+      '${companyWorks(companyId)}/$workId';
+  static String companyWorkImage(int companyId, int imageId) =>
+      '${company(companyId)}/works/image/$imageId';
+  static String publicCompanyWorks(int companyId) =>
+      '$publicCompanies/$companyId/works';
 
   // ==================== SHOP ====================
-  static const String shopBaseUrl = '$baseUrl/shop';
-  static const String shopCatalogMeta = '$shopBaseUrl/catalog/meta';
-  static const String storefront = '$shopBaseUrl/frontstore';
-  static const String storefrontProducts = '$shopBaseUrl/frontstore/products';
-  static const String storefrontCompanies = '$shopBaseUrl/store/companies';
+  static String get shopBaseUrl => '$baseUrl/shop';
+  static String get shopCatalogMeta => '$shopBaseUrl/catalog/meta';
+  static String get storefront => '$shopBaseUrl/frontstore';
+  static String get storefrontProducts => '$shopBaseUrl/frontstore/products';
+  static String get storefrontCompanies => '$shopBaseUrl/store/companies';
   static String storefrontCompanyCategories(int companyId) =>
       '$shopBaseUrl/store/companies/$companyId/company-categories';
-  static const String b2cProducts = '$shopBaseUrl/store/products';
-  static const String b2cSearch = '$shopBaseUrl/store/search';
-  static const String b2cOrders = '$shopBaseUrl/store/orders';
-  static const String b2cMyOrders = '$shopBaseUrl/store/my-orders';
+  static String get b2cProducts => '$shopBaseUrl/store/products';
+  static String get b2cSearch => '$shopBaseUrl/store/search';
+  static String get b2cOrders => '$shopBaseUrl/store/orders';
+  static String get b2cMyOrders => '$shopBaseUrl/store/my-orders';
   static String b2cMyOrder(int orderId) => '$b2cMyOrders/$orderId';
-  static String cancelB2cMyOrder(int orderId) => '${b2cMyOrder(orderId)}/cancel';
+  static String cancelB2cMyOrder(int orderId) =>
+      '${b2cMyOrder(orderId)}/cancel';
   static String b2cCompanyProducts(int companyId) =>
       '$shopBaseUrl/store/companies/$companyId/products';
   static String b2cCategoryProducts(String categoryType, int categoryId) =>
       '$shopBaseUrl/store/categories/$categoryType/$categoryId/products';
-  static const String b2bProducts = '$shopBaseUrl/b2b/products';
-  static const String b2bSearch = '$shopBaseUrl/b2b/search';
-  static const String b2bOrders = '$shopBaseUrl/b2b/orders';
-  static const String b2bMyOrders = '$shopBaseUrl/b2b/my-orders';
+  static String get b2bProducts => '$shopBaseUrl/b2b/products';
+  static String get b2bSearch => '$shopBaseUrl/b2b/search';
+  static String get b2bOrders => '$shopBaseUrl/b2b/orders';
+  static String get b2bMyOrders => '$shopBaseUrl/b2b/my-orders';
   static String b2bMyOrder(int orderId) => '$b2bMyOrders/$orderId';
-  static String cancelB2bMyOrder(int orderId) => '${b2bMyOrder(orderId)}/cancel';
+  static String cancelB2bMyOrder(int orderId) =>
+      '${b2bMyOrder(orderId)}/cancel';
   static String confirmB2bMyOrderReceipt(int orderId) =>
       '${b2bMyOrder(orderId)}/confirm-receipt';
   static String b2bCompanyProducts(int companyId) =>
@@ -182,9 +207,9 @@ class AppUrls {
   static String shopProduct(int id) => '$shopBaseUrl/products/$id';
 
   // ==================== COMMUNITY ====================
-  static const String communityBaseUrl = '$baseUrl/community';
-  static const String allPosts = '$communityBaseUrl/posts';
-  static const String createPost = '$communityBaseUrl/posts/create';
+  static String get communityBaseUrl => '$baseUrl/community';
+  static String get allPosts => '$communityBaseUrl/posts';
+  static String get createPost => '$communityBaseUrl/posts/create';
   static String postById(int postId) => '$communityBaseUrl/posts/$postId';
   static String updatePost(int postId) =>
       '$communityBaseUrl/posts/$postId/update';
@@ -208,10 +233,10 @@ class AppUrls {
       '$communityBaseUrl/posts/$postId/comments/$commentId/replies/$replyId';
   static String deleteReply(int postId, int commentId, int replyId) =>
       '$communityBaseUrl/posts/$postId/comments/$commentId/replies/$replyId/delete';
-  static String filteredPosts = '$communityBaseUrl/posts/filter';
+  static String get filteredPosts => '$communityBaseUrl/posts/filter';
 
   // ==================== ACCOUNTING ====================
-  static const String accountingBaseUrl = '$baseUrl/accounting';
+  static String get accountingBaseUrl => '$baseUrl/accounting';
   static String accountingOverview(int companyId) =>
       '$accountingBaseUrl/$companyId/overview';
   static String accountingLedger(int companyId) =>
@@ -242,40 +267,42 @@ class AppUrls {
       '$accountingBaseUrl/$companyId/transactions';
 
   // ==================== SYSTEMS ====================
-  static const String systemsBaseUrl = '$baseUrl/systems';
-  static const String mySystems = '$systemsBaseUrl/my-systems';
+  static String get systemsBaseUrl => '$baseUrl/systems';
+  static String get mySystems => '$systemsBaseUrl/my-systems';
   static String systemDetails(int id) => '$systemsBaseUrl/$id';
 
   // ==================== NOTIFICATIONS ====================
-  static const String notificationBaseUrl = '$baseUrl/notification';
-  static const String notificationSubscribe = '$notificationBaseUrl/subscribe';
-  static const String notificationUnsubscribe =
+  static String get notificationBaseUrl => '$baseUrl/notification';
+  static String get notificationSubscribe => '$notificationBaseUrl/subscribe';
+  static String get notificationUnsubscribe =>
       '$notificationBaseUrl/unsubscribe';
-  static const String notificationHistory = '$notificationBaseUrl/history';
-  static const String notificationDevices = '$notificationBaseUrl/devices';
-  static const String notificationSendBroadcast =
+  static String get notificationHistory => '$notificationBaseUrl/history';
+  static String get notificationDevices => '$notificationBaseUrl/devices';
+  static String get notificationSendBroadcast =>
       '$notificationBaseUrl/send-broadcast';
-  static const String notificationSendTopic = '$notificationBaseUrl/send-topic';
-  static const String notificationStatistics =
+  static String get notificationSendTopic => '$notificationBaseUrl/send-topic';
+  static String get notificationSendGroup => '$notificationBaseUrl/send-group';
+  static String get notificationSendUser => '$notificationBaseUrl/send-user';
+  static String get notificationStatistics =>
       '$notificationBaseUrl/statistics';
   static String notificationDeactivateDevice(int deviceId) =>
       '$notificationBaseUrl/tokens/$deviceId/deactivate';
 
   // ==================== CONFIGURATION ====================
-  static const String configBaseUrl = '$baseUrl/config';
-  static const String generalConfig = '$configBaseUrl/general';
-  static const String siteConfig = '$configBaseUrl/site';
+  static String get configBaseUrl => '$baseUrl/config';
+  static String get generalConfig => '$configBaseUrl/general';
+  static String get siteConfig => '$configBaseUrl/site';
 
   // ==================== OFFERS & REQUESTS (MARKETPLACE) ====================
 
-  static const String _offersBaseUrl = '$baseUrl/offers';
-  static const String requestsBaseUrl = '$_offersBaseUrl/requests';
-  static const String availableRequests = '$_offersBaseUrl/available-requests';
-  static const String myOffers = '$_offersBaseUrl/my-offers';
+  static String get _offersBaseUrl => '$baseUrl/offers';
+  static String get requestsBaseUrl => '$_offersBaseUrl/requests';
+  static String get availableRequests => '$_offersBaseUrl/available-requests';
+  static String get myOffers => '$_offersBaseUrl/my-offers';
 
   // User Interface
-  static const String createRequest = requestsBaseUrl;
-  static const String userRequests = requestsBaseUrl;
+  static String get createRequest => requestsBaseUrl;
+  static String get userRequests => requestsBaseUrl;
   static String deleteRequest(int id) => '$requestsBaseUrl/$id';
   static String requestOffers(int requestId) =>
       '$requestsBaseUrl/$requestId/offers';
@@ -289,10 +316,10 @@ class AppUrls {
   static String offerDetails(int offerId) => '$myOffers/$offerId';
   static String updateOffer(int offerId) => offerDetails(offerId);
   static String deleteOffer(int offerId) => offerDetails(offerId);
-  static const String involves = '$baseUrl/involves';
+  static String get involves => '$baseUrl/involves';
   static String involve(int id) => '$involves/$id';
 
   // Admin Interface
-  static const String adminOffers = '$baseUrl/offers/admin/offers';
-  static const String adminRequests = '$baseUrl/offers/admin/requests';
+  static String get adminOffers => '$baseUrl/offers/admin/offers';
+  static String get adminRequests => '$baseUrl/offers/admin/requests';
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
@@ -15,7 +15,8 @@ import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CompanyDashboardContactsScreen extends ConsumerStatefulWidget {
-  const CompanyDashboardContactsScreen({super.key});
+  final bool embedded;
+  const CompanyDashboardContactsScreen({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyDashboardContactsScreen> createState() => _CompanyDashboardContactsScreenState();
@@ -43,52 +44,56 @@ class _CompanyDashboardContactsScreenState extends ConsumerState<CompanyDashboar
     final companyId = company?.id;
     final canManage = company?.canManageWorkspace ?? false;
 
-    return CompanyPageScaffold(
-      child: companyId == null
-          ? AdminEmptyState(icon: Iconsax.call_bold, title: l10n.contacts, subtitle: l10n.company_contacts_no_company)
-          : state.isLoading && state.contacts.isEmpty
-          ? AdminLoadingState(icon: Iconsax.call_bold, message: l10n.company_contacts_loading)
-          : state.error != null && state.contacts.isEmpty
-          ? AdminErrorState(error: state.error!, onRetry: _load)
-          : SingleChildScrollView(
-              padding: AppBreakpoints.pagePadding(context),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CompanySectionIntro(
-                        title: l10n.contacts,
-                        subtitle: l10n.company_contacts_subtitle,
-                        action: FilledButton.icon(
-                          onPressed: canManage ? () => _openContactSheet(context, companyId) : null,
-                          icon: const Icon(Iconsax.add_circle_bold),
-                          label: Text(l10n.company_contacts_add),
-                        ),
+    final content = companyId == null
+        ? AdminEmptyState(icon: Iconsax.call, title: l10n.contacts, subtitle: l10n.company_contacts_no_company)
+        : state.isLoading && state.contacts.isEmpty
+        ? AdminLoadingState(icon: Iconsax.call, message: l10n.company_contacts_loading)
+        : state.error != null && state.contacts.isEmpty
+        ? AdminErrorState(error: state.error!, onRetry: _load)
+        : SingleChildScrollView(
+            padding: AppBreakpoints.pagePadding(context),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CompanySectionIntro(
+                      title: l10n.contacts,
+                      subtitle: l10n.company_contacts_subtitle,
+                      action: FilledButton.icon(
+                        onPressed: canManage ? () => _openContactSheet(context, companyId) : null,
+                        icon: const Icon(Iconsax.add_circle),
+                        label: Text(l10n.company_contacts_add),
                       ),
-                      const SizedBox(height: 20),
-                      if (state.contacts.isEmpty)
-                        AdminEmptyState(icon: Iconsax.call_bold, title: l10n.company_contacts_empty_title, subtitle: l10n.company_contacts_empty_subtitle)
-                      else
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.contacts.length,
-                          itemBuilder: (context, index) {
-                            final contact = state.contacts[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                              child: _ContactCard(contact: contact, onDelete: canManage ? () => _deleteContact(context, companyId, contact) : null),
-                            );
-                          },
-                        ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                    if (state.contacts.isEmpty)
+                      AdminEmptyState(icon: Iconsax.call, title: l10n.company_contacts_empty_title, subtitle: l10n.company_contacts_empty_subtitle)
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.contacts.length,
+                        itemBuilder: (context, index) {
+                          final contact = state.contacts[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: _ContactCard(contact: contact, onDelete: canManage ? () => _deleteContact(context, companyId, contact) : null),
+                          );
+                        },
+                      ),
+                  ],
                 ),
               ),
             ),
-    );
+          );
+
+    if (widget.embedded) {
+      return content;
+    }
+
+    return CompanyPageScaffold(child: content);
   }
 
   Future<void> _deleteContact(BuildContext context, int companyId, CompanyContact contact) async {
@@ -157,12 +162,12 @@ class _ContactCard extends StatelessWidget {
                 height: 44,
                 width: 44,
                 decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(14)),
-                child: const Icon(Iconsax.user_bold, color: AppTheme.primaryColor),
+                child: const Icon(Iconsax.user, color: AppTheme.primaryColor),
               ),
               const Spacer(),
               IconButton(
                 onPressed: onDelete,
-                icon: const Icon(Iconsax.trash_bold, color: Colors.redAccent),
+                icon: const Icon(Iconsax.trash, color: Colors.redAccent),
               ),
             ],
           ),
@@ -172,10 +177,10 @@ class _ContactCard extends StatelessWidget {
             style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 16, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 10),
-          _MetaRow(icon: Iconsax.sms_bold, value: contact.email ?? '-'),
+          _MetaRow(icon: Iconsax.sms, value: contact.email ?? '-'),
           const SizedBox(height: 8),
-          _MetaRow(icon: Iconsax.call_bold, value: contact.phone ?? '-'),
-          if ((contact.notes ?? '').isNotEmpty) ...[const SizedBox(height: 8), _MetaRow(icon: Iconsax.note_bold, value: contact.notes!)],
+          _MetaRow(icon: Iconsax.call, value: contact.phone ?? '-'),
+          if ((contact.notes ?? '').isNotEmpty) ...[const SizedBox(height: 8), _MetaRow(icon: Iconsax.note, value: contact.notes!)],
         ],
       ),
     );

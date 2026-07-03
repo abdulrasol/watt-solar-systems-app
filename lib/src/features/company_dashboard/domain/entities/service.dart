@@ -63,6 +63,16 @@ class CompanyService {
     );
   }
 
+  bool get isActive {
+    final value = status?.toLowerCase();
+    return value == 'active' || value == 'approved' || value == 'string';
+  }
+
+  static bool isServiceActive(String? status) {
+    final value = status?.toLowerCase();
+    return value == 'active' || value == 'approved' || value == 'string';
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'service_code': serviceCode,

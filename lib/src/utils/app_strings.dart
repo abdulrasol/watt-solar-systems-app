@@ -37,6 +37,7 @@ class AppStrings {
   static const String mySalesPermission = 'my_sales';
   static const String analyticsPermission = 'analytics';
   static const String subscribersPermission = 'subscribers';
+  static const String projectsPermission = 'projects';
 
   //
   /// compnay statuses

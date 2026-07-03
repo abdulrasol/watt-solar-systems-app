@@ -62,7 +62,8 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,17 +84,18 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
-    Locale('en')
+    Locale('en'),
   ];
 
   /// No description provided for @app_name.
@@ -100,6 +103,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Watt'**
   String get app_name;
+
+  /// No description provided for @convert_to_lead.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert to Lead'**
+  String get convert_to_lead;
+
+  /// No description provided for @leads.
+  ///
+  /// In en, this message translates to:
+  /// **'Leads'**
+  String get leads;
+
+  /// No description provided for @no_leads_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No leads found'**
+  String get no_leads_found;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @no_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get no_notifications;
+
+  /// No description provided for @mark_all_read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get mark_all_read;
 
   /// No description provided for @version.
   ///
@@ -503,6 +542,30 @@ abstract class AppLocalizations {
   /// **'Buy components'**
   String get buy_components;
 
+  /// No description provided for @new_products.
+  ///
+  /// In en, this message translates to:
+  /// **'New Products'**
+  String get new_products;
+
+  /// No description provided for @companies.
+  ///
+  /// In en, this message translates to:
+  /// **'Companies'**
+  String get companies;
+
+  /// No description provided for @view_more.
+  ///
+  /// In en, this message translates to:
+  /// **'View More'**
+  String get view_more;
+
+  /// No description provided for @see_all.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get see_all;
+
   /// No description provided for @b2b_storefront.
   ///
   /// In en, this message translates to:
@@ -526,6 +589,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open storefront for all users with public product access.'**
   String get storefront_b2c_subtitle;
+
+  /// No description provided for @storefront_unified_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore products, compare companies, and move into the full catalog only when you need more detail.'**
+  String get storefront_unified_subtitle;
 
   /// No description provided for @storefront_products_available.
   ///
@@ -713,11 +782,35 @@ abstract class AppLocalizations {
   /// **'Store Filters'**
   String get store_filters;
 
+  /// No description provided for @store_filters_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refine products by sort order, category, company, and price in one place.'**
+  String get store_filters_subtitle;
+
+  /// No description provided for @price_range.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range'**
+  String get price_range;
+
+  /// No description provided for @unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit Price'**
+  String get unit_price;
+
   /// No description provided for @no_store_products_found.
   ///
   /// In en, this message translates to:
   /// **'No products matched the current filters.'**
   String get no_store_products_found;
+
+  /// No description provided for @no_categories_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories available right now.'**
+  String get no_categories_found;
 
   /// No description provided for @load_more.
   ///
@@ -779,6 +872,102 @@ abstract class AppLocalizations {
   /// **'Price Overview'**
   String get price_overview;
 
+  /// No description provided for @base_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Base Unit Price'**
+  String get base_unit_price;
+
+  /// No description provided for @options_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Options Total'**
+  String get options_total;
+
+  /// No description provided for @effective_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective Unit Price'**
+  String get effective_unit_price;
+
+  /// No description provided for @line_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Line Total'**
+  String get line_total;
+
+  /// No description provided for @applied_pricing_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied Pricing Tier'**
+  String get applied_pricing_tier;
+
+  /// No description provided for @selected_options_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Options'**
+  String get selected_options_title;
+
+  /// No description provided for @choose_cart_audience.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose cart mode'**
+  String get choose_cart_audience;
+
+  /// No description provided for @add_to_b2b_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add this product to the B2B cart'**
+  String get add_to_b2b_cart;
+
+  /// No description provided for @add_to_b2c_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add this product to the B2C cart'**
+  String get add_to_b2c_cart;
+
+  /// No description provided for @added_to_b2b_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to B2B cart'**
+  String get added_to_b2b_cart;
+
+  /// No description provided for @added_to_b2c_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to B2C cart'**
+  String get added_to_b2c_cart;
+
+  /// No description provided for @payment_cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get payment_cash;
+
+  /// No description provided for @payment_credit.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit'**
+  String get payment_credit;
+
+  /// No description provided for @payment_upon_receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay on receipt'**
+  String get payment_upon_receipt;
+
+  /// No description provided for @pickup_from_company.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up from company'**
+  String get pickup_from_company;
+
+  /// No description provided for @no_delivery_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'No delivery selected'**
+  String get no_delivery_selected;
+
   /// No description provided for @display_price.
   ///
   /// In en, this message translates to:
@@ -821,11 +1010,29 @@ abstract class AppLocalizations {
   /// **'Add to Cart'**
   String get add_to_cart;
 
+  /// No description provided for @remove_from_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Cart'**
+  String get remove_from_cart;
+
   /// No description provided for @added_to_cart.
   ///
   /// In en, this message translates to:
   /// **'Added to cart'**
   String get added_to_cart;
+
+  /// No description provided for @removed_from_cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from cart'**
+  String get removed_from_cart;
+
+  /// No description provided for @cart.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart'**
+  String get cart;
 
   /// No description provided for @b2b_cart.
   ///
@@ -916,6 +1123,929 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter the token you received and choose a new password.'**
   String get reset_password_token_instructions;
+
+  /// No description provided for @structure_design_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure Design'**
+  String get structure_design_title;
+
+  /// No description provided for @structure_design_intro.
+  ///
+  /// In en, this message translates to:
+  /// **'Lay out a fixed-tilt ground frame, estimate the best annual tilt and direction, and review the main structural geometry before detailed engineering.'**
+  String get structure_design_intro;
+
+  /// No description provided for @structure_site_inputs.
+  ///
+  /// In en, this message translates to:
+  /// **'Site Inputs'**
+  String get structure_site_inputs;
+
+  /// No description provided for @structure_site_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Site width'**
+  String get structure_site_width;
+
+  /// No description provided for @structure_site_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Site depth'**
+  String get structure_site_depth;
+
+  /// No description provided for @structure_latitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get structure_latitude;
+
+  /// No description provided for @structure_use_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Use location'**
+  String get structure_use_location;
+
+  /// No description provided for @structure_direction_preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed facing direction'**
+  String get structure_direction_preference;
+
+  /// No description provided for @structure_mount_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Mount type'**
+  String get structure_mount_type;
+
+  /// No description provided for @structure_clearances.
+  ///
+  /// In en, this message translates to:
+  /// **'Clearances'**
+  String get structure_clearances;
+
+  /// No description provided for @structure_front_clearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Front clearance'**
+  String get structure_front_clearance;
+
+  /// No description provided for @structure_rear_clearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear clearance'**
+  String get structure_rear_clearance;
+
+  /// No description provided for @structure_side_clearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Side clearance'**
+  String get structure_side_clearance;
+
+  /// No description provided for @structure_front_leg_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Front leg height'**
+  String get structure_front_leg_height;
+
+  /// No description provided for @structure_inter_row_gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Inter-row gap'**
+  String get structure_inter_row_gap;
+
+  /// No description provided for @structure_panel_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel Dimensions'**
+  String get structure_panel_dimensions;
+
+  /// No description provided for @structure_panel_orientation.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel orientation'**
+  String get structure_panel_orientation;
+
+  /// No description provided for @structure_panel_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel length'**
+  String get structure_panel_length;
+
+  /// No description provided for @structure_panel_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel width'**
+  String get structure_panel_width;
+
+  /// No description provided for @structure_panel_thickness.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel thickness'**
+  String get structure_panel_thickness;
+
+  /// No description provided for @structure_horizontal_gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Horizontal gap'**
+  String get structure_horizontal_gap;
+
+  /// No description provided for @structure_vertical_gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Vertical gap'**
+  String get structure_vertical_gap;
+
+  /// No description provided for @structure_layout_editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Layout Editor'**
+  String get structure_layout_editor;
+
+  /// No description provided for @structure_rows.
+  ///
+  /// In en, this message translates to:
+  /// **'Rows'**
+  String get structure_rows;
+
+  /// No description provided for @structure_columns.
+  ///
+  /// In en, this message translates to:
+  /// **'Columns'**
+  String get structure_columns;
+
+  /// No description provided for @structure_reset_auto_layout.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to auto layout'**
+  String get structure_reset_auto_layout;
+
+  /// No description provided for @structure_ground_mount_only_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only fixed-tilt ground mount is implemented in this release. Other mount types remain reserved for later phases.'**
+  String get structure_ground_mount_only_hint;
+
+  /// No description provided for @structure_geometry_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Geometry Results'**
+  String get structure_geometry_results;
+
+  /// No description provided for @structure_panel_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel count'**
+  String get structure_panel_count;
+
+  /// No description provided for @structure_frame_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame width'**
+  String get structure_frame_width;
+
+  /// No description provided for @structure_frame_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame slope length'**
+  String get structure_frame_length;
+
+  /// No description provided for @structure_row_spacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Row spacing'**
+  String get structure_row_spacing;
+
+  /// No description provided for @structure_total_footprint_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Total footprint depth'**
+  String get structure_total_footprint_depth;
+
+  /// No description provided for @structure_rear_leg_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear leg height'**
+  String get structure_rear_leg_height;
+
+  /// No description provided for @structure_rail_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Rail length'**
+  String get structure_rail_length;
+
+  /// No description provided for @structure_brace_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Brace length'**
+  String get structure_brace_length;
+
+  /// No description provided for @structure_total_front_legs_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total front legs length'**
+  String get structure_total_front_legs_length;
+
+  /// No description provided for @structure_total_rear_legs_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total rear legs length'**
+  String get structure_total_rear_legs_length;
+
+  /// No description provided for @structure_total_braces_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total braces length'**
+  String get structure_total_braces_length;
+
+  /// No description provided for @structure_total_steel_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Total steel length'**
+  String get structure_total_steel_length;
+
+  /// No description provided for @structure_total_steel_breakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Rails {rails} + Front legs {frontLegs} + Rear legs {rearLegs} + Braces {braces}'**
+  String structure_total_steel_breakdown(
+    Object rails,
+    Object frontLegs,
+    Object rearLegs,
+    Object braces,
+  );
+
+  /// No description provided for @structure_bom_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated BOM'**
+  String get structure_bom_title;
+
+  /// No description provided for @structure_sketch_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Schematic Sketch'**
+  String get structure_sketch_title;
+
+  /// No description provided for @structure_sketch_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a schematic preview for planning. It is not a fabrication drawing or a code-compliant engineering detail.'**
+  String get structure_sketch_hint;
+
+  /// No description provided for @structure_results_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated Frame'**
+  String get structure_results_title;
+
+  /// No description provided for @structure_ideal_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideal tilt'**
+  String get structure_ideal_tilt;
+
+  /// No description provided for @structure_applied_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied tilt'**
+  String get structure_applied_tilt;
+
+  /// No description provided for @structure_applied_azimuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied azimuth'**
+  String get structure_applied_azimuth;
+
+  /// No description provided for @structure_constrained_orientation.
+  ///
+  /// In en, this message translates to:
+  /// **'Constrained orientation'**
+  String get structure_constrained_orientation;
+
+  /// No description provided for @structure_direction_any.
+  ///
+  /// In en, this message translates to:
+  /// **'Any / auto'**
+  String get structure_direction_any;
+
+  /// No description provided for @structure_direction_north.
+  ///
+  /// In en, this message translates to:
+  /// **'North'**
+  String get structure_direction_north;
+
+  /// No description provided for @structure_direction_northeast.
+  ///
+  /// In en, this message translates to:
+  /// **'North-East'**
+  String get structure_direction_northeast;
+
+  /// No description provided for @structure_direction_east.
+  ///
+  /// In en, this message translates to:
+  /// **'East'**
+  String get structure_direction_east;
+
+  /// No description provided for @structure_direction_southeast.
+  ///
+  /// In en, this message translates to:
+  /// **'South-East'**
+  String get structure_direction_southeast;
+
+  /// No description provided for @structure_direction_south.
+  ///
+  /// In en, this message translates to:
+  /// **'South'**
+  String get structure_direction_south;
+
+  /// No description provided for @structure_direction_southwest.
+  ///
+  /// In en, this message translates to:
+  /// **'South-West'**
+  String get structure_direction_southwest;
+
+  /// No description provided for @structure_direction_west.
+  ///
+  /// In en, this message translates to:
+  /// **'West'**
+  String get structure_direction_west;
+
+  /// No description provided for @structure_direction_northwest.
+  ///
+  /// In en, this message translates to:
+  /// **'North-West'**
+  String get structure_direction_northwest;
+
+  /// No description provided for @structure_mount_ground.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground mount'**
+  String get structure_mount_ground;
+
+  /// No description provided for @structure_mount_flat_roof.
+  ///
+  /// In en, this message translates to:
+  /// **'Flat roof'**
+  String get structure_mount_flat_roof;
+
+  /// No description provided for @structure_mount_pitched_roof.
+  ///
+  /// In en, this message translates to:
+  /// **'Pitched roof'**
+  String get structure_mount_pitched_roof;
+
+  /// No description provided for @structure_mount_custom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom frame'**
+  String get structure_mount_custom;
+
+  /// No description provided for @structure_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'coming soon'**
+  String get structure_coming_soon;
+
+  /// No description provided for @structure_orientation_portrait.
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait'**
+  String get structure_orientation_portrait;
+
+  /// No description provided for @structure_orientation_landscape.
+  ///
+  /// In en, this message translates to:
+  /// **'Landscape'**
+  String get structure_orientation_landscape;
+
+  /// No description provided for @structure_validation_positive.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a value greater than zero'**
+  String get structure_validation_positive;
+
+  /// No description provided for @structure_step_site.
+  ///
+  /// In en, this message translates to:
+  /// **'Site'**
+  String get structure_step_site;
+
+  /// No description provided for @structure_step_panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels'**
+  String get structure_step_panels;
+
+  /// No description provided for @structure_step_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get structure_step_results;
+
+  /// No description provided for @structure_row_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Row mode'**
+  String get structure_row_mode;
+
+  /// No description provided for @structure_row_mode_independent.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent rows'**
+  String get structure_row_mode_independent;
+
+  /// No description provided for @structure_row_mode_stepped.
+  ///
+  /// In en, this message translates to:
+  /// **'Stepped rows'**
+  String get structure_row_mode_stepped;
+
+  /// No description provided for @structure_independent_rows_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use when each row is a repeated frame on flat ground.'**
+  String get structure_independent_rows_hint;
+
+  /// No description provided for @structure_stepped_rows_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use when rows need different support heights.'**
+  String get structure_stepped_rows_hint;
+
+  /// No description provided for @structure_row_offsets.
+  ///
+  /// In en, this message translates to:
+  /// **'Row offsets'**
+  String get structure_row_offsets;
+
+  /// No description provided for @structure_base_offset.
+  ///
+  /// In en, this message translates to:
+  /// **'Base offset'**
+  String get structure_base_offset;
+
+  /// No description provided for @structure_repeated_frame.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeated frame'**
+  String get structure_repeated_frame;
+
+  /// No description provided for @structure_per_row_legs.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-row legs'**
+  String get structure_per_row_legs;
+
+  /// No description provided for @structure_equal_legs_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Legs are equal because rows are repeated on the same flat-ground geometry.'**
+  String get structure_equal_legs_explanation;
+
+  /// No description provided for @structure_stepped_legs_explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Legs differ because row offsets are applied to each row separately.'**
+  String get structure_stepped_legs_explanation;
+
+  /// No description provided for @structure_min_front_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Min front leg'**
+  String get structure_min_front_leg;
+
+  /// No description provided for @structure_max_front_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Max front leg'**
+  String get structure_max_front_leg;
+
+  /// No description provided for @structure_min_rear_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Min rear leg'**
+  String get structure_min_rear_leg;
+
+  /// No description provided for @structure_max_rear_leg.
+  ///
+  /// In en, this message translates to:
+  /// **'Max rear leg'**
+  String get structure_max_rear_leg;
+
+  /// No description provided for @structure_top_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Top view'**
+  String get structure_top_view;
+
+  /// No description provided for @structure_side_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Side view'**
+  String get structure_side_view;
+
+  /// No description provided for @structure_front_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Front view'**
+  String get structure_front_view;
+
+  /// No description provided for @structure_isometric_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Isometric view'**
+  String get structure_isometric_view;
+
+  /// No description provided for @structure_front_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Front'**
+  String get structure_front_label;
+
+  /// No description provided for @structure_rear_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear'**
+  String get structure_rear_label;
+
+  /// No description provided for @structure_brace_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Brace'**
+  String get structure_brace_label;
+
+  /// No description provided for @structure_view_full_sketch.
+  ///
+  /// In en, this message translates to:
+  /// **'View full sketch'**
+  String get structure_view_full_sketch;
+
+  /// No description provided for @structure_detail_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Detail view'**
+  String get structure_detail_view;
+
+  /// No description provided for @structure_panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels'**
+  String get structure_panels;
+
+  /// No description provided for @structure_offset.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset'**
+  String get structure_offset;
+
+  /// No description provided for @structure_total_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Total depth'**
+  String get structure_total_depth;
+
+  /// No description provided for @structure_ground_level.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground level'**
+  String get structure_ground_level;
+
+  /// No description provided for @structure_scale.
+  ///
+  /// In en, this message translates to:
+  /// **'Scale'**
+  String get structure_scale;
+
+  /// No description provided for @structure_base_plate_detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Base plate detail'**
+  String get structure_base_plate_detail;
+
+  /// No description provided for @structure_leg_detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg detail'**
+  String get structure_leg_detail;
+
+  /// No description provided for @structure_copy_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Dimensions'**
+  String get structure_copy_dimensions;
+
+  /// No description provided for @structure_print.
+  ///
+  /// In en, this message translates to:
+  /// **'Print'**
+  String get structure_print;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @structure_usable_width.
+  ///
+  /// In en, this message translates to:
+  /// **'Usable width'**
+  String get structure_usable_width;
+
+  /// No description provided for @structure_usable_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Usable depth'**
+  String get structure_usable_depth;
+
+  /// No description provided for @structure_panel_layout.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel layout'**
+  String get structure_panel_layout;
+
+  /// No description provided for @structure_total_panels.
+  ///
+  /// In en, this message translates to:
+  /// **'Total panels'**
+  String get structure_total_panels;
+
+  /// No description provided for @structure_frame_depth.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame depth'**
+  String get structure_frame_depth;
+
+  /// No description provided for @structure_leg_heights.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg heights'**
+  String get structure_leg_heights;
+
+  /// No description provided for @structure_min_front_leg_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Min front leg height'**
+  String get structure_min_front_leg_height;
+
+  /// No description provided for @structure_recents_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Structures'**
+  String get structure_recents_tooltip;
+
+  /// No description provided for @structure_support_structure.
+  ///
+  /// In en, this message translates to:
+  /// **'Support structure'**
+  String get structure_support_structure;
+
+  /// No description provided for @structure_support_station_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Support station count'**
+  String get structure_support_station_count;
+
+  /// No description provided for @structure_support_spacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Support spacing'**
+  String get structure_support_spacing;
+
+  /// No description provided for @structure_angles.
+  ///
+  /// In en, this message translates to:
+  /// **'Angles'**
+  String get structure_angles;
+
+  /// No description provided for @structure_ideal_azimuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideal azimuth'**
+  String get structure_ideal_azimuth;
+
+  /// No description provided for @structure_materials.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials'**
+  String get structure_materials;
+
+  /// No description provided for @structure_front_leg_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Front leg count'**
+  String get structure_front_leg_count;
+
+  /// No description provided for @structure_rear_leg_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Rear leg count'**
+  String get structure_rear_leg_count;
+
+  /// No description provided for @structure_anchor_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Anchor count'**
+  String get structure_anchor_count;
+
+  /// No description provided for @structure_row_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Row details'**
+  String get structure_row_details;
+
+  /// No description provided for @structure_row.
+  ///
+  /// In en, this message translates to:
+  /// **'Row'**
+  String get structure_row;
+
+  /// No description provided for @structure_local_footprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Local footprint'**
+  String get structure_local_footprint;
+
+  /// No description provided for @structure_layout.
+  ///
+  /// In en, this message translates to:
+  /// **'Layout'**
+  String get structure_layout;
+
+  /// No description provided for @structure_dimensions_report.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure Dimensions Report'**
+  String get structure_dimensions_report;
+
+  /// No description provided for @structure_dimensions_copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Dimensions copied to clipboard'**
+  String get structure_dimensions_copied;
+
+  /// No description provided for @structure_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Tilt'**
+  String get structure_tilt;
+
+  /// No description provided for @structure_reset_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset view'**
+  String get structure_reset_view;
+
+  /// No description provided for @structure_show_grid.
+  ///
+  /// In en, this message translates to:
+  /// **'Show grid'**
+  String get structure_show_grid;
+
+  /// No description provided for @structure_show_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Show dimensions'**
+  String get structure_show_dimensions;
+
+  /// No description provided for @structure_show_annotations.
+  ///
+  /// In en, this message translates to:
+  /// **'Show annotations'**
+  String get structure_show_annotations;
+
+  /// No description provided for @structure_print_feature_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Print feature coming soon'**
+  String get structure_print_feature_coming_soon;
+
+  /// No description provided for @structure_supports.
+  ///
+  /// In en, this message translates to:
+  /// **'Supports'**
+  String get structure_supports;
+
+  /// No description provided for @structure_save_watt_drawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Watt Drawing'**
+  String get structure_save_watt_drawing;
+
+  /// No description provided for @structure_open_watt_drawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Watt Drawing'**
+  String get structure_open_watt_drawing;
+
+  /// No description provided for @structure_drawing_default_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure Design'**
+  String get structure_drawing_default_title;
+
+  /// No description provided for @structure_drawing_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Watt drawing saved: {path}'**
+  String structure_drawing_saved(Object path);
+
+  /// No description provided for @structure_drawing_save_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save Watt drawing: {error}'**
+  String structure_drawing_save_failed(Object error);
+
+  /// No description provided for @structure_drawing_opened.
+  ///
+  /// In en, this message translates to:
+  /// **'Opened Watt drawing: {title}'**
+  String structure_drawing_opened(Object title);
+
+  /// No description provided for @structure_drawing_open_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open Watt drawing: {error}'**
+  String structure_drawing_open_failed(Object error);
+
+  /// No description provided for @structure_full_sketch_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Sketch'**
+  String get structure_full_sketch_title;
+
+  /// No description provided for @structure_geometry_dimensions.
+  ///
+  /// In en, this message translates to:
+  /// **'Geometry dimensions'**
+  String get structure_geometry_dimensions;
+
+  /// No description provided for @structure_row_offset_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Row {row} offset'**
+  String structure_row_offset_value(Object row);
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailable;
+
+  /// No description provided for @updateAvailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of Watt is available.'**
+  String get updateAvailableMessage;
+
+  /// No description provided for @currentVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Current version'**
+  String get currentVersion;
+
+  /// No description provided for @newVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'New version'**
+  String get newVersion;
+
+  /// No description provided for @whatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get whatsNew;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
+  /// No description provided for @updateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Update now'**
+  String get updateNow;
+
+  /// No description provided for @updateDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Update downloaded'**
+  String get updateDownloaded;
+
+  /// No description provided for @restartToInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart to install the update.'**
+  String get restartToInstall;
+
+  /// No description provided for @install.
+  ///
+  /// In en, this message translates to:
+  /// **'Install'**
+  String get install;
 
   /// No description provided for @email_is_required.
   ///
@@ -1868,7 +2998,7 @@ abstract class AppLocalizations {
   /// No description provided for @inverter_size.
   ///
   /// In en, this message translates to:
-  /// **'Inverter Size'**
+  /// **'Inverter size'**
   String get inverter_size;
 
   /// No description provided for @battery_bank.
@@ -2026,6 +3156,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
 
   /// No description provided for @save.
   ///
@@ -2465,6 +3601,240 @@ abstract class AppLocalizations {
   /// **'Suppliers'**
   String get suppliers;
 
+  /// No description provided for @manage_orders_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track customer and storefront orders.'**
+  String get manage_orders_subtitle;
+
+  /// No description provided for @manage_customers_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review customer balances and activity.'**
+  String get manage_customers_subtitle;
+
+  /// No description provided for @manage_suppliers_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review supplier balances and purchase history.'**
+  String get manage_suppliers_subtitle;
+
+  /// No description provided for @manage_accounting_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor accounting summaries and transactions.'**
+  String get manage_accounting_subtitle;
+
+  /// No description provided for @b2b_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'B2B Orders'**
+  String get b2b_orders;
+
+  /// No description provided for @b2c_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'B2C Orders'**
+  String get b2c_orders;
+
+  /// No description provided for @no_orders_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No orders found'**
+  String get no_orders_found;
+
+  /// No description provided for @no_customers_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers found'**
+  String get no_customers_found;
+
+  /// No description provided for @no_suppliers_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No suppliers found'**
+  String get no_suppliers_found;
+
+  /// No description provided for @order_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Details'**
+  String get order_details;
+
+  /// No description provided for @order_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Number'**
+  String get order_number;
+
+  /// No description provided for @order_placed.
+  ///
+  /// In en, this message translates to:
+  /// **'Order placed successfully'**
+  String get order_placed;
+
+  /// No description provided for @place_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Place Order'**
+  String get place_order;
+
+  /// No description provided for @payment_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Status'**
+  String get payment_status;
+
+  /// No description provided for @payment_method.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get payment_method;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @fulfilled_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Fulfilled At'**
+  String get fulfilled_at;
+
+  /// No description provided for @items.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get items;
+
+  /// No description provided for @parties.
+  ///
+  /// In en, this message translates to:
+  /// **'Parties'**
+  String get parties;
+
+  /// No description provided for @seller.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get seller;
+
+  /// No description provided for @buyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer'**
+  String get buyer;
+
+  /// No description provided for @customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customer;
+
+  /// No description provided for @supplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier'**
+  String get supplier;
+
+  /// No description provided for @confirm_receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Receipt'**
+  String get confirm_receipt;
+
+  /// No description provided for @edit_order_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Order Details'**
+  String get edit_order_details;
+
+  /// No description provided for @shipping_cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping Cost'**
+  String get shipping_cost;
+
+  /// No description provided for @shipping_method.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping Method'**
+  String get shipping_method;
+
+  /// No description provided for @paid_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Amount'**
+  String get paid_amount;
+
+  /// No description provided for @cancellation_reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation Reason'**
+  String get cancellation_reason;
+
+  /// No description provided for @bills.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get bills;
+
+  /// No description provided for @payments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get payments;
+
+  /// No description provided for @net_income.
+  ///
+  /// In en, this message translates to:
+  /// **'Net Income'**
+  String get net_income;
+
+  /// No description provided for @journal_entries.
+  ///
+  /// In en, this message translates to:
+  /// **'Journal Entries'**
+  String get journal_entries;
+
+  /// No description provided for @receivables.
+  ///
+  /// In en, this message translates to:
+  /// **'Receivables'**
+  String get receivables;
+
+  /// No description provided for @payables.
+  ///
+  /// In en, this message translates to:
+  /// **'Payables'**
+  String get payables;
+
+  /// No description provided for @transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get transactions;
+
+  /// No description provided for @accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get accounts;
+
+  /// No description provided for @no_data_available.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get no_data_available;
+
+  /// No description provided for @no_company_workspace.
+  ///
+  /// In en, this message translates to:
+  /// **'No company workspace is available for this account.'**
+  String get no_company_workspace;
+
   /// No description provided for @my_purchases.
   ///
   /// In en, this message translates to:
@@ -2518,6 +3888,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Explore companies'**
   String get services_explore_companies;
+
+  /// No description provided for @service_types.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Types'**
+  String get service_types;
+
+  /// No description provided for @service_types_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading service types...'**
+  String get service_types_loading;
+
+  /// No description provided for @service_types_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No service types yet'**
+  String get service_types_empty_title;
+
+  /// No description provided for @service_types_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the first service type to start organizing companies.'**
+  String get service_types_empty_subtitle;
+
+  /// No description provided for @service_types_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Service Type'**
+  String get service_types_add;
+
+  /// No description provided for @service_types_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Service Type'**
+  String get service_types_edit;
+
+  /// No description provided for @service_types_create_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Service Type'**
+  String get service_types_create_action;
+
+  /// No description provided for @service_types_update_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Service Type'**
+  String get service_types_update_action;
+
+  /// No description provided for @service_types_pick_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick image'**
+  String get service_types_pick_image;
+
+  /// No description provided for @service_types_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type deleted successfully.'**
+  String get service_types_deleted;
+
+  /// No description provided for @service_types_created.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type created successfully.'**
+  String get service_types_created;
+
+  /// No description provided for @service_types_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type updated successfully.'**
+  String get service_types_updated;
+
+  /// No description provided for @service_types_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete service type'**
+  String get service_types_delete_title;
+
+  /// No description provided for @service_types_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name}?'**
+  String service_types_delete_message(Object name);
+
+  /// No description provided for @service_types_company_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the service types your company provides.'**
+  String get service_types_company_subtitle;
+
+  /// No description provided for @service_types_mark_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark served'**
+  String get service_types_mark_served;
+
+  /// No description provided for @service_types_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Served'**
+  String get service_types_served;
+
+  /// No description provided for @service_types_marked_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type added to your company profile.'**
+  String get service_types_marked_served;
+
+  /// No description provided for @service_types_unmarked_served.
+  ///
+  /// In en, this message translates to:
+  /// **'Service type removed from your company profile.'**
+  String get service_types_unmarked_served;
+
+  /// No description provided for @service_types_companies_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} companies'**
+  String service_types_companies_count(Object count);
 
   /// No description provided for @services_companies_found.
   ///
@@ -2626,6 +4116,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No phone number'**
   String get services_no_phone;
+
+  /// No description provided for @services_tab_works.
+  ///
+  /// In en, this message translates to:
+  /// **'Works'**
+  String get services_tab_works;
+
+  /// No description provided for @services_tab_info_contacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Info & Contacts'**
+  String get services_tab_info_contacts;
+
+  /// No description provided for @services_mode_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get services_mode_overview;
+
+  /// No description provided for @services_mode_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get services_mode_products;
+
+  /// No description provided for @services_products_header.
+  ///
+  /// In en, this message translates to:
+  /// **'Company products'**
+  String get services_products_header;
+
+  /// No description provided for @services_products_mode_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop from this company'**
+  String get services_products_mode_title;
+
+  /// No description provided for @services_company_categories_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Company categories'**
+  String get services_company_categories_title;
+
+  /// No description provided for @services_products_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse available products from {company}.'**
+  String services_products_subtitle(Object company);
+
+  /// No description provided for @services_works_preview_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Project showcase'**
+  String get services_works_preview_title;
+
+  /// No description provided for @services_works_preview_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview sample work cards until real portfolio images are added.'**
+  String get services_works_preview_subtitle;
+
+  /// No description provided for @services_work_item_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Project {number}'**
+  String services_work_item_title(Object number);
+
+  /// No description provided for @company_work_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Works'**
+  String get company_work_title;
+
+  /// No description provided for @company_work_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage completed projects, installations, and portfolio highlights.'**
+  String get company_work_subtitle;
+
+  /// No description provided for @company_work_public_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Showcase'**
+  String get company_work_public_title;
+
+  /// No description provided for @company_work_public_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore recent company projects and installation highlights.'**
+  String get company_work_public_subtitle;
+
+  /// No description provided for @company_work_public_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No work items have been published yet.'**
+  String get company_work_public_empty;
+
+  /// No description provided for @company_work_public_showcase.
+  ///
+  /// In en, this message translates to:
+  /// **'Public showcase'**
+  String get company_work_public_showcase;
+
+  /// No description provided for @company_work_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Work'**
+  String get company_work_add;
+
+  /// No description provided for @company_work_add_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Work'**
+  String get company_work_add_title;
+
+  /// No description provided for @company_work_edit_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Work'**
+  String get company_work_edit_title;
+
+  /// No description provided for @company_work_title_field.
+  ///
+  /// In en, this message translates to:
+  /// **'Work title'**
+  String get company_work_title_field;
+
+  /// No description provided for @company_work_body_field.
+  ///
+  /// In en, this message translates to:
+  /// **'Work description'**
+  String get company_work_body_field;
+
+  /// No description provided for @company_work_title_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Work title is required'**
+  String get company_work_title_required;
+
+  /// No description provided for @company_work_images.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Images'**
+  String get company_work_images;
+
+  /// No description provided for @company_work_images_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add one or more images to present this project.'**
+  String get company_work_images_empty;
+
+  /// No description provided for @company_work_existing_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing'**
+  String get company_work_existing_image;
+
+  /// No description provided for @company_work_new_image.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get company_work_new_image;
+
+  /// No description provided for @company_work_pick_from_gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from gallery'**
+  String get company_work_pick_from_gallery;
+
+  /// No description provided for @company_work_pick_from_camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get company_work_pick_from_camera;
+
+  /// No description provided for @company_work_image_pick_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick images.'**
+  String get company_work_image_pick_failed;
+
+  /// No description provided for @company_work_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading company works...'**
+  String get company_work_loading;
+
+  /// No description provided for @company_work_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No works yet'**
+  String get company_work_empty_title;
+
+  /// No description provided for @company_work_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first work item to show completed projects to customers.'**
+  String get company_work_empty_subtitle;
+
+  /// No description provided for @company_work_no_description.
+  ///
+  /// In en, this message translates to:
+  /// **'No description added yet.'**
+  String get company_work_no_description;
+
+  /// No description provided for @company_work_images_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} images'**
+  String company_work_images_count(Object count);
+
+  /// No description provided for @company_work_created_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Created {date}'**
+  String company_work_created_at(Object date);
+
+  /// No description provided for @company_work_updated_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {date}'**
+  String company_work_updated_at(Object date);
+
+  /// No description provided for @company_work_publish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish Work'**
+  String get company_work_publish;
+
+  /// No description provided for @company_work_save_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Work'**
+  String get company_work_save_changes;
+
+  /// No description provided for @company_work_created.
+  ///
+  /// In en, this message translates to:
+  /// **'Work created successfully.'**
+  String get company_work_created;
+
+  /// No description provided for @company_work_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Work updated successfully.'**
+  String get company_work_updated;
+
+  /// No description provided for @company_work_delete_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete work'**
+  String get company_work_delete_title;
+
+  /// No description provided for @company_work_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'This work item will be removed permanently.'**
+  String get company_work_delete_message;
+
+  /// No description provided for @company_work_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Work deleted successfully.'**
+  String get company_work_deleted;
+
+  /// No description provided for @company_work_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'This work item is no longer available.'**
+  String get company_work_not_found;
+
+  /// No description provided for @try_again.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get try_again;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
 
   /// No description provided for @services_section_services.
   ///
@@ -3029,6 +4801,720 @@ abstract class AppLocalizations {
   /// **'Fulfilled'**
   String get request_status_fulfilled;
 
+  /// No description provided for @request_status_offered.
+  ///
+  /// In en, this message translates to:
+  /// **'Offered'**
+  String get request_status_offered;
+
+  /// No description provided for @request_status_accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get request_status_accepted;
+
+  /// No description provided for @unknown_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown User'**
+  String get unknown_user;
+
+  /// No description provided for @requester_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Requester'**
+  String get requester_info;
+
+  /// No description provided for @bids_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Bids'**
+  String bids_count(Object count);
+
+  /// No description provided for @time_ago_days.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String time_ago_days(Object count);
+
+  /// No description provided for @time_ago_hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String time_ago_hours(Object count);
+
+  /// No description provided for @time_ago_minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String time_ago_minutes(Object count);
+
+  /// No description provided for @time_ago_just_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get time_ago_just_now;
+
+  /// No description provided for @unit_watts.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}W'**
+  String unit_watts(Object value);
+
+  /// No description provided for @unit_kilowatts.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}kW'**
+  String unit_kilowatts(Object value);
+
+  /// No description provided for @unit_watthours.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}Wh'**
+  String unit_watthours(Object value);
+
+  /// No description provided for @unit_kilowatthours.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}kWh'**
+  String unit_kilowatthours(Object value);
+
+  /// No description provided for @edit_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit offer'**
+  String get edit_offer;
+
+  /// No description provided for @build_quotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Build your quotation'**
+  String get build_quotation;
+
+  /// No description provided for @build_quotation_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start from the customer request, adjust your technical offer, then add extra services if needed.'**
+  String get build_quotation_subtitle;
+
+  /// No description provided for @auto_totals_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto totals from unit prices'**
+  String get auto_totals_label;
+
+  /// No description provided for @editing_existing_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing existing offer'**
+  String get editing_existing_offer;
+
+  /// No description provided for @uses_request_defaults.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses request defaults'**
+  String get uses_request_defaults;
+
+  /// No description provided for @panel_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel offer'**
+  String get panel_offer;
+
+  /// No description provided for @panel_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'These values start from the customer request and can be adjusted before sending your quote.'**
+  String get panel_offer_subtitle;
+
+  /// No description provided for @panel_power_watts.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel power (W)'**
+  String get panel_power_watts;
+
+  /// No description provided for @panel_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel unit price'**
+  String get panel_unit_price;
+
+  /// No description provided for @total_panel_power_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total panel power'**
+  String get total_panel_power_label;
+
+  /// No description provided for @panels_total_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels total price'**
+  String get panels_total_price;
+
+  /// No description provided for @panel_note_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel note (optional)'**
+  String get panel_note_label;
+
+  /// No description provided for @panel_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand, mono, warranty, mounting notes...'**
+  String get panel_note_hint;
+
+  /// No description provided for @battery_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery offer'**
+  String get battery_offer;
+
+  /// No description provided for @battery_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use battery type and size details to explain your backup recommendation clearly.'**
+  String get battery_offer_subtitle;
+
+  /// No description provided for @battery_size.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery size'**
+  String get battery_size;
+
+  /// No description provided for @battery_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery unit price'**
+  String get battery_unit_price;
+
+  /// No description provided for @batteries_total_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Batteries total price'**
+  String get batteries_total_price;
+
+  /// No description provided for @battery_note_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery note (optional)'**
+  String get battery_note_label;
+
+  /// No description provided for @battery_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Rack setup, backup hours, preferred brand...'**
+  String get battery_note_hint;
+
+  /// No description provided for @battery_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Type'**
+  String get battery_type;
+
+  /// No description provided for @battery_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Count'**
+  String get battery_count;
+
+  /// No description provided for @inverter_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter offer'**
+  String get inverter_offer;
+
+  /// No description provided for @inverter_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep inverter details aligned with the real installation setup and grid requirements.'**
+  String get inverter_offer_subtitle;
+
+  /// No description provided for @inverter_unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter unit price'**
+  String get inverter_unit_price;
+
+  /// No description provided for @inverters_total_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverters total price'**
+  String get inverters_total_price;
+
+  /// No description provided for @inverter_note_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter note (optional)'**
+  String get inverter_note_label;
+
+  /// No description provided for @inverter_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Single phase, MPPT count, protection notes...'**
+  String get inverter_note_hint;
+
+  /// No description provided for @inverter_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Type'**
+  String get inverter_type;
+
+  /// No description provided for @inverter_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Count'**
+  String get inverter_count;
+
+  /// No description provided for @offer_note_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer note'**
+  String get offer_note_title;
+
+  /// No description provided for @offer_note_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this area for delivery time, warranty, execution notes, or exclusions.'**
+  String get offer_note_description;
+
+  /// No description provided for @template_involves.
+  ///
+  /// In en, this message translates to:
+  /// **'Template involves'**
+  String get template_involves;
+
+  /// No description provided for @template_involves_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this for installation fee, delivery, mounting, cables, or any extra service linked to this quotation.'**
+  String get template_involves_subtitle;
+
+  /// No description provided for @no_extra_services.
+  ///
+  /// In en, this message translates to:
+  /// **'No extra services added yet.'**
+  String get no_extra_services;
+
+  /// No description provided for @estimated_extra_fees_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated extra fees'**
+  String get estimated_extra_fees_label;
+
+  /// No description provided for @add_from_catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Add from catalog'**
+  String get add_from_catalog;
+
+  /// No description provided for @create_new_item.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new item'**
+  String get create_new_item;
+
+  /// No description provided for @manage_catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage catalog'**
+  String get manage_catalog;
+
+  /// No description provided for @quotation_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Quotation total'**
+  String get quotation_total;
+
+  /// No description provided for @save_offer_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save offer changes'**
+  String get save_offer_changes;
+
+  /// No description provided for @no_more_catalog_items.
+  ///
+  /// In en, this message translates to:
+  /// **'No more active catalog items are available. Create a new one first.'**
+  String get no_more_catalog_items;
+
+  /// No description provided for @create_item_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new catalog item'**
+  String get create_item_title;
+
+  /// No description provided for @create_item_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a custom service or material to use in this and future quotations.'**
+  String get create_item_subtitle;
+
+  /// No description provided for @name_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name_label;
+
+  /// No description provided for @cost_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get cost_label;
+
+  /// No description provided for @create_item_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Create item'**
+  String get create_item_button;
+
+  /// No description provided for @extra_fees_missing_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra fees missing'**
+  String get extra_fees_missing_title;
+
+  /// No description provided for @extra_fees_missing_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a catalog item for all extra fee rows or remove them.'**
+  String get extra_fees_missing_msg;
+
+  /// No description provided for @invalid_panel_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid panel offer'**
+  String get invalid_panel_offer_title;
+
+  /// No description provided for @invalid_panel_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check panel power, count, and price.'**
+  String get invalid_panel_offer_msg;
+
+  /// No description provided for @invalid_battery_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid battery offer'**
+  String get invalid_battery_offer_title;
+
+  /// No description provided for @invalid_battery_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check battery size, count, and price.'**
+  String get invalid_battery_offer_msg;
+
+  /// No description provided for @invalid_inverter_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid inverter offer'**
+  String get invalid_inverter_offer_title;
+
+  /// No description provided for @invalid_inverter_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check inverter size, count, and price.'**
+  String get invalid_inverter_offer_msg;
+
+  /// No description provided for @invalid_pricing_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid pricing'**
+  String get invalid_pricing_title;
+
+  /// No description provided for @invalid_pricing_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Total quotation price must be greater than zero.'**
+  String get invalid_pricing_msg;
+
+  /// No description provided for @form_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get form_required;
+
+  /// No description provided for @edit_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit_button;
+
+  /// No description provided for @finish_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish offer'**
+  String get finish_offer;
+
+  /// No description provided for @delete_offer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete offer'**
+  String get delete_offer_title;
+
+  /// No description provided for @delete_offer_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this offer? This action cannot be undone.'**
+  String get delete_offer_msg;
+
+  /// No description provided for @cancel_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel_button;
+
+  /// No description provided for @delete_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete_button;
+
+  /// No description provided for @contact_unavailable_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact unavailable'**
+  String get contact_unavailable_title;
+
+  /// No description provided for @contact_unavailable_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone or email available for this requester.'**
+  String get contact_unavailable_msg;
+
+  /// No description provided for @panel_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel'**
+  String get panel_label;
+
+  /// No description provided for @battery_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery'**
+  String get battery_label;
+
+  /// No description provided for @inverter_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter'**
+  String get inverter_label;
+
+  /// No description provided for @location_reach_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & reach'**
+  String get location_reach_title;
+
+  /// No description provided for @request_city_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Request city'**
+  String get request_city_label;
+
+  /// No description provided for @send_to_all_cities.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to all cities'**
+  String get send_to_all_cities;
+
+  /// No description provided for @general_note_title.
+  ///
+  /// In en, this message translates to:
+  /// **'General note'**
+  String get general_note_title;
+
+  /// No description provided for @no_city_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'No city selected'**
+  String get no_city_selected;
+
+  /// No description provided for @panels_power_recommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'We recommend choosing a panel power between 400W and 600W for modern systems.'**
+  String get panels_power_recommendation;
+
+  /// No description provided for @battery_power_recommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Lithium batteries are recommended for longer life and better performance.'**
+  String get battery_power_recommendation;
+
+  /// No description provided for @inverter_power_recommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Hybrid inverters are best for systems with solar and batteries.'**
+  String get inverter_power_recommendation;
+
+  /// No description provided for @send_to_all_cities_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request will be visible to companies in all cities.'**
+  String get send_to_all_cities_msg;
+
+  /// No description provided for @general_note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Any other details or requirements for your solar system...'**
+  String get general_note_hint;
+
+  /// No description provided for @panel_recommendation_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended: keep the same wattage for all panels for better matching and easier offers.'**
+  String get panel_recommendation_msg;
+
+  /// No description provided for @panel_count_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel count'**
+  String get panel_count_label;
+
+  /// No description provided for @panel_note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand, half-cut, mono, roof limits...'**
+  String get panel_note_hint_request;
+
+  /// No description provided for @battery_recommendation_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Best performance: lithium is the default for longer cycle life and faster charging.'**
+  String get battery_recommendation_msg;
+
+  /// No description provided for @battery_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Type'**
+  String get battery_type_label;
+
+  /// No description provided for @battery_count_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Count'**
+  String get battery_count_label;
+
+  /// No description provided for @battery_note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Rack style, backup hours, preferred brand...'**
+  String get battery_note_hint_request;
+
+  /// No description provided for @total_battery_power_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total battery power'**
+  String get total_battery_power_label;
+
+  /// No description provided for @inverter_recommendation_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Best performance: hybrid works well when you want grid support and future battery expansion.'**
+  String get inverter_recommendation_msg;
+
+  /// No description provided for @inverter_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter Type'**
+  String get inverter_type_label;
+
+  /// No description provided for @inverter_count_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter count'**
+  String get inverter_count_label;
+
+  /// No description provided for @inverter_note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Single phase, MPPT count, brand...'**
+  String get inverter_note_hint_request;
+
+  /// No description provided for @total_inverters_power_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total inverters power'**
+  String get total_inverters_power_label;
+
+  /// No description provided for @city_required_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile must have a city before creating a request.'**
+  String get city_required_error;
+
+  /// No description provided for @request_submitted_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Service request submitted successfully!'**
+  String get request_submitted_success;
+
+  /// No description provided for @request_submit_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not submit the request. Please try again.'**
+  String get request_submit_error;
+
+  /// No description provided for @hero_request_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share clear sizes and notes so companies can send more accurate offers.'**
+  String get hero_request_subtitle;
+
+  /// No description provided for @hero_request_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Defaults tuned for fast entry'**
+  String get hero_request_info;
+
+  /// No description provided for @send_to_all_cities_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on to let companies outside your city respond as well.'**
+  String get send_to_all_cities_subtitle;
+
+  /// No description provided for @general_note_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any site details, installation limits, or preferred brands.'**
+  String get general_note_subtitle;
+
+  /// No description provided for @note_optional_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get note_optional_label;
+
+  /// No description provided for @note_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get note_optional;
+
+  /// No description provided for @note_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any additional details or requirements...'**
+  String get note_hint;
+
+  /// No description provided for @note_hint_request.
+  ///
+  /// In en, this message translates to:
+  /// **'Roof type, backup target, timeline...'**
+  String get note_hint_request;
+
+  /// No description provided for @delete_offer_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove the offer permanently.'**
+  String get delete_offer_subtitle;
+
+  /// No description provided for @phone_unavailable_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone number is available for this action.'**
+  String get phone_unavailable_msg;
+
   /// No description provided for @battery_type_gel.
   ///
   /// In en, this message translates to:
@@ -3383,18 +5869,6 @@ abstract class AppLocalizations {
   /// **'Total Energy Capacity'**
   String get total_energy_capacity;
 
-  /// No description provided for @battery_type_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery Type'**
-  String get battery_type_label;
-
-  /// No description provided for @inverter_type_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Inverter Type'**
-  String get inverter_type_label;
-
   /// No description provided for @storage_batteries.
   ///
   /// In en, this message translates to:
@@ -3562,6 +6036,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Battery'**
   String get battery;
+
+  /// No description provided for @inverter.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter'**
+  String get inverter;
 
   /// No description provided for @city_label.
   ///
@@ -3791,6 +6271,60 @@ abstract class AppLocalizations {
   /// **'Delivery'**
   String get delivery;
 
+  /// No description provided for @expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get cost;
+
+  /// No description provided for @company_delivery_estimated_days_min.
+  ///
+  /// In en, this message translates to:
+  /// **'Min Days'**
+  String get company_delivery_estimated_days_min;
+
+  /// No description provided for @company_delivery_estimated_days_max.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Days'**
+  String get company_delivery_estimated_days_max;
+
+  /// No description provided for @company_delivery_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\" delivery option?'**
+  String company_delivery_delete_message(Object name);
+
+  /// No description provided for @company_expense_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this {category} expense?'**
+  String company_expense_delete_message(Object category);
+
+  /// No description provided for @company_workspace_no_company.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a company to continue'**
+  String get company_workspace_no_company;
+
   /// No description provided for @subscription.
   ///
   /// In en, this message translates to:
@@ -3808,12 +6342,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dashboard'**
   String get dashboard;
-
-  /// No description provided for @notifications.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications'**
-  String get notifications;
 
   /// No description provided for @no_notifications_yet.
   ///
@@ -4577,12 +7105,6 @@ abstract class AppLocalizations {
   /// **'Battery Voltage'**
   String get battery_voltage_label;
 
-  /// No description provided for @battery_count_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery Count'**
-  String get battery_count_label;
-
   /// No description provided for @battery_count_hint.
   ///
   /// In en, this message translates to:
@@ -4618,6 +7140,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g., 5 or 8'**
   String get example_5_or_8;
+
+  /// No description provided for @example_5.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 5'**
+  String get example_5;
+
+  /// No description provided for @example_15.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 15'**
+  String get example_15;
 
   /// No description provided for @battery_count_explanation.
   ///
@@ -4823,12 +7357,6 @@ abstract class AppLocalizations {
   /// **'Add Image'**
   String get add_image;
 
-  /// No description provided for @status.
-  ///
-  /// In en, this message translates to:
-  /// **'Status'**
-  String get status;
-
   /// No description provided for @add.
   ///
   /// In en, this message translates to:
@@ -4900,12 +7428,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Submitting...'**
   String get submitting_request;
-
-  /// No description provided for @request_submitted_success.
-  ///
-  /// In en, this message translates to:
-  /// **'Service request submitted successfully!'**
-  String get request_submitted_success;
 
   /// No description provided for @request_failed.
   ///
@@ -4984,9 +7506,418 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open {service}'**
   String open_service(Object service);
+
+  /// No description provided for @structure_button_next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get structure_button_next;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @load_more_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More Offers'**
+  String get load_more_offers;
+
+  /// No description provided for @catalog_tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalog'**
+  String get catalog_tooltip;
+
+  /// No description provided for @orientation_calc.
+  ///
+  /// In en, this message translates to:
+  /// **'Orientation Calculator'**
+  String get orientation_calc;
+
+  /// No description provided for @align_panels_efficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Align your solar panels for maximum efficiency.'**
+  String get align_panels_efficiency;
+
+  /// No description provided for @your_latitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Latitude'**
+  String get your_latitude;
+
+  /// No description provided for @auto_detect.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Detect'**
+  String get auto_detect;
+
+  /// No description provided for @latitude_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude (e.g. 33.3)'**
+  String get latitude_label;
+
+  /// No description provided for @latitude_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter manually if needed'**
+  String get latitude_hint;
+
+  /// No description provided for @hemisphere_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Positive (+) = North Hemisphere\nNegative (-) = South Hemisphere'**
+  String get hemisphere_hint;
+
+  /// No description provided for @perfect_alignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Alignment! ✅'**
+  String get perfect_alignment;
+
+  /// No description provided for @rotate_phone_align.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate phone to align Green Arrow'**
+  String get rotate_phone_align;
+
+  /// No description provided for @current_heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Heading: {heading}°'**
+  String current_heading(String heading);
+
+  /// No description provided for @optimal_tilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal Tilt'**
+  String get optimal_tilt;
+
+  /// No description provided for @face_direction.
+  ///
+  /// In en, this message translates to:
+  /// **'Face Direction'**
+  String get face_direction;
+
+  /// No description provided for @best_performance_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'For best year-round performance, tilt panels at {tilt}° facing {direction}.'**
+  String best_performance_desc(String tilt, String direction);
+
+  /// No description provided for @why_orientation_matters.
+  ///
+  /// In en, this message translates to:
+  /// **'Why Orientation Matters?'**
+  String get why_orientation_matters;
+
+  /// No description provided for @azimuth_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Azimuth (Direction)'**
+  String get azimuth_title;
+
+  /// No description provided for @azimuth_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Panels should face the equator (South in North Hemisphere) to catch sun all day.'**
+  String get azimuth_desc;
+
+  /// No description provided for @tilt_angle_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Tilt Angle'**
+  String get tilt_angle_title;
+
+  /// No description provided for @tilt_angle_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Angle from horizontal. Usually equals your Latitude for year-round average.'**
+  String get tilt_angle_desc;
+
+  /// No description provided for @close_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close_button;
+
+  /// No description provided for @north.
+  ///
+  /// In en, this message translates to:
+  /// **'North'**
+  String get north;
+
+  /// No description provided for @south.
+  ///
+  /// In en, this message translates to:
+  /// **'South'**
+  String get south;
+
+  /// No description provided for @east.
+  ///
+  /// In en, this message translates to:
+  /// **'East'**
+  String get east;
+
+  /// No description provided for @west.
+  ///
+  /// In en, this message translates to:
+  /// **'West'**
+  String get west;
+
+  /// No description provided for @equator.
+  ///
+  /// In en, this message translates to:
+  /// **'Equator'**
+  String get equator;
+
+  /// No description provided for @optimal.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal'**
+  String get optimal;
+
+  /// No description provided for @quick_create.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Create'**
+  String get quick_create;
+
+  /// No description provided for @add_product.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Product'**
+  String get add_product;
+
+  /// No description provided for @invite_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Member'**
+  String get invite_member;
+
+  /// No description provided for @create_offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Offer'**
+  String get create_offer;
+
+  /// No description provided for @start_adding_products_to_inventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Start adding products to your inventory to see them here'**
+  String get start_adding_products_to_inventory;
+
+  /// No description provided for @search_results_for.
+  ///
+  /// In en, this message translates to:
+  /// **'Search results for'**
+  String get search_results_for;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @recent_activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Activity'**
+  String get recent_activity;
+
+  /// No description provided for @view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get view_all;
+
+  /// No description provided for @dashboard_your_activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Activity'**
+  String get dashboard_your_activity;
+
+  /// No description provided for @dashboard_get_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get dashboard_get_started;
+
+  /// No description provided for @dashboard_activity_signed_in_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track requests, orders, and alerts from one place.'**
+  String get dashboard_activity_signed_in_subtitle;
+
+  /// No description provided for @dashboard_activity_guest_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to save requests, place orders, and receive updates.'**
+  String get dashboard_activity_guest_subtitle;
+
+  /// No description provided for @dashboard_services_action_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore services and companies before creating an account.'**
+  String get dashboard_services_action_subtitle;
+
+  /// No description provided for @dashboard_store_action_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop products, compare companies, and place B2C orders.'**
+  String get dashboard_store_action_subtitle;
+
+  /// No description provided for @dashboard_sign_in_card_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Access your saved requests, orders, and notifications.'**
+  String get dashboard_sign_in_card_subtitle;
+
+  /// No description provided for @dashboard_guest_services_card_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore services and companies before creating an account.'**
+  String get dashboard_guest_services_card_subtitle;
+
+  /// No description provided for @dashboard_my_requests_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active and past requests.'**
+  String dashboard_my_requests_count(int count);
+
+  /// No description provided for @dashboard_my_orders_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} B2C orders across storefront sellers.'**
+  String dashboard_my_orders_count(int count);
+
+  /// No description provided for @dashboard_notifications_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} recent alerts and system updates.'**
+  String dashboard_notifications_count(int count);
+
+  /// No description provided for @user_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'User Mode'**
+  String get user_mode;
+
+  /// No description provided for @admin_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Mode'**
+  String get admin_mode;
+
+  /// No description provided for @revenue_trend.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue Trend'**
+  String get revenue_trend;
+
+  /// No description provided for @financial_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Overview'**
+  String get financial_overview;
+
+  /// No description provided for @order_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Status'**
+  String get order_status;
+
+  /// No description provided for @low_stock_alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Low Stock Alerts'**
+  String get low_stock_alerts;
+
+  /// No description provided for @items_count.
+  ///
+  /// In en, this message translates to:
+  /// **'items'**
+  String get items_count;
+
+  /// No description provided for @formatUnitsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} units left'**
+  String formatUnitsLeft(int count);
+
+  /// No description provided for @restock.
+  ///
+  /// In en, this message translates to:
+  /// **'Restock'**
+  String get restock;
+
+  /// No description provided for @view_all_alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Alerts'**
+  String get view_all_alerts;
+
+  /// No description provided for @create_invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Invoice'**
+  String get create_invoice;
+
+  /// No description provided for @add_project.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Project'**
+  String get add_project;
+
+  /// No description provided for @no_results_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get no_results_found;
+
+  /// No description provided for @marketplace_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Marketplace Requests'**
+  String get marketplace_requests;
+
+  /// No description provided for @no_contact_info.
+  ///
+  /// In en, this message translates to:
+  /// **'No contact info'**
+  String get no_contact_info;
+
+  /// No description provided for @seasonal_solar_estimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Seasonal Solar Estimation'**
+  String get seasonal_solar_estimate;
+
+  /// No description provided for @est_daily_kw.
+  ///
+  /// In en, this message translates to:
+  /// **'Est. daily production'**
+  String get est_daily_kw;
+
+  /// No description provided for @formatSolarAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended tilt: {advice}'**
+  String formatSolarAdvice(String advice);
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -4995,25 +7926,26 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar': return AppLocalizationsAr();
-    case 'en': return AppLocalizationsEn();
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'en':
+      return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

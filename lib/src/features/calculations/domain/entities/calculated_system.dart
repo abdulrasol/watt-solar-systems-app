@@ -277,3 +277,22 @@ class CalculatedSystem {
     };
   }
 }
+
+List<CalculatedSystem> parseCalculatedSystems(dynamic raw) {
+  if (raw is! List) {
+    return const [];
+  }
+
+  final systems = <CalculatedSystem>[];
+  for (final item in raw) {
+    if (item is! Map) {
+      continue;
+    }
+    try {
+      systems.add(CalculatedSystem.fromJson(Map<String, dynamic>.from(item)));
+    } catch (_) {
+      continue;
+    }
+  }
+  return systems;
+}

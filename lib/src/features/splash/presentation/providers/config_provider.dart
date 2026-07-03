@@ -2,11 +2,10 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/features/splash/domain/entities/config.dart';
 import 'package:solar_hub/src/features/splash/domain/entities/config_snapshot.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
 /// Provides access to the app's global configurations.
-final configProvider = NotifierProvider<ConfigNotifier, ConfigState>(
-  ConfigNotifier.new,
-);
+final configProvider = NotifierProvider<ConfigNotifier, ConfigState>(ConfigNotifier.new);
 
 class ConfigState {
   final Map<String, bool> values;
@@ -14,26 +13,11 @@ class ConfigState {
   final bool isRefreshing;
   final DateTime? lastUpdated;
 
-  const ConfigState({
-    required this.values,
-    required this.isHydrated,
-    required this.isRefreshing,
-    required this.lastUpdated,
-  });
+  const ConfigState({required this.values, required this.isHydrated, required this.isRefreshing, required this.lastUpdated});
 
-  const ConfigState.initial()
-    : values = const {},
-      isHydrated = false,
-      isRefreshing = false,
-      lastUpdated = null;
+  const ConfigState.initial() : values = const {}, isHydrated = false, isRefreshing = false, lastUpdated = null;
 
-  ConfigState copyWith({
-    Map<String, bool>? values,
-    bool? isHydrated,
-    bool? isRefreshing,
-    DateTime? lastUpdated,
-    bool clearLastUpdated = false,
-  }) {
+  ConfigState copyWith({Map<String, bool>? values, bool? isHydrated, bool? isRefreshing, DateTime? lastUpdated, bool clearLastUpdated = false}) {
     return ConfigState(
       values: values ?? this.values,
       isHydrated: isHydrated ?? this.isHydrated,
@@ -50,30 +34,15 @@ class ConfigNotifier extends Notifier<ConfigState> {
   }
 
   void hydrateFromSnapshot(ConfigSnapshot snapshot) {
-    state = state.copyWith(
-      values: _mapConfigs(snapshot.configs),
-      isHydrated: true,
-      isRefreshing: false,
-      lastUpdated: snapshot.lastUpdated,
-    );
+    state = state.copyWith(values: _mapConfigs(snapshot.configs), isHydrated: true, isRefreshing: false, lastUpdated: snapshot.lastUpdated);
   }
 
   void setRefreshing(bool isRefreshing) {
     state = state.copyWith(isRefreshing: isRefreshing);
   }
 
-  void setConfigs(
-    List<Config> configsList, {
-    DateTime? lastUpdated,
-    bool isHydrated = true,
-    bool isRefreshing = false,
-  }) {
-    state = state.copyWith(
-      values: _mapConfigs(configsList),
-      isHydrated: isHydrated,
-      isRefreshing: isRefreshing,
-      lastUpdated: lastUpdated,
-    );
+  void setConfigs(List<Config> configsList, {DateTime? lastUpdated, bool isHydrated = true, bool isRefreshing = false}) {
+    state = state.copyWith(values: _mapConfigs(configsList), isHydrated: isHydrated, isRefreshing: isRefreshing, lastUpdated: lastUpdated);
   }
 
   Map<String, bool> _mapConfigs(List<Config> configsList) {
@@ -88,6 +57,7 @@ class ConfigNotifier extends Notifier<ConfigState> {
     if (skipFalseIfDebug && kDebugMode) {
       return true;
     }
+    dPrint('isEnabled for $key: ${state.values[key] ?? defaultValue}', tag: 'isEnabled');
     return state.values[key] ?? defaultValue;
   }
 }

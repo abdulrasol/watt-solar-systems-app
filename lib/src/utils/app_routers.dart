@@ -5,7 +5,8 @@ import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_shell.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
+import 'package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart';
+import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/auth_page.dart';
 import 'package:solar_hub/src/features/auth/presentation/screens/company_registration_page.dart';
@@ -28,10 +29,18 @@ import 'package:solar_hub/src/features/admin/presentation/screens/admin_dashboar
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_feedbacks_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/app_configs_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/send_notification_screen.dart';
+import 'package:solar_hub/src/features/accounting/presentation/screens/accounting_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_company_details_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_catalog_screen.dart';
-import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_requests_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/companies/admin_service_types_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_currency_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_categories_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_address_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_users_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_subscription_plans_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_products_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_systems_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
@@ -39,28 +48,52 @@ import 'package:solar_hub/src/features/notifications/presentation/screens/notifi
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/construction_page.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_overview_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_services_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_service_types_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_contacts_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_public_services_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_categories_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_delivery_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_expenses_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_systems_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_shell.dart';
+import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
+import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_details_page.dart';
+import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_form_page.dart';
+import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_page.dart';
+import 'package:solar_hub/src/features/crm/presentation/screens/crm_screens.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/offer_request_wizard.dart';
+import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:solar_hub/src/features/structure_design/presentation/screens/structure_design_screen.dart';
+import 'package:solar_hub/src/features/roof_simulator/presentation/screens/roof_simulator_page.dart';
+import 'package:solar_hub/src/features/pv_system_designer/presentation/screens/pv_system_designer_screen.dart';
+import 'package:solar_hub/src/features/orders_buyer/presentation/screens/buyer_orders_screen.dart';
+import 'package:solar_hub/src/features/orders_buyer/presentation/screens/order_checkout_result_screen.dart';
+import 'package:solar_hub/src/features/orders_company/presentation/screens/company_orders_screen.dart';
+import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:solar_hub/src/features/orders_core/presentation/screens/order_detail_screen.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_companies_screen.dart';
+import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_products_screen.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_screen.dart';
+import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_routes.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/company_details_screen.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/companies_screen.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/services_explorer_screen.dart';
 
 // Create a globally accessible provider for the GoRouter
 final routerProvider = Provider<GoRouter>((ref) {
-  // We can watch the auth state if we want the router to refresh on auth changes
-  // Or just read it inside the redirect callback.
+  final refreshListenable = ValueNotifier<bool>(false);
+  ref.listen(authProvider, (previous, next) {
+    refreshListenable.value = !refreshListenable.value;
+  });
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
+    refreshListenable: refreshListenable,
     redirect: (BuildContext context, GoRouterState state) {
-      // For global redirects if needed
-      return null;
+      final authState = ref.read(authProvider);
+      return appRedirectForRoute(state.uri.path, authState);
     },
     routes: <RouteBase>[
       GoRoute(
@@ -84,7 +117,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/auth',
         builder: (BuildContext context, GoRouterState state) {
-          return const AuthPage();
+          return AuthPage(redirectTo: state.uri.queryParameters['redirect_to']);
         },
         routes: [
           GoRoute(
@@ -109,19 +142,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: 'company_registration',
             builder: (BuildContext context, GoRouterState state) {
               return const CompanyRegistrationPage();
-            },
-            redirect: (BuildContext context, GoRouterState state) {
-              // Read the current authentication state synchronously
-              final isSigned = ref.read(authProvider).isSigned;
-
-              if (!isSigned) {
-                // If the user is NOT logged in, redirect them to the auth (login) page.
-                // You can even pass the intended location as a query parameter if you want to route back!
-                // e.g. return '/auth?redirect_to=${state.uri.toString()}';
-                return '/auth';
-              }
-              // If signed in, let them through
-              return null;
             },
           ),
         ],
@@ -163,6 +183,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
+            path: '/companies/dashboard/service-types',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardServiceTypesScreen();
+            },
+          ),
+          GoRoute(
             path: '/companies/dashboard/members',
             builder: (BuildContext context, GoRouterState state) {
               return const MembersPage();
@@ -186,32 +212,123 @@ final routerProvider = Provider<GoRouter>((ref) {
               return const CompanyDashboardCategoriesScreen();
             },
           ),
+          GoRoute(
+            path: '/companies/dashboard/orders',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyOrdersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/orders/:id',
+            builder: (BuildContext context, GoRouterState state) {
+              final authState = ref.read(authProvider);
+              final id = int.tryParse(state.pathParameters['id'] ?? '');
+              if (id == null || authState.company?.id == null) {
+                return const _RouteRequirementPage(title: 'Order Unavailable', message: 'This order link is invalid or requires a company workspace session.');
+              }
+              return OrderDetailScreen(orderId: id, companyId: authState.company?.id, sellerView: true);
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/customers',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyCustomersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/suppliers',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanySuppliersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/accounting',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AccountingScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/delivery',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardDeliveryScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/expenses',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardExpensesScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/systems',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardSystemsScreen();
+            },
+          ),
         ],
       ),
       GoRoute(
         path: '/inventory',
         builder: (context, state) => const InventoryPage(),
         routes: [
-          GoRoute(
-            path: 'add',
-            builder: (context, state) => const AddProductPage(),
-          ),
-          GoRoute(
-            path: 'product/:id',
-            builder: (BuildContext context, GoRouterState state) {
-              final product = state.extra as Product;
-              return ProductDetailsPage(product: product);
-            },
-          ),
+          GoRoute(path: 'add', builder: (context, state) => const AddProductPage()),
+          GoRoute(path: 'product/:id', builder: (BuildContext context, GoRouterState state) => buildInventoryProductRoute(state)),
           GoRoute(
             path: 'edit/:id',
             builder: (BuildContext context, GoRouterState state) {
-              final product = state.extra as Product;
+              final product = state.extra is Product ? state.extra as Product : null;
+              if (product == null) {
+                return const _RouteRequirementPage(
+                  title: 'Product Edit Unavailable',
+                  message: 'Open product editing from the inventory list or product details page.',
+                );
+              }
               return AddProductPage(product: product);
             },
           ),
         ],
       ),
+      GoRoute(
+        path: '/company-work',
+        builder: (context, state) => const CompanyWorkPage(),
+        routes: [
+          GoRoute(path: 'add', builder: (context, state) => const CompanyWorkFormPage()),
+          GoRoute(
+            path: ':id',
+            builder: (context, state) {
+              final id = int.parse(state.pathParameters['id']!);
+              final work = state.extra is CompanyWork ? state.extra as CompanyWork : null;
+              return CompanyWorkDetailsPage(workId: id, initialWork: work);
+            },
+          ),
+          GoRoute(
+            path: 'edit/:id',
+            builder: (context, state) {
+              final work = state.extra is CompanyWork ? state.extra as CompanyWork : null;
+              return CompanyWorkFormPage(work: work);
+            },
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/storefront/:audience/orders',
+        builder: (context, state) {
+          final audience = state.pathParameters['audience'] == 'b2b' ? OrderAudience.b2b : OrderAudience.b2c;
+          return BuyerOrdersScreen(audience: audience);
+        },
+      ),
+      GoRoute(
+        path: '/storefront/:audience/orders/:id',
+        builder: (context, state) {
+          final audience = state.pathParameters['audience'] == 'b2b' ? OrderAudience.b2b : OrderAudience.b2c;
+          final id = int.tryParse(state.pathParameters['id'] ?? '');
+          if (id == null) {
+            return const _RouteRequirementPage(title: 'Order Unavailable', message: 'This order link is invalid.');
+          }
+          return OrderDetailScreen(orderId: id, audience: audience);
+        },
+      ),
+      GoRoute(path: '/storefront/order-result', builder: (context, state) => buildOrderResultRoute(state)),
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
           return AdminShell(location: state.uri.path, child: child);
@@ -261,9 +378,51 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
-            path: '/admin/service-requests',
+            path: '/admin/service-types',
             builder: (BuildContext context, GoRouterState state) {
-              return const AdminServiceRequestsScreen();
+              return const AdminServiceTypesScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/currencies',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminCurrencyScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/categories',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminCategoriesScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/address',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminAddressScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/users',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminUsersScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/subscriptions',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminSubscriptionPlansScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/products',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminProductsScreen();
+            },
+          ),
+          GoRoute(
+            path: '/admin/systems',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AdminSystemsScreen();
             },
           ),
         ],
@@ -280,58 +439,52 @@ final routerProvider = Provider<GoRouter>((ref) {
           );
         },
       ),
-      GoRoute(
-        path: '/user-requests',
-        builder: (context, state) => const UserRequestsScreen(),
-      ),
+      GoRoute(path: '/user-requests', builder: (context, state) => const UserRequestsScreen()),
       GoRoute(
         path: '/user-requests/new',
         builder: (context, state) {
-          final prefill = state.extra is SolarRequestFormPrefill
-              ? state.extra as SolarRequestFormPrefill
-              : null;
+          final prefill = state.extra is SolarRequestFormPrefill ? state.extra as SolarRequestFormPrefill : null;
           return SolarRequestForm(prefill: prefill);
         },
-        redirect: (BuildContext context, GoRouterState state) {
-          final isSigned = ref.read(authProvider).isSigned;
-          if (!isSigned) return '/auth';
-          return null;
-        },
       ),
+      GoRoute(path: '/calculator/request-offer-wizard', builder: (context, state) => const OfferRequestWizard()),
       GoRoute(
-        path: '/calculator/request-offer-wizard',
-        builder: (context, state) => const OfferRequestWizard(),
-        redirect: (BuildContext context, GoRouterState state) {
-          final isSigned = ref.read(authProvider).isSigned;
-          if (!isSigned) return '/auth';
-          return null;
-        },
+        path: '/calculator/structure-design',
+        builder: (context, state) => StructureDesignScreen(initialInput: state.extra as StructureDesignInput?),
       ),
-      GoRoute(
-        path: '/members',
-        builder: (context, state) => const MembersPage(),
-      ),
-      GoRoute(
-        path: '/offers',
-        builder: (context, state) => const CompanyOffersHub(),
-      ),
-      GoRoute(
-        path: '/offers/catalog',
-        builder: (context, state) => const InvolvesCatalogScreen(),
-      ),
-      GoRoute(
-        path: '/admin-marketplace',
-        builder: (context, state) => const AdminOffersDashboard(),
-      ),
+      GoRoute(path: '/calculator/roof-simulator', builder: (context, state) => const RoofSimulatorPage()),
+      GoRoute(path: '/calculator/pv-system-designer', builder: (context, state) => const PvSystemDesignerScreen()),
+      GoRoute(path: '/calculator/fast-calculator', builder: (context, state) => const FastCalculator()),
+      GoRoute(path: '/members', builder: (context, state) => const MembersPage()),
+      GoRoute(path: '/offers', builder: (context, state) => const CompanyOffersHub()),
+      GoRoute(path: '/offers/catalog', builder: (context, state) => const InvolvesCatalogScreen()),
+      GoRoute(path: '/admin-marketplace', builder: (context, state) => const AdminOffersDashboard()),
       GoRoute(
         path: '/storefront',
         builder: (context, state) {
-          final audience = state.extra as StorefrontAudience?;
+          final audience = state.extra as StorefrontAudience? ?? storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
+          final companyId = int.tryParse(state.uri.queryParameters['company_id'] ?? '');
           return PreScaffold(
-            child: StorefrontScreen(
-              audience: audience ?? StorefrontAudience.b2c,
-            ),
+            child: StorefrontScreen(audience: audience, companyId: companyId),
           );
+        },
+      ),
+      GoRoute(
+        path: '/storefront/products',
+        builder: (context, state) {
+          final audience = storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
+          final companyId = int.tryParse(state.uri.queryParameters['company_id'] ?? '');
+          final globalCategoryId = int.tryParse(state.uri.queryParameters['global_category_id'] ?? '');
+          final title = state.uri.queryParameters['title'];
+
+          return StorefrontProductsScreen(audience: audience, companyId: companyId, initialGlobalCategoryId: globalCategoryId, title: title);
+        },
+      ),
+      GoRoute(
+        path: '/storefront/companies',
+        builder: (context, state) {
+          final audience = storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
+          return StorefrontCompaniesScreen(audience: audience);
         },
       ),
       GoRoute(
@@ -344,18 +497,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/services/companies',
         builder: (context, state) {
           final l10n = AppLocalizations.of(context)!;
-          final typeCode = state.uri.queryParameters['typeCode'] ?? '';
-          final typeName =
-              state.uri.queryParameters['typeName'] ??
-              state.uri.queryParameters['typeCode'] ??
-              l10n.services;
-          final typeId =
-              int.tryParse(state.uri.queryParameters['typeId'] ?? '') ?? 0;
+          final typeName = state.uri.queryParameters['typeName'] ?? state.uri.queryParameters['typeId'] ?? l10n.services;
+          final typeId = int.tryParse(state.uri.queryParameters['typeId'] ?? '') ?? 0;
 
           return PreScaffold(
             title: typeName,
             child: CompaniesScreen(
-              type: CompanyType(id: typeId, code: typeCode, name: typeName),
+              type: ServiceType(id: typeId, name: typeName),
             ),
           );
         },
@@ -374,3 +522,118 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+String? appRedirectForRoute(String path, AuthState authState) {
+  if (routeRequiresAdmin(path) && !authState.isSuperUser) {
+    return authState.isSigned ? '/home' : '/auth?redirect_to=$path';
+  }
+
+  if (routeRequiresCompanyMember(path) && !authState.isCompanyMember) {
+    return authState.isSigned ? '/home' : '/auth?redirect_to=$path';
+  }
+
+  if (path == '/company-work' || path.startsWith('/company-work/')) {
+    final projectsValue = authState.company?.permissions?.projects;
+    if (projectsValue == 'none' || projectsValue == null) {
+      return '/home';
+    }
+
+    if ((path == '/company-work/add' || path.startsWith('/company-work/edit/')) && projectsValue != 'write') {
+      return '/company-work';
+    }
+  }
+
+  if (routeRequiresAuthenticatedUser(path) && !authState.isSigned) {
+    return '/auth?redirect_to=$path';
+  }
+
+  return null;
+}
+
+// `/admin-marketplace` used to be excluded from this check (it doesn't
+// match `/admin` or `/admin/*`), so any signed-in non-admin user could
+// navigate straight to the Marketplace Oversight screen — the backend
+// calls would still 403, but the UI shell itself was reachable. Widened to
+// close that gap.
+bool routeRequiresAdmin(String path) => path == '/admin' || path.startsWith('/admin/') || path == '/admin-marketplace';
+
+bool routeRequiresCompanyMember(String path) {
+  return path.startsWith('/companies/dashboard') ||
+      path == '/inventory' ||
+      path.startsWith('/inventory/') ||
+      path == '/company-work' ||
+      path.startsWith('/company-work/') ||
+      path == '/members' ||
+      path == '/offers' ||
+      path.startsWith('/offers/');
+}
+
+bool routeRequiresAuthenticatedUser(String path) {
+  return path == '/auth/profile' ||
+      path == '/auth/edit_profile' ||
+      path == '/notifications' ||
+      path == '/user-requests' ||
+      path.startsWith('/user-requests/') ||
+      path == '/calculator/request-offer-wizard' ||
+      (path.startsWith('/storefront/') && path.contains('/orders'));
+}
+
+class _RouteRequirementPage extends StatelessWidget {
+  const _RouteRequirementPage({required this.title, required this.message, this.actionLabel, this.onAction});
+
+  final String title;
+  final String message;
+  final String? actionLabel;
+  final void Function(BuildContext context)? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return PreScaffold(
+      title: title,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 480),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.info_outline, size: 56),
+                const SizedBox(height: 16),
+                Text(title, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
+                const SizedBox(height: 12),
+                Text(message, textAlign: TextAlign.center),
+                if (actionLabel != null && onAction != null) ...[
+                  const SizedBox(height: 20),
+                  ElevatedButton(onPressed: () => onAction!(context), child: Text(actionLabel!)),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget buildInventoryProductRoute(GoRouterState state) {
+  final product = state.extra is Product ? state.extra as Product : null;
+  if (product == null) {
+    return const _RouteRequirementPage(title: 'Product Unavailable', message: 'Open this page from the inventory list so the product can be loaded safely.');
+  }
+  return ProductDetailsPage(product: product);
+}
+
+Widget buildOrderResultRoute(GoRouterState state) {
+  final order = state.extra is OrderRecord ? state.extra as OrderRecord : null;
+  if (order == null) {
+    final audience = storefrontAudienceFromQuery(state.uri.queryParameters['audience']);
+    return _RouteRequirementPage(
+      title: 'Order Result Unavailable',
+      message: 'The checkout result is only available immediately after placing an order.',
+      actionLabel: 'Open My Orders',
+      onAction: (context) => context.go('/storefront/${audience == StorefrontAudience.b2b ? 'b2b' : 'b2c'}/orders'),
+    );
+  }
+  return OrderCheckoutResultScreen(order: order);
+}

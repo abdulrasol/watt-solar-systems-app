@@ -1,8 +1,10 @@
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
+import 'solar_profile.dart';
 
 class SolarRequest {
   final int? id;
+  final SolarProfile? user;
   final int? cityId;
   final City? city;
   final bool allCities;
@@ -27,6 +29,7 @@ class SolarRequest {
 
   SolarRequest({
     this.id,
+    this.user,
     this.cityId,
     this.city,
     this.allCities = false,

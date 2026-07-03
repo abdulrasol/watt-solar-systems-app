@@ -5,15 +5,15 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
+import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart' show isEnabled;
 import 'package:solar_hub/src/features/calculations/presentation/screens/calculated_systems_page.dart';
 
 class AppDrawer extends ConsumerWidget {
@@ -27,20 +27,13 @@ class AppDrawer extends ConsumerWidget {
       width: 300,
       backgroundColor: Colors.transparent,
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
+        borderRadius: const BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30)),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             decoration: BoxDecoration(
-              color: isDark
-                  ? const Color(0xFF1E1E2C).withValues(alpha: 0.95)
-                  : Colors.white.withValues(alpha: 0.95),
-              border: Border(
-                right: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-              ),
+              color: isDark ? const Color(0xFF1E1E2C).withValues(alpha: 0.95) : Colors.white.withValues(alpha: 0.95),
+              border: Border(right: BorderSide(color: Colors.white.withValues(alpha: 0.1))),
             ),
             child: Column(
               children: [
@@ -55,41 +48,39 @@ class AppDrawer extends ConsumerWidget {
                           children: [
                             _buildDrawerItem(
                               context: context,
-                              icon: Iconsax.user_bold,
+                              icon: Iconsax.user,
                               title: AppLocalizations.of(context)!.profile,
                               route: '/auth/profile',
                               delay: 100,
                             ),
                           ],
                         ),
-                        _buildDrawerItem(
-                          context: context,
-                          icon: Iconsax.home_2_bold,
-                          title: AppLocalizations.of(context)!.my_systems,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (c) => const CalculatedSystemsPage(),
-                              ),
-                            );
-                          },
-                          delay: 100,
-                        ),
-                        _buildDrawerItem(
-                          context: context,
-                          icon: Iconsax.clipboard_bold,
-                          title: AppLocalizations.of(context)!.my_requests,
-                          route: '/user-requests',
-                          delay: 100,
-                        ),
-                        _buildDrawerItem(
-                          context: context,
-                          icon: Iconsax.shopping_cart_bold,
-                          title: AppLocalizations.of(context)!.my_orders,
-                          route: '/my_orders',
-                          delay: 100,
-                        ),
+                        if (ref.watch(isSystemsEnabled))
+                          _buildDrawerItem(
+                            context: context,
+                            icon: Iconsax.home_2,
+                            title: AppLocalizations.of(context)!.my_systems,
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (c) => const CalculatedSystemsPage()));
+                            },
+                            delay: 100,
+                          ),
+                        if (ref.watch(isOffersEnabled))
+                          _buildDrawerItem(
+                            context: context,
+                            icon: Iconsax.clipboard,
+                            title: AppLocalizations.of(context)!.my_requests,
+                            route: '/user-requests',
+                            delay: 100,
+                          ),
+                        if (ref.watch(isStoreEnabled))
+                          _buildDrawerItem(
+                            context: context,
+                            icon: Iconsax.shopping_cart,
+                            title: AppLocalizations.of(context)!.my_orders,
+                            route: '/storefront/b2c/orders',
+                            delay: 100,
+                          ),
                       ],
 
                       if (authState.isCompanyMember)
@@ -97,22 +88,17 @@ class AppDrawer extends ConsumerWidget {
                           children: [
                             _buildDrawerItem(
                               context: context,
-                              icon: Iconsax.building_bold,
-                              title:
-                                  authState.company?.name ??
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.company_dashboard,
+                              icon: Iconsax.building,
+                              title: authState.company?.name ?? AppLocalizations.of(context)!.company_dashboard,
                               route: '/companies/dashboard',
                               delay: 100,
                             ),
                           ],
                         )
-                      else if (isEnabled(ref, 'auth', skipFalseIfDebug: true) &&
-                          isEnabled(ref, 'companies', skipFalseIfDebug: true))
+                      else if (ref.watch(isAuthEnabled) && ref.watch(isCompaniesEnabled))
                         _buildDrawerItem(
                           context: context,
-                          icon: Iconsax.building_3_bold,
+                          icon: Iconsax.building_3,
                           title: AppLocalizations.of(context)!.register_company,
                           route: '/auth/company_registration',
                           delay: 170,
@@ -122,10 +108,8 @@ class AppDrawer extends ConsumerWidget {
                           children: [
                             _buildDrawerItem(
                               context: context,
-                              icon: EvaIcons.code,
-                              title: AppLocalizations.of(
-                                context,
-                              )!.admin_dashboard,
+                              icon: Icons.code,
+                              title: AppLocalizations.of(context)!.admin_dashboard,
                               onTap: () {
                                 Navigator.of(context).pop();
                                 context.go('/admin');
@@ -136,7 +120,7 @@ class AppDrawer extends ConsumerWidget {
                         ),
                       _buildDrawerItem(
                         context: context,
-                        icon: Iconsax.setting_2_bold,
+                        icon: Iconsax.setting_2,
                         title: AppLocalizations.of(context)!.settings,
                         route: '/settings',
                         delay: 300,
@@ -144,7 +128,7 @@ class AppDrawer extends ConsumerWidget {
 
                       _buildDrawerItem(
                         context: context,
-                        icon: Iconsax.message_text_bold,
+                        icon: Iconsax.message_text,
                         title: AppLocalizations.of(context)!.send_feedback,
                         onTap: () async {
                           Navigator.of(context).pop();
@@ -176,25 +160,19 @@ class AppDrawer extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppTheme.primaryColor,
-            AppTheme.primaryColor.withValues(alpha: 0.6),
-          ],
+          colors: [AppTheme.primaryColor, AppTheme.primaryColor.withValues(alpha: 0.6)],
         ),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.3),
-            ),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: 0.3)),
             child: CircleAvatar(
               radius: 28,
               backgroundColor: Colors.white,
               child: isGuest || user.image == null || user.image!.isEmpty
-                  ? const Icon(Iconsax.user_bold, size: 28, color: Colors.grey)
+                  ? const Icon(Iconsax.user, size: 28, color: Colors.grey)
                   : WdImagePreview(imageUrl: user.image!),
             ),
           ),
@@ -204,19 +182,13 @@ class AppDrawer extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isGuest
-                      ? AppLocalizations.of(context)!.welcome_guest
-                      : AppLocalizations.of(context)!.hello,
+                  isGuest ? AppLocalizations.of(context)!.welcome_guest : AppLocalizations.of(context)!.hello,
                   style: const TextStyle(color: Colors.white70, fontSize: 13),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -241,21 +213,11 @@ class AppDrawer extends ConsumerWidget {
       child: ListTile(
         leading: Container(
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(10),
-          ),
+          decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
           child: Icon(icon, color: AppTheme.primaryColor, size: 20),
         ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-        ),
-        trailing: const Icon(
-          Icons.arrow_forward_ios_rounded,
-          size: 14,
-          color: Colors.grey,
-        ),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         onTap: () {
           // Navigator.of(context).pop(); // Close drawer
@@ -267,38 +229,24 @@ class AppDrawer extends ConsumerWidget {
     ).animate().fadeIn(duration: 50.ms).slideX(begin: -0.1);
   }
 
-  Widget _buildFooter(
-    BuildContext context,
-    AuthState authState,
-    WidgetRef ref,
-  ) {
+  Widget _buildFooter(BuildContext context, AuthState authState, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Colors.grey.withValues(alpha: 0.1)),
-        ),
+        border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.1))),
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                AppLocalizations.of(context)!.dark_mode,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              Switch(
-                value: isDark,
-                activeTrackColor: AppTheme.primaryColor,
-                onChanged: (val) =>
-                    ref.read(settingsProvider.notifier).toggleDark(),
-              ),
+              Text(AppLocalizations.of(context)!.dark_mode, style: const TextStyle(fontWeight: FontWeight.w600)),
+              Switch(value: isDark, activeTrackColor: AppTheme.primaryColor, onChanged: (val) => ref.read(settingsProvider.notifier).toggleDark()),
             ],
           ),
           SizedBox(height: 20.h),
-          if (isEnabled(ref, 'auth', skipFalseIfDebug: true))
+          if (ref.watch(isAuthEnabled))
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -311,27 +259,14 @@ class AppDrawer extends ConsumerWidget {
                     context.go('/auth');
                   }
                 },
-                icon: Icon(
-                  authState.isSigned ? Iconsax.logout_bold : Iconsax.login_bold,
-                  size: 20,
-                ),
-                label: Text(
-                  authState.isSigned
-                      ? AppLocalizations.of(context)!.sign_out
-                      : AppLocalizations.of(context)!.sign_in,
-                ),
+                icon: Icon(authState.isSigned ? Iconsax.logout : Iconsax.login, size: 20),
+                label: Text(authState.isSigned ? AppLocalizations.of(context)!.sign_out : AppLocalizations.of(context)!.sign_in),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: authState.isSigned
-                      ? Colors.red.withValues(alpha: 0.1)
-                      : AppTheme.primaryColor,
-                  foregroundColor: authState.isSigned
-                      ? Colors.red
-                      : Colors.white,
+                  backgroundColor: authState.isSigned ? Colors.red.withValues(alpha: 0.1) : AppTheme.primaryColor,
+                  foregroundColor: authState.isSigned ? Colors.red : Colors.white,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
             ),

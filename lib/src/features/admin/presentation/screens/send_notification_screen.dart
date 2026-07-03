@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/notification_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
@@ -21,6 +21,10 @@ class _SendNotificationScreenState extends ConsumerState<SendNotificationScreen>
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
   final _dataController = TextEditingController();
+  // Holds a company id, post id, or user id depending on `_selectedType` —
+  // one field reused across the three "target a specific thing" types to
+  // keep the form compact.
+  final _targetIdController = TextEditingController();
 
   String _selectedType = 'broadcast';
   String _selectedTopic = 'general';
@@ -36,6 +40,7 @@ class _SendNotificationScreenState extends ConsumerState<SendNotificationScreen>
     _titleController.dispose();
     _bodyController.dispose();
     _dataController.dispose();
+    _targetIdController.dispose();
     super.dispose();
   }
 
@@ -62,7 +67,7 @@ class _SendNotificationScreenState extends ConsumerState<SendNotificationScreen>
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (state.isLoadingStats && state.stats.devices.total == 0) {
-            return const AdminLoadingState(icon: Iconsax.notification_bing_bold, message: 'Loading notification tools...');
+            return const AdminLoadingState(icon: Iconsax.notification_bing, message: 'Loading notification tools...');
           }
 
           final wide = constraints.maxWidth >= 920;
@@ -74,6 +79,7 @@ class _SendNotificationScreenState extends ConsumerState<SendNotificationScreen>
             titleController: _titleController,
             bodyController: _bodyController,
             dataController: _dataController,
+            targetIdController: _targetIdController,
             isSending: state.isSending,
             onTypeChanged: (value) => setState(() => _selectedType = value),
             onTopicChanged: (value) => setState(() => _selectedTopic = value),
@@ -105,13 +111,36 @@ class _SendNotificationScreenState extends ConsumerState<SendNotificationScreen>
       data = jsonDecode(_dataController.text) as Map<String, dynamic>;
     }
 
+    final title = _titleController.text.trim();
+    final body = _bodyController.text.trim();
     final controller = ref.read(notificationProvider.notifier);
-    if (_selectedType == 'broadcast') {
-      controller.sendBroadcastNotification(title: _titleController.text.trim(), body: _bodyController.text.trim(), data: data);
-      return;
-    }
 
-    controller.sendTopicNotification(topic: _selectedTopic, title: _titleController.text.trim(), body: _bodyController.text.trim(), data: data);
+    switch (_selectedType) {
+      case 'broadcast':
+        controller.sendBroadcastNotification(title: title, body: body, data: data);
+      case 'topic':
+        controller.sendTopicNotification(topic: _selectedTopic, title: title, body: body, data: data);
+      case 'group_company':
+        controller.sendGroupNotification(
+          groupType: 'company',
+          groupId: int.tryParse(_targetIdController.text.trim()) ?? _targetIdController.text.trim(),
+          title: title,
+          body: body,
+          data: data,
+        );
+      case 'group_followers':
+        controller.sendGroupNotification(
+          groupType: 'followers',
+          groupId: int.tryParse(_targetIdController.text.trim()) ?? _targetIdController.text.trim(),
+          title: title,
+          body: body,
+          data: data,
+        );
+      case 'user':
+        final userId = int.tryParse(_targetIdController.text.trim());
+        if (userId == null) return;
+        controller.sendUserNotification(userId: userId, title: title, body: body, data: data);
+    }
   }
 }
 
@@ -123,10 +152,10 @@ class _StatsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      ('Devices', '${state.stats.devices.total}', Iconsax.mobile_bold),
-      ('Active', '${state.stats.devices.active}', Iconsax.flash_circle_bold),
-      ('Sent', '${state.stats.notifications.sent}', Iconsax.send_2_bold),
-      ('Failed', '${state.stats.notifications.failed}', Iconsax.warning_2_bold),
+      ('Devices', '${state.stats.devices.total}', Iconsax.mobile),
+      ('Active', '${state.stats.devices.active}', Iconsax.flash_circle),
+      ('Sent', '${state.stats.notifications.sent}', Iconsax.send_2),
+      ('Failed', '${state.stats.notifications.failed}', Iconsax.warning_2),
     ];
 
     return Container(
@@ -182,6 +211,7 @@ class _NotificationForm extends StatelessWidget {
     required this.titleController,
     required this.bodyController,
     required this.dataController,
+    required this.targetIdController,
     required this.isSending,
     required this.onTypeChanged,
     required this.onTopicChanged,
@@ -194,6 +224,7 @@ class _NotificationForm extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController bodyController;
   final TextEditingController dataController;
+  final TextEditingController targetIdController;
   final bool isSending;
   final ValueChanged<String> onTypeChanged;
   final ValueChanged<String> onTopicChanged;
@@ -217,8 +248,11 @@ class _NotificationForm extends StatelessWidget {
             DropdownButtonFormField<String>(
               initialValue: selectedType,
               items: const [
-                DropdownMenuItem(value: 'broadcast', child: Text('Broadcast')),
+                DropdownMenuItem(value: 'broadcast', child: Text('Broadcast (everyone)')),
                 DropdownMenuItem(value: 'topic', child: Text('Topic')),
+                DropdownMenuItem(value: 'group_company', child: Text('Company (all members)')),
+                DropdownMenuItem(value: 'group_followers', child: Text('Post Followers')),
+                DropdownMenuItem(value: 'user', child: Text('Specific User')),
               ],
               onChanged: (value) => onTypeChanged(value ?? 'broadcast'),
               decoration: const InputDecoration(labelText: 'Target Type'),
@@ -234,6 +268,21 @@ class _NotificationForm extends StatelessWidget {
                 ],
                 onChanged: (value) => onTopicChanged(value ?? 'general'),
                 decoration: const InputDecoration(labelText: 'Topic'),
+              ),
+              const SizedBox(height: 12),
+            ],
+            if (selectedType == 'group_company' || selectedType == 'group_followers' || selectedType == 'user') ...[
+              TextFormField(
+                controller: targetIdController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: switch (selectedType) {
+                    'group_company' => 'Company ID',
+                    'group_followers' => 'Post ID',
+                    _ => 'User ID',
+                  },
+                ),
+                validator: (value) => value == null || value.trim().isEmpty ? 'This field is required' : null,
               ),
               const SizedBox(height: 12),
             ],
@@ -258,7 +307,7 @@ class _NotificationForm extends StatelessWidget {
             const SizedBox(height: 20),
             FilledButton.icon(
               onPressed: isSending ? null : onSubmit,
-              icon: const Icon(Iconsax.send_2_bold),
+              icon: const Icon(Iconsax.send_2),
               label: Text(isSending ? 'Sending...' : 'Send Notification'),
             ),
           ],

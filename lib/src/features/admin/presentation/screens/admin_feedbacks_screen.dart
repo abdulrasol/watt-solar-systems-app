@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_controller.dart';
@@ -13,17 +13,30 @@ class AdminFeedbacksScreen extends ConsumerStatefulWidget {
   const AdminFeedbacksScreen({super.key});
 
   @override
-  ConsumerState<AdminFeedbacksScreen> createState() =>
-      _AdminFeedbacksScreenState();
+  ConsumerState<AdminFeedbacksScreen> createState() => _AdminFeedbacksScreenState();
 }
 
 class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
   String _filterMode = 'all';
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(adminProvider.notifier).fetchFeedbacks());
+    Future.microtask(() => ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true));
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      ref.read(adminProvider.notifier).fetchNextPage();
+    }
   }
 
   @override
@@ -31,24 +44,11 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
     final state = ref.watch(adminProvider);
 
     return AdminPageScaffold(
-      // title: 'User Feedbacks',
-      // subtitle: 'Messages load only when this route is opened.',
-      actions: [
-        IconButton(
-          onPressed: () => ref.read(adminProvider.notifier).fetchFeedbacks(),
-          icon: const Icon(Iconsax.refresh_bold),
-        ),
-      ],
+      actions: [IconButton(onPressed: () => ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true), icon: const Icon(Iconsax.refresh))],
       child: state.isLoading
-          ? const AdminLoadingState(
-              icon: Iconsax.message_bold,
-              message: 'Loading feedbacks...',
-            )
+          ? const AdminLoadingState(icon: Iconsax.message, message: 'Loading feedbacks...')
           : state.error != null
-          ? AdminErrorState(
-              error: state.error!,
-              onRetry: () => ref.read(adminProvider.notifier).fetchFeedbacks(),
-            )
+          ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true))
           : _buildContent(context, state),
     );
   }
@@ -63,44 +63,33 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
           child: Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: [
-              _buildFilterChip(context, 'All', 'all'),
-              _buildFilterChip(context, 'Unread', 'unread'),
-              _buildFilterChip(context, 'Read', 'read'),
-            ],
+            children: [_buildFilterChip(context, 'All', 'all'), _buildFilterChip(context, 'Unread', 'unread'), _buildFilterChip(context, 'Read', 'read')],
           ),
         ),
         const SizedBox(height: 16),
         Expanded(
           child: filtered.isEmpty
-              ? const AdminEmptyState(
-                  icon: Iconsax.message_question_bold,
-                  title: 'No feedbacks found',
-                  subtitle: 'There are no feedback items for this filter.',
-                )
+              ? const AdminEmptyState(icon: Iconsax.message_question, title: 'No feedbacks found', subtitle: 'There are no feedback items for this filter.')
               : RefreshIndicator(
-                  onRefresh: () =>
-                      ref.read(adminProvider.notifier).fetchFeedbacks(),
+                  onRefresh: () => ref.read(adminProvider.notifier).fetchFeedbacks(isRefresh: true),
                   child: ListView.separated(
-                    itemCount: filtered.length,
+                    controller: _scrollController,
+                    padding: const EdgeInsets.only(bottom: 100),
+                    itemCount: filtered.length + (state.isMoreLoading ? 1 : 0),
                     separatorBuilder: (_, index) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
+                      if (index == filtered.length) {
+                        return const Center(
+                          child: Padding(padding: EdgeInsets.all(16.0), child: CircularProgressIndicator()),
+                        );
+                      }
                       final feedback = filtered[index];
                       return _FeedbackCard(
                         feedback: feedback,
                         onToggleRead: feedback.id == null
                             ? null
-                            : () => ref
-                                .read(adminProvider.notifier)
-                                .toggleFeedbackReadStatus(
-                                  feedback.id!,
-                                  !feedback.isRead,
-                                ),
-                        onDelete: feedback.id == null
-                            ? null
-                            : () => ref
-                                .read(adminProvider.notifier)
-                                .deleteFeedback(feedback.id!),
+                            : () => ref.read(adminProvider.notifier).toggleFeedbackReadStatus(feedback.id!, !feedback.isRead),
+                        onDelete: feedback.id == null ? null : () => ref.read(adminProvider.notifier).deleteFeedback(feedback.id!),
                       );
                     },
                   ),
@@ -117,11 +106,7 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
       onSelected: (_) => setState(() => _filterMode = mode),
       label: Text(
         label,
-        style: TextStyle(
-          fontFamily: AppTheme.fontFamily,
-          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-          color: isSelected ? Colors.white : null,
-        ),
+        style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500, color: isSelected ? Colors.white : null),
       ),
       selectedColor: AppTheme.primaryColor,
       checkmarkColor: Colors.white,
@@ -141,11 +126,7 @@ class _AdminFeedbacksScreenState extends ConsumerState<AdminFeedbacksScreen> {
 }
 
 class _FeedbackCard extends StatelessWidget {
-  const _FeedbackCard({
-    required this.feedback,
-    required this.onToggleRead,
-    required this.onDelete,
-  });
+  const _FeedbackCard({required this.feedback, required this.onToggleRead, required this.onDelete});
 
   final FeedbackEntity feedback;
   final VoidCallback? onToggleRead;
@@ -161,11 +142,7 @@ class _FeedbackCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: feedback.isRead
-              ? Colors.grey.withValues(alpha: 0.2)
-              : AppTheme.primaryColor.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: feedback.isRead ? Colors.grey.withValues(alpha: 0.2) : AppTheme.primaryColor.withValues(alpha: 0.3)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.14 : 0.05),
@@ -184,16 +161,8 @@ class _FeedbackCard extends StatelessWidget {
                 radius: 24,
                 backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
                 child: feedback.imageData != null && feedback.imageData!.isNotEmpty
-                    ? ClipOval(
-                        child: WdImagePreview(
-                          imageUrl: feedback.imageData!,
-                          size: 48,
-                        ),
-                      )
-                    : const Icon(
-                        Iconsax.user_bold,
-                        color: AppTheme.primaryColor,
-                      ),
+                    ? ClipOval(child: WdImagePreview(imageUrl: feedback.imageData!, size: 48))
+                    : const Icon(Iconsax.user, color: AppTheme.primaryColor),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -202,20 +171,12 @@ class _FeedbackCard extends StatelessWidget {
                   children: [
                     Text(
                       feedback.name.isNotEmpty ? feedback.name : 'Anonymous',
-                      style: const TextStyle(
-                        fontFamily: AppTheme.fontFamily,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     if ((feedback.phoneNumber ?? '').isNotEmpty)
                       Text(
                         feedback.phoneNumber!,
-                        style: TextStyle(
-                          fontFamily: AppTheme.fontFamily,
-                          fontSize: 13,
-                          color: Theme.of(context).hintColor,
-                        ),
+                        style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 13, color: Theme.of(context).hintColor),
                       ),
                   ],
                 ),
@@ -223,10 +184,7 @@ class _FeedbackCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: (feedback.isRead
-                          ? Colors.grey
-                          : AppTheme.primaryColor)
-                      .withValues(alpha: 0.12),
+                  color: (feedback.isRead ? Colors.grey : AppTheme.primaryColor).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
@@ -242,25 +200,14 @@ class _FeedbackCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            feedback.message,
-            style: const TextStyle(
-              fontFamily: AppTheme.fontFamily,
-              fontSize: 14,
-              height: 1.5,
-            ),
-          ),
+          Text(feedback.message, style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14, height: 1.5)),
           const SizedBox(height: 16),
           Wrap(
             spacing: 12,
             runSpacing: 8,
             children: [
-              _MetaChip(icon: Iconsax.calendar_bold, label: createdAt),
-              if ((feedback.phoneNumber ?? '').isNotEmpty)
-                _MetaChip(
-                  icon: Iconsax.call_bold,
-                  label: feedback.phoneNumber!,
-                ),
+              _MetaChip(icon: Iconsax.calendar, label: createdAt),
+              if ((feedback.phoneNumber ?? '').isNotEmpty) _MetaChip(icon: Iconsax.call, label: feedback.phoneNumber!),
             ],
           ),
           const SizedBox(height: 16),
@@ -268,21 +215,14 @@ class _FeedbackCard extends StatelessWidget {
             children: [
               TextButton.icon(
                 onPressed: onToggleRead,
-                icon: Icon(
-                  feedback.isRead
-                      ? Iconsax.eye_slash_bold
-                      : Iconsax.eye_bold,
-                ),
+                icon: Icon(feedback.isRead ? Iconsax.eye_slash : Iconsax.eye),
                 label: Text(feedback.isRead ? 'Mark unread' : 'Mark read'),
               ),
               const SizedBox(width: 8),
               TextButton.icon(
                 onPressed: onDelete,
-                icon: const Icon(Iconsax.trash_bold, color: AppTheme.errorColor),
-                label: const Text(
-                  'Delete',
-                  style: TextStyle(color: AppTheme.errorColor),
-                ),
+                icon: const Icon(Iconsax.trash, color: AppTheme.errorColor),
+                label: const Text('Delete', style: TextStyle(color: AppTheme.errorColor)),
               ),
             ],
           ),
@@ -290,7 +230,6 @@ class _FeedbackCard extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class _MetaChip extends StatelessWidget {
@@ -303,10 +242,7 @@ class _MetaChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).chipTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(999),
-      ),
+      decoration: BoxDecoration(color: Theme.of(context).chipTheme.backgroundColor, borderRadius: BorderRadius.circular(999)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -314,11 +250,7 @@ class _MetaChip extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: TextStyle(
-              fontFamily: AppTheme.fontFamily,
-              fontSize: 12,
-              color: Theme.of(context).hintColor,
-            ),
+            style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12, color: Theme.of(context).hintColor),
           ),
         ],
       ),

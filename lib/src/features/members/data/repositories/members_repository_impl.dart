@@ -30,4 +30,9 @@ class MembersRepositoryImpl implements MembersRepository {
   Future<void> deleteMember(int companyId, int memberId) {
     return remoteDataSource.deleteMember(companyId, memberId);
   }
+
+  @override
+  Future<void> updateMemberRole(int companyId, int memberId, String role) {
+    return remoteDataSource.updateMember(companyId, memberId, {'role': role});
+  }
 }

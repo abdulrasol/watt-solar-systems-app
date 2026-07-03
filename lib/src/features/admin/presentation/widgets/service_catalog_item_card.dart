@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class ServiceCatalogItemCard extends StatelessWidget {
-  const ServiceCatalogItemCard({
-    super.key,
-    required this.item,
-    required this.onEdit,
-    required this.onDelete,
-    required this.onToggleActive,
-    this.index,
-  });
+  const ServiceCatalogItemCard({super.key, required this.item, required this.onEdit, required this.onDelete, required this.onToggleActive, this.index});
 
   final ServiceCatalogItem item;
   final VoidCallback onEdit;
@@ -32,9 +25,7 @@ class ServiceCatalogItemCard extends StatelessWidget {
         border: Border.all(
           color: item.isActive
               ? AppTheme.primaryColor.withValues(alpha: 0.3)
-              : (isDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.grey.withValues(alpha: 0.1)),
+              : (isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1)),
           width: 1.5,
         ),
       ),
@@ -61,16 +52,10 @@ class ServiceCatalogItemCard extends StatelessWidget {
                   alignment: WrapAlignment.spaceBetween,
                   children: [
                     ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: isMobile ? 180 : 340,
-                      ),
+                      constraints: BoxConstraints(maxWidth: isMobile ? 180 : 340),
                       child: Text(
                         item.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          fontFamily: AppTheme.fontFamily,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, fontFamily: AppTheme.fontFamily),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -82,11 +67,7 @@ class ServiceCatalogItemCard extends StatelessWidget {
                 if (item.description != null && item.description!.isNotEmpty)
                   Text(
                     item.description!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
-                      fontFamily: AppTheme.fontFamily,
-                    ),
+                    style: TextStyle(fontSize: 12, color: isDark ? Colors.grey[400] : Colors.grey[600], fontFamily: AppTheme.fontFamily),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -96,26 +77,16 @@ class ServiceCatalogItemCard extends StatelessWidget {
                   runSpacing: 8,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    if (item.category != null)
-                      _buildCategoryTag(item.category!),
-                    if (item.route != null && item.route!.isNotEmpty)
-                      _buildRouteTag(item.route!),
+                    if (item.category != null) _buildCategoryTag(item.category!),
+                    if (item.route != null && item.route!.isNotEmpty) _buildRouteTag(item.route!),
                     IconButton(
-                      icon: const Icon(
-                        Iconsax.edit_2_bold,
-                        color: AppTheme.primaryColor,
-                        size: 20,
-                      ),
+                      icon: Icon(Iconsax.edit_2, color: AppTheme.primaryColor, size: 20),
                       onPressed: onEdit,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                     ),
                     IconButton(
-                      icon: const Icon(
-                        Iconsax.trash_bold,
-                        color: AppTheme.errorColor,
-                        size: 20,
-                      ),
+                      icon: const Icon(Iconsax.trash, color: AppTheme.errorColor, size: 20),
                       onPressed: onDelete,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
@@ -137,20 +108,9 @@ class ServiceCatalogItemCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10),
-        image: item.icon != null
-            ? DecorationImage(
-                image: NetworkImage(item.icon!),
-                fit: BoxFit.contain,
-              )
-            : null,
+        image: item.icon != null ? DecorationImage(image: NetworkImage(item.icon!), fit: BoxFit.contain) : null,
       ),
-      child: item.icon == null
-          ? const Icon(
-              Iconsax.setting_2_bold,
-              color: AppTheme.primaryColor,
-              size: 24,
-            )
-          : null,
+      child: item.icon == null ? Icon(Iconsax.setting_2, color: AppTheme.primaryColor, size: 24) : null,
     );
   }
 
@@ -159,29 +119,15 @@ class ServiceCatalogItemCard extends StatelessWidget {
       onTap: onToggleActive,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: (item.isActive ? Colors.green : Colors.grey).withValues(
-            alpha: 0.1,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
+        decoration: BoxDecoration(color: (item.isActive ? Colors.green : Colors.grey).withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              item.isActive ? Icons.check_circle : Icons.cancel,
-              size: 14,
-              color: item.isActive ? Colors.green : Colors.grey,
-            ),
+            Icon(item.isActive ? Icons.check_circle : Icons.cancel, size: 14, color: item.isActive ? Colors.green : Colors.grey),
             const SizedBox(width: 4),
             Text(
               item.isActive ? 'ON' : 'OFF',
-              style: TextStyle(
-                color: item.isActive ? Colors.green : Colors.grey,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppTheme.fontFamily,
-              ),
+              style: TextStyle(color: item.isActive ? Colors.green : Colors.grey, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
             ),
           ],
         ),
@@ -192,18 +138,10 @@ class ServiceCatalogItemCard extends StatelessWidget {
   Widget _buildCategoryTag(String category) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: AppTheme.accentColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(4),
-      ),
+      decoration: BoxDecoration(color: AppTheme.accentColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
       child: Text(
         category.toUpperCase(),
-        style: const TextStyle(
-          color: AppTheme.accentColor,
-          fontSize: 9,
-          fontWeight: FontWeight.w600,
-          fontFamily: AppTheme.fontFamily,
-        ),
+        style: const TextStyle(color: AppTheme.accentColor, fontSize: 9, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
       ),
     );
   }
@@ -211,18 +149,10 @@ class ServiceCatalogItemCard extends StatelessWidget {
   Widget _buildRouteTag(String route) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(4),
-      ),
+      decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
       child: Text(
         route,
-        style: const TextStyle(
-          color: AppTheme.primaryColor,
-          fontSize: 9,
-          fontWeight: FontWeight.w600,
-          fontFamily: AppTheme.fontFamily,
-        ),
+        style: const TextStyle(color: AppTheme.primaryColor, fontSize: 9, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
       ),
     );
   }

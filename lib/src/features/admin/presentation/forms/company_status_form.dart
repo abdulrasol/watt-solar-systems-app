@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyStatusForm extends StatefulWidget {
   final String currentStatus;
   final Function(String status) onSubmit;
 
-  const CompanyStatusForm({
-    super.key,
-    required this.currentStatus,
-    required this.onSubmit,
-  });
+  const CompanyStatusForm({super.key, required this.currentStatus, required this.onSubmit});
 
   @override
   State<CompanyStatusForm> createState() => _CompanyStatusFormState();
@@ -44,43 +40,20 @@ class _CompanyStatusFormState extends State<CompanyStatusForm> {
               children: [
                 const Text(
                   'Update Company Status',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: AppTheme.fontFamily,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
                 ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Iconsax.close_circle_bold,
-                    color: Colors.grey,
-                    size: 24,
-                  ),
+                  icon: const Icon(Iconsax.close_circle, color: Colors.grey, size: 24),
                 ),
               ],
             ),
             const SizedBox(height: 24),
-            _buildStatusOption(
-              'pending',
-              'Pending Review',
-              Iconsax.clock_bold,
-              AppTheme.warningColor,
-            ),
+            _buildStatusOption('pending', 'Pending Review', Iconsax.clock, AppTheme.warningColor),
             const SizedBox(height: 12),
-            _buildStatusOption(
-              'active',
-              'Activate Company',
-              Iconsax.tick_circle_bold,
-              Colors.green,
-            ),
+            _buildStatusOption('active', 'Activate Company', Iconsax.tick_circle, Colors.green),
             const SizedBox(height: 12),
-            _buildStatusOption(
-              'rejected',
-              'Reject Company',
-              Iconsax.close_circle_bold,
-              AppTheme.errorColor,
-            ),
+            _buildStatusOption('rejected', 'Reject Company', Iconsax.close_circle, AppTheme.errorColor),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
@@ -93,17 +66,11 @@ class _CompanyStatusFormState extends State<CompanyStatusForm> {
                   backgroundColor: AppTheme.primaryColor,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 child: const Text(
                   'UPDATE STATUS',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: AppTheme.fontFamily,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
                 ),
               ),
             ),
@@ -114,12 +81,7 @@ class _CompanyStatusFormState extends State<CompanyStatusForm> {
     );
   }
 
-  Widget _buildStatusOption(
-    String status,
-    String label,
-    IconData icon,
-    Color color,
-  ) {
+  Widget _buildStatusOption(String status, String label, IconData icon, Color color) {
     final isSelected = _status == status;
     return InkWell(
       onTap: () => setState(() => _status = status),
@@ -129,9 +91,7 @@ class _CompanyStatusFormState extends State<CompanyStatusForm> {
         decoration: BoxDecoration(
           color: isSelected ? color.withValues(alpha: 0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? color : Colors.grey.withValues(alpha: 0.2),
-          ),
+          border: Border.all(color: isSelected ? color : Colors.grey.withValues(alpha: 0.2)),
         ),
         child: Row(
           children: [
@@ -147,8 +107,7 @@ class _CompanyStatusFormState extends State<CompanyStatusForm> {
               ),
             ),
             const Spacer(),
-            if (isSelected)
-              Icon(Iconsax.tick_circle_bold, color: color, size: 24),
+            if (isSelected) Icon(Iconsax.tick_circle, color: color, size: 24),
           ],
         ),
       ),

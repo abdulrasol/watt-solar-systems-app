@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class WdImagePreview extends StatelessWidget {
@@ -13,7 +13,7 @@ class WdImagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageUrl.isEmpty || imageUrl == 'null') return Icon(Iconsax.image_bold, size: 28.sp, color: Colors.grey);
+    if (imageUrl.isEmpty || imageUrl == 'null') return Icon(Iconsax.image, size: 28.sp, color: Colors.grey);
     return ClipRRect(
       borderRadius: BorderRadius.circular(shape == BoxShape.circle ? 999.r : 24.r),
       child: Container(
@@ -27,7 +27,7 @@ class WdImagePreview extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: fit,
-          errorWidget: (context, url, error) => Icon(Iconsax.building_bold, color: AppTheme.primaryColor, size: 28.sp),
+          errorWidget: (context, url, error) => Icon(Iconsax.building, color: AppTheme.primaryColor, size: 28.sp),
         ),
       ),
     );

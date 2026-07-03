@@ -3,14 +3,19 @@ import 'package:solar_hub/src/core/models/response.dart' as api;
 import 'package:solar_hub/src/core/services/dio.dart';
 import 'package:solar_hub/src/shared/domain/company/company_category.dart';
 import 'package:solar_hub/src/shared/domain/company/company_contact.dart';
+import 'package:solar_hub/src/shared/domain/company/company_expense.dart';
 import 'package:solar_hub/src/shared/domain/company/company_public_service.dart';
+import 'package:solar_hub/src/shared/domain/company/delivery_option.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_activation_reminder_response.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_plan.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_request.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_system.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_category_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_contact_form_model.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/models/company_expense_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_public_service_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_subscription_request_form_model.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/models/delivery_option_form_model.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
 
@@ -19,6 +24,7 @@ abstract class CompanyManagementRemoteDataSource {
     int companyId, {
     int page = 1,
     int? pageSize,
+    String? search,
   });
 
   Future<CompanyContact> createContact(
@@ -27,6 +33,34 @@ abstract class CompanyManagementRemoteDataSource {
   );
 
   Future<void> deleteContact(int companyId, int contactId);
+
+  Future<List<DeliveryOption>> listDeliveryOptions(
+    int companyId, {
+    int page = 1,
+    int pageSize = 12,
+  });
+
+  Future<DeliveryOption> createDeliveryOption(
+    int companyId,
+    DeliveryOptionFormModel payload,
+  );
+
+  Future<void> deleteDeliveryOption(int companyId, int optionId);
+
+  Future<List<CompanyExpense>> listExpenses(
+    int companyId, {
+    int page = 1,
+    int pageSize = 12,
+  });
+
+  Future<CompanyExpense> createExpense(
+    int companyId,
+    CompanyExpenseFormModel payload,
+  );
+
+  Future<void> deleteExpense(int companyId, int expenseId);
+
+  Future<List<CompanySystem>> listCompanySystems(int companyId);
 
   Future<List<CompanyPublicService>> listPublicServices(int companyId);
 
@@ -75,11 +109,13 @@ class CompanyManagementRemoteDataSourceImpl
     int companyId, {
     int page = 1,
     int? pageSize,
+    String? search,
   }) async {
     try {
       final queryParameters = <String, dynamic>{
         'page': page,
         'page_size': pageSize,
+        'search': search,
       }..removeWhere((key, value) => value == null);
       final response = await _dioService.getRawMap(
         AppUrls.contacts(companyId),
@@ -137,6 +173,126 @@ class CompanyManagementRemoteDataSourceImpl
         stackTrace: stackTrace,
         tag: 'CompanyManagementRemoteDataSource',
       );
+      rethrow;
+    }
+  }
+
+  // --- Delivery Options ---
+  // Backend paginates via Django Ninja's native `@paginate(PageNumberPagination,
+  // page_size=12)`, which returns a flat `{"items": [...], "count": N}` body
+  // (no envelope wrapper) — `PaginationResponse.fromJson`'s fallback branch
+  // already handles this shape, same as `listContacts` above.
+  @override
+  Future<List<DeliveryOption>> listDeliveryOptions(
+    int companyId, {
+    int page = 1,
+    int pageSize = 12,
+  }) async {
+    try {
+      final response = await _dioService.getRawMap(
+        AppUrls.deliveryOptions(companyId),
+        queryParameters: {'page': page, 'page_size': pageSize},
+      );
+      final pagination = api.PaginationResponse.fromJson(response);
+      final items = List<Map<String, dynamic>>.from(
+        (pagination.body as List? ?? const []).whereType<Map>().map(
+          (item) => Map<String, dynamic>.from(item),
+        ),
+      );
+      return items.map<DeliveryOption>(DeliveryOption.fromJson).toList(growable: false);
+    } catch (e, stackTrace) {
+      dPrint('listDeliveryOptions error: $e', stackTrace: stackTrace, tag: 'CompanyManagementRemoteDataSource');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<DeliveryOption> createDeliveryOption(
+    int companyId,
+    DeliveryOptionFormModel payload,
+  ) async {
+    try {
+      final response = await _dioService.post(AppUrls.deliveryOptions(companyId), data: payload.toJson());
+      return DeliveryOption.fromJson(Map<String, dynamic>.from(response.body as Map));
+    } catch (e, stackTrace) {
+      dPrint('createDeliveryOption error: $e', stackTrace: stackTrace, tag: 'CompanyManagementRemoteDataSource');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteDeliveryOption(int companyId, int optionId) async {
+    try {
+      await _dioService.delete(AppUrls.deleteDeliveryOption(companyId, optionId));
+    } catch (e, stackTrace) {
+      dPrint('deleteDeliveryOption error: $e', stackTrace: stackTrace, tag: 'CompanyManagementRemoteDataSource');
+      rethrow;
+    }
+  }
+
+  // --- Expenses ---
+  @override
+  Future<List<CompanyExpense>> listExpenses(
+    int companyId, {
+    int page = 1,
+    int pageSize = 12,
+  }) async {
+    try {
+      final response = await _dioService.getRawMap(
+        AppUrls.expenses(companyId),
+        queryParameters: {'page': page, 'page_size': pageSize},
+      );
+      final pagination = api.PaginationResponse.fromJson(response);
+      final items = List<Map<String, dynamic>>.from(
+        (pagination.body as List? ?? const []).whereType<Map>().map(
+          (item) => Map<String, dynamic>.from(item),
+        ),
+      );
+      return items.map<CompanyExpense>(CompanyExpense.fromJson).toList(growable: false);
+    } catch (e, stackTrace) {
+      dPrint('listExpenses error: $e', stackTrace: stackTrace, tag: 'CompanyManagementRemoteDataSource');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CompanyExpense> createExpense(
+    int companyId,
+    CompanyExpenseFormModel payload,
+  ) async {
+    try {
+      final response = await _dioService.post(AppUrls.expenses(companyId), data: payload.toJson());
+      return CompanyExpense.fromJson(Map<String, dynamic>.from(response.body as Map));
+    } catch (e, stackTrace) {
+      dPrint('createExpense error: $e', stackTrace: stackTrace, tag: 'CompanyManagementRemoteDataSource');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteExpense(int companyId, int expenseId) async {
+    try {
+      await _dioService.delete(AppUrls.deleteExpense(companyId, expenseId));
+    } catch (e, stackTrace) {
+      dPrint('deleteExpense error: $e', stackTrace: stackTrace, tag: 'CompanyManagementRemoteDataSource');
+      rethrow;
+    }
+  }
+
+  // --- Company Systems (read-only; not paginated server-side) ---
+  @override
+  Future<List<CompanySystem>> listCompanySystems(int companyId) async {
+    try {
+      final response = await _dioService.get(AppUrls.companySystems(companyId));
+      final rawBody = response.body;
+      final bodyMap = rawBody is Map ? Map<String, dynamic>.from(rawBody) : <String, dynamic>{};
+      final rawItems = bodyMap['items'] as List? ?? const [];
+      final items = List<Map<String, dynamic>>.from(
+        rawItems.whereType<Map>().map((item) => Map<String, dynamic>.from(item)),
+      );
+      return items.map<CompanySystem>(CompanySystem.fromJson).toList(growable: false);
+    } catch (e, stackTrace) {
+      dPrint('listCompanySystems error: $e', stackTrace: stackTrace, tag: 'CompanyManagementRemoteDataSource');
       rethrow;
     }
   }
@@ -294,13 +450,15 @@ class CompanyManagementRemoteDataSourceImpl
   Future<List<CompanySubscriptionPlan>> listSubscriptionPlans() async {
     try {
       final response = await _dioService.get(AppUrls.companySubscriptions);
-      final pagination = api.PaginationResponse.fromJson({
-        'status': response.status,
-        'message': response.message,
-        'body': response.body,
-        'error': response.error,
-        'message_user': response.messageUser,
-      });
+      final pagination = api.PaginationResponse.fromJson(
+        <String, dynamic>{
+          'status': response.status,
+          'message': response.message,
+          'body': response.body,
+          'error': response.error,
+          'message_user': response.messageUser,
+        },
+      );
       final items = List<Map<String, dynamic>>.from(
         (pagination.body as List? ?? const []).whereType<Map>().map(
           (item) => Map<String, dynamic>.from(item),
@@ -350,7 +508,11 @@ class CompanyManagementRemoteDataSourceImpl
         file: formData,
       );
       return CompanySubscriptionRequest.fromJson(
-        Map<String, dynamic>.from(response.body as Map),
+        Map<String, dynamic>.from(
+          response.body is Map && (response.body as Map).containsKey('body')
+              ? Map<String, dynamic>.from((response.body as Map)['body'] as Map)
+              : response.body as Map,
+        ),
       );
     } catch (e, stackTrace) {
       dPrint(

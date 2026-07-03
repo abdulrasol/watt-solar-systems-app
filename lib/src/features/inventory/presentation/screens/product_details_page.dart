@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summery_provider.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 import 'package:solar_hub/src/utils/app_strings.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import '../../domain/entities/product.dart';
@@ -19,8 +19,8 @@ class ProductDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final companySummery = ref.watch(companySummeryProvider);
-    final hasInventoryPermission = companySummery.isPermisseon(AppStrings.inventoryPermission);
+    final companySummary = ref.watch(companySummaryProvider);
+    final hasInventoryPermission = companySummary.isPermission(AppStrings.inventoryPermission);
 
     return PreScaffold(
       title: l10n.product_details,

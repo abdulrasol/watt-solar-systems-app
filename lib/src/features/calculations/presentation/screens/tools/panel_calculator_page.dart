@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/calculator_widgets.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart';
@@ -50,7 +50,7 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
           children: [
             Hero(
               tag: 'panel_hero',
-              child: Icon(Iconsax.sun_1_bold, size: 80, color: Colors.orange),
+              child: Icon(Iconsax.sun_1, size: 80, color: Colors.orange),
             ),
             const SizedBox(height: 20),
             Text(l10n.panel_calc_intro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
@@ -63,7 +63,7 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
                 Expanded(
                   child: CalcInputRow(
                     label: l10n.total_daily_usage,
-                    suffix: "Ah", // TODO: translate
+                    suffix: "Ah",
                     hint: l10n.example_100_or_200,
                     onChanged: (v) {
                       controller.panelCalcDailyUsage = double.tryParse(v) ?? 0;
@@ -170,7 +170,7 @@ class _PanelCalculatorPageState extends ConsumerState<PanelCalculatorPage> {
                   title: l10n.required_panels,
                   value: "${controller.panelCalcResult}",
                   subtitle: l10n.total_array_kw((controller.panelCalcTotalWattage / 1000).toStringAsFixed(2)),
-                  icon: Iconsax.sun_1_bold,
+                  icon: Iconsax.sun_1,
                   color: Colors.amber,
                 ),
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/offers/domain/entities/involve.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/form/models/selected_involve.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -37,9 +37,7 @@ class InvolveItemCard extends StatelessWidget {
       uniqueOptions[item.id] = item;
     }
     final dropdownOptions = uniqueOptions.values.toList();
-    final hasSelectedOption = dropdownOptions.any(
-      (item) => item.id == selected.templateId,
-    );
+    final hasSelectedOption = dropdownOptions.any((item) => item.id == selected.templateId);
 
     Involve? selectedTemplate;
     for (final item in catalogItems) {
@@ -48,9 +46,7 @@ class InvolveItemCard extends StatelessWidget {
         break;
       }
     }
-    final rowCost = selectedTemplate == null
-        ? 0.0
-        : selectedTemplate.cost.toDouble() * selected.quantity;
+    final rowCost = selectedTemplate == null ? 0.0 : selectedTemplate.cost.toDouble() * selected.quantity;
 
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
@@ -58,13 +54,7 @@ class InvolveItemCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10, offset: const Offset(0, 4))],
         border: Border.all(color: onSurface.withValues(alpha: 0.08)),
       ),
       child: Column(
@@ -74,27 +64,16 @@ class InvolveItemCard extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(6.r),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
+                decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8.r)),
                 child: Text(
                   '${index + 1}',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.primaryColor,
-                  ),
+                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
                 ),
               ),
               SizedBox(width: 8.w),
               Text(
                 tr('Service details', 'تفاصيل الخدمة'),
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: onSurface,
-                ),
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: onSurface),
               ),
             ],
           ),
@@ -109,9 +88,7 @@ class InvolveItemCard extends StatelessWidget {
             },
             decoration: InputDecoration(
               labelText: tr('Item', 'العنصر'),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16.r),
-              ),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
               filled: true,
               fillColor: fieldFillColor,
             ),
@@ -119,10 +96,7 @@ class InvolveItemCard extends StatelessWidget {
                 .map(
                   (item) => DropdownMenuItem<int>(
                     value: item.id,
-                    child: Text(
-                      '${item.name} (\$${item.cost})',
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    child: Text('${item.name} (\$${item.cost})', overflow: TextOverflow.ellipsis),
                   ),
                 )
                 .toList(),
@@ -140,10 +114,8 @@ class InvolveItemCard extends StatelessWidget {
                   onChanged: (_) => onChanged(),
                   decoration: InputDecoration(
                     labelText: tr('Quantity', 'الكمية'),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    prefixIcon: const Icon(Iconsax.box_bold, size: 20),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
+                    prefixIcon: const Icon(Iconsax.box, size: 20),
                     filled: true,
                     fillColor: fieldFillColor,
                   ),
@@ -158,10 +130,7 @@ class InvolveItemCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16.r),
                   child: Container(
                     padding: EdgeInsets.all(12.r),
-                    child: const Icon(
-                      Iconsax.trash_bold,
-                      color: Colors.redAccent,
-                    ),
+                    child: const Icon(Iconsax.trash, color: Colors.redAccent),
                   ),
                 ),
               ),
@@ -176,18 +145,11 @@ class InvolveItemCard extends StatelessWidget {
               children: [
                 Text(
                   tr('Line total', 'إجمالي البند'),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: onSurface.withValues(alpha: 0.7),
-                  ),
+                  style: TextStyle(fontSize: 12.sp, color: onSurface.withValues(alpha: 0.7)),
                 ),
                 Text(
                   '\$${rowCost.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w900,
-                    color: AppTheme.primaryColor,
-                  ),
+                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
                 ),
               ],
             ),

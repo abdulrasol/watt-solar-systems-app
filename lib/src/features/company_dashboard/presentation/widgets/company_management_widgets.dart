@@ -1,13 +1,9 @@
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
-Future<bool?> showCompanyDeleteDialog({
-  required BuildContext context,
-  required String title,
-  required String message,
-}) {
+Future<bool?> showCompanyDeleteDialog({required BuildContext context, required String title, required String message}) {
   return showDialog<bool>(
     context: context,
     builder: (context) {
@@ -15,25 +11,12 @@ Future<bool?> showCompanyDeleteDialog({
       return AlertDialog(
         title: Text(
           title,
-          style: const TextStyle(
-            fontFamily: AppTheme.fontFamily,
-            fontWeight: FontWeight.w700,
-          ),
+          style: const TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w700),
         ),
-        content: Text(
-          message,
-          style: const TextStyle(fontFamily: AppTheme.fontFamily),
-        ),
+        content: Text(message, style: const TextStyle(fontFamily: AppTheme.fontFamily)),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.cancel_action),
-          ),
-          FilledButton.icon(
-            onPressed: () => Navigator.of(context).pop(true),
-            icon: const Icon(Iconsax.trash_bold),
-            label: Text(l10n.delete_action),
-          ),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancel_action)),
+          FilledButton.icon(onPressed: () => Navigator.of(context).pop(true), icon: const Icon(Iconsax.trash), label: Text(l10n.delete_action)),
         ],
       );
     },
@@ -41,12 +24,7 @@ Future<bool?> showCompanyDeleteDialog({
 }
 
 class CompanySectionIntro extends StatelessWidget {
-  const CompanySectionIntro({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.action,
-  });
+  const CompanySectionIntro({super.key, required this.title, required this.subtitle, required this.action});
 
   final String title;
   final String subtitle;
@@ -63,20 +41,12 @@ class CompanySectionIntro extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontFamily: AppTheme.fontFamily,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
+                style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 20, fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 6),
               Text(
                 subtitle,
-                style: TextStyle(
-                  fontFamily: AppTheme.fontFamily,
-                  fontSize: 13,
-                  color: Theme.of(context).hintColor,
-                ),
+                style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 13, color: Theme.of(context).hintColor),
               ),
             ],
           ),

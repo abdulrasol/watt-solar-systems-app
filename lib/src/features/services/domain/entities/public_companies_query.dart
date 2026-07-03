@@ -1,13 +1,15 @@
-class PublicCompaniesQuery {
+import 'package:equatable/equatable.dart';
+
+class PublicCompaniesQuery extends Equatable {
   final int? cityId;
   final String search;
-  final List<String> companyTypes;
+  final int? serviceId;
   final String channel;
 
   const PublicCompaniesQuery({
     this.cityId,
     this.search = '',
-    this.companyTypes = const [],
+    this.serviceId,
     this.channel = 'b2c',
   });
 
@@ -15,13 +17,14 @@ class PublicCompaniesQuery {
     int? cityId,
     bool clearCityId = false,
     String? search,
-    List<String>? companyTypes,
+    int? serviceId,
+    bool clearServiceId = false,
     String? channel,
   }) {
     return PublicCompaniesQuery(
       cityId: clearCityId ? null : (cityId ?? this.cityId),
       search: search ?? this.search,
-      companyTypes: companyTypes ?? this.companyTypes,
+      serviceId: clearServiceId ? null : (serviceId ?? this.serviceId),
       channel: channel ?? this.channel,
     );
   }
@@ -31,7 +34,10 @@ class PublicCompaniesQuery {
       'channel': channel,
       if (cityId != null) 'city_id': cityId,
       if (search.trim().isNotEmpty) 'search': search.trim(),
-      if (companyTypes.isNotEmpty) 'company_type': companyTypes,
+      if (serviceId != null) 'service_id': serviceId,
     };
   }
+
+  @override
+  List<Object?> get props => [cityId, search, serviceId, channel];
 }

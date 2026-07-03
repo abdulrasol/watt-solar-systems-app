@@ -16,6 +16,12 @@ abstract class MembersRemoteDataSource {
   Future<void> createMember(int companyId, Map<String, dynamic> payload);
 
   Future<void> deleteMember(int companyId, int memberId);
+
+  Future<void> updateMember(
+    int companyId,
+    int memberId,
+    Map<String, dynamic> payload,
+  );
 }
 
 class MembersRemoteDataSourceImpl implements MembersRemoteDataSource {
@@ -133,6 +139,35 @@ class MembersRemoteDataSourceImpl implements MembersRemoteDataSource {
     } catch (e, stackTrace) {
       dPrint(
         'deleteMember error: $e',
+        stackTrace: stackTrace,
+        tag: 'MembersRemoteDataSource',
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateMember(
+    int companyId,
+    int memberId,
+    Map<String, dynamic> payload,
+  ) async {
+    try {
+      final response = await _dioService.patch(
+        AppUrls.deleteMember(companyId, memberId), // Reusing the same URL base
+        data: payload,
+      );
+
+      if (response.error || (response.status != 200 && response.status != 204)) {
+        throw Exception(
+          response.messageUser.isEmpty
+              ? response.message
+              : response.messageUser,
+        );
+      }
+    } catch (e, stackTrace) {
+      dPrint(
+        'updateMember error: $e',
         stackTrace: stackTrace,
         tag: 'MembersRemoteDataSource',
       );

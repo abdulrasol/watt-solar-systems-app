@@ -1,0 +1,29 @@
+# Ignore images and assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp
+*.ico
+*.bmp
+*.tiff
+
+# Ignore documents and PDFs
+*.pdf
+*.md
+*.txt
+*.csv
+*.xlsx
+*.docx
+*.pptx
+
+# Ignore build and cache directories
+build/
+.dart_tool/
+.git/
+.gradle/
+ios/Pods/
+node_modules/
+venv/
+bin/

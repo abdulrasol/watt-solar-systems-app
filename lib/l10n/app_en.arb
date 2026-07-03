@@ -1,5 +1,11 @@
 {
   "app_name": "Watt",
+  "convert_to_lead": "Convert to Lead",
+  "leads": "Leads",
+  "no_leads_found": "No leads found",
+  "notifications": "Notifications",
+  "no_notifications": "No notifications",
+  "mark_all_read": "Mark all read",
   "version": "Version",
   "view": "View",
 
@@ -69,10 +75,15 @@
   "dashboard_hint_compare_title": "Compare before you buy",
   "dashboard_hint_compare_desc": "Use the calculators first, then compare offers and components against the same target system size.",
   "buy_components": "Buy components",
+  "new_products": "New Products",
+  "companies": "Companies",
+  "view_more": "View More",
+  "see_all": "See All",
   "b2b_storefront": "B2B Storefront",
   "b2c_storefront": "B2C Storefront",
   "storefront_b2b_subtitle": "Member-only catalog with wholesale pricing and company inventory visibility.",
   "storefront_b2c_subtitle": "Open storefront for all users with public product access.",
+  "storefront_unified_subtitle": "Explore products, compare companies, and move into the full catalog only when you need more detail.",
   "storefront_products_available": "{count} products available",
   "@storefront_products_available": {
     "placeholders": {
@@ -109,7 +120,11 @@
   "clear_filters": "Clear",
   "apply_filters": "Apply",
   "store_filters": "Store Filters",
+  "store_filters_subtitle": "Refine products by sort order, category, company, and price in one place.",
+  "price_range": "Price Range",
+  "unit_price": "Unit Price",
   "no_store_products_found": "No products matched the current filters.",
+  "no_categories_found": "No categories available right now.",
   "load_more": "Load More",
   "global_category": "Global",
   "internal_category": "Internal",
@@ -140,6 +155,22 @@
   },
   "product_details": "Product Details",
   "price_overview": "Price Overview",
+  "base_unit_price": "Base Unit Price",
+  "options_total": "Options Total",
+  "effective_unit_price": "Effective Unit Price",
+  "line_total": "Line Total",
+  "applied_pricing_tier": "Applied Pricing Tier",
+  "selected_options_title": "Selected Options",
+  "choose_cart_audience": "Choose cart mode",
+  "add_to_b2b_cart": "Add this product to the B2B cart",
+  "add_to_b2c_cart": "Add this product to the B2C cart",
+  "added_to_b2b_cart": "Added to B2B cart",
+  "added_to_b2c_cart": "Added to B2C cart",
+  "payment_cash": "Cash",
+  "payment_credit": "Credit",
+  "payment_upon_receipt": "Pay on receipt",
+  "pickup_from_company": "Pick up from company",
+  "no_delivery_selected": "No delivery selected",
   "display_price": "Display Price",
   "retail_price": "Retail Price",
   "wholesale_price": "Wholesale Price",
@@ -153,7 +184,10 @@
     }
   },
   "add_to_cart": "Add to Cart",
+  "remove_from_cart": "Remove from Cart",
   "added_to_cart": "Added to cart",
+  "removed_from_cart": "Removed from cart",
+  "cart": "Cart",
   "b2b_cart": "B2B Cart",
   "b2c_cart": "B2C Cart",
   "cart_empty": "Your cart is empty",
@@ -174,6 +208,192 @@
   "reset_password": "Reset Password",
   "reset_password_instructions": "Enter your email address and we will send you a link to reset your password.",
   "reset_password_token_instructions": "Enter the token you received and choose a new password.",
+  "structure_design_title": "Structure Design",
+  "structure_design_intro": "Lay out a fixed-tilt ground frame, estimate the best annual tilt and direction, and review the main structural geometry before detailed engineering.",
+  "structure_site_inputs": "Site Inputs",
+  "structure_site_width": "Site width",
+  "structure_site_depth": "Site depth",
+  "structure_latitude": "Latitude",
+  "structure_use_location": "Use location",
+  "structure_direction_preference": "Allowed facing direction",
+  "structure_mount_type": "Mount type",
+  "structure_clearances": "Clearances",
+  "structure_front_clearance": "Front clearance",
+  "structure_rear_clearance": "Rear clearance",
+  "structure_side_clearance": "Side clearance",
+  "structure_front_leg_height": "Front leg height",
+  "structure_inter_row_gap": "Inter-row gap",
+  "structure_panel_dimensions": "Panel Dimensions",
+  "structure_panel_orientation": "Panel orientation",
+  "structure_panel_length": "Panel length",
+  "structure_panel_width": "Panel width",
+  "structure_panel_thickness": "Panel thickness",
+  "structure_horizontal_gap": "Horizontal gap",
+  "structure_vertical_gap": "Vertical gap",
+  "structure_layout_editor": "Layout Editor",
+  "structure_rows": "Rows",
+  "structure_columns": "Columns",
+  "structure_reset_auto_layout": "Reset to auto layout",
+  "structure_ground_mount_only_hint": "Only fixed-tilt ground mount is implemented in this release. Other mount types remain reserved for later phases.",
+  "structure_geometry_results": "Geometry Results",
+  "structure_panel_count": "Panel count",
+  "structure_frame_width": "Frame width",
+  "structure_frame_length": "Frame slope length",
+  "structure_row_spacing": "Row spacing",
+  "structure_total_footprint_depth": "Total footprint depth",
+  "structure_rear_leg_height": "Rear leg height",
+  "structure_rail_length": "Rail length",
+  "structure_brace_length": "Brace length",
+  "structure_total_front_legs_length": "Total front legs length",
+  "structure_total_rear_legs_length": "Total rear legs length",
+  "structure_total_braces_length": "Total braces length",
+  "structure_total_steel_length": "Total steel length",
+  "structure_total_steel_breakdown": "Rails {rails} + Front legs {frontLegs} + Rear legs {rearLegs} + Braces {braces}",
+  "@structure_total_steel_breakdown": {
+    "placeholders": {
+      "rails": {},
+      "frontLegs": {},
+      "rearLegs": {},
+      "braces": {}
+    }
+  },
+  "structure_bom_title": "Estimated BOM",
+  "structure_sketch_title": "Schematic Sketch",
+  "structure_sketch_hint": "This is a schematic preview for planning. It is not a fabrication drawing or a code-compliant engineering detail.",
+  "structure_results_title": "Calculated Frame",
+  "structure_ideal_tilt": "Ideal tilt",
+  "structure_applied_tilt": "Applied tilt",
+  "structure_applied_azimuth": "Applied azimuth",
+  "structure_constrained_orientation": "Constrained orientation",
+  "structure_direction_any": "Any / auto",
+  "structure_direction_north": "North",
+  "structure_direction_northeast": "North-East",
+  "structure_direction_east": "East",
+  "structure_direction_southeast": "South-East",
+  "structure_direction_south": "South",
+  "structure_direction_southwest": "South-West",
+  "structure_direction_west": "West",
+  "structure_direction_northwest": "North-West",
+  "structure_mount_ground": "Ground mount",
+  "structure_mount_flat_roof": "Flat roof",
+  "structure_mount_pitched_roof": "Pitched roof",
+  "structure_mount_custom": "Custom frame",
+  "structure_coming_soon": "coming soon",
+  "structure_orientation_portrait": "Portrait",
+  "structure_orientation_landscape": "Landscape",
+  "structure_validation_positive": "Enter a value greater than zero",
+  "structure_step_site": "Site",
+  "structure_step_panels": "Panels",
+  "structure_step_results": "Results",
+  "structure_row_mode": "Row mode",
+  "structure_row_mode_independent": "Independent rows",
+  "structure_row_mode_stepped": "Stepped rows",
+  "structure_independent_rows_hint": "Use when each row is a repeated frame on flat ground.",
+  "structure_stepped_rows_hint": "Use when rows need different support heights.",
+  "structure_row_offsets": "Row offsets",
+  "structure_base_offset": "Base offset",
+  "structure_repeated_frame": "Repeated frame",
+  "structure_per_row_legs": "Per-row legs",
+  "structure_equal_legs_explanation": "Legs are equal because rows are repeated on the same flat-ground geometry.",
+  "structure_stepped_legs_explanation": "Legs differ because row offsets are applied to each row separately.",
+  "structure_min_front_leg": "Min front leg",
+  "structure_max_front_leg": "Max front leg",
+  "structure_min_rear_leg": "Min rear leg",
+  "structure_max_rear_leg": "Max rear leg",
+  "structure_top_view": "Top view",
+  "structure_side_view": "Side view",
+  "structure_front_view": "Front view",
+  "structure_isometric_view": "Isometric view",
+  "structure_front_label": "Front",
+  "structure_rear_label": "Rear",
+  "structure_brace_label": "Brace",
+  "structure_view_full_sketch": "View full sketch",
+  "structure_detail_view": "Detail view",
+  "structure_panels": "Panels",
+  "structure_offset": "Offset",
+  "structure_total_depth": "Total depth",
+  "structure_ground_level": "Ground level",
+  "structure_scale": "Scale",
+  "structure_base_plate_detail": "Base plate detail",
+  "structure_leg_detail": "Leg detail",
+  "structure_copy_dimensions": "Copy Dimensions",
+  "structure_print": "Print",
+  "share": "Share",
+  "structure_usable_width": "Usable width",
+  "structure_usable_depth": "Usable depth",
+  "structure_panel_layout": "Panel layout",
+  "structure_total_panels": "Total panels",
+  "structure_frame_depth": "Frame depth",
+  "structure_leg_heights": "Leg heights",
+  "structure_min_front_leg_height": "Min front leg height",
+  "structure_recents_tooltip": "Recent Structures",
+  "structure_support_structure": "Support structure",
+  "structure_support_station_count": "Support station count",
+  "structure_support_spacing": "Support spacing",
+  "structure_angles": "Angles",
+  "structure_ideal_azimuth": "Ideal azimuth",
+  "structure_materials": "Materials",
+  "structure_front_leg_count": "Front leg count",
+  "structure_rear_leg_count": "Rear leg count",
+  "structure_anchor_count": "Anchor count",
+  "structure_row_details": "Row details",
+  "structure_row": "Row",
+  "structure_local_footprint": "Local footprint",
+  "structure_layout": "Layout",
+  "structure_dimensions_report": "Structure Dimensions Report",
+  "structure_dimensions_copied": "Dimensions copied to clipboard",
+  "structure_tilt": "Tilt",
+  "structure_reset_view": "Reset view",
+  "structure_show_grid": "Show grid",
+  "structure_show_dimensions": "Show dimensions",
+  "structure_show_annotations": "Show annotations",
+  "structure_print_feature_coming_soon": "Print feature coming soon",
+  "structure_supports": "Supports",
+  "structure_save_watt_drawing": "Save Watt Drawing",
+  "structure_open_watt_drawing": "Open Watt Drawing",
+  "structure_drawing_default_title": "Structure Design",
+  "structure_drawing_saved": "Watt drawing saved: {path}",
+  "@structure_drawing_saved": {
+    "placeholders": {
+      "path": {}
+    }
+  },
+  "structure_drawing_save_failed": "Could not save Watt drawing: {error}",
+  "@structure_drawing_save_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "structure_drawing_opened": "Opened Watt drawing: {title}",
+  "@structure_drawing_opened": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "structure_drawing_open_failed": "Could not open Watt drawing: {error}",
+  "@structure_drawing_open_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "structure_full_sketch_title": "Full Sketch",
+  "structure_geometry_dimensions": "Geometry dimensions",
+  "structure_row_offset_value": "Row {row} offset",
+  "@structure_row_offset_value": {
+    "placeholders": {
+      "row": {}
+    }
+  },
+  "updateAvailable": "Update available",
+  "updateAvailableMessage": "A new version of Watt is available.",
+  "currentVersion": "Current version",
+  "newVersion": "New version",
+  "whatsNew": "What's new",
+  "later": "Later",
+  "updateNow": "Update now",
+  "updateDownloaded": "Update downloaded",
+  "restartToInstall": "Restart to install the update.",
+  "install": "Install",
   "email_is_required": "Email is required",
   "invalid_email": "Invalid email",
   "email": "Email",
@@ -386,6 +606,7 @@
   "enter_system_name": "Enter a name for your new system:",
   "back_to_list": "Back to List",
   "cancel": "Cancel",
+  "delete": "Delete",
   "save": "Save",
   "error_enter_system_name": "Required: Please enter a system name",
   "error_select_system": "Required: Please select a system",
@@ -476,6 +697,46 @@
   "members_role_sales": "Sales",
   "customers": "Customers",
   "suppliers": "Suppliers",
+  "manage_orders_subtitle": "Track customer and storefront orders.",
+  "manage_customers_subtitle": "Review customer balances and activity.",
+  "manage_suppliers_subtitle": "Review supplier balances and purchase history.",
+  "manage_accounting_subtitle": "Monitor accounting summaries and transactions.",
+  "b2b_orders": "B2B Orders",
+  "b2c_orders": "B2C Orders",
+  "no_orders_found": "No orders found",
+  "no_customers_found": "No customers found",
+  "no_suppliers_found": "No suppliers found",
+  "order_details": "Order Details",
+  "order_number": "Order Number",
+  "order_placed": "Order placed successfully",
+  "place_order": "Place Order",
+  "payment_status": "Payment Status",
+  "payment_method": "Payment Method",
+  "status": "Status",
+  "fulfilled_at": "Fulfilled At",
+  "items": "Items",
+  "parties": "Parties",
+  "seller": "Seller",
+  "buyer": "Buyer",
+  "customer": "Customer",
+  "supplier": "Supplier",
+  "confirm_receipt": "Confirm Receipt",
+  "edit_order_details": "Edit Order Details",
+  "shipping_cost": "Shipping Cost",
+  "shipping_method": "Shipping Method",
+  "paid_amount": "Paid Amount",
+  "cancellation_reason": "Cancellation Reason",
+  "save_changes": "Save Changes",
+  "bills": "Bills",
+  "payments": "Payments",
+  "net_income": "Net Income",
+  "journal_entries": "Journal Entries",
+  "receivables": "Receivables",
+  "payables": "Payables",
+  "transactions": "Transactions",
+  "accounts": "Accounts",
+  "no_data_available": "No data available",
+  "no_company_workspace": "No company workspace is available for this account.",
   "my_purchases": "My Purchases",
   "tools": "Tools",
   "analytics": "Analytics",
@@ -485,6 +746,36 @@
   "services_choose_category": "Choose a service category",
   "services_no_categories": "No service categories are available yet.",
   "services_explore_companies": "Explore companies",
+  "service_types": "Service Types",
+  "service_types_loading": "Loading service types...",
+  "service_types_empty_title": "No service types yet",
+  "service_types_empty_subtitle": "Add the first service type to start organizing companies.",
+  "service_types_add": "Add Service Type",
+  "service_types_edit": "Edit Service Type",
+  "service_types_create_action": "Create Service Type",
+  "service_types_update_action": "Update Service Type",
+  "service_types_pick_image": "Pick image",
+  "service_types_deleted": "Service type deleted successfully.",
+  "service_types_created": "Service type created successfully.",
+  "service_types_updated": "Service type updated successfully.",
+  "service_types_delete_title": "Delete service type",
+  "service_types_delete_message": "Delete {name}?",
+  "@service_types_delete_message": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "service_types_company_subtitle": "Select the service types your company provides.",
+  "service_types_mark_served": "Mark served",
+  "service_types_served": "Served",
+  "service_types_marked_served": "Service type added to your company profile.",
+  "service_types_unmarked_served": "Service type removed from your company profile.",
+  "service_types_companies_count": "{count} companies",
+  "@service_types_companies_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "services_companies_found": "{count} companies found",
   "@services_companies_found": {
     "placeholders": {
@@ -518,6 +809,78 @@
   "services_type_label": "Type",
   "services_phone_label": "Phone",
   "services_no_phone": "No phone number",
+  "services_tab_works": "Works",
+  "services_tab_info_contacts": "Info & Contacts",
+  "services_mode_overview": "Overview",
+  "services_mode_products": "Products",
+  "services_products_header": "Company products",
+  "services_products_mode_title": "Shop from this company",
+  "services_company_categories_title": "Company categories",
+  "services_products_subtitle": "Browse available products from {company}.",
+  "@services_products_subtitle": {
+    "placeholders": {
+      "company": {}
+    }
+  },
+  "services_works_preview_title": "Project showcase",
+  "services_works_preview_subtitle": "Preview sample work cards until real portfolio images are added.",
+  "services_work_item_title": "Project {number}",
+  "@services_work_item_title": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "company_work_title": "Company Works",
+  "company_work_subtitle": "Manage completed projects, installations, and portfolio highlights.",
+  "company_work_public_title": "Project Showcase",
+  "company_work_public_subtitle": "Explore recent company projects and installation highlights.",
+  "company_work_public_empty": "No work items have been published yet.",
+  "company_work_public_showcase": "Public showcase",
+  "company_work_add": "Add Work",
+  "company_work_add_title": "Add Work",
+  "company_work_edit_title": "Edit Work",
+  "company_work_title_field": "Work title",
+  "company_work_body_field": "Work description",
+  "company_work_title_required": "Work title is required",
+  "company_work_images": "Work Images",
+  "company_work_images_empty": "Add one or more images to present this project.",
+  "company_work_existing_image": "Existing",
+  "company_work_new_image": "New",
+  "company_work_pick_from_gallery": "Pick from gallery",
+  "company_work_pick_from_camera": "Take photo",
+  "company_work_image_pick_failed": "Failed to pick images.",
+  "company_work_loading": "Loading company works...",
+  "company_work_empty_title": "No works yet",
+  "company_work_empty_subtitle": "Create your first work item to show completed projects to customers.",
+  "company_work_no_description": "No description added yet.",
+  "company_work_images_count": "{count} images",
+  "@company_work_images_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "company_work_created_at": "Created {date}",
+  "@company_work_created_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_updated_at": "Updated {date}",
+  "@company_work_updated_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_publish": "Publish Work",
+  "company_work_save_changes": "Save Work",
+  "company_work_created": "Work created successfully.",
+  "company_work_updated": "Work updated successfully.",
+  "company_work_delete_title": "Delete work",
+  "company_work_delete_message": "This work item will be removed permanently.",
+  "company_work_deleted": "Work deleted successfully.",
+  "company_work_not_found": "This work item is no longer available.",
+  "try_again": "Try Again",
+  "edit": "Edit",
   "services_section_services": "Services",
   "services_no_public_services": "No public services listed yet.",
   "services_price_on_request": "Price on request",
@@ -606,6 +969,166 @@
   "request_status_open": "Open",
   "request_status_closed": "Closed",
   "request_status_fulfilled": "Fulfilled",
+  "request_status_offered": "Offered",
+  "request_status_accepted": "Accepted",
+  "unknown_user": "Unknown User",
+  "requester_info": "Requester",
+  "bids_count": "{count} Bids",
+  "@bids_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_days": "{count}d ago",
+  "@time_ago_days": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_hours": "{count}h ago",
+  "@time_ago_hours": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_minutes": "{count}m ago",
+  "@time_ago_minutes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_just_now": "Just now",
+  "unit_watts": "{value}W",
+  "@unit_watts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatts": "{value}kW",
+  "@unit_kilowatts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_watthours": "{value}Wh",
+  "@unit_watthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatthours": "{value}kWh",
+  "@unit_kilowatthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "edit_offer": "Edit offer",
+  "build_quotation": "Build your quotation",
+  "build_quotation_subtitle": "Start from the customer request, adjust your technical offer, then add extra services if needed.",
+  "auto_totals_label": "Auto totals from unit prices",
+  "editing_existing_offer": "Editing existing offer",
+  "uses_request_defaults": "Uses request defaults",
+  "panel_offer": "Panel offer",
+  "panel_offer_subtitle": "These values start from the customer request and can be adjusted before sending your quote.",
+  "panel_power_watts": "Panel power (W)",
+  "panel_unit_price": "Panel unit price",
+  "total_panel_power_label": "Total panel power",
+  "panels_total_price": "Panels total price",
+  "panel_note_label": "Panel note (optional)",
+  "panel_note_hint": "Brand, mono, warranty, mounting notes...",
+  "battery_offer": "Battery offer",
+  "battery_offer_subtitle": "Use battery type and size details to explain your backup recommendation clearly.",
+  "battery_size": "Battery size",
+  "battery_unit_price": "Battery unit price",
+  "batteries_total_price": "Batteries total price",
+  "battery_note_label": "Battery note (optional)",
+  "battery_note_hint": "Rack setup, backup hours, preferred brand...",
+  "battery_type": "Battery Type",
+  "battery_count": "Battery Count",
+  "inverter_offer": "Inverter offer",
+  "inverter_offer_subtitle": "Keep inverter details aligned with the real installation setup and grid requirements.",
+  "inverter_size": "Inverter size",
+  "inverter_unit_price": "Inverter unit price",
+  "inverters_total_price": "Inverters total price",
+  "inverter_note_label": "Inverter note (optional)",
+  "inverter_note_hint": "Single phase, MPPT count, protection notes...",
+  "inverter_type": "Inverter Type",
+  "inverter_count": "Inverter Count",
+  "offer_note_title": "Offer note",
+  "offer_note_description": "Use this area for delivery time, warranty, execution notes, or exclusions.",
+  "template_involves": "Template involves",
+  "template_involves_subtitle": "Use this for installation fee, delivery, mounting, cables, or any extra service linked to this quotation.",
+  "no_extra_services": "No extra services added yet.",
+  "estimated_extra_fees_label": "Estimated extra fees",
+  "add_from_catalog": "Add from catalog",
+  "create_new_item": "Create new item",
+  "manage_catalog": "Manage catalog",
+  "quotation_total": "Quotation total",
+  "save_offer_changes": "Save offer changes",
+  "no_more_catalog_items": "No more active catalog items are available. Create a new one first.",
+  "create_item_title": "Create new catalog item",
+  "create_item_subtitle": "Add a custom service or material to use in this and future quotations.",
+  "name_label": "Name",
+  "cost_label": "Cost",
+  "create_item_button": "Create item",
+  "extra_fees_missing_title": "Extra fees missing",
+  "extra_fees_missing_msg": "Please select a catalog item for all extra fee rows or remove them.",
+  "invalid_panel_offer_title": "Invalid panel offer",
+  "invalid_panel_offer_msg": "Please check panel power, count, and price.",
+  "invalid_battery_offer_title": "Invalid battery offer",
+  "invalid_battery_offer_msg": "Please check battery size, count, and price.",
+  "invalid_inverter_offer_title": "Invalid inverter offer",
+  "invalid_inverter_offer_msg": "Please check inverter size, count, and price.",
+  "invalid_pricing_title": "Invalid pricing",
+  "invalid_pricing_msg": "Total quotation price must be greater than zero.",
+  "form_required": "Required",
+  "edit_button": "Edit",
+  "finish_offer": "Finish offer",
+  "delete_offer_title": "Delete offer",
+  "delete_offer_msg": "Are you sure you want to delete this offer? This action cannot be undone.",
+  "cancel_button": "Cancel",
+  "delete_button": "Delete",
+  "contact_unavailable_title": "Contact unavailable",
+  "contact_unavailable_msg": "No phone or email available for this requester.",
+  "panel_label": "Panel",
+  "battery_label": "Battery",
+  "inverter_label": "Inverter",
+  "location_reach_title": "Location & reach",
+  "request_city_label": "Request city",
+  "send_to_all_cities": "Send to all cities",
+  "general_note_title": "General note",
+  "no_city_selected": "No city selected",
+  "panels_power_recommendation": "We recommend choosing a panel power between 400W and 600W for modern systems.",
+  "battery_power_recommendation": "Lithium batteries are recommended for longer life and better performance.",
+  "inverter_power_recommendation": "Hybrid inverters are best for systems with solar and batteries.",
+  "send_to_all_cities_msg": "Your request will be visible to companies in all cities.",
+  "general_note_hint": "Any other details or requirements for your solar system...",
+  "panel_recommendation_msg": "Recommended: keep the same wattage for all panels for better matching and easier offers.",
+  "panel_count_label": "Panel count",
+  "panel_note_hint_request": "Brand, half-cut, mono, roof limits...",
+  "battery_recommendation_msg": "Best performance: lithium is the default for longer cycle life and faster charging.",
+  "battery_type_label": "Battery type",
+  "battery_count_label": "Battery count",
+  "battery_note_hint_request": "Rack style, backup hours, preferred brand...",
+  "total_battery_power_label": "Total battery power",
+  "inverter_recommendation_msg": "Best performance: hybrid works well when you want grid support and future battery expansion.",
+  "inverter_type_label": "Inverter type",
+  "inverter_count_label": "Inverter count",
+  "inverter_note_hint_request": "Single phase, MPPT count, brand...",
+  "total_inverters_power_label": "Total inverters power",
+  "city_required_error": "Your profile must have a city before creating a request.",
+  "request_submitted_success": "Your solar request was submitted successfully.",
+  "request_submit_error": "Could not submit the request. Please try again.",
+  "hero_request_subtitle": "Share clear sizes and notes so companies can send more accurate offers.",
+  "hero_request_info": "Defaults tuned for fast entry",
+  "send_to_all_cities_subtitle": "Turn on to let companies outside your city respond as well.",
+  "general_note_subtitle": "Add any site details, installation limits, or preferred brands.",
+  "note_optional_label": "Note (optional)",
+  "note_optional": "Note (optional)",
+  "note_hint": "Add any additional details or requirements...",
+  "note_hint_request": "Roof type, backup target, timeline...",
+  "delete_offer_subtitle": "This will remove the offer permanently.",
+  "phone_unavailable_msg": "No phone number is available for this action.",
   "battery_type_gel": "Gel",
   "battery_type_tubular": "Tubular",
   "battery_type_lithium": "Lithium",
@@ -706,6 +1229,7 @@
   "battery_type_full": "Battery Type",
   "pv_power": "PV Power",
   "battery": "Battery",
+  "inverter": "Inverter",
   "city_label": "City: {city}",
   "@city_label": {
     "placeholders": {
@@ -779,6 +1303,25 @@
   "chat_on_whatsapp": "Chat on WhatsApp",
   "systems": "Systems",
   "delivery": "Delivery",
+  "expenses": "Expenses",
+  "amount": "Amount",
+  "category": "Category",
+  "cost": "Cost",
+  "company_delivery_estimated_days_min": "Min Days",
+  "company_delivery_estimated_days_max": "Max Days",
+  "company_delivery_delete_message": "Delete \"{name}\" delivery option?",
+  "@company_delivery_delete_message": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "company_expense_delete_message": "Delete this {category} expense?",
+  "@company_expense_delete_message": {
+    "placeholders": {
+      "category": {}
+    }
+  },
+  "company_workspace_no_company": "Select a company to continue",
   "company_profile": "Company Profile",
   "subscription": "Subscription",
   "switch_to_user_view": "Switch to User View",
@@ -961,6 +1504,8 @@
   "example_100_or_200": "e.g., 100 or 200",
   "example_12_24_48_512": "e.g., 12, 24, 48, or 51.2",
   "example_5_or_8": "e.g., 5 or 8",
+  "example_5": "e.g., 5",
+  "example_15": "e.g., 15",
   "battery_count_explanation": "The number of batteries needed is calculated as:\n\n(Power × Time) ÷ (Battery Voltage × Capacity × DoD)\n\nExample: (2300 W × 5 h) ÷ (12 V × 100 Ah × 0.2) = about 8 batteries.\n\nThis helps estimate how many batteries are needed for a specific load and runtime.",
   "depth_of_discharge_with_value": "Battery Depth of Discharge ({value}%)",
   "@depth_of_discharge_with_value": {
@@ -1057,6 +1602,128 @@
   "@open_service": {
     "placeholders": {
       "service": {}
+    }
+  },
+  "structure_button_next": "Next",
+  "date": "Date",
+  "reset": "Reset",
+  "load_more_offers": "Load More Offers",
+  "catalog_tooltip": "Catalog",
+  "orientation_calc": "Orientation Calculator",
+  "align_panels_efficiency": "Align your solar panels for maximum efficiency.",
+  "your_latitude": "Your Latitude",
+  "auto_detect": "Auto Detect",
+  "latitude_label": "Latitude (e.g. 33.3)",
+  "latitude_hint": "Enter manually if needed",
+  "hemisphere_hint": "Positive (+) = North Hemisphere\nNegative (-) = South Hemisphere",
+  "perfect_alignment": "Perfect Alignment! ✅",
+  "rotate_phone_align": "Rotate phone to align Green Arrow",
+  "current_heading": "Current Heading: {heading}°",
+  "@current_heading": {
+    "placeholders": {
+      "heading": {
+        "type": "String"
+      }
+    }
+  },
+  "optimal_tilt": "Optimal Tilt",
+  "face_direction": "Face Direction",
+  "best_performance_desc": "For best year-round performance, tilt panels at {tilt}° facing {direction}.",
+  "@best_performance_desc": {
+    "placeholders": {
+      "tilt": {
+        "type": "String"
+      },
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "why_orientation_matters": "Why Orientation Matters?",
+  "azimuth_title": "Azimuth (Direction)",
+  "azimuth_desc": "Panels should face the equator (South in North Hemisphere) to catch sun all day.",
+  "tilt_angle_title": "Tilt Angle",
+  "tilt_angle_desc": "Angle from horizontal. Usually equals your Latitude for year-round average.",
+  "guide": "Guide",
+  "dont_show_again": "Don't show this again",
+  "close_button": "Close",
+  "north": "North",
+  "south": "South",
+  "east": "East",
+  "west": "West",
+  "equator": "Equator",
+  "optimal": "Optimal",
+  "quick_create": "Quick Create",
+  "add_product": "Add Product",
+  "invite_member": "Invite Member",
+  "create_offer": "Create Offer",
+  "start_adding_products_to_inventory": "Start adding products to your inventory to see them here",
+  "search_results_for": "Search results for",
+  "clear": "Clear",
+  "recent_activity": "Recent Activity",
+  "view_all": "View All",
+  "dashboard_your_activity": "Your Activity",
+  "dashboard_get_started": "Get Started",
+  "dashboard_activity_signed_in_subtitle": "Track requests, orders, and alerts from one place.",
+  "dashboard_activity_guest_subtitle": "Sign in to save requests, place orders, and receive updates.",
+  "dashboard_services_action_subtitle": "Explore services and companies before creating an account.",
+  "dashboard_store_action_subtitle": "Shop products, compare companies, and place B2C orders.",
+  "dashboard_sign_in_card_subtitle": "Access your saved requests, orders, and notifications.",
+  "dashboard_guest_services_card_subtitle": "Explore services and companies before creating an account.",
+  "dashboard_my_requests_count": "{count} active and past requests.",
+  "@dashboard_my_requests_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_my_orders_count": "{count} B2C orders across storefront sellers.",
+  "@dashboard_my_orders_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_notifications_count": "{count} recent alerts and system updates.",
+  "@dashboard_notifications_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_mode": "User Mode",
+  "admin_mode": "Admin Mode",
+  "revenue_trend": "Revenue Trend",
+  "financial_overview": "Financial Overview",
+  "order_status": "Order Status",
+  "low_stock_alerts": "Low Stock Alerts",
+  "items_count": "items",
+  "formatUnitsLeft": "{count} units left",
+  "@formatUnitsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restock": "Restock",
+  "view_all_alerts": "View All Alerts",
+  "create_invoice": "Create Invoice",
+  "add_project": "Add Project",
+  "no_results_found": "No results found",
+  "marketplace_requests": "Marketplace Requests",
+  "no_contact_info": "No contact info",
+  "seasonal_solar_estimate": "Seasonal Solar Estimation",
+  "est_daily_kw": "Est. daily production",
+  "formatSolarAdvice": "Recommended tilt: {advice}",
+  "@formatSolarAdvice": {
+    "placeholders": {
+      "advice": {
+        "type": "String"
+      }
     }
   }
 }

@@ -12,4 +12,6 @@ abstract class MembersRepository {
   Future<void> createMember(int companyId, Map<String, dynamic> payload);
 
   Future<void> deleteMember(int companyId, int memberId);
+
+  Future<void> updateMemberRole(int companyId, int memberId, String role);
 }

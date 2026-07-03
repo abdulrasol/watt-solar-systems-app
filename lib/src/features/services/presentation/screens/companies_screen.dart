@@ -3,21 +3,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/widgets/offline_status_banner.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
+import 'package:solar_hub/src/shared/domain/service_type.dart';
 import 'package:solar_hub/src/features/services/presentation/providers/public_services_provider.dart';
 import 'package:solar_hub/src/features/services/presentation/widgets/company_card.dart';
 import 'package:solar_hub/src/features/services/presentation/widgets/services_header.dart';
 
 class CompaniesScreen extends ConsumerStatefulWidget {
-  final CompanyType type;
+  final ServiceType type;
 
   const CompaniesScreen({super.key, required this.type});
 
   @override
-  ConsumerState<CompaniesScreen> createState() =>
-      _ServicesCompaniesScreenState();
+  ConsumerState<CompaniesScreen> createState() => _ServicesCompaniesScreenState();
 }
 
 class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
@@ -51,11 +51,9 @@ class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
             padding: padding,
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                ServicesHeader(
-                  title: widget.type.name,
-                  subtitle: l10n.services_companies_subtitle,
-                  badge: l10n.services_companies_found(state.totalItems),
-                ),
+                ServicesHeader(title: widget.type.name, subtitle: l10n.services_companies_subtitle, badge: l10n.services_companies_found(state.totalItems)),
+                SizedBox(height: 16.h),
+                const OfflineStatusBanner(padding: EdgeInsets.zero),
                 SizedBox(height: 16.h),
                 _FiltersSection(
                   searchController: _searchController,
@@ -65,11 +63,7 @@ class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
                   onSearchChanged: notifier.updateSearch,
                 ),
                 SizedBox(height: 16.h),
-                if (state.error != null && !state.isLoading)
-                  _ErrorBanner(
-                    message: state.error!,
-                    onRetry: notifier.refresh,
-                  ),
+                if (state.error != null && !state.isLoading) _ErrorBanner(message: state.error!, onRetry: notifier.refresh),
               ]),
             ),
           ),
@@ -91,11 +85,7 @@ class _ServicesCompaniesScreenState extends ConsumerState<CompaniesScreen> {
               sliver: SliverList.builder(
                 itemBuilder: (context, index) {
                   final company = state.companies[index];
-                  return CompanyCard(
-                    company: company,
-                    onTap: () =>
-                        context.push('/services/company/${company.id}'),
-                  );
+                  return CompanyCard(key: ObjectKey(company.id), company: company, onTap: () => context.push('/services/company/${company.id}'));
                 },
                 itemCount: state.companies.length,
               ),
@@ -138,19 +128,10 @@ class _FiltersSection extends StatelessWidget {
         final isCompact = constraints.maxWidth < 620;
         final cityField = DropdownButtonFormField<City?>(
           initialValue: selectedCity,
-          decoration: InputDecoration(
-            labelText: l10n.city,
-            prefixIcon: const Icon(Icons.location_on_outlined),
-          ),
+          decoration: InputDecoration(labelText: l10n.city, prefixIcon: const Icon(Icons.location_on_outlined)),
           items: [
-            DropdownMenuItem<City?>(
-              value: null,
-              child: Text(l10n.services_all_cities),
-            ),
-            ...cities.map(
-              (city) =>
-                  DropdownMenuItem<City?>(value: city, child: Text(city.name)),
-            ),
+            DropdownMenuItem<City?>(value: null, child: Text(l10n.services_all_cities)),
+            ...cities.map((city) => DropdownMenuItem<City?>(value: city, child: Text(city.name))),
           ],
           onChanged: onCityChanged,
         );
@@ -212,17 +193,12 @@ class _ErrorBanner extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: EdgeInsets.all(14.r),
-      decoration: BoxDecoration(
-        color: Colors.red.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(18.r),
-      ),
+      decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(18.r)),
       child: Row(
         children: [
           const Icon(Icons.error_outline_rounded, color: Colors.red),
           SizedBox(width: 12.w),
-          Expanded(
-            child: Text(message, maxLines: 3, overflow: TextOverflow.ellipsis),
-          ),
+          Expanded(child: Text(message, maxLines: 3, overflow: TextOverflow.ellipsis)),
           TextButton(onPressed: onRetry, child: Text(l10n.services_retry)),
         ],
       ),

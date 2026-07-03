@@ -12,13 +12,16 @@ class AppConfigRemoteDataSourceImpl implements AppConfigRemoteDataSource {
   @override
   Future<List<AppConfig>> getAllConfigs() async {
     try {
-      final response = await dioService.get(AppUrls.appConfigs, isList: true);
+      final response = await dioService.get(
+        AppUrls.appConfigs,
+        isList: true,
+      );
       if (response.status == 200 && !response.error) {
         final List<dynamic> configsJson = response.body;
         return configsJson.map((json) => AppConfig.fromJson(json)).toList();
       }
       throw Exception(response.messageUser.isNotEmpty ? response.messageUser : response.message);
-  } catch (e, stackTrace) {
+    } catch (e, stackTrace) {
       dPrint('getAllConfigs error: $e', stackTrace: stackTrace, tag: 'AppConfigRemoteDataSourceImpl');
       rethrow;
     }

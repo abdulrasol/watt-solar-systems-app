@@ -1,37 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/service_request_bottom_sheet.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyWorkspaceServiceCard extends StatelessWidget {
-  const CompanyWorkspaceServiceCard({
-    super.key,
-    required this.service,
-    this.companyId,
-    this.canManageActions = true,
-  });
+  const CompanyWorkspaceServiceCard({super.key, required this.service, this.companyId, this.canManageActions = true});
 
   final CompanyService service;
   final int? companyId;
   final bool canManageActions;
 
-  bool get _isActive {
-    final value = service.status?.toLowerCase();
-    return value == 'active' || value == 'approved' || value == 'string';
-  }
+  bool get _isActive => service.isActive;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final statusColor = _statusColor(service.status);
-    final hasCustomIcon =
-        service.icon != null &&
-        service.icon!.isNotEmpty &&
-        service.icon != 'null';
+    final hasCustomIcon = service.icon != null && service.icon!.isNotEmpty && service.icon != 'null';
 
     return InkWell(
       onTap: () => _handleTap(context),
@@ -42,13 +30,7 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: statusColor.withValues(alpha: 0.18)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 16,
-              offset: const Offset(0, 10),
-            ),
-          ],
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 16, offset: const Offset(0, 10))],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,40 +42,18 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
                   height: 52,
                   width: 52,
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+                  decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(16)),
                   child: hasCustomIcon
-                      ? WdImagePreview(
-                          imageUrl: service.icon!,
-                          size: 32,
-                          shape: BoxShape.circle,
-                        )
-                      : Icon(
-                          _serviceIcon(service.serviceCode),
-                          color: statusColor,
-                          size: 24,
-                        ),
+                      ? WdImagePreview(imageUrl: service.icon!, size: 32, shape: BoxShape.circle)
+                      : Icon(_serviceIcon(service.serviceCode), color: statusColor, size: 24),
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(999)),
                   child: Text(
                     _statusLabel(l10n),
-                    style: TextStyle(
-                      fontFamily: AppTheme.fontFamily,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                      color: statusColor,
-                    ),
+                    style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 11, fontWeight: FontWeight.w700, color: statusColor),
                   ),
                 ),
               ],
@@ -103,47 +63,25 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
               service.serviceName,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontFamily: AppTheme.fontFamily,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
+              style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 16, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),
             Text(
               _description(l10n),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontFamily: AppTheme.fontFamily,
-                fontSize: 12,
-                height: 1.45,
-                color: Theme.of(context).hintColor,
-              ),
+              style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12, height: 1.45, color: Theme.of(context).hintColor),
             ),
             const Spacer(),
             const SizedBox(height: 16),
             Row(
               children: [
                 Text(
-                  _isActive
-                      ? service.serviceName
-                      : canManageActions
-                      ? l10n.request_access
-                      : l10n.company_activation_required_short,
-                  style: const TextStyle(
-                    fontFamily: AppTheme.fontFamily,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.primaryColor,
-                  ),
+                  _isActive ? service.serviceName : l10n.status_unavailable,
+                  style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.primaryColor),
                 ),
                 const SizedBox(width: 8),
-                const Icon(
-                  Icons.arrow_forward_rounded,
-                  size: 18,
-                  color: AppTheme.primaryColor,
-                ),
+                const Icon(Icons.arrow_forward_rounded, size: 18, color: AppTheme.primaryColor),
               ],
             ),
           ],
@@ -168,34 +106,11 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
       return;
     }
 
-    if (!_isActive && companyId != null) {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => ServiceRequestBottomSheet(
-          companyId: companyId!,
-          serviceCode: service.serviceCode,
-          serviceName: service.serviceName,
-          onSuccess: () {},
-        ),
-      );
-      return;
-    }
-
     _openStatusPage(context);
   }
 
   void _openStatusPage(BuildContext context) {
-    context.push(
-      '/service-status',
-      extra: {
-        'name': service.serviceName,
-        'code': service.serviceCode,
-        'status': service.status,
-        'icon': service.icon,
-      },
-    );
+    context.push('/service-status', extra: {'name': service.serviceName, 'code': service.serviceCode, 'status': service.status, 'icon': service.icon});
   }
 
   String _statusLabel(AppLocalizations l10n) {
@@ -218,7 +133,7 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
 
   String _description(AppLocalizations l10n) {
     if (_isActive) return l10n.section_label(service.serviceName);
-    return l10n.service_not_requested(service.serviceName);
+    return l10n.status_unavailable;
   }
 
   Color _statusColor(String? status) {
@@ -239,6 +154,7 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
   }
 
   String? _normalizedRoute(String? route) {
+    if (service.serviceCode == 'company_work') return '/company-work';
     if (route == null || route.isEmpty || route == 'null') return null;
     return route.startsWith('/') ? route : '/$route';
   }
@@ -246,25 +162,27 @@ class CompanyWorkspaceServiceCard extends StatelessWidget {
   IconData _serviceIcon(String code) {
     switch (code) {
       case 'offers':
-        return Iconsax.document_bold;
+        return Iconsax.document;
       case 'offers_catalog':
-        return Iconsax.receipt_item_bold;
+        return Iconsax.receipt_item;
       case 'inventory':
-        return Iconsax.box_bold;
+        return Iconsax.box;
+      case 'company_work':
+        return Iconsax.gallery;
       case 'accounting':
-        return Iconsax.money_2_bold;
+        return Iconsax.money_2;
       case 'multi_member':
-        return Iconsax.user_tag_bold;
+        return Iconsax.user_tag;
       case 'storefront_b2c':
-        return Iconsax.shop_bold;
+        return Iconsax.shop;
       case 'storefront_b2b':
-        return Iconsax.building_3_bold;
+        return Iconsax.building_3;
       case 'systems_portfolio':
-        return Iconsax.sun_1_bold;
+        return Iconsax.sun_1;
       case 'analytics':
-        return Iconsax.chart_2_bold;
+        return Iconsax.chart_2;
       default:
-        return Iconsax.category_bold;
+        return Iconsax.category;
     }
   }
 }

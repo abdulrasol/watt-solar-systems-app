@@ -1,19 +1,25 @@
 import 'package:solar_hub/src/shared/domain/company/company_category.dart';
 import 'package:solar_hub/src/shared/domain/company/company_contact.dart';
+import 'package:solar_hub/src/shared/domain/company/company_expense.dart';
 import 'package:solar_hub/src/shared/domain/company/company_public_service.dart';
+import 'package:solar_hub/src/shared/domain/company/delivery_option.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_activation_reminder_response.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_plan.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_request.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_system.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_category_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_contact_form_model.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/models/company_expense_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_public_service_form_model.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/models/company_subscription_request_form_model.dart';
+import 'package:solar_hub/src/features/company_dashboard/domain/models/delivery_option_form_model.dart';
 
 abstract class CompanyManagementRepository {
   Future<List<CompanyContact>> listContacts(
     int companyId, {
     int page = 1,
     int? pageSize,
+    String? search,
   });
 
   Future<CompanyContact> createContact(
@@ -22,6 +28,34 @@ abstract class CompanyManagementRepository {
   );
 
   Future<void> deleteContact(int companyId, int contactId);
+
+  Future<List<DeliveryOption>> listDeliveryOptions(
+    int companyId, {
+    int page = 1,
+    int pageSize = 12,
+  });
+
+  Future<DeliveryOption> createDeliveryOption(
+    int companyId,
+    DeliveryOptionFormModel payload,
+  );
+
+  Future<void> deleteDeliveryOption(int companyId, int optionId);
+
+  Future<List<CompanyExpense>> listExpenses(
+    int companyId, {
+    int page = 1,
+    int pageSize = 12,
+  });
+
+  Future<CompanyExpense> createExpense(
+    int companyId,
+    CompanyExpenseFormModel payload,
+  );
+
+  Future<void> deleteExpense(int companyId, int expenseId);
+
+  Future<List<CompanySystem>> listCompanySystems(int companyId);
 
   Future<List<CompanyPublicService>> listPublicServices(int companyId);
 

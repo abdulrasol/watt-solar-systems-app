@@ -1,5 +1,11 @@
 {
   "app_name": "واط، احسب منظومتك الشمسية",
+  "convert_to_lead": "تحويل إلى مهتم",
+  "leads": "المهتمين",
+  "no_leads_found": "لا يوجد مهتمين بعد",
+  "notifications": "الإشعارات",
+  "no_notifications": "لا توجد إشعارات حالياً",
+  "mark_all_read": "تحديد الكل كمقروء",
   "version": "الإصدار",
   "view": "عرض",
 
@@ -69,10 +75,15 @@
   "dashboard_hint_compare_title": "قارن قبل الشراء",
   "dashboard_hint_compare_desc": "استخدم أدوات الحساب أولاً ثم قارن العروض والمكونات على أساس نفس حجم المنظومة المستهدف.",
   "buy_components": "شراء المكونات",
+  "new_products": "منتجات جديدة",
+  "companies": "الشركات",
+  "view_more": "عرض المزيد",
+  "see_all": "عرض الكل",
   "b2b_storefront": "واجهة B2B",
   "b2c_storefront": "واجهة B2C",
   "storefront_b2b_subtitle": "كتالوج مخصص للأعضاء مع أسعار الجملة وإظهار مخزون الشركة.",
   "storefront_b2c_subtitle": "واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.",
+  "storefront_unified_subtitle": "استكشف المنتجات، وقارن بين الشركات، وانتقل إلى الكتالوج الكامل فقط عندما تحتاج تفاصيل أكثر.",
   "storefront_products_available": "المنتجات المتاحة {count}",
   "@storefront_products_available": {
     "placeholders": {
@@ -109,7 +120,11 @@
   "clear_filters": "مسح",
   "apply_filters": "تطبيق",
   "store_filters": "فلاتر المتجر",
+  "store_filters_subtitle": "قم بتضييق النتائج حسب الترتيب والتصنيف والشركة والسعر من مكان واحد.",
+  "price_range": "نطاق السعر",
+  "unit_price": "سعر الوحدة",
   "no_store_products_found": "لا توجد منتجات مطابقة للفلاتر الحالية.",
+  "no_categories_found": "لا توجد تصنيفات متاحة حالياً.",
   "load_more": "تحميل المزيد",
   "global_category": "عام",
   "internal_category": "داخلي",
@@ -140,6 +155,22 @@
   },
   "product_details": "تفاصيل المنتج",
   "price_overview": "ملخص الأسعار",
+  "base_unit_price": "سعر الوحدة الأساسي",
+  "options_total": "إجمالي الخيارات",
+  "effective_unit_price": "سعر الوحدة النهائي",
+  "line_total": "إجمالي السطر",
+  "applied_pricing_tier": "شريحة التسعير المطبقة",
+  "selected_options_title": "الخيارات المحددة",
+  "choose_cart_audience": "اختر وضع السلة",
+  "add_to_b2b_cart": "أضف هذا المنتج إلى سلة B2B",
+  "add_to_b2c_cart": "أضف هذا المنتج إلى سلة B2C",
+  "added_to_b2b_cart": "تمت الإضافة إلى سلة B2B",
+  "added_to_b2c_cart": "تمت الإضافة إلى سلة B2C",
+  "payment_cash": "نقداً",
+  "payment_credit": "آجل",
+  "payment_upon_receipt": "الدفع عند الاستلام",
+  "pickup_from_company": "استلام من الشركة",
+  "no_delivery_selected": "بدون توصيل",
   "display_price": "السعر المعروض",
   "retail_price": "سعر المفرد",
   "wholesale_price": "سعر الجملة",
@@ -153,7 +184,10 @@
     }
   },
   "add_to_cart": "أضف إلى السلة",
+  "remove_from_cart": "إزالة من السلة",
   "added_to_cart": "تمت الإضافة إلى السلة",
+  "removed_from_cart": "تمت الإزالة من السلة",
+  "cart": "السلة",
   "b2b_cart": "سلة B2B",
   "b2c_cart": "سلة B2C",
   "cart_empty": "سلتك فارغة",
@@ -174,6 +208,192 @@
   "reset_password": "إعادة تعيين كلمة المرور",
   "reset_password_instructions": "أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
   "reset_password_token_instructions": "أدخل الرمز الذي وصلك ثم اختر كلمة مرور جديدة.",
+  "structure_design_title": "تصميم الهيكل",
+  "structure_design_intro": "صمّم هيكل أرضي ثابت الميل، وقدّر أفضل ميل واتجاه سنوي، وراجع الأبعاد الأساسية للهيكل قبل التفصيل الهندسي النهائي.",
+  "structure_site_inputs": "مدخلات الموقع",
+  "structure_site_width": "عرض الموقع",
+  "structure_site_depth": "عمق الموقع",
+  "structure_latitude": "خط العرض",
+  "structure_use_location": "استخدام الموقع",
+  "structure_direction_preference": "اتجاه التوجيه المسموح",
+  "structure_mount_type": "نوع التركيب",
+  "structure_clearances": "الخلوصات",
+  "structure_front_clearance": "الخلوص الأمامي",
+  "structure_rear_clearance": "الخلوص الخلفي",
+  "structure_side_clearance": "الخلوص الجانبي",
+  "structure_front_leg_height": "ارتفاع الرجل الأمامية",
+  "structure_inter_row_gap": "المسافة بين الصفوف",
+  "structure_panel_dimensions": "أبعاد اللوح",
+  "structure_panel_orientation": "وضعية اللوح",
+  "structure_panel_length": "طول اللوح",
+  "structure_panel_width": "عرض اللوح",
+  "structure_panel_thickness": "سماكة اللوح",
+  "structure_horizontal_gap": "الفاصل الأفقي",
+  "structure_vertical_gap": "الفاصل العمودي",
+  "structure_layout_editor": "محرر الترتيب",
+  "structure_rows": "الصفوف",
+  "structure_columns": "الأعمدة",
+  "structure_reset_auto_layout": "إعادة الضبط التلقائي",
+  "structure_ground_mount_only_hint": "الإصدار الحالي يدعم فقط الهيكل الأرضي ثابت الميل. الأنواع الأخرى محجوزة للمراحل القادمة.",
+  "structure_geometry_results": "نتائج الأبعاد",
+  "structure_panel_count": "عدد الألواح",
+  "structure_frame_width": "عرض الهيكل",
+  "structure_frame_length": "طول الميل",
+  "structure_row_spacing": "تباعد الصفوف",
+  "structure_total_footprint_depth": "العمق الكلي للبصمة",
+  "structure_rear_leg_height": "ارتفاع الرجل الخلفية",
+  "structure_rail_length": "طول السكة",
+  "structure_brace_length": "طول الدعامة",
+  "structure_total_front_legs_length": "إجمالي طول الأرجل الأمامية",
+  "structure_total_rear_legs_length": "إجمالي طول الأرجل الخلفية",
+  "structure_total_braces_length": "إجمالي طول الدعامات",
+  "structure_total_steel_length": "إجمالي طول الحديد",
+  "structure_total_steel_breakdown": "السكات {rails} + الأرجل الأمامية {frontLegs} + الأرجل الخلفية {rearLegs} + الدعامات {braces}",
+  "@structure_total_steel_breakdown": {
+    "placeholders": {
+      "rails": {},
+      "frontLegs": {},
+      "rearLegs": {},
+      "braces": {}
+    }
+  },
+  "structure_bom_title": "تقدير المواد",
+  "structure_sketch_title": "رسم تخطيطي",
+  "structure_sketch_hint": "هذا الرسم تخطيطي لغرض التخطيط فقط، وليس رسماً تنفيذياً أو تفصيلاً إنشائياً معتمداً.",
+  "structure_results_title": "نتيجة الهيكل",
+  "structure_ideal_tilt": "الميل المثالي",
+  "structure_applied_tilt": "الميل المطبق",
+  "structure_applied_azimuth": "السمت المطبق",
+  "structure_constrained_orientation": "اتجاه مقيّد",
+  "structure_direction_any": "أي اتجاه / تلقائي",
+  "structure_direction_north": "شمال",
+  "structure_direction_northeast": "شمال شرقي",
+  "structure_direction_east": "شرق",
+  "structure_direction_southeast": "جنوب شرقي",
+  "structure_direction_south": "جنوب",
+  "structure_direction_southwest": "جنوب غربي",
+  "structure_direction_west": "غرب",
+  "structure_direction_northwest": "شمال غربي",
+  "structure_mount_ground": "تركيب أرضي",
+  "structure_mount_flat_roof": "سطح مستوٍ",
+  "structure_mount_pitched_roof": "سطح مائل",
+  "structure_mount_custom": "هيكل مخصص",
+  "structure_coming_soon": "قريباً",
+  "structure_orientation_portrait": "عمودي",
+  "structure_orientation_landscape": "أفقي",
+  "structure_validation_positive": "أدخل قيمة أكبر من صفر",
+  "structure_step_site": "الموقع",
+  "structure_step_panels": "الألواح",
+  "structure_step_results": "النتائج",
+  "structure_row_mode": "وضع الصفوف",
+  "structure_row_mode_independent": "صفوف مستقلة",
+  "structure_row_mode_stepped": "صفوف متدرجة",
+  "structure_independent_rows_hint": "استخدمه عندما يكون كل صف مكرراً على أرض مستوية.",
+  "structure_stepped_rows_hint": "استخدمه عندما يحتاج كل صف إلى ارتفاعات دعم مختلفة.",
+  "structure_row_offsets": "إزاحات الصفوف",
+  "structure_base_offset": "الإزاحة الأساسية",
+  "structure_repeated_frame": "هيكل مكرر",
+  "structure_per_row_legs": "أرجل كل صف",
+  "structure_equal_legs_explanation": "الأرجل متساوية لأن الصفوف مكررة على نفس هندسة الأرض المستوية.",
+  "structure_stepped_legs_explanation": "الأرجل تختلف لأن إزاحات الصفوف تطبق على كل صف بشكل مستقل.",
+  "structure_min_front_leg": "أقل رجل أمامية",
+  "structure_max_front_leg": "أعلى رجل أمامية",
+  "structure_min_rear_leg": "أقل رجل خلفية",
+  "structure_max_rear_leg": "أعلى رجل خلفية",
+  "structure_top_view": "منظر علوي",
+  "structure_side_view": "منظر جانبي",
+  "structure_front_view": "منظر أمامي",
+  "structure_isometric_view": "منظور مجسم",
+  "structure_front_label": "أمام",
+  "structure_rear_label": "خلف",
+  "structure_brace_label": "دعامة",
+  "structure_view_full_sketch": "عرض الرسم الكامل",
+  "structure_detail_view": "عرض التفاصيل",
+  "structure_panels": "الألواح",
+  "structure_offset": "الإزاحة",
+  "structure_total_depth": "العمق الإجمالي",
+  "structure_ground_level": "مستوى الأرض",
+  "structure_scale": "المقياس",
+  "structure_base_plate_detail": "تفاصيل لوحة القاعدة",
+  "structure_leg_detail": "تفاصيل الساق",
+  "structure_copy_dimensions": "نسخ الأبعاد",
+  "structure_print": "طباعة",
+  "share": "مشاركة",
+  "structure_usable_width": "العرض المتاح",
+  "structure_usable_depth": "العمق المتاح",
+  "structure_panel_layout": "تخطيط الألواح",
+  "structure_total_panels": "إجمالي الألواح",
+  "structure_frame_depth": "عمق الإطار",
+  "structure_leg_heights": "ارتفاعات السيقان",
+  "structure_min_front_leg_height": "أقل ارتفاع للساق الأمامية",
+  "structure_recents_tooltip": "الهياكل الأخيرة",
+  "structure_support_structure": "هيكل الدعم",
+  "structure_support_station_count": "عدد محطات الدعم",
+  "structure_support_spacing": "تباعد الدعم",
+  "structure_angles": "الزوايا",
+  "structure_ideal_azimuth": "السمت المثالي",
+  "structure_materials": "المواد",
+  "structure_front_leg_count": "عدد الأرجل الأمامية",
+  "structure_rear_leg_count": "عدد الأرجل الخلفية",
+  "structure_anchor_count": "عدد المثبتات",
+  "structure_row_details": "تفاصيل الصفوف",
+  "structure_row": "صف",
+  "structure_local_footprint": "البصمة المحلية",
+  "structure_layout": "التخطيط",
+  "structure_dimensions_report": "تقرير أبعاد الهيكل",
+  "structure_dimensions_copied": "تم نسخ الأبعاد إلى الحافظة",
+  "structure_tilt": "الميل",
+  "structure_reset_view": "إعادة ضبط العرض",
+  "structure_show_grid": "إظهار الشبكة",
+  "structure_show_dimensions": "إظهار الأبعاد",
+  "structure_show_annotations": "إظهار التوضيحات",
+  "structure_print_feature_coming_soon": "ميزة الطباعة قريباً",
+  "structure_supports": "الدعامات",
+  "structure_save_watt_drawing": "حفظ رسم Watt",
+  "structure_open_watt_drawing": "فتح رسم Watt",
+  "structure_drawing_default_title": "تصميم الهيكل",
+  "structure_drawing_saved": "تم حفظ رسم Watt: {path}",
+  "@structure_drawing_saved": {
+    "placeholders": {
+      "path": {}
+    }
+  },
+  "structure_drawing_save_failed": "تعذر حفظ رسم Watt: {error}",
+  "@structure_drawing_save_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "structure_drawing_opened": "تم فتح رسم Watt: {title}",
+  "@structure_drawing_opened": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "structure_drawing_open_failed": "تعذر فتح رسم Watt: {error}",
+  "@structure_drawing_open_failed": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "structure_full_sketch_title": "الرسم الكامل",
+  "structure_geometry_dimensions": "أبعاد الهندسة",
+  "structure_row_offset_value": "إزاحة الصف {row}",
+  "@structure_row_offset_value": {
+    "placeholders": {
+      "row": {}
+    }
+  },
+  "updateAvailable": "تحديث متوفر",
+  "updateAvailableMessage": "يتوفر إصدار جديد من Watt.",
+  "currentVersion": "الإصدار الحالي",
+  "newVersion": "الإصدار الجديد",
+  "whatsNew": "ما الجديد",
+  "later": "لاحقاً",
+  "updateNow": "التحديث الآن",
+  "updateDownloaded": "تم تنزيل التحديث",
+  "restartToInstall": "أعد التشغيل لتثبيت التحديث.",
+  "install": "تثبيت",
   "email_is_required": "البريد الإلكتروني مطلوب",
   "invalid_email": "بريد إلكتروني غير صالح",
   "email": "البريد الإلكتروني",
@@ -385,6 +605,7 @@
   "enter_system_name": "أدخل اسماً لنظامك الجديد:",
   "back_to_list": "العودة للقائمة",
   "cancel": "إلغاء",
+  "delete": "حذف",
   "save": "حفظ",
   "error_enter_system_name": "مطلوب: يرجى إدخال اسم النظام",
   "error_select_system": "مطلوب: يرجى تحديد نظام",
@@ -475,6 +696,46 @@
   "members_role_sales": "مبيعات",
   "customers": "العملاء",
   "suppliers": "الموردون",
+  "manage_orders_subtitle": "متابعة طلبات العملاء وطلبات المتجر.",
+  "manage_customers_subtitle": "مراجعة أرصدة العملاء ونشاطهم.",
+  "manage_suppliers_subtitle": "مراجعة أرصدة الموردين وسجل المشتريات.",
+  "manage_accounting_subtitle": "متابعة الملخصات المحاسبية والحركات.",
+  "b2b_orders": "طلبات B2B",
+  "b2c_orders": "طلبات B2C",
+  "no_orders_found": "لا توجد طلبات",
+  "no_customers_found": "لا يوجد عملاء",
+  "no_suppliers_found": "لا يوجد موردون",
+  "order_details": "تفاصيل الطلب",
+  "order_number": "رقم الطلب",
+  "order_placed": "تم إنشاء الطلب بنجاح",
+  "place_order": "تنفيذ الطلب",
+  "payment_status": "حالة الدفع",
+  "payment_method": "طريقة الدفع",
+  "status": "الحالة",
+  "fulfilled_at": "تاريخ الإنجاز",
+  "items": "العناصر",
+  "parties": "الأطراف",
+  "seller": "البائع",
+  "buyer": "المشتري",
+  "customer": "العميل",
+  "supplier": "المورد",
+  "confirm_receipt": "تأكيد الاستلام",
+  "edit_order_details": "تعديل تفاصيل الطلب",
+  "shipping_cost": "تكلفة الشحن",
+  "shipping_method": "طريقة الشحن",
+  "paid_amount": "المبلغ المدفوع",
+  "cancellation_reason": "سبب الإلغاء",
+  "save_changes": "حفظ التغييرات",
+  "bills": "الفواتير المستحقة",
+  "payments": "المدفوعات",
+  "net_income": "صافي الدخل",
+  "journal_entries": "قيود اليومية",
+  "receivables": "الذمم المدينة",
+  "payables": "الذمم الدائنة",
+  "transactions": "الحركات",
+  "accounts": "الحسابات",
+  "no_data_available": "لا توجد بيانات",
+  "no_company_workspace": "لا توجد مساحة عمل شركة لهذا الحساب.",
   "my_purchases": "مشترياتي",
   "tools": "الأدوات",
   "analytics": "التحليلات",
@@ -484,6 +745,36 @@
   "services_choose_category": "اختر فئة الخدمة",
   "services_no_categories": "لا توجد فئات خدمات متاحة حالياً.",
   "services_explore_companies": "استعرض الشركات",
+  "service_types": "أنواع الخدمات",
+  "service_types_loading": "جاري تحميل أنواع الخدمات...",
+  "service_types_empty_title": "لا توجد أنواع خدمات بعد",
+  "service_types_empty_subtitle": "أضف أول نوع خدمة لبدء تنظيم الشركات.",
+  "service_types_add": "إضافة نوع خدمة",
+  "service_types_edit": "تعديل نوع الخدمة",
+  "service_types_create_action": "إنشاء نوع خدمة",
+  "service_types_update_action": "تحديث نوع الخدمة",
+  "service_types_pick_image": "اختيار صورة",
+  "service_types_deleted": "تم حذف نوع الخدمة بنجاح.",
+  "service_types_created": "تم إنشاء نوع الخدمة بنجاح.",
+  "service_types_updated": "تم تحديث نوع الخدمة بنجاح.",
+  "service_types_delete_title": "حذف نوع الخدمة",
+  "service_types_delete_message": "هل تريد حذف {name}؟",
+  "@service_types_delete_message": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "service_types_company_subtitle": "حدد أنواع الخدمات التي تقدمها شركتك.",
+  "service_types_mark_served": "تحديد كمخدوم",
+  "service_types_served": "مخدوم",
+  "service_types_marked_served": "تمت إضافة نوع الخدمة إلى ملف الشركة.",
+  "service_types_unmarked_served": "تمت إزالة نوع الخدمة من ملف الشركة.",
+  "service_types_companies_count": "{count} شركة",
+  "@service_types_companies_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "services_companies_found": "تم العثور على {count} شركة",
   "@services_companies_found": {
     "placeholders": {
@@ -517,6 +808,78 @@
   "services_type_label": "النوع",
   "services_phone_label": "الهاتف",
   "services_no_phone": "لا يوجد رقم هاتف",
+  "services_tab_works": "الأعمال",
+  "services_tab_info_contacts": "المعلومات وجهات الاتصال",
+  "services_mode_overview": "نظرة عامة",
+  "services_mode_products": "المنتجات",
+  "services_products_header": "منتجات الشركة",
+  "services_products_mode_title": "تسوق من هذه الشركة",
+  "services_company_categories_title": "تصنيفات الشركة",
+  "services_products_subtitle": "تصفح المنتجات المتاحة من {company}.",
+  "@services_products_subtitle": {
+    "placeholders": {
+      "company": {}
+    }
+  },
+  "services_works_preview_title": "معرض الأعمال",
+  "services_works_preview_subtitle": "عرض تجريبي لبطاقات الأعمال إلى حين إضافة صور المشاريع الحقيقية.",
+  "services_work_item_title": "مشروع {number}",
+  "@services_work_item_title": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "company_work_title": "أعمال الشركة",
+  "company_work_subtitle": "إدارة المشاريع المنفذة وأعمال التركيب ونماذج الأعمال.",
+  "company_work_public_title": "معرض المشاريع",
+  "company_work_public_subtitle": "استكشف أحدث مشاريع الشركة وأعمال التركيب المنجزة.",
+  "company_work_public_empty": "لم يتم نشر أي أعمال حتى الآن.",
+  "company_work_public_showcase": "عرض عام",
+  "company_work_add": "إضافة عمل",
+  "company_work_add_title": "إضافة عمل",
+  "company_work_edit_title": "تعديل العمل",
+  "company_work_title_field": "عنوان العمل",
+  "company_work_body_field": "وصف العمل",
+  "company_work_title_required": "عنوان العمل مطلوب",
+  "company_work_images": "صور العمل",
+  "company_work_images_empty": "أضف صورة واحدة أو أكثر لعرض هذا المشروع.",
+  "company_work_existing_image": "حالياً",
+  "company_work_new_image": "جديدة",
+  "company_work_pick_from_gallery": "اختيار من المعرض",
+  "company_work_pick_from_camera": "التقاط صورة",
+  "company_work_image_pick_failed": "فشل اختيار الصور.",
+  "company_work_loading": "جاري تحميل أعمال الشركة...",
+  "company_work_empty_title": "لا توجد أعمال بعد",
+  "company_work_empty_subtitle": "أنشئ أول عمل لعرض المشاريع المنجزة للعملاء.",
+  "company_work_no_description": "لم يتم إضافة وصف بعد.",
+  "company_work_images_count": "{count} صور",
+  "@company_work_images_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "company_work_created_at": "أُنشئ في {date}",
+  "@company_work_created_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_updated_at": "آخر تحديث {date}",
+  "@company_work_updated_at": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "company_work_publish": "نشر العمل",
+  "company_work_save_changes": "حفظ العمل",
+  "company_work_created": "تم إنشاء العمل بنجاح.",
+  "company_work_updated": "تم تحديث العمل بنجاح.",
+  "company_work_delete_title": "حذف العمل",
+  "company_work_delete_message": "سيتم حذف هذا العمل نهائياً.",
+  "company_work_deleted": "تم حذف العمل بنجاح.",
+  "company_work_not_found": "هذا العمل غير متاح الآن.",
+  "try_again": "حاول مرة أخرى",
+  "edit": "تعديل",
   "services_section_services": "الخدمات",
   "services_no_public_services": "لا توجد خدمات عامة مدرجة بعد.",
   "services_price_on_request": "السعر عند الطلب",
@@ -605,6 +968,166 @@
   "request_status_open": "مفتوح",
   "request_status_closed": "مغلق",
   "request_status_fulfilled": "مكتمل التنفيذ",
+  "request_status_offered": "تم تقديم عرض",
+  "request_status_accepted": "مقبول",
+  "unknown_user": "مستخدم غير معروف",
+  "requester_info": "صاحب الطلب",
+  "bids_count": "{count} عروض",
+  "@bids_count": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_days": "منذ {count} يوم",
+  "@time_ago_days": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_hours": "منذ {count} ساعة",
+  "@time_ago_hours": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_minutes": "منذ {count} دقيقة",
+  "@time_ago_minutes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "time_ago_just_now": "الآن",
+  "unit_watts": "{value} واط",
+  "@unit_watts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatts": "{value} كيلوواط",
+  "@unit_kilowatts": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_watthours": "{value} واط-ساعة",
+  "@unit_watthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "unit_kilowatthours": "{value} كيلوواط-ساعة",
+  "@unit_kilowatthours": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "edit_offer": "تعديل العرض",
+  "cancel_button": "إلغاء",
+  "delete_button": "حذف",
+  "edit_button": "تعديل",
+  "finish_offer": "إنهاء العرض",
+  "general_note_title": "ملاحظة عامة",
+  "build_quotation": "أنشئ عرض السعر",
+  "build_quotation_subtitle": "ابدأ من طلب العميل ثم عدّل العرض الفني وأضف الخدمات الإضافية عند الحاجة.",
+  "auto_totals_label": "إجماليات تلقائية من أسعار الوحدة",
+  "editing_existing_offer": "تعديل عرض موجود",
+  "uses_request_defaults": "يعتمد على القيم الافتراضية للطلب",
+  "panel_offer": "عرض الألواح",
+  "panel_offer_subtitle": "هذه القيم تبدأ من طلب العميل ويمكن تعديلها قبل إرسال عرض السعر.",
+  "panel_power_watts": "قدرة اللوح (واط)",
+  "panel_unit_price": "سعر اللوح",
+  "total_panel_power_label": "إجمالي قدرة الألواح",
+  "panels_total_price": "إجمالي سعر الألواح",
+  "panel_note_label": "ملاحظة الألواح (اختياري)",
+  "panel_note_hint": "العلامة التجارية، مونو، الضمان، ملاحظات التركيب...",
+  "battery_offer": "عرض البطاريات",
+  "battery_offer_subtitle": "استخدم نوع البطارية وسعتها لتوضيح توصيتك الخاصة بالنسخ الاحتياطي بشكل واضح.",
+  "battery_size": "سعة البطارية",
+  "battery_unit_price": "سعر البطارية",
+  "batteries_total_price": "إجمالي سعر البطاريات",
+  "battery_note_label": "ملاحظة البطارية (اختياري)",
+  "battery_note_hint": "إعداد الرف، ساعات التشغيل، العلامة المفضلة...",
+  "battery_type": "نوع البطارية",
+  "battery_count": "عدد البطاريات",
+  "inverter_offer": "عرض العاكس",
+  "inverter_offer_subtitle": "اجعل تفاصيل العاكس متوافقة مع إعداد التركيب الفعلي ومتطلبات الشبكة.",
+  "inverter_size": "قدرة العاكس",
+  "inverter_unit_price": "سعر العاكس",
+  "inverters_total_price": "إجمالي سعر العواكس",
+  "inverter_note_label": "ملاحظة العاكس (اختياري)",
+  "inverter_type": "نوع العاكس",
+  "inverter_count": "عدد العواكس",
+  "battery_label": "البطارية",
+  "inverter_label": "العاكس",
+  "panel_label": "اللوح",
+  "inverter_note_hint": "أحادي الطور، عدد MPPT، ملاحظات الحماية...",
+  "general_note_hint": "أي تفاصيل أو متطلبات أخرى لنظامك الشمسي...",
+  "panel_recommendation_msg": "مقترح: استخدم نفس القدرة لكل الألواح لتحصل على توافق أفضل وعروض أدق.",
+  "panel_count_label": "عدد الألواح",
+  "panel_note_hint_request": "العلامة التجارية، نصف خلية، مونو، قيود السطح...",
+  "battery_power_recommendation": "يوصى ببطاريات الليثيوم لعمر أطول وأداء أفضل.",
+  "inverter_power_recommendation": "العواكس الهجينة هي الأفضل للأنظمة التي تحتوي على طاقة شمسية وبطاريات.",
+  "panels_power_recommendation": "نوصي باختيار قدرة لوح بين 400 واط و 600 واط للأنظمة الحديثة.",
+  "battery_recommendation_msg": "أفضل أداء: الليثيوم هو الخيار الافتراضي لعمر أطول وشحن أسرع.",
+  "battery_type_label": "نوع البطارية",
+  "battery_count_label": "عدد البطاريات",
+  "battery_note_hint_request": "نوع الرف، ساعات النسخ الاحتياطي، العلامة المفضلة...",
+  "total_battery_power_label": "إجمالي سعة البطاريات",
+  "inverter_recommendation_msg": "أفضل أداء: الهايبرد مناسب عند الحاجة لدعم الشبكة وإضافة بطاريات مستقبلًا.",
+  "inverter_type_label": "نوع العاكس",
+  "inverter_count_label": "عدد العواكس",
+  "inverter_note_hint_request": "أحادي الطور، عدد MPPT، العلامة التجارية...",
+  "total_inverters_power_label": "إجمالي قدرة العواكس",
+  "city_required_error": "يجب تحديد مدينة في ملفك الشخصي قبل إنشاء الطلب.",
+  "request_submitted_success": "تم إرسال طلبك الشمسي بنجاح.",
+  "request_submit_error": "تعذر إرسال الطلب. حاول مرة أخرى.",
+  "hero_request_subtitle": "أضف المقاسات والملاحظات بوضوح لتصلك عروض أدق من الشركات.",
+  "hero_request_info": "إعدادات افتراضية لإدخال أسرع",
+  "send_to_all_cities": "إرسال إلى جميع المدن",
+  "send_to_all_cities_msg": "سيكون طلبك مرئياً للشركات في جميع المدن.",
+  "location_reach_title": "الموقع والوصول",
+  "no_city_selected": "لم يتم اختيار مدينة",
+  "request_city_label": "مدينة الطلب",
+  "send_to_all_cities_subtitle": "فعّل هذا الخيار للسماح للشركات خارج مدينتك بالرد أيضًا.",
+  "general_note_subtitle": "أضف تفاصيل الموقع أو قيود التركيب أو العلامات التجارية المفضلة.",
+  "note_optional_label": "ملاحظة (اختياري)",
+  "note_optional": "ملاحظة (اختياري)",
+  "note_hint": "أضف أي تفاصيل إضافية أو متطلبات هنا...",
+  "note_hint_request": "نوع السطح، هدف النسخ الاحتياطي، الجدول الزمني...",
+  "delete_offer_subtitle": "سيؤدي هذا إلى حذف العرض نهائيًا.",
+  "delete_offer_title": "حذف العرض",
+  "delete_offer_msg": "هل أنت متأكد من حذف هذا العرض؟ لا يمكن التراجع عن هذا الإجراء.",
+  "phone_unavailable_msg": "لا يوجد رقم هاتف متاح لهذا الإجراء.",
+  "contact_unavailable_title": "الاتصال غير متاح",
+  "contact_unavailable_msg": "لا يتوفر رقم هاتف أو بريد إلكتروني لهذا الطالب.",
+  "offer_note_title": "ملاحظات العرض",
+  "offer_note_description": "استخدم هذا الحقل لوقت التسليم أو الضمان أو ملاحظات التنفيذ أو الاستثناءات.",
+  "template_involves": "الخدمات أو الرسوم الإضافية",
+  "template_involves_subtitle": "استخدم هذا القسم لرسوم التركيب أو التوصيل أو الهياكل أو الكابلات أو أي خدمة إضافية مرتبطة بهذا العرض.",
+  "no_extra_services": "لم تتم إضافة خدمات أو رسوم إضافية بعد.",
+  "estimated_extra_fees_label": "إجمالي الرسوم الإضافية التقديري",
+  "add_from_catalog": "إضافة من الكتالوج",
+  "create_new_item": "إنشاء عنصر جديد",
+  "manage_catalog": "إدارة الكتالوج",
+  "quotation_total": "إجمالي عرض السعر",
+  "save_offer_changes": "حفظ تعديلات العرض",
+  "no_more_catalog_items": "لا توجد عناصر نشطة أخرى متاحة في الكتالوج. أنشئ عنصرًا جديدًا أولًا.",
+  "create_item_title": "إنشاء عنصر كتالوج جديد",
+  "create_item_subtitle": "أضف خدمة أو مادة مخصصة لاستخدامها في هذا العرض والعروض المستقبلية.",
+  "name_label": "الاسم",
+  "cost_label": "السعر",
+  "create_item_button": "إنشاء العنصر",
+  "extra_fees_missing_title": "رسوم إضافية مفقودة",
+  "extra_fees_missing_msg": "يرجى اختيار عنصر من الكتالوج لجميع صفوف الرسوم الإضافية أو إزالتها.",
+  "invalid_panel_offer_title": "عرض ألواح غير صالح",
+  "invalid_panel_offer_msg": "يرجى التحقق من قدرة الألواح وعددها وسعرها.",
+  "invalid_battery_offer_title": "عرض بطاريات غير صالح",
+  "invalid_battery_offer_msg": "يرجى التحقق من سعة البطاريات وعددها وسعرها.",
+  "invalid_inverter_offer_title": "عرض عاكس غير صالح",
+  "invalid_inverter_offer_msg": "يرجى التحقق من قدرة العاكس وعدده وسعره.",
+  "invalid_pricing_title": "تسعير غير صالح",
+  "invalid_pricing_msg": "يجب أن يكون إجمالي سعر العرض أكبر من صفر.",
+  "form_required": "مطلوب",
   "battery_type_gel": "جل",
   "battery_type_tubular": "أنبوبي",
   "battery_type_lithium": "ليثيوم",
@@ -703,6 +1226,7 @@
   "battery_type_full": "نوع البطارية",
   "pv_power": "قدرة الألواح",
   "battery": "البطارية",
+  "inverter": "الإنفرتر",
   "city_label": "المدينة: {city}",
   "@city_label": {
     "placeholders": {
@@ -776,6 +1300,15 @@
   "chat_on_whatsapp": "المحادثة عبر واتساب",
   "systems": "الأنظمة",
   "delivery": "التوصيل",
+  "expenses": "المصروفات",
+  "amount": "المبلغ",
+  "category": "الفئة",
+  "cost": "التكلفة",
+  "company_delivery_estimated_days_min": "أقل عدد أيام",
+  "company_delivery_estimated_days_max": "أقصى عدد أيام",
+  "company_delivery_delete_message": "حذف خيار التوصيل \"{name}\"؟",
+  "company_expense_delete_message": "حذف مصروف {category}؟",
+  "company_workspace_no_company": "الرجاء اختيار شركة للمتابعة",
   "company_profile": "ملف الشركة",
   "subscription": "الاشتراك",
   "switch_to_user_view": "التبديل لعرض المستخدم",
@@ -958,6 +1491,8 @@
   "example_100_or_200": "مثال: 100 أو 200",
   "example_12_24_48_512": "مثال: 12 أو 24 أو 48 أو 51.2",
   "example_5_or_8": "مثال: 5 أو 8",
+  "example_5": "مثال: 5",
+  "example_15": "مثال: 15",
   "battery_count_explanation": "يتم حساب عدد البطاريات المطلوبة وفق المعادلة التالية:\n\n(القدرة × الوقت) ÷ (جهد البطارية × السعة × عمق التفريغ)\n\nمثال: (2300 واط × 5 ساعات) ÷ (12 فولت × 100Ah × 0.2) = حوالي 8 بطاريات.\n\nهذا يساعدك على تقدير عدد البطاريات اللازمة لحمل ومدة تشغيل محددين.",
   "depth_of_discharge_with_value": "عمق تفريغ البطارية ({value}%)",
   "@depth_of_discharge_with_value": {
@@ -1054,6 +1589,128 @@
   "@open_service": {
     "placeholders": {
       "service": {}
+    }
+  },
+  "structure_button_next": "التالي",
+  "date": "التاريخ",
+  "reset": "إعادة تعيين",
+  "load_more_offers": "تحميل المزيد من العروض",
+  "catalog_tooltip": "الكتالوج",
+  "orientation_calc": "حاسبة التوجيه",
+  "align_panels_efficiency": "قم بمحاذاة ألواحك الشمسية لتحقيق أقصى قدر من الكفاءة.",
+  "your_latitude": "خط العرض الخاص بك",
+  "auto_detect": "كشف تلقائي",
+  "latitude_label": "خط العرض (مثال: 33.3)",
+  "latitude_hint": "أدخل يدوياً إذا لزم الأمر",
+  "hemisphere_hint": "موجب (+) = نصف الكرة الشمالي\nسالب (-) = نصف الكرة الجنوبي",
+  "perfect_alignment": "محاذاة مثالية! ✅",
+  "rotate_phone_align": "قم بتدوير الهاتف لمحاذاة السهم الأخضر",
+  "current_heading": "الاتجاه الحالي: {heading}°",
+  "@current_heading": {
+    "placeholders": {
+      "heading": {
+        "type": "String"
+      }
+    }
+  },
+  "optimal_tilt": "الميل الأمثل",
+  "face_direction": "اتجاه الواجهة",
+  "best_performance_desc": "لأفضل أداء على مدار العام، قم بإمالة الألواح بزاوية {tilt}° باتجاه {direction}.",
+  "@best_performance_desc": {
+    "placeholders": {
+      "tilt": {
+        "type": "String"
+      },
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "why_orientation_matters": "لماذا يهم التوجيه؟",
+  "azimuth_title": "السمت (الاتجاه)",
+  "azimuth_desc": "يجب أن تواجه الألواح خط الاستواء (الجنوب في نصف الكرة الشمالي) لالتقاط الشمس طوال اليوم.",
+  "tilt_angle_title": "زاوية الميل",
+  "tilt_angle_desc": "الزاوية عن الأفق. عادة ما تساوي خط العرض الخاص بك للحصول على متوسط سنوي.",
+  "guide": "دليل",
+  "dont_show_again": "لا تظهر هذا مرة أخرى",
+  "close_button": "إغلاق",
+  "north": "الشمال",
+  "south": "الجنوب",
+  "east": "الشرق",
+  "west": "الغرب",
+  "equator": "خط الاستواء",
+  "optimal": "الأمثل",
+  "quick_create": "إنشاء سريع",
+  "add_product": "إضافة منتج",
+  "invite_member": "دعوة عضو",
+  "create_offer": "إنشاء عرض",
+  "start_adding_products_to_inventory": "ابدأ بإضافة المنتجات إلى مخزونك لرؤيتها هنا",
+  "search_results_for": "نتائج البحث عن",
+  "clear": "مسح",
+  "recent_activity": "النشاط الأخير",
+  "view_all": "عرض الكل",
+  "dashboard_your_activity": "نشاطك",
+  "dashboard_get_started": "البدء",
+  "dashboard_activity_signed_in_subtitle": "تتبع الطلبات والطلبيات والتنبيهات من مكان واحد.",
+  "dashboard_activity_guest_subtitle": "سجل الدخول لحفظ الطلبات وتقديم الطلبيات وتلقي التحديثات.",
+  "dashboard_services_action_subtitle": "استكشف الخدمات والشركات قبل إنشاء حساب.",
+  "dashboard_store_action_subtitle": "تسوق المنتجات، قارن الشركات، وقدم طلبات B2C.",
+  "dashboard_sign_in_card_subtitle": "الوصول إلى طلباتك المحفوظة وطلبياتك وإشعاراتك.",
+  "dashboard_guest_services_card_subtitle": "استكشف الخدمات والشركات قبل إنشاء حساب.",
+  "dashboard_my_requests_count": "{count} طلبات نشطة وسابقة.",
+  "@dashboard_my_requests_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_my_orders_count": "{count} طلبات B2C عبر بائعي المتجر.",
+  "@dashboard_my_orders_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_notifications_count": "{count} تنبيهات حديثة وتحديثات للنظام.",
+  "@dashboard_notifications_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_mode": "وضع المستخدم",
+  "admin_mode": "وضع المسؤول",
+  "revenue_trend": "اتجاه الإيرادات",
+  "financial_overview": "نظرة عامة مالية",
+  "order_status": "حالة الطلب",
+  "low_stock_alerts": "تنبيهات انخفاض المخزون",
+  "items_count": "عناصر",
+  "formatUnitsLeft": "{count} وحدة متبقية",
+  "@formatUnitsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restock": "تجديد المخزون",
+  "view_all_alerts": "عرض جميع التنبيهات",
+  "create_invoice": "إنشاء فاتورة",
+  "add_project": "إضافة مشروع",
+  "no_results_found": "لم يتم العثور على نتائج",
+  "marketplace_requests": "طلبات السوق",
+  "no_contact_info": "لا توجد معلومات اتصال",
+  "seasonal_solar_estimate": "تقدير إنتاج الطاقة الموسمي",
+  "est_daily_kw": "الإنتاج اليومي المقدر",
+  "formatSolarAdvice": "زاوية الميل الموصى بها: {advice}",
+  "@formatSolarAdvice": {
+    "placeholders": {
+      "advice": {
+        "type": "String"
+      }
     }
   }
 }

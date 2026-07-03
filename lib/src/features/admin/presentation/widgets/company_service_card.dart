@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/status_badge.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -25,9 +25,7 @@ class CompanyServiceCard extends StatelessWidget {
           border: Border.all(
             color: service.isActive
                 ? AppTheme.successColor.withValues(alpha: 0.3)
-                : (isDark
-                      ? Colors.white.withValues(alpha: 0.1)
-                      : Colors.grey.withValues(alpha: 0.1)),
+                : (isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1)),
             width: 1.5,
           ),
         ),
@@ -47,21 +45,13 @@ class CompanyServiceCard extends StatelessWidget {
                     children: [
                       Text(
                         service.serviceName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          fontFamily: AppTheme.fontFamily,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, fontFamily: AppTheme.fontFamily),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         service.serviceCode,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey,
-                          fontFamily: AppTheme.fontFamily,
-                        ),
+                        style: const TextStyle(fontSize: 11, color: Colors.grey, fontFamily: AppTheme.fontFamily),
                       ),
                     ],
                   ),
@@ -76,14 +66,8 @@ class CompanyServiceCard extends StatelessWidget {
                 spacing: 12,
                 runSpacing: 8,
                 children: [
-                  _buildInfoTag(
-                    Iconsax.calendar_bold,
-                    'Started: ${service.startsAt?.substring(0, 10) ?? 'N/A'}',
-                  ),
-                  _buildInfoTag(
-                    Iconsax.calendar_tick_bold,
-                    'Ends: ${service.endsAt?.substring(0, 10) ?? 'N/A'}',
-                  ),
+                  _buildInfoTag(Iconsax.calendar, 'Started: ${service.startsAt?.substring(0, 10) ?? 'N/A'}'),
+                  _buildInfoTag(Iconsax.calendar_tick, 'Ends: ${service.endsAt?.substring(0, 10) ?? 'N/A'}'),
                 ],
               ),
             ],
@@ -98,26 +82,11 @@ class CompanyServiceCard extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: service.isActive
-            ? AppTheme.successColor.withValues(alpha: 0.1)
-            : AppTheme.primaryColor.withValues(alpha: 0.1),
+        color: service.isActive ? AppTheme.successColor.withValues(alpha: 0.1) : AppTheme.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        image: service.icon != null
-            ? DecorationImage(
-                image: NetworkImage(service.icon!),
-                fit: BoxFit.contain,
-              )
-            : null,
+        image: service.icon != null ? DecorationImage(image: NetworkImage(service.icon!), fit: BoxFit.contain) : null,
       ),
-      child: service.icon == null
-          ? Icon(
-              Iconsax.setting_2_bold,
-              color: service.isActive
-                  ? AppTheme.successColor
-                  : AppTheme.primaryColor,
-              size: 20,
-            )
-          : null,
+      child: service.icon == null ? Icon(Iconsax.setting_2, color: service.isActive ? AppTheme.successColor : AppTheme.primaryColor, size: 20) : null,
     );
   }
 
@@ -125,29 +94,15 @@ class CompanyServiceCard extends StatelessWidget {
     final isActive = service.isActive;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: (isActive ? AppTheme.successColor : Colors.grey).withValues(
-          alpha: 0.1,
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: BoxDecoration(color: (isActive ? AppTheme.successColor : Colors.grey).withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            isActive ? Icons.check_circle : Icons.cancel,
-            size: 14,
-            color: isActive ? AppTheme.successColor : Colors.grey,
-          ),
+          Icon(isActive ? Icons.check_circle : Icons.cancel, size: 14, color: isActive ? AppTheme.successColor : Colors.grey),
           const SizedBox(width: 4),
           Text(
             isActive ? 'ON' : 'OFF',
-            style: TextStyle(
-              color: isActive ? AppTheme.successColor : Colors.grey,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              fontFamily: AppTheme.fontFamily,
-            ),
+            style: TextStyle(color: isActive ? AppTheme.successColor : Colors.grey, fontSize: 10, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
           ),
         ],
       ),
@@ -162,11 +117,7 @@ class CompanyServiceCard extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 10,
-            color: Colors.grey,
-            fontFamily: AppTheme.fontFamily,
-          ),
+          style: const TextStyle(fontSize: 10, color: Colors.grey, fontFamily: AppTheme.fontFamily),
         ),
       ],
     );

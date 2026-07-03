@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -55,10 +55,10 @@ class _InventorySearchBarState extends ConsumerState<InventorySearchBar> {
         onChanged: _onChanged,
         decoration: InputDecoration(
           hintText: l10n.searchProducts,
-          prefixIcon: const Icon(IonIcons.search, color: AppTheme.primaryDarkColor),
+          prefixIcon: Icon(Iconsax.search_normal, color: AppTheme.primaryDarkColor),
           suffixIcon: _controller.text.isNotEmpty
               ? IconButton(
-                  icon: const Icon(IonIcons.close_circle),
+                  icon: const Icon(Iconsax.close_circle),
                   onPressed: () {
                     _controller.clear();
                     ref.read(inventoryNotifierProvider.notifier).search('');

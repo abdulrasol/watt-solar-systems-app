@@ -5,20 +5,44 @@ import '../../../feedback/domain/repositories/feedback_repository.dart';
 
 class AdminState {
   final bool isLoading;
+  final bool isMoreLoading;
+  final bool hasMore;
   final String? error;
   final List<FeedbackEntity> feedbacks;
   final int unreadCount;
+  final int page;
   final DateTime? lastRefreshed;
 
-  AdminState({this.isLoading = false, this.error, this.feedbacks = const [], this.unreadCount = 0, this.lastRefreshed});
+  AdminState({
+    this.isLoading = false,
+    this.isMoreLoading = false,
+    this.hasMore = true,
+    this.error,
+    this.feedbacks = const [],
+    this.unreadCount = 0,
+    this.page = 1,
+    this.lastRefreshed,
+  });
 
-  AdminState copyWith({bool? isLoading, String? error, List<FeedbackEntity>? feedbacks, int? unreadCount, DateTime? lastRefreshed}) {
+  AdminState copyWith({
+    bool? isLoading,
+    bool? isMoreLoading,
+    bool? hasMore,
+    String? error,
+    List<FeedbackEntity>? feedbacks,
+    int? unreadCount,
+    int? page,
+    DateTime? lastRefreshed,
+  }) {
     final newFeedbacks = feedbacks ?? this.feedbacks;
     return AdminState(
       isLoading: isLoading ?? this.isLoading,
+      isMoreLoading: isMoreLoading ?? this.isMoreLoading,
+      hasMore: hasMore ?? this.hasMore,
       error: error ?? this.error,
       feedbacks: newFeedbacks,
       unreadCount: unreadCount ?? newFeedbacks.where((f) => !f.isRead).length,
+      page: page ?? this.page,
       lastRefreshed: lastRefreshed ?? this.lastRefreshed,
     );
   }
@@ -33,14 +57,45 @@ class AdminController extends Notifier<AdminState> {
     return AdminState();
   }
 
-  Future<void> fetchFeedbacks() async {
-    state = state.copyWith(isLoading: true, error: null);
-    try {
-      final feedbacks = await _feedbackRepository.getAllFeedbacks();
-      state = state.copyWith(isLoading: false, feedbacks: feedbacks, lastRefreshed: DateTime.now());
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: 'Failed to load feedbacks: ${e.toString()}');
+  Future<void> fetchFeedbacks({bool isRefresh = false}) async {
+    if (isRefresh) {
+      state = state.copyWith(
+        isLoading: true,
+        hasMore: true,
+        page: 1,
+        error: null,
+        feedbacks: [],
+      );
+    } else {
+      if (state.isMoreLoading || !state.hasMore) return;
+      state = state.copyWith(isMoreLoading: true, error: null);
     }
+
+    try {
+      final feedbacks = await _feedbackRepository.getAllFeedbacks(
+        page: state.page,
+        pageSize: 12,
+      );
+      state = state.copyWith(
+        isLoading: false,
+        isMoreLoading: false,
+        feedbacks: isRefresh ? feedbacks : [...state.feedbacks, ...feedbacks],
+        hasMore: feedbacks.length >= 12,
+        lastRefreshed: isRefresh ? DateTime.now() : state.lastRefreshed,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        isMoreLoading: false,
+        error: 'Failed to load feedbacks: ${e.toString()}',
+      );
+    }
+  }
+
+  Future<void> fetchNextPage() async {
+    if (state.isMoreLoading || !state.hasMore) return;
+    state = state.copyWith(page: state.page + 1);
+    await fetchFeedbacks();
   }
 
   Future<void> toggleFeedbackReadStatus(String id, bool isRead) async {

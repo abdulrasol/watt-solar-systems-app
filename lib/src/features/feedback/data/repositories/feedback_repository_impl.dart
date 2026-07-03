@@ -26,8 +26,8 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
   }
 
   @override
-  Future<List<FeedbackEntity>> getAllFeedbacks() async {
-    return _remoteDataSource.fetchFeedbacks();
+  Future<List<FeedbackEntity>> getAllFeedbacks({int page = 1, int pageSize = 12}) async {
+    return _remoteDataSource.fetchFeedbacks(page: page, pageSize: pageSize);
   }
 
   @override

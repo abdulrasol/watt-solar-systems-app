@@ -13,8 +13,10 @@ import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/core/services/dio.dart';
+import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 
 const List<String> _guestNotificationTopics = ['general', 'info'];
 const String _notificationChannelId = 'solar_hub_notifications';
@@ -53,13 +55,18 @@ void notificationTapBackgroundHandler(NotificationResponse response) {
 }
 
 class PushNotificationService {
+  static final StreamController<RemoteMessage> onMessageReceived = StreamController<RemoteMessage>.broadcast();
+
   final CasheInterface _cache = getIt<CasheInterface>();
   final DioService _dioService = getIt<DioService>();
+  final NetworkStatusService _networkStatus = getIt<NetworkStatusService>();
   final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
 
   FirebaseMessaging get _messaging => FirebaseMessaging.instance;
 
   StreamSubscription<String>? _tokenRefreshSubscription;
+  StreamSubscription<RemoteMessage>? _onMessageSubscription;
+  StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
   bool _initialized = false;
   bool _initializationAttempted = false;
   bool _localNotificationsAvailable = true;
@@ -72,7 +79,11 @@ class PushNotificationService {
     _initializationAttempted = true;
 
     try {
-      // Firebase is already initialized in main.dart
+      if (Firebase.apps.isEmpty) {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      }
 
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
       await _initializeLocalNotifications();
@@ -84,12 +95,15 @@ class PushNotificationService {
       // richer local notification presentation.
       await _messaging.setForegroundNotificationPresentationOptions(alert: false, badge: true, sound: true);
 
-      FirebaseMessaging.onMessage.listen((message) {
+      _onMessageSubscription?.cancel();
+      _onMessageSubscription = FirebaseMessaging.onMessage.listen((message) {
         dPrint('Foreground message received: ${message.messageId} - ${message.notification?.title}', tag: 'fcm');
+        onMessageReceived.add(message);
         unawaited(_showForegroundNotification(message));
       });
 
-      FirebaseMessaging.onMessageOpenedApp.listen((_) {
+      _onMessageOpenedAppSubscription?.cancel();
+      _onMessageOpenedAppSubscription = FirebaseMessaging.onMessageOpenedApp.listen((_) {
         _openNotificationsPage();
       });
 
@@ -123,6 +137,7 @@ class PushNotificationService {
       }
     } catch (e, stackTrace) {
       dPrint('Firebase Messaging initialization skipped: $e', tag: 'fcm', stackTrace: stackTrace);
+      _initializationAttempted = false;
     }
   }
 
@@ -233,6 +248,11 @@ class PushNotificationService {
         dPrint('FCM sync failed: ${response.message}', tag: 'fcm');
       }
     } catch (e, stackTrace) {
+      if (_networkStatus.isConnectivityError(e)) {
+        _networkStatus.markOffline(
+          'Notifications will sync again when your connection returns.',
+        );
+      }
       dPrint('FCM sync error (non-fatal): $e', tag: 'fcm', stackTrace: stackTrace);
     }
   }
@@ -339,6 +359,11 @@ class PushNotificationService {
     );
     const iosDetails = DarwinNotificationDetails(presentAlert: true, presentBadge: true, presentSound: true);
 
+    final context = rootNavigatorKey.currentContext;
+    if (context != null) {
+      ToastService.info(context, title, body);
+    }
+
     await _localNotifications.show(
       id: message.messageId.hashCode,
       title: title,
@@ -377,5 +402,11 @@ class PushNotificationService {
     final deviceId = '${Platform.operatingSystem}-${DateTime.now().millisecondsSinceEpoch}-$random';
     await _cache.save('fcm_installation_id', deviceId);
     return {'device_id': deviceId, 'app_version': '1.0.0'};
+  }
+
+  void dispose() {
+    _onMessageSubscription?.cancel();
+    _onMessageOpenedAppSubscription?.cancel();
+    _tokenRefreshSubscription?.cancel();
   }
 }

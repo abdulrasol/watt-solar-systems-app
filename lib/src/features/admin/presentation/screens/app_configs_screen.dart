@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/entities/app_config.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/app_config_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
@@ -18,7 +18,12 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(appConfigProvider.notifier).fetchConfigs());
+    Future.microtask(() => ref.read(appConfigProvider.notifier).fetchConfigs(isRefresh: true));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -26,40 +31,28 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
     final state = ref.watch(appConfigProvider);
 
     return AdminPageScaffold(
-      // title: 'App Configurations',
-      // subtitle: 'Flags and settings are fetched only for this route.',
       actions: [
         FilledButton.icon(
           onPressed: state.isSubmitting ? null : () => _showConfigDialog(context),
-          icon: const Icon(Iconsax.add_bold),
+          icon: const Icon(Iconsax.add),
           label: const Text('New Config'),
         ),
       ],
       child: state.isLoading
-          ? const AdminLoadingState(
-              icon: Iconsax.setting_bold,
-              message: 'Loading configurations...',
-            )
+          ? const AdminLoadingState(icon: Iconsax.setting, message: 'Loading configurations...')
           : state.error != null && state.configs.isEmpty
-          ? AdminErrorState(
-              error: state.error!,
-              onRetry: () => ref.read(appConfigProvider.notifier).fetchConfigs(),
-            )
+          ? AdminErrorState(error: state.error!, onRetry: () => ref.read(appConfigProvider.notifier).fetchConfigs(isRefresh: true))
           : _buildContent(context, state),
     );
   }
 
   Widget _buildContent(BuildContext context, AppConfigState state) {
     if (state.configs.isEmpty) {
-      return const AdminEmptyState(
-        icon: Iconsax.setting_2_bold,
-        title: 'No configurations found',
-        subtitle: 'Create your first configuration flag.',
-      );
+      return const AdminEmptyState(icon: Iconsax.setting_2, title: 'No configurations found', subtitle: 'Create your first configuration flag.');
     }
 
     return RefreshIndicator(
-      onRefresh: () => ref.read(appConfigProvider.notifier).fetchConfigs(),
+      onRefresh: () => ref.read(appConfigProvider.notifier).fetchConfigs(isRefresh: true),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth;
@@ -79,12 +72,8 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                   config: config,
                   isSubmitting: state.isSubmitting,
                   onTap: () => _showConfigDialog(context, config: config),
-                  onDelete: () => ref
-                      .read(appConfigProvider.notifier)
-                      .deleteConfig(config.key),
-                  onToggle: (value) => ref
-                      .read(appConfigProvider.notifier)
-                      .toggleConfig(config.key, value),
+                  onDelete: () => ref.read(appConfigProvider.notifier).deleteConfig(config.key),
+                  onToggle: (value) => ref.read(appConfigProvider.notifier).toggleConfig(config.key, value),
                 );
               },
             );
@@ -104,12 +93,8 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                 config: config,
                 isSubmitting: state.isSubmitting,
                 onTap: () => _showConfigDialog(context, config: config),
-                onDelete: () => ref
-                    .read(appConfigProvider.notifier)
-                    .deleteConfig(config.key),
-                onToggle: (value) => ref
-                    .read(appConfigProvider.notifier)
-                    .toggleConfig(config.key, value),
+                onDelete: () => ref.read(appConfigProvider.notifier).deleteConfig(config.key),
+                onToggle: (value) => ref.read(appConfigProvider.notifier).toggleConfig(config.key, value),
               );
             },
           );
@@ -118,14 +103,9 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
     );
   }
 
-  Future<void> _showConfigDialog(
-    BuildContext context, {
-    AppConfig? config,
-  }) async {
+  Future<void> _showConfigDialog(BuildContext context, {AppConfig? config}) async {
     final keyController = TextEditingController(text: config?.key ?? '');
-    final descriptionController = TextEditingController(
-      text: config?.description ?? '',
-    );
+    final descriptionController = TextEditingController(text: config?.description ?? '');
     var value = config?.value ?? false;
 
     await showDialog<void>(
@@ -136,10 +116,13 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
-                controller: keyController,
-                enabled: config == null,
-                decoration: const InputDecoration(labelText: 'Key'),
+              StatefulBuilder(
+                builder: (context, setInternalState) => TextField(
+                  controller: keyController,
+                  enabled: config == null,
+                  decoration: InputDecoration(labelText: 'Key', errorText: keyController.text.trim().isEmpty ? 'Key cannot be empty' : null),
+                  onChanged: (_) => setInternalState(() {}),
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -157,25 +140,18 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
             ],
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
             FilledButton(
               onPressed: () {
+                final key = keyController.text.trim();
+                if (key.isEmpty) return;
+
                 if (config == null) {
-                  ref.read(appConfigProvider.notifier).createConfig(
-                        key: keyController.text,
-                        value: value,
-                        description: descriptionController.text,
-                      );
+                  ref.read(appConfigProvider.notifier).createConfig(key: key, value: value, description: descriptionController.text.trim());
                 } else {
-                  ref.read(appConfigProvider.notifier).updateConfig(
-                        oldKey: config.key,
-                        newKey: keyController.text,
-                        value: value,
-                        description: descriptionController.text,
-                      );
+                  ref
+                      .read(appConfigProvider.notifier)
+                      .updateConfig(oldKey: config.key, newKey: key, value: value, description: descriptionController.text.trim());
                 }
                 Navigator.pop(context);
               },
@@ -192,13 +168,7 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
 }
 
 class _ConfigCard extends StatelessWidget {
-  const _ConfigCard({
-    required this.config,
-    required this.isSubmitting,
-    required this.onTap,
-    required this.onDelete,
-    required this.onToggle,
-  });
+  const _ConfigCard({required this.config, required this.isSubmitting, required this.onTap, required this.onDelete, required this.onToggle});
 
   final AppConfig config;
   final bool isSubmitting;
@@ -214,15 +184,11 @@ class _ConfigCard extends StatelessWidget {
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: config.value
-                ? AppTheme.successColor.withValues(alpha: 0.4)
-                : Colors.grey.withValues(alpha: 0.2),
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: config.value ? AppTheme.successColor.withValues(alpha: 0.4) : Colors.grey.withValues(alpha: 0.2)),
           ),
-        ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,25 +198,16 @@ class _ConfigCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: (config.value ? AppTheme.successColor : Colors.grey)
-                          .withValues(alpha: 0.12),
+                      color: (config.value ? AppTheme.successColor : Colors.grey).withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: Icon(
-                      config.value
-                          ? Iconsax.tick_circle_bold
-                          : Iconsax.close_circle_bold,
-                      color: config.value ? AppTheme.successColor : Colors.grey,
-                    ),
+                    child: Icon(config.value ? Iconsax.tick_circle : Iconsax.close_circle, color: config.value ? AppTheme.successColor : Colors.grey),
                   ),
                   const Spacer(),
                   IconButton(
                     visualDensity: VisualDensity.compact,
                     onPressed: isSubmitting ? null : onDelete,
-                    icon: const Icon(
-                      Iconsax.trash_bold,
-                      color: AppTheme.errorColor,
-                    ),
+                    icon: const Icon(Iconsax.trash, color: AppTheme.errorColor),
                   ),
                 ],
               ),
@@ -259,11 +216,7 @@ class _ConfigCard extends StatelessWidget {
                 config.key,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: AppTheme.fontFamily,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 16, fontWeight: FontWeight.w700),
               ),
               if ((config.description ?? '').isNotEmpty) ...[
                 const SizedBox(height: 6),
@@ -271,11 +224,7 @@ class _ConfigCard extends StatelessWidget {
                   config.description!,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontFamily,
-                    fontSize: 13,
-                    color: Theme.of(context).hintColor,
-                  ),
+                  style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 13, color: Theme.of(context).hintColor),
                 ),
               ],
               const SizedBox(height: 10),
@@ -289,10 +238,7 @@ class _ConfigCard extends StatelessWidget {
                       style: const TextStyle(fontFamily: AppTheme.fontFamily),
                     ),
                   ),
-                  Switch.adaptive(
-                    value: config.value,
-                    onChanged: isSubmitting ? null : onToggle,
-                  ),
+                  Switch.adaptive(value: config.value, onChanged: isSubmitting ? null : onToggle),
                 ],
               ),
             ],

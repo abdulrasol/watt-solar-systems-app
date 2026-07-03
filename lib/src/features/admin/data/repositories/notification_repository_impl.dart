@@ -79,6 +79,47 @@ class NotificationRepositoryImpl implements NotificationRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, NotificationResponse>> sendToGroup({
+    required String groupType,
+    required dynamic groupId,
+    required String title,
+    required String body,
+    Map<String, dynamic>? data,
+  }) async {
+    try {
+      final response = await _dioService.post(
+        AppUrls.notificationSendGroup,
+        data: {'group_type': groupType, 'group_id': groupId, 'title': title, 'body': body, 'data': data ?? {}},
+      );
+      return _parseSendResponse(response);
+    } on DioException catch (e) {
+      return Left(_mapDioFailure(e, fallback: 'Failed to send group notification'));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, NotificationResponse>> sendToUser({
+    required int userId,
+    required String title,
+    required String body,
+    Map<String, dynamic>? data,
+  }) async {
+    try {
+      final response = await _dioService.post(
+        AppUrls.notificationSendUser,
+        data: {'user_id': userId, 'title': title, 'body': body, 'data': data ?? {}},
+      );
+      return _parseSendResponse(response);
+    } on DioException catch (e) {
+      return Left(_mapDioFailure(e, fallback: 'Failed to send notification to user'));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
   Either<Failure, NotificationResponse> _parseSendResponse(dynamic response) {
     if (response.status == 200 && !response.error) {
       final body = Map<String, dynamic>.from(response.body ?? const {});
