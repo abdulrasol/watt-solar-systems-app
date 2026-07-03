@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
@@ -58,15 +58,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     _firstNameController = TextEditingController(text: user?.firstName ?? '');
     _lastNameController = TextEditingController(text: user?.lastName ?? '');
     _emailController = TextEditingController(text: user?.email ?? '');
-    _phoneController = TextEditingController(
-      text: user?.phone.toString() ?? '',
-    );
-    _securityQuestionController = TextEditingController(
-      text: user?.securityQuestion ?? '',
-    );
-    _securityAnswerController = TextEditingController(
-      text: user?.securityAnswer ?? '',
-    );
+    _phoneController = TextEditingController(text: user?.phone.toString() ?? '');
+    _securityQuestionController = TextEditingController(text: user?.securityQuestion ?? '');
+    _securityAnswerController = TextEditingController(text: user?.securityAnswer ?? '');
     _selectedCity = user?.city;
     _uploadedAvatarUrl = user?.image;
   }
@@ -134,24 +128,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     final l10n = AppLocalizations.of(context)!;
     try {
       final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(
-        source: source,
-        maxWidth: 512,
-        maxHeight: 512,
-        imageQuality: 85,
-      );
+      final XFile? image = await picker.pickImage(source: source, maxWidth: 512, maxHeight: 512, imageQuality: 85);
 
       if (image != null) {
         setState(() => _selectedImage = File(image.path));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.failed_to_pick_image(e.toString())),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.failed_to_pick_image(e.toString())), backgroundColor: Colors.red));
       }
     }
   }
@@ -171,34 +155,22 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
         lastName: _lastNameController.text.trim(),
         phone: _phoneController.text.trim(),
         city: _selectedCity?.id,
-        image: _selectedImage
-            ?.path, // Assuming backend accepts string image path or we leave as null
+        image: _selectedImage?.path, // Assuming backend accepts string image path or we leave as null
         securityQuestion: _securityQuestionController.text.trim(),
         securityAnswer: _securityAnswerController.text.trim(),
       );
 
-      final response = await getIt.get<AuthRepository>().updateProfile(
-        userModel,
-      );
+      final response = await getIt.get<AuthRepository>().updateProfile(userModel);
 
       if (mounted) {
         ref.read(authProvider.notifier).updateProfile(response);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.profile_updated_success),
-            backgroundColor: Colors.green,
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profile_updated_success), backgroundColor: Colors.green));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${l10n.error}: $e'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('${l10n.error}: $e'), backgroundColor: Colors.red, behavior: SnackBarBehavior.floating));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -218,13 +190,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
         actions: [
           TextButton(
             onPressed: _isLoading ? null : _saveProfile,
-            child: _isLoading
-                ? SizedBox(
-                    width: 20.w,
-                    height: 20.h,
-                    child: const CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Text(l10n.save),
+            child: _isLoading ? SizedBox(width: 20.w, height: 20.h, child: const CircularProgressIndicator(strokeWidth: 2)) : Text(l10n.save),
           ),
         ],
       ),
@@ -246,31 +212,18 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: 2,
-                          ),
+                          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                         ),
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundColor: isDark
-                              ? Colors.grey[800]
-                              : Colors.grey[200],
+                          backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
                           backgroundImage: _selectedImage != null
                               ? FileImage(_selectedImage!)
-                              : (_uploadedAvatarUrl != null &&
-                                    _uploadedAvatarUrl!.isNotEmpty)
+                              : (_uploadedAvatarUrl != null && _uploadedAvatarUrl!.isNotEmpty)
                               ? CachedNetworkImageProvider(_uploadedAvatarUrl!)
                               : null,
-                          child:
-                              (_selectedImage == null &&
-                                  (_uploadedAvatarUrl == null ||
-                                      _uploadedAvatarUrl!.isEmpty))
-                              ? Icon(
-                                  Iconsax.user_bold,
-                                  size: 50,
-                                  color: isDark ? Colors.white54 : Colors.grey,
-                                )
+                          child: (_selectedImage == null && (_uploadedAvatarUrl == null || _uploadedAvatarUrl!.isEmpty))
+                              ? Icon(Iconsax.user, size: 50, color: isDark ? Colors.white54 : Colors.grey)
                               : null,
                         ),
                       ),
@@ -279,15 +232,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                         right: 0,
                         child: Container(
                           padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Iconsax.camera_bold,
-                            size: 20,
-                            color: Colors.white,
-                          ),
+                          decoration: BoxDecoration(color: Theme.of(context).primaryColor, shape: BoxShape.circle),
+                          child: const Icon(Iconsax.camera, size: 20, color: Colors.white),
                         ),
                       ),
                     ],
@@ -295,10 +241,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
-                l10n.tap_to_change_avatar,
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
-              ),
+              Text(l10n.tap_to_change_avatar, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
               const SizedBox(height: 32),
 
               // Username Field
@@ -306,10 +249,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 controller: _usernameController,
                 decoration: InputDecoration(
                   labelText: l10n.username,
-                  prefixIcon: const Icon(Iconsax.user_cirlce_add_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.user_cirlce_add),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 validator: Validatorless.required(l10n.username_is_required),
               ),
@@ -320,15 +261,10 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: l10n.email,
-                  prefixIcon: const Icon(Iconsax.sms_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.sms),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                validator: Validatorless.multiple([
-                  Validatorless.required(l10n.email_is_required),
-                  Validatorless.email(l10n.invalid_email),
-                ]),
+                validator: Validatorless.multiple([Validatorless.required(l10n.email_is_required), Validatorless.email(l10n.invalid_email)]),
               ),
               const SizedBox(height: 16),
 
@@ -337,10 +273,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 controller: _firstNameController,
                 decoration: InputDecoration(
                   labelText: l10n.first_name,
-                  prefixIcon: const Icon(Iconsax.user_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.user),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -350,10 +284,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 controller: _lastNameController,
                 decoration: InputDecoration(
                   labelText: l10n.last_name,
-                  prefixIcon: const Icon(Iconsax.user_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.user),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -364,10 +296,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   labelText: l10n.phone_number,
-                  prefixIcon: const Icon(Iconsax.call_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.call),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 // validator: Validatorless.multiple([Validatorless.required('Phone is required'), Validatorless.number('Enter valid phone number')]),
               ),
@@ -378,10 +308,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 controller: _securityQuestionController,
                 decoration: InputDecoration(
                   labelText: l10n.security_question,
-                  prefixIcon: const Icon(Iconsax.security_safe_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.security_safe),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -391,10 +319,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 controller: _securityAnswerController,
                 decoration: InputDecoration(
                   labelText: l10n.security_answer,
-                  prefixIcon: const Icon(Iconsax.security_safe_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.security_safe),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -406,35 +332,17 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                     child: DropdownButtonFormField<Country>(
                       initialValue: _selectedCountry,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCountries
-                            ? AppLocalizations.of(context)!.loading
-                            : AppLocalizations.of(context)!.country,
-                        prefixIcon: _selectedCountry != null
-                            ? Icon(Iconsax.location_bold, size: 20.r)
-                            : null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide.none,
-                        ),
+                        labelText: _isLoadingCountries ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.country,
+                        prefixIcon: _selectedCountry != null ? Icon(Iconsax.location, size: 20.r) : null,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                         filled: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 16.h,
-                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       ),
-                      items: _countries
-                          .map(
-                            (country) => DropdownMenuItem(
-                              value: country,
-                              child: Text(country.name),
-                            ),
-                          )
-                          .toList(), // Now empty list
+                      items: _countries.map((country) => DropdownMenuItem(value: country, child: Text(country.name))).toList(), // Now empty list
                       onChanged: (value) {
                         setState(() {
                           _selectedCountry = value;
-                          _selectedCity =
-                              null; // Reset city to resolve assertion error
+                          _selectedCity = null; // Reset city to resolve assertion error
                           _fetchCities();
                         });
                       },
@@ -445,30 +353,13 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                     child: DropdownButtonFormField<City>(
                       initialValue: _selectedCity,
                       decoration: InputDecoration(
-                        labelText: _isLoadingCities
-                            ? AppLocalizations.of(context)!.loading
-                            : AppLocalizations.of(context)!.city,
-                        prefixIcon: _selectedCity != null
-                            ? Icon(Iconsax.location_bold, size: 20.r)
-                            : null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide.none,
-                        ),
+                        labelText: _isLoadingCities ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.city,
+                        prefixIcon: _selectedCity != null ? Icon(Iconsax.location, size: 20.r) : null,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                         filled: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 16.h,
-                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       ),
-                      items: _cities
-                          .map(
-                            (city) => DropdownMenuItem(
-                              value: city,
-                              child: Text(city.name),
-                            ),
-                          )
-                          .toList(), // Now empty list
+                      items: _cities.map((city) => DropdownMenuItem(value: city, child: Text(city.name))).toList(), // Now empty list
                       onChanged: (value) {
                         setState(() {
                           _selectedCity = value;
@@ -492,22 +383,12 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 child: ElevatedButton.icon(
                   onPressed: _isLoading ? null : _saveProfile,
                   icon: _isLoading
-                      ? SizedBox(
-                          width: 20.w,
-                          height: 20.h,
-                          child: const CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : const Icon(Iconsax.tick_circle_bold),
-                  label: _isLoading
-                      ? Text(l10n.saving)
-                      : Text(l10n.save_changes),
+                      ? SizedBox(width: 20.w, height: 20.h, child: const CircularProgressIndicator(strokeWidth: 2))
+                      : const Icon(Iconsax.tick_circle),
+                  label: _isLoading ? Text(l10n.saving) : Text(l10n.save_changes),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16.r),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
               ),
@@ -533,9 +414,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       if (mounted) ToastService.error(context, l10n.error, e.toString());
     }
     if (_selectedCity != null && _countries.isNotEmpty) {
-      final match = _countries.where(
-        (element) => element.id == _selectedCity!.country.id,
-      );
+      final match = _countries.where((element) => element.id == _selectedCity!.country.id);
       if (match.isNotEmpty) {
         _selectedCountry = match.first;
         await _fetchCities(countryId: _selectedCountry!.id);
@@ -555,14 +434,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       _isLoadingCities = true;
     });
     try {
-      final response = await getIt.get<AuthRepository>().getCities(
-        countryId: countryId ?? _selectedCountry!.id,
-      );
+      final response = await getIt.get<AuthRepository>().getCities(countryId: countryId ?? _selectedCountry!.id);
       if (!mounted) return;
       setState(() {
         _cities = response;
-        if (_selectedCity != null &&
-            !_cities.any((city) => city.id == _selectedCity!.id)) {
+        if (_selectedCity != null && !_cities.any((city) => city.id == _selectedCity!.id)) {
           _selectedCity = null;
         }
       });

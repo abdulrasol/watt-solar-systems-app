@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/input_text.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/save_to_system_dialog.dart';
@@ -176,7 +176,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
                       ),
                     ),
                     if (systemsEnabled && batteryCount > 0)
-                      IconButton(onPressed: () => _saveSystem(), icon: const Icon(Iconsax.save_2_bold), tooltip: AppLocalizations.of(context)!.save_to_system),
+                      IconButton(onPressed: () => _saveSystem(), icon: const Icon(Iconsax.save_2), tooltip: AppLocalizations.of(context)!.save_to_system),
                   ],
                 ),
               ),
@@ -197,7 +197,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         context: context,
         label: AppLocalizations.of(context)!.your_load_ampere,
         hintText: AppLocalizations.of(context)!.example_10,
-        icon: FontAwesome.bolt_solid,
+        icon: Iconsax.flash,
         controller: current,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -214,7 +214,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         null,
         label: AppLocalizations.of(context)!.battery_amperes,
         hintText: AppLocalizations.of(context)!.example_100_or_200,
-        icon: FontAwesome.i_solid,
+        icon: Icons.electric_bolt,
         controller: batteryCurrent,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -227,7 +227,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         null,
         label: AppLocalizations.of(context)!.battery_voltage_label,
         hintText: AppLocalizations.of(context)!.example_12_24_48_512,
-        icon: FontAwesome.v_solid,
+        icon: Icons.electric_bolt,
         controller: batteryVoltage,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -241,7 +241,7 @@ class _CountCalculatorState extends ConsumerState<CountCalculator> {
         AppLocalizations.of(context)!.runtime_question,
         label: AppLocalizations.of(context)!.required_runtime_hours,
         hintText: AppLocalizations.of(context)!.example_5_or_8,
-        icon: IonIcons.timer,
+        icon: Iconsax.timer,
         controller: time,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),

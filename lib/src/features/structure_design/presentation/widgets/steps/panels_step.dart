@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/section_card.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
@@ -56,7 +56,7 @@ class PanelsStep extends StatelessWidget {
         child: Column(
           children: [
             SectionCard(
-              icon: Iconsax.sun_1_bold,
+              icon: Iconsax.sun_1,
               title: l10n.structure_panel_dimensions,
               explanation: explanations[4],
               child: Column(
@@ -125,7 +125,7 @@ class PanelsStep extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             SectionCard(
-              icon: Iconsax.buildings_2_bold,
+              icon: Iconsax.buildings_2,
               title: l10n.structure_row_mode,
               explanation: explanations[5],
               child: Column(
@@ -160,7 +160,7 @@ class PanelsStep extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             SectionCard(
-              icon: Iconsax.ruler_bold,
+              icon: Iconsax.ruler,
               title: l10n.structure_clearances,
               explanation: explanations[6],
               child: Column(

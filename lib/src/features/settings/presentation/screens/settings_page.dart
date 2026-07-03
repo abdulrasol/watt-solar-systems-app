@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
@@ -41,7 +41,7 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 16),
 
             _buildSwitchItem(
-              icon: isDark ? Iconsax.moon_bold : Iconsax.sun_1_bold,
+              icon: isDark ? Iconsax.moon : Iconsax.sun_1,
               title: l10n.dark_mode,
               value: settings.isDark,
               onChanged: (val) => ref.read(settingsProvider.notifier).toggleDark(),
@@ -49,7 +49,7 @@ class SettingsPage extends ConsumerWidget {
             ),
             if (ref.watch(isNotificationsEnabled)) // to be checck if posters from backend fetched or not after launching  posters
               _buildSwitchItem(
-                icon: Iconsax.notification_bold,
+                icon: Iconsax.notification,
                 title: l10n.push_notifications,
                 value: settings.isNotificationEnabled,
                 onChanged: (val) => ref.read(settingsProvider.notifier).toggleNotification(),
@@ -61,7 +61,7 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 16),
 
             _buildDropdownItem(
-              icon: Iconsax.language_circle_bold,
+              icon: Iconsax.language_circle,
               title: l10n.language,
               value: settings.language,
               items: [
@@ -81,7 +81,7 @@ class SettingsPage extends ConsumerWidget {
               const SizedBox(height: 16),
 
               _buildSwitchItem(
-                icon: Iconsax.login_1_bold,
+                icon: Iconsax.login_1,
                 title: l10n.save_role_page_selection,
                 subtitle: l10n.startup_role_subtitle,
                 value: settings.saveRolePageSelection,

@@ -1,19 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyWorkCard extends StatelessWidget {
-  const CompanyWorkCard({
-    super.key,
-    required this.work,
-    required this.onTap,
-    this.onEdit,
-    this.onDelete,
-  });
+  const CompanyWorkCard({super.key, required this.work, required this.onTap, this.onEdit, this.onDelete});
 
   final CompanyWork work;
   final VoidCallback onTap;
@@ -32,13 +26,7 @@ class CompanyWorkCard extends StatelessWidget {
           color: theme.cardColor,
           borderRadius: BorderRadius.circular(22.r),
           border: Border.all(color: Colors.grey.withValues(alpha: 0.12)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 18,
-              offset: const Offset(0, 10),
-            ),
-          ],
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 18, offset: const Offset(0, 10))],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,11 +50,7 @@ class CompanyWorkCard extends StatelessWidget {
                           work.title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: AppTheme.fontFamily,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                          ),
+                          style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 15, fontWeight: FontWeight.w800),
                         ),
                       ),
                       if (onEdit != null || onDelete != null)
@@ -80,59 +64,31 @@ class CompanyWorkCard extends StatelessWidget {
                             }
                           },
                           itemBuilder: (context) => [
-                            if (onEdit != null)
-                              PopupMenuItem<String>(
-                                value: 'edit',
-                                child: Text(l10n.edit),
-                              ),
-                            if (onDelete != null)
-                              PopupMenuItem<String>(
-                                value: 'delete',
-                                child: Text(l10n.delete_action),
-                              ),
+                            if (onEdit != null) PopupMenuItem<String>(value: 'edit', child: Text(l10n.edit)),
+                            if (onDelete != null) PopupMenuItem<String>(value: 'delete', child: Text(l10n.delete_action)),
                           ],
                         ),
                     ],
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    work.body?.trim().isNotEmpty == true
-                        ? work.body!.trim()
-                        : l10n.company_work_no_description,
+                    work.body?.trim().isNotEmpty == true ? work.body!.trim() : l10n.company_work_no_description,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppTheme.fontFamily,
-                      fontSize: 12,
-                      height: 1.5,
-                      color: theme.hintColor,
-                    ),
+                    style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12, height: 1.5, color: theme.hintColor),
                   ),
                   SizedBox(height: 12.h),
                   Row(
                     children: [
-                      const Icon(
-                        Iconsax.gallery_bold,
-                        size: 16,
-                        color: AppTheme.primaryColor,
-                      ),
+                      const Icon(Iconsax.gallery, size: 16, color: AppTheme.primaryColor),
                       SizedBox(width: 6.w),
                       Expanded(
                         child: Text(
                           l10n.company_work_images_count(work.images.length),
-                          style: const TextStyle(
-                            fontFamily: AppTheme.fontFamily,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.primaryColor,
-                          ),
+                          style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.primaryColor),
                         ),
                       ),
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        size: 18.sp,
-                        color: AppTheme.primaryColor,
-                      ),
+                      Icon(Icons.arrow_forward_rounded, size: 18.sp, color: AppTheme.primaryColor),
                     ],
                   ),
                 ],
@@ -155,13 +111,7 @@ class _CardImage extends StatelessWidget {
     if (work.coverImageUrl == null || work.coverImageUrl!.isEmpty) {
       return Container(
         color: AppTheme.primaryColor.withValues(alpha: 0.08),
-        child: const Center(
-          child: Icon(
-            Iconsax.gallery_bold,
-            size: 42,
-            color: AppTheme.primaryColor,
-          ),
-        ),
+        child: const Center(child: Icon(Iconsax.gallery, size: 42, color: AppTheme.primaryColor)),
       );
     }
 

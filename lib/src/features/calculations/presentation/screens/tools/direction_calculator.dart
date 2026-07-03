@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
@@ -64,11 +64,11 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
     // Update text controller if location was auto-detected
     String controllerText = controller.orientationLat == 0 ? '' : controller.orientationLat.toString();
     if (_textController.text != controllerText && !controller.locationLoading) {
-       // Only update if parsing result is different to avoid cursor jump while typing
-       if (double.tryParse(_textController.text) != controller.orientationLat) {
-         _textController.text = controllerText;
-         _textController.selection = TextSelection.collapsed(offset: controllerText.length);
-       }
+      // Only update if parsing result is different to avoid cursor jump while typing
+      if (double.tryParse(_textController.text) != controller.orientationLat) {
+        _textController.text = controllerText;
+        _textController.selection = TextSelection.collapsed(offset: controllerText.length);
+      }
     }
 
     return Scaffold(
@@ -82,7 +82,7 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
           children: [
             const Hero(
               tag: 'direction_hero',
-              child: Icon(Iconsax.map_1_bold, size: 80, color: Colors.teal),
+              child: Icon(Iconsax.map_1, size: 80, color: Colors.teal),
             ),
             const SizedBox(height: 20),
             Text(l10n.align_panels_efficiency, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
@@ -104,8 +104,8 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
                         child: Text(l10n.your_latitude, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                       controller.locationLoading
-                            ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                            : TextButton.icon(onPressed: controller.fetchLocation, icon: const Icon(Icons.my_location, size: 18), label: Text(l10n.auto_detect)),
+                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                          : TextButton.icon(onPressed: controller.fetchLocation, icon: const Icon(Icons.my_location, size: 18), label: Text(l10n.auto_detect)),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -131,169 +131,168 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
             const SizedBox(height: 30),
 
             // Compass Visual
-            Builder(builder: (context) {
-              if (controller.orientationLat == 0) return const SizedBox.shrink();
+            Builder(
+              builder: (context) {
+                if (controller.orientationLat == 0) return const SizedBox.shrink();
 
-              double targetHeading = controller.optimalDirection == "South" ? 180 : 0; // 0 is North
-              double currentHeading = controller.compassHeading;
-              double diff = (currentHeading - targetHeading).abs();
-              bool isAligned = diff < 5 || diff > 355; // Tolerance 5 degrees
+                double targetHeading = controller.optimalDirection == "South" ? 180 : 0; // 0 is North
+                double currentHeading = controller.compassHeading;
+                double diff = (currentHeading - targetHeading).abs();
+                bool isAligned = diff < 5 || diff > 355; // Tolerance 5 degrees
 
-              return Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Compass Background
-                      Container(
-                        width: 250,
-                        height: 250,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: isDark ? Colors.grey[900] : Colors.grey[200],
-                          boxShadow: [BoxShadow(color: isAligned ? Colors.green.withValues(alpha: 0.3) : Colors.black12, blurRadius: 20, spreadRadius: 5)],
-                          border: Border.all(color: isAligned ? Colors.green : Colors.grey, width: 4),
-                        ),
-                        child: Stack(
-                          children: [
-                            // Markers
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: EdgeInsets.all(8),
-                                child: Text(l10n.north[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                return Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Compass Background
+                        Container(
+                          width: 250,
+                          height: 250,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isDark ? Colors.grey[900] : Colors.grey[200],
+                            boxShadow: [BoxShadow(color: isAligned ? Colors.green.withValues(alpha: 0.3) : Colors.black12, blurRadius: 20, spreadRadius: 5)],
+                            border: Border.all(color: isAligned ? Colors.green : Colors.grey, width: 4),
+                          ),
+                          child: Stack(
+                            children: [
+                              // Markers
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(l10n.north[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: EdgeInsets.all(8),
-                                child: Text(l10n.south[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(l10n.south[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: EdgeInsets.all(8),
-                                child: Text(l10n.east[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(l10n.east[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.all(8),
-                                child: Text(l10n.west[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(l10n.west[0], style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
-                      Transform.rotate(
-                        angle: -currentUserHeadingRad(currentHeading),
-                        child: Icon(Icons.navigation, size: 200, color: Colors.grey.withValues(alpha: 0.2)),
-                      ),
-
-                      Transform.rotate(
-                        angle: -currentUserHeadingRad(currentHeading),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.arrow_upward, size: 50, color: Colors.red),
-                            Text(
-                              l10n.north[0],
-                              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 50), // Spacing
-                          ],
+                        Transform.rotate(
+                          angle: -currentUserHeadingRad(currentHeading),
+                          child: Icon(Icons.navigation, size: 200, color: Colors.grey.withValues(alpha: 0.2)),
                         ),
-                      ),
 
-                      // Target Indicator (Optimal Direction)
-                      Transform.rotate(
-                        angle: -currentUserHeadingRad(currentHeading) + (controller.optimalDirection == "South" ? math.pi : 0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.arrow_upward, size: 50, color: Colors.green),
-                            Text(
-                              l10n.optimal,
-                              style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 50), // Spacing
-                          ],
+                        Transform.rotate(
+                          angle: -currentUserHeadingRad(currentHeading),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.arrow_upward, size: 50, color: Colors.red),
+                              Text(
+                                l10n.north[0],
+                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 50), // Spacing
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    isAligned ? l10n.perfect_alignment : l10n.rotate_phone_align,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isAligned ? Colors.green : Colors.orange),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(l10n.current_heading(currentHeading.toStringAsFixed(0))),
-                ],
-              );
-            }),
+
+                        // Target Indicator (Optimal Direction)
+                        Transform.rotate(
+                          angle: -currentUserHeadingRad(currentHeading) + (controller.optimalDirection == "South" ? math.pi : 0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.arrow_upward, size: 50, color: Colors.green),
+                              Text(
+                                l10n.optimal,
+                                style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 50), // Spacing
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      isAligned ? l10n.perfect_alignment : l10n.rotate_phone_align,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isAligned ? Colors.green : Colors.orange),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(l10n.current_heading(currentHeading.toStringAsFixed(0))),
+                  ],
+                );
+              },
+            ),
 
             const SizedBox(height: 30),
 
             // Results Card
             controller.orientationLat != 0
-                  ? Container(
-                      padding: const EdgeInsets.all(20),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [BoxShadow(color: AppTheme.primaryColor.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 5))],
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(l10n.optimal_tilt, style: const TextStyle(color: Colors.white70)),
-                                  Text(
-                                    "${controller.optimalTilt.toStringAsFixed(1)}°",
-                                    style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              Container(height: 40, width: 1, color: Colors.white24),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(l10n.face_direction, style: const TextStyle(color: Colors.white70)),
-                                  Text(
-                                    _getLocalizedDirection(controller.optimalDirection, l10n),
-                                    style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              l10n.best_performance_desc(
-                                controller.optimalTilt.toStringAsFixed(1),
-                                _getLocalizedDirection(controller.optimalDirection, l10n),
-                              ),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: Colors.white),
+                ? Container(
+                    padding: const EdgeInsets.all(20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [BoxShadow(color: AppTheme.primaryColor.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 5))],
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(l10n.optimal_tilt, style: const TextStyle(color: Colors.white70)),
+                                Text(
+                                  "${controller.optimalTilt.toStringAsFixed(1)}°",
+                                  style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
+                            Container(height: 40, width: 1, color: Colors.white24),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(l10n.face_direction, style: const TextStyle(color: Colors.white70)),
+                                Text(
+                                  _getLocalizedDirection(controller.optimalDirection, l10n),
+                                  style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            l10n.best_performance_desc(controller.optimalTilt.toStringAsFixed(1), _getLocalizedDirection(controller.optimalDirection, l10n)),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.white),
                           ),
-                        ],
-                      ),
-                    )
-                  : const SizedBox.shrink(),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
 
             const SizedBox(height: 20),
             // Educational Hint
@@ -312,14 +311,8 @@ class _DirectionCalculatorState extends ConsumerState<DirectionCalculator> {
                     style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
                   ),
                   const SizedBox(height: 10),
-                  _buildDefinitionRow(
-                    l10n.azimuth_title,
-                    l10n.azimuth_desc,
-                  ),
-                  _buildDefinitionRow(
-                    l10n.tilt_angle_title,
-                    l10n.tilt_angle_desc,
-                  ),
+                  _buildDefinitionRow(l10n.azimuth_title, l10n.azimuth_desc),
+                  _buildDefinitionRow(l10n.tilt_angle_title, l10n.tilt_angle_desc),
                 ],
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/wizard_intro_card.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/inputs/section_card.dart';
@@ -20,6 +20,15 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
   late final TextEditingController _widthCtrl;
   late final TextEditingController _weightCtrl;
   late final TextEditingController _thicknessCtrl;
+  // Previously these two were created inline inside build() (a new
+  // TextEditingController on every rebuild, leaking the old instance on
+  // every keystroke). They're now persistent State fields like the rest,
+  // created once and disposed properly.
+  late final TextEditingController _horizontalGapCtrl;
+  late final TextEditingController _verticalGapCtrl;
+  late final TextEditingController _vocCtrl;
+  late final TextEditingController _vmpCtrl;
+  late final TextEditingController _iscCtrl;
 
   @override
   void initState() {
@@ -30,6 +39,11 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
     _widthCtrl = TextEditingController(text: s.panelWidthM.toStringAsFixed(2));
     _weightCtrl = TextEditingController(text: s.panelWeightKg.toStringAsFixed(1));
     _thicknessCtrl = TextEditingController(text: s.panelThicknessM.toStringAsFixed(3));
+    _horizontalGapCtrl = TextEditingController(text: s.horizontalGapM.toStringAsFixed(3));
+    _verticalGapCtrl = TextEditingController(text: s.verticalGapM.toStringAsFixed(3));
+    _vocCtrl = TextEditingController(text: s.panelVocV.toStringAsFixed(1));
+    _vmpCtrl = TextEditingController(text: s.panelVmpV.toStringAsFixed(1));
+    _iscCtrl = TextEditingController(text: s.panelIscA.toStringAsFixed(2));
   }
 
   @override
@@ -39,6 +53,11 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
     _widthCtrl.dispose();
     _weightCtrl.dispose();
     _thicknessCtrl.dispose();
+    _horizontalGapCtrl.dispose();
+    _verticalGapCtrl.dispose();
+    _vocCtrl.dispose();
+    _vmpCtrl.dispose();
+    _iscCtrl.dispose();
     super.dispose();
   }
 
@@ -54,7 +73,7 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WizardIntroCard(
-            icon: Iconsax.sun_1_bold,
+            icon: Iconsax.sun_1,
             titleEn: 'Panel Specifications',
             titleAr: 'مواصفات الألواح',
             descriptionEn: 'Configure your solar panel dimensions, power rating, and orientation.',
@@ -64,7 +83,7 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
           SectionCard(
             titleEn: 'Panel Dimensions & Power',
             titleAr: 'أبعاد وقوة اللوح',
-            icon: Iconsax.sun_1_bold,
+            icon: Iconsax.sun_1,
             child: Column(
               children: [
                 PvNumberField(
@@ -77,16 +96,52 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
                 ),
                 Row(
                   children: [
-                    Expanded(child: PvNumberField(label: isAr ? 'الطول' : 'Length', controller: _lengthCtrl, suffix: 'm', min: 0.2, max: 5, onChanged: (v) => controller.updatePanelSpec(lengthM: v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'الطول' : 'Length',
+                        controller: _lengthCtrl,
+                        suffix: 'm',
+                        min: 0.2,
+                        max: 5,
+                        onChanged: (v) => controller.updatePanelSpec(lengthM: v),
+                      ),
+                    ),
                     SizedBox(width: 12.w),
-                    Expanded(child: PvNumberField(label: isAr ? 'العرض' : 'Width', controller: _widthCtrl, suffix: 'm', min: 0.2, max: 5, onChanged: (v) => controller.updatePanelSpec(widthM: v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'العرض' : 'Width',
+                        controller: _widthCtrl,
+                        suffix: 'm',
+                        min: 0.2,
+                        max: 5,
+                        onChanged: (v) => controller.updatePanelSpec(widthM: v),
+                      ),
+                    ),
                   ],
                 ),
                 Row(
                   children: [
-                    Expanded(child: PvNumberField(label: isAr ? 'الوزن' : 'Weight', controller: _weightCtrl, suffix: 'kg', min: 1, max: 100, onChanged: (v) => controller.updatePanelSpec(weightKg: v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'الوزن' : 'Weight',
+                        controller: _weightCtrl,
+                        suffix: 'kg',
+                        min: 1,
+                        max: 100,
+                        onChanged: (v) => controller.updatePanelSpec(weightKg: v),
+                      ),
+                    ),
                     SizedBox(width: 12.w),
-                    Expanded(child: PvNumberField(label: isAr ? 'السماكة' : 'Thickness', controller: _thicknessCtrl, suffix: 'm', min: 0.01, max: 0.1, onChanged: (v) => controller.updatePanelSpec(thicknessM: v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'السماكة' : 'Thickness',
+                        controller: _thicknessCtrl,
+                        suffix: 'm',
+                        min: 0.01,
+                        max: 0.1,
+                        onChanged: (v) => controller.updatePanelSpec(thicknessM: v),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -95,7 +150,7 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
           SectionCard(
             titleEn: 'Panel Orientation',
             titleAr: 'اتجاه اللوح',
-            icon: Iconsax.rotate_left_bold,
+            icon: Iconsax.rotate_left,
             child: Row(
               children: [
                 Expanded(
@@ -121,13 +176,13 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
           SectionCard(
             titleEn: 'Panel Gaps',
             titleAr: 'فجوات الألواح',
-            icon: Iconsax.row_vertical_bold,
+            icon: Iconsax.row_vertical,
             child: Row(
               children: [
                 Expanded(
                   child: PvNumberField(
                     label: isAr ? 'أفقي' : 'Horizontal Gap',
-                    controller: TextEditingController(text: state.horizontalGapM.toStringAsFixed(3)),
+                    controller: _horizontalGapCtrl,
                     suffix: 'm',
                     min: 0,
                     max: 0.5,
@@ -138,12 +193,57 @@ class _PanelPlacementStepState extends ConsumerState<PanelPlacementStep> {
                 Expanded(
                   child: PvNumberField(
                     label: isAr ? 'عمودي' : 'Vertical Gap',
-                    controller: TextEditingController(text: state.verticalGapM.toStringAsFixed(3)),
+                    controller: _verticalGapCtrl,
                     suffix: 'm',
                     min: 0,
                     max: 0.5,
                     onChanged: (v) => controller.updateVerticalGap(v),
                   ),
+                ),
+              ],
+            ),
+          ),
+          SectionCard(
+            titleEn: 'Electrical Specifications',
+            titleAr: 'المواصفات الكهربائية',
+            icon: Iconsax.flash_1,
+            explanationEn:
+                'Used to check your inverter/string sizing (voltage window, current limits) on the Results step. Find these on the panel datasheet (STC ratings).',
+            explanationAr: 'تُستخدم للتحقق من توافق الإنفرتر والسلاسل الكهربائية (نافذة الجهد، حدود التيار) في خطوة النتائج. تجدها في ورقة بيانات اللوح.',
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'جهد الدارة المفتوحة (Voc)' : 'Open-Circuit Voltage (Voc)',
+                        controller: _vocCtrl,
+                        suffix: 'V',
+                        min: 5,
+                        max: 100,
+                        onChanged: (v) => controller.updatePanelElectricalSpec(vocV: v),
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'جهد أقصى قدرة (Vmp)' : 'Max Power Voltage (Vmp)',
+                        controller: _vmpCtrl,
+                        suffix: 'V',
+                        min: 5,
+                        max: 90,
+                        onChanged: (v) => controller.updatePanelElectricalSpec(vmpV: v),
+                      ),
+                    ),
+                  ],
+                ),
+                PvNumberField(
+                  label: isAr ? 'تيار الدارة القصيرة (Isc)' : 'Short-Circuit Current (Isc)',
+                  controller: _iscCtrl,
+                  suffix: 'A',
+                  min: 1,
+                  max: 30,
+                  onChanged: (v) => controller.updatePanelElectricalSpec(iscA: v),
                 ),
               ],
             ),

@@ -1229,6 +1229,7 @@
   "battery_type_full": "Battery Type",
   "pv_power": "PV Power",
   "battery": "Battery",
+  "inverter": "Inverter",
   "city_label": "City: {city}",
   "@city_label": {
     "placeholders": {
@@ -1302,6 +1303,25 @@
   "chat_on_whatsapp": "Chat on WhatsApp",
   "systems": "Systems",
   "delivery": "Delivery",
+  "expenses": "Expenses",
+  "amount": "Amount",
+  "category": "Category",
+  "cost": "Cost",
+  "company_delivery_estimated_days_min": "Min Days",
+  "company_delivery_estimated_days_max": "Max Days",
+  "company_delivery_delete_message": "Delete \"{name}\" delivery option?",
+  "@company_delivery_delete_message": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "company_expense_delete_message": "Delete this {category} expense?",
+  "@company_expense_delete_message": {
+    "placeholders": {
+      "category": {}
+    }
+  },
+  "company_workspace_no_company": "Select a company to continue",
   "company_profile": "Company Profile",
   "subscription": "Subscription",
   "switch_to_user_view": "Switch to User View",
@@ -1639,5 +1659,71 @@
   "create_offer": "Create Offer",
   "start_adding_products_to_inventory": "Start adding products to your inventory to see them here",
   "search_results_for": "Search results for",
-  "clear": "Clear"
+  "clear": "Clear",
+  "recent_activity": "Recent Activity",
+  "view_all": "View All",
+  "dashboard_your_activity": "Your Activity",
+  "dashboard_get_started": "Get Started",
+  "dashboard_activity_signed_in_subtitle": "Track requests, orders, and alerts from one place.",
+  "dashboard_activity_guest_subtitle": "Sign in to save requests, place orders, and receive updates.",
+  "dashboard_services_action_subtitle": "Explore services and companies before creating an account.",
+  "dashboard_store_action_subtitle": "Shop products, compare companies, and place B2C orders.",
+  "dashboard_sign_in_card_subtitle": "Access your saved requests, orders, and notifications.",
+  "dashboard_guest_services_card_subtitle": "Explore services and companies before creating an account.",
+  "dashboard_my_requests_count": "{count} active and past requests.",
+  "@dashboard_my_requests_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_my_orders_count": "{count} B2C orders across storefront sellers.",
+  "@dashboard_my_orders_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_notifications_count": "{count} recent alerts and system updates.",
+  "@dashboard_notifications_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_mode": "User Mode",
+  "admin_mode": "Admin Mode",
+  "revenue_trend": "Revenue Trend",
+  "financial_overview": "Financial Overview",
+  "order_status": "Order Status",
+  "low_stock_alerts": "Low Stock Alerts",
+  "items_count": "items",
+  "formatUnitsLeft": "{count} units left",
+  "@formatUnitsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restock": "Restock",
+  "view_all_alerts": "View All Alerts",
+  "create_invoice": "Create Invoice",
+  "add_project": "Add Project",
+  "no_results_found": "No results found",
+  "marketplace_requests": "Marketplace Requests",
+  "no_contact_info": "No contact info",
+  "seasonal_solar_estimate": "Seasonal Solar Estimation",
+  "est_daily_kw": "Est. daily production",
+  "formatSolarAdvice": "Recommended tilt: {advice}",
+  "@formatSolarAdvice": {
+    "placeholders": {
+      "advice": {
+        "type": "String"
+      }
+    }
+  }
 }

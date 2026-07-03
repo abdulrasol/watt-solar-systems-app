@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 enum AdminModuleId {
   dashboard,
@@ -16,16 +16,11 @@ enum AdminModuleId {
   subscriptions,
   products,
   systems,
+  marketplace,
 }
 
 class AdminModule {
-  const AdminModule({
-    required this.id,
-    required this.label,
-    required this.subtitle,
-    required this.route,
-    required this.icon,
-  });
+  const AdminModule({required this.id, required this.label, required this.subtitle, required this.route, required this.icon});
 
   final AdminModuleId id;
   final String label;
@@ -40,7 +35,7 @@ class AdminModules {
     label: 'Dashboard',
     subtitle: 'Open a section to load its data.',
     route: '/admin',
-    icon: Iconsax.grid_1_bold,
+    icon: Iconsax.grid_1,
   );
 
   static const feedbacks = AdminModule(
@@ -48,7 +43,7 @@ class AdminModules {
     label: 'Feedbacks',
     subtitle: 'Review user reports and mark items as read.',
     route: '/admin/feedbacks',
-    icon: Iconsax.message_bold,
+    icon: Iconsax.message,
   );
 
   static const configs = AdminModule(
@@ -56,7 +51,7 @@ class AdminModules {
     label: 'App Configs',
     subtitle: 'Manage runtime configuration flags.',
     route: '/admin/configs',
-    icon: Iconsax.setting_2_bold,
+    icon: Iconsax.setting_2,
   );
 
   static const notifications = AdminModule(
@@ -64,7 +59,7 @@ class AdminModules {
     label: 'Notifications',
     subtitle: 'Send pushes and inspect delivery statistics.',
     route: '/admin/send-notification',
-    icon: Iconsax.notification_bing_bold,
+    icon: Iconsax.notification_bing,
   );
 
   static const companies = AdminModule(
@@ -72,7 +67,7 @@ class AdminModules {
     label: 'Companies',
     subtitle: 'Inspect, approve, and manage company accounts.',
     route: '/admin/companies',
-    icon: Iconsax.buildings_2_bold,
+    icon: Iconsax.buildings_2,
   );
 
   static const serviceTypes = AdminModule(
@@ -80,7 +75,7 @@ class AdminModules {
     label: 'Service Types',
     subtitle: 'Manage public service type tags for companies.',
     route: '/admin/service-types',
-    icon: Iconsax.gallery_edit_bold,
+    icon: Iconsax.gallery_edit,
   );
 
   static const serviceCatalog = AdminModule(
@@ -88,16 +83,15 @@ class AdminModules {
     label: 'Service Catalog',
     subtitle: 'Control available services and ordering.',
     route: '/admin/service-catalog',
-    icon: Iconsax.category_2_bold,
+    icon: Iconsax.category_2,
   );
-
 
   static const currencies = AdminModule(
     id: AdminModuleId.currencies,
     label: 'Currencies',
     subtitle: 'Manage system-wide accepted currencies.',
     route: '/admin/currencies',
-    icon: Iconsax.money_bold,
+    icon: Iconsax.money,
   );
 
   static const categories = AdminModule(
@@ -105,7 +99,7 @@ class AdminModules {
     label: 'Categories',
     subtitle: 'Global product and service category tags.',
     route: '/admin/categories',
-    icon: Iconsax.category_bold,
+    icon: Iconsax.category,
   );
 
   static const address = AdminModule(
@@ -113,7 +107,7 @@ class AdminModules {
     label: 'Address & Global',
     subtitle: 'Manage system-wide countries and cities.',
     route: '/admin/address',
-    icon: Iconsax.global_bold,
+    icon: Iconsax.global,
   );
 
   static const users = AdminModule(
@@ -121,7 +115,7 @@ class AdminModules {
     label: 'Users',
     subtitle: 'Promote users and manage admin accounts.',
     route: '/admin/users',
-    icon: Iconsax.user_bold,
+    icon: Iconsax.user,
   );
 
   static const subscriptions = AdminModule(
@@ -129,7 +123,7 @@ class AdminModules {
     label: 'Subscriptions',
     subtitle: 'Manage pricing tiers and subscription plans.',
     route: '/admin/subscriptions',
-    icon: Iconsax.card_bold,
+    icon: Iconsax.card,
   );
 
   static const products = AdminModule(
@@ -137,7 +131,7 @@ class AdminModules {
     label: 'Global Products',
     subtitle: 'Inspect and manage products across all companies.',
     route: '/admin/products',
-    icon: Iconsax.box_bold,
+    icon: Iconsax.box,
   );
 
   static const systems = AdminModule(
@@ -145,7 +139,19 @@ class AdminModules {
     label: 'Solar Systems',
     subtitle: 'Review and manage user-created solar systems.',
     route: '/admin/systems',
-    icon: Iconsax.sun_1_bold,
+    icon: Iconsax.sun_1,
+  );
+
+  // Previously this screen was fully built and working (real pagination,
+  // infinite scroll, status filters) but absent from the dashboard/module
+  // list entirely — its only entry point was a direct drawer link, so it
+  // never showed up as a normal admin dashboard tile.
+  static const marketplace = AdminModule(
+    id: AdminModuleId.marketplace,
+    label: 'Marketplace Oversight',
+    subtitle: 'Review all solar requests and company offers.',
+    route: '/admin-marketplace',
+    icon: Iconsax.shop,
   );
 
   static const navItems = <AdminModule>[
@@ -163,10 +169,12 @@ class AdminModules {
     subscriptions,
     products,
     systems,
+    marketplace,
   ];
 
   static const dashboardCards = <AdminModule>[
     companies,
+    marketplace,
     serviceCatalog,
     serviceTypes,
     subscriptions,
@@ -196,6 +204,7 @@ class AdminModules {
     if (location.startsWith('/admin/subscriptions')) return subscriptions;
     if (location.startsWith('/admin/products')) return products;
     if (location.startsWith('/admin/systems')) return systems;
+    if (location.startsWith('/admin-marketplace')) return marketplace;
     return dashboard;
   }
 }

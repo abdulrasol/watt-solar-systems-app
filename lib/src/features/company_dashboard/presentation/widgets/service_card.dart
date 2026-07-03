@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
@@ -16,25 +16,25 @@ class ServiceCard extends StatelessWidget {
   IconData _getServiceIcon(String code) {
     switch (code) {
       case 'offers':
-        return Iconsax.document_bold;
+        return Iconsax.document;
       case 'offers_catalog':
-        return Iconsax.receipt_item_bold;
+        return Iconsax.receipt_item;
       case 'inventory':
-        return Iconsax.box_bold;
+        return Iconsax.box;
       case 'company_work':
-        return Iconsax.gallery_bold;
+        return Iconsax.gallery;
       case 'accounting':
-        return Iconsax.money_2_bold;
+        return Iconsax.money_2;
       case 'multi_member':
-        return Iconsax.user_tag_bold;
+        return Iconsax.user_tag;
       case 'storefront_b2c':
-        return Iconsax.shop_bold;
+        return Iconsax.shop;
       case 'storefront_b2b':
-        return Iconsax.building_3_bold;
+        return Iconsax.building_3;
       case 'systems_portfolio':
-        return Iconsax.sun_1_bold;
+        return Iconsax.sun_1;
       default:
-        return Iconsax.category_bold;
+        return Iconsax.category;
     }
   }
 
@@ -56,16 +56,9 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final bool isActive =
-        service.status != null &&
-        (service.status!.toLowerCase() == 'active' ||
-            service.status!.toLowerCase() == 'approved' ||
-            service.status!.toLowerCase() == 'string');
+    final bool isActive = service.isActive;
 
-    final bool hasCustomIcon =
-        service.icon != null &&
-        service.icon!.isNotEmpty &&
-        service.icon != 'null';
+    final bool hasCustomIcon = service.icon != null && service.icon!.isNotEmpty && service.icon != 'null';
 
     return InkWell(
       onTap: () {
@@ -77,26 +70,10 @@ class ServiceCard extends StatelessWidget {
             context.push(targetRoute);
           } catch (e) {
             // Fallback to service status if route matching fails
-            context.push(
-              '/service-status',
-              extra: {
-                'name': service.serviceName,
-                'code': service.serviceCode,
-                'status': service.status,
-                'icon': service.icon,
-              },
-            );
+            context.push('/service-status', extra: {'name': service.serviceName, 'code': service.serviceCode, 'status': service.status, 'icon': service.icon});
           }
         } else if (!isActive) {
-          context.push(
-            '/service-status',
-            extra: {
-              'name': service.serviceName,
-              'code': service.serviceCode,
-              'status': service.status,
-              'icon': service.icon,
-            },
-          );
+          context.push('/service-status', extra: {'name': service.serviceName, 'code': service.serviceCode, 'status': service.status, 'icon': service.icon});
         }
       },
       borderRadius: BorderRadius.circular(16.r),
@@ -105,17 +82,8 @@ class ServiceCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(
-            color: _getStatusColor(service.status).withValues(alpha: 0.2),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          border: Border.all(color: _getStatusColor(service.status).withValues(alpha: 0.2), width: 1.5),
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,40 +94,18 @@ class ServiceCard extends StatelessWidget {
               children: [
                 Container(
                   padding: EdgeInsets.all(8.r),
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(
-                      service.status,
-                    ).withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: BoxDecoration(color: _getStatusColor(service.status).withValues(alpha: 0.1), shape: BoxShape.circle),
                   child: hasCustomIcon
-                      ? WdImagePreview(
-                          imageUrl: service.icon!,
-                          size: 24,
-                          shape: BoxShape.circle,
-                        )
-                      : Icon(
-                          _getServiceIcon(service.serviceCode),
-                          color: _getStatusColor(service.status),
-                          size: 20.sp,
-                        ),
+                      ? WdImagePreview(imageUrl: service.icon!, size: 24, shape: BoxShape.circle)
+                      : Icon(_getServiceIcon(service.serviceCode), color: _getStatusColor(service.status), size: 20.sp),
                 ),
-                if (!isActive)
-                  Icon(
-                    Iconsax.lock_bold,
-                    color: Colors.grey.withValues(alpha: 0.5),
-                    size: 14.sp,
-                  ),
+                if (!isActive) Icon(Iconsax.lock, color: Colors.grey.withValues(alpha: 0.5), size: 14.sp),
               ],
             ),
             SizedBox(height: 12.h),
             Text(
               service.serviceName,
-              style: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w800,
-                fontFamily: AppTheme.fontFamily,
-              ),
+              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -169,21 +115,13 @@ class ServiceCard extends StatelessWidget {
                 Container(
                   width: 6.w,
                   height: 6.w,
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(service.status),
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: BoxDecoration(color: _getStatusColor(service.status), shape: BoxShape.circle),
                 ),
                 SizedBox(width: 4.w),
                 Expanded(
                   child: Text(
                     _localizedStatusLabel(l10n, isActive),
-                    style: TextStyle(
-                      fontSize: 9.sp,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: AppTheme.fontFamily,
-                    ),
+                    style: TextStyle(fontSize: 9.sp, color: Colors.grey, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -215,13 +153,9 @@ class ServiceCard extends StatelessWidget {
 
   String? get _targetRoute {
     if (service.serviceCode == 'company_work') return '/company-work';
-    if (service.route == null ||
-        service.route!.isEmpty ||
-        service.route == 'null') {
+    if (service.route == null || service.route!.isEmpty || service.route == 'null') {
       return null;
     }
-    return service.route!.startsWith('/')
-        ? service.route!
-        : '/${service.route}';
+    return service.route!.startsWith('/') ? service.route! : '/${service.route}';
   }
 }

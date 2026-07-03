@@ -1,10 +1,41 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/services/solar_position_calculator.dart';
 
+/// Determines which grid cells are shaded, using the sun's real position
+/// (elevation + azimuth) rather than the previous arbitrary
+/// `0.5 + |hour-12|/4.5 * 2.0` formula, which had no physical relationship
+/// to where the sun actually is for the site's latitude/longitude/date.
+///
+/// Two shading sources are modeled differently, reflecting what data is
+/// actually available:
+///  - **Boundary walls** (N/S/E/W, each with a real height) get a proper
+///    geometric shadow-length projection: `length = height / tan(elevation)`,
+///    projected along the sun's azimuth, compared against each cell's
+///    distance to that wall.
+///  - **Obstacles/trees/manually-marked shadow cells** on the grid don't
+///    carry a height value in this model, so — as before — blocking is
+///    approximated by checking the neighboring cell in the sun's direction
+///    (i.e. "is something standing between this panel and the sun?"),
+///    just now driven by the real sun azimuth instead of a fixed
+///    panel-orientation lookup. This is still a simplification (documented
+///    here rather than hidden) — a future improvement would let users
+///    assign a height to obstacle/tree cells for a true shadow-length
+///    projection like the walls get.
 class ShadowCalculator {
-  double shadowMultiplier(double simulationTime) {
-    final distanceFromNoon = (simulationTime - 12.0).abs();
-    return 0.5 + (distanceFromNoon / 4.5) * 2.0;
+  const ShadowCalculator({SolarPositionCalculator? sunCalculator}) : _sunCalculator = sunCalculator ?? const SolarPositionCalculator();
+
+  final SolarPositionCalculator _sunCalculator;
+
+  SolarPositionCalculator get sunCalculator => _sunCalculator;
+
+  /// Convenience wrapper so callers (the controller) don't need to import
+  /// [SolarPositionCalculator] directly just to get a sun position for a
+  /// given wall-clock date/time + site.
+  SunPosition sunPositionFor({required DateTime date, required double latitude, required double longitude}) {
+    return _sunCalculator.calculate(date: date, latitude: latitude, longitude: longitude);
   }
 
   bool isInSetbackZone({
@@ -42,8 +73,7 @@ class ShadowCalculator {
     required bool isPortrait,
     required double panelWidthM,
     required double panelLengthM,
-    required String panelOrientation,
-    required double simulationTime,
+    required SunPosition sunPosition,
     required bool hasNorthWall,
     required bool hasSouthWall,
     required bool hasEastWall,
@@ -53,6 +83,13 @@ class ShadowCalculator {
     required double eastWallHeight,
     required double westWallHeight,
   }) {
+    if (!sunPosition.isDaylight) {
+      // Sun below horizon: nothing productive is happening anyway, but we
+      // don't have a dedicated "night" cell type, so treat as unshaded
+      // rather than mislabel it as an obstacle/tree/wall shadow.
+      return null;
+    }
+
     final row = index ~/ cols;
     final col = index % cols;
     final cellW = isPortrait ? panelWidthM : panelLengthM;
@@ -61,28 +98,38 @@ class ShadowCalculator {
     final distToSouth = (rows - 0.5 - row) * cellH;
     final distToWest = (col + 0.5) * cellW;
     final distToEast = (cols - 0.5 - col) * cellW;
-    final factor = shadowMultiplier(simulationTime);
 
-    bool isShadedByWall = false;
-    if (panelOrientation == 'South') {
-      if (hasSouthWall && distToSouth < southWallHeight * factor) isShadedByWall = true;
-      if (hasEastWall && distToEast < eastWallHeight * factor) isShadedByWall = true;
-      if (hasWestWall && distToWest < westWallHeight * factor) isShadedByWall = true;
-    } else if (panelOrientation == 'North') {
-      if (hasNorthWall && distToNorth < northWallHeight * factor) isShadedByWall = true;
-      if (hasEastWall && distToEast < eastWallHeight * factor) isShadedByWall = true;
-      if (hasWestWall && distToWest < westWallHeight * factor) isShadedByWall = true;
-    } else if (panelOrientation == 'East') {
-      if (hasEastWall && distToEast < eastWallHeight * factor) isShadedByWall = true;
-      if (hasNorthWall && distToNorth < northWallHeight * factor) isShadedByWall = true;
-      if (hasSouthWall && distToSouth < southWallHeight * factor) isShadedByWall = true;
-    } else if (panelOrientation == 'West') {
-      if (hasWestWall && distToWest < westWallHeight * factor) isShadedByWall = true;
-      if (hasNorthWall && distToNorth < northWallHeight * factor) isShadedByWall = true;
-      if (hasSouthWall && distToSouth < southWallHeight * factor) isShadedByWall = true;
+    final shadowLengthPerMeter = _shadowLengthPerMeterHeight(sunPosition);
+    if (shadowLengthPerMeter != null) {
+      // North-component and east-component of the shadow's throw per
+      // metre of object height, from the sun's azimuth (shadow points
+      // opposite the sun).
+      final shadowAzimuthRad = ((sunPosition.azimuthDeg + 180) % 360) * (math.pi / 180.0);
+      final northComponentPerM = shadowLengthPerMeter * _cos(shadowAzimuthRad);
+      final eastComponentPerM = shadowLengthPerMeter * _sin(shadowAzimuthRad);
+
+      if (hasSouthWall) {
+        final reachNorth = southWallHeight * northComponentPerM;
+        if (reachNorth > distToSouth) return CellType.shadow;
+      }
+      if (hasNorthWall) {
+        final reachSouth = northWallHeight * -northComponentPerM;
+        if (reachSouth > distToNorth) return CellType.shadow;
+      }
+      if (hasEastWall) {
+        final reachWest = eastWallHeight * -eastComponentPerM;
+        if (reachWest > distToEast) return CellType.shadow;
+      }
+      if (hasWestWall) {
+        final reachEast = westWallHeight * eastComponentPerM;
+        if (reachEast > distToWest) return CellType.shadow;
+      }
     }
-    if (isShadedByWall) return CellType.shadow;
 
+    // Obstacle/tree/manual-shadow adjacency check, looking toward the sun
+    // (an object between this cell and the sun blocks it). See class doc
+    // for why this remains an adjacency approximation rather than a full
+    // shadow-length projection.
     CellType? getBlockerType(int r, int c) {
       if (r < 0 || r >= rows || c < 0 || c >= cols) return null;
       final type = grid[r * cols + c];
@@ -90,16 +137,17 @@ class ShadowCalculator {
       return null;
     }
 
-    if (panelOrientation == 'South') {
-      return getBlockerType(row + 1, col) ?? getBlockerType(row + 1, col - 1) ?? getBlockerType(row + 1, col + 1);
-    } else if (panelOrientation == 'North') {
-      return getBlockerType(row - 1, col) ?? getBlockerType(row - 1, col - 1) ?? getBlockerType(row - 1, col + 1);
-    } else if (panelOrientation == 'East') {
-      return getBlockerType(row, col + 1) ?? getBlockerType(row - 1, col + 1) ?? getBlockerType(row + 1, col + 1);
-    } else if (panelOrientation == 'West') {
-      return getBlockerType(row, col - 1) ?? getBlockerType(row - 1, col - 1) ?? getBlockerType(row + 1, col - 1);
+    final lookDirection = _compassOctantTowardSun(sunPosition.azimuthDeg);
+    switch (lookDirection) {
+      case _Octant.north:
+        return getBlockerType(row - 1, col) ?? getBlockerType(row - 1, col - 1) ?? getBlockerType(row - 1, col + 1);
+      case _Octant.south:
+        return getBlockerType(row + 1, col) ?? getBlockerType(row + 1, col - 1) ?? getBlockerType(row + 1, col + 1);
+      case _Octant.east:
+        return getBlockerType(row, col + 1) ?? getBlockerType(row - 1, col + 1) ?? getBlockerType(row + 1, col + 1);
+      case _Octant.west:
+        return getBlockerType(row, col - 1) ?? getBlockerType(row - 1, col - 1) ?? getBlockerType(row + 1, col - 1);
     }
-    return null;
   }
 
   bool isCellShaded({
@@ -110,8 +158,7 @@ class ShadowCalculator {
     required bool isPortrait,
     required double panelWidthM,
     required double panelLengthM,
-    required String panelOrientation,
-    required double simulationTime,
+    required SunPosition sunPosition,
     required bool hasNorthWall,
     required bool hasSouthWall,
     required bool hasEastWall,
@@ -129,8 +176,7 @@ class ShadowCalculator {
           isPortrait: isPortrait,
           panelWidthM: panelWidthM,
           panelLengthM: panelLengthM,
-          panelOrientation: panelOrientation,
-          simulationTime: simulationTime,
+          sunPosition: sunPosition,
           hasNorthWall: hasNorthWall,
           hasSouthWall: hasSouthWall,
           hasEastWall: hasEastWall,
@@ -151,8 +197,7 @@ class ShadowCalculator {
     required bool isPortrait,
     required double panelWidthM,
     required double panelLengthM,
-    required String panelOrientation,
-    required double simulationTime,
+    required SunPosition sunPosition,
     required bool hasNorthWall,
     required bool hasSouthWall,
     required bool hasEastWall,
@@ -173,8 +218,7 @@ class ShadowCalculator {
           isPortrait: isPortrait,
           panelWidthM: panelWidthM,
           panelLengthM: panelLengthM,
-          panelOrientation: panelOrientation,
-          simulationTime: simulationTime,
+          sunPosition: sunPosition,
           hasNorthWall: hasNorthWall,
           hasSouthWall: hasSouthWall,
           hasEastWall: hasEastWall,
@@ -224,4 +268,28 @@ class ShadowCalculator {
     }
     return inside;
   }
+
+  /// Shadow length cast per 1 metre of object height, for the given sun
+  /// elevation. Null when the sun is at/below the horizon.
+  double? _shadowLengthPerMeterHeight(SunPosition sunPosition) {
+    if (!sunPosition.isDaylight) return null;
+    return sunPosition.shadowLengthFor(1.0);
+  }
+
+  double _cos(double radians) => math.cos(radians);
+  double _sin(double radians) => math.sin(radians);
+
+  _Octant _compassOctantTowardSun(double sunAzimuthDeg) {
+    // Which grid direction to look in to find something standing between
+    // the panel and the sun — i.e. roughly the sun's own compass
+    // direction, bucketed into the four cardinal directions this grid
+    // model supports.
+    final a = sunAzimuthDeg % 360;
+    if (a >= 45 && a < 135) return _Octant.east;
+    if (a >= 135 && a < 225) return _Octant.south;
+    if (a >= 225 && a < 315) return _Octant.west;
+    return _Octant.north;
+  }
 }
+
+enum _Octant { north, south, east, west }

@@ -3193,6 +3193,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get battery => 'البطارية';
 
   @override
+  String get inverter => 'الإنفرتر';
+
+  @override
   String city_label(Object city) {
     return 'المدينة: $city';
   }
@@ -3326,6 +3329,37 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get delivery => 'التوصيل';
+
+  @override
+  String get expenses => 'المصروفات';
+
+  @override
+  String get amount => 'المبلغ';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get cost => 'التكلفة';
+
+  @override
+  String get company_delivery_estimated_days_min => 'أقل عدد أيام';
+
+  @override
+  String get company_delivery_estimated_days_max => 'أقصى عدد أيام';
+
+  @override
+  String company_delivery_delete_message(Object name) {
+    return 'حذف خيار التوصيل \"$name\"؟';
+  }
+
+  @override
+  String company_expense_delete_message(Object category) {
+    return 'حذف مصروف $category؟';
+  }
+
+  @override
+  String get company_workspace_no_company => 'الرجاء اختيار شركة للمتابعة';
 
   @override
   String get subscription => 'الاشتراك';
@@ -4086,4 +4120,113 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clear => 'مسح';
+
+  @override
+  String get recent_activity => 'النشاط الأخير';
+
+  @override
+  String get view_all => 'عرض الكل';
+
+  @override
+  String get dashboard_your_activity => 'نشاطك';
+
+  @override
+  String get dashboard_get_started => 'البدء';
+
+  @override
+  String get dashboard_activity_signed_in_subtitle =>
+      'تتبع الطلبات والطلبيات والتنبيهات من مكان واحد.';
+
+  @override
+  String get dashboard_activity_guest_subtitle =>
+      'سجل الدخول لحفظ الطلبات وتقديم الطلبيات وتلقي التحديثات.';
+
+  @override
+  String get dashboard_services_action_subtitle =>
+      'استكشف الخدمات والشركات قبل إنشاء حساب.';
+
+  @override
+  String get dashboard_store_action_subtitle =>
+      'تسوق المنتجات، قارن الشركات، وقدم طلبات B2C.';
+
+  @override
+  String get dashboard_sign_in_card_subtitle =>
+      'الوصول إلى طلباتك المحفوظة وطلبياتك وإشعاراتك.';
+
+  @override
+  String get dashboard_guest_services_card_subtitle =>
+      'استكشف الخدمات والشركات قبل إنشاء حساب.';
+
+  @override
+  String dashboard_my_requests_count(int count) {
+    return '$count طلبات نشطة وسابقة.';
+  }
+
+  @override
+  String dashboard_my_orders_count(int count) {
+    return '$count طلبات B2C عبر بائعي المتجر.';
+  }
+
+  @override
+  String dashboard_notifications_count(int count) {
+    return '$count تنبيهات حديثة وتحديثات للنظام.';
+  }
+
+  @override
+  String get user_mode => 'وضع المستخدم';
+
+  @override
+  String get admin_mode => 'وضع المسؤول';
+
+  @override
+  String get revenue_trend => 'اتجاه الإيرادات';
+
+  @override
+  String get financial_overview => 'نظرة عامة مالية';
+
+  @override
+  String get order_status => 'حالة الطلب';
+
+  @override
+  String get low_stock_alerts => 'تنبيهات انخفاض المخزون';
+
+  @override
+  String get items_count => 'عناصر';
+
+  @override
+  String formatUnitsLeft(int count) {
+    return '$count وحدة متبقية';
+  }
+
+  @override
+  String get restock => 'تجديد المخزون';
+
+  @override
+  String get view_all_alerts => 'عرض جميع التنبيهات';
+
+  @override
+  String get create_invoice => 'إنشاء فاتورة';
+
+  @override
+  String get add_project => 'إضافة مشروع';
+
+  @override
+  String get no_results_found => 'لم يتم العثور على نتائج';
+
+  @override
+  String get marketplace_requests => 'طلبات السوق';
+
+  @override
+  String get no_contact_info => 'لا توجد معلومات اتصال';
+
+  @override
+  String get seasonal_solar_estimate => 'تقدير إنتاج الطاقة الموسمي';
+
+  @override
+  String get est_daily_kw => 'الإنتاج اليومي المقدر';
+
+  @override
+  String formatSolarAdvice(String advice) {
+    return 'زاوية الميل الموصى بها: $advice';
+  }
 }

@@ -1226,6 +1226,7 @@
   "battery_type_full": "نوع البطارية",
   "pv_power": "قدرة الألواح",
   "battery": "البطارية",
+  "inverter": "الإنفرتر",
   "city_label": "المدينة: {city}",
   "@city_label": {
     "placeholders": {
@@ -1299,6 +1300,15 @@
   "chat_on_whatsapp": "المحادثة عبر واتساب",
   "systems": "الأنظمة",
   "delivery": "التوصيل",
+  "expenses": "المصروفات",
+  "amount": "المبلغ",
+  "category": "الفئة",
+  "cost": "التكلفة",
+  "company_delivery_estimated_days_min": "أقل عدد أيام",
+  "company_delivery_estimated_days_max": "أقصى عدد أيام",
+  "company_delivery_delete_message": "حذف خيار التوصيل \"{name}\"؟",
+  "company_expense_delete_message": "حذف مصروف {category}؟",
+  "company_workspace_no_company": "الرجاء اختيار شركة للمتابعة",
   "company_profile": "ملف الشركة",
   "subscription": "الاشتراك",
   "switch_to_user_view": "التبديل لعرض المستخدم",
@@ -1636,5 +1646,71 @@
   "create_offer": "إنشاء عرض",
   "start_adding_products_to_inventory": "ابدأ بإضافة المنتجات إلى مخزونك لرؤيتها هنا",
   "search_results_for": "نتائج البحث عن",
-  "clear": "مسح"
+  "clear": "مسح",
+  "recent_activity": "النشاط الأخير",
+  "view_all": "عرض الكل",
+  "dashboard_your_activity": "نشاطك",
+  "dashboard_get_started": "البدء",
+  "dashboard_activity_signed_in_subtitle": "تتبع الطلبات والطلبيات والتنبيهات من مكان واحد.",
+  "dashboard_activity_guest_subtitle": "سجل الدخول لحفظ الطلبات وتقديم الطلبيات وتلقي التحديثات.",
+  "dashboard_services_action_subtitle": "استكشف الخدمات والشركات قبل إنشاء حساب.",
+  "dashboard_store_action_subtitle": "تسوق المنتجات، قارن الشركات، وقدم طلبات B2C.",
+  "dashboard_sign_in_card_subtitle": "الوصول إلى طلباتك المحفوظة وطلبياتك وإشعاراتك.",
+  "dashboard_guest_services_card_subtitle": "استكشف الخدمات والشركات قبل إنشاء حساب.",
+  "dashboard_my_requests_count": "{count} طلبات نشطة وسابقة.",
+  "@dashboard_my_requests_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_my_orders_count": "{count} طلبات B2C عبر بائعي المتجر.",
+  "@dashboard_my_orders_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboard_notifications_count": "{count} تنبيهات حديثة وتحديثات للنظام.",
+  "@dashboard_notifications_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "user_mode": "وضع المستخدم",
+  "admin_mode": "وضع المسؤول",
+  "revenue_trend": "اتجاه الإيرادات",
+  "financial_overview": "نظرة عامة مالية",
+  "order_status": "حالة الطلب",
+  "low_stock_alerts": "تنبيهات انخفاض المخزون",
+  "items_count": "عناصر",
+  "formatUnitsLeft": "{count} وحدة متبقية",
+  "@formatUnitsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restock": "تجديد المخزون",
+  "view_all_alerts": "عرض جميع التنبيهات",
+  "create_invoice": "إنشاء فاتورة",
+  "add_project": "إضافة مشروع",
+  "no_results_found": "لم يتم العثور على نتائج",
+  "marketplace_requests": "طلبات السوق",
+  "no_contact_info": "لا توجد معلومات اتصال",
+  "seasonal_solar_estimate": "تقدير إنتاج الطاقة الموسمي",
+  "est_daily_kw": "الإنتاج اليومي المقدر",
+  "formatSolarAdvice": "زاوية الميل الموصى بها: {advice}",
+  "@formatSolarAdvice": {
+    "placeholders": {
+      "advice": {
+        "type": "String"
+      }
+    }
+  }
 }

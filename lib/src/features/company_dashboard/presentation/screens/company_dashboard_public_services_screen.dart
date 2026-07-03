@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
@@ -45,9 +45,9 @@ class _CompanyDashboardPublicServicesScreenState extends ConsumerState<CompanyDa
     final canManage = company?.canManageWorkspace ?? false;
 
     final content = companyId == null
-        ? AdminEmptyState(icon: Iconsax.briefcase_bold, title: l10n.company_public_services, subtitle: l10n.company_public_services_no_company)
+        ? AdminEmptyState(icon: Iconsax.briefcase, title: l10n.company_public_services, subtitle: l10n.company_public_services_no_company)
         : state.isLoading && state.services.isEmpty
-        ? AdminLoadingState(icon: Iconsax.briefcase_bold, message: l10n.company_public_services_loading)
+        ? AdminLoadingState(icon: Iconsax.briefcase, message: l10n.company_public_services_loading)
         : state.error != null && state.services.isEmpty
         ? AdminErrorState(error: state.error!, onRetry: _load)
         : SingleChildScrollView(
@@ -63,14 +63,14 @@ class _CompanyDashboardPublicServicesScreenState extends ConsumerState<CompanyDa
                       subtitle: l10n.company_public_services_subtitle,
                       action: FilledButton.icon(
                         onPressed: canManage ? () => _openForm(context, companyId) : null,
-                        icon: const Icon(Iconsax.add_circle_bold),
+                        icon: const Icon(Iconsax.add_circle),
                         label: Text(l10n.company_public_services_add),
                       ),
                     ),
                     const SizedBox(height: 20),
                     if (state.services.isEmpty)
                       AdminEmptyState(
-                        icon: Iconsax.briefcase_bold,
+                        icon: Iconsax.briefcase,
                         title: l10n.company_public_services_empty_title,
                         subtitle: l10n.company_public_services_empty_subtitle,
                       )
@@ -102,9 +102,7 @@ class _CompanyDashboardPublicServicesScreenState extends ConsumerState<CompanyDa
       return content;
     }
 
-    return CompanyPageScaffold(
-      child: content,
-    );
+    return CompanyPageScaffold(child: content);
   }
 
   Future<void> _deleteService(BuildContext context, int companyId, CompanyPublicService service) async {
@@ -179,7 +177,7 @@ class _PublicServiceCard extends StatelessWidget {
             height: 52,
             width: 52,
             decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16)),
-            child: const Icon(Iconsax.briefcase_bold, color: AppTheme.primaryColor),
+            child: const Icon(Iconsax.briefcase, color: AppTheme.primaryColor),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -212,12 +210,11 @@ class _PublicServiceCard extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (onEdit != null)
-                  IconButton(onPressed: onEdit, icon: const Icon(Iconsax.edit_bold, size: 20)),
+                if (onEdit != null) IconButton(onPressed: onEdit, icon: const Icon(Iconsax.edit, size: 20)),
                 if (onDelete != null)
                   IconButton(
                     onPressed: onDelete,
-                    icon: const Icon(Iconsax.trash_bold, color: Colors.redAccent, size: 20),
+                    icon: const Icon(Iconsax.trash, color: Colors.redAccent, size: 20),
                   ),
               ],
             ),

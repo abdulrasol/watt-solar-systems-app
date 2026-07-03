@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_company_details.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_company_details_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/forms/company_status_form.dart';
@@ -39,10 +39,10 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
       // subtitle: 'Detailed company data loads only when a company is opened.',
       actions: [
         if (state.details != null)
-          FilledButton.icon(onPressed: () => _showStatusUpdateForm(context), icon: const Icon(Iconsax.edit_bold), label: const Text('Update Status')),
+          FilledButton.icon(onPressed: () => _showStatusUpdateForm(context), icon: const Icon(Iconsax.edit), label: const Text('Update Status')),
       ],
       child: state.isLoading && state.details == null
-          ? const AdminLoadingState(icon: Iconsax.building_bold, message: 'Loading company details...')
+          ? const AdminLoadingState(icon: Iconsax.building, message: 'Loading company details...')
           : state.error != null && state.details == null
           ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminCompanyDetailsProvider.notifier).fetchDetails())
           : _buildContent(context, state.details!),
@@ -100,7 +100,7 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
             radius: 40,
             backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.14),
             backgroundImage: company.logo != null ? NetworkImage(company.logo!) : null,
-            child: company.logo == null ? const Icon(Iconsax.building_bold, color: AppTheme.primaryColor, size: 34) : null,
+            child: company.logo == null ? const Icon(Iconsax.building, color: AppTheme.primaryColor, size: 34) : null,
           ),
           const SizedBox(height: 16),
           Text(
@@ -157,7 +157,7 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
         children: [
           const AdminSectionHeader(title: 'Company Services', subtitle: 'Review subscription and activation status.'),
           if (details.services.isEmpty)
-            const AdminEmptyState(icon: Iconsax.category_bold, title: 'No services assigned')
+            const AdminEmptyState(icon: Iconsax.category, title: 'No services assigned')
           else
             Column(
               children: details.services
@@ -181,7 +181,7 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
         children: [
           const AdminSectionHeader(title: 'Members', subtitle: 'Company users returned with this account.'),
           if (details.members.isEmpty)
-            const AdminEmptyState(icon: Iconsax.people_bold, title: 'No members found')
+            const AdminEmptyState(icon: Iconsax.people, title: 'No members found')
           else
             Column(
               children: details.members

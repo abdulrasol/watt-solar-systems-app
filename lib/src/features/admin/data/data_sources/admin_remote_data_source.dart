@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:solar_hub/src/core/services/dio.dart';
 import 'package:solar_hub/src/core/models/response.dart' as api;
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
@@ -58,8 +59,24 @@ abstract class AdminRemoteDataSource {
   // Products
   Future<api.PaginationResponse> listAdminProducts({int page = 1, int pageSize = 12});
 
+  /// [payload] is the JSON-encoded `AdminProductCreateSchema` body
+  /// (includes `company_id`); [imagePaths] are local file paths to upload
+  /// as the multipart `images` field, matching `POST /admin/shop/products`.
+  Future<api.Response> createAdminProduct(String payload, {List<String> imagePaths = const []});
+
+  /// [payload] is the JSON-encoded `AdminProductUpdateSchema` body
+  /// (`company_id` optional — only send it to reassign the product to a
+  /// different company).
+  Future<api.Response> updateAdminProduct(int productId, String payload, {List<String> imagePaths = const []});
+
+  Future<api.Response> deleteAdminProduct(int productId);
+
   // Systems
   Future<api.PaginationResponse> listAdminSystems({int page = 1, int pageSize = 12});
+
+  /// Either field may be omitted — the backend only updates whichever of
+  /// `user_status`/`company_status` is supplied, leaving the other as-is.
+  Future<api.Response> updateAdminSystemStatus(int systemId, {String? userStatus, String? companyStatus});
 }
 
 class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
@@ -416,6 +433,43 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     }
   }
 
+  @override
+  Future<api.Response> createAdminProduct(String payload, {List<String> imagePaths = const []}) async {
+    try {
+      final formData = FormData();
+      formData.fields.add(MapEntry('payload', payload));
+      for (final path in imagePaths) {
+        formData.files.add(MapEntry('images', await MultipartFile.fromFile(path, filename: path.split('/').last)));
+      }
+      return await _dioService.multipartRequest(AppUrls.adminProducts, file: formData);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateAdminProduct(int productId, String payload, {List<String> imagePaths = const []}) async {
+    try {
+      final formData = FormData();
+      formData.fields.add(MapEntry('payload', payload));
+      for (final path in imagePaths) {
+        formData.files.add(MapEntry('images', await MultipartFile.fromFile(path, filename: path.split('/').last)));
+      }
+      return await _dioService.multipartRequest(AppUrls.adminProduct(productId), file: formData, isPut: true);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> deleteAdminProduct(int productId) async {
+    try {
+      return await _dioService.delete(AppUrls.adminProduct(productId));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   // Systems
   @override
   Future<api.PaginationResponse> listAdminSystems({int page = 1, int pageSize = 12}) async {
@@ -423,6 +477,18 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
       final response = await _dioService.get(AppUrls.adminSystems, queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> updateAdminSystemStatus(int systemId, {String? userStatus, String? companyStatus}) async {
+    try {
+      final data = <String, dynamic>{};
+      if (userStatus != null) data['user_status'] = userStatus;
+      if (companyStatus != null) data['company_status'] = companyStatus;
+      return await _dioService.put(AppUrls.adminSystemStatus(systemId), data: data);
     } catch (e) {
       rethrow;
     }

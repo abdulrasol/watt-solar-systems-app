@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_systems_controller.dart';
@@ -22,9 +22,7 @@ class _AdminSystemsScreenState extends ConsumerState<AdminSystemsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => ref.read(adminSystemsProvider.notifier).fetchSystems(isRefresh: true),
-    );
+    Future.microtask(() => ref.read(adminSystemsProvider.notifier).fetchSystems(isRefresh: true));
     _scrollController.addListener(_onScroll);
   }
 
@@ -35,8 +33,7 @@ class _AdminSystemsScreenState extends ConsumerState<AdminSystemsScreen> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
       ref.read(adminSystemsProvider.notifier).fetchNextPage();
     }
   }
@@ -46,47 +43,22 @@ class _AdminSystemsScreenState extends ConsumerState<AdminSystemsScreen> {
     final state = ref.watch(adminSystemsProvider);
 
     return AdminPageScaffold(
-      actions: [
-        IconButton(
-          onPressed:
-              () => ref.read(adminSystemsProvider.notifier).fetchSystems(
-                isRefresh: true,
-              ),
-          icon: const Icon(Iconsax.refresh_bold),
-        ),
-      ],
-      child:
-          state.isLoading
-              ? const AdminLoadingState(
-                icon: Iconsax.sun_1_bold,
-                message: 'Loading systems...',
-              )
-              : state.error != null
-              ? AdminErrorState(
-                error: state.error!,
-                onRetry:
-                    () => ref.read(adminSystemsProvider.notifier).fetchSystems(
-                      isRefresh: true,
-                    ),
-              )
-              : _buildContent(context, state),
+      actions: [IconButton(onPressed: () => ref.read(adminSystemsProvider.notifier).fetchSystems(isRefresh: true), icon: const Icon(Iconsax.refresh))],
+      child: state.isLoading
+          ? const AdminLoadingState(icon: Iconsax.sun_1, message: 'Loading systems...')
+          : state.error != null
+          ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminSystemsProvider.notifier).fetchSystems(isRefresh: true))
+          : _buildContent(context, state),
     );
   }
 
   Widget _buildContent(BuildContext context, AdminSystemsState state) {
     if (state.systems.isEmpty) {
-      return const AdminEmptyState(
-        icon: Iconsax.sun_fog_bold,
-        title: 'No systems found',
-        subtitle: 'User solar systems list is currently empty.',
-      );
+      return const AdminEmptyState(icon: Iconsax.sun_fog, title: 'No systems found', subtitle: 'User solar systems list is currently empty.');
     }
 
     return RefreshIndicator(
-      onRefresh:
-          () => ref.read(adminSystemsProvider.notifier).fetchSystems(
-            isRefresh: true,
-          ),
+      onRefresh: () => ref.read(adminSystemsProvider.notifier).fetchSystems(isRefresh: true),
       child: ListView.separated(
         controller: _scrollController,
         padding: const EdgeInsets.only(bottom: 100),
@@ -95,31 +67,86 @@ class _AdminSystemsScreenState extends ConsumerState<AdminSystemsScreen> {
         itemBuilder: (context, index) {
           if (index == state.systems.length) {
             return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: CircularProgressIndicator(),
-              ),
+              child: Padding(padding: EdgeInsets.all(16.0), child: CircularProgressIndicator()),
             );
           }
           final system = state.systems[index];
-          return _SystemAdminCard(system: system);
+          return _SystemAdminCard(
+            system: system,
+            onUpdateStatus: () => _showStatusDialog(context, ref, system),
+          );
         },
+      ),
+    );
+  }
+
+  Future<void> _showStatusDialog(BuildContext context, WidgetRef ref, SystemModel system) async {
+    String? userStatus;
+    String? companyStatus;
+    const statuses = [
+      DropdownMenuItem(value: 'pending', child: Text('Pending')),
+      DropdownMenuItem(value: 'accepted', child: Text('Accepted')),
+      DropdownMenuItem(value: 'rejected', child: Text('Rejected')),
+    ];
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) => AlertDialog(
+          title: const Text('Update System Status'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'These are tracked independently on the backend — leave either dropdown unset to leave that one unchanged.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                initialValue: userStatus,
+                items: statuses,
+                onChanged: (v) => setDialogState(() => userStatus = v),
+                decoration: const InputDecoration(labelText: 'User Status'),
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                initialValue: companyStatus,
+                items: statuses,
+                onChanged: (v) => setDialogState(() => companyStatus = v),
+                decoration: const InputDecoration(labelText: 'Company Status'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Cancel')),
+            FilledButton(
+              onPressed: (userStatus == null && companyStatus == null)
+                  ? null
+                  : () async {
+                      Navigator.pop(dialogContext);
+                      final id = system.id;
+                      if (id == null) return;
+                      await ref.read(adminSystemsProvider.notifier).updateSystemStatus(id, userStatus: userStatus, companyStatus: companyStatus);
+                    },
+              child: const Text('Save'),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class _SystemAdminCard extends StatelessWidget {
-  const _SystemAdminCard({required this.system});
+  const _SystemAdminCard({required this.system, required this.onUpdateStatus});
 
   final SystemModel system;
+  final VoidCallback onUpdateStatus;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final dateStr = system.createdAt != null 
-        ? DateFormat('yyyy-MM-dd').format(system.createdAt!) 
-        : 'N/A';
+    final dateStr = system.createdAt != null ? DateFormat('yyyy-MM-dd').format(system.createdAt!) : 'N/A';
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -141,27 +168,15 @@ class _SystemAdminCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: WdImagePreview(
-                  imageUrl: system.imageUrl ?? '',
-                  size: 60,
-                ),
+                child: WdImagePreview(imageUrl: system.imageUrl ?? '', size: 60),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      system.systemName ?? 'Unnamed System',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      'Owner: ${system.userName}',
-                      style: TextStyle(fontSize: 13, color: Theme.of(context).hintColor),
-                    ),
+                    Text(system.systemName ?? 'Unnamed System', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text('Owner: ${system.userName}', style: TextStyle(fontSize: 13, color: Theme.of(context).hintColor)),
                   ],
                 ),
               ),
@@ -176,6 +191,16 @@ class _SystemAdminCard extends StatelessWidget {
               _InfoItem(label: 'Panels', value: '${system.panelCount}'),
               _InfoItem(label: 'Created', value: dateStr),
             ],
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerRight,
+            child: OutlinedButton.icon(
+              onPressed: onUpdateStatus,
+              icon: const Icon(Iconsax.tick_circle, size: 16),
+              label: const Text('Update Status'),
+              style: OutlinedButton.styleFrom(visualDensity: VisualDensity.compact),
+            ),
           ),
         ],
       ),
@@ -194,14 +219,8 @@ class _InfoItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(fontSize: 11, color: Theme.of(context).hintColor),
-        ),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-        ),
+        Text(label, style: TextStyle(fontSize: 11, color: Theme.of(context).hintColor)),
+        Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
       ],
     );
   }
@@ -235,11 +254,7 @@ class _VerificationBadge extends StatelessWidget {
       ),
       child: Text(
         status.toUpperCase(),
-        style: TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          color: color,
-        ),
+        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color),
       ),
     );
   }

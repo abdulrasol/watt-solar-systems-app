@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_global_category.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_categories_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
@@ -49,33 +49,26 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
             child: state.isLoading
                 ? const AdminLoadingState(message: 'Loading Categories...')
                 : state.error != null && state.categories.isEmpty
-                    ? AdminErrorState(
-                        error: state.error!,
-                        onRetry: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true),
-                      )
-                    : RefreshIndicator(
-                        onRefresh: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true),
-                        child: state.categories.isEmpty
-                            ? const AdminEmptyState(
-                                icon: Iconsax.category_bold,
-                                title: 'No Categories',
-                                subtitle: 'Add a global category to get started',
-                              )
-                            : ListView.builder(
-                                controller: _scrollController,
-                                padding: EdgeInsets.all(20.w),
-                                itemCount: state.categories.length + (state.isMoreLoading ? 1 : 0),
-                                itemBuilder: (context, index) {
-                                  if (index == state.categories.length) {
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 20.h),
-                                      child: const Center(child: CircularProgressIndicator()),
-                                    );
-                                  }
-                                  return _CategoryCard(category: state.categories[index]);
-                                },
-                              ),
-                      ),
+                ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true))
+                : RefreshIndicator(
+                    onRefresh: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true),
+                    child: state.categories.isEmpty
+                        ? const AdminEmptyState(icon: Iconsax.category, title: 'No Categories', subtitle: 'Add a global category to get started')
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.all(20.w),
+                            itemCount: state.categories.length + (state.isMoreLoading ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == state.categories.length) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                                  child: const Center(child: CircularProgressIndicator()),
+                                );
+                              }
+                              return _CategoryCard(category: state.categories[index]);
+                            },
+                          ),
+                  ),
           ),
         ],
       ),
@@ -148,14 +141,16 @@ class _CategoryCard extends ConsumerWidget {
           Container(
             width: 50.w,
             height: 50.w,
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
+            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12.r)),
             child: Center(
               child: category.icon != null && category.icon!.isNotEmpty
-                  ? Image.network(category.icon!, width: 30.w, height: 30.w, errorBuilder: (context, error, stackTrace) => Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp))
-                  : Icon(Iconsax.category_bold, color: AppTheme.primaryColor, size: 24.sp),
+                  ? Image.network(
+                      category.icon!,
+                      width: 30.w,
+                      height: 30.w,
+                      errorBuilder: (context, error, stackTrace) => Icon(Iconsax.category, color: AppTheme.primaryColor, size: 24.sp),
+                    )
+                  : Icon(Iconsax.category, color: AppTheme.primaryColor, size: 24.sp),
             ),
           ),
           SizedBox(width: 16.w),
@@ -168,14 +163,20 @@ class _CategoryCard extends ConsumerWidget {
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'edit') {
-                showDialog(context: context, builder: (context) => _CategoryDialog(category: category));
+                showDialog(
+                  context: context,
+                  builder: (context) => _CategoryDialog(category: category),
+                );
               } else if (value == 'delete') {
                 _confirmDelete(context, ref);
               }
             },
             itemBuilder: (context) => [
               const PopupMenuItem(value: 'edit', child: Text('Edit')),
-              const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
+              const PopupMenuItem(
+                value: 'delete',
+                child: Text('Delete', style: TextStyle(color: Colors.red)),
+              ),
             ],
           ),
         ],
@@ -250,10 +251,7 @@ class _CategoryDialogState extends ConsumerState<_CategoryDialog> {
         ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              final data = {
-                'name': _nameController.text,
-                'icon': _iconController.text,
-              };
+              final data = {'name': _nameController.text, 'icon': _iconController.text};
               if (widget.category == null) {
                 ref.read(adminCategoriesProvider.notifier).createCategory(data);
               } else {

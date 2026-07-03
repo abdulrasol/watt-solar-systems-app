@@ -1,6 +1,6 @@
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -50,7 +50,7 @@ class StorefrontCartButton extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Icon(
-                        FontAwesome.cart_shopping_solid,
+                        Iconsax.shopping_cart,
                         size: 18.sp,
                         color: filled ? Colors.white : AppTheme.primaryColor,
                       ),

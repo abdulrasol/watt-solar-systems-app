@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
@@ -25,11 +24,7 @@ class AdminDrawer extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final content = Container(
-      decoration: BoxDecoration(
-        color: isDark
-            ? const Color(0xFF1E1E2C).withValues(alpha: 0.97)
-            : Colors.white.withValues(alpha: 0.98),
-      ),
+      decoration: BoxDecoration(color: isDark ? const Color(0xFF1E1E2C).withValues(alpha: 0.97) : Colors.white.withValues(alpha: 0.98)),
       child: Column(
         children: [
           _buildHeader(context, authState),
@@ -40,7 +35,7 @@ class AdminDrawer extends ConsumerWidget {
               children: [
                 _buildDrawerItem(
                   context: context,
-                  icon: FontAwesomeIcons.solidBuilding,
+                  icon: Iconsax.building,
                   title: AppLocalizations.of(context)!.dashboard,
                   onTap: () => _closeIfDrawer(context),
                   delay: 100,
@@ -48,7 +43,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.message_circle_bold,
+                  icon: Iconsax.message_circle,
                   title: AppLocalizations.of(context)!.user_feedbacks,
                   onTap: () {
                     _closeIfDrawer(context);
@@ -58,7 +53,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.setting_2_bold,
+                  icon: Iconsax.setting_2,
                   title: 'App Configurations',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -68,7 +63,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.shop_bold,
+                  icon: Iconsax.shop,
                   title: 'Marketplace Oversight',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -78,7 +73,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.building_bold,
+                  icon: Iconsax.building,
                   title: 'Manage Companies',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -88,7 +83,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.gallery_edit_bold,
+                  icon: Iconsax.gallery_edit,
                   title: 'Service Types',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -98,7 +93,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.category_2_bold,
+                  icon: Iconsax.category_2,
                   title: 'Service Catalog',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -108,17 +103,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.briefcase_bold,
-                  title: 'Service Requests',
-                  onTap: () {
-                    _closeIfDrawer(context);
-                    context.go('/admin/service-requests');
-                  },
-                  delay: 220,
-                ),
-                _buildDrawerItem(
-                  context: context,
-                  icon: Iconsax.user_bold,
+                  icon: Iconsax.user,
                   title: 'Manage Users',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -128,7 +113,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.category_bold,
+                  icon: Iconsax.category,
                   title: 'Global Categories',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -138,7 +123,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.money_bold,
+                  icon: Iconsax.money,
                   title: 'Currencies',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -148,7 +133,7 @@ class AdminDrawer extends ConsumerWidget {
                 ),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.location_bold,
+                  icon: Iconsax.location,
                   title: 'Address (Countries/Cities)',
                   onTap: () {
                     _closeIfDrawer(context);
@@ -169,7 +154,7 @@ class AdminDrawer extends ConsumerWidget {
                 const SizedBox(height: 8),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.home_2_bold,
+                  icon: Iconsax.home_2,
                   title: AppLocalizations.of(context)!.home,
                   onTap: () {
                     if (!embedded) {
@@ -182,31 +167,21 @@ class AdminDrawer extends ConsumerWidget {
                 if (authState.isCompanyMember)
                   _buildDrawerItem(
                     context: context,
-                    icon: Iconsax.building_bold,
-                    title:
-                        authState.company?.name ??
-                        AppLocalizations.of(context)!.company_dashboard,
+                    icon: Iconsax.building,
+                    title: authState.company?.name ?? AppLocalizations.of(context)!.company_dashboard,
                     onTap: () {
                       if (!embedded) {
-                        Navigator.of(
-                          context,
-                        ).popUntil((route) => route.isFirst);
+                        Navigator.of(context).popUntil((route) => route.isFirst);
                       }
                       context.go('/companies/dashboard');
                     },
                     delay: 250,
                   ),
                 const SizedBox(height: 16),
+                _buildDrawerItem(context: context, icon: Iconsax.setting_2, title: AppLocalizations.of(context)!.settings, route: '/settings', delay: 300),
                 _buildDrawerItem(
                   context: context,
-                  icon: Iconsax.setting_2_bold,
-                  title: AppLocalizations.of(context)!.settings,
-                  route: '/settings',
-                  delay: 300,
-                ),
-                _buildDrawerItem(
-                  context: context,
-                  icon: Iconsax.message_text_bold,
+                  icon: Iconsax.message_text,
                   title: AppLocalizations.of(context)!.send_feedback,
                   onTap: () async {
                     _closeIfDrawer(context);
@@ -234,11 +209,7 @@ class AdminDrawer extends ConsumerWidget {
       width: double.infinity,
       padding: EdgeInsets.all(8.r),
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppTheme.primaryColor, AppTheme.primaryDarkColor],
-        ),
+        gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [AppTheme.primaryColor, AppTheme.primaryDarkColor]),
       ),
       child: SafeArea(
         bottom: false,
@@ -249,20 +220,13 @@ class AdminDrawer extends ConsumerWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white.withValues(alpha: 0.3),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.5),
-                  width: 2,
-                ),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.5), width: 2),
               ),
               child: CircleAvatar(
                 radius: 28.r,
                 backgroundColor: Colors.white,
                 child: user == null || user.image == null || user.image!.isEmpty
-                    ? const Icon(
-                        Icons.admin_panel_settings,
-                        size: 28,
-                        color: AppTheme.primaryColor,
-                      )
+                    ? const Icon(Icons.admin_panel_settings, size: 28, color: AppTheme.primaryColor)
                     : WdImagePreview(imageUrl: user.image!),
               ),
             ),
@@ -273,28 +237,17 @@ class AdminDrawer extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.16),
                   borderRadius: BorderRadius.circular(20.r),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.28),
-                  ),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.28)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Iconsax.verify_bold,
-                      color: AppTheme.accentColor,
-                      size: 16,
-                    ),
+                    const Icon(Iconsax.verify, color: AppTheme.accentColor, size: 16),
                     horSpace(),
                     Expanded(
                       child: Text(
                         name,
-                        style: const TextStyle(
-                          fontFamily: AppTheme.fontFamily,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: const TextStyle(fontFamily: AppTheme.fontFamily, color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -326,9 +279,7 @@ class AdminDrawer extends ConsumerWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withValues(
-              alpha: isActive ? 0.2 : 0.1,
-            ),
+            color: AppTheme.primaryColor.withValues(alpha: isActive ? 0.2 : 0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: AppTheme.primaryColor, size: 20),
@@ -339,9 +290,7 @@ class AdminDrawer extends ConsumerWidget {
             fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
             fontSize: 15,
             fontFamily: AppTheme.fontFamily,
-            color: isActive
-                ? AppTheme.primaryColor
-                : (isDark ? Colors.white : Colors.black87),
+            color: isActive ? AppTheme.primaryColor : (isDark ? Colors.white : Colors.black87),
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -349,21 +298,10 @@ class AdminDrawer extends ConsumerWidget {
         trailing: isActive
             ? Container(
                 padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                  color: AppTheme.primaryColor,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Iconsax.check_bold,
-                  color: Colors.white,
-                  size: 12,
-                ),
+                decoration: const BoxDecoration(color: AppTheme.primaryColor, shape: BoxShape.circle),
+                child: Icon(Iconsax.check, color: Colors.white, size: 12),
               )
-            : const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 14,
-                color: Colors.grey,
-              ),
+            : const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         onTap: () {
           if (onTap != null) onTap();
@@ -374,18 +312,11 @@ class AdminDrawer extends ConsumerWidget {
     ).animate().fadeIn(duration: 50.ms).slideX(begin: -0.1);
   }
 
-  Widget _buildFooter(
-    BuildContext context,
-    AuthState authState,
-    WidgetRef ref,
-    bool isDark,
-  ) {
+  Widget _buildFooter(BuildContext context, AuthState authState, WidgetRef ref, bool isDark) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Colors.grey.withValues(alpha: 0.1)),
-        ),
+        border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.1))),
       ),
       child: Column(
         children: [
@@ -394,18 +325,9 @@ class AdminDrawer extends ConsumerWidget {
             children: [
               const Text(
                 'Dark Mode',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontFamily: AppTheme.fontFamily,
-                  fontSize: 14,
-                ),
+                style: TextStyle(fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily, fontSize: 14),
               ),
-              Switch(
-                value: isDark,
-                activeTrackColor: AppTheme.primaryColor,
-                onChanged: (val) =>
-                    ref.read(settingsProvider.notifier).toggleDark(),
-              ),
+              Switch(value: isDark, activeTrackColor: AppTheme.primaryColor, onChanged: (val) => ref.read(settingsProvider.notifier).toggleDark()),
             ],
           ),
           SizedBox(height: 20.h),
@@ -421,30 +343,17 @@ class AdminDrawer extends ConsumerWidget {
                   context.go('/auth');
                 }
               },
-              icon: Icon(
-                authState.isSigned ? Iconsax.logout_bold : Iconsax.login_bold,
-                size: 20,
-              ),
+              icon: Icon(authState.isSigned ? Iconsax.logout : Iconsax.login, size: 20),
               label: Text(
-                authState.isSigned
-                    ? AppLocalizations.of(context)!.sign_out
-                    : AppLocalizations.of(context)!.sign_in,
-                style: const TextStyle(
-                  fontFamily: AppTheme.fontFamily,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                authState.isSigned ? AppLocalizations.of(context)!.sign_out : AppLocalizations.of(context)!.sign_in,
+                style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 14, fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: authState.isSigned
-                    ? Colors.red.withValues(alpha: 0.1)
-                    : AppTheme.primaryColor,
+                backgroundColor: authState.isSigned ? Colors.red.withValues(alpha: 0.1) : AppTheme.primaryColor,
                 foregroundColor: authState.isSigned ? Colors.red : Colors.white,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
           ),

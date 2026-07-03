@@ -1,7 +1,7 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/offline_status_banner.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
@@ -41,17 +41,12 @@ class Home extends ConsumerWidget {
       const ServicesExplorerScreen(embedded: true),
       const StorefrontScreen(audience: StorefrontAudience.b2c),
     ];
-    final navItems = navigation.visibleTabs
-        .map((tab) => _buildNavItem(tab, context))
-        .toList();
+    final navItems = navigation.visibleTabs.map((tab) => _buildNavItem(tab, context)).toList();
     final navIndex = navigation.navIndexFor(effectiveIndex);
 
     return Scaffold(
       extendBody: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: _appBar(context, ref),
-      ),
+      appBar: PreferredSize(preferredSize: const Size.fromHeight(kToolbarHeight), child: _appBar(context, ref)),
       body: Column(
         children: [
           const OfflineStatusBanner(),
@@ -60,13 +55,7 @@ class Home extends ConsumerWidget {
           ),
         ],
       ),
-      bottomNavigationBar: _navbar(
-        navItems,
-        context,
-        navIndex,
-        ref,
-        navigation,
-      ),
+      bottomNavigationBar: _navbar(navItems, context, navIndex, ref, navigation),
       drawer: const AppDrawer(),
     );
   }
@@ -74,52 +63,26 @@ class Home extends ConsumerWidget {
   CrystalNavigationBarItem _buildNavItem(HomeTab tab, BuildContext context) {
     switch (tab) {
       case HomeTab.dashboard:
-        return CrystalNavigationBarItem(
-          icon: Iconsax.home_bold,
-          unselectedIcon: Iconsax.home_outline,
-          selectedColor: Theme.of(context).primaryColor,
-        );
+        return CrystalNavigationBarItem(icon: Iconsax.home, unselectedIcon: Iconsax.home, selectedColor: Theme.of(context).primaryColor);
       case HomeTab.calculator:
         return CrystalNavigationBarItem(
-          icon: FontAwesome.calculator_solid,
-          unselectedIcon: FontAwesome.calculator_solid,
+          icon: Iconsax.calculator,
+          unselectedIcon: Iconsax.calculator,
           selectedColor: Theme.of(context).primaryColor,
         );
       case HomeTab.services:
-        return CrystalNavigationBarItem(
-          icon: Iconsax.category_2_bold,
-          unselectedIcon: Iconsax.category_2_outline,
-          selectedColor: Theme.of(context).primaryColor,
-        );
+        return CrystalNavigationBarItem(icon: Iconsax.category_2, unselectedIcon: Iconsax.category_2, selectedColor: Theme.of(context).primaryColor);
       case HomeTab.store:
-        return CrystalNavigationBarItem(
-          icon: Iconsax.shop_bold,
-          unselectedIcon: Iconsax.shop_outline,
-          selectedColor: Theme.of(context).primaryColor,
-        );
+        return CrystalNavigationBarItem(icon: Iconsax.shop, unselectedIcon: Iconsax.shop, selectedColor: Theme.of(context).primaryColor);
       case HomeTab.community:
-        return CrystalNavigationBarItem(
-          icon: Icons.hub_outlined,
-          unselectedIcon: Icons.hub_outlined,
-          selectedColor: Theme.of(context).primaryColor,
-        );
+        return CrystalNavigationBarItem(icon: Icons.hub_outlined, unselectedIcon: Icons.hub_outlined, selectedColor: Theme.of(context).primaryColor);
     }
   }
 
-  Padding _navbar(
-    List<CrystalNavigationBarItem> navItems,
-    BuildContext context,
-    int navIndex,
-    WidgetRef ref,
-    HomeNavigationState navigation,
-  ) {
+  Padding _navbar(List<CrystalNavigationBarItem> navItems, BuildContext context, int navIndex, WidgetRef ref, HomeNavigationState navigation) {
     return Padding(
       padding: navItems.length <= 2
-          ? EdgeInsets.only(
-              left: MediaQuery.sizeOf(context).width * 0.22,
-              right: MediaQuery.sizeOf(context).width * 0.22,
-              bottom: 10,
-            )
+          ? EdgeInsets.only(left: MediaQuery.sizeOf(context).width * 0.22, right: MediaQuery.sizeOf(context).width * 0.22, bottom: 10)
           : EdgeInsets.zero,
       child: CrystalNavigationBar(
         currentIndex: navIndex,
@@ -152,9 +115,7 @@ class Home extends ConsumerWidget {
   AppBar _appBar(BuildContext context, WidgetRef ref) {
     final navigation = ref.watch(homeNavigationProvider);
     final selectedIndex = ref.watch(homePageIndexProvider);
-    final currentTab = HomeTab.fromIndex(
-      navigation.sanitizeIndex(selectedIndex),
-    );
+    final currentTab = HomeTab.fromIndex(navigation.sanitizeIndex(selectedIndex));
 
     return AppBar(
       title: Text(_getTitle(currentTab, context)),
@@ -174,16 +135,11 @@ class Home extends ConsumerWidget {
                           Navigator.of(context).push(
                             buildStorefrontRoute(
                               context: context,
-                              page: const StorefrontCartScreen(
-                                audience: StorefrontAudience.b2c,
-                              ),
+                              page: const StorefrontCartScreen(audience: StorefrontAudience.b2c),
                             ),
                           );
                         },
-                        icon: const Icon(
-                          FontAwesome.cart_shopping_solid,
-                          size: 20,
-                        ),
+                        icon: const Icon(Iconsax.shopping_cart, size: 20),
                       ),
                       if (count > 0)
                         Positioned(
@@ -191,17 +147,10 @@ class Home extends ConsumerWidget {
                           top: 8,
                           child: Container(
                             padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
+                            decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                             child: Text(
                               count > 9 ? '9+' : '$count',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -213,30 +162,19 @@ class Home extends ConsumerWidget {
             // Notification Icon with Badge
             Consumer(
               builder: (context, ref, _) {
-                final isSigned = ref.watch(
-                  authProvider.select((auth) => auth.isSigned),
-                );
+                final isSigned = ref.watch(authProvider.select((auth) => auth.isSigned));
                 final notificationsEnabled = ref.watch(isNotificationsEnabled);
                 if (!isSigned || !notificationsEnabled) {
                   return const SizedBox.shrink();
                 }
-                final notificationCount = ref.watch(
-                  notificationHistoryProvider.select(
-                    (state) => state.totalCount,
-                  ),
-                );
+                final notificationCount = ref.watch(notificationHistoryProvider.select((state) => state.totalCount));
                 return InkWell(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed('/notifications'),
+                  onTap: () => Navigator.of(context).pushNamed('/notifications'),
                   child: Stack(
                     children: [
                       IconButton(
-                        onPressed: () =>
-                            Navigator.of(context).pushNamed('/notifications'),
-                        icon: const Icon(
-                          Iconsax.notification_bing_bold,
-                          color: AppTheme.primaryColor,
-                        ),
+                        onPressed: () => Navigator.of(context).pushNamed('/notifications'),
+                        icon: const Icon(Iconsax.notification_bing, color: AppTheme.primaryColor),
                       ),
                       if (notificationCount > 0)
                         Positioned(
@@ -244,19 +182,10 @@ class Home extends ConsumerWidget {
                           top: 8,
                           child: Container(
                             padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
+                            decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                             child: Text(
-                              notificationCount > 9
-                                  ? '9+'
-                                  : '$notificationCount',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              notificationCount > 9 ? '9+' : '$notificationCount',
+                              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),

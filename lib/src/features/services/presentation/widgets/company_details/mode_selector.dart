@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
@@ -10,11 +10,7 @@ class CompanyModeSelector extends StatelessWidget {
   final CompanyDetailsMode currentMode;
   final ValueChanged<CompanyDetailsMode> onModeChanged;
 
-  const CompanyModeSelector({
-    super.key,
-    required this.currentMode,
-    required this.onModeChanged,
-  });
+  const CompanyModeSelector({super.key, required this.currentMode, required this.onModeChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +20,7 @@ class CompanyModeSelector extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(4.r),
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark
-            ? Colors.white.withValues(alpha: 0.06)
-            : Colors.black.withValues(alpha: 0.04),
+        color: theme.brightness == Brightness.dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(22.r),
         border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
       ),
@@ -35,7 +29,7 @@ class CompanyModeSelector extends StatelessWidget {
           Expanded(
             child: _ModeChip(
               label: l10n.services_mode_overview,
-              icon: Iconsax.info_circle_bold,
+              icon: Iconsax.info_circle,
               selected: currentMode == CompanyDetailsMode.overview,
               onTap: () => onModeChanged(CompanyDetailsMode.overview),
             ),
@@ -44,7 +38,7 @@ class CompanyModeSelector extends StatelessWidget {
           Expanded(
             child: _ModeChip(
               label: l10n.services_mode_products,
-              icon: Iconsax.shop_bold,
+              icon: Iconsax.shop,
               selected: currentMode == CompanyDetailsMode.products,
               onTap: () => onModeChanged(CompanyDetailsMode.products),
             ),
@@ -61,12 +55,7 @@ class _ModeChip extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  const _ModeChip({
-    required this.label,
-    required this.icon,
-    required this.selected,
-    required this.onTap,
-  });
+  const _ModeChip({required this.label, required this.icon, required this.selected, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +70,7 @@ class _ModeChip extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 16.sp,
-                color: selected
-                    ? Colors.white
-                    : Theme.of(context).textTheme.bodyMedium?.color,
-              ),
+              Icon(icon, size: 16.sp, color: selected ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color),
               SizedBox(width: 8.w),
               Flexible(
                 child: Text(
@@ -97,9 +80,7 @@ class _ModeChip extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w700,
-                    color: selected
-                        ? Colors.white
-                        : Theme.of(context).textTheme.bodyMedium?.color,
+                    color: selected ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
               ),

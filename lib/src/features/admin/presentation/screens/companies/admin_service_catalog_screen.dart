@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_service_catalog_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/forms/service_catalog_form.dart';
@@ -13,18 +13,14 @@ class AdminServiceCatalogScreen extends ConsumerStatefulWidget {
   const AdminServiceCatalogScreen({super.key});
 
   @override
-  ConsumerState<AdminServiceCatalogScreen> createState() =>
-      _AdminServiceCatalogScreenState();
+  ConsumerState<AdminServiceCatalogScreen> createState() => _AdminServiceCatalogScreenState();
 }
 
-class _AdminServiceCatalogScreenState
-    extends ConsumerState<AdminServiceCatalogScreen> {
+class _AdminServiceCatalogScreenState extends ConsumerState<AdminServiceCatalogScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => ref.read(adminServiceCatalogProvider.notifier).fetchServiceCatalog(),
-    );
+    Future.microtask(() => ref.read(adminServiceCatalogProvider.notifier).fetchServiceCatalog());
   }
 
   @override
@@ -34,40 +30,20 @@ class _AdminServiceCatalogScreenState
     return AdminPageScaffold(
       // title: 'Service Catalog',
       // subtitle: 'Catalog entries load only after this route opens.',
-      actions: [
-        FilledButton.icon(
-          onPressed: () => _showServiceForm(context),
-          icon: const Icon(Iconsax.add_circle_bold),
-          label: const Text('Add Service'),
-        ),
-      ],
+      actions: [FilledButton.icon(onPressed: () => _showServiceForm(context), icon: const Icon(Iconsax.add_circle), label: const Text('Add Service'))],
       child: state.isLoading && state.catalog.isEmpty
-          ? const AdminLoadingState(
-              icon: Iconsax.category_2_bold,
-              message: 'Loading service catalog...',
-            )
+          ? const AdminLoadingState(icon: Iconsax.category_2, message: 'Loading service catalog...')
           : _buildContent(context, state),
     );
   }
 
-  Widget _buildContent(
-    BuildContext context,
-    AdminServiceCatalogState state,
-  ) {
+  Widget _buildContent(BuildContext context, AdminServiceCatalogState state) {
     if (state.error != null && state.catalog.isEmpty) {
-      return AdminErrorState(
-        error: state.error!,
-        onRetry: () =>
-            ref.read(adminServiceCatalogProvider.notifier).fetchServiceCatalog(),
-      );
+      return AdminErrorState(error: state.error!, onRetry: () => ref.read(adminServiceCatalogProvider.notifier).fetchServiceCatalog());
     }
 
     if (state.catalog.isEmpty) {
-      return const AdminEmptyState(
-        icon: Iconsax.category_2_bold,
-        title: 'Catalog is empty',
-        subtitle: 'Add services that companies can request.',
-      );
+      return const AdminEmptyState(icon: Iconsax.category_2, title: 'Catalog is empty', subtitle: 'Add services that companies can request.');
     }
 
     return Column(
@@ -75,22 +51,15 @@ class _AdminServiceCatalogScreenState
       children: [
         Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(18),
-          ),
+          decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(18)),
           child: Row(
             children: [
-              const Icon(Iconsax.info_circle_bold, color: AppTheme.primaryColor),
+              const Icon(Iconsax.info_circle, color: AppTheme.primaryColor),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   'Drag items to reorder the catalog. Order syncs after the drag ends.',
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontFamily,
-                    fontSize: 13,
-                    color: Theme.of(context).hintColor,
-                  ),
+                  style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 13, color: Theme.of(context).hintColor),
                 ),
               ),
             ],
@@ -99,14 +68,11 @@ class _AdminServiceCatalogScreenState
         const SizedBox(height: 16),
         Expanded(
           child: RefreshIndicator(
-            onRefresh: () =>
-                ref.read(adminServiceCatalogProvider.notifier).fetchServiceCatalog(),
+            onRefresh: () => ref.read(adminServiceCatalogProvider.notifier).fetchServiceCatalog(),
             child: ReorderableListView.builder(
               itemCount: state.catalog.length,
-              onReorder: (oldIndex, newIndex) {
-                ref
-                    .read(adminServiceCatalogProvider.notifier)
-                    .reorderCatalog(oldIndex, newIndex);
+              onReorderItem: (oldIndex, newIndex) {
+                ref.read(adminServiceCatalogProvider.notifier).reorderCatalog(oldIndex, newIndex);
               },
               onReorderEnd: (_) {
                 ref.read(adminServiceCatalogProvider.notifier).syncCatalogOrder();
@@ -141,7 +107,9 @@ class _AdminServiceCatalogScreenState
         item: item,
         onSubmit: (data) {
           if (item == null) {
-            ref.read(adminServiceCatalogProvider.notifier).createServiceCatalogEntry(
+            ref
+                .read(adminServiceCatalogProvider.notifier)
+                .createServiceCatalogEntry(
                   ServiceCatalogItem(
                     id: 0,
                     code: data['code'] as String,
@@ -154,9 +122,7 @@ class _AdminServiceCatalogScreenState
                   ),
                 );
           } else {
-            ref
-                .read(adminServiceCatalogProvider.notifier)
-                .updateServiceCatalogEntry(item.code, data);
+            ref.read(adminServiceCatalogProvider.notifier).updateServiceCatalogEntry(item.code, data);
           }
         },
       ),
@@ -170,21 +136,13 @@ class _AdminServiceCatalogScreenState
         title: const Text('Delete service?'),
         content: Text('Delete "${item.name}" from the catalog?'),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
-              ref
-                  .read(adminServiceCatalogProvider.notifier)
-                  .deleteServiceCatalogEntry(item.code);
+              ref.read(adminServiceCatalogProvider.notifier).deleteServiceCatalogEntry(item.code);
               Navigator.pop(context);
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: AppTheme.errorColor),
-            ),
+            child: const Text('Delete', style: TextStyle(color: AppTheme.errorColor)),
           ),
         ],
       ),
@@ -192,9 +150,6 @@ class _AdminServiceCatalogScreenState
   }
 
   void _toggleActive(ServiceCatalogItem item) {
-    ref.read(adminServiceCatalogProvider.notifier).updateServiceCatalogEntry(
-      item.code,
-      {'is_active': !item.isActive},
-    );
+    ref.read(adminServiceCatalogProvider.notifier).updateServiceCatalogEntry(item.code, {'is_active': !item.isActive});
   }
 }

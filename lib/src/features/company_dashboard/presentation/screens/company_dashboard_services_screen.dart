@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
@@ -24,50 +24,29 @@ class CompanyDashboardServicesScreen extends ConsumerWidget {
     final services = [...?state.summary?.services];
 
     final content = state.isError && services.isEmpty
-        ? AdminErrorState(
-            error: l10n.error_loading_data,
-            onRetry: () =>
-                ref.read(companySummaryProvider.notifier).getSummary(),
-          )
+        ? AdminErrorState(error: l10n.error_loading_data, onRetry: () => ref.read(companySummaryProvider.notifier).getSummary())
         : state.isLoading && services.isEmpty
-        ? const AdminLoadingState(
-            icon: Iconsax.category_bold,
-            message: 'Loading services...',
-          )
+        ? const AdminLoadingState(icon: Iconsax.category, message: 'Loading services...')
         : SingleChildScrollView(
             padding: AppBreakpoints.pagePadding(context),
             child: Center(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: AppBreakpoints.contentMaxWidth(context),
-                ),
+                constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       l10n.services,
-                      style: const TextStyle(
-                        fontFamily: AppTheme.fontFamily,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 20, fontWeight: FontWeight.w800),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       l10n.section_label(l10n.services),
-                      style: TextStyle(
-                        fontFamily: AppTheme.fontFamily,
-                        fontSize: 13,
-                        color: Theme.of(context).hintColor,
-                      ),
+                      style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 13, color: Theme.of(context).hintColor),
                     ),
                     const SizedBox(height: 20),
                     if (services.isEmpty)
-                      AdminEmptyState(
-                        icon: Iconsax.category_bold,
-                        title: l10n.services,
-                        subtitle: l10n.section_label(l10n.services),
-                      )
+                      AdminEmptyState(icon: Iconsax.category, title: l10n.services, subtitle: l10n.section_label(l10n.services))
                     else
                       LayoutBuilder(
                         builder: (context, constraints) {
@@ -82,21 +61,17 @@ class CompanyDashboardServicesScreen extends ConsumerWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: services.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: columns,
-                                  crossAxisSpacing: 16,
-                                  mainAxisSpacing: 16,
-                                  childAspectRatio: columns == 2
-                                      ? 0.6.h
-                                      : 1.0,
-                                ),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: columns,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                              childAspectRatio: columns == 2 ? 0.6.h : 1.0,
+                            ),
                             itemBuilder: (context, index) {
                               return CompanyWorkspaceServiceCard(
                                 service: services[index],
                                 companyId: companyId,
-                                canManageActions:
-                                    company?.canManageWorkspace ?? false,
+                                canManageActions: company?.canManageWorkspace ?? false,
                               );
                             },
                           );
@@ -112,8 +87,6 @@ class CompanyDashboardServicesScreen extends ConsumerWidget {
       return content;
     }
 
-    return CompanyPageScaffold(
-      child: content,
-    );
+    return CompanyPageScaffold(child: content);
   }
 }

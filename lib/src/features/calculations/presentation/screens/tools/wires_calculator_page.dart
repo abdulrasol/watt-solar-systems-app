@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/calculator_widgets.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart';
@@ -176,12 +176,7 @@ class _WiresCalculatorPageState extends ConsumerState<WiresCalculatorPage> {
 
             const SizedBox(height: 30),
 
-            ResultCard(
-              title: l10n.recommended_wire_size,
-              value: controller.wireCalcResult,
-              icon: Iconsax.mask_1_bold,
-              color: Colors.blueGrey,
-            ),
+            ResultCard(title: l10n.recommended_wire_size, value: controller.wireCalcResult, icon: Iconsax.mask_1, color: Colors.blueGrey),
 
             const SizedBox(height: 20),
             Container(

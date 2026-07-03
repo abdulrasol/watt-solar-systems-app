@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_users_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
@@ -49,29 +49,23 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
             child: state.isLoading
                 ? const AdminLoadingState(message: 'Loading Users...')
                 : state.error != null && state.users.isEmpty
-                    ? AdminErrorState(
-                        error: state.error!,
-                        onRetry: () => ref.read(adminUsersProvider.notifier).fetchUsers(isRefresh: true),
-                      )
-                    : RefreshIndicator(
-                        onRefresh: () => ref.read(adminUsersProvider.notifier).fetchUsers(isRefresh: true),
-                        child: state.users.isEmpty
-                            ? const AdminEmptyState(
-                                icon: Iconsax.user_bold,
-                                title: 'No Users Found',
-                              )
-                            : ListView.builder(
-                                controller: _scrollController,
-                                padding: EdgeInsets.all(20.w),
-                                itemCount: state.users.length + (state.isMoreLoading ? 1 : 0),
-                                itemBuilder: (context, index) {
-                                  if (index == state.users.length) {
-                                    return const Center(child: CircularProgressIndicator());
-                                  }
-                                  return _UserCard(user: state.users[index]);
-                                },
-                              ),
-                      ),
+                ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminUsersProvider.notifier).fetchUsers(isRefresh: true))
+                : RefreshIndicator(
+                    onRefresh: () => ref.read(adminUsersProvider.notifier).fetchUsers(isRefresh: true),
+                    child: state.users.isEmpty
+                        ? const AdminEmptyState(icon: Iconsax.user, title: 'No Users Found')
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.all(20.w),
+                            itemCount: state.users.length + (state.isMoreLoading ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == state.users.length) {
+                                return const Center(child: CircularProgressIndicator());
+                              }
+                              return _UserCard(user: state.users[index]);
+                            },
+                          ),
+                  ),
           ),
         ],
       ),
@@ -119,7 +113,7 @@ class _UserCard extends ConsumerWidget {
           CircleAvatar(
             radius: 25.r,
             backgroundImage: user.image != null ? NetworkImage(user.image!) : null,
-            child: user.image == null ? Icon(Iconsax.user_bold, size: 24.sp) : null,
+            child: user.image == null ? Icon(Iconsax.user, size: 24.sp) : null,
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -139,16 +133,15 @@ class _UserCard extends ConsumerWidget {
                     margin: EdgeInsets.only(top: 4.h),
                     padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(color: Colors.amber.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4.r)),
-                    child: Text('SUPERUSER', style: TextStyle(fontSize: 9.sp, color: Colors.amber, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'SUPERUSER',
+                      style: TextStyle(fontSize: 9.sp, color: Colors.amber, fontWeight: FontWeight.bold),
+                    ),
                   ),
               ],
             ),
           ),
-          Switch(
-            value: user.isSuperuser,
-            onChanged: (v) => _confirmPromotion(context, ref, v),
-            activeThumbColor: Colors.amber,
-          ),
+          Switch(value: user.isSuperuser, onChanged: (v) => _confirmPromotion(context, ref, v), activeThumbColor: Colors.amber),
         ],
       ),
     );

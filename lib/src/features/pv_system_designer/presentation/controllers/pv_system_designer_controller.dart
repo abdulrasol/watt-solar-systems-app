@@ -1,13 +1,24 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/energy_estimate.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/entities/solar_irradiance_data.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/entities/system_losses.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/entities/financial_estimate.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/services/shadow_calculator.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/services/structure_design_calculator.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/services/energy_estimator.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/services/inverter_sizing_calculator.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/services/financial_calculator.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/services/solar_position_calculator.dart';
 import 'package:solar_hub/src/features/pv_system_designer/data/location_service.dart';
+import 'package:solar_hub/src/features/pv_system_designer/data/open_meteo_solar_data_source.dart';
+import 'package:solar_hub/src/features/pv_system_designer/data/inverter_catalog.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/utils/debounce_util.dart';
 
 final pvSystemDesignerProvider = NotifierProvider<PvSystemDesignerController, PvSystemDesignState>(() {
@@ -17,21 +28,35 @@ final pvSystemDesignerProvider = NotifierProvider<PvSystemDesignerController, Pv
 class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
   final _shadowCalc = ShadowCalculator();
   final _structureCalc = StructureDesignCalculator();
-  final _energyEstimator = EnergyEstimator();
+  final _energyEstimator = const EnergyEstimator();
+  final _inverterSizingCalc = const InverterSizingCalculator();
+  final _financialCalc = const FinancialCalculator();
   final _locationService = GeolocatorLocationService();
+  final _weatherDataSource = OpenMeteoSolarDataSource();
   final _debouncer = Debouncer(milliseconds: 300);
+  final _weatherDebouncer = Debouncer(milliseconds: 800);
 
   FrameResult? _frameResult;
   EnergyEstimate? _energyEstimate;
+  SolarIrradianceData? _irradianceData;
+  StringSizingResult? _stringSizingResult;
+  FinancialEstimate? _financialEstimate;
+  bool _isFetchingWeather = false;
 
   FrameResult? get frameResult => _frameResult;
   EnergyEstimate? get energyEstimate => _energyEstimate;
+  SolarIrradianceData? get irradianceData => _irradianceData;
+  StringSizingResult? get stringSizingResult => _stringSizingResult;
+  FinancialEstimate? get financialEstimate => _financialEstimate;
+  bool get isFetchingWeather => _isFetchingWeather;
+  bool get isUsingRealWeatherData => _irradianceData?.isRealData ?? false;
 
   @override
   PvSystemDesignState build() => PvSystemDesignState.initial();
 
   void cleanup() {
     _debouncer.dispose();
+    _weatherDebouncer.dispose();
   }
 
   // ── STEP NAVIGATION ──
@@ -56,6 +81,7 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
     final updatedRedo = List<List<CellType>>.from(state.redoStack.map((l) => List<CellType>.from(l)));
     updatedRedo.add(List<CellType>.from(state.grid));
     state = state.copyWith(grid: prev, undoStack: updatedUndo, redoStack: updatedRedo);
+    _debouncer.run(recalculate);
   }
 
   void redo() {
@@ -65,6 +91,7 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
     final updatedUndo = List<List<CellType>>.from(state.undoStack.map((l) => List<CellType>.from(l)));
     updatedUndo.add(List<CellType>.from(state.grid));
     state = state.copyWith(grid: next, undoStack: updatedUndo, redoStack: updatedRedo);
+    _debouncer.run(recalculate);
   }
 
   // ── SITE PARAMETERS ──
@@ -72,10 +99,13 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
   void updateLatitude(double value) {
     state = state.copyWith(latitude: value, locationError: null);
     _debouncer.run(recalculate);
+    _weatherDebouncer.run(refreshIrradianceData);
   }
 
   void updateLongitude(double value) {
     state = state.copyWith(longitude: value);
+    _debouncer.run(recalculate);
+    _weatherDebouncer.run(refreshIrradianceData);
   }
 
   void updateFacingPreference(FacingDirectionPreference value) {
@@ -94,6 +124,7 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       final location = await _locationService.getCurrentLocation();
       state = state.copyWith(latitude: location.latitude, longitude: location.longitude, isLocationLoading: false);
       _debouncer.run(recalculate);
+      unawaited(refreshIrradianceData());
       return true;
     } on LocationException catch (e) {
       state = state.copyWith(isLocationLoading: false, locationError: e.message);
@@ -104,15 +135,36 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
     }
   }
 
+  /// Fetches real historical irradiance/temperature data for the current
+  /// site from Open-Meteo and re-runs the energy estimate once it arrives.
+  /// Safe to call repeatedly — failures fall back silently (the estimator
+  /// already has a synthetic fallback), and this never throws.
+  Future<void> refreshIrradianceData() async {
+    _isFetchingWeather = true;
+    state = state;
+    try {
+      final data = await _weatherDataSource.fetchSolarData(latitude: state.latitude, longitude: state.longitude);
+      _irradianceData = data;
+    } catch (_) {
+      // EnergyEstimator already falls back to a synthetic estimate when
+      // _irradianceData is null, so there's nothing else to do here.
+    } finally {
+      _isFetchingWeather = false;
+      recalculate();
+    }
+  }
+
   // ── ROOF CONFIGURATION ──
 
   void updateRoofDimensions(double width, double length) {
     state = state.copyWith(roofWidthM: width, roofLengthM: length);
     updateGridFromDimensions();
+    _debouncer.run(recalculate);
   }
 
   void updateWallSetback(double setback) {
     state = state.copyWith(wallSetbackM: setback);
+    _debouncer.run(recalculate);
   }
 
   void updateWallToggles({bool? north, bool? south, bool? east, bool? west}) {
@@ -122,6 +174,7 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       hasEastWall: east ?? state.hasEastWall,
       hasWestWall: west ?? state.hasWestWall,
     );
+    _debouncer.run(recalculate);
   }
 
   void updateWallHeights({double? north, double? south, double? east, double? west}) {
@@ -131,6 +184,7 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       eastWallHeight: east ?? state.eastWallHeight,
       westWallHeight: west ?? state.westWallHeight,
     );
+    _debouncer.run(recalculate);
   }
 
   // ── PANEL SPECIFICATIONS ──
@@ -144,15 +198,23 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       panelThicknessM: thicknessM ?? state.panelThicknessM,
     );
     updateGridFromDimensions();
+    _debouncer.run(recalculate);
+  }
+
+  void updatePanelElectricalSpec({double? vocV, double? vmpV, double? iscA}) {
+    state = state.copyWith(panelVocV: vocV, panelVmpV: vmpV, panelIscA: iscA);
+    _debouncer.run(recalculate);
   }
 
   void updatePortrait(bool isPortrait) {
     state = state.copyWith(isPortrait: isPortrait);
     updateGridFromDimensions();
+    _debouncer.run(recalculate);
   }
 
   void updatePanelOrientation(String orientation) {
     state = state.copyWith(panelOrientation: orientation);
+    _debouncer.run(recalculate);
   }
 
   // ── STRUCTURE CLEARANCES ──
@@ -284,11 +346,13 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
         newGrid[index] = CellType.empty;
     }
     state = state.copyWith(grid: newGrid);
+    _debouncer.run(recalculate);
   }
 
   void clearGrid() {
     saveStateToHistory();
     state = state.copyWith(grid: List<CellType>.filled(state.cols * state.rows, CellType.empty));
+    _debouncer.run(recalculate);
   }
 
   void autofillRoof({bool avoidShade = true}) {
@@ -314,6 +378,7 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       }
     }
     state = state.copyWith(grid: newGrid);
+    _debouncer.run(recalculate);
   }
 
   void rotateGrid90Clockwise() {
@@ -342,11 +407,13 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       northWallHeight: state.westWallHeight, eastWallHeight: state.northWallHeight,
       southWallHeight: state.eastWallHeight, westWallHeight: state.southWallHeight,
     );
+    _debouncer.run(recalculate);
   }
 
   void alignLayoutToSouth() {
     saveStateToHistory();
     state = state.copyWith(panelOrientation: 'South');
+    _debouncer.run(recalculate);
   }
 
   // ── POLYGON SKETCHING ──
@@ -392,6 +459,7 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       }
     }
     state = state.copyWith(grid: newGrid, isPolygonSketchMode: false, polygonVertices: const []);
+    _debouncer.run(recalculate);
   }
 
   // ── SHADOW & SIMULATION ──
@@ -402,6 +470,12 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
 
   void updateSimulationTime(double hour) {
     state = state.copyWith(simulationTime: hour);
+    _debouncer.run(recalculate);
+  }
+
+  void updateSimulationDate(DateTime date) {
+    state = state.copyWith(simulationDate: date);
+    _debouncer.run(recalculate);
   }
 
   void selectTool(ToolMode tool) {
@@ -418,12 +492,32 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
     );
   }
 
+  /// Combines [PvSystemDesignState.simulationDate] and `simulationTime`
+  /// into one `DateTime` for sun-position math.
+  DateTime get simulationDateTime {
+    final d = state.simulationDate;
+    final hour = state.simulationTime.floor();
+    final minute = ((state.simulationTime - hour) * 60).round();
+    return DateTime(d.year, d.month, d.day, hour, minute);
+  }
+
+  /// The sun's real position (elevation/azimuth) for the currently
+  /// selected simulation date+time and site — replaces the old arbitrary
+  /// `simulationTime`-only heuristic used throughout the shading UI.
+  SunPosition get sunPosition => _shadowCalc.sunPositionFor(date: simulationDateTime, latitude: state.latitude, longitude: state.longitude);
+
+  /// Approximate sunrise/sunset (decimal hours) for the selected date and
+  /// site, used to size the simulation-time slider realistically instead
+  /// of a fixed 8:00–17:00 range.
+  ({double sunrise, double sunset}) get sunriseSunset =>
+      _shadowCalc.sunCalculator.sunriseSunset(date: state.simulationDate, latitude: state.latitude, longitude: state.longitude);
+
   CellType? shadingSourceCell(int index) {
     return _shadowCalc.shadingSourceCell(
       index: index, grid: state.grid, rows: state.rows, cols: state.cols,
       isPortrait: state.isPortrait, panelWidthM: state.panelWidthM,
-      panelLengthM: state.panelLengthM, panelOrientation: state.panelOrientation,
-      simulationTime: state.simulationTime,
+      panelLengthM: state.panelLengthM,
+      sunPosition: sunPosition,
       hasNorthWall: state.hasNorthWall, hasSouthWall: state.hasSouthWall,
       hasEastWall: state.hasEastWall, hasWestWall: state.hasWestWall,
       northWallHeight: state.northWallHeight, southWallHeight: state.southWallHeight,
@@ -440,8 +534,8 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
       grid: state.grid, panelPowerW: state.panelPowerW,
       cols: state.cols, rows: state.rows,
       isPortrait: state.isPortrait, panelWidthM: state.panelWidthM,
-      panelLengthM: state.panelLengthM, panelOrientation: state.panelOrientation,
-      simulationTime: state.simulationTime,
+      panelLengthM: state.panelLengthM,
+      sunPosition: sunPosition,
       hasNorthWall: state.hasNorthWall, hasSouthWall: state.hasSouthWall,
       hasEastWall: state.hasEastWall, hasWestWall: state.hasWestWall,
       northWallHeight: state.northWallHeight, southWallHeight: state.southWallHeight,
@@ -455,16 +549,70 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
   double get totalArea => _shadowCalc.totalArea(state.grid, state.panelLengthM, state.panelWidthM);
   double get totalWeight => panelsCount * state.panelWeightKg;
 
+  // ── SYSTEM LOSSES / FINANCIAL / INVERTER ──
+
+  void updateSystemLosses(SystemLosses losses) {
+    state = state.copyWith(systemLosses: losses);
+    _debouncer.run(recalculate);
+  }
+
+  void selectInverter(String? inverterId) {
+    state = state.copyWith(selectedInverterId: inverterId, clearSelectedInverterId: inverterId == null);
+    recalculate();
+  }
+
+  void updateFinancialInputs({double? costPerWatt, double? electricityRate}) {
+    state = state.copyWith(installedCostPerWatt: costPerWatt, electricityRatePerKwh: electricityRate);
+    _debouncer.run(recalculate);
+  }
+
   // ── RECALCULATE ──
 
   void recalculate() {
     _frameResult = _structureCalc.calculate(state);
     final pp = peakPower;
+
+    final double tiltDegrees = _frameResult?.appliedTiltDegrees ?? state.latitude.abs().clamp(10.0, 40.0).toDouble();
+    final azimuthDegrees = _frameResult?.appliedAzimuthDegrees ?? (state.latitude >= 0 ? 180.0 : 0.0);
+
     _energyEstimate = _energyEstimator.estimate(
       peakPowerKwp: pp,
       latitude: state.latitude,
-      systemLossesPercent: EnergyEstimate.defaultSystemLossesPercent,
+      longitude: state.longitude,
+      tiltDegrees: tiltDegrees,
+      azimuthDegrees: azimuthDegrees,
+      irradianceData: _irradianceData,
+      losses: state.systemLosses,
     );
+
+    final inverter = state.selectedInverterId != null ? InverterCatalog.byId(state.selectedInverterId!) : InverterCatalog.suggestFor(pp);
+    final coldTemp = _irradianceData?.approxMinTempC ?? (state.latitude.abs() < 30 ? 5.0 : -5.0);
+    final hotTemp = _irradianceData?.approxMaxTempC ?? 45.0;
+    if (panelsCount > 0) {
+      _stringSizingResult = _inverterSizingCalc.calculate(
+        inverter: inverter,
+        panelCount: panelsCount,
+        panelVocV: state.panelVocV,
+        panelVmpV: state.panelVmpV,
+        panelIscA: state.panelIscA,
+        coldDesignTempC: coldTemp,
+        hotDesignTempC: hotTemp,
+        dcArrayKw: panelsCount * state.panelPowerW / 1000.0,
+      );
+    } else {
+      _stringSizingResult = null;
+    }
+
+    final totalCost = state.installedCostPerWatt * pp * 1000;
+    _financialEstimate = _financialCalc.estimate(
+      firstYearKwh: _energyEstimate?.yearlyKwh ?? 0,
+      annualDegradationPercent: state.systemLosses.annualDegradationPercent,
+      systemCost: totalCost,
+      electricityRatePerKwh: state.electricityRatePerKwh,
+    );
+
+    // ignore: no-op reassignment to notify listeners that cached
+    // (non-state) derived fields above have changed.
     state = state;
   }
 
@@ -472,7 +620,8 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
 
   Future<void> saveDesign(String name) async {
     final box = GetStorage();
-    final data = {'name': name, 'date': DateTime.now().toIso8601String(), 'state': state.toJson()};
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
+    final data = {'id': id, 'name': name, 'date': DateTime.now().toIso8601String(), 'state': state.toJson()};
     List<Map<String, dynamic>> designs = [];
     final existing = box.read('saved_pv_designs');
     if (existing != null) {
@@ -495,12 +644,38 @@ class PvSystemDesignerController extends Notifier<PvSystemDesignState> {
     final stateJson = design['state'] as Map<String, dynamic>;
     state = PvSystemDesignState.fromJson(stateJson);
     recalculate();
+    unawaited(refreshIrradianceData());
   }
 
-  Future<void> deleteDesign(String key) async {
+  Future<void> deleteDesign(String id) async {
     final box = GetStorage();
     List<Map<String, dynamic>> designs = getSavedDesigns();
-    designs.removeWhere((d) => d['state'].toString() == key);
+    designs.removeWhere((d) => (d['id']?.toString() ?? d['state'].toString()) == id);
     await box.write('saved_pv_designs', designs);
+  }
+
+  // ── MARKETPLACE HANDOFF ──
+
+  /// Builds the request payload for the app's existing offers/marketplace
+  /// flow (`OffersRepository.createRequest` / `POST offers/requests`),
+  /// summarizing this design so "Share & Request Quotes" sends a real
+  /// request to companies instead of only showing a success toast.
+  Map<String, dynamic> buildOfferRequestData() {
+    final pp = peakPower;
+    final note = StringBuffer('PV System Designer request — ')
+      ..write('$panelsCount panels')
+      ..write(_frameResult != null ? ', ${_frameResult!.rows}×${_frameResult!.columns} layout' : '')
+      ..write(_frameResult != null ? ', tilt ${_frameResult!.appliedTiltDegrees.toStringAsFixed(0)}°' : '')
+      ..write(_frameResult != null ? ', azimuth ${_frameResult!.appliedAzimuthDegrees.toStringAsFixed(0)}°' : '')
+      ..write(_energyEstimate != null ? ', est. annual production ${_energyEstimate!.yearlyKwh.toStringAsFixed(0)} kWh' : '')
+      ..write(', location ${state.latitude.toStringAsFixed(4)}, ${state.longitude.toStringAsFixed(4)}.');
+
+    return {
+      'all_cities': true,
+      'total_panel_power': (pp * 1000).round(),
+      'panel_power': state.panelPowerW.round(),
+      'panel_count': panelsCount,
+      'panel_note': note.toString(),
+    };
   }
 }

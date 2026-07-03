@@ -46,7 +46,9 @@ class AppUrls {
   static String get adminSubscriptions => '$adminBaseUrl/subscriptions';
   static String adminSubscription(int id) => '$adminSubscriptions/$id';
   static String get adminProducts => '$adminBaseUrl/shop/products';
+  static String adminProduct(int id) => '$adminProducts/$id';
   static String get adminSystems => '$adminBaseUrl/systems';
+  static String adminSystemStatus(int id) => '$adminSystems/$id/status';
 
   // Cities & Countries
   static String get countries => '$adminBaseUrl/countries';
@@ -96,6 +98,8 @@ class AppUrls {
       '${companyMembers(companyId)}/create';
   static String deleteMember(int companyId, int memberId) =>
       '${companyMembers(companyId)}/$memberId';
+  static String companyActivity(int companyId) =>
+      '${company(companyId)}/activity';
 
   // Company Products
   static String products(int companyId) => '${company(companyId)}/products';
@@ -127,7 +131,11 @@ class AppUrls {
       '${deliveryOptions(companyId)}/$optionId';
 
   // Company Expenses
-  static String expenses(int companyId) => '${company(companyId)}/expenses';
+  // NOTE: backend route is singular `/expense` (see companies/api.py
+  // `api_list_expense`/`api_create_expense`/`api_delete_expense`) — this
+  // helper previously pointed at `/expenses` (plural), which would 404
+  // against the real API. Fixed to match the backend exactly.
+  static String expenses(int companyId) => '${company(companyId)}/expense';
   static String deleteExpense(int companyId, int expenseId) =>
       '${expenses(companyId)}/$expenseId';
 
@@ -273,6 +281,8 @@ class AppUrls {
   static String get notificationSendBroadcast =>
       '$notificationBaseUrl/send-broadcast';
   static String get notificationSendTopic => '$notificationBaseUrl/send-topic';
+  static String get notificationSendGroup => '$notificationBaseUrl/send-group';
+  static String get notificationSendUser => '$notificationBaseUrl/send-user';
   static String get notificationStatistics =>
       '$notificationBaseUrl/statistics';
   static String notificationDeactivateDevice(int deviceId) =>

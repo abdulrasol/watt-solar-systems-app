@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
@@ -23,12 +23,10 @@ class CompanyRegistrationPage extends ConsumerStatefulWidget {
   const CompanyRegistrationPage({super.key});
 
   @override
-  ConsumerState<CompanyRegistrationPage> createState() =>
-      _CompanyRegistrationPageState();
+  ConsumerState<CompanyRegistrationPage> createState() => _CompanyRegistrationPageState();
 }
 
-class _CompanyRegistrationPageState
-    extends ConsumerState<CompanyRegistrationPage> {
+class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -79,10 +77,7 @@ class _CompanyRegistrationPageState
     final company = ref.watch(authProvider).company;
     final remoteLogo = company?.logo;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_isEditMode ? l10n.edit_company : l10n.register_company),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(_isEditMode ? l10n.edit_company : l10n.register_company), centerTitle: true),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(24.0.r),
         child: Form(
@@ -91,17 +86,13 @@ class _CompanyRegistrationPageState
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                _isEditMode
-                    ? l10n.edit_company
-                    : AppLocalizations.of(context)!.start_your_solar_business,
+                _isEditMode ? l10n.edit_company : AppLocalizations.of(context)!.start_your_solar_business,
                 style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 8.h),
               Text(
-                _isEditMode
-                    ? l10n.company_profile_subtitle
-                    : AppLocalizations.of(context)!.register_company_details,
+                _isEditMode ? l10n.company_profile_subtitle : AppLocalizations.of(context)!.register_company_details,
                 style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
@@ -117,39 +108,22 @@ class _CompanyRegistrationPageState
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.grey.withValues(alpha: 0.3),
-                      ),
+                      border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
                       image: logoFile.value != null
-                          ? DecorationImage(
-                              image: FileImage(logoFile.value!),
-                              fit: BoxFit.cover,
-                            )
+                          ? DecorationImage(image: FileImage(logoFile.value!), fit: BoxFit.cover)
                           : remoteLogo != null && remoteLogo.isNotEmpty
-                          ? DecorationImage(
-                              image: NetworkImage(remoteLogo),
-                              fit: BoxFit.cover,
-                            )
+                          ? DecorationImage(image: NetworkImage(remoteLogo), fit: BoxFit.cover)
                           : null,
                     ),
-                    child:
-                        logoFile.value == null &&
-                            (remoteLogo == null || remoteLogo.isEmpty)
+                    child: logoFile.value == null && (remoteLogo == null || remoteLogo.isEmpty)
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Iconsax.camera_bold,
-                                size: 32.r,
-                                color: Colors.grey[600],
-                              ),
+                              Icon(Iconsax.camera, size: 32.r, color: Colors.grey[600]),
                               SizedBox(height: 4.h),
                               Text(
                                 l10n.upload_logo,
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.grey[600],
-                                ),
+                                style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
                               ),
                             ],
                           )
@@ -164,36 +138,21 @@ class _CompanyRegistrationPageState
                 controller: nameController,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.company_name,
-                  prefixIcon: const Icon(Iconsax.building_bold),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.building),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                validator: Validatorless.required(
-                  AppLocalizations.of(context)!.company_name_is_required,
-                ),
+                validator: Validatorless.required(AppLocalizations.of(context)!.company_name_is_required),
               ),
               SizedBox(height: 16.h),
 
               DropdownButtonFormField<CompanyType>(
                 initialValue: _selectedCompanyType,
                 decoration: InputDecoration(
-                  labelText: _isLoadingCompanyTypes
-                      ? l10n.loading
-                      : l10n.company_type,
-                  prefixIcon: const Icon(Iconsax.building_4_bold),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  labelText: _isLoadingCompanyTypes ? l10n.loading : l10n.company_type,
+                  prefixIcon: const Icon(Iconsax.building_4),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                items: _companyTypes
-                    .map(
-                      (type) => DropdownMenuItem<CompanyType>(
-                        value: type,
-                        child: Text(type.name),
-                      ),
-                    )
-                    .toList(),
+                items: _companyTypes.map((type) => DropdownMenuItem<CompanyType>(value: type, child: Text(type.name))).toList(),
                 onChanged: (value) {
                   setState(() {
                     _selectedCompanyType = value;
@@ -213,10 +172,8 @@ class _CompanyRegistrationPageState
                 maxLines: 3,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.description,
-                  prefixIcon: const Icon(Iconsax.document_text_bold),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.document_text),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -247,35 +204,17 @@ class _CompanyRegistrationPageState
               DropdownButtonFormField<Country>(
                 initialValue: _selectedCountry,
                 decoration: InputDecoration(
-                  labelText: _isLoadingCountries
-                      ? AppLocalizations.of(context)!.loading
-                      : AppLocalizations.of(context)!.country,
-                  prefixIcon: _selectedCountry != null
-                      ? Icon(Iconsax.location_bold, size: 20.r)
-                      : null,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide.none,
-                  ),
+                  labelText: _isLoadingCountries ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.country,
+                  prefixIcon: _selectedCountry != null ? Icon(Iconsax.location, size: 20.r) : null,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                   filled: true,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 16.h,
-                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                 ),
-                items: _countries
-                    .map(
-                      (country) => DropdownMenuItem(
-                        value: country,
-                        child: Text(country.name),
-                      ),
-                    )
-                    .toList(), // Now empty list
+                items: _countries.map((country) => DropdownMenuItem(value: country, child: Text(country.name))).toList(), // Now empty list
                 onChanged: (value) {
                   setState(() {
                     _selectedCountry = value;
-                    _selectedCity =
-                        null; // Reset city to resolve assertion error
+                    _selectedCity = null; // Reset city to resolve assertion error
                     _fetchCities();
                   });
                 },
@@ -284,28 +223,13 @@ class _CompanyRegistrationPageState
               DropdownButtonFormField<City>(
                 initialValue: _selectedCity,
                 decoration: InputDecoration(
-                  labelText: _isLoadingCities
-                      ? AppLocalizations.of(context)!.loading
-                      : AppLocalizations.of(context)!.city,
-                  prefixIcon: _selectedCity != null
-                      ? Icon(Iconsax.location_bold, size: 20.r)
-                      : null,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide.none,
-                  ),
+                  labelText: _isLoadingCities ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.city,
+                  prefixIcon: _selectedCity != null ? Icon(Iconsax.location, size: 20.r) : null,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                   filled: true,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 16.h,
-                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                 ),
-                items: _cities
-                    .map(
-                      (city) =>
-                          DropdownMenuItem(value: city, child: Text(city.name)),
-                    )
-                    .toList(), // Now empty list
+                items: _cities.map((city) => DropdownMenuItem(value: city, child: Text(city.name))).toList(), // Now empty list
                 onChanged: (value) {
                   setState(() {
                     _selectedCity = value;
@@ -324,14 +248,10 @@ class _CompanyRegistrationPageState
                 controller: addressController,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.address,
-                  prefixIcon: const Icon(Iconsax.location_bold),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.location),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                validator: Validatorless.required(
-                  AppLocalizations.of(context)!.address_is_required,
-                ),
+                validator: Validatorless.required(AppLocalizations.of(context)!.address_is_required),
               ),
               SizedBox(height: 16.h),
               TextFormField(
@@ -339,16 +259,11 @@ class _CompanyRegistrationPageState
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   labelText: l10n.business_phone,
-                  prefixIcon: const Icon(Iconsax.call_bold),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  prefixIcon: const Icon(Iconsax.call),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validator: Validatorless.multiple([
-                  Validatorless.required(l10n.phone_required),
-                  Validatorless.number(l10n.invalid_phone_number),
-                ]),
+                validator: Validatorless.multiple([Validatorless.required(l10n.phone_required), Validatorless.number(l10n.invalid_phone_number)]),
               ),
 
               SizedBox(height: 40.h),
@@ -360,23 +275,13 @@ class _CompanyRegistrationPageState
                   padding: EdgeInsets.symmetric(vertical: 16.r),
                   backgroundColor: AppTheme.primaryColor,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 child: isLoading
-                    ? CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2.r,
-                      )
+                    ? CircularProgressIndicator(color: Colors.white, strokeWidth: 2.r)
                     : Text(
-                        _isEditMode
-                            ? l10n.edit_company
-                            : l10n.submit_application,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        _isEditMode ? l10n.edit_company : l10n.submit_application,
+                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                       ),
               ),
             ],
@@ -406,31 +311,19 @@ class _CompanyRegistrationPageState
         allowsB2C: _isB2C,
         image: logoFile.value?.path,
         currency: currentCompany?.currency?.id,
-        categories: currentCompany?.categories
-            .map((category) => category.id)
-            .where((id) => id > 0)
-            .toList(),
+        categories: currentCompany?.categories.map((category) => category.id).where((id) => id > 0).toList(),
       );
       try {
         final repository = getIt.get<AuthRepository>();
         final value = _isEditMode && currentCompany != null
-            ? await repository.updateCompany(
-                companyId: currentCompany.id,
-                companyRegistrationModel: model,
-              )
+            ? await repository.updateCompany(companyId: currentCompany.id, companyRegistrationModel: model)
             : await repository.registerCompany(model);
         await ref.read(authProvider.notifier).registerCompany(value);
         setState(() {
           isLoading = false;
         });
         if (mounted) {
-          ToastService.success(
-            context,
-            l10n.success,
-            _isEditMode
-                ? l10n.company_updated_successfully
-                : l10n.company_registered_success,
-          );
+          ToastService.success(context, l10n.success, _isEditMode ? l10n.company_updated_successfully : l10n.company_registered_success);
           context.pop();
         }
       } catch (error) {
@@ -474,15 +367,10 @@ class _CompanyRegistrationPageState
     }
     final company = ref.read(authProvider).company;
     if (_selectedCity != null) {
-      _selectedCountry = _countries.firstWhere(
-        (element) => element.id == _selectedCity!.country.id,
-        orElse: () => _countries.first,
-      );
+      _selectedCountry = _countries.firstWhere((element) => element.id == _selectedCity!.country.id, orElse: () => _countries.first);
       await _fetchCities(countryId: _selectedCountry?.id);
       if (company?.city != null) {
-        _selectedCity = _cities
-            .where((city) => city.id == company!.city!.id)
-            .firstOrNull;
+        _selectedCity = _cities.where((city) => city.id == company!.city!.id).firstOrNull;
       }
     }
     setState(() {
@@ -496,9 +384,7 @@ class _CompanyRegistrationPageState
       _isLoadingCities = true;
     });
     try {
-      final response = await getIt.get<AuthRepository>().getCities(
-        countryId: countryId ?? _selectedCountry!.id,
-      );
+      final response = await getIt.get<AuthRepository>().getCities(countryId: countryId ?? _selectedCountry!.id);
       setState(() {
         _cities = response;
       });
@@ -520,11 +406,7 @@ class _CompanyRegistrationPageState
     try {
       final response = await getIt.get<AuthRepository>().getCompanyTypes();
       final validTypes = response.where((type) => !type.isPlaceholder).toList();
-      final currentCompanyTypeId = ref
-          .read(authProvider)
-          .company
-          ?.companyType
-          ?.id;
+      final currentCompanyTypeId = ref.read(authProvider).company?.companyType?.id;
       setState(() {
         _companyTypes = validTypes;
         if (currentCompanyTypeId != null) {

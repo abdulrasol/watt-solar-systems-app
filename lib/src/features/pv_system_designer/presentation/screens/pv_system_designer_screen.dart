@@ -12,6 +12,7 @@ import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/s
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/results_step.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/export_step.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
 
 class PvSystemDesignerScreen extends ConsumerStatefulWidget {
   const PvSystemDesignerScreen({super.key});
@@ -51,7 +52,12 @@ class _PvSystemDesignerScreenState extends ConsumerState<PvSystemDesignerScreen>
     _tabController = TabController(length: _totalSteps, vsync: this);
     _tabController.addListener(_onTabChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(pvSystemDesignerProvider.notifier).recalculate();
+      final controller = ref.read(pvSystemDesignerProvider.notifier);
+      controller.recalculate();
+      // Kick off a real irradiance/temperature fetch for the default (or
+      // last-used) site so the energy estimate reflects real climate data
+      // as soon as possible, rather than only the synthetic fallback.
+      controller.refreshIrradianceData();
     });
   }
 
@@ -136,6 +142,7 @@ class _PvSystemDesignerScreenState extends ConsumerState<PvSystemDesignerScreen>
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(pvSystemDesignerProvider);
+    final controller = ref.read(pvSystemDesignerProvider.notifier);
     final isAr = _isArabic(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -215,19 +222,42 @@ class _PvSystemDesignerScreenState extends ConsumerState<PvSystemDesignerScreen>
         totalSteps: _totalSteps,
         onBack: () => _goToStep(state.currentStep - 1),
         onNext: () => _goToStep(state.currentStep + 1),
-        onSave: () {
-          showDialog(
+        onSave: () async {
+          // Previously this dialog had no text field and its Save button
+          // never called controller.saveDesign() — it silently did
+          // nothing. Now mirrors the working implementation on the Export
+          // step's Save button.
+          final nameCtrl = TextEditingController();
+          final name = await showDialog<String>(
             context: context,
-            builder: (context) => AlertDialog(
+            builder: (dialogContext) => AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
               title: Text(isAr ? 'حفظ التصميم' : 'Save Design'),
-              content: Text(isAr ? 'أدخل اسم التصميم' : 'Enter a name for your design'),
+              content: TextField(
+                controller: nameCtrl,
+                autofocus: true,
+                decoration: InputDecoration(
+                  labelText: isAr ? 'اسم التصميم' : 'Design Name',
+                  hintText: isAr ? 'أدخل اسماً' : 'Enter a name',
+                ),
+              ),
               actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: Text(isAr ? 'إلغاء' : 'Cancel')),
-                ElevatedButton(onPressed: () => Navigator.pop(context), child: Text(isAr ? 'حفظ' : 'Save')),
+                TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(isAr ? 'إلغاء' : 'Cancel')),
+                ElevatedButton(onPressed: () => Navigator.pop(dialogContext, nameCtrl.text), child: Text(isAr ? 'حفظ' : 'Save')),
               ],
             ),
           );
+          nameCtrl.dispose();
+          if (name != null && name.trim().isNotEmpty) {
+            await controller.saveDesign(name.trim());
+            if (context.mounted) {
+              ToastService.success(
+                context,
+                isAr ? 'تم الحفظ بنجاح' : 'Saved Successfully',
+                isAr ? 'تم حفظ التصميم' : 'Design has been saved',
+              );
+            }
+          }
         },
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -38,10 +38,15 @@ class _RoofGridCanvasState extends ConsumerState<RoofGridCanvas> {
             children: [
               Icon(Icons.grid_on_rounded, size: 16.sp, color: AppTheme.primaryColor),
               SizedBox(width: 6.w),
-              Text('${state.rows} × ${state.cols}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
+              Text(
+                '${state.rows} × ${state.cols}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+              ),
               const Spacer(),
-              Text('${state.roofWidthM.toStringAsFixed(1)}m × ${state.roofLengthM.toStringAsFixed(1)}m',
-                  style: TextStyle(fontSize: 10.sp, color: Colors.grey)),
+              Text(
+                '${state.roofWidthM.toStringAsFixed(1)}m × ${state.roofLengthM.toStringAsFixed(1)}m',
+                style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+              ),
             ],
           ),
           SizedBox(height: 8.h),
@@ -55,11 +60,7 @@ class _RoofGridCanvasState extends ConsumerState<RoofGridCanvas> {
                 height: totalHeight,
                 child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: state.cols,
-                    mainAxisSpacing: 2,
-                    crossAxisSpacing: 2,
-                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: state.cols, mainAxisSpacing: 2, crossAxisSpacing: 2),
                   itemCount: state.grid.length,
                   itemBuilder: (context, index) => _buildCell(index, state, controller, isDark, cellSize),
                 ),
@@ -94,7 +95,7 @@ class _RoofGridCanvasState extends ConsumerState<RoofGridCanvas> {
       switch (cellType) {
         case CellType.panel:
           bgColor = isShaded ? Colors.orange.withValues(alpha: 0.8) : Colors.amber.withValues(alpha: 0.85);
-          icon = Iconsax.sun_1_bold;
+          icon = Iconsax.sun_1;
           iconColor = Colors.white;
         case CellType.obstacle:
           bgColor = Colors.redAccent.withValues(alpha: 0.8);
@@ -125,9 +126,7 @@ class _RoofGridCanvasState extends ConsumerState<RoofGridCanvas> {
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(4.r),
-          border: isInSetback && cellType == CellType.empty
-              ? Border.all(color: Colors.amber.withValues(alpha: 0.4), width: 1)
-              : null,
+          border: isInSetback && cellType == CellType.empty ? Border.all(color: Colors.amber.withValues(alpha: 0.4), width: 1) : null,
         ),
         child: icon != null ? Icon(icon, size: cellSize * 0.4, color: iconColor) : null,
       ),

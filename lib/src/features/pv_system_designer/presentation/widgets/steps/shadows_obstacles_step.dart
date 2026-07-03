@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/wizard_intro_card.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/canvas/roof_grid_canvas.dart';
+import 'package:solar_hub/src/utils/app_theme.dart';
 
 class ShadowsObstaclesStep extends ConsumerWidget {
   const ShadowsObstaclesStep({super.key});
@@ -23,7 +24,7 @@ class ShadowsObstaclesStep extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WizardIntroCard(
-            icon: Iconsax.sun_bold,
+            icon: Iconsax.sun,
             titleEn: 'Panel Layout & Shadows',
             titleAr: 'توزيع الألواح والظلال',
             descriptionEn: 'Place panels on the roof grid. Mark obstacles, trees, and shadow zones. Use the time slider to simulate sun movement.',
@@ -42,17 +43,65 @@ class ShadowsObstaclesStep extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(isAr ? 'الأدوات' : 'Tools', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12.sp)),
+                Text(
+                  isAr ? 'الأدوات' : 'Tools',
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12.sp),
+                ),
                 SizedBox(height: 8.h),
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 8.h,
                   children: [
-                    _buildToolChip(context, isAr, ToolMode.placePanel, isAr ? 'لوح' : 'Panel', Iconsax.sun_1_bold, Colors.amber, state.activeTool, (t) => controller.selectTool(t)),
-                    _buildToolChip(context, isAr, ToolMode.placeObstacle, isAr ? 'عائق' : 'Obstacle', Icons.warning_amber_rounded, Colors.redAccent, state.activeTool, (t) => controller.selectTool(t)),
-                    _buildToolChip(context, isAr, ToolMode.placeTree, isAr ? 'شجرة' : 'Tree', Icons.park_rounded, Colors.green, state.activeTool, (t) => controller.selectTool(t)),
-                    _buildToolChip(context, isAr, ToolMode.excludeRoof, isAr ? 'مستبعد' : 'Exclude', Icons.close_rounded, Colors.blueGrey, state.activeTool, (t) => controller.selectTool(t)),
-                    _buildToolChip(context, isAr, ToolMode.erase, isAr ? 'ممحاة' : 'Eraser', Icons.auto_fix_normal_rounded, Colors.orange, state.activeTool, (t) => controller.selectTool(t)),
+                    _buildToolChip(
+                      context,
+                      isAr,
+                      ToolMode.placePanel,
+                      isAr ? 'لوح' : 'Panel',
+                      Iconsax.sun_1,
+                      Colors.amber,
+                      state.activeTool,
+                      (t) => controller.selectTool(t),
+                    ),
+                    _buildToolChip(
+                      context,
+                      isAr,
+                      ToolMode.placeObstacle,
+                      isAr ? 'عائق' : 'Obstacle',
+                      Icons.warning_amber_rounded,
+                      Colors.redAccent,
+                      state.activeTool,
+                      (t) => controller.selectTool(t),
+                    ),
+                    _buildToolChip(
+                      context,
+                      isAr,
+                      ToolMode.placeTree,
+                      isAr ? 'شجرة' : 'Tree',
+                      Icons.park_rounded,
+                      Colors.green,
+                      state.activeTool,
+                      (t) => controller.selectTool(t),
+                    ),
+                    _buildToolChip(
+                      context,
+                      isAr,
+                      ToolMode.excludeRoof,
+                      isAr ? 'مستبعد' : 'Exclude',
+                      Icons.close_rounded,
+                      Colors.blueGrey,
+                      state.activeTool,
+                      (t) => controller.selectTool(t),
+                    ),
+                    _buildToolChip(
+                      context,
+                      isAr,
+                      ToolMode.erase,
+                      isAr ? 'ممحاة' : 'Eraser',
+                      Icons.auto_fix_normal_rounded,
+                      Colors.orange,
+                      state.activeTool,
+                      (t) => controller.selectTool(t),
+                    ),
                   ],
                 ),
               ],
@@ -69,23 +118,88 @@ class ShadowsObstaclesStep extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(isAr ? 'وقت المحاكي' : 'Simulation Time', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12.sp)),
-                SizedBox(height: 8.h),
-                Slider(
-                  value: state.simulationTime,
-                  min: 8.0,
-                  max: 17.0,
-                  divisions: 18,
-                  label: _formatHour(state.simulationTime, isAr),
-                  onChanged: (v) => controller.updateSimulationTime(v),
-                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(isAr ? 'شروق' : 'Sunrise', style: TextStyle(fontSize: 10.sp, color: Colors.grey)),
-                    Text(isAr ? 'ظهر' : 'Noon', style: TextStyle(fontSize: 10.sp, color: Colors.grey)),
-                    Text(isAr ? 'غروب' : 'Sunset', style: TextStyle(fontSize: 10.sp, color: Colors.grey)),
+                    Text(
+                      isAr ? 'تاريخ المحاكاة' : 'Simulation Date',
+                      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12.sp),
+                    ),
+                    const Spacer(),
+                    TextButton.icon(
+                      onPressed: () async {
+                        final picked = await showDatePicker(
+                          context: context,
+                          initialDate: state.simulationDate,
+                          firstDate: DateTime(state.simulationDate.year - 1),
+                          lastDate: DateTime(state.simulationDate.year + 1),
+                        );
+                        if (picked != null) controller.updateSimulationDate(picked);
+                      },
+                      icon: Icon(Icons.calendar_month_rounded, size: 14.sp),
+                      label: Text(
+                        '${state.simulationDate.year}-${state.simulationDate.month.toString().padLeft(2, '0')}-${state.simulationDate.day.toString().padLeft(2, '0')}',
+                        style: TextStyle(fontSize: 11.sp),
+                      ),
+                    ),
                   ],
+                ),
+                Wrap(
+                  spacing: 6.w,
+                  children: [
+                    _buildDatePreset(context, isAr ? 'الانقلاب الشتوي' : 'Winter Solstice', DateTime(state.simulationDate.year, 12, 21), controller),
+                    _buildDatePreset(context, isAr ? 'الاعتدال' : 'Equinox', DateTime(state.simulationDate.year, 3, 20), controller),
+                    _buildDatePreset(context, isAr ? 'الانقلاب الصيفي' : 'Summer Solstice', DateTime(state.simulationDate.year, 6, 21), controller),
+                  ],
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  isAr ? 'وقت المحاكي' : 'Simulation Time',
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12.sp),
+                ),
+                SizedBox(height: 8.h),
+                Builder(
+                  builder: (context) {
+                    final sunTimes = controller.sunriseSunset;
+                    final double min = sunTimes.sunrise.clamp(0.0, 23.5).toDouble();
+                    final double max = sunTimes.sunset.clamp(min + 0.5, 24.0).toDouble();
+                    final double clampedValue = state.simulationTime.clamp(min, max).toDouble();
+                    final sun = controller.sunPosition;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Slider(
+                          value: clampedValue,
+                          min: min,
+                          max: max,
+                          divisions: ((max - min) * 4).round().clamp(1, 200).toInt(),
+                          label: _formatHour(clampedValue, isAr),
+                          onChanged: (v) => controller.updateSimulationTime(v),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${isAr ? 'شروق' : 'Sunrise'} ${_formatHour(min, isAr)}',
+                              style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                            ),
+                            Text(
+                              '${isAr ? 'غروب' : 'Sunset'} ${_formatHour(max, isAr)}',
+                              style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          sun.isDaylight
+                              ? (isAr
+                                    ? 'ارتفاع الشمس ${sun.elevationDeg.toStringAsFixed(0)}° · الاتجاه ${sun.azimuthDeg.toStringAsFixed(0)}°'
+                                    : 'Sun elevation ${sun.elevationDeg.toStringAsFixed(0)}° · azimuth ${sun.azimuthDeg.toStringAsFixed(0)}°')
+                              : (isAr ? 'الشمس تحت الأفق في هذا الوقت' : 'Sun is below the horizon at this time'),
+                          style: TextStyle(fontSize: 10.sp, color: AppTheme.primaryColor, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -96,7 +210,7 @@ class ShadowsObstaclesStep extends ConsumerWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => controller.toggleSafeOverlay(),
-                  icon: Icon(state.isSafeOverlayActive ? Iconsax.eye_bold : Iconsax.eye_slash_bold, size: 16.sp),
+                  icon: Icon(state.isSafeOverlayActive ? Iconsax.eye : Iconsax.eye_slash, size: 16.sp),
                   label: Text(isAr ? 'طبقة الأمان' : 'Safety Overlay', style: TextStyle(fontSize: 10.sp)),
                   style: OutlinedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 10.h)),
                 ),
@@ -105,7 +219,7 @@ class ShadowsObstaclesStep extends ConsumerWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => controller.autofillRoof(avoidShade: true),
-                  icon: Icon(Iconsax.magic_star_bold, size: 16.sp),
+                  icon: Icon(Iconsax.magic_star, size: 16.sp),
                   label: Text(isAr ? 'ملء تلقائي' : 'Autofill', style: TextStyle(fontSize: 10.sp)),
                   style: OutlinedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 10.h)),
                 ),
@@ -114,7 +228,7 @@ class ShadowsObstaclesStep extends ConsumerWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => controller.rotateGrid90Clockwise(),
-                  icon: Icon(Iconsax.refresh_bold, size: 16.sp),
+                  icon: Icon(Iconsax.refresh, size: 16.sp),
                   label: Text(isAr ? 'تدوير' : 'Rotate', style: TextStyle(fontSize: 10.sp)),
                   style: OutlinedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 10.h)),
                 ),
@@ -127,7 +241,7 @@ class ShadowsObstaclesStep extends ConsumerWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: controller.undo,
-                  icon: Icon(Iconsax.undo_bold, size: 16.sp),
+                  icon: Icon(Iconsax.undo, size: 16.sp),
                   label: Text(isAr ? 'تراجع' : 'Undo', style: TextStyle(fontSize: 10.sp)),
                   style: OutlinedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 10.h)),
                 ),
@@ -152,20 +266,38 @@ class ShadowsObstaclesStep extends ConsumerWidget {
                         content: Text(isAr ? 'هل أنت متأكد؟' : 'Clear all placed items?'),
                         actions: [
                           TextButton(onPressed: () => Navigator.pop(context), child: Text(isAr ? 'إلغاء' : 'Cancel')),
-                          ElevatedButton(onPressed: () { controller.clearGrid(); Navigator.pop(context); }, child: Text(isAr ? 'مسح' : 'Clear')),
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.clearGrid();
+                              Navigator.pop(context);
+                            },
+                            child: Text(isAr ? 'مسح' : 'Clear'),
+                          ),
                         ],
                       ),
                     );
                   },
                   icon: Icon(Icons.refresh_rounded, size: 16.sp),
                   label: Text(isAr ? 'مسح' : 'Clear', style: TextStyle(fontSize: 10.sp)),
-                  style: OutlinedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 10.h), foregroundColor: Colors.redAccent),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
+                    foregroundColor: Colors.redAccent,
+                  ),
                 ),
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDatePreset(BuildContext context, String label, DateTime date, PvSystemDesignerController controller) {
+    return ActionChip(
+      label: Text(label, style: TextStyle(fontSize: 9.5.sp)),
+      onPressed: () => controller.updateSimulationDate(date),
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 
@@ -177,7 +309,16 @@ class ShadowsObstaclesStep extends ConsumerWidget {
     return '$displayH:${m.toString().padLeft(2, '0')} $period';
   }
 
-  Widget _buildToolChip(BuildContext context, bool isAr, ToolMode tool, String label, IconData icon, Color color, ToolMode activeTool, ValueChanged<ToolMode> onSelect) {
+  Widget _buildToolChip(
+    BuildContext context,
+    bool isAr,
+    ToolMode tool,
+    String label,
+    IconData icon,
+    Color color,
+    ToolMode activeTool,
+    ValueChanged<ToolMode> onSelect,
+  ) {
     final isSelected = activeTool == tool;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
@@ -194,7 +335,10 @@ class ShadowsObstaclesStep extends ConsumerWidget {
           children: [
             Icon(icon, color: isSelected ? color : Colors.grey, size: 14.sp),
             SizedBox(width: 6.w),
-            Text(label, style: TextStyle(fontSize: 10.5.sp, fontWeight: FontWeight.bold, color: isSelected ? color : (isDark ? Colors.white70 : Colors.black87))),
+            Text(
+              label,
+              style: TextStyle(fontSize: 10.5.sp, fontWeight: FontWeight.bold, color: isSelected ? color : (isDark ? Colors.white70 : Colors.black87)),
+            ),
           ],
         ),
       ),

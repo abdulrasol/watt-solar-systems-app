@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/core/widgets/branded_empty_state.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/features/inventory/presentation/widgets/product_card.dart';
@@ -97,22 +96,17 @@ class _InventoryPageState extends ConsumerState<InventoryPage> {
 
   Widget _buildEmptyState(AppLocalizations l10n) {
     return BrandedEmptyState(
-      icon: Iconsax.box_bold,
+      icon: Iconsax.box,
       title: l10n.noProducts,
       subtitle: 'Start adding products to your inventory to manage stock.',
       action: ElevatedButton.icon(
         onPressed: () => context.push('/inventory/add'),
-        icon: const Icon(Iconsax.add_bold, color: Colors.white),
-        label: const Text(
-          'Add Product',
-          style: TextStyle(color: Colors.white),
-        ),
+        icon: const Icon(Iconsax.add, color: Colors.white),
+        label: const Text('Add Product', style: TextStyle(color: Colors.white)),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppTheme.primaryColor,
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         ),
       ),
     );

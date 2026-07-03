@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/detail_card.dart';
@@ -15,8 +15,7 @@ class SystemResultsTab extends StatefulWidget {
   State<SystemResultsTab> createState() => _SystemResultsTabState();
 }
 
-class _SystemResultsTabState extends State<SystemResultsTab>
-    with SingleTickerProviderStateMixin {
+class _SystemResultsTabState extends State<SystemResultsTab> with SingleTickerProviderStateMixin {
   late final AnimationController _animCtrl;
   late final Animation<double> _fade;
   late final Animation<Offset> _slide;
@@ -24,15 +23,9 @@ class _SystemResultsTabState extends State<SystemResultsTab>
   @override
   void initState() {
     super.initState();
-    _animCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
+    _animCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     _fade = CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut);
-    _slide = Tween<Offset>(
-      begin: const Offset(0, 0.06),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut));
+    _slide = Tween<Offset>(begin: const Offset(0, 0.06), end: Offset.zero).animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut));
     _animCtrl.forward();
   }
 
@@ -51,9 +44,7 @@ class _SystemResultsTabState extends State<SystemResultsTab>
     String tr(String en, String ar) => isAr ? ar : en;
     String unit(String en, String ar) => isAr ? ar : en;
 
-    final modeTitle = c.isPracticalHybridMode
-        ? tr('Practical Hybrid Result', 'نتيجة الهجين العملي')
-        : l10n.recommended_system;
+    final modeTitle = c.isPracticalHybridMode ? tr('Practical Hybrid Result', 'نتيجة الهجين العملي') : l10n.recommended_system;
     final modeSubtitle = c.isPracticalHybridMode
         ? tr(
             'Direct load ${c.directAcLoadWatts.toStringAsFixed(0)} ${unit('W', 'واط')} | Grid ${c.gridOnHours.toStringAsFixed(0)}/${c.gridOffHours.toStringAsFixed(0)} ${unit('h', 'ساعة')}',
@@ -73,19 +64,9 @@ class _SystemResultsTabState extends State<SystemResultsTab>
               Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppTheme.primaryColor, AppTheme.primaryDarkColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  gradient: LinearGradient(colors: [AppTheme.primaryColor, AppTheme.primaryDarkColor], begin: Alignment.topLeft, end: Alignment.bottomRight),
                   borderRadius: BorderRadius.all(Radius.circular(24)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x6600BFA5),
-                      blurRadius: 20,
-                      offset: Offset(0, 8),
-                    ),
-                  ],
+                  boxShadow: [BoxShadow(color: Color(0x6600BFA5), blurRadius: 20, offset: Offset(0, 8))],
                 ),
                 child: Column(
                   children: [
@@ -95,15 +76,8 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                         children: [
                           Container(
                             padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Iconsax.verify_bold,
-                              color: Colors.white,
-                              size: 22,
-                            ),
+                            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12)),
+                            child: const Icon(Iconsax.verify, color: Colors.white, size: 22),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -112,20 +86,11 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                               children: [
                                 Text(
                                   modeTitle,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: AppTheme.fontFamily,
-                                  ),
+                                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
                                 ),
                                 Text(
                                   modeSubtitle,
-                                  style: const TextStyle(
-                                    color: Color(0xBFFFFFFF),
-                                    fontSize: 13,
-                                    fontFamily: AppTheme.fontFamily,
-                                  ),
+                                  style: const TextStyle(color: Color(0xBFFFFFFF), fontSize: 13, fontFamily: AppTheme.fontFamily),
                                 ),
                               ],
                             ),
@@ -139,36 +104,27 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                         children: [
                           Expanded(
                             child: ResultItem(
-                              label: c.isPracticalHybridMode
-                                  ? tr('AC Load', 'الحمل المتناوب')
-                                  : l10n.total_daily_usage,
+                              label: c.isPracticalHybridMode ? tr('AC Load', 'الحمل المتناوب') : l10n.total_daily_usage,
                               value: c.isPracticalHybridMode
                                   ? '${c.directAcLoadWatts.toStringAsFixed(0)} ${unit('W', 'واط')}'
                                   : '${c.dailyUsageKWh.toStringAsFixed(1)} ${unit('kWh', 'كيلوواط ساعة')}',
-                              icon: Iconsax.flash_1_bold,
+                              icon: Iconsax.flash_1,
                             ),
                           ),
                           Expanded(
                             child: ResultItem(
-                              label: c.isPracticalHybridMode
-                                  ? tr('Grid Cycle', 'دورة الشبكة')
-                                  : tr('Peak Load', 'الحمل الأقصى'),
+                              label: c.isPracticalHybridMode ? tr('Grid Cycle', 'دورة الشبكة') : tr('Peak Load', 'الحمل الأقصى'),
                               value: c.isPracticalHybridMode
                                   ? '${c.gridOnHours.toStringAsFixed(0)}/${c.gridOffHours.toStringAsFixed(0)} ${unit('h', 'ساعة')}'
                                   : '${c.peakLoadW.toStringAsFixed(0)} ${unit('W', 'واط')}',
-                              icon: c.isPracticalHybridMode
-                                  ? Iconsax.timer_bold
-                                  : Iconsax.activity_bold,
+                              icon: c.isPracticalHybridMode ? Iconsax.timer : Iconsax.activity,
                             ),
                           ),
                           Expanded(
                             child: ResultItem(
-                              label: c.isThreePhase
-                                  ? l10n.ac_three_phase
-                                  : l10n.ac_single_phase,
-                              value:
-                                  '${c.acLoadCurrent.toStringAsFixed(1)} ${unit('A', 'أمبير')}',
-                              icon: Iconsax.electricity_bold,
+                              label: c.isThreePhase ? l10n.ac_three_phase : l10n.ac_single_phase,
+                              value: '${c.acLoadCurrent.toStringAsFixed(1)} ${unit('A', 'أمبير')}',
+                              icon: Iconsax.electricity,
                             ),
                           ),
                         ],
@@ -179,43 +135,30 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                       child: Row(
                         children: [
                           Expanded(
-                            child: ResultItem(
-                              label: l10n.panel_count,
-                              value: '${c.recommendedPanels}',
-                              icon: Iconsax.sun_1_bold,
-                            ),
+                            child: ResultItem(label: l10n.panel_count, value: '${c.recommendedPanels}', icon: Iconsax.sun_1),
                           ),
                           Expanded(
                             child: ResultItem(
                               label: l10n.inverter_size,
-                              value:
-                                  '${c.recommendedInverterSize.toStringAsFixed(0)} ${unit('kW', 'كيلوواط')}',
-                              icon: Iconsax.flash_bold,
+                              value: '${c.recommendedInverterSize.toStringAsFixed(0)} ${unit('kW', 'كيلوواط')}',
+                              icon: Iconsax.flash,
                             ),
                           ),
                           Expanded(
                             child: ResultItem(
-                              label: c.isPracticalHybridMode
-                                  ? tr('Battery Need', 'احتياج البطارية')
-                                  : l10n.battery_bank,
+                              label: c.isPracticalHybridMode ? tr('Battery Need', 'احتياج البطارية') : l10n.battery_bank,
                               value: c.isPracticalHybridMode
                                   ? '${c.practicalBatteryNeedKWh.toStringAsFixed(1)} ${unit('kWh', 'كيلوواط ساعة')}'
                                   : '${c.recommendedBatteries}',
-                              icon: Iconsax.battery_charging_bold,
+                              icon: Iconsax.battery_charging,
                             ),
                           ),
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 16,
-                      ),
-                      child: Divider(
-                        color: Colors.white.withValues(alpha: 0.25),
-                        height: 1,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      child: Divider(color: Colors.white.withValues(alpha: 0.25), height: 1),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -224,18 +167,14 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                           Expanded(
                             child: ResultItem(
                               label: l10n.total_pv_power,
-                              value:
-                                  '${c.totalPanelCapacityKw.toStringAsFixed(1)} ${unit('kW', 'كيلوواط')}',
+                              value: '${c.totalPanelCapacityKw.toStringAsFixed(1)} ${unit('kW', 'كيلوواط')}',
                               icon: Icons.solar_power_rounded,
                             ),
                           ),
                           Expanded(
                             child: ResultItem(
-                              label: c.isPracticalHybridMode
-                                  ? tr('After recharge', 'بعد إعادة الشحن')
-                                  : tr('Battery Need', 'احتياج البطارية'),
-                              value:
-                                  '${c.requiredBatteryKWh.toStringAsFixed(1)} ${unit('kWh', 'كيلوواط ساعة')}',
+                              label: c.isPracticalHybridMode ? tr('After recharge', 'بعد إعادة الشحن') : tr('Battery Need', 'احتياج البطارية'),
+                              value: '${c.requiredBatteryKWh.toStringAsFixed(1)} ${unit('kWh', 'كيلوواط ساعة')}',
                               icon: Icons.battery_std_rounded,
                             ),
                           ),
@@ -244,33 +183,19 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                     ),
                     const SizedBox(height: 16),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 20,
-                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                       decoration: const BoxDecoration(
                         color: Color(0x26000000),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(24),
-                          bottomRight: Radius.circular(24),
-                        ),
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(24), bottomRight: Radius.circular(24)),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.settings_input_component_rounded,
-                            color: Colors.white70,
-                            size: 16,
-                          ),
+                          const Icon(Icons.settings_input_component_rounded, color: Colors.white70, size: 16),
                           const SizedBox(width: 8),
                           Text(
                             '${l10n.charge_controller}: ${c.recommendedControllerSize}${unit('A', ' أمبير')}',
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 13,
-                              fontFamily: AppTheme.fontFamily,
-                            ),
+                            style: const TextStyle(color: Colors.white70, fontSize: 13, fontFamily: AppTheme.fontFamily),
                           ),
                         ],
                       ),
@@ -285,20 +210,15 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                     child: DetailCard(
                       icon: Icons.bolt_rounded,
                       label: tr('AC / Battery', 'المتناوب / البطارية'),
-                      value:
-                          '${c.acSystemVoltage.toStringAsFixed(0)}/${c.systemVoltage.toStringAsFixed(0)} ${unit('V', 'فولت')}',
+                      value: '${c.acSystemVoltage.toStringAsFixed(0)}/${c.systemVoltage.toStringAsFixed(0)} ${unit('V', 'فولت')}',
                       color: AppTheme.accentColor,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: DetailCard(
-                      icon: c.isPracticalHybridMode
-                          ? Iconsax.timer_bold
-                          : Icons.wb_sunny_rounded,
-                      label: c.isPracticalHybridMode
-                          ? tr('Recharge', 'إعادة الشحن')
-                          : l10n.peak_sun_hours,
+                      icon: c.isPracticalHybridMode ? Iconsax.timer : Icons.wb_sunny_rounded,
+                      label: c.isPracticalHybridMode ? tr('Recharge', 'إعادة الشحن') : l10n.peak_sun_hours,
                       value: c.isPracticalHybridMode
                           ? '${c.rechargePercentage.toStringAsFixed(0)}%'
                           : '${c.sunPeakHours.toStringAsFixed(1)} ${unit('h', 'ساعة')}',
@@ -313,9 +233,7 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                   Expanded(
                     child: DetailCard(
                       icon: Icons.battery_charging_full_rounded,
-                      label: c.isPracticalHybridMode
-                          ? tr('Grid coverage', 'تغطية الشبكة')
-                          : l10n.autonomy,
+                      label: c.isPracticalHybridMode ? tr('Grid coverage', 'تغطية الشبكة') : l10n.autonomy,
                       value: c.isPracticalHybridMode
                           ? '${(c.gridCoverageFactor * 100).toStringAsFixed(0)}%'
                           : '${c.autonomyHours.toStringAsFixed(1)} ${unit('h', 'ساعة')}',
@@ -326,9 +244,7 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                   Expanded(
                     child: DetailCard(
                       icon: Icons.solar_power_rounded,
-                      label: c.isPracticalHybridMode
-                          ? tr('Panel size', 'قدرة اللوح')
-                          : tr('Panel / derating', 'اللوح / الفواقد'),
+                      label: c.isPracticalHybridMode ? tr('Panel size', 'قدرة اللوح') : tr('Panel / derating', 'اللوح / الفواقد'),
                       value: c.isPracticalHybridMode
                           ? '${c.selectedPanelWattage}${unit('W', ' واط')}'
                           : '${c.selectedPanelWattage}${unit('W', ' واط')} • ${(c.pvDerating * 100).toStringAsFixed(0)}%',
@@ -342,18 +258,16 @@ class _SystemResultsTabState extends State<SystemResultsTab>
                 children: [
                   Expanded(
                     child: DetailCard(
-                      icon: Iconsax.battery_charging_bold,
+                      icon: Iconsax.battery_charging,
                       label: tr('Battery topology', 'ترتيب البطاريات'),
-                      value: c.recommendedBatteries == 0
-                          ? '--'
-                          : '${c.batterySeriesCount}S${c.batteryParallelCount}P',
+                      value: c.recommendedBatteries == 0 ? '--' : '${c.batterySeriesCount}S${c.batteryParallelCount}P',
                       color: const Color(0xFF7E57C2),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: DetailCard(
-                      icon: Iconsax.layer_bold,
+                      icon: Iconsax.layer,
                       label: tr('Battery bank', 'بنك البطاريات'),
                       value: c.totalBatteryCapacityAh,
                       color: const Color(0xFF26A69A),
@@ -363,9 +277,7 @@ class _SystemResultsTabState extends State<SystemResultsTab>
               ),
               const SizedBox(height: 12),
               DetailCard(
-                icon: c.isThreePhase
-                    ? Iconsax.hierarchy_2_bold
-                    : Iconsax.path_2_bold,
+                icon: c.isThreePhase ? Iconsax.hierarchy_2 : Iconsax.path_2,
                 label: tr('Design note', 'ملاحظة التصميم'),
                 value: c.isPracticalHybridMode
                     ? tr(

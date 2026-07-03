@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solar_hub/src/features/pv_system_designer/domain/entities/system_losses.dart';
 
 enum CellType { empty, panel, obstacle, shadow, tree, excluded }
 
@@ -72,6 +73,30 @@ class PvSystemDesignState {
   final bool isLocationLoading;
   final String? locationError;
 
+  /// Calendar date the shading simulation is evaluated for (paired with
+  /// [simulationTime] as the hour-of-day), so users can check e.g. winter
+  /// solstice worst-case shading rather than only "some arbitrary hour".
+  final DateTime simulationDate;
+
+  /// Structured loss diagram (soiling/mismatch/wiring/inverter/etc.),
+  /// replacing the old single flat "system losses %" input.
+  final SystemLosses systemLosses;
+
+  /// Panel electrical ratings (STC), needed for inverter/string sizing —
+  /// the app previously had no electrical spec fields at all, only
+  /// physical dimensions.
+  final double panelVocV;
+  final double panelVmpV;
+  final double panelIscA;
+
+  /// Selected catalog inverter id (see InverterCatalog); null = not yet
+  /// chosen / use the auto-suggested default for the array size.
+  final String? selectedInverterId;
+
+  /// Financial inputs for the payback/ROI estimate.
+  final double installedCostPerWatt;
+  final double electricityRatePerKwh;
+
   const PvSystemDesignState({
     required this.cols,
     required this.rows,
@@ -120,6 +145,14 @@ class PvSystemDesignState {
     required this.currentStep,
     required this.isLocationLoading,
     required this.locationError,
+    required this.simulationDate,
+    required this.systemLosses,
+    required this.panelVocV,
+    required this.panelVmpV,
+    required this.panelIscA,
+    required this.selectedInverterId,
+    required this.installedCostPerWatt,
+    required this.electricityRatePerKwh,
   });
 
   factory PvSystemDesignState.initial() {
@@ -173,6 +206,14 @@ class PvSystemDesignState {
       currentStep: 0,
       isLocationLoading: false,
       locationError: null,
+      simulationDate: DateTime.now(),
+      systemLosses: SystemLosses.standard(),
+      panelVocV: 46.5,
+      panelVmpV: 38.9,
+      panelIscA: 13.95,
+      selectedInverterId: null,
+      installedCostPerWatt: 0.7,
+      electricityRatePerKwh: 0.15,
     );
   }
 
@@ -227,6 +268,15 @@ class PvSystemDesignState {
     bool clearManualRows = false,
     bool clearManualColumns = false,
     bool clearTargetPanelCount = false,
+    DateTime? simulationDate,
+    SystemLosses? systemLosses,
+    double? panelVocV,
+    double? panelVmpV,
+    double? panelIscA,
+    String? selectedInverterId,
+    bool clearSelectedInverterId = false,
+    double? installedCostPerWatt,
+    double? electricityRatePerKwh,
   }) {
     return PvSystemDesignState(
       cols: cols ?? this.cols,
@@ -276,6 +326,14 @@ class PvSystemDesignState {
       currentStep: currentStep ?? this.currentStep,
       isLocationLoading: isLocationLoading ?? this.isLocationLoading,
       locationError: locationError ?? this.locationError,
+      simulationDate: simulationDate ?? this.simulationDate,
+      systemLosses: systemLosses ?? this.systemLosses,
+      panelVocV: panelVocV ?? this.panelVocV,
+      panelVmpV: panelVmpV ?? this.panelVmpV,
+      panelIscA: panelIscA ?? this.panelIscA,
+      selectedInverterId: clearSelectedInverterId ? null : (selectedInverterId ?? this.selectedInverterId),
+      installedCostPerWatt: installedCostPerWatt ?? this.installedCostPerWatt,
+      electricityRatePerKwh: electricityRatePerKwh ?? this.electricityRatePerKwh,
     );
   }
 
@@ -317,6 +375,14 @@ class PvSystemDesignState {
       'verticalGapM': verticalGapM,
       'rowMode': rowMode.name,
       'rowBaseOffsetsM': rowBaseOffsetsM,
+      'simulationDate': simulationDate.toIso8601String(),
+      'systemLosses': systemLosses.toJson(),
+      'panelVocV': panelVocV,
+      'panelVmpV': panelVmpV,
+      'panelIscA': panelIscA,
+      'selectedInverterId': selectedInverterId,
+      'installedCostPerWatt': installedCostPerWatt,
+      'electricityRatePerKwh': electricityRatePerKwh,
     };
   }
 
@@ -380,6 +446,14 @@ class PvSystemDesignState {
       currentStep: 0,
       isLocationLoading: false,
       locationError: null,
+      simulationDate: json['simulationDate'] != null ? DateTime.tryParse(json['simulationDate'] as String) ?? DateTime.now() : DateTime.now(),
+      systemLosses: SystemLosses.fromJson(json['systemLosses'] as Map<String, dynamic>?),
+      panelVocV: (json['panelVocV'] as num? ?? 46.5).toDouble(),
+      panelVmpV: (json['panelVmpV'] as num? ?? 38.9).toDouble(),
+      panelIscA: (json['panelIscA'] as num? ?? 13.95).toDouble(),
+      selectedInverterId: json['selectedInverterId'] as String?,
+      installedCostPerWatt: (json['installedCostPerWatt'] as num? ?? 0.7).toDouble(),
+      electricityRatePerKwh: (json['electricityRatePerKwh'] as num? ?? 0.15).toDouble(),
     );
   }
 }

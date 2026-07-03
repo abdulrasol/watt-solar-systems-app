@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart';
@@ -58,7 +58,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                       'Quick home PV sizing for current, panels, inverter, and batteries.',
                       'تقدير سريع لمنظومة منزلية يشمل التيار والألواح والعاكس والبطاريات.',
                     ),
-                    icon: Iconsax.flash_1_bold,
+                    icon: Iconsax.flash_1,
                     accent: const Color(0xFF0BAA9D),
                     gradient: const [Color(0xFFE8FCF8), Color(0xFFFCFFFF)],
                     cta: _tr(context, 'Open calculator', 'فتح الحاسبة'),
@@ -74,7 +74,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                     context,
                     title: l10n.system_wizard,
                     description: l10n.system_wizard_desc,
-                    icon: Iconsax.calculator_bold,
+                    icon: Iconsax.calculator,
                     accent: const Color(0xFFFF9800),
                     gradient: const [Color(0xFFFFF4E8), Color(0xFFFFFCF8)],
                     cta: _tr(context, 'Open wizard', 'فتح المعالج'),
@@ -94,7 +94,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 context,
                 title: l10n.request_offer_wizard,
                 description: l10n.request_offer_desc,
-                icon: Iconsax.document_text_bold,
+                icon: Iconsax.document_text,
                 accent: const Color(0xFF4B9EFF),
                 onTap: () => context.push('/calculator/request-offer-wizard'),
               ),
@@ -132,7 +132,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 _buildToolCard(
                   context,
                   l10n.panels_calc,
-                  Iconsax.sun_1_bold,
+                  Iconsax.sun_1,
                   Colors.amber,
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PanelCalculatorPage())),
                   'panel_hero',
@@ -140,7 +140,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 _buildToolCard(
                   context,
                   l10n.inverter_calc,
-                  Iconsax.flash_bold,
+                  Iconsax.flash,
                   Colors.red,
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const InverterCalculatorPage())),
                   'inverter_hero',
@@ -148,7 +148,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 _buildToolCard(
                   context,
                   l10n.battery_calc,
-                  Iconsax.battery_charging_bold,
+                  Iconsax.battery_charging,
                   Colors.green,
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BatteryCalculatorPage())),
                   'battery_hero',
@@ -180,7 +180,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 _buildToolCard(
                   context,
                   l10n.orientation_calc,
-                  Iconsax.map_bold,
+                  Iconsax.map,
                   Colors.deepPurple,
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectionCalculator())),
                   'direction_hero',
@@ -188,7 +188,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 _buildToolCard(
                   context,
                   _tr(context, 'Roof Simulator', 'محاكي الأسطح'),
-                  Iconsax.grid_5_bold,
+                  Iconsax.grid_5,
                   Colors.teal,
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RoofSimulatorPage())),
                   'roof_simulator_hero',
@@ -196,7 +196,7 @@ class CalculatorLandingPage extends ConsumerWidget {
                 _buildToolCard(
                   context,
                   _tr(context, 'PV System Designer', 'مصمم النظام الشمسي'),
-                  Iconsax.category_bold,
+                  Iconsax.category,
                   const Color(0xFFFF6B35),
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PvSystemDesignerScreen())),
                   'pv_designer_hero',
@@ -236,7 +236,7 @@ class CalculatorLandingPage extends ConsumerWidget {
           Container(
             padding: EdgeInsets.all(12.r),
             decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(18.r)),
-            child: const Icon(Iconsax.category_bold, color: AppTheme.primaryColor),
+            child: const Icon(Iconsax.category, color: AppTheme.primaryColor),
           ),
           SizedBox(width: 12.w),
           Expanded(

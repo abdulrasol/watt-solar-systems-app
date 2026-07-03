@@ -18,4 +18,23 @@ abstract class NotificationRepository {
     required String body,
     Map<String, dynamic>? data,
   });
+
+  /// [groupType] is one of 'company', 'followers', or 'custom'. [groupId]
+  /// is a company id, a post id (for 'followers'), or — for 'custom' — a
+  /// `List<int>` of user ids (matches the backend's `Any`-typed
+  /// `group_id` field on `GroupNotificationSchema`).
+  Future<Either<Failure, NotificationResponse>> sendToGroup({
+    required String groupType,
+    required dynamic groupId,
+    required String title,
+    required String body,
+    Map<String, dynamic>? data,
+  });
+
+  Future<Either<Failure, NotificationResponse>> sendToUser({
+    required int userId,
+    required String title,
+    required String body,
+    Map<String, dynamic>? data,
+  });
 }

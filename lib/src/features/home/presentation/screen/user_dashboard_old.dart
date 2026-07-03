@@ -7,7 +7,7 @@
 // import 'package:solar_hub/src/utils/app_theme.dart';
 // import 'package:solar_hub/src/utils/app_explanations.dart';
 // import 'package:go_router/go_router.dart';
-// import 'package:icons_plus/icons_plus.dart';
+// import 'package:iconsax_flutter/iconsax_flutter.dart';
 // import 'package:solar_hub/src/utils/helper_methods.dart';
 
 // class UserDashboard extends ConsumerWidget {
@@ -92,7 +92,7 @@
 //                     SizedBox(height: 16.h),
 //                     ElevatedButton.icon(
 //                       onPressed: () => context.go('/auth'),
-//                       icon: Icon(Iconsax.login_bold, size: 20.sp),
+//                       icon: Icon(Iconsax.login, size: 20.sp),
 //                       label: Text(AppLocalizations.of(context)!.sign_in),
 //                       style: ElevatedButton.styleFrom(
 //                         backgroundColor: AppTheme.primaryColor,
@@ -125,7 +125,7 @@
 //                           isDark,
 //                           AppLocalizations.of(context)!.active_orders,
 //                           "0",
-//                           Iconsax.box_bold,
+//                           Iconsax.box,
 //                           Colors.blue,
 //                         ),
 //                       ),
@@ -136,7 +136,7 @@
 //                           isDark,
 //                           AppLocalizations.of(context)!.my_systems,
 //                           "0",
-//                           Iconsax.sun_1_bold,
+//                           Iconsax.sun_1,
 //                           Colors.orange,
 //                         ),
 //                       ),
@@ -164,7 +164,7 @@
 //                 isDark,
 //                 AppLocalizations.of(context)!.calculator,
 //                 AppLocalizations.of(context)!.plan_your_system,
-//                 Iconsax.calculator_bold,
+//                 Iconsax.calculator,
 //                 Colors.purple,
 //                 () => ref.read(homePageIndexProvider.notifier).state =
 //                     1, // Switch to Calculator tab
@@ -175,7 +175,7 @@
 //                   isDark,
 //                   AppLocalizations.of(context)!.store,
 //                   AppLocalizations.of(context)!.buy_components,
-//                   Iconsax.shop_bold,
+//                   Iconsax.shop,
 //                   Colors.pink,
 //                   () => ref.read(homePageIndexProvider.notifier).state =
 //                       3, // Switch to Store tab
@@ -231,7 +231,7 @@
 //                         borderRadius: BorderRadius.circular(12),
 //                       ),
 //                       child: Icon(
-//                         Iconsax.people_bold,
+//                         Iconsax.people,
 //                         color: Colors.white,
 //                         size: 32.sp,
 //                       ),
@@ -277,7 +277,7 @@
 //                   crossAxisAlignment: CrossAxisAlignment.start,
 //                   children: [
 //                     Icon(
-//                       Iconsax.info_circle_bold,
+//                       Iconsax.info_circle,
 //                       color: AppTheme.primaryColor,
 //                       size: 24.sp,
 //                     ),

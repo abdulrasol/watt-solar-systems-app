@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
@@ -17,11 +17,7 @@ class OfferDetailsScreen extends ConsumerWidget {
   final SolarOffer offer;
   final bool isCompanyView;
 
-  const OfferDetailsScreen({
-    super.key,
-    required this.offer,
-    this.isCompanyView = false,
-  });
+  const OfferDetailsScreen({super.key, required this.offer, this.isCompanyView = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,10 +27,7 @@ class OfferDetailsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           l10n.offer_details,
-          style: TextStyle(
-            fontFamily: AppTheme.fontFamily,
-            fontWeight: FontWeight.w900,
-          ),
+          style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w900),
         ),
         centerTitle: true,
       ),
@@ -43,19 +36,11 @@ class OfferDetailsScreen extends ConsumerWidget {
         children: [
           _buildCompanyHeader(context),
           SizedBox(height: 24.h),
-          _buildPriceSection(
-            l10n.offering_price,
-            offer.price,
-            isHighlight: true,
-          ),
+          _buildPriceSection(l10n.offering_price, offer.price, isHighlight: true),
           SizedBox(height: 24.h),
           Text(
             l10n.technical_specifications,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              fontFamily: AppTheme.fontFamily,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp, fontFamily: AppTheme.fontFamily),
           ),
           SizedBox(height: 12.h),
           _buildSpecList(context),
@@ -63,11 +48,7 @@ class OfferDetailsScreen extends ConsumerWidget {
             SizedBox(height: 24.h),
             Text(
               l10n.included_services_items,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.sp,
-                fontFamily: AppTheme.fontFamily,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp, fontFamily: AppTheme.fontFamily),
             ),
             SizedBox(height: 12.h),
             ...offer.involves!.map((item) => _buildInvolveItem(item)),
@@ -76,11 +57,7 @@ class OfferDetailsScreen extends ConsumerWidget {
             SizedBox(height: 24.h),
             Text(
               l10n.notes_from_provider,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.sp,
-                fontFamily: AppTheme.fontFamily,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp, fontFamily: AppTheme.fontFamily),
             ),
             SizedBox(height: 8.h),
             Container(
@@ -88,21 +65,11 @@ class OfferDetailsScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.08),
-                ),
+                border: Border.all(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.08)),
               ),
               child: Text(
                 offer.note!,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.78),
-                  height: 1.5,
-                ),
+                style: TextStyle(fontSize: 13.sp, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.78), height: 1.5),
               ),
             ),
           ],
@@ -126,11 +93,7 @@ class OfferDetailsScreen extends ConsumerWidget {
           backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
           child: offer.company.logo != null
               ? WdImagePreview(imageUrl: offer.company.logo!)
-              : const Icon(
-                  Iconsax.building_bold,
-                  color: AppTheme.primaryColor,
-                  size: 28,
-                ),
+              : const Icon(Iconsax.building, color: AppTheme.primaryColor, size: 28),
         ),
         SizedBox(width: 16.w),
         Expanded(
@@ -139,18 +102,10 @@ class OfferDetailsScreen extends ConsumerWidget {
             children: [
               Text(
                 offer.company.name,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: AppTheme.fontFamily,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily),
               ),
               Text(
-                offer.createdAt != null
-                    ? l10n.submitted_on_date(
-                        '${offer.createdAt!.day}/${offer.createdAt!.month}/${offer.createdAt!.year}',
-                      )
-                    : l10n.quotation,
+                offer.createdAt != null ? l10n.submitted_on_date('${offer.createdAt!.day}/${offer.createdAt!.month}/${offer.createdAt!.year}') : l10n.quotation,
                 style: TextStyle(fontSize: 12.sp, color: Colors.grey),
               ),
             ],
@@ -158,46 +113,27 @@ class OfferDetailsScreen extends ConsumerWidget {
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          decoration: BoxDecoration(
-            color: offer.status.color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(20.r),
-          ),
+          decoration: BoxDecoration(color: offer.status.color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20.r)),
           child: Text(
             offer.status.localizedLabel(l10n),
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: offer.status.color,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 12.sp, color: offer.status.color, fontWeight: FontWeight.bold),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildPriceSection(
-    String label,
-    double value, {
-    bool isHighlight = false,
-  }) {
+  Widget _buildPriceSection(String label, double value, {bool isHighlight = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], fontWeight: FontWeight.w500),
         ),
         Text(
           '\$${value.toStringAsFixed(1)}',
-          style: TextStyle(
-            fontSize: isHighlight ? 24.sp : 18.sp,
-            fontWeight: FontWeight.w900,
-            color: isHighlight ? AppTheme.primaryColor : null,
-          ),
+          style: TextStyle(fontSize: isHighlight ? 24.sp : 18.sp, fontWeight: FontWeight.w900, color: isHighlight ? AppTheme.primaryColor : null),
         ),
       ],
     );
@@ -208,20 +144,14 @@ class OfferDetailsScreen extends ConsumerWidget {
 
     return Column(
       children: [
-        _buildSpecRow(
-          context,
-          l10n.panels,
-          '${offer.panelCount} x ${offer.panelPower}W',
-          note: offer.panelNote,
-          icon: Iconsax.sun_1_bold,
-        ),
+        _buildSpecRow(context, l10n.panels, '${offer.panelCount} x ${offer.panelPower}W', note: offer.panelNote, icon: Iconsax.sun_1),
         SizedBox(height: 12.h),
         _buildSpecRow(
           context,
           l10n.battery_storage,
           '${offer.batteryCount} x ${_formatNumber(offer.batterySize)}Wh (${offer.batteryType.localizedLabel(l10n)})',
           note: offer.batteryNote,
-          icon: Iconsax.flash_1_bold,
+          icon: Iconsax.flash_1,
         ),
         SizedBox(height: 12.h),
         _buildSpecRow(
@@ -229,19 +159,13 @@ class OfferDetailsScreen extends ConsumerWidget {
           l10n.inverter_calc,
           '${_formatNumber(offer.inverterSize)}W (${offer.inverterType.localizedLabel(l10n)})',
           note: offer.inverterNote,
-          icon: Iconsax.setting_2_bold,
+          icon: Iconsax.setting_2,
         ),
       ],
     );
   }
 
-  Widget _buildSpecRow(
-    BuildContext context,
-    String label,
-    String value, {
-    String? note,
-    required IconData icon,
-  }) {
+  Widget _buildSpecRow(BuildContext context, String label, String value, {String? note, required IconData icon}) {
     final theme = Theme.of(context);
     final onSurface = theme.colorScheme.onSurface;
 
@@ -251,12 +175,7 @@ class OfferDetailsScreen extends ConsumerWidget {
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: onSurface.withValues(alpha: 0.08)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 10,
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,30 +188,18 @@ class OfferDetailsScreen extends ConsumerWidget {
               children: [
                 Text(
                   label,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: onSurface.withValues(alpha: 0.64),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 12.sp, color: onSurface.withValues(alpha: 0.64), fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   value,
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w800,
-                    fontFamily: AppTheme.fontFamily,
-                  ),
+                  style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
                 ),
                 if (note != null && note.isNotEmpty) ...[
                   SizedBox(height: 8.h),
                   Text(
                     note,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: onSurface.withValues(alpha: 0.72),
-                      fontStyle: FontStyle.italic,
-                    ),
+                    style: TextStyle(fontSize: 12.sp, color: onSurface.withValues(alpha: 0.72), fontStyle: FontStyle.italic),
                   ),
                 ],
               ],
@@ -312,11 +219,7 @@ class OfferDetailsScreen extends ConsumerWidget {
           Expanded(
             child: Text(
               item.name,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppTheme.fontFamily,
-              ),
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
             ),
           ),
           Text(
@@ -326,11 +229,7 @@ class OfferDetailsScreen extends ConsumerWidget {
           SizedBox(width: 24.w),
           Text(
             '\$${(item.totalCost ?? (item.cost * (item.quantity ?? 1))).toStringAsFixed(1)}',
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.primaryColor,
-            ),
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
           ),
         ],
       ),
@@ -338,9 +237,7 @@ class OfferDetailsScreen extends ConsumerWidget {
   }
 
   Widget _buildActionArea(BuildContext context, WidgetRef ref) {
-    return isCompanyView
-        ? _buildCompanyActionArea(context, ref)
-        : _buildUserActionArea(context, ref);
+    return isCompanyView ? _buildCompanyActionArea(context, ref) : _buildUserActionArea(context, ref);
   }
 
   Widget _buildUserActionArea(BuildContext context, WidgetRef ref) {
@@ -357,32 +254,24 @@ class OfferDetailsScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: hasContact
-                    ? () => _openWhatsApp(context, contactNumber)
-                    : () => _showMissingContact(context),
+                onPressed: hasContact ? () => _openWhatsApp(context, contactNumber) : () => _showMissingContact(context),
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                 ),
-                icon: const Icon(Iconsax.whatsapp_bold),
+                icon: const Icon(Iconsax.whatsapp),
                 label: Text(l10n.whatsapp),
               ),
             ),
             SizedBox(width: 12.w),
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: hasContact
-                    ? () => _openCall(context, contactNumber)
-                    : () => _showMissingContact(context),
+                onPressed: hasContact ? () => _openCall(context, contactNumber) : () => _showMissingContact(context),
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                 ),
-                icon: const Icon(Iconsax.call_bold),
+                icon: const Icon(Iconsax.call),
                 label: Text(l10n.call),
               ),
             ),
@@ -394,15 +283,10 @@ class OfferDetailsScreen extends ConsumerWidget {
             Expanded(
               child: TextButton(
                 onPressed: () async {
-                  await ref
-                      .read(offersProvider.notifier)
-                      .respondToOffer(offer.id!, 'rejected');
+                  await ref.read(offersProvider.notifier).respondToOffer(offer.id!, 'rejected');
                   if (context.mounted) Navigator.pop(context);
                 },
-                child: Text(
-                  l10n.reject_offer,
-                  style: const TextStyle(color: Colors.red),
-                ),
+                child: Text(l10n.reject_offer, style: const TextStyle(color: Colors.red)),
               ),
             ),
             SizedBox(width: 12.w),
@@ -410,17 +294,13 @@ class OfferDetailsScreen extends ConsumerWidget {
               flex: 2,
               child: ElevatedButton(
                 onPressed: () async {
-                  await ref
-                      .read(offersProvider.notifier)
-                      .respondToOffer(offer.id!, 'accepted');
+                  await ref.read(offersProvider.notifier).respondToOffer(offer.id!, 'accepted');
                   if (context.mounted) Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
                   padding: EdgeInsets.symmetric(vertical: 16.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                 ),
                 child: Text(l10n.accept_offer),
               ),
@@ -449,11 +329,9 @@ class OfferDetailsScreen extends ConsumerWidget {
                   onPressed: () => _openEditForm(context),
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                   ),
-                  icon: const Icon(Iconsax.edit_bold),
+                  icon: const Icon(Iconsax.edit),
                   label: Text(l10n.edit_button),
                 ),
               ),
@@ -461,11 +339,8 @@ class OfferDetailsScreen extends ConsumerWidget {
               Expanded(
                 child: TextButton.icon(
                   onPressed: () => _confirmDelete(context, ref),
-                  icon: const Icon(Iconsax.trash_bold, color: Colors.red),
-                  label: Text(
-                    l10n.remove,
-                    style: const TextStyle(color: Colors.red),
-                  ),
+                  icon: const Icon(Iconsax.trash, color: Colors.red),
+                  label: Text(l10n.remove, style: const TextStyle(color: Colors.red)),
                 ),
               ),
             ],
@@ -476,9 +351,7 @@ class OfferDetailsScreen extends ConsumerWidget {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () async {
-                final success = await ref
-                    .read(offersProvider.notifier)
-                    .finishOffer(offer.id!);
+                final success = await ref.read(offersProvider.notifier).finishOffer(offer.id!);
                 if (success && context.mounted) {
                   Navigator.pop(context);
                 }
@@ -486,11 +359,9 @@ class OfferDetailsScreen extends ConsumerWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
               ),
-              icon: const Icon(Iconsax.tick_circle_bold),
+              icon: const Icon(Iconsax.tick_circle),
               label: Text(l10n.finish_offer),
             ),
           ),
@@ -506,28 +377,18 @@ class OfferDetailsScreen extends ConsumerWidget {
       children: [
         Text(
           l10n.total_project_quote,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey[700],
-          ),
+          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.grey[700]),
         ),
         Text(
           '\$${offer.price.toStringAsFixed(1)}',
-          style: TextStyle(
-            fontSize: 22.sp,
-            fontWeight: FontWeight.w900,
-            color: AppTheme.primaryColor,
-          ),
+          style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w900, color: AppTheme.primaryColor),
         ),
       ],
     );
   }
 
   Future<void> _openEditForm(BuildContext context) async {
-    final updated = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(builder: (_) => OfferReplyForm(offer: offer)),
-    );
+    final updated = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => OfferReplyForm(offer: offer)));
     if (updated == true && context.mounted) {
       Navigator.pop(context);
     }
@@ -542,16 +403,10 @@ class OfferDetailsScreen extends ConsumerWidget {
           title: Text(l10n.delete_offer_title),
           content: Text(l10n.delete_offer_subtitle),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(l10n.cancel_button),
-            ),
+            TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: Text(l10n.cancel_button)),
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(
-                l10n.delete_button,
-                style: const TextStyle(color: Colors.red),
-              ),
+              child: Text(l10n.delete_button, style: const TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -559,18 +414,14 @@ class OfferDetailsScreen extends ConsumerWidget {
     );
 
     if (shouldDelete != true) return;
-    final success = await ref
-        .read(offersProvider.notifier)
-        .deleteOffer(offer.id!);
+    final success = await ref.read(offersProvider.notifier).deleteOffer(offer.id!);
     if (success && context.mounted) {
       Navigator.pop(context);
     }
   }
 
   Future<void> _openWhatsApp(BuildContext context, String rawNumber) async {
-    final sanitized = rawNumber
-        .replaceAll(RegExp(r'[^0-9+]'), '')
-        .replaceAll('+', '');
+    final sanitized = rawNumber.replaceAll(RegExp(r'[^0-9+]'), '').replaceAll('+', '');
     final uri = Uri.parse('https://wa.me/$sanitized');
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (context.mounted) _showMissingContact(context);
@@ -586,13 +437,8 @@ class OfferDetailsScreen extends ConsumerWidget {
 
   void _showMissingContact(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    ToastService.error(
-      context,
-      l10n.contact_unavailable_title,
-      l10n.phone_unavailable_msg,
-    );
+    ToastService.error(context, l10n.contact_unavailable_title, l10n.phone_unavailable_msg);
   }
-
 
   String _formatNumber(num value) {
     return value % 1 == 0 ? value.toInt().toString() : value.toString();

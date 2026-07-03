@@ -6037,6 +6037,12 @@ abstract class AppLocalizations {
   /// **'Battery'**
   String get battery;
 
+  /// No description provided for @inverter.
+  ///
+  /// In en, this message translates to:
+  /// **'Inverter'**
+  String get inverter;
+
   /// No description provided for @city_label.
   ///
   /// In en, this message translates to:
@@ -6264,6 +6270,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delivery'**
   String get delivery;
+
+  /// No description provided for @expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get cost;
+
+  /// No description provided for @company_delivery_estimated_days_min.
+  ///
+  /// In en, this message translates to:
+  /// **'Min Days'**
+  String get company_delivery_estimated_days_min;
+
+  /// No description provided for @company_delivery_estimated_days_max.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Days'**
+  String get company_delivery_estimated_days_max;
+
+  /// No description provided for @company_delivery_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\" delivery option?'**
+  String company_delivery_delete_message(Object name);
+
+  /// No description provided for @company_expense_delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this {category} expense?'**
+  String company_expense_delete_message(Object category);
+
+  /// No description provided for @company_workspace_no_company.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a company to continue'**
+  String get company_workspace_no_company;
 
   /// No description provided for @subscription.
   ///
@@ -7668,6 +7728,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear'**
   String get clear;
+
+  /// No description provided for @recent_activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Activity'**
+  String get recent_activity;
+
+  /// No description provided for @view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get view_all;
+
+  /// No description provided for @dashboard_your_activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Activity'**
+  String get dashboard_your_activity;
+
+  /// No description provided for @dashboard_get_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get dashboard_get_started;
+
+  /// No description provided for @dashboard_activity_signed_in_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track requests, orders, and alerts from one place.'**
+  String get dashboard_activity_signed_in_subtitle;
+
+  /// No description provided for @dashboard_activity_guest_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to save requests, place orders, and receive updates.'**
+  String get dashboard_activity_guest_subtitle;
+
+  /// No description provided for @dashboard_services_action_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore services and companies before creating an account.'**
+  String get dashboard_services_action_subtitle;
+
+  /// No description provided for @dashboard_store_action_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop products, compare companies, and place B2C orders.'**
+  String get dashboard_store_action_subtitle;
+
+  /// No description provided for @dashboard_sign_in_card_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Access your saved requests, orders, and notifications.'**
+  String get dashboard_sign_in_card_subtitle;
+
+  /// No description provided for @dashboard_guest_services_card_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore services and companies before creating an account.'**
+  String get dashboard_guest_services_card_subtitle;
+
+  /// No description provided for @dashboard_my_requests_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active and past requests.'**
+  String dashboard_my_requests_count(int count);
+
+  /// No description provided for @dashboard_my_orders_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} B2C orders across storefront sellers.'**
+  String dashboard_my_orders_count(int count);
+
+  /// No description provided for @dashboard_notifications_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} recent alerts and system updates.'**
+  String dashboard_notifications_count(int count);
+
+  /// No description provided for @user_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'User Mode'**
+  String get user_mode;
+
+  /// No description provided for @admin_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Mode'**
+  String get admin_mode;
+
+  /// No description provided for @revenue_trend.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue Trend'**
+  String get revenue_trend;
+
+  /// No description provided for @financial_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Overview'**
+  String get financial_overview;
+
+  /// No description provided for @order_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Status'**
+  String get order_status;
+
+  /// No description provided for @low_stock_alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Low Stock Alerts'**
+  String get low_stock_alerts;
+
+  /// No description provided for @items_count.
+  ///
+  /// In en, this message translates to:
+  /// **'items'**
+  String get items_count;
+
+  /// No description provided for @formatUnitsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} units left'**
+  String formatUnitsLeft(int count);
+
+  /// No description provided for @restock.
+  ///
+  /// In en, this message translates to:
+  /// **'Restock'**
+  String get restock;
+
+  /// No description provided for @view_all_alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Alerts'**
+  String get view_all_alerts;
+
+  /// No description provided for @create_invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Invoice'**
+  String get create_invoice;
+
+  /// No description provided for @add_project.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Project'**
+  String get add_project;
+
+  /// No description provided for @no_results_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get no_results_found;
+
+  /// No description provided for @marketplace_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Marketplace Requests'**
+  String get marketplace_requests;
+
+  /// No description provided for @no_contact_info.
+  ///
+  /// In en, this message translates to:
+  /// **'No contact info'**
+  String get no_contact_info;
+
+  /// No description provided for @seasonal_solar_estimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Seasonal Solar Estimation'**
+  String get seasonal_solar_estimate;
+
+  /// No description provided for @est_daily_kw.
+  ///
+  /// In en, this message translates to:
+  /// **'Est. daily production'**
+  String get est_daily_kw;
+
+  /// No description provided for @formatSolarAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended tilt: {advice}'**
+  String formatSolarAdvice(String advice);
 }
 
 class _AppLocalizationsDelegate

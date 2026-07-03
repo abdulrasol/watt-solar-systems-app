@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_plan.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_subscriptions_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
@@ -48,36 +48,29 @@ class _AdminSubscriptionPlansScreenState extends ConsumerState<AdminSubscription
           onPressed: () => _showPlanDialog(context, ref),
           icon: const Icon(Icons.add),
           label: const Text('Add Plan'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.primaryColor,
-            foregroundColor: Colors.white,
-          ),
+          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, foregroundColor: Colors.white),
         ),
       ],
       child: state.isLoading
           ? const AdminLoadingState()
           : state.plans.isEmpty
-              ? const AdminEmptyState(
-                  icon: Iconsax.card_bold,
-                  title: 'No subscription plans found',
-                  subtitle: 'Add your first pricing tier to get started.',
-                )
-              : RefreshIndicator(
-                  onRefresh: () => ref.read(adminSubscriptionsProvider.notifier).fetchPlans(isRefresh: true),
-                  child: ListView.separated(
-                    controller: _scrollController,
-                    padding: EdgeInsets.all(16.w),
-                    itemCount: state.plans.length + (state.isMoreLoading ? 1 : 0),
-                    separatorBuilder: (context, index) => SizedBox(height: 12.h),
-                    itemBuilder: (context, index) {
-                      if (index == state.plans.length) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final plan = state.plans[index];
-                      return _buildPlanCard(context, ref, plan);
-                    },
-                  ),
-                ),
+          ? const AdminEmptyState(icon: Iconsax.card, title: 'No subscription plans found', subtitle: 'Add your first pricing tier to get started.')
+          : RefreshIndicator(
+              onRefresh: () => ref.read(adminSubscriptionsProvider.notifier).fetchPlans(isRefresh: true),
+              child: ListView.separated(
+                controller: _scrollController,
+                padding: EdgeInsets.all(16.w),
+                itemCount: state.plans.length + (state.isMoreLoading ? 1 : 0),
+                separatorBuilder: (context, index) => SizedBox(height: 12.h),
+                itemBuilder: (context, index) {
+                  if (index == state.plans.length) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final plan = state.plans[index];
+                  return _buildPlanCard(context, ref, plan);
+                },
+              ),
+            ),
     );
   }
 
@@ -86,24 +79,15 @@ class _AdminSubscriptionPlansScreenState extends ConsumerState<AdminSubscription
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         leading: Container(
           width: 48.w,
           height: 48.w,
-          decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withValues(alpha: 0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(Iconsax.medal_bold, color: AppTheme.primaryColor, size: 24.sp),
+          decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+          child: Icon(Iconsax.medal, color: AppTheme.primaryColor, size: 24.sp),
         ),
         title: Text(
           plan.name,
@@ -132,11 +116,11 @@ class _AdminSubscriptionPlansScreenState extends ConsumerState<AdminSubscription
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: const Icon(Iconsax.edit_2_bold, color: Colors.blue),
+              icon: const Icon(Iconsax.edit_2, color: Colors.blue),
               onPressed: () => _showPlanDialog(context, ref, plan: plan),
             ),
             IconButton(
-              icon: const Icon(Iconsax.trash_bold, color: Colors.red),
+              icon: const Icon(Iconsax.trash, color: Colors.red),
               onPressed: () => _confirmDelete(context, ref, plan),
             ),
           ],

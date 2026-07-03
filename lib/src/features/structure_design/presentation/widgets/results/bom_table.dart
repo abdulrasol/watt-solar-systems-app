@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
 
 /// A data table displaying the Bill of Materials
@@ -38,7 +38,7 @@ class BomTable extends StatelessWidget {
             // Header
             Row(
               children: [
-                Icon(Iconsax.box_bold, color: theme.colorScheme.primary, size: 24.sp),
+                Icon(Iconsax.box, color: theme.colorScheme.primary, size: 24.sp),
                 SizedBox(width: 12.w),
                 Text(title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
                 const Spacer(),
@@ -144,7 +144,7 @@ class BomTable extends StatelessWidget {
               decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(8.r)),
               child: Row(
                 children: [
-                  Icon(Iconsax.weight_bold, size: 20.sp, color: theme.colorScheme.primary),
+                  Icon(Iconsax.weight, size: 20.sp, color: theme.colorScheme.primary),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(totalLabel, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
@@ -172,18 +172,18 @@ class BomTable extends StatelessWidget {
   IconData _getIconForItem(String name) {
     final lowerName = name.toLowerCase();
     if (lowerName.contains('leg') || lowerName.contains('post')) {
-      return IonIcons.cloud_offline; // .colum  column_bold;
+      return Iconsax.row_vertical; // column/post structural element
     } else if (lowerName.contains('rail') || lowerName.contains('beam')) {
-      return Iconsax.ruler_bold;
+      return Iconsax.ruler;
     } else if (lowerName.contains('brace') || lowerName.contains('diagonal')) {
-      return Iconsax.activity_bold;
+      return Iconsax.activity;
     } else if (lowerName.contains('anchor') || lowerName.contains('bolt')) {
-      return Iconsax.link_bold;
+      return Iconsax.link;
     } else if (lowerName.contains('clamp') || lowerName.contains('clip')) {
-      return Iconsax.attach_circle_bold;
+      return Iconsax.attach_circle;
     } else if (lowerName.contains('panel') || lowerName.contains('module')) {
-      return Iconsax.sun_1_bold;
+      return Iconsax.sun_1;
     }
-    return Iconsax.box_bold;
+    return Iconsax.box;
   }
 }

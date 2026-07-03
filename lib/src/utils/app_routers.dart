@@ -52,6 +52,9 @@ import 'package:solar_hub/src/features/company_dashboard/presentation/screens/co
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_contacts_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_public_services_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_categories_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_delivery_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_expenses_screen.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/screens/company_dashboard_systems_screen.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_shell.dart';
 import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
 import 'package:solar_hub/src/features/company_work/presentation/screens/company_work_details_page.dart';
@@ -242,6 +245,24 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/companies/dashboard/accounting',
             builder: (BuildContext context, GoRouterState state) {
               return const AccountingScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/delivery',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardDeliveryScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/expenses',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardExpensesScreen();
+            },
+          ),
+          GoRoute(
+            path: '/companies/dashboard/systems',
+            builder: (BuildContext context, GoRouterState state) {
+              return const CompanyDashboardSystemsScreen();
             },
           ),
         ],
@@ -529,7 +550,12 @@ String? appRedirectForRoute(String path, AuthState authState) {
   return null;
 }
 
-bool routeRequiresAdmin(String path) => path == '/admin' || path.startsWith('/admin/');
+// `/admin-marketplace` used to be excluded from this check (it doesn't
+// match `/admin` or `/admin/*`), so any signed-in non-admin user could
+// navigate straight to the Marketplace Oversight screen — the backend
+// calls would still 403, but the UI shell itself was reachable. Widened to
+// close that gap.
+bool routeRequiresAdmin(String path) => path == '/admin' || path.startsWith('/admin/') || path == '/admin-marketplace';
 
 bool routeRequiresCompanyMember(String path) {
   return path.startsWith('/companies/dashboard') ||

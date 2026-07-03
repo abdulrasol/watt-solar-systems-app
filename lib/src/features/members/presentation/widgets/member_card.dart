@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
@@ -9,14 +9,7 @@ import 'package:solar_hub/src/features/members/presentation/widgets/member_role_
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class MemberCard extends StatelessWidget {
-  const MemberCard({
-    super.key,
-    required this.member,
-    required this.canRemove,
-    required this.isRemoving,
-    required this.onRemove,
-    this.onRoleUpdate,
-  });
+  const MemberCard({super.key, required this.member, required this.canRemove, required this.isRemoving, required this.onRemove, this.onRoleUpdate});
 
   final CompanyMember member;
   final bool canRemove;
@@ -43,12 +36,7 @@ class MemberCard extends StatelessWidget {
             backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.12),
             child: Text(
               _initials(member.username, member.email),
-              style: TextStyle(
-                fontFamily: AppTheme.fontFamily,
-                color: AppTheme.primaryColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 16.sp,
-              ),
+              style: TextStyle(fontFamily: AppTheme.fontFamily, color: AppTheme.primaryColor, fontWeight: FontWeight.w700, fontSize: 16.sp),
             ),
           ),
           SizedBox(width: 14.w),
@@ -58,37 +46,21 @@ class MemberCard extends StatelessWidget {
               children: [
                 Text(
                   member.username.isEmpty ? member.email : member.username,
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontFamily,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15.sp,
-                  ),
+                  style: TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w700, fontSize: 15.sp),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   member.email,
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontFamily,
-                    fontSize: 12.sp,
-                    color: Theme.of(context).hintColor,
-                  ),
+                  style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12.sp, color: Theme.of(context).hintColor),
                 ),
                 SizedBox(height: 10.h),
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 8.h,
                   children: [
-                    _MemberBadge(
-                      label: _roleLabel(l10n, member.role),
-                      color: _roleColor(member.role),
-                    ),
+                    _MemberBadge(label: _roleLabel(l10n, member.role), color: _roleColor(member.role)),
                     if (member.joinedAt != null)
-                      _MemberBadge(
-                        label: l10n.members_joined_on(
-                          DateFormat.yMMMd().format(member.joinedAt!.toLocal()),
-                        ),
-                        color: Colors.blueGrey,
-                      ),
+                      _MemberBadge(label: l10n.members_joined_on(DateFormat.yMMMd().format(member.joinedAt!.toLocal())), color: Colors.blueGrey),
                   ],
                 ),
               ],
@@ -99,24 +71,15 @@ class MemberCard extends StatelessWidget {
               tooltip: 'Change Role',
               onPressed: () => showDialog(
                 context: context,
-                builder: (context) => MemberRoleDialog(
-                  member: member,
-                  onRoleSelected: onRoleUpdate!,
-                ),
+                builder: (context) => MemberRoleDialog(member: member, onRoleSelected: onRoleUpdate!),
               ),
-              icon: const Icon(Iconsax.edit_2_bold),
+              icon: const Icon(Iconsax.edit_2),
             ),
           if (canRemove)
             IconButton(
               tooltip: l10n.members_remove_member,
               onPressed: isRemoving ? null : onRemove,
-              icon: isRemoving
-                  ? SizedBox(
-                      width: 18.r,
-                      height: 18.r,
-                      child: const CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.delete_outline),
+              icon: isRemoving ? SizedBox(width: 18.r, height: 18.r, child: const CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.delete_outline),
             ),
         ],
       ),
@@ -181,18 +144,10 @@ class _MemberBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(999),
-      ),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(999)),
       child: Text(
         label,
-        style: TextStyle(
-          fontFamily: AppTheme.fontFamily,
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w700,
-          color: color,
-        ),
+        style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 11.sp, fontWeight: FontWeight.w700, color: color),
       ),
     );
   }

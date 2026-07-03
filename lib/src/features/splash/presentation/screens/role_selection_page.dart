@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
@@ -80,7 +80,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                   isDark,
                   title: authState.user?.company?.name ?? l10n.company_dashboard,
                   subtitle: l10n.company_dashboard,
-                  icon: Iconsax.building_bold,
+                  icon: Iconsax.building,
                   color: Colors.orange,
                   routeName: '/companies/dashboard',
                   image: authState.user?.company?.logo,
@@ -93,7 +93,7 @@ class _RoleSelectionPageState extends ConsumerState<RoleSelectionPage> {
                   isDark,
                   title: l10n.admin_dashboard,
                   subtitle: l10n.platform_management,
-                  icon: Iconsax.security_safe_bold,
+                  icon: Iconsax.security_safe,
                   color: Colors.redAccent,
                   routeName: '/admin',
                 ),

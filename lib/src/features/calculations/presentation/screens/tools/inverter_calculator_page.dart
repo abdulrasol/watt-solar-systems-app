@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/calculator_widgets.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart';
@@ -15,12 +15,10 @@ class InverterCalculatorPage extends ConsumerStatefulWidget {
   const InverterCalculatorPage({super.key});
 
   @override
-  ConsumerState<InverterCalculatorPage> createState() =>
-      _InverterCalculatorPageState();
+  ConsumerState<InverterCalculatorPage> createState() => _InverterCalculatorPageState();
 }
 
-class _InverterCalculatorPageState
-    extends ConsumerState<InverterCalculatorPage> {
+class _InverterCalculatorPageState extends ConsumerState<InverterCalculatorPage> {
   late final CalculatorNotifier controller;
 
   @override
@@ -44,12 +42,7 @@ class _InverterCalculatorPageState
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.inverter_calc),
-        actions: [
-          ExplanationButton(
-            explanations: AppExplanations(context).getInverterExplanations(),
-            storageKey: 'inverter_calc_help_viewed',
-          ),
-        ],
+        actions: [ExplanationButton(explanations: AppExplanations(context).getInverterExplanations(), storageKey: 'inverter_calc_help_viewed')],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -57,18 +50,10 @@ class _InverterCalculatorPageState
           children: [
             Hero(
               tag: 'inverter_hero',
-              child: Icon(
-                Iconsax.flash_bold,
-                size: 80,
-                color: Colors.blueAccent,
-              ),
+              child: Icon(Iconsax.flash, size: 80, color: Colors.blueAccent),
             ),
             const SizedBox(height: 20),
-            Text(
-              l10n.inverter_calc_intro,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            Text(l10n.inverter_calc_intro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 30),
 
             // Inputs
@@ -99,21 +84,11 @@ class _InverterCalculatorPageState
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      l10n.ac_system_voltage,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    child: Text(l10n.ac_system_voltage, style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   DropdownButton<double>(
                     value: controller.acSystemVoltage,
-                    items: controller.acVoltageOptions
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text("${e.toStringAsFixed(0)} V"),
-                          ),
-                        )
-                        .toList(),
+                    items: controller.acVoltageOptions.map((e) => DropdownMenuItem(value: e, child: Text("${e.toStringAsFixed(0)} V"))).toList(),
                     onChanged: (v) {
                       controller.acSystemVoltage = v ?? 230.0;
                       controller.calculateInverter();
@@ -136,13 +111,8 @@ class _InverterCalculatorPageState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            l10n.safety_factor_oversizing,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
-                          ),
+                          Text(l10n.safety_factor_oversizing, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text("x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}"),
                         ],
                       ),
                       Slider(
@@ -150,8 +120,7 @@ class _InverterCalculatorPageState
                         min: 1.0,
                         max: 2.0,
                         divisions: 20,
-                        label:
-                            "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
+                        label: "x${controller.inverterCalcSafetyFactor.toStringAsFixed(2)}",
                         onChanged: (v) {
                           controller.inverterCalcSafetyFactor = v;
                           controller.calculateInverter();
@@ -171,10 +140,8 @@ class _InverterCalculatorPageState
             ResultCard(
               title: l10n.recommended_inverter_size,
               value: "${controller.inverterCalcResult.toStringAsFixed(1)} kVA",
-              subtitle: l10n.approx_watts(
-                (controller.inverterCalcResult * 1000).toStringAsFixed(0),
-              ),
-              icon: Iconsax.flash_1_bold,
+              subtitle: l10n.approx_watts((controller.inverterCalcResult * 1000).toStringAsFixed(0)),
+              icon: Iconsax.flash_1,
               color: Colors.redAccent,
             ),
 
@@ -192,16 +159,10 @@ class _InverterCalculatorPageState
                 children: [
                   Text(
                     l10n.did_you_know,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.primaryColor,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    l10n.inverter_calc_tip_text,
-                    style: TextStyle(fontSize: 12),
-                  ),
+                  Text(l10n.inverter_calc_tip_text, style: TextStyle(fontSize: 12)),
                 ],
               ),
             ),
@@ -213,11 +174,6 @@ class _InverterCalculatorPageState
 
   void _showHelpDialog() {
     final explanations = AppExplanations(context).getInverterExplanations();
-    ExplanationDialog.show(
-      context,
-      explanations: explanations,
-      showDontShowAgain: true,
-      storageKey: 'inverter_calc_help_viewed',
-    );
+    ExplanationDialog.show(context, explanations: explanations, showDontShowAgain: true, storageKey: 'inverter_calc_help_viewed');
   }
 }

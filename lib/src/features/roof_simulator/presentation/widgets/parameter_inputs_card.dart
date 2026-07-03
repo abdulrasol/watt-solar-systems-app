@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:solar_hub/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart';
@@ -28,8 +28,7 @@ class _ParameterInputsCardState extends ConsumerState<ParameterInputsCard> {
   late FocusNode _roofLengthFocus;
   late FocusNode _setbackFocus;
 
-  bool _isArabic(BuildContext context) =>
-      Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
+  bool _isArabic(BuildContext context) => Localizations.localeOf(context).languageCode.toLowerCase() == 'ar';
 
   String _tr(BuildContext context, String en, String ar) {
     return _isArabic(context) ? ar : en;
@@ -189,11 +188,7 @@ class _ParameterInputsCardState extends ConsumerState<ParameterInputsCard> {
           break;
       }
       controller.text = oldVal.toString();
-      ToastService.warning(
-        context,
-        _tr(context, 'Limit Exceeded', 'تجاوز الحدود'),
-        _tr(context, errorEn, errorAr),
-      );
+      ToastService.warning(context, _tr(context, 'Limit Exceeded', 'تجاوز الحدود'), _tr(context, errorEn, errorAr));
       return;
     }
 
@@ -221,13 +216,20 @@ class _ParameterInputsCardState extends ConsumerState<ParameterInputsCard> {
 
   TextEditingController _getController(String type) {
     switch (type) {
-      case 'power': return _powerController;
-      case 'length': return _lengthController;
-      case 'width': return _widthController;
-      case 'roofWidth': return _roofWidthController;
-      case 'roofLength': return _roofLengthController;
-      case 'setback': return _setbackController;
-      default: return _powerController;
+      case 'power':
+        return _powerController;
+      case 'length':
+        return _lengthController;
+      case 'width':
+        return _widthController;
+      case 'roofWidth':
+        return _roofWidthController;
+      case 'roofLength':
+        return _roofLengthController;
+      case 'setback':
+        return _setbackController;
+      default:
+        return _powerController;
     }
   }
 
@@ -237,12 +239,7 @@ class _ParameterInputsCardState extends ConsumerState<ParameterInputsCard> {
       builder: (context) => AlertDialog(
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(_tr(context, 'Close', 'إغلاق')),
-          ),
-        ],
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text(_tr(context, 'Close', 'إغلاق')))],
       ),
     );
   }
@@ -257,10 +254,7 @@ class _ParameterInputsCardState extends ConsumerState<ParameterInputsCard> {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF161E1C) : Colors.white,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12),
-          width: 1.2,
-        ),
+        border: Border.all(color: Colors.grey.withValues(alpha: isDark ? 0.08 : 0.12), width: 1.2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,7 +267,7 @@ class _ParameterInputsCardState extends ConsumerState<ParameterInputsCard> {
                 _tr(context, 'Specifications & Dimensions', 'المواصفات والأبعاد'),
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13.sp),
               ),
-              Icon(Iconsax.setting_2_bold, color: AppTheme.primaryColor, size: 16.sp),
+              Icon(Iconsax.setting_2, color: AppTheme.primaryColor, size: 16.sp),
             ],
           ),
           SizedBox(height: 12.h),

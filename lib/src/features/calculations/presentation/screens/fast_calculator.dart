@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
 import 'package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart';
@@ -345,7 +345,7 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Iconsax.warning_2_bold, color: theme.colorScheme.error),
+          Icon(Iconsax.warning_2, color: theme.colorScheme.error),
           SizedBox(width: 12.w),
           Expanded(
             child: Text(
@@ -420,7 +420,7 @@ class _FastCalculatorState extends ConsumerState<FastCalculator> {
               height: 56.h,
               child: ElevatedButton.icon(
                 onPressed: () => _openRequestForm(result),
-                icon: const Icon(Iconsax.document_text_bold),
+                icon: const Icon(Iconsax.document_text),
                 label: Text(_tr(context, 'Request offer', 'اطلب عرض سعر')),
               ),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 
 /// All notification types sent by the server.
@@ -35,19 +35,19 @@ enum NotificationType {
   IconData get icon {
     switch (this) {
       case NotificationType.subscriptionRequest:
-        return Iconsax.receipt_1_bold;
+        return Iconsax.receipt_1;
       case NotificationType.companyActivationReminder:
-        return Iconsax.buildings_2_bold;
+        return Iconsax.buildings_2;
       case NotificationType.offerRequest:
-        return Iconsax.sun_1_bold;
+        return Iconsax.sun_1;
       case NotificationType.offer:
-        return Iconsax.tag_bold;
+        return Iconsax.tag;
       case NotificationType.invite:
-        return Iconsax.people_bold;
+        return Iconsax.people;
       case NotificationType.memberRemove:
-        return Iconsax.close_circle_bold;
+        return Iconsax.close_circle;
       case NotificationType.unknown:
-        return Iconsax.notification_bing_bold;
+        return Iconsax.notification_bing;
     }
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/status_badge.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -24,17 +24,8 @@ class CompanyCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: statusColor.withValues(alpha: 0.3),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: statusColor.withValues(alpha: 0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          border: Border.all(color: statusColor.withValues(alpha: 0.3), width: 1.5),
+          boxShadow: [BoxShadow(color: statusColor.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4))],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,16 +42,10 @@ class CompanyCard extends StatelessWidget {
                     alignment: WrapAlignment.spaceBetween,
                     children: [
                       ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth: isMobile ? 180 : 320,
-                        ),
+                        constraints: BoxConstraints(maxWidth: isMobile ? 180 : 320),
                         child: Text(
                           company.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            fontFamily: AppTheme.fontFamily,
-                          ),
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, fontFamily: AppTheme.fontFamily),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -71,20 +56,12 @@ class CompanyCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(
-                        Iconsax.location_bold,
-                        size: 12,
-                        color: Colors.grey,
-                      ),
+                      const Icon(Iconsax.location, size: 12, color: Colors.grey),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           company.city?.name ?? 'Unknown',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
-                            fontFamily: AppTheme.fontFamily,
-                          ),
+                          style: TextStyle(fontSize: 12, color: isDark ? Colors.grey[400] : Colors.grey[600], fontFamily: AppTheme.fontFamily),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -100,22 +77,11 @@ class CompanyCard extends StatelessWidget {
                       _buildFeatureTag('B2C', company.allowsB2C),
                       if (company.tier != null)
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.accentColor.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(color: AppTheme.accentColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)),
                           child: Text(
                             company.tier!,
-                            style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.accentColor,
-                              fontFamily: AppTheme.fontFamily,
-                            ),
+                            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppTheme.accentColor, fontFamily: AppTheme.fontFamily),
                           ),
                         ),
                     ],
@@ -136,20 +102,9 @@ class CompanyCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        image: company.logo != null
-            ? DecorationImage(
-                image: NetworkImage(company.logo!),
-                fit: BoxFit.cover,
-              )
-            : null,
+        image: company.logo != null ? DecorationImage(image: NetworkImage(company.logo!), fit: BoxFit.cover) : null,
       ),
-      child: company.logo == null
-          ? const Icon(
-              Iconsax.building_bold,
-              color: AppTheme.primaryColor,
-              size: 26,
-            )
-          : null,
+      child: company.logo == null ? const Icon(Iconsax.building, color: AppTheme.primaryColor, size: 26) : null,
     );
   }
 
@@ -174,19 +129,12 @@ class CompanyCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: enabled
-            ? AppTheme.primaryColor.withValues(alpha: 0.1)
-            : Colors.grey.withValues(alpha: 0.1),
+        color: enabled ? AppTheme.primaryColor.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
         label,
-        style: TextStyle(
-          color: enabled ? AppTheme.primaryColor : Colors.grey,
-          fontSize: 10,
-          fontWeight: FontWeight.w600,
-          fontFamily: AppTheme.fontFamily,
-        ),
+        style: TextStyle(color: enabled ? AppTheme.primaryColor : Colors.grey, fontSize: 10, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/wizard_intro_card.dart';
@@ -56,7 +56,7 @@ class _StructureDesignStepState extends ConsumerState<StructureDesignStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WizardIntroCard(
-            icon: Iconsax.buildings_2_bold,
+            icon: Iconsax.buildings_2,
             titleEn: 'Structure Design',
             titleAr: 'تصميم الهيكل',
             descriptionEn: 'Configure clearances and row mode. The calculator will auto-optimize the frame layout.',
@@ -66,31 +66,74 @@ class _StructureDesignStepState extends ConsumerState<StructureDesignStep> {
           SectionCard(
             titleEn: 'Clearances',
             titleAr: 'المسافات الفاصلة',
-            icon: Iconsax.maximize_circle_bold,
+            icon: Iconsax.maximize_circle,
             child: Column(
               children: [
                 Row(
                   children: [
-                    Expanded(child: PvNumberField(label: isAr ? 'أمامي' : 'Front', controller: _frontCtrl, suffix: 'm', min: 0, max: 10, onChanged: (v) => controller.updateFrontClearance(v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'أمامي' : 'Front',
+                        controller: _frontCtrl,
+                        suffix: 'm',
+                        min: 0,
+                        max: 10,
+                        onChanged: (v) => controller.updateFrontClearance(v),
+                      ),
+                    ),
                     SizedBox(width: 12.w),
-                    Expanded(child: PvNumberField(label: isAr ? 'خلفي' : 'Rear', controller: _rearCtrl, suffix: 'm', min: 0, max: 10, onChanged: (v) => controller.updateRearClearance(v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'خلفي' : 'Rear',
+                        controller: _rearCtrl,
+                        suffix: 'm',
+                        min: 0,
+                        max: 10,
+                        onChanged: (v) => controller.updateRearClearance(v),
+                      ),
+                    ),
                   ],
                 ),
                 Row(
                   children: [
-                    Expanded(child: PvNumberField(label: isAr ? 'جانبي' : 'Side', controller: _sideCtrl, suffix: 'm', min: 0, max: 5, onChanged: (v) => controller.updateSideClearance(v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'جانبي' : 'Side',
+                        controller: _sideCtrl,
+                        suffix: 'm',
+                        min: 0,
+                        max: 5,
+                        onChanged: (v) => controller.updateSideClearance(v),
+                      ),
+                    ),
                     SizedBox(width: 12.w),
-                    Expanded(child: PvNumberField(label: isAr ? 'ارتفاع الساق' : 'Leg Height', controller: _legCtrl, suffix: 'm', min: 0, max: 5, onChanged: (v) => controller.updateFrontLegClearance(v))),
+                    Expanded(
+                      child: PvNumberField(
+                        label: isAr ? 'ارتفاع الساق' : 'Leg Height',
+                        controller: _legCtrl,
+                        suffix: 'm',
+                        min: 0,
+                        max: 5,
+                        onChanged: (v) => controller.updateFrontLegClearance(v),
+                      ),
+                    ),
                   ],
                 ),
-                PvNumberField(label: isAr ? 'فجوة بين الصفوف' : 'Inter-Row Gap', controller: _interRowCtrl, suffix: 'm', min: 0, max: 5, onChanged: (v) => controller.updateInterRowGap(v)),
+                PvNumberField(
+                  label: isAr ? 'فجوة بين الصفوف' : 'Inter-Row Gap',
+                  controller: _interRowCtrl,
+                  suffix: 'm',
+                  min: 0,
+                  max: 5,
+                  onChanged: (v) => controller.updateInterRowGap(v),
+                ),
               ],
             ),
           ),
           SectionCard(
             titleEn: 'Row Mode',
             titleAr: 'وضع الصفوف',
-            icon: Iconsax.row_vertical_bold,
+            icon: Iconsax.row_vertical,
             child: Row(
               children: [
                 Expanded(
@@ -118,7 +161,7 @@ class _StructureDesignStepState extends ConsumerState<StructureDesignStep> {
             SectionCard(
               titleEn: 'Layout Result',
               titleAr: 'نتيجة التخطيط',
-              icon: Iconsax.chart_bold,
+              icon: Iconsax.chart,
               child: Column(
                 children: [
                   _buildMetricRow(isAr, 'Rows / Columns', 'الصفوف / الأعمدة', '${result.rows} / ${result.columns}'),
@@ -141,8 +184,16 @@ class _StructureDesignStepState extends ConsumerState<StructureDesignStep> {
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: Row(
         children: [
-          Expanded(child: Text(isAr ? ar : en, style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]))),
-          Text(value, style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold)),
+          Expanded(
+            child: Text(
+              isAr ? ar : en,
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );

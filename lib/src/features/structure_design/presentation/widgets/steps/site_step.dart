@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/section_card.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
@@ -45,7 +45,7 @@ class SiteStep extends StatelessWidget {
             IntroCard(l10n: l10n, title: l10n.structure_design_title, description: l10n.structure_design_intro),
             SizedBox(height: 16.h),
             SectionCard(
-              icon: Iconsax.map_1_bold,
+              icon: Iconsax.map_1,
               title: l10n.structure_site_inputs,
               explanation: explanations[0],
               child: Column(
@@ -71,7 +71,7 @@ class SiteStep extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             SectionCard(
-              icon: Iconsax.location_bold,
+              icon: Iconsax.location,
               title: l10n.structure_direction_preference,
               explanation: explanations[1],
               child: Column(

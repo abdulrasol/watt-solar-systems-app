@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
 //import 'package:solar_hub/controllers/data_controller.dart';
 
@@ -161,7 +161,7 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
         context: context,
         label: AppLocalizations.of(context)!.your_load_ampere,
         hintText: AppLocalizations.of(context)!.example_10,
-        icon: FontAwesome.bolt_solid,
+        icon: Iconsax.flash,
         controller: userCurrent,
         validator: Validatorless.multiple([
           Validatorless.required(AppLocalizations.of(context)!.required_field),
@@ -183,7 +183,7 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
             null,
             label: AppLocalizations.of(context)!.battery_amperes,
             hintText: AppLocalizations.of(context)!.example_100_or_200,
-            icon: FontAwesome.i_solid,
+            icon: Icons.electric_bolt,
             controller: current,
             validator: Validatorless.multiple([
               Validatorless.required(
@@ -199,7 +199,7 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
             null,
             label: AppLocalizations.of(context)!.battery_voltage_label,
             hintText: AppLocalizations.of(context)!.example_12_24_48_512,
-            icon: FontAwesome.v_solid,
+            icon: Icons.electric_bolt,
             controller: voltage,
             validator: Validatorless.multiple([
               Validatorless.required(
@@ -215,7 +215,7 @@ class _TimeCalculatorState extends ConsumerState<TimeCalculator> {
             null,
             label: AppLocalizations.of(context)!.battery_count_label,
             hintText: AppLocalizations.of(context)!.battery_count_hint,
-            icon: FontAwesome.n_solid,
+            icon: Iconsax.battery_full,
             controller: numbers,
             validator: Validatorless.multiple([
               Validatorless.required(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -33,16 +33,9 @@ class RequestDetailBottomSheet extends ConsumerWidget {
             children: [
               Text(
                 l10n.solar_request_details,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: AppTheme.fontFamily,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily),
               ),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Iconsax.close_circle_bold),
-              ),
+              IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Iconsax.close_circle)),
             ],
           ),
           const Divider(),
@@ -60,9 +53,7 @@ class RequestDetailBottomSheet extends ConsumerWidget {
                 radius: 24.r,
                 backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
                 backgroundImage: request.user?.image != null ? NetworkImage(request.user!.image!) : null,
-                child: request.user?.image == null
-                    ? Icon(Iconsax.user_bold, size: 24.sp, color: AppTheme.primaryColor)
-                    : null,
+                child: request.user?.image == null ? Icon(Iconsax.user, size: 24.sp, color: AppTheme.primaryColor) : null,
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -75,7 +66,7 @@ class RequestDetailBottomSheet extends ConsumerWidget {
                     ),
                     Row(
                       children: [
-                        Icon(Iconsax.location_bold, size: 12.sp, color: Colors.grey),
+                        Icon(Iconsax.location, size: 12.sp, color: Colors.grey),
                         SizedBox(width: 4.w),
                         Text(
                           request.city?.name ?? '-',
@@ -89,12 +80,12 @@ class RequestDetailBottomSheet extends ConsumerWidget {
               if (request.user?.phone != null)
                 IconButton(
                   onPressed: () => launchUrl(Uri.parse('tel:${request.user!.phone}')),
-                  icon: Icon(Iconsax.call_bold, color: Colors.green, size: 24.sp),
+                  icon: Icon(Iconsax.call, color: Colors.green, size: 24.sp),
                 ),
               if (request.user?.email != null)
                 IconButton(
                   onPressed: () => launchUrl(Uri.parse('mailto:${request.user!.email}')),
-                  icon: Icon(Iconsax.sms_bold, color: Colors.blue, size: 24.sp),
+                  icon: Icon(Iconsax.sms, color: Colors.blue, size: 24.sp),
                 ),
             ],
           ),
@@ -104,11 +95,7 @@ class RequestDetailBottomSheet extends ConsumerWidget {
 
           Text(
             l10n.user_needs,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              color: AppTheme.primaryColor,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp, color: AppTheme.primaryColor),
           ),
           SizedBox(height: 12.h),
           _buildSpecGrid(context),
@@ -133,25 +120,16 @@ class RequestDetailBottomSheet extends ConsumerWidget {
             child: ElevatedButton.icon(
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OfferReplyForm(request: request),
-                  ),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OfferReplyForm(request: request)));
               },
-              icon: const Icon(Iconsax.flash_1_bold),
+              icon: const Icon(Iconsax.flash_1),
               label: Text(l10n.send_offer_for_request),
             ),
           ),
           SizedBox(height: 12.h),
           SizedBox(
             width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Iconsax.close_circle_bold),
-              label: Text(l10n.cancel),
-            ),
+            child: OutlinedButton.icon(onPressed: () => Navigator.pop(context), icon: const Icon(Iconsax.close_circle), label: Text(l10n.cancel)),
           ),
         ],
       ),
@@ -166,22 +144,10 @@ class RequestDetailBottomSheet extends ConsumerWidget {
       crossAxisCount: 2,
       childAspectRatio: 3,
       children: [
-        _buildMiniSpec(
-          l10n.panels_power,
-          l10n.unit_watts(request.totalPanelPower),
-        ),
-        _buildMiniSpec(
-          l10n.battery_power,
-          l10n.unit_watthours(_formatNumber(request.totalBatteryPower)),
-        ),
-        _buildMiniSpec(
-          l10n.inverter_calc,
-          '${l10n.unit_watts(_formatNumber(request.totalInvertersPower))} (${request.inverterType.localizedLabel(l10n)})',
-        ),
-        _buildMiniSpec(
-          l10n.battery_type_full,
-          request.batteryType.localizedLabel(l10n),
-        ),
+        _buildMiniSpec(l10n.panels_power, l10n.unit_watts(request.totalPanelPower)),
+        _buildMiniSpec(l10n.battery_power, l10n.unit_watthours(_formatNumber(request.totalBatteryPower))),
+        _buildMiniSpec(l10n.inverter_calc, '${l10n.unit_watts(_formatNumber(request.totalInvertersPower))} (${request.inverterType.localizedLabel(l10n)})'),
+        _buildMiniSpec(l10n.battery_type_full, request.batteryType.localizedLabel(l10n)),
       ],
     );
   }
@@ -189,7 +155,7 @@ class RequestDetailBottomSheet extends ConsumerWidget {
   Widget _buildMiniSpec(String label, String value) {
     return Row(
       children: [
-        const Icon(Iconsax.verify_bold, size: 14, color: AppTheme.primaryColor),
+        const Icon(Iconsax.verify, size: 14, color: AppTheme.primaryColor),
         SizedBox(width: 4.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

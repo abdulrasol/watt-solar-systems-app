@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/wizard_intro_card.dart';
@@ -46,7 +46,7 @@ class _SiteSetupStepState extends ConsumerState<SiteSetupStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WizardIntroCard(
-            icon: Iconsax.location_bold,
+            icon: Iconsax.location,
             titleEn: 'Site Location & Orientation',
             titleAr: 'موقع الموقع والاتجاه',
             descriptionEn: 'Set your location and preferred panel facing direction for optimal solar capture.',
@@ -56,7 +56,7 @@ class _SiteSetupStepState extends ConsumerState<SiteSetupStep> {
           SectionCard(
             titleEn: 'GPS Location',
             titleAr: 'الموقع الجغرافي',
-            icon: Iconsax.global_bold,
+            icon: Iconsax.global,
             explanationEn: 'Your latitude determines the optimal tilt angle and sun path for maximum energy production.',
             explanationAr: 'يحدد خط العرض الخاص بك زاوية الميل المثالية ومسار الشمس لأقصى إنتاج للطاقة.',
             child: Column(
@@ -93,10 +93,12 @@ class _SiteSetupStepState extends ConsumerState<SiteSetupStep> {
                           },
                     icon: state.isLocationLoading
                         ? SizedBox(width: 16.w, height: 16.h, child: const CircularProgressIndicator(strokeWidth: 2))
-                        : const Icon(Iconsax.location_tick_bold),
-                    label: Text(state.isLocationLoading
-                        ? (isAr ? 'جاري الحصول على الموقع...' : 'Getting location...')
-                        : (isAr ? 'استخدام الموقع الحالي' : 'Use Current Location')),
+                        : const Icon(Iconsax.location_tick),
+                    label: Text(
+                      state.isLocationLoading
+                          ? (isAr ? 'جاري الحصول على الموقع...' : 'Getting location...')
+                          : (isAr ? 'استخدام الموقع الحالي' : 'Use Current Location'),
+                    ),
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
@@ -105,7 +107,10 @@ class _SiteSetupStepState extends ConsumerState<SiteSetupStep> {
                 ),
                 if (state.locationError != null) ...[
                   SizedBox(height: 8.h),
-                  Text(state.locationError!, style: TextStyle(color: Colors.redAccent, fontSize: 11.sp)),
+                  Text(
+                    state.locationError!,
+                    style: TextStyle(color: Colors.redAccent, fontSize: 11.sp),
+                  ),
                 ],
               ],
             ),
@@ -146,7 +151,7 @@ class _SiteSetupStepState extends ConsumerState<SiteSetupStep> {
           SectionCard(
             titleEn: 'Mount Type',
             titleAr: 'نوع التركيب',
-            icon: Iconsax.buildings_bold,
+            icon: Iconsax.buildings,
             child: DropdownButtonFormField<MountType>(
               initialValue: state.mountType,
               isExpanded: true,

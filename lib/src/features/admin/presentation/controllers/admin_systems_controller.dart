@@ -90,6 +90,17 @@ class AdminSystemsController extends Notifier<AdminSystemsState> {
     state = state.copyWith(page: state.page + 1);
     await fetchSystems();
   }
+
+  /// Backend tracks `user_status` and `company_status` as two independent
+  /// fields (not one combined status) — pass only the one(s) you want to
+  /// change, matching `PUT /admin/systems/{id}/status`'s
+  /// `SystemAdminStatusSchema` (both fields optional).
+  Future<void> updateSystemStatus(String systemId, {String? userStatus, String? companyStatus}) async {
+    final id = int.tryParse(systemId);
+    if (id == null) return;
+    await _adminDataSource.updateAdminSystemStatus(id, userStatus: userStatus, companyStatus: companyStatus);
+    await fetchSystems(isRefresh: true);
+  }
 }
 
 final adminSystemsProvider =

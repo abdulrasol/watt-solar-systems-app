@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
@@ -25,36 +25,26 @@ class AuthPage extends ConsumerStatefulWidget {
   ConsumerState<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends ConsumerState<AuthPage>
-    with SingleTickerProviderStateMixin {
+class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
 
   // Login Controllers
-  final TextEditingController _loginUsernameController =
-      TextEditingController();
-  final TextEditingController _loginPasswordController =
-      TextEditingController();
-  final RoundedLoadingButtonController _loginBtnController =
-      RoundedLoadingButtonController();
+  final TextEditingController _loginUsernameController = TextEditingController();
+  final TextEditingController _loginPasswordController = TextEditingController();
+  final RoundedLoadingButtonController _loginBtnController = RoundedLoadingButtonController();
 
   // Sign Up Controllers
-  final TextEditingController _signUpFirstNameController =
-      TextEditingController();
-  final TextEditingController _signUpLastNameController =
-      TextEditingController();
+  final TextEditingController _signUpFirstNameController = TextEditingController();
+  final TextEditingController _signUpLastNameController = TextEditingController();
   final TextEditingController _signUpEmailController = TextEditingController();
-  final TextEditingController _signUpUsernameController =
-      TextEditingController();
+  final TextEditingController _signUpUsernameController = TextEditingController();
   final TextEditingController _signUpPhoneController = TextEditingController();
-  final TextEditingController _signUpPasswordController =
-      TextEditingController();
-  final TextEditingController _signUpConfirmPasswordController =
-      TextEditingController();
-  final RoundedLoadingButtonController _signUpBtnController =
-      RoundedLoadingButtonController();
+  final TextEditingController _signUpPasswordController = TextEditingController();
+  final TextEditingController _signUpConfirmPasswordController = TextEditingController();
+  final RoundedLoadingButtonController _signUpBtnController = RoundedLoadingButtonController();
 
   City? _selectedCity;
   Country? _selectedCountry;
@@ -103,10 +93,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
             child: Container(
               width: 300,
               height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: theme.primaryColor.withValues(alpha: 0.1),
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: theme.primaryColor.withValues(alpha: 0.1)),
             ),
           ),
           Positioned(
@@ -115,37 +102,22 @@ class _AuthPageState extends ConsumerState<AuthPage>
             child: Container(
               width: 200,
               height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: theme.colorScheme.secondary.withValues(alpha: 0.1),
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: theme.colorScheme.secondary.withValues(alpha: 0.1)),
             ),
           ),
 
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 20,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Hero(
-                      tag: 'logo',
-                      child: Image.asset('assets/png/logo.png', height: 80),
-                    ).animate().scale(
-                      duration: 500.ms,
-                      curve: Curves.easeOutBack,
-                    ),
+                    Hero(tag: 'logo', child: Image.asset('assets/png/logo.png', height: 80)).animate().scale(duration: 500.ms, curve: Curves.easeOutBack),
                     const SizedBox(height: 20),
                     Text(
                       l10n.welcome_back,
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.primaryColor,
-                      ),
+                      style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, color: theme.primaryColor),
                     ).animate().fadeIn(delay: 200.ms).moveY(begin: 10, end: 0),
                     const SizedBox(height: 30),
 
@@ -153,30 +125,19 @@ class _AuthPageState extends ConsumerState<AuthPage>
                     Container(
                       height: 55,
                       padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: isDark ? Colors.grey[800] : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                      decoration: BoxDecoration(color: isDark ? Colors.grey[800] : Colors.grey[200], borderRadius: BorderRadius.circular(30)),
                       child: TabBar(
                         controller: _tabController,
                         indicator: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
                           color: theme.primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: theme.primaryColor.withValues(alpha: 0.3),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
+                          boxShadow: [BoxShadow(color: theme.primaryColor.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 2))],
                         ),
                         labelColor: Colors.white,
                         unselectedLabelColor: Colors.grey,
                         indicatorSize: TabBarIndicatorSize.tab,
                         dividerColor: Colors.transparent,
-                        labelStyle: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        labelStyle: const TextStyle(fontWeight: FontWeight.w600),
                         tabs: [
                           Tab(text: l10n.login),
                           Tab(text: l10n.sign_up),
@@ -192,10 +153,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
                       child: TabBarView(
                         controller: _tabController,
                         physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          _buildLoginForm(theme),
-                          _buildSignUpForm(theme),
-                        ],
+                        children: [_buildLoginForm(theme), _buildSignUpForm(theme)],
                       ),
                     ),
                   ],
@@ -208,10 +166,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
           Positioned(
             top: 40,
             left: 20,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: () => context.go(widget.redirectTo ?? '/home'),
-            ),
+            child: IconButton(icon: const Icon(Icons.arrow_back_ios), onPressed: () => context.go(widget.redirectTo ?? '/home')),
           ),
         ],
       ),
@@ -230,10 +185,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
               const Expanded(child: Divider()),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  l10n.or_text,
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                ),
+                child: Text(l10n.or_text, style: TextStyle(color: Colors.grey, fontSize: 12)),
               ),
               const Expanded(child: Divider()),
             ],
@@ -242,24 +194,16 @@ class _AuthPageState extends ConsumerState<AuthPage>
           _buildTextField(
             controller: _loginUsernameController,
             label: AppLocalizations.of(context)!.username,
-            icon: Iconsax.user_cirlce_add_bold,
-            validator: Validatorless.multiple([
-              Validatorless.required(
-                AppLocalizations.of(context)!.username_is_required,
-              ),
-            ]),
+            icon: Iconsax.user_cirlce_add,
+            validator: Validatorless.multiple([Validatorless.required(AppLocalizations.of(context)!.username_is_required)]),
           ),
           const SizedBox(height: 16),
           _buildTextField(
             controller: _loginPasswordController,
             label: AppLocalizations.of(context)!.password,
-            icon: Iconsax.lock_bold,
+            icon: Iconsax.lock,
             isPassword: true,
-            validator: Validatorless.multiple([
-              Validatorless.required(
-                AppLocalizations.of(context)!.password_is_required,
-              ),
-            ]),
+            validator: Validatorless.multiple([Validatorless.required(AppLocalizations.of(context)!.password_is_required)]),
           ),
           const SizedBox(height: 10),
           Align(
@@ -268,21 +212,14 @@ class _AuthPageState extends ConsumerState<AuthPage>
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                   isScrollControlled: true,
                   builder: (context) => ForgotPasswordSheet(),
                 );
               },
               child: Text(
                 AppLocalizations.of(context)!.forgot_password,
-                style: TextStyle(
-                  color: theme.primaryColor,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -296,11 +233,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
             borderRadius: 12,
             child: Text(
               AppLocalizations.of(context)!.login,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
         ],
@@ -316,45 +249,30 @@ class _AuthPageState extends ConsumerState<AuthPage>
         child: Column(
           children: [
             const SizedBox(height: 10),
-            _buildTextField(
-              controller: _signUpFirstNameController,
-              label: AppLocalizations.of(context)!.first_name,
-              icon: Iconsax.user_bold,
-            ),
+            _buildTextField(controller: _signUpFirstNameController, label: AppLocalizations.of(context)!.first_name, icon: Iconsax.user),
             const SizedBox(height: 16),
-            _buildTextField(
-              controller: _signUpLastNameController,
-              label: AppLocalizations.of(context)!.last_name,
-              icon: Iconsax.user_bold,
-            ),
+            _buildTextField(controller: _signUpLastNameController, label: AppLocalizations.of(context)!.last_name, icon: Iconsax.user),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpUsernameController,
               label: AppLocalizations.of(context)!.username,
-              icon: Iconsax.user_cirlce_add_bold,
-              validator: Validatorless.required(
-                AppLocalizations.of(context)!.username_is_required,
-              ),
+              icon: Iconsax.user_cirlce_add,
+              validator: Validatorless.required(AppLocalizations.of(context)!.username_is_required),
             ),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpEmailController,
               label: AppLocalizations.of(context)!.email,
-              icon: Iconsax.sms_bold,
-              validator: Validatorless.email(
-                AppLocalizations.of(context)!.invalid_email,
-              ),
+              icon: Iconsax.sms,
+              validator: Validatorless.email(AppLocalizations.of(context)!.invalid_email),
             ),
             const SizedBox(height: 16),
             _buildTextField(
               controller: _signUpPhoneController,
               label: l10n.phone_number,
-              icon: Iconsax.call_bold,
+              icon: Iconsax.call,
               inputType: TextInputType.phone,
-              validator: Validatorless.multiple([
-                Validatorless.required(l10n.phone_required),
-                Validatorless.number(l10n.invalid_phone_number),
-              ]),
+              validator: Validatorless.multiple([Validatorless.required(l10n.phone_required), Validatorless.number(l10n.invalid_phone_number)]),
             ),
             const SizedBox(height: 16),
             Row(
@@ -363,35 +281,17 @@ class _AuthPageState extends ConsumerState<AuthPage>
                   child: DropdownButtonFormField<Country>(
                     initialValue: _selectedCountry,
                     decoration: InputDecoration(
-                      labelText: _isLoadingCountries
-                          ? AppLocalizations.of(context)!.loading
-                          : AppLocalizations.of(context)!.country,
-                      prefixIcon: _selectedCountry != null
-                          ? Icon(Iconsax.location_bold, size: 20.r)
-                          : null,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide.none,
-                      ),
+                      labelText: _isLoadingCountries ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.country,
+                      prefixIcon: _selectedCountry != null ? Icon(Iconsax.location, size: 20.r) : null,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20.w,
-                        vertical: 16.h,
-                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                     ),
-                    items: _countries
-                        .map(
-                          (country) => DropdownMenuItem(
-                            value: country,
-                            child: Text(country.name),
-                          ),
-                        )
-                        .toList(), // Now empty list
+                    items: _countries.map((country) => DropdownMenuItem(value: country, child: Text(country.name))).toList(), // Now empty list
                     onChanged: (value) {
                       setState(() {
                         _selectedCountry = value;
-                        _selectedCity =
-                            null; // Reset city to resolve assertion error
+                        _selectedCity = null; // Reset city to resolve assertion error
                         _fetchCities();
                       });
                     },
@@ -402,30 +302,13 @@ class _AuthPageState extends ConsumerState<AuthPage>
                   child: DropdownButtonFormField<City>(
                     initialValue: _selectedCity,
                     decoration: InputDecoration(
-                      labelText: _isLoadingCities
-                          ? AppLocalizations.of(context)!.loading
-                          : AppLocalizations.of(context)!.city,
-                      prefixIcon: _selectedCity != null
-                          ? Icon(Iconsax.location_bold, size: 20.r)
-                          : null,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide.none,
-                      ),
+                      labelText: _isLoadingCities ? AppLocalizations.of(context)!.loading : AppLocalizations.of(context)!.city,
+                      prefixIcon: _selectedCity != null ? Icon(Iconsax.location, size: 20.r) : null,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide.none),
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20.w,
-                        vertical: 16.h,
-                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                     ),
-                    items: _cities
-                        .map(
-                          (city) => DropdownMenuItem(
-                            value: city,
-                            child: Text(city.name),
-                          ),
-                        )
-                        .toList(), // Now empty list
+                    items: _cities.map((city) => DropdownMenuItem(value: city, child: Text(city.name))).toList(), // Now empty list
                     onChanged: (value) {
                       setState(() {
                         _selectedCity = value;
@@ -445,12 +328,10 @@ class _AuthPageState extends ConsumerState<AuthPage>
             _buildTextField(
               controller: _signUpPasswordController,
               label: AppLocalizations.of(context)!.password,
-              icon: Iconsax.lock_bold,
+              icon: Iconsax.lock,
               isPassword: true,
               validator: Validatorless.multiple([
-                Validatorless.required(
-                  AppLocalizations.of(context)!.password_is_required,
-                ),
+                Validatorless.required(AppLocalizations.of(context)!.password_is_required),
                 Validatorless.min(6, l10n.min_6_characters),
               ]),
             ),
@@ -458,15 +339,11 @@ class _AuthPageState extends ConsumerState<AuthPage>
             _buildTextField(
               controller: _signUpConfirmPasswordController,
               label: AppLocalizations.of(context)!.confirm_password,
-              icon: Iconsax.lock_bold,
+              icon: Iconsax.lock,
               isPassword: true,
               validator: Validatorless.multiple([
-                Validatorless.required(
-                  AppLocalizations.of(context)!.confirm_password_is_required,
-                ),
-                (val) => val != _signUpPasswordController.text
-                    ? AppLocalizations.of(context)!.passwords_do_not_match
-                    : null,
+                Validatorless.required(AppLocalizations.of(context)!.confirm_password_is_required),
+                (val) => val != _signUpPasswordController.text ? AppLocalizations.of(context)!.passwords_do_not_match : null,
               ]),
             ),
             const SizedBox(height: 30),
@@ -479,11 +356,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
               borderRadius: 12,
               child: Text(
                 l10n.sign_up,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
           ],
@@ -508,15 +381,9 @@ class _AuthPageState extends ConsumerState<AuthPage>
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, size: 20),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         filled: true,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 16,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       ),
     );
   }
@@ -540,11 +407,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
       });
     } catch (e) {
       if (!mounted) return;
-      _showMessage(
-        AppLocalizations.of(context)!.error,
-        e.toString(),
-        isError: true,
-      );
+      _showMessage(AppLocalizations.of(context)!.error, e.toString(), isError: true);
     }
     setState(() {
       _isLoadingCountries = false;
@@ -557,19 +420,13 @@ class _AuthPageState extends ConsumerState<AuthPage>
       _isLoadingCities = true;
     });
     try {
-      final response = await getIt.get<AuthRepository>().getCities(
-        countryId: _selectedCountry!.id,
-      );
+      final response = await getIt.get<AuthRepository>().getCities(countryId: _selectedCountry!.id);
       setState(() {
         _cities = response;
       });
     } catch (e) {
       if (!mounted) return;
-      _showMessage(
-        AppLocalizations.of(context)!.error,
-        e.toString(),
-        isError: true,
-      );
+      _showMessage(AppLocalizations.of(context)!.error, e.toString(), isError: true);
     }
     setState(() {
       _isLoadingCities = false;
@@ -579,10 +436,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
   Future<void> _handleLogin() async {
     if (_loginFormKey.currentState!.validate()) {
       try {
-        final response = await getIt.get<AuthRepository>().login(
-          _loginUsernameController.text.trim(),
-          _loginPasswordController.text,
-        );
+        final response = await getIt.get<AuthRepository>().login(_loginUsernameController.text.trim(), _loginPasswordController.text);
         if (!mounted) return;
         ref.read(authProvider.notifier).login(response);
         _loginBtnController.success();
@@ -591,11 +445,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
       } catch (e) {
         if (!mounted) return;
         _loginBtnController.error();
-        _showMessage(
-          AppLocalizations.of(context)!.error,
-          e.toString(),
-          isError: true,
-        );
+        _showMessage(AppLocalizations.of(context)!.error, e.toString(), isError: true);
         await Future.delayed(const Duration(seconds: 1));
         _loginBtnController.reset();
       }
@@ -623,20 +473,13 @@ class _AuthPageState extends ConsumerState<AuthPage>
         if (!mounted) return;
         ref.read(authProvider.notifier).register(response);
         _signUpBtnController.success();
-        _showMessage(
-          AppLocalizations.of(context)!.account_created,
-          AppLocalizations.of(context)!.please_verify_email,
-        );
+        _showMessage(AppLocalizations.of(context)!.account_created, AppLocalizations.of(context)!.please_verify_email);
         await Future.delayed(const Duration(seconds: 2));
         if (mounted) context.go(widget.redirectTo ?? '/home');
       } catch (e) {
         if (!mounted) return;
         _signUpBtnController.error();
-        _showMessage(
-          AppLocalizations.of(context)!.sign_up_failed,
-          e.toString(),
-          isError: true,
-        );
+        _showMessage(AppLocalizations.of(context)!.sign_up_failed, e.toString(), isError: true);
         await Future.delayed(const Duration(seconds: 1));
         _signUpBtnController.reset();
       }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/notifications/presentation/controllers/notification_history_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -28,10 +28,7 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
           Container(
             width: 40.w,
             height: 4.h,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(2.r),
-            ),
+            decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2.r)),
           ),
           Padding(
             padding: EdgeInsets.all(24.r),
@@ -40,11 +37,7 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
               children: [
                 Text(
                   l10n.notifications,
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w800,
-                    fontFamily: AppTheme.fontFamily,
-                  ),
+                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
                 ),
                 if (state.items.any((item) => item.status != 'read'))
                   TextButton(
@@ -53,10 +46,7 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                     },
                     child: Text(
                       l10n.mark_all_read,
-                      style: TextStyle(
-                        color: AppTheme.primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.bold),
                     ),
                   ),
               ],
@@ -70,18 +60,11 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Iconsax.notification_bing_bold,
-                          size: 64.sp,
-                          color: Colors.grey.withValues(alpha: 0.3),
-                        ),
+                        Icon(Iconsax.notification_bing, size: 64.sp, color: Colors.grey.withValues(alpha: 0.3)),
                         SizedBox(height: 16.h),
                         Text(
                           l10n.no_notifications,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.sp,
-                          ),
+                          style: TextStyle(color: Colors.grey, fontSize: 16.sp),
                         ),
                       ],
                     ),
@@ -89,12 +72,8 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                 : ListView.separated(
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     itemCount: state.items.length,
-                    separatorBuilder: (context, index) => Divider(
-                      height: 32.h,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.1),
-                    ),
+                    separatorBuilder: (context, index) =>
+                        Divider(height: 32.h, color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1)),
                     itemBuilder: (context, index) {
                       final notification = state.items[index];
                       final isUnread = notification.status != 'read';
@@ -106,17 +85,8 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                             children: [
                               Container(
                                 padding: EdgeInsets.all(10.r),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.primaryColor.withValues(
-                                    alpha: 0.1,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Iconsax.notification_bold,
-                                  color: AppTheme.primaryColor,
-                                  size: 20.sp,
-                                ),
+                                decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+                                child: Icon(Iconsax.notification, color: AppTheme.primaryColor, size: 20.sp),
                               ),
                               if (isUnread)
                                 Positioned(
@@ -128,10 +98,7 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                                     decoration: BoxDecoration(
                                       color: Colors.redAccent,
                                       shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Theme.of(context).scaffoldBackgroundColor,
-                                        width: 1.5.r,
-                                      ),
+                                      border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 1.5.r),
                                     ),
                                   ),
                                 ),
@@ -144,28 +111,17 @@ class NotificationCenterBottomSheet extends ConsumerWidget {
                               children: [
                                 Text(
                                   notification.title,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.sp,
-                                  ),
+                                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14.sp),
                                 ),
                                 SizedBox(height: 4.h),
                                 Text(
                                   notification.body,
-                                  style: TextStyle(
-                                    color: isDark
-                                        ? Colors.grey[400]
-                                        : Colors.grey[600],
-                                    fontSize: 13.sp,
-                                  ),
+                                  style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600], fontSize: 13.sp),
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
                                   timeago.format(notification.createdAt),
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 11.sp,
-                                  ),
+                                  style: TextStyle(color: Colors.grey, fontSize: 11.sp),
                                 ),
                               ],
                             ),

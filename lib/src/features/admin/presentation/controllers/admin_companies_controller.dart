@@ -71,16 +71,18 @@ class AdminCompaniesController extends Notifier<AdminCompaniesState> {
     }
 
     try {
+      // Was pageSize: 20 — brought to 12 to match the project's standard
+      // pagination page size used everywhere else in the app.
       final companies = await _repository.listCompanies(
         status: status ?? state.statusFilter,
         page: state.page,
-        pageSize: 20,
+        pageSize: 12,
       );
       state = state.copyWith(
         isLoading: false,
         isMoreLoading: false,
         companies: isRefresh ? companies : [...state.companies, ...companies],
-        hasMore: companies.length >= 20,
+        hasMore: companies.length >= 12,
       );
     } catch (e, s) {
       dPrint(e, stackTrace: s);

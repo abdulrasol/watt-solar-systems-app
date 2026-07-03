@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:solar_hub/src/features/admin/data/data_sources/admin_remote_data_source.dart';
@@ -89,6 +91,81 @@ class AdminProductsController extends Notifier<AdminProductsState> {
     if (state.isMoreLoading || !state.hasMore) return;
     state = state.copyWith(page: state.page + 1);
     await fetchProducts();
+  }
+
+  /// [companyId] is required by the backend's `AdminProductCreateSchema` —
+  /// this is the field that was entirely missing before: admins could only
+  /// view products, never create one (or reassign one to a different
+  /// company on edit).
+  Future<void> createProduct({
+    required int companyId,
+    required String name,
+    String? sku,
+    int? globalCategoryId,
+    String? description,
+    double costPrice = 0,
+    double retailPrice = 0,
+    double wholesalePrice = 0,
+    double discount = 0,
+    int stockQuantity = 0,
+    int minStockAlert = 5,
+    String status = 'active',
+  }) async {
+    final payload = jsonEncode({
+      'company_id': companyId,
+      'name': name,
+      'sku': sku,
+      'global_category_id': globalCategoryId,
+      'description': description,
+      'cost_price': costPrice,
+      'retail_price': retailPrice,
+      'wholesale_price': wholesalePrice,
+      'discount': discount,
+      'stock_quantity': stockQuantity,
+      'min_stock_alert': minStockAlert,
+      'status': status,
+    });
+    await _adminDataSource.createAdminProduct(payload);
+    await fetchProducts(isRefresh: true);
+  }
+
+  /// Only fields the caller actually supplies are sent — the backend's
+  /// `AdminProductUpdateSchema` only touches fields present in the payload
+  /// (`exclude_unset=True`), so omitted fields are left as-is server-side.
+  Future<void> updateProduct(
+    int productId, {
+    int? companyId,
+    String? name,
+    String? sku,
+    int? globalCategoryId,
+    String? description,
+    double? retailPrice,
+    double? wholesalePrice,
+    double? discount,
+    int? stockQuantity,
+    int? minStockAlert,
+    String? status,
+  }) async {
+    final payload = <String, dynamic>{};
+    if (companyId != null) payload['company_id'] = companyId;
+    if (name != null) payload['name'] = name;
+    if (sku != null) payload['sku'] = sku;
+    if (globalCategoryId != null) payload['global_category_id'] = globalCategoryId;
+    if (description != null) payload['description'] = description;
+    if (retailPrice != null) payload['retail_price'] = retailPrice;
+    if (wholesalePrice != null) payload['wholesale_price'] = wholesalePrice;
+    if (discount != null) payload['discount'] = discount;
+    if (stockQuantity != null) payload['stock_quantity'] = stockQuantity;
+    if (minStockAlert != null) payload['min_stock_alert'] = minStockAlert;
+    if (status != null) payload['status'] = status;
+
+    await _adminDataSource.updateAdminProduct(productId, jsonEncode(payload));
+    await fetchProducts(isRefresh: true);
+  }
+
+  Future<void> deleteProduct(int productId) async {
+    await _adminDataSource.deleteAdminProduct(productId);
+    state = state.copyWith(products: state.products.where((p) => p.id != productId).toList());
   }
 }
 

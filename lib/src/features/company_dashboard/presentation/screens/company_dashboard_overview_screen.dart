@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
@@ -12,6 +12,7 @@ import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/co
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_header_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_service_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_stat_card.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/financial_summary_card.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
 class CompanyDashboardOverviewScreen extends ConsumerWidget {
@@ -31,7 +32,7 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
           if (state.isError && summary == null)
             AdminErrorState(error: l10n.error_loading_data, onRetry: () => ref.read(companySummaryProvider.notifier).getSummary())
           else if (summary == null && state.isLoading)
-            const AdminLoadingState(icon: Iconsax.buildings_2_bold, message: 'Loading company workspace...')
+            const AdminLoadingState(icon: Iconsax.buildings_2, message: 'Loading company workspace...')
           else
             SingleChildScrollView(
               padding: AppBreakpoints.pagePadding(context),
@@ -64,20 +65,10 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
                             mainAxisSpacing: 16,
                             childAspectRatio: columns == 2 ? 1 : 1.5,
                             children: [
-                              CompanyWorkspaceStatCard(title: l10n.members, value: '${summary?.members ?? 0}', icon: Iconsax.people_bold, color: Colors.blue),
-                              CompanyWorkspaceStatCard(
-                                title: l10n.orders,
-                                value: '${summary?.orders ?? 0}',
-                                icon: Iconsax.shopping_cart_bold,
-                                color: Colors.green,
-                              ),
-                              CompanyWorkspaceStatCard(title: l10n.offers, value: '${summary?.offers ?? 0}', icon: Iconsax.document_bold, color: Colors.orange),
-                              CompanyWorkspaceStatCard(
-                                title: l10n.contacts,
-                                value: '${summary?.contactsCount ?? 0}',
-                                icon: Iconsax.call_bold,
-                                color: Colors.purple,
-                              ),
+                              CompanyWorkspaceStatCard(title: l10n.members, value: '${summary?.members ?? 0}', icon: Iconsax.people, color: Colors.blue),
+                              CompanyWorkspaceStatCard(title: l10n.orders, value: '${summary?.orders ?? 0}', icon: Iconsax.shopping_cart, color: Colors.green),
+                              CompanyWorkspaceStatCard(title: l10n.offers, value: '${summary?.offers ?? 0}', icon: Iconsax.document, color: Colors.orange),
+                              CompanyWorkspaceStatCard(title: l10n.contacts, value: '${summary?.contactsCount ?? 0}', icon: Iconsax.call, color: Colors.purple),
                             ],
                           );
                         },
@@ -91,7 +82,7 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
                           final services = [...?summary?.services];
                           final preview = services.take(width >= 1100 ? 4 : 2).toList();
                           if (preview.isEmpty) {
-                            return AdminEmptyState(icon: Iconsax.category_bold, title: l10n.services, subtitle: l10n.section_label(l10n.services));
+                            return AdminEmptyState(icon: Iconsax.category, title: l10n.services, subtitle: l10n.section_label(l10n.services));
                           }
 
                           final columns = width >= 1180
@@ -121,6 +112,8 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
                         },
                       ),
                       const SizedBox(height: 28),
+                      const FinancialSummaryCard(),
+                      const SizedBox(height: 28),
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(24),
@@ -132,7 +125,7 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Iconsax.chart_2_bold, color: AppTheme.primaryColor, size: 32),
+                            const Icon(Iconsax.chart_2, color: AppTheme.primaryColor, size: 32),
                             const SizedBox(height: 14),
                             Text(
                               l10n.ready_to_scale_business,

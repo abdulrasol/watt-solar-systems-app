@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
@@ -15,11 +15,7 @@ class AdminEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BrandedEmptyState(
-      icon: icon,
-      title: title,
-      subtitle: subtitle,
-    );
+    return BrandedEmptyState(icon: icon, title: title, subtitle: subtitle);
   }
 }
 
@@ -39,49 +35,29 @@ class AdminErrorState extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.all(20.w),
-              decoration: BoxDecoration(
-                color: AppTheme.errorColor.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Iconsax.warning_2_bold,
-                size: 48.sp,
-                color: AppTheme.errorColor,
-              ),
+              decoration: BoxDecoration(color: AppTheme.errorColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+              child: Icon(Iconsax.warning_2, size: 48.sp, color: AppTheme.errorColor),
             ),
             SizedBox(height: 24.h),
             Text(
               'Oops! Something went wrong',
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppTheme.fontFamily,
-              ),
+              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
             ),
             SizedBox(height: 12.h),
             Text(
               error,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey,
-                fontFamily: AppTheme.fontFamily,
-              ),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 32.h),
             ElevatedButton.icon(
               onPressed: onRetry,
-              icon: const Icon(Iconsax.refresh_bold, color: Colors.white),
-              label: const Text(
-                'Retry',
-                style: TextStyle(color: Colors.white),
-              ),
+              icon: const Icon(Iconsax.refresh, color: Colors.white),
+              label: const Text('Retry', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
                 padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                 elevation: 0,
               ),
             ),
@@ -93,11 +69,7 @@ class AdminErrorState extends StatelessWidget {
 }
 
 class AdminLoadingState extends StatelessWidget {
-  const AdminLoadingState({
-    super.key,
-    this.message = 'Loading...',
-    this.icon,
-  });
+  const AdminLoadingState({super.key, this.message = 'Loading...', this.icon});
 
   final String message;
   final IconData? icon;
@@ -111,27 +83,15 @@ class AdminLoadingState extends StatelessWidget {
           if (icon != null) ...[
             Container(
               padding: EdgeInsets.all(20.r),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                size: 40.sp,
-                color: AppTheme.primaryColor,
-              ),
+              decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+              child: Icon(icon, size: 40.sp, color: AppTheme.primaryColor),
             ),
             SizedBox(height: 24.h),
           ] else
             LoadingWidget(size: 80.sp),
           Text(
             message,
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: Colors.grey,
-              fontFamily: AppTheme.fontFamily,
-              letterSpacing: 0.5,
-            ),
+            style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily, letterSpacing: 0.5),
           ),
         ],
       ),
@@ -244,7 +204,7 @@ class AdminActionTile extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Iconsax.arrow_right_bold, color: isDark ? Colors.grey[400] : Colors.grey[600], size: 20.sp),
+            Icon(Iconsax.arrow_right, color: isDark ? Colors.grey[400] : Colors.grey[600], size: 20.sp),
           ],
         ),
       ),

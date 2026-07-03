@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 
 enum Permissions { read, write, none }
 
 enum ServiceStatus {
-  pending('Pending', Iconsax.clock_bold, Colors.orange),
-  active('Active', Iconsax.verify_bold, Colors.green),
-  rejected('Rejected', Iconsax.close_circle_bold, Colors.red),
-  suspended('Suspended', Iconsax.warning_2_bold, Colors.amber),
-  cancelled('Cancelled', Iconsax.slash_bold, Colors.grey);
+  pending('Pending', Iconsax.clock, Colors.orange),
+  active('Active', Iconsax.verify, Colors.green),
+  rejected('Rejected', Iconsax.close_circle, Colors.red),
+  suspended('Suspended', Iconsax.warning_2, Colors.amber),
+  cancelled('Cancelled', Iconsax.slash, Colors.grey);
 
   final String label;
   final IconData icon;
@@ -56,10 +56,10 @@ enum InverterType {
 }
 
 enum RequestStatus {
-  open('Open', Iconsax.folder_open_bold, Colors.blue),
-  offered('Offered', Iconsax.document_text_1_bold, Colors.orange),
-  accepted('Accepted', Iconsax.tick_circle_bold, Colors.purple),
-  closed('Closed', Iconsax.folder_cross_bold, Colors.grey);
+  open('Open', Iconsax.folder_open, Colors.blue),
+  offered('Offered', Iconsax.document_text_1, Colors.orange),
+  accepted('Accepted', Iconsax.tick_circle, Colors.purple),
+  closed('Closed', Iconsax.folder_cross, Colors.grey);
 
   final String label;
   final IconData icon;
@@ -68,10 +68,10 @@ enum RequestStatus {
 }
 
 enum OfferStatus {
-  pending('Pending', Iconsax.clock_bold, Colors.orange),
-  accepted('Accepted', Iconsax.verify_bold, Colors.green),
-  rejected('Rejected', Iconsax.close_circle_bold, Colors.red),
-  completed('Completed', Iconsax.document_text_bold, Colors.blue);
+  pending('Pending', Iconsax.clock, Colors.orange),
+  accepted('Accepted', Iconsax.verify, Colors.green),
+  rejected('Rejected', Iconsax.close_circle, Colors.red),
+  completed('Completed', Iconsax.document_text, Colors.blue);
 
   final String label;
   final IconData icon;

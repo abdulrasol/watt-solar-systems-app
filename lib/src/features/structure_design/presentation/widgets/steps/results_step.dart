@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/calculations/presentation/widgets/section_card.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
@@ -45,7 +45,7 @@ class ResultsStep extends ConsumerWidget {
       child: Column(
         children: [
           SectionCard(
-            icon: Iconsax.grid_1_bold,
+            icon: Iconsax.grid_1,
             title: l10n.structure_layout_editor,
             explanation: explanations[7],
             child: Column(
@@ -84,23 +84,15 @@ class ResultsStep extends ConsumerWidget {
                   SizedBox(height: 16.h),
                   Align(
                     alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      l10n.structure_row_offsets,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
+                    child: Text(l10n.structure_row_offsets, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
                   ),
                   SizedBox(height: 10.h),
                   for (var index = 0; index < result.rows; index++)
                     OffsetField(
                       key: Key('row_offset_$index'),
                       label: l10n.structure_row_offset_value(index + 1),
-                      initialValue: index < controller.rowBaseOffsetsMeters.length
-                          ? controller.rowBaseOffsetsMeters[index]
-                          : 0.0,
-                      onChanged: (value) =>
-                          controller.updateRowBaseOffset(index, value),
+                      initialValue: index < controller.rowBaseOffsetsMeters.length ? controller.rowBaseOffsetsMeters[index] : 0.0,
+                      onChanged: (value) => controller.updateRowBaseOffset(index, value),
                     ),
                 ],
               ],
@@ -115,54 +107,21 @@ class ResultsStep extends ConsumerWidget {
             explanation: explanations[8],
             child: Column(
               children: [
-                MetricRow(
-                  label: l10n.structure_panel_count,
-                  value: '${result.panelCount}',
-                ),
-                MetricRow(
-                  label: l10n.structure_frame_width,
-                  value: _meters(result.frameWidthMeters),
-                ),
-                MetricRow(
-                  label: l10n.structure_frame_length,
-                  value: _meters(result.frameSlopeLengthMeters),
-                ),
-                MetricRow(
-                  label: l10n.structure_row_spacing,
-                  value: _meters(result.rowSpacingMeters),
-                ),
-                MetricRow(
-                  label: l10n.structure_total_footprint_depth,
-                  value: _meters(result.totalFootprintDepthMeters),
-                ),
-                MetricRow(
-                  label: l10n.structure_front_leg_height,
-                  value: _meters(result.frontLegHeightMeters),
-                ),
-                MetricRow(
-                  label: l10n.structure_rear_leg_height,
-                  value: _meters(result.rearLegHeightMeters),
-                ),
+                MetricRow(label: l10n.structure_panel_count, value: '${result.panelCount}'),
+                MetricRow(label: l10n.structure_frame_width, value: _meters(result.frameWidthMeters)),
+                MetricRow(label: l10n.structure_frame_length, value: _meters(result.frameSlopeLengthMeters)),
+                MetricRow(label: l10n.structure_row_spacing, value: _meters(result.rowSpacingMeters)),
+                MetricRow(label: l10n.structure_total_footprint_depth, value: _meters(result.totalFootprintDepthMeters)),
+                MetricRow(label: l10n.structure_front_leg_height, value: _meters(result.frontLegHeightMeters)),
+                MetricRow(label: l10n.structure_rear_leg_height, value: _meters(result.rearLegHeightMeters)),
                 if (result.rowMode == RowMode.stepped) ...[
                   Column(
                     key: const Key('stepped_row_results'),
                     children: [
-                      MetricRow(
-                        label: l10n.structure_min_front_leg,
-                        value: _meters(result.minFrontLegHeightMeters),
-                      ),
-                      MetricRow(
-                        label: l10n.structure_max_front_leg,
-                        value: _meters(result.maxFrontLegHeightMeters),
-                      ),
-                      MetricRow(
-                        label: l10n.structure_min_rear_leg,
-                        value: _meters(result.minRearLegHeightMeters),
-                      ),
-                      MetricRow(
-                        label: l10n.structure_max_rear_leg,
-                        value: _meters(result.maxRearLegHeightMeters),
-                      ),
+                      MetricRow(label: l10n.structure_min_front_leg, value: _meters(result.minFrontLegHeightMeters)),
+                      MetricRow(label: l10n.structure_max_front_leg, value: _meters(result.maxFrontLegHeightMeters)),
+                      MetricRow(label: l10n.structure_min_rear_leg, value: _meters(result.minRearLegHeightMeters)),
+                      MetricRow(label: l10n.structure_max_rear_leg, value: _meters(result.maxRearLegHeightMeters)),
                     ],
                   ),
                 ],
@@ -176,18 +135,9 @@ class ResultsStep extends ConsumerWidget {
             explanation: explanations[8],
             child: Column(
               children: [
-                MetricRow(
-                  label: l10n.structure_rail_length,
-                  value: _meters(result.railLengthMeters),
-                ),
-                MetricRow(
-                  label: l10n.structure_brace_length,
-                  value: _meters(result.braceLengthMeters),
-                ),
-                MetricRow(
-                  label: l10n.structure_total_steel_length,
-                  value: _meters(result.totalSteelLengthMeters),
-                ),
+                MetricRow(label: l10n.structure_rail_length, value: _meters(result.railLengthMeters)),
+                MetricRow(label: l10n.structure_brace_length, value: _meters(result.braceLengthMeters)),
+                MetricRow(label: l10n.structure_total_steel_length, value: _meters(result.totalSteelLengthMeters)),
                 SizedBox(height: 4.h),
                 Text(
                   l10n.structure_total_steel_breakdown(
@@ -204,7 +154,7 @@ class ResultsStep extends ConsumerWidget {
           ),
           SizedBox(height: 16.h),
           SectionCard(
-            icon: Iconsax.gallery_bold,
+            icon: Iconsax.gallery,
             title: l10n.structure_sketch_title,
             explanation: explanations[8],
             child: Column(
@@ -256,10 +206,7 @@ class ResultsStep extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(height: 12.h),
-                Text(
-                  l10n.structure_sketch_hint,
-                  style: theme.textTheme.bodySmall,
-                ),
+                Text(l10n.structure_sketch_hint, style: theme.textTheme.bodySmall),
               ],
             ),
           ),

@@ -3214,6 +3214,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get battery => 'Battery';
 
   @override
+  String get inverter => 'Inverter';
+
+  @override
   String city_label(Object city) {
     return 'City: $city';
   }
@@ -3347,6 +3350,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delivery => 'Delivery';
+
+  @override
+  String get expenses => 'Expenses';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get cost => 'Cost';
+
+  @override
+  String get company_delivery_estimated_days_min => 'Min Days';
+
+  @override
+  String get company_delivery_estimated_days_max => 'Max Days';
+
+  @override
+  String company_delivery_delete_message(Object name) {
+    return 'Delete \"$name\" delivery option?';
+  }
+
+  @override
+  String company_expense_delete_message(Object category) {
+    return 'Delete this $category expense?';
+  }
+
+  @override
+  String get company_workspace_no_company => 'Select a company to continue';
 
   @override
   String get subscription => 'Subscription';
@@ -4114,4 +4148,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clear => 'Clear';
+
+  @override
+  String get recent_activity => 'Recent Activity';
+
+  @override
+  String get view_all => 'View All';
+
+  @override
+  String get dashboard_your_activity => 'Your Activity';
+
+  @override
+  String get dashboard_get_started => 'Get Started';
+
+  @override
+  String get dashboard_activity_signed_in_subtitle =>
+      'Track requests, orders, and alerts from one place.';
+
+  @override
+  String get dashboard_activity_guest_subtitle =>
+      'Sign in to save requests, place orders, and receive updates.';
+
+  @override
+  String get dashboard_services_action_subtitle =>
+      'Explore services and companies before creating an account.';
+
+  @override
+  String get dashboard_store_action_subtitle =>
+      'Shop products, compare companies, and place B2C orders.';
+
+  @override
+  String get dashboard_sign_in_card_subtitle =>
+      'Access your saved requests, orders, and notifications.';
+
+  @override
+  String get dashboard_guest_services_card_subtitle =>
+      'Explore services and companies before creating an account.';
+
+  @override
+  String dashboard_my_requests_count(int count) {
+    return '$count active and past requests.';
+  }
+
+  @override
+  String dashboard_my_orders_count(int count) {
+    return '$count B2C orders across storefront sellers.';
+  }
+
+  @override
+  String dashboard_notifications_count(int count) {
+    return '$count recent alerts and system updates.';
+  }
+
+  @override
+  String get user_mode => 'User Mode';
+
+  @override
+  String get admin_mode => 'Admin Mode';
+
+  @override
+  String get revenue_trend => 'Revenue Trend';
+
+  @override
+  String get financial_overview => 'Financial Overview';
+
+  @override
+  String get order_status => 'Order Status';
+
+  @override
+  String get low_stock_alerts => 'Low Stock Alerts';
+
+  @override
+  String get items_count => 'items';
+
+  @override
+  String formatUnitsLeft(int count) {
+    return '$count units left';
+  }
+
+  @override
+  String get restock => 'Restock';
+
+  @override
+  String get view_all_alerts => 'View All Alerts';
+
+  @override
+  String get create_invoice => 'Create Invoice';
+
+  @override
+  String get add_project => 'Add Project';
+
+  @override
+  String get no_results_found => 'No results found';
+
+  @override
+  String get marketplace_requests => 'Marketplace Requests';
+
+  @override
+  String get no_contact_info => 'No contact info';
+
+  @override
+  String get seasonal_solar_estimate => 'Seasonal Solar Estimation';
+
+  @override
+  String get est_daily_kw => 'Est. daily production';
+
+  @override
+  String formatSolarAdvice(String advice) {
+    return 'Recommended tilt: $advice';
+  }
 }

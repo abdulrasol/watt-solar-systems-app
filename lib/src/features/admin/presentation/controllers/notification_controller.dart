@@ -116,6 +116,64 @@ class NotificationController extends Notifier<NotificationState> {
     await fetchStatistics();
   }
 
+  Future<void> sendGroupNotification({
+    required String groupType,
+    required dynamic groupId,
+    required String title,
+    required String body,
+    Map<String, dynamic>? data,
+  }) async {
+    state = state.copyWith(isSending: true, error: null, successMessage: null);
+    final result = await _repository.sendToGroup(
+      groupType: groupType,
+      groupId: groupId,
+      title: title,
+      body: body,
+      data: data,
+    );
+    result.fold(
+      (failure) {
+        state = state.copyWith(isSending: false, error: failure.message);
+      },
+      (response) {
+        state = state.copyWith(
+          isSending: false,
+          successMessage:
+              '${response.message} Success: ${response.successCount}, Failed: ${response.failureCount}',
+        );
+      },
+    );
+    await fetchStatistics();
+  }
+
+  Future<void> sendUserNotification({
+    required int userId,
+    required String title,
+    required String body,
+    Map<String, dynamic>? data,
+  }) async {
+    state = state.copyWith(isSending: true, error: null, successMessage: null);
+    final result = await _repository.sendToUser(
+      userId: userId,
+      title: title,
+      body: body,
+      data: data,
+    );
+    result.fold(
+      (failure) {
+        state = state.copyWith(isSending: false, error: failure.message);
+      },
+      (response) {
+        state = state.copyWith(
+          isSending: false,
+          successMessage:
+              '${response.message} Success: ${response.successCount}, Failed: ${response.failureCount}',
+        );
+      },
+    );
+    await fetchStatistics();
+  }
+
   void clearSuccessMessage() {
     state = state.copyWith(successMessage: null);
   }

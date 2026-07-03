@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_currency.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_currency_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
@@ -49,33 +49,26 @@ class _AdminCurrencyScreenState extends ConsumerState<AdminCurrencyScreen> {
             child: state.isLoading
                 ? const AdminLoadingState(message: 'Loading Currencies...')
                 : state.error != null && state.currencies.isEmpty
-                    ? AdminErrorState(
-                        error: state.error!,
-                        onRetry: () => ref.read(adminCurrencyProvider.notifier).fetchCurrencies(isRefresh: true),
-                      )
-                    : RefreshIndicator(
-                        onRefresh: () => ref.read(adminCurrencyProvider.notifier).fetchCurrencies(isRefresh: true),
-                        child: state.currencies.isEmpty
-                            ? const AdminEmptyState(
-                                icon: Iconsax.money_bold,
-                                title: 'No Currencies',
-                                subtitle: 'Add a currency to get started',
-                              )
-                            : ListView.builder(
-                                controller: _scrollController,
-                                padding: EdgeInsets.all(20.w),
-                                itemCount: state.currencies.length + (state.isMoreLoading ? 1 : 0),
-                                itemBuilder: (context, index) {
-                                  if (index == state.currencies.length) {
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 20.h),
-                                      child: const Center(child: CircularProgressIndicator()),
-                                    );
-                                  }
-                                  return _CurrencyCard(currency: state.currencies[index]);
-                                },
-                              ),
-                      ),
+                ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminCurrencyProvider.notifier).fetchCurrencies(isRefresh: true))
+                : RefreshIndicator(
+                    onRefresh: () => ref.read(adminCurrencyProvider.notifier).fetchCurrencies(isRefresh: true),
+                    child: state.currencies.isEmpty
+                        ? const AdminEmptyState(icon: Iconsax.money, title: 'No Currencies', subtitle: 'Add a currency to get started')
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.all(20.w),
+                            itemCount: state.currencies.length + (state.isMoreLoading ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == state.currencies.length) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                                  child: const Center(child: CircularProgressIndicator()),
+                                );
+                              }
+                              return _CurrencyCard(currency: state.currencies[index]);
+                            },
+                          ),
+                  ),
           ),
         ],
       ),
@@ -148,10 +141,7 @@ class _CurrencyCard extends ConsumerWidget {
           Container(
             width: 50.w,
             height: 50.w,
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
+            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12.r)),
             child: Center(
               child: Text(
                 currency.symbol,
@@ -178,10 +168,7 @@ class _CurrencyCard extends ConsumerWidget {
           if (currency.isDefault)
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(6.r),
-              ),
+              decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6.r)),
               child: Text(
                 'Default',
                 style: TextStyle(fontSize: 10.sp, color: Colors.green, fontWeight: FontWeight.bold),
@@ -190,14 +177,20 @@ class _CurrencyCard extends ConsumerWidget {
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'edit') {
-                showDialog(context: context, builder: (context) => _CurrencyDialog(currency: currency));
+                showDialog(
+                  context: context,
+                  builder: (context) => _CurrencyDialog(currency: currency),
+                );
               } else if (value == 'delete') {
                 _confirmDelete(context, ref);
               }
             },
             itemBuilder: (context) => [
               const PopupMenuItem(value: 'edit', child: Text('Edit')),
-              const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
+              const PopupMenuItem(
+                value: 'delete',
+                child: Text('Delete', style: TextStyle(color: Colors.red)),
+              ),
             ],
           ),
         ],
@@ -275,11 +268,7 @@ class _CurrencyDialogState extends ConsumerState<_CurrencyDialog> {
                 decoration: const InputDecoration(labelText: 'Symbol', hintText: r'e.g. $'),
                 validator: (v) => v == null || v.isEmpty ? 'Required' : null,
               ),
-              SwitchListTile(
-                title: const Text('Default Currency'),
-                value: _isDefault,
-                onChanged: (v) => setState(() => _isDefault = v),
-              ),
+              SwitchListTile(title: const Text('Default Currency'), value: _isDefault, onChanged: (v) => setState(() => _isDefault = v)),
             ],
           ),
         ),
@@ -289,12 +278,7 @@ class _CurrencyDialogState extends ConsumerState<_CurrencyDialog> {
         ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              final data = {
-                'name': _nameController.text,
-                'code': _codeController.text,
-                'symbol': _symbolController.text,
-                'is_default': _isDefault,
-              };
+              final data = {'name': _nameController.text, 'code': _codeController.text, 'symbol': _symbolController.text, 'is_default': _isDefault};
               if (widget.currency == null) {
                 ref.read(adminCurrencyProvider.notifier).createCurrency(data);
               } else {

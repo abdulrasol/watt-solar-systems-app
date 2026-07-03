@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
 
 /// A card displaying per-row details for non-uniform designs
@@ -29,9 +29,7 @@ class RowDetailsCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
@@ -40,31 +38,16 @@ class RowDetailsCard extends StatelessWidget {
             // Header
             Row(
               children: [
-                Icon(
-                  Iconsax.row_horizontal_bold,
-                  color: theme.colorScheme.primary,
-                  size: 24.sp,
-                ),
+                Icon(Iconsax.row_horizontal, color: theme.colorScheme.primary, size: 24.sp),
                 SizedBox(width: 12.w),
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                Text(title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
                 const Spacer(),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
+                  decoration: BoxDecoration(color: theme.colorScheme.primaryContainer, borderRadius: BorderRadius.circular(20.r)),
                   child: Text(
                     '${rows.length} $rowLabel',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onPrimaryContainer, fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -84,10 +67,7 @@ class RowDetailsCard extends StatelessWidget {
                     flex: 1,
                     child: Text(
                       '#',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.colorScheme.onPrimaryContainer,
-                      ),
+                      style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onPrimaryContainer),
                     ),
                   ),
                   Expanded(
@@ -95,10 +75,7 @@ class RowDetailsCard extends StatelessWidget {
                     child: Text(
                       frontHeightLabel,
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.colorScheme.onPrimaryContainer,
-                      ),
+                      style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onPrimaryContainer),
                     ),
                   ),
                   Expanded(
@@ -106,10 +83,7 @@ class RowDetailsCard extends StatelessWidget {
                     child: Text(
                       rearHeightLabel,
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.colorScheme.onPrimaryContainer,
-                      ),
+                      style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onPrimaryContainer),
                     ),
                   ),
                   Expanded(
@@ -117,10 +91,7 @@ class RowDetailsCard extends StatelessWidget {
                     child: Text(
                       offsetLabel,
                       textAlign: TextAlign.right,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.colorScheme.onPrimaryContainer,
-                      ),
+                      style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onPrimaryContainer),
                     ),
                   ),
                 ],
@@ -137,12 +108,8 @@ class RowDetailsCard extends StatelessWidget {
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                 decoration: BoxDecoration(
-                  color: isEven
-                      ? theme.colorScheme.surface
-                      : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-                  borderRadius: isLast
-                      ? BorderRadius.vertical(bottom: Radius.circular(8.r))
-                      : null,
+                  color: isEven ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                  borderRadius: isLast ? BorderRadius.vertical(bottom: Radius.circular(8.r)) : null,
                 ),
                 child: Row(
                   children: [
@@ -151,46 +118,29 @@ class RowDetailsCard extends StatelessWidget {
                       child: Container(
                         width: 28.w,
                         height: 28.w,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                        ),
+                        decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: 0.1), shape: BoxShape.circle),
                         child: Center(
                           child: Text(
                             '${row.rowIndex + 1}',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: theme.colorScheme.primary,
-                            ),
+                            style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.primary),
                           ),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 2,
-                      child: Text(
-                        '${row.frontLegHeightMeters.toStringAsFixed(2)} m',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium,
-                      ),
+                      child: Text('${row.frontLegHeightMeters.toStringAsFixed(2)} m', textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
                     ),
                     Expanded(
                       flex: 2,
-                      child: Text(
-                        '${row.rearLegHeightMeters.toStringAsFixed(2)} m',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium,
-                      ),
+                      child: Text('${row.rearLegHeightMeters.toStringAsFixed(2)} m', textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
                         '${row.baseOffsetMeters.toStringAsFixed(2)} m',
                         textAlign: TextAlign.right,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.primary,
-                        ),
+                        style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
                       ),
                     ),
                   ],

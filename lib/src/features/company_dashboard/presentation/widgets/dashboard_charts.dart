@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/accounting/presentation/providers/accounting_providers.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -11,10 +12,18 @@ class RevenueChart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final companyId = ref.watch(authProvider).company?.id;
     if (companyId == null) return const SizedBox.shrink();
 
-    // Use actual revenue if available, otherwise fallback to mock trends
+    final accountingState = ref.watch(accountingDashboardProvider(companyId));
+    final overview = accountingState.overview;
+    final invoices = (overview?.invoicesTotal ?? 0).toDouble();
+    final bills = (overview?.billsTotal ?? 0).toDouble();
+    final payments = (overview?.paymentsTotal ?? 0).toDouble();
+    final maxRevenue = [invoices, bills, payments, 1.0]
+        .reduce((a, b) => a > b ? a : b);
+
     return Container(
       height: 300.h,
       padding: EdgeInsets.all(20.r),
@@ -32,8 +41,8 @@ class RevenueChart extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Revenue Trend',
+            Text(
+              AppLocalizations.of(context)!.revenue_trend,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w700,
@@ -76,22 +85,13 @@ class RevenueChart extends ConsumerWidget {
                         String text;
                         switch (value.toInt()) {
                           case 0:
-                            text = 'Jan';
+                            text = l10n.invoices;
+                            break;
+                          case 1:
+                            text = l10n.bills;
                             break;
                           case 2:
-                            text = 'Mar';
-                            break;
-                          case 4:
-                            text = 'May';
-                            break;
-                          case 6:
-                            text = 'Jul';
-                            break;
-                          case 8:
-                            text = 'Sep';
-                            break;
-                          case 10:
-                            text = 'Nov';
+                            text = l10n.payments;
                             break;
                           default:
                             return Container();
@@ -113,7 +113,7 @@ class RevenueChart extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 10,
                         );
-                        return Text('${value.toInt()}k', style: style);
+                        return Text('${value.toInt()}', style: style);
                       },
                       reservedSize: 32,
                     ),
@@ -121,19 +121,15 @@ class RevenueChart extends ConsumerWidget {
                 ),
                 borderData: FlBorderData(show: false),
                 minX: 0,
-                maxX: 11,
+                maxX: 2,
                 minY: 0,
-                maxY: 6,
+                maxY: maxRevenue * 1.2,
                 lineBarsData: [
                   LineChartBarData(
-                    spots: const [
-                      FlSpot(0, 3),
-                      FlSpot(2.6, 2),
-                      FlSpot(4.9, 5),
-                      FlSpot(6.8, 3.1),
-                      FlSpot(8, 4),
-                      FlSpot(9.5, 3),
-                      FlSpot(11, 4),
+                    spots: [
+                      FlSpot(0, invoices),
+                      FlSpot(1, bills),
+                      FlSpot(2, payments),
                     ],
                     isCurved: true,
                     gradient: LinearGradient(
@@ -144,7 +140,7 @@ class RevenueChart extends ConsumerWidget {
                     ),
                     barWidth: 5,
                     isStrokeCapRound: true,
-                    dotData: const FlDotData(show: false),
+                    dotData: const FlDotData(show: true),
                     belowBarData: BarAreaData(
                       show: true,
                       gradient: LinearGradient(
@@ -163,123 +159,6 @@ class RevenueChart extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class OrderDistributionChart extends ConsumerWidget {
-  const OrderDistributionChart({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final companyId = ref.watch(authProvider).company?.id;
-    if (companyId == null) return const SizedBox.shrink();
-
-    final accountingState = ref.watch(accountingDashboardProvider(companyId));
-    final overview = accountingState.overview;
-
-    final invoices = overview?.invoicesTotal.toDouble() ?? 40;
-    final bills = overview?.billsTotal.toDouble() ?? 30;
-    final payments = overview?.paymentsTotal.toDouble() ?? 15;
-    final total = invoices + bills + payments;
-    return Container(
-      height: 300.h,
-      padding: EdgeInsets.all(20.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Order Status',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w700,
-              fontFamily: AppTheme.fontFamily,
-            ),
-          ),
-          SizedBox(height: 20.h),
-          Expanded(
-            child: PieChart(
-              PieChartData(
-                sectionsSpace: 0,
-                centerSpaceRadius: 40,
-                sections: [
-                  PieChartSectionData(
-                    color: Colors.blue,
-                    value: invoices,
-                    title: total > 0 ? '${(invoices / total * 100).toStringAsFixed(0)}%' : '0%',
-                    radius: 50,
-                    titleStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  PieChartSectionData(
-                    color: Colors.green,
-                    value: bills,
-                    title: total > 0 ? '${(bills / total * 100).toStringAsFixed(0)}%' : '0%',
-                    radius: 50,
-                    titleStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  PieChartSectionData(
-                    color: Colors.orange,
-                    value: payments,
-                    title: total > 0 ? '${(payments / total * 100).toStringAsFixed(0)}%' : '0%',
-                    radius: 50,
-                    titleStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 10.h),
-          Wrap(
-            spacing: 16.w,
-            children: [
-              _buildLegend('Invoices', Colors.blue),
-              _buildLegend('Bills', Colors.green),
-              _buildLegend('Payments', Colors.orange),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLegend(String label, Color color) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 10.w,
-          height: 10.w,
-          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-        ),
-        SizedBox(width: 4.w),
-        Text(
-          label,
-          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
-        ),
-      ],
     );
   }
 }

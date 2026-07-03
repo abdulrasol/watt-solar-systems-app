@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_city.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_country.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_address_controller.dart';
@@ -37,7 +37,6 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return AdminPageScaffold(
@@ -55,13 +54,7 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
             ],
           ),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildCountriesTab(),
-                _buildCitiesTab(),
-              ],
-            ),
+            child: TabBarView(controller: _tabController, children: [_buildCountriesTab(), _buildCitiesTab()]),
           ),
         ],
       ),
@@ -116,13 +109,19 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
     final state = ref.watch(adminAddressProvider);
     if (state.isCountriesLoading) return const AdminLoadingState();
     if (state.countries.isEmpty) {
-      return const AdminEmptyState(icon: Iconsax.global_bold, title: 'No Countries');
+      return const AdminEmptyState(icon: Iconsax.global, title: 'No Countries');
     }
 
-    return ListView.builder(
-      padding: EdgeInsets.all(20.w),
-      itemCount: state.countries.length,
-      itemBuilder: (context, index) => _CountryCard(country: state.countries[index]),
+    // Previously this tab had no RefreshIndicator at all — the only admin
+    // list missing pull-to-refresh entirely (Cities, right next to it,
+    // already had one).
+    return RefreshIndicator(
+      onRefresh: () => ref.read(adminAddressProvider.notifier).fetchCountries(),
+      child: ListView.builder(
+        padding: EdgeInsets.all(20.w),
+        itemCount: state.countries.length,
+        itemBuilder: (context, index) => _CountryCard(country: state.countries[index]),
+      ),
     );
   }
 
@@ -130,7 +129,7 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
     final state = ref.watch(adminAddressProvider);
     if (state.isCitiesLoading) return const AdminLoadingState();
     if (state.cities.isEmpty) {
-      return const AdminEmptyState(icon: Iconsax.building_bold, title: 'No Cities');
+      return const AdminEmptyState(icon: Iconsax.building, title: 'No Cities');
     }
 
     return RefreshIndicator(
@@ -156,7 +155,7 @@ class _CountryCard extends ConsumerWidget {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
-        leading: const Icon(Iconsax.global_bold),
+        leading: const Icon(Iconsax.global),
         title: Text(country.name),
         subtitle: Text(country.code),
         trailing: Row(
@@ -164,7 +163,10 @@ class _CountryCard extends ConsumerWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () => showDialog(context: context, builder: (context) => _CountryDialog(country: country)),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => _CountryDialog(country: country),
+              ),
             ),
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.red),
@@ -206,7 +208,7 @@ class _CityCard extends ConsumerWidget {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
-        leading: const Icon(Iconsax.building_bold),
+        leading: const Icon(Iconsax.building),
         title: Text(city.name),
         subtitle: Text('${city.country.name} (${city.code})'),
         trailing: Row(
@@ -214,7 +216,10 @@ class _CityCard extends ConsumerWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () => showDialog(context: context, builder: (context) => _CityDialog(city: city)),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => _CityDialog(city: city),
+              ),
             ),
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.red),
@@ -367,11 +372,7 @@ class _CityDialogState extends ConsumerState<_CityDialog> {
         ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              final data = {
-                'name': _nameController.text,
-                'code': _codeController.text,
-                'country_id': _selectedCountryId,
-              };
+              final data = {'name': _nameController.text, 'code': _codeController.text, 'country_id': _selectedCountryId};
               if (widget.city == null) {
                 ref.read(adminAddressProvider.notifier).createCity(data);
               } else {

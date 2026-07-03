@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/entities/app_config.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/app_config_controller.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
@@ -34,12 +34,12 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
       actions: [
         FilledButton.icon(
           onPressed: state.isSubmitting ? null : () => _showConfigDialog(context),
-          icon: const Icon(Iconsax.add_bold),
+          icon: const Icon(Iconsax.add),
           label: const Text('New Config'),
         ),
       ],
       child: state.isLoading
-          ? const AdminLoadingState(icon: Iconsax.setting_bold, message: 'Loading configurations...')
+          ? const AdminLoadingState(icon: Iconsax.setting, message: 'Loading configurations...')
           : state.error != null && state.configs.isEmpty
           ? AdminErrorState(error: state.error!, onRetry: () => ref.read(appConfigProvider.notifier).fetchConfigs(isRefresh: true))
           : _buildContent(context, state),
@@ -48,7 +48,7 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
 
   Widget _buildContent(BuildContext context, AppConfigState state) {
     if (state.configs.isEmpty) {
-      return const AdminEmptyState(icon: Iconsax.setting_2_bold, title: 'No configurations found', subtitle: 'Create your first configuration flag.');
+      return const AdminEmptyState(icon: Iconsax.setting_2, title: 'No configurations found', subtitle: 'Create your first configuration flag.');
     }
 
     return RefreshIndicator(
@@ -120,10 +120,7 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                 builder: (context, setInternalState) => TextField(
                   controller: keyController,
                   enabled: config == null,
-                  decoration: InputDecoration(
-                    labelText: 'Key',
-                    errorText: keyController.text.trim().isEmpty ? 'Key cannot be empty' : null,
-                  ),
+                  decoration: InputDecoration(labelText: 'Key', errorText: keyController.text.trim().isEmpty ? 'Key cannot be empty' : null),
                   onChanged: (_) => setInternalState(() {}),
                 ),
               ),
@@ -150,18 +147,11 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
                 if (key.isEmpty) return;
 
                 if (config == null) {
-                  ref.read(appConfigProvider.notifier).createConfig(
-                        key: key,
-                        value: value,
-                        description: descriptionController.text.trim(),
-                      );
+                  ref.read(appConfigProvider.notifier).createConfig(key: key, value: value, description: descriptionController.text.trim());
                 } else {
-                  ref.read(appConfigProvider.notifier).updateConfig(
-                        oldKey: config.key,
-                        newKey: key,
-                        value: value,
-                        description: descriptionController.text.trim(),
-                      );
+                  ref
+                      .read(appConfigProvider.notifier)
+                      .updateConfig(oldKey: config.key, newKey: key, value: value, description: descriptionController.text.trim());
                 }
                 Navigator.pop(context);
               },
@@ -211,13 +201,13 @@ class _ConfigCard extends StatelessWidget {
                       color: (config.value ? AppTheme.successColor : Colors.grey).withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: Icon(config.value ? Iconsax.tick_circle_bold : Iconsax.close_circle_bold, color: config.value ? AppTheme.successColor : Colors.grey),
+                    child: Icon(config.value ? Iconsax.tick_circle : Iconsax.close_circle, color: config.value ? AppTheme.successColor : Colors.grey),
                   ),
                   const Spacer(),
                   IconButton(
                     visualDensity: VisualDensity.compact,
                     onPressed: isSubmitting ? null : onDelete,
-                    icon: const Icon(Iconsax.trash_bold, color: AppTheme.errorColor),
+                    icon: const Icon(Iconsax.trash, color: AppTheme.errorColor),
                   ),
                 ],
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
 
 /// A card displaying key summary metrics for the structure design
@@ -42,18 +42,9 @@ class SummaryCard extends StatelessWidget {
             // Header
             Row(
               children: [
-                Icon(
-                  Iconsax.chart_2_bold,
-                  color: theme.colorScheme.primary,
-                  size: 24.sp,
-                ),
+                Icon(Iconsax.chart_2, color: theme.colorScheme.primary, size: 24.sp),
                 SizedBox(width: 12.w),
-                Text(
-                  'Design Summary',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                Text('Design Summary', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
               ],
             ),
             SizedBox(height: 16.h),
@@ -63,7 +54,7 @@ class SummaryCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: _MetricTile(
-                    icon: Iconsax.sun_1_bold,
+                    icon: Iconsax.sun_1,
                     iconColor: Colors.orange,
                     value: '${result.panelCount}',
                     label: panelCountLabel,
@@ -73,7 +64,7 @@ class SummaryCard extends StatelessWidget {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: _MetricTile(
-                    icon: Iconsax.flash_bold,
+                    icon: Iconsax.flash,
                     iconColor: Colors.amber,
                     value: totalPowerKw.toStringAsFixed(2),
                     label: totalPowerLabel,
@@ -87,10 +78,9 @@ class SummaryCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: _MetricTile(
-                    icon: Iconsax.map_1_bold,
+                    icon: Iconsax.map_1,
                     iconColor: Colors.green,
-                    value:
-                        '${result.frameWidthMeters.toStringAsFixed(1)} x ${result.totalFootprintDepthMeters.toStringAsFixed(1)}',
+                    value: '${result.frameWidthMeters.toStringAsFixed(1)} x ${result.totalFootprintDepthMeters.toStringAsFixed(1)}',
                     label: footprintLabel,
                     subtitle: 'm',
                   ),
@@ -98,12 +88,11 @@ class SummaryCard extends StatelessWidget {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: _MetricTile(
-                    icon: Iconsax.rotate_left_bold,
+                    icon: Iconsax.rotate_left,
                     iconColor: Colors.blue,
                     value: '${result.appliedTiltDegrees.toStringAsFixed(1)}°',
                     label: tiltLabel,
-                    subtitle:
-                        'ideal: ${result.idealTiltDegrees.toStringAsFixed(1)}°',
+                    subtitle: 'ideal: ${result.idealTiltDegrees.toStringAsFixed(1)}°',
                   ),
                 ),
               ],
@@ -117,24 +106,16 @@ class SummaryCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.orange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(
-                    color: Colors.orange.withValues(alpha: 0.3),
-                  ),
+                  border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Iconsax.warning_2_bold,
-                      color: Colors.orange,
-                      size: 20.sp,
-                    ),
+                    Icon(Iconsax.warning_2, color: Colors.orange, size: 20.sp),
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
                         'Layout constrained by site dimensions. Consider adjusting site size or panel orientation.',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.orange[800],
-                        ),
+                        style: theme.textTheme.bodySmall?.copyWith(color: Colors.orange[800]),
                       ),
                     ),
                   ],
@@ -149,13 +130,7 @@ class SummaryCard extends StatelessWidget {
 }
 
 class _MetricTile extends StatelessWidget {
-  const _MetricTile({
-    required this.icon,
-    required this.iconColor,
-    required this.value,
-    required this.label,
-    this.subtitle,
-  });
+  const _MetricTile({required this.icon, required this.iconColor, required this.value, required this.label, this.subtitle});
 
   final IconData icon;
   final Color iconColor;
@@ -169,10 +144,7 @@ class _MetricTile extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+      decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(12.r)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -183,28 +155,17 @@ class _MetricTile extends StatelessWidget {
               if (subtitle != null)
                 Text(
                   subtitle!,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontWeight: FontWeight.w500),
                 ),
             ],
           ),
           SizedBox(height: 8.h),
           Text(
             value,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: theme.colorScheme.onSurface,
-            ),
+            style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface),
           ),
           SizedBox(height: 4.h),
-          Text(
-            label,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
+          Text(label, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/wizard_intro_card.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/inputs/section_card.dart';
@@ -60,7 +60,7 @@ class _RoofConfigStepState extends ConsumerState<RoofConfigStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WizardIntroCard(
-            icon: Iconsax.buildings_bold,
+            icon: Iconsax.buildings,
             titleEn: 'Roof Configuration',
             titleAr: 'إعدادات السقف',
             descriptionEn: 'Define your roof dimensions, safety setback, and boundary walls for shading analysis.',
@@ -70,7 +70,7 @@ class _RoofConfigStepState extends ConsumerState<RoofConfigStep> {
           SectionCard(
             titleEn: 'Roof Dimensions',
             titleAr: 'أبعاد السقف',
-            icon: Iconsax.maximize_bold,
+            icon: Iconsax.maximize,
             explanationEn: 'Enter the total usable width and length of your roof area for panel placement.',
             explanationAr: 'أدخل العرض والطول الإجماليين لمنطقة السقف القابلة للاستخدام لوضع الألواح.',
             child: Row(
@@ -117,15 +117,51 @@ class _RoofConfigStepState extends ConsumerState<RoofConfigStep> {
           SectionCard(
             titleEn: 'Boundary Walls',
             titleAr: 'الجدران المحيطة',
-            icon: Iconsax.building_bold,
+            icon: Iconsax.building,
             explanationEn: 'Configure boundary walls that may cast shadows on your panels throughout the day.',
             explanationAr: 'اضبط الجدران المحيطة التي قد تلقي ظلالاً على الألواح خلال اليوم.',
             child: Column(
               children: [
-                _buildWallToggle(context, isAr, 'North', 'شمال', state.hasNorthWall, (v) => controller.updateWallToggles(north: v), _northWallCtrl, (v) => controller.updateWallHeights(north: v)),
-                _buildWallToggle(context, isAr, 'South', 'جنوب', state.hasSouthWall, (v) => controller.updateWallToggles(south: v), _southWallCtrl, (v) => controller.updateWallHeights(south: v)),
-                _buildWallToggle(context, isAr, 'East', 'شرق', state.hasEastWall, (v) => controller.updateWallToggles(east: v), _eastWallCtrl, (v) => controller.updateWallHeights(east: v)),
-                _buildWallToggle(context, isAr, 'West', 'غرب', state.hasWestWall, (v) => controller.updateWallToggles(west: v), _westWallCtrl, (v) => controller.updateWallHeights(west: v)),
+                _buildWallToggle(
+                  context,
+                  isAr,
+                  'North',
+                  'شمال',
+                  state.hasNorthWall,
+                  (v) => controller.updateWallToggles(north: v),
+                  _northWallCtrl,
+                  (v) => controller.updateWallHeights(north: v),
+                ),
+                _buildWallToggle(
+                  context,
+                  isAr,
+                  'South',
+                  'جنوب',
+                  state.hasSouthWall,
+                  (v) => controller.updateWallToggles(south: v),
+                  _southWallCtrl,
+                  (v) => controller.updateWallHeights(south: v),
+                ),
+                _buildWallToggle(
+                  context,
+                  isAr,
+                  'East',
+                  'شرق',
+                  state.hasEastWall,
+                  (v) => controller.updateWallToggles(east: v),
+                  _eastWallCtrl,
+                  (v) => controller.updateWallHeights(east: v),
+                ),
+                _buildWallToggle(
+                  context,
+                  isAr,
+                  'West',
+                  'غرب',
+                  state.hasWestWall,
+                  (v) => controller.updateWallToggles(west: v),
+                  _westWallCtrl,
+                  (v) => controller.updateWallHeights(west: v),
+                ),
               ],
             ),
           ),
@@ -134,7 +170,16 @@ class _RoofConfigStepState extends ConsumerState<RoofConfigStep> {
     );
   }
 
-  Widget _buildWallToggle(BuildContext context, bool isAr, String en, String ar, bool enabled, ValueChanged<bool> onToggle, TextEditingController ctrl, ValueChanged<double> onHeight) {
+  Widget _buildWallToggle(
+    BuildContext context,
+    bool isAr,
+    String en,
+    String ar,
+    bool enabled,
+    ValueChanged<bool> onToggle,
+    TextEditingController ctrl,
+    ValueChanged<double> onHeight,
+  ) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.h),
       child: Row(
@@ -155,24 +200,25 @@ class _RoofConfigStepState extends ConsumerState<RoofConfigStep> {
                   ),
                 ),
                 SizedBox(width: 4.w),
-                Text(isAr ? ar : en, style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600)),
+                Text(
+                  isAr ? ar : en,
+                  style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600),
+                ),
                 SizedBox(width: 8.w),
               ],
             ),
           ),
           if (enabled)
             Expanded(
-              child: PvNumberField(
-                label: isAr ? 'الارتفاع' : 'Height',
-                controller: ctrl,
-                suffix: 'm',
-                min: 0,
-                max: 10,
-                onChanged: onHeight,
-              ),
+              child: PvNumberField(label: isAr ? 'الارتفاع' : 'Height', controller: ctrl, suffix: 'm', min: 0, max: 10, onChanged: onHeight),
             )
           else
-            Expanded(child: Text(isAr ? 'غير مفعل' : 'Disabled', style: TextStyle(color: Colors.grey, fontSize: 12.sp))),
+            Expanded(
+              child: Text(
+                isAr ? 'غير مفعل' : 'Disabled',
+                style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+              ),
+            ),
         ],
       ),
     );

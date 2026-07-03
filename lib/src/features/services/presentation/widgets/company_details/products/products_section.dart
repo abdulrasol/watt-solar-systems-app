@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart'
-    show StorefrontAudience;
+import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart' show StorefrontAudience;
 import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_cart_screen.dart';
 import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_product_details_screen.dart';
@@ -22,18 +21,13 @@ class CompanyProductsSection extends ConsumerStatefulWidget {
   const CompanyProductsSection({super.key, required this.company});
 
   @override
-  ConsumerState<CompanyProductsSection> createState() =>
-      _CompanyProductsSectionState();
+  ConsumerState<CompanyProductsSection> createState() => _CompanyProductsSectionState();
 }
 
-class _CompanyProductsSectionState
-    extends ConsumerState<CompanyProductsSection> {
+class _CompanyProductsSectionState extends ConsumerState<CompanyProductsSection> {
   late final TextEditingController _searchController;
 
-  StorefrontScope get _scope => StorefrontScope(
-    audience: StorefrontAudience.b2c,
-    companyId: widget.company.id,
-  );
+  StorefrontScope get _scope => StorefrontScope(audience: StorefrontAudience.b2c, companyId: widget.company.id);
 
   @override
   void initState() {
@@ -48,8 +42,7 @@ class _CompanyProductsSectionState
   }
 
   void _onScroll(ScrollNotification notification) {
-    if (notification.metrics.pixels >=
-        notification.metrics.maxScrollExtent - 320) {
+    if (notification.metrics.pixels >= notification.metrics.maxScrollExtent - 320) {
       final state = ref.read(storefrontNotifierProvider(_scope));
       if (!state.isLoadingMore && state.pagination.hasNext) {
         ref.read(storefrontNotifierProvider(_scope).notifier).loadMore();
@@ -96,24 +89,12 @@ class _CompanyProductsSectionState
                                 children: [
                                   Text(
                                     l10n.services_products_mode_title,
-                                    style: TextStyle(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w800,
-                                    ),
+                                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w800),
                                   ),
                                   SizedBox(height: 4.h),
                                   Text(
-                                    l10n.storefront_products_available(
-                                      state.pagination.totalItems,
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.color
-                                          ?.withValues(alpha: 0.68),
-                                    ),
+                                    l10n.storefront_products_available(state.pagination.totalItems),
+                                    style: TextStyle(fontSize: 12.sp, color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.68)),
                                   ),
                                 ],
                               ),
@@ -124,9 +105,7 @@ class _CompanyProductsSectionState
                                 Navigator.of(context).push(
                                   buildStorefrontRoute(
                                     context: context,
-                                    page: const StorefrontCartScreen(
-                                      audience: StorefrontAudience.b2c,
-                                    ),
+                                    page: const StorefrontCartScreen(audience: StorefrontAudience.b2c),
                                   ),
                                 );
                               },
@@ -154,23 +133,15 @@ class _CompanyProductsSectionState
                           ),
                         ),
                         SizedBox(height: 14.h),
-                        CompanySectionHeading(
-                          title: l10n.services_company_categories_title,
-                        ),
+                        CompanySectionHeading(title: l10n.services_company_categories_title),
                         SizedBox(height: 10.h),
-                        CompanyCategoryChips(
-                          state: state,
-                          onSelected: notifier.updateCompanyCategory,
-                        ),
+                        CompanyCategoryChips(state: state, onSelected: notifier.updateCompanyCategory),
                       ],
                     ),
                   ),
                   if (state.error != null && state.products.isNotEmpty) ...[
                     SizedBox(height: 14.h),
-                    CompanyInlineErrorCard(
-                      message: state.error!,
-                      onRetry: notifier.refresh,
-                    ),
+                    CompanyInlineErrorCard(message: state.error!, onRetry: notifier.refresh),
                   ],
                   SizedBox(height: 14.h),
                 ],
@@ -186,20 +157,14 @@ class _CompanyProductsSectionState
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: CompanyInlineErrorCard(
-                  message: state.error!,
-                  onRetry: notifier.refresh,
-                ),
+                child: CompanyInlineErrorCard(message: state.error!, onRetry: notifier.refresh),
               ),
             )
           else if (state.products.isEmpty)
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: CompanyEmptyStateCard(
-                  icon: Iconsax.shop_bold,
-                  message: l10n.no_store_products_found,
-                ),
+                child: CompanyEmptyStateCard(icon: Iconsax.shop, message: l10n.no_store_products_found),
               ),
             )
           else
@@ -211,10 +176,7 @@ class _CompanyProductsSectionState
                   Navigator.of(context).push(
                     buildStorefrontRoute(
                       context: context,
-                      page: StorefrontProductDetailsScreen(
-                        product: product,
-                        audience: StorefrontAudience.b2c,
-                      ),
+                      page: StorefrontProductDetailsScreen(product: product, audience: StorefrontAudience.b2c),
                     ),
                   );
                 },
@@ -224,9 +186,7 @@ class _CompanyProductsSectionState
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 20.h),
-                child: const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2.5),
-                ),
+                child: const Center(child: CircularProgressIndicator(strokeWidth: 2.5)),
               ),
             ),
           SliverToBoxAdapter(child: SizedBox(height: 24.h)),

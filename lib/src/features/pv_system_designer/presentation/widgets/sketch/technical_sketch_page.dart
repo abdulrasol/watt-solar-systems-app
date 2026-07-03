@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
 import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/frame_sketch_painter.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:solar_hub/src/services/pdf_service.dart';
+import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:printing/printing.dart';
 
 class TechnicalSketchPage extends ConsumerStatefulWidget {
   const TechnicalSketchPage({super.key});
@@ -60,11 +64,26 @@ class _TechnicalSketchPageState extends ConsumerState<TechnicalSketchPage> with 
         ),
         actions: [
           IconButton(
-            icon: const Icon(Iconsax.export_bold),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(isAr ? 'قريباً: تصدير PDF' : 'Coming soon: PDF Export')),
-              );
+            icon: const Icon(Iconsax.export),
+            onPressed: () async {
+              try {
+                final pdfData = await getIt<PdfService>().generatePvSystemReport(
+                  state: state,
+                  panelsCount: controller.panelsCount,
+                  peakPowerKwp: controller.peakPower,
+                  totalAreaM2: controller.totalArea,
+                  totalWeightKg: controller.totalWeight,
+                  frameResult: controller.frameResult,
+                  energyEstimate: controller.energyEstimate,
+                  stringSizing: controller.stringSizingResult,
+                  financialEstimate: controller.financialEstimate,
+                );
+                await Printing.layoutPdf(onLayout: (format) async => pdfData, name: 'PV_System_Design_Report.pdf');
+              } catch (e) {
+                if (context.mounted) {
+                  ToastService.error(context, isAr ? 'فشل التصدير' : 'Export Failed', isAr ? 'تعذر إنشاء ملف PDF' : 'Could not generate the PDF report.');
+                }
+              }
             },
           ),
         ],
@@ -72,38 +91,13 @@ class _TechnicalSketchPageState extends ConsumerState<TechnicalSketchPage> with 
       body: TabBarView(
         controller: _tabController,
         children: [
-          _SketchView(
-            state: state,
-            frameResult: frameResult,
-            isDark: isDark,
-            viewMode: SketchViewMode.top,
-          ),
-          _SketchView(
-            state: state,
-            frameResult: frameResult,
-            isDark: isDark,
-            viewMode: SketchViewMode.side,
-          ),
-          _SketchView(
-            state: state,
-            frameResult: frameResult,
-            isDark: isDark,
-            viewMode: SketchViewMode.front,
-          ),
-          _SketchView(
-            state: state,
-            frameResult: frameResult,
-            isDark: isDark,
-            viewMode: SketchViewMode.isometric,
-          ),
+          _SketchView(state: state, frameResult: frameResult, isDark: isDark, viewMode: SketchViewMode.top),
+          _SketchView(state: state, frameResult: frameResult, isDark: isDark, viewMode: SketchViewMode.side),
+          _SketchView(state: state, frameResult: frameResult, isDark: isDark, viewMode: SketchViewMode.front),
+          _SketchView(state: state, frameResult: frameResult, isDark: isDark, viewMode: SketchViewMode.isometric),
         ],
       ),
-      bottomNavigationBar: _DimensionsPanel(
-        state: state,
-        frameResult: frameResult,
-        isAr: isAr,
-        isDark: isDark,
-      ),
+      bottomNavigationBar: _DimensionsPanel(state: state, frameResult: frameResult, isAr: isAr, isDark: isDark),
     );
   }
 }
@@ -114,12 +108,7 @@ class _SketchView extends StatelessWidget {
   final bool isDark;
   final SketchViewMode viewMode;
 
-  const _SketchView({
-    required this.state,
-    required this.frameResult,
-    required this.isDark,
-    required this.viewMode,
-  });
+  const _SketchView({required this.state, required this.frameResult, required this.isDark, required this.viewMode});
 
   @override
   Widget build(BuildContext context) {
@@ -130,12 +119,7 @@ class _SketchView extends StatelessWidget {
         color: isDark ? const Color(0xFF1A2220) : const Color(0xFFF8FAF9),
         child: CustomPaint(
           size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height - 200),
-          painter: FrameSketchPainter(
-            state: state,
-            frameResult: frameResult,
-            isDark: isDark,
-            viewMode: viewMode,
-          ),
+          painter: FrameSketchPainter(state: state, frameResult: frameResult, isDark: isDark, viewMode: viewMode),
         ),
       ),
     );
@@ -148,12 +132,7 @@ class _DimensionsPanel extends StatelessWidget {
   final bool isAr;
   final bool isDark;
 
-  const _DimensionsPanel({
-    required this.state,
-    required this.frameResult,
-    required this.isAr,
-    required this.isDark,
-  });
+  const _DimensionsPanel({required this.state, required this.frameResult, required this.isAr, required this.isDark});
 
   @override
   Widget build(BuildContext context) {

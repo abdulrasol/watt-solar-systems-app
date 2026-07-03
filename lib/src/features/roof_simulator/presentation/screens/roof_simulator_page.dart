@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:solar_hub/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
@@ -221,7 +221,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
             Container(
               padding: EdgeInsets.all(8.r),
               decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12.r)),
-              child: const Icon(Iconsax.document_text_bold, color: AppTheme.primaryColor),
+              child: const Icon(Iconsax.document_text, color: AppTheme.primaryColor),
             ),
             SizedBox(width: 10.w),
             Text(
@@ -248,7 +248,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 context,
                 label: _tr(context, 'Total Solar Panels', 'إجمالي الألواح الشمسية'),
                 value: '$panelsCount ${_tr(context, 'Panels', 'لوح')}',
-                icon: Iconsax.sun_1_bold,
+                icon: Iconsax.sun_1,
                 iconColor: Colors.amber,
               ),
               const Divider(),
@@ -256,7 +256,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 context,
                 label: _tr(context, 'Peak Output (kWp)', 'قدرة الإنتاج القصوى (ك.و)'),
                 value: '${peakPower.toStringAsFixed(2)} kWp',
-                icon: Iconsax.flash_1_bold,
+                icon: Iconsax.flash_1,
                 iconColor: Colors.redAccent,
               ),
               const Divider(),
@@ -264,7 +264,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                 context,
                 label: _tr(context, 'Roof Area Occupied', 'المساحة المشغولة'),
                 value: '${totalArea.toStringAsFixed(1)} m²',
-                icon: Iconsax.grid_5_bold,
+                icon: Iconsax.grid_5,
                 iconColor: Colors.blueAccent,
               ),
               const Divider(),
@@ -469,7 +469,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                           tool: ToolMode.placePanel,
                           titleEn: 'PV Panel',
                           titleAr: 'لوح شمسي',
-                          icon: Iconsax.sun_1_bold,
+                          icon: Iconsax.sun_1,
                           color: Colors.amber,
                           activeTool: simulator.activeTool,
                           onSelect: (t) => notifier.selectTool(t),
@@ -562,7 +562,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                             elevation: 0,
                           ),
                           onPressed: _autofillRoof,
-                          icon: const Icon(Iconsax.magic_star_bold),
+                          icon: const Icon(Iconsax.magic_star),
                           label: Text(_tr(context, 'Smart Autofill', 'ملء تلقائي ذكي')),
                         ),
                       ),
@@ -608,7 +608,7 @@ class _RoofSimulatorPageState extends ConsumerState<RoofSimulatorPage> {
                                 _tr(context, 'Please place at least one panel first!', 'يرجى وضع لوح شمسي واحد على الأقل أولًا!'),
                               );
                             },
-                      icon: const Icon(Iconsax.export_bold),
+                      icon: const Icon(Iconsax.export),
                       label: Text(
                         _tr(context, 'Export Proposal Mockup', 'تصدير ملخص المقترح البصري'),
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp),
