@@ -20,7 +20,7 @@ http:
 runtime:
   variables:
     - name: baseUrl
-      value: http://localhost:3000
+      value: http://localhost:8080/api/users/login
 
 settings:
   encodeUrl: true
