@@ -1,0 +1,39 @@
+info:
+  name: Promote user to superuser (Superuser only)
+  type: http
+  seq: 1
+  tags:
+    - Auth & Users
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/auth/promote/:username"
+  params:
+    - name: username
+      value: ""
+      type: path
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/auth/promote/:username"
+      method: POST
+      params:
+        - name: username
+          value: ""
+          type: path
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

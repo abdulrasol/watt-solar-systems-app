@@ -1,0 +1,53 @@
+info:
+  name: CompanySubscriptionsController_requestSubscription
+  type: http
+  seq: 1
+  tags:
+    - Company Subscription Requests
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/companies/:company_id/subscription-requests"
+  params:
+    - name: company_id
+      value: ""
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "subscription_plan": 0,
+        "notes": ""
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/companies/:company_id/subscription-requests"
+      method: POST
+      params:
+        - name: company_id
+          value: ""
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+            "subscription_plan": 0,
+            "notes": ""
+          }
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

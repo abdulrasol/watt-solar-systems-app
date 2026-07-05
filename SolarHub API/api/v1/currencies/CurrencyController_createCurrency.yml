@@ -1,0 +1,49 @@
+info:
+  name: CurrencyController_createCurrency
+  type: http
+  seq: 2
+  tags:
+    - Currencies
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/currencies"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "code": "",
+        "symbol": "",
+        "is_default": false
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/currencies"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "code": "",
+            "symbol": "",
+            "is_default": false
+          }
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

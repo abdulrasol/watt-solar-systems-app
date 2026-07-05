@@ -1,0 +1,7 @@
+info:
+  name: send-broadcast
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

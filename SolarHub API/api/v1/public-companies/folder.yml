@@ -1,0 +1,7 @@
+info:
+  name: public-companies
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

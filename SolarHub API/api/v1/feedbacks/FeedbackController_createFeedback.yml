@@ -1,0 +1,53 @@
+info:
+  name: FeedbackController_createFeedback
+  type: http
+  seq: 2
+  tags:
+    - Feedbacks
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/feedbacks"
+  body:
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: ""
+      - name: phone_number
+        type: text
+        value: ""
+      - name: message
+        type: text
+        value: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/feedbacks"
+      method: POST
+      body:
+        type: multipart-form
+        data:
+          - name: name
+            type: text
+            value: ""
+          - name: phone_number
+            type: text
+            value: ""
+          - name: message
+            type: text
+            value: ""
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

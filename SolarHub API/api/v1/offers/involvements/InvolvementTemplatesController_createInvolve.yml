@@ -1,0 +1,49 @@
+info:
+  name: InvolvementTemplatesController_createInvolve
+  type: http
+  seq: 2
+  tags:
+    - Involvement Templates
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/offers/involvements"
+  headers:
+    - name: company-id
+      value: ""
+      description: Company ID
+    - name: company-id
+      value: ""
+  body:
+    type: json
+    data: "{}"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/offers/involvements"
+      method: POST
+      headers:
+        - name: company-id
+          value: ""
+          description: Company ID
+        - name: company-id
+          value: ""
+      body:
+        type: json
+        data: "{}"
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

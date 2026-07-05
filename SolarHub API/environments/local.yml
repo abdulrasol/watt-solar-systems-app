@@ -1,0 +1,8 @@
+name: local
+variables:
+  - name: baseUrl
+    value: http://localhost:3000
+    disabled: true
+  - secret: true
+    name: admin
+    disabled: true

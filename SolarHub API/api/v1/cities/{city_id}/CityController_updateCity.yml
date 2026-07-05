@@ -1,0 +1,55 @@
+info:
+  name: CityController_updateCity
+  type: http
+  seq: 1
+  tags:
+    - Cities
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/v1/cities/:city_id"
+  params:
+    - name: city_id
+      value: ""
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "country_id": 0,
+        "code": ""
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    request:
+      url: "{{baseUrl}}/api/v1/cities/:city_id"
+      method: PUT
+      params:
+        - name: city_id
+          value: ""
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "country_id": 0,
+            "code": ""
+          }
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: ""

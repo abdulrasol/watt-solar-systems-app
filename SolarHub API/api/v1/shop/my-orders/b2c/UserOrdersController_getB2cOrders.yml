@@ -1,0 +1,31 @@
+info:
+  name: UserOrdersController_getB2cOrders
+  type: http
+  seq: 1
+  tags:
+    - User Purchases (B2C & B2B)
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/v1/shop/my-orders/b2c"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    request:
+      url: "{{baseUrl}}/api/v1/shop/my-orders/b2c"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: ""
