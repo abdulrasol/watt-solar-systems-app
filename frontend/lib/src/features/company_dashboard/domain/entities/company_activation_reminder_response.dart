@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class CompanyActivationReminderResponse {
   const CompanyActivationReminderResponse({
     required this.companyId,
@@ -15,7 +16,7 @@ class CompanyActivationReminderResponse {
     return CompanyActivationReminderResponse(
       companyId: int.tryParse(json['company_id']?.toString() ?? '') ?? 0,
       lastActivationReminderAt: json['last_activation_reminder_at'] != null
-          ? DateTime.tryParse(json['last_activation_reminder_at'].toString())
+          ? safeParseDate(json['last_activation_reminder_at'])
           : null,
       activationReminderAvailableAt:
           json['activation_reminder_available_at'] != null

@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:solar_hub/src/shared/domain/company/company.dart';
 import 'package:solar_hub/src/features/offers/data/models/involve_model.dart';
 import 'package:solar_hub/src/features/offers/domain/entities/involve.dart';
@@ -102,7 +103,7 @@ class SolarOfferModel extends SolarOffer {
               status: 'unknown',
             ),
       createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'])
+          ? safeParseDate(json['created_at'])
           : null,
     );
   }

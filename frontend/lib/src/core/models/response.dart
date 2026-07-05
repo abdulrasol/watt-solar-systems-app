@@ -137,12 +137,11 @@ class PaginationResponse extends BaseResponse {
 
     if (bodyData is Map) {
       dPrint('Found wrapped body (Map)', tag: 'PaginationResponse');
-      items = (bodyData['items'] as List?) ?? [];
+      items = (bodyData['items'] as List?) ?? (bodyData['data'] as List?) ?? (bodyData['results'] as List?) ?? [];
       pagination = PaginationMeta.fromJson(
         bodyData['pagination'] as Map<String, dynamic>?,
       );
-      count =
-          bodyData['count'] ?? bodyData['total_items'] ?? pagination.totalItems;
+      count = bodyData['count'] ?? bodyData['total_items'] ?? bodyData['total'] ?? pagination.totalItems;
       dPrint(
         'Extracted ${items.length} items, count=$count',
         tag: 'PaginationResponse',
@@ -203,7 +202,7 @@ class PaginatedItemsResponse<T> extends BaseResponse {
   ) {
     final bodyData =
         json['body'] as Map<String, dynamic>? ?? const <String, dynamic>{};
-    final rawItems = bodyData['items'] as List? ?? const [];
+    final rawItems = bodyData['items'] as List? ?? bodyData['data'] as List? ?? bodyData['results'] as List? ?? const [];
     final items = rawItems
         .whereType<Map>()
         .map((item) => itemFromJson(Map<String, dynamic>.from(item)))

@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
 import 'package:solar_hub/src/features/members/domain/entities/member_role.dart';
 
@@ -18,7 +19,7 @@ class CompanyMemberModel extends CompanyMember {
       role: MemberRole.fromValue(json['role']?.toString()),
       joinedAt: json['joined_at'] == null
           ? null
-          : DateTime.tryParse(json['joined_at'].toString()),
+          : safeParseDate(json['joined_at']),
     );
   }
 }

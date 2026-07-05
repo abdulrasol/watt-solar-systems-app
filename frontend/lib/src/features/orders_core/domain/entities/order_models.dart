@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:solar_hub/src/features/storefront/domain/entities/storefront_cart.dart';
 
 enum OrderAudience { b2c, b2b }
@@ -136,8 +137,8 @@ class CustomerRecord {
       lastPaymentDate: DateTime.tryParse(
         json['last_payment_date']?.toString() ?? '',
       ),
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
     );
   }
 }
@@ -192,8 +193,8 @@ class SupplierRecord {
       lastPaymentDate: DateTime.tryParse(
         json['last_payment_date']?.toString() ?? '',
       ),
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
     );
   }
 }
@@ -329,7 +330,7 @@ class OrderRecord {
       buyerReceiptConfirmedAt: DateTime.tryParse(
         json['buyer_receipt_confirmed_at']?.toString() ?? '',
       ),
-      fulfilledAt: DateTime.tryParse(json['fulfilled_at']?.toString() ?? ''),
+      fulfilledAt: safeParseDate(json['fulfilled_at']),
       stockTransferredAt: DateTime.tryParse(
         json['stock_transferred_at']?.toString() ?? '',
       ),
@@ -339,8 +340,8 @@ class OrderRecord {
             (item) => OrderItemRecord.fromJson(Map<String, dynamic>.from(item)),
           )
           .toList(),
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
     );
   }
 

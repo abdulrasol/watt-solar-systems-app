@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/posters/presentation/controllers/active_posters_provider.dart';
 import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
@@ -153,18 +154,19 @@ class PosterCarousel extends ConsumerWidget {
   void _handlePosterTap(BuildContext context, dynamic poster) {
     if (poster.actionType == 'company_profile' || poster.actionType == 'post') {
       // post: fallback to company profile until community is active
-      Navigator.pushNamed(context, '/services/company/${poster.companyId}');
+      context.push('/services/company/${poster.companyId}');
     } else if (poster.actionType == 'work') {
       if (poster.actionId != null) {
-        Navigator.pushNamed(context, '/company-work/${poster.actionId}');
+        context.push('/company-work/${poster.actionId}');
       } else {
-        Navigator.pushNamed(context, '/company-work');
+        context.push('/company-work');
       }
     } else if (poster.actionType == 'product') {
       if (poster.actionId != null) {
-        Navigator.pushNamed(context, '/storefront/product/${poster.actionId}');
+        context.push('/storefront/product/${poster.actionId}');
       } else {
-        Navigator.pushNamed(context, '/storefront/products', arguments: {'audience': 'b2c'});
+        // `context.push` with URI handles path parameters better in go_router
+        context.push('/storefront/products?audience=b2c');
       }
     }
   }

@@ -129,12 +129,9 @@ class FeedbackRemoteDataSourceImpl implements FeedbackRemoteDataSource {
   }
 
   void _throwIfFailed(api.BaseResponse response, String fallback) {
-    if (response.error || response.status != 200) {
-      throw Exception(
-        response.messageUser.isEmpty
-            ? (response.message.isEmpty ? fallback : response.message)
-            : response.messageUser,
-      );
+    if (response.status < 200 || response.status >= 300 || response.error) {
+      final msg = response.messageUser.isNotEmpty ? response.messageUser : response.message;
+      throw Exception(msg.isNotEmpty ? msg : fallback);
     }
   }
 }

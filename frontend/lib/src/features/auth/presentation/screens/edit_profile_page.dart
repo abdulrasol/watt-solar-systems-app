@@ -414,7 +414,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       if (mounted) ToastService.error(context, l10n.error, e.toString());
     }
     if (_selectedCity != null && _countries.isNotEmpty) {
-      final match = _countries.where((element) => element.id == _selectedCity!.country.id);
+      final match = _countries.where((element) => element.id == _selectedCity!.country?.id);
       if (match.isNotEmpty) {
         _selectedCountry = match.first;
         await _fetchCities(countryId: _selectedCountry!.id);

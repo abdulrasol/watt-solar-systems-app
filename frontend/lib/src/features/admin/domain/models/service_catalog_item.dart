@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class ServiceCatalogItem {
   final int id;
   final String code;
@@ -36,8 +37,8 @@ class ServiceCatalogItem {
       sortOrder: json['sort_order'] ?? 0,
       route: json['route'],
       icon: json['icon'],
-      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at']) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.tryParse(json['updated_at']) : null,
+      createdAt: json['created_at'] != null ? safeParseDate(json['created_at']) : null,
+      updatedAt: json['updated_at'] != null ? safeParseDate(json['updated_at']) : null,
     );
   }
 

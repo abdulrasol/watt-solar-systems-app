@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:equatable/equatable.dart';
 
 class AppConfig extends Equatable {
@@ -21,7 +22,7 @@ class AppConfig extends Equatable {
       key: json['key'] ?? '',
       value: json['value'] ?? false,
       description: json['description'],
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      updatedAt: json['updated_at'] is String ? safeParseDate(json['updated_at']) : null,
     );
   }
 

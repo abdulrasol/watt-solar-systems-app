@@ -1,6 +1,8 @@
 import 'package:solar_hub/src/features/calculations/domain/entities/appliance_entity.dart';
 import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
+import 'package:solar_hub/src/core/utils/date_parser.dart';
+import 'package:solar_hub/src/core/utils/number_parser.dart';
 
 class CalculatedSystem {
   final String id;
@@ -181,39 +183,36 @@ class CalculatedSystem {
     return CalculatedSystem(
       id: json['id'],
       title: json['title'],
-      date: DateTime.parse(json['date']),
-      appliances: (json['appliances'] as List)
+      date: safeParseDate(json['date']) ?? DateTime.now(),
+      appliances: (json['appliances'] as List? ?? [])
           .map((e) => ApplianceEntity.fromJson(e))
           .toList(),
-      dailyUsageKWh: json['dailyUsageKWh']?.toDouble() ?? 0.0,
-      recommendedPanels: json['recommendedPanels'] ?? 0,
-      totalPanelCapacityKw: json['totalPanelCapacityKw']?.toDouble() ?? 0.0,
-      totalBatteryCapacityAh: json['totalBatteryCapacityAh'] ?? '',
-      recommendedInverterSize:
-          json['recommendedInverterSize']?.toDouble() ?? 0.0,
-      recommendedBatteries: json['recommendedBatteries'] ?? 0,
-      recommendedControllerSize: json['recommendedControllerSize'] ?? 0,
-      peakLoadW: json['peakLoadW']?.toDouble() ?? 0.0,
-      acSystemVoltage: json['acSystemVoltage']?.toDouble() ?? 230.0,
-      acLoadCurrent: json['acLoadCurrent']?.toDouble() ?? 0.0,
-      systemCalcSingleBatteryVoltage:
-          json['systemCalcSingleBatteryVoltage']?.toDouble() ?? 12.0,
-      batteryUnitCapacityAh: json['batteryUnitCapacityAh']?.toDouble() ?? 200.0,
-      pvDerating: json['pvDerating']?.toDouble() ?? 0.78,
-      inverterSafetyFactor: json['inverterSafetyFactor']?.toDouble() ?? 1.3,
+      dailyUsageKWh: parseDouble(json['dailyUsageKWh']),
+      recommendedPanels: parseInt(json['recommendedPanels']),
+      totalPanelCapacityKw: parseDouble(json['totalPanelCapacityKw']),
+      totalBatteryCapacityAh: json['totalBatteryCapacityAh']?.toString() ?? '',
+      recommendedInverterSize: parseDouble(json['recommendedInverterSize']),
+      recommendedBatteries: parseInt(json['recommendedBatteries']),
+      recommendedControllerSize: parseInt(json['recommendedControllerSize']),
+      peakLoadW: parseDouble(json['peakLoadW']),
+      acSystemVoltage: parseDouble(json['acSystemVoltage'], 230.0),
+      acLoadCurrent: parseDouble(json['acLoadCurrent']),
+      systemCalcSingleBatteryVoltage: parseDouble(json['systemCalcSingleBatteryVoltage'], 12.0),
+      batteryUnitCapacityAh: parseDouble(json['batteryUnitCapacityAh'], 200.0),
+      pvDerating: parseDouble(json['pvDerating'], 0.78),
+      inverterSafetyFactor: parseDouble(json['inverterSafetyFactor'], 1.3),
       systemBatteryType: BatteryType.values.firstWhere(
         (value) => value.name == json['systemBatteryType'],
         orElse: () => BatteryType.lithium,
       ),
-      batterySeriesCount: json['batterySeriesCount'] ?? 0,
-      batteryParallelCount: json['batteryParallelCount'] ?? 0,
-      requiredBatteryAh: json['requiredBatteryAh']?.toDouble() ?? 0.0,
-      requiredBatteryKWh: json['requiredBatteryKWh']?.toDouble() ?? 0.0,
-      practicalBatteryNeedKWh:
-          json['practicalBatteryNeedKWh']?.toDouble() ?? 0.0,
-      effectiveBatteryNeedWh: json['effectiveBatteryNeedWh']?.toDouble() ?? 0.0,
-      averageLoadW: json['averageLoadW']?.toDouble() ?? 0.0,
-      gridCoverageFactor: json['gridCoverageFactor']?.toDouble() ?? 1.0,
+      batterySeriesCount: parseInt(json['batterySeriesCount']),
+      batteryParallelCount: parseInt(json['batteryParallelCount']),
+      requiredBatteryAh: parseDouble(json['requiredBatteryAh']),
+      requiredBatteryKWh: parseDouble(json['requiredBatteryKWh']),
+      practicalBatteryNeedKWh: parseDouble(json['practicalBatteryNeedKWh']),
+      effectiveBatteryNeedWh: parseDouble(json['effectiveBatteryNeedWh']),
+      averageLoadW: parseDouble(json['averageLoadW']),
+      gridCoverageFactor: parseDouble(json['gridCoverageFactor'], 1.0),
       gridCycleHours: json['gridCycleHours']?.toDouble() ?? 0.0,
       calculationMode: SystemCalculationMode.values.firstWhere(
         (value) => value.name == json['calculationMode'],

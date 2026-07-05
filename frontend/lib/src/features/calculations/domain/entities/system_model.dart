@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:solar_hub/src/core/enums/system_status.dart';
 
 class SystemModel {
@@ -65,15 +66,15 @@ class SystemModel {
       notes: json['notes'] as String?,
       installDate:
           json['installed_at'] != null
-              ? DateTime.tryParse(json['installed_at'])
+              ? safeParseDate(json['installed_at'])
               : (json['installation_date'] != null
-                    ? DateTime.tryParse(json['installation_date'])
+                    ? safeParseDate(json['installation_date'])
                     : null),
       createdAt:
           json['created_at'] != null
-              ? DateTime.tryParse(json['created_at'])
+              ? safeParseDate(json['created_at'])
               : (json['createdAt'] != null
-                    ? DateTime.tryParse(json['createdAt'])
+                    ? safeParseDate(json['createdAt'])
                     : null),
       userName: json['user_name'] as String? ?? '',
       installer: json['installer'] as String? ?? '',

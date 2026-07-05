@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
 import 'package:solar_hub/src/utils/app_enums.dart';
 import '../../domain/entities/solar_profile.dart';
@@ -88,7 +89,7 @@ class SolarRequestModel extends SolarRequest {
       note: json['note'],
       status: _parseRequestStatus(json['status']),
       createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'])
+          ? safeParseDate(json['created_at'])
           : null,
       offersCount: int.tryParse(json['offers_count']?.toString() ?? ''),
     );

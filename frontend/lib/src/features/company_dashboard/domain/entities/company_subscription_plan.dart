@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class CompanySubscriptionPlan {
   const CompanySubscriptionPlan({
     required this.id,
@@ -26,7 +27,7 @@ class CompanySubscriptionPlan {
       description: json['description']?.toString(),
       isActive: json['is_active'] == true,
       createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'].toString())
+          ? safeParseDate(json['created_at'])
           : null,
     );
   }

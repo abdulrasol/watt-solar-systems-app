@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class CompanyWorkImage {
   const CompanyWorkImage({
     required this.id,
@@ -13,7 +14,7 @@ class CompanyWorkImage {
     return CompanyWorkImage(
       id: int.tryParse(json['id']?.toString() ?? '') ?? 0,
       imageUrl: json['image_url']?.toString() ?? '',
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
     );
   }
 
@@ -50,8 +51,8 @@ class CompanyWork {
       id: int.tryParse(json['id']?.toString() ?? '') ?? 0,
       title: json['title']?.toString() ?? '',
       body: json['body']?.toString(),
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
       images: (json['images'] as List? ?? const [])
           .whereType<Map>()
           .map(

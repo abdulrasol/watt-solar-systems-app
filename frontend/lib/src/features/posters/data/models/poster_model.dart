@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:solar_hub/src/features/posters/domain/entities/poster_entity.dart';
 
 class PosterModel {
@@ -53,10 +54,10 @@ class PosterModel {
       status: json['status']?.toString() ?? '',
       isActive: json['is_active'] == true || json['is_active'] == 'true',
       durationDays: _parseInt(json['duration_days']),
-      approvedAt: json['approved_at'] != null ? DateTime.tryParse(json['approved_at'].toString()) : null,
-      expiresAt: json['expires_at'] != null ? DateTime.tryParse(json['expires_at'].toString()) : null,
-      createdAt: DateTime.parse(json['created_at'].toString()),
-      updatedAt: DateTime.parse(json['updated_at'].toString()),
+      approvedAt: safeParseDate(json['approved_at']),
+      expiresAt: safeParseDate(json['expires_at']),
+      createdAt: safeParseDate(json['created_at']) ?? DateTime.now(),
+      updatedAt: safeParseDate(json['updated_at']) ?? DateTime.now(),
     );
   }
 
