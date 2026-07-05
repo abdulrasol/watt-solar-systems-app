@@ -619,7 +619,7 @@ model CompanyServiceTypes {
   serviceType ServiceType @relation(fields: [servicetype_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   company     Company     @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([company_id, servicetype_id], map: "company_company_service_types_company_id_servicetype_id_326d67e4_uniq")
+  @@unique([company_id, servicetype_id], map: "company_service_types_cmp_srv_uniq")
   @@index([servicetype_id], map: "company_company_service_types_servicetype_id_ac48ad8e")
   @@index([company_id], map: "company_company_service_types_company_id_86d15421")
   @@map("company_company_service_types")
@@ -781,7 +781,7 @@ model CompanyServiceSubscription {
   company                                                            Company               @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user_company_companyservicesubscription_approved_by_idToauth_user  User?                 @relation("company_companyservicesubscription_approved_by_idToauth_user", fields: [approved_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([company_id, service_id], map: "company_companyservicesubscription_company_id_service_id_a53015a2_uniq")
+  @@unique([company_id, service_id], map: "company_srvsub_cmp_srv_uniq")
   @@index([service_id], map: "company_companyservicesubscription_service_id_f0e5778c")
   @@index([requested_by_id], map: "company_companyservicesubscription_requested_by_id_4ad86781")
   @@index([company_id], map: "company_companyservicesubscription_company_id_99b2e479")
@@ -803,31 +803,32 @@ model CompanySubscriptionRequest {
 
   company_id Int
 
-  plan_id Int
-
   requested_by_id Int?
 
-  subscriptionPlan SubscriptionPlan @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subscription_plan_id Int
+
+  subscriptionPlan SubscriptionPlan @relation(fields: [subscription_plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user             User?            @relation(fields: [requested_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   company          Company          @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([plan_id], map: "company_companysubscriptionrequest_plan_id_3226a4c2")
-  @@index([requested_by_id], map: "company_companysubscriptionrequest_requested_by_id_00fcf958")
-  @@index([company_id], map: "company_companysubscriptionrequest_company_id_a46b60ed")
+  @@index([subscription_plan_id], map: "company_companysubscriptionrequest_subscription_plan_id_1c84406f")
+  @@index([requested_by_id], map: "company_companysubscriptionrequest_requested_by_id_b33f0bbd")
+  @@index([company_id], map: "company_companysubscriptionrequest_company_id_a3cf705d")
   @@map("company_companysubscriptionrequest")
 }
 
 model CompanyType {
-  id   Int    @id @default(autoincrement())
-  name String @unique(map: "sqlite_autoindex_company_companytype_1")
-  icon String
-
+  id         Int      @id @default(autoincrement())
   created_at DateTime
 
-  company                    Company[]
+  name String
+
+  ctype   String    @unique(map: "sqlite_autoindex_company_companytype_1")
+  company Company[]
+
   companyTypeAllowedServices CompanyTypeAllowedServices[]
 
-  company_companytype_allowed_subscription_plans company_companytype_allowed_subscription_plans[]
+  companyType_allowed_subscription_plans company_companytype_allowed_subscription_plans[]
 
   @@map("company_companytype")
 }
@@ -841,44 +842,46 @@ model CompanyTypeAllowedServices {
   companyServiceCatalog CompanyServiceCatalog @relation(fields: [companyservicecatalog_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   companyType           CompanyType           @relation(fields: [companytype_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([companytype_id, companyservicecatalog_id], map: "company_companytype_all_companytype_id_companys_1ce44634_uniq")
-  @@index([companyservicecatalog_id], map: "company_companytype_allow_companyservicecatalog_id_4464c8d4")
-  @@index([companytype_id], map: "company_companytype_allowed_services_companytype_id_e3a9a1d4")
+  @@unique([companytype_id, companyservicecatalog_id], map: "companytype_allow_srv_cmp_cat_uniq")
+  @@index([companyservicecatalog_id], map: "companytype_allow_srv_cat_idx")
+  @@index([companytype_id], map: "company_companytype_allowed_services_companytype_id_04a7f6fc")
   @@map("company_companytype_allowed_services")
 }
 
 model company_companytype_allowed_subscription_plans {
-  id                   Int @id @default(autoincrement())
-  companytype_id       Int
-  subscriptionplan_id  Int
-  subscriptionPlan     SubscriptionPlan @relation(fields: [subscriptionplan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  companyType          CompanyType      @relation(fields: [companytype_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id             Int @id @default(autoincrement())
+  companytype_id Int
 
-  @@unique([companytype_id, subscriptionplan_id], map: "company_companytype_all_companytype_id_subscrip_898ca6c8_uniq")
-  @@index([subscriptionplan_id], map: "company_companytype_allow_subscriptionplan_id_6d2e61c7")
-  @@index([companytype_id], map: "company_companytype_allowe_companytype_id_0cdba286")
+  subscriptionplan_id Int
+
+  subscriptionPlan SubscriptionPlan @relation(fields: [subscriptionplan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  companyType      CompanyType      @relation(fields: [companytype_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([companytype_id, subscriptionplan_id], map: "companytype_allow_plan_cmp_plan_uniq")
+  @@index([subscriptionplan_id], map: "companytype_allow_plan_plan_idx")
+  @@index([companytype_id], map: "companytype_allow_plan_cmp_idx")
 }
 
 model CompanyWork {
-  id    Int    @id @default(autoincrement())
-  title String
+  id    Int     @id @default(autoincrement())
+  title String?
 
-  description String?
+  body String?
 
   created_at DateTime
 
+  updated_at DateTime
+
   company_id Int
 
-  is_active Boolean
+  company          Company            @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  companyWorkImage CompanyWorkImage[]
 
-  company           Company             @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  companyWorksImage CompanyWorksImage[]
-
-  @@index([company_id], map: "company_companywork_company_id_f6966627")
+  @@index([company_id], map: "company_companywork_company_id_b9958b02")
   @@map("company_companywork")
 }
 
-model CompanyWorksImage {
+model CompanyWorkImage {
   id    Int    @id @default(autoincrement())
   image String
 
@@ -888,62 +891,65 @@ model CompanyWorksImage {
 
   companyWork CompanyWork @relation(fields: [work_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([work_id], map: "company_companyworksimage_work_id_5b768137")
-  @@map("company_companyworksimage")
+  @@index([work_id], map: "company_companyworkimage_work_id_3ec0d572")
+  @@map("company_companyworkimage")
 }
 
 model Contact {
-  id         Int    @id @default(autoincrement())
-  name       String
-  phone      String
-  email      String
-  address    String
-  created_at DateTime
-  company_id Int
-  company    Company @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  name String
 
-  @@index([company_id], map: "company_contact_company_id_10bd5511")
+  email String?
+
+  phone String
+
+  notes String?
+
+  created_at DateTime
+
+  company_id Int
+
+  id      Int     @id @default(autoincrement())
+  company Company @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([company_id], map: "company_contact_company_id_852620e3")
   @@map("company_contact")
 }
 
 model DeliveryOption {
-  id          Int     @id @default(autoincrement())
-  name        String
-  price       Decimal
-  description String?
+  name String
 
-  estimated_days Int
+  cost Decimal
+
+  estimated_days_min Int?
+
+  estimated_days_max Int?
+
+  description String?
 
   is_active Boolean
 
   created_at DateTime
 
-  updated_at DateTime
-
   company_id Int
 
+  id      Int     @id @default(autoincrement())
   company Company @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([company_id], map: "company_deliveryoption_company_id_fc964827")
+  @@index([company_id], map: "company_deliveryoption_company_id_06d6c61e")
   @@map("company_deliveryoption")
 }
 
 model Expense {
   id     Int     @id @default(autoincrement())
-  title  String
   amount Decimal
-
-  date DateTime
 
   category String
 
   description String?
 
-  receipt String?
+  date DateTime
 
   created_at DateTime
-
-  updated_at DateTime
 
   company_id Int
 
@@ -951,71 +957,101 @@ model Expense {
   journalEntry     JournalEntry? @relation(fields: [journal_entry_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   company          Company       @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([company_id], map: "company_expense_company_id_6ceb45df")
+  @@index([company_id], map: "company_expense_company_id_fbb7378b")
   @@map("company_expense")
 }
 
 model FinancialTransaction {
-  id               Int     @id @default(autoincrement())
-  transaction_type String
-  amount           Decimal
+  id   Int    @id @default(autoincrement())
+  type String
 
-  date DateTime
+  category String
+
+  amount Decimal
 
   description String?
+
+  payment_method String
+
+  date DateTime
 
   created_at DateTime
 
   company_id Int
 
+  reference_id Int?
+
   company Company @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([company_id], map: "company_financialtransaction_company_id_3337996c")
+  @@index([company_id], map: "company_financialtransaction_company_id_05228e37")
   @@map("company_financialtransaction")
 }
 
 model Poster {
-  id          Int       @id @default(autoincrement())
-  text        String?
+  id    Int    @id @default(autoincrement())
+  image String
+
+  text String?
+
   action_type String
-  action_id   Int?
-  image       String?
-  is_active   Boolean
-  status      String
-  created_at  DateTime
-  expires_at  DateTime?
+
+  action_id Int?
+
+  status String
+
+  is_active Boolean
+
+  duration_days Int?
+
+  approved_at DateTime?
+
+  expires_at DateTime?
+
+  created_at DateTime
+
+  updated_at DateTime
 
   company_id Int
 
   company Company @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([company_id], map: "company_poster_company_id_44bd69bd")
+  @@index([company_id], map: "company_poster_company_id_73acafbc")
   @@map("company_poster")
 }
 
 model ServiceType {
   id   Int    @id @default(autoincrement())
-  name String @unique(map: "sqlite_autoindex_company_servicetype_1")
-  icon String
+  name String
+
+  image String?
+
+  description String?
 
   created_at DateTime
-
-  is_active Boolean
 
   companyServiceTypes CompanyServiceTypes[]
 
   @@map("company_servicetype")
 }
 
-model DjangoAdminLog {
-  id              Int      @id @default(autoincrement())
-  action_time     DateTime
-  object_id       String?
-  object_repr     String
-  action_flag     Int
-  change_message  String
+model AdminLog {
+  id        Int     @id @default(autoincrement())
+  object_id String?
+
+  object_repr String
+
+  action_flag Int
+
+  change_message String
+
   content_type_id Int?
-  user_id         Int
+
+  user_id Int
+
+  action_time DateTime
+
+  user        User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  contentType ContentType? @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([user_id], map: "django_admin_log_user_id_c564eba6")
   @@index([content_type_id], map: "django_admin_log_content_type_id_c4bce8eb")
@@ -1023,380 +1059,688 @@ model DjangoAdminLog {
 }
 
 model ContentType {
-  id         Int    @id @default(autoincrement())
-  app_label  String
-  model      String
+  id        Int    @id @default(autoincrement())
+  app_label String
+
+  model String
 
   permission Permission[]
+
+  adminLog AdminLog[]
 
   @@unique([app_label, model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
   @@map("django_content_type")
 }
 
-model DjangoMigrations {
-  id      Int      @id @default(autoincrement())
-  app     String
-  name    String
+model Migrations {
+  id  Int    @id @default(autoincrement())
+  app String
+
+  name String
+
   applied DateTime
 
   @@map("django_migrations")
 }
 
-model DjangoSession {
-  session_key  String   @id
+model ResetPasswordToken {
+  created_at DateTime
+
+  key        String @unique(map: "sqlite_autoindex_django_rest_passwordreset_resetpasswordtoken_1")
+  user_agent String
+
+  user_id Int
+
+  id         Int     @id @default(autoincrement())
+  ip_address String?
+
+  user User @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([user_id], map: "django_rest_passwordreset_resetpasswordtoken_user_id_e8015b11")
+  @@map("django_rest_passwordreset_resetpasswordtoken")
+}
+
+model Session {
+  session_key  String @id
   session_data String
-  expire_date  DateTime
+
+  expire_date DateTime
 
   @@index([expire_date], map: "django_session_expire_date_a5c62663")
   @@map("django_session")
 }
 
-model AdminLog {
-  id          Int      @id @default(autoincrement())
-  action      String
-  description String
-  created_at  DateTime
-  user_id     Int
-
-  user User @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([user_id], map: "management_adminlog_user_id_db09d177")
-  @@map("management_adminlog")
-}
-
-model ResetPasswordToken {
-  id         Int      @id @default(autoincrement())
-  token      String   @unique(map: "sqlite_autoindex_management_resetpasswordtoken_1")
-  created_at DateTime
-  user_id    Int
-
-  user User @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([user_id], map: "management_resetpasswordtoken_user_id_45cb2b50")
-  @@map("management_resetpasswordtoken")
-}
-
 model FCMDevice {
-  id                Int      @id @default(autoincrement())
-  name              String?
-  active            Boolean
-  date_created      DateTime
-  device_id         String?
-  registration_id   String
-  type              String
-  user_id           Int?
-  topic_connections NotificationTopicConnection[]
+  id   Int     @id @default(autoincrement())
+  name String?
 
-  user User? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  active Boolean
 
-  @@index([user_id], map: "notification_fcmdevice_user_id_ab9c76ba")
-  @@index([device_id], map: "notification_fcmdevice_device_id_812c3f85")
-  @@map("notification_fcmdevice")
+  date_created DateTime?
+
+  device_id String?
+
+  type String
+
+  user_id Int?
+
+  registration_id String @unique(map: "sqlite_autoindex_fcm_django_fcmdevice_1")
+  user            User?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([registration_id, user_id], map: "fcm_django__registr_dacdb2_idx")
+  @@index([user_id], map: "fcm_django_fcmdevice_user_id_6cdfc0a2")
+  @@index([device_id], map: "fcm_django_fcmdevice_device_id_a9406c36")
+  @@map("fcm_django_fcmdevice")
 }
 
 model NotificationMsg {
-  id               Int      @id @default(autoincrement())
-  title            String
-  body             String
-  data             String?
-  created_at       DateTime
-  topic            String?
-  status           String
-  target_user_id   Int?
-  target_device_id Int?
+  id    Int    @id @default(autoincrement())
+  title String
+
+  body String
+
+  data String
+
+  type String
+
+  topic String?
+
+  status String
+
+  devices_count Int
+
+  success_count Int
+
+  failure_count Int
+
+  created_at DateTime
+
+  sent_at DateTime?
+
+  error_message String?
+
+  target_user_id Int?
+
+  data_extra String
 
   user User? @relation(fields: [target_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([target_user_id], map: "notification_notificationmsg_target_user_id_dd167fcf")
-  @@map("notification_notificationmsg")
-}
-
-model NotificationTopic {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique(map: "sqlite_autoindex_notification_notificationtopic_1")
-  description String?
-  created_at  DateTime
-
-  topicConnections NotificationTopicConnection[]
-
-  @@map("notification_notificationtopic")
-}
-
-model NotificationTopicConnection {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime
-  device_id  Int
-  topic_id   Int
-
-  topic  NotificationTopic @relation(fields: [topic_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  device FCMDevice         @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@unique([device_id, topic_id], map: "notification_notificationt_device_id_topic_id_07fc02d1_uniq")
-  @@index([topic_id], map: "notification_notificationtopicconnection_topic_id_baeb3da8")
-  @@index([device_id], map: "notification_notificationtopicconnection_device_id_65c5d263")
-  @@map("notification_notificationtopicconnection")
+  @@index([target_user_id, status], map: "notificatio_target__94e9d6_idx")
+  @@index([created_at], map: "notificatio_created_46ad24_idx")
+  @@index([type], map: "notificatio_type_ea918f_idx")
+  @@index([status], map: "notificatio_status_d92267_idx")
+  @@index([target_user_id], map: "notifications_notification_target_user_id_35babc75")
+  @@map("notifications_notification")
 }
 
 model InvolvementTemplate {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  file_url    String?
-  created_at  DateTime
-  updated_at  DateTime
-  company_id  Int
+  id   Int    @id @default(autoincrement())
+  name String
 
-  company          Company            @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  offerInvolvement OfferInvolvement[]
+  cost Decimal
 
-  @@index([company_id], map: "offers_involvementtemplate_company_id_10ed6893")
+  is_active Boolean
+
+  created_at DateTime
+
+  company_id Int?
+
+  company Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([company_id], map: "offers_involvementtemplate_company_id_4479839d")
   @@map("offers_involvementtemplate")
 }
 
 model Offer {
-  id              Int      @id @default(autoincrement())
-  status          String
-  message         String
-  price           Decimal?
-  pdf_file        String?
-  created_at      DateTime
-  updated_at      DateTime
-  company_id      Int
-  request_id      Int
-  user_id         Int
-  finished_at     DateTime?
+  id          Int @id @default(autoincrement())
+  panel_count Int
 
-  user             User               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  offerRequest     OfferRequest       @relation(fields: [request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  company          Company            @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  offerInvolvement OfferInvolvement[]
+  battery_count Int
 
-  @@unique([request_id, company_id], map: "offers_offer_request_id_company_id_d7b88950_uniq")
-  @@index([user_id], map: "offers_offer_user_id_4dcc9d05")
-  @@index([request_id], map: "offers_offer_request_id_f4f53582")
-  @@index([company_id], map: "offers_offer_company_id_57864227")
+  battery_type String
+
+  inverter_count Int
+
+  inverter_type String
+
+  price Decimal
+
+  status String
+
+  created_at DateTime
+
+  company_id Int?
+
+  battery_note String?
+
+  inverter_note String?
+
+  note String?
+
+  panel_note String?
+
+  battery_size Float
+
+  inverter_size Float
+
+  offer_request_id Int
+
+  total_panel_power Int
+
+  user_id Int
+
+  panel_power Int
+
+  user          User            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  offerRequest  OfferRequest    @relation(fields: [offer_request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company       Company?        @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  offerInvolves OfferInvolves[]
+
+  order Order[]
+
+  @@index([user_id], map: "offers_offer_user_id_4fbc0994")
+  @@index([offer_request_id], map: "offers_offer_offer_request_id_bc2a4a3a")
+  @@index([company_id], map: "offers_offer_company_id_623c4621")
   @@map("offers_offer")
 }
 
+model OfferInvolves {
+  id       Int @id @default(autoincrement())
+  offer_id Int
+
+  offerinvolvement_id Int
+
+  offerInvolvement OfferInvolvement @relation(fields: [offerinvolvement_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  offer            Offer            @relation(fields: [offer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([offer_id, offerinvolvement_id], map: "offers_offer_involves_offer_id_offerinvolvement_id_8a32d13e_uniq")
+  @@index([offerinvolvement_id], map: "offers_offer_involves_offerinvolvement_id_0e5554e0")
+  @@index([offer_id], map: "offers_offer_involves_offer_id_4cfd42e4")
+  @@map("offers_offer_involves")
+}
+
 model OfferInvolvement {
-  id          Int      @id @default(autoincrement())
-  description String?
-  file_url    String?
-  status      String
-  created_at  DateTime
-  updated_at  DateTime
-  company_id  Int
-  offer_id    Int
-  template_id Int?
+  id   Int    @id @default(autoincrement())
+  name String
 
-  involvementTemplate InvolvementTemplate? @relation(fields: [template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  offer               Offer                @relation(fields: [offer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  company             Company              @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  quantity Int
 
-  @@index([template_id], map: "offers_offerinvolvement_template_id_c519d5cb")
-  @@index([offer_id], map: "offers_offerinvolvement_offer_id_33ab958e")
-  @@index([company_id], map: "offers_offerinvolvement_company_id_1df4fce3")
+  cost Decimal
+
+  company_id Int?
+
+  offerInvolves OfferInvolves[]
+
+  company Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([company_id], map: "offers_offerinvolvement_company_id_e3ff2e99")
   @@map("offers_offerinvolvement")
 }
 
 model OfferRequest {
-  id           Int      @id @default(autoincrement())
-  title        String
-  description  String
-  status       String
-  created_at   DateTime
-  updated_at   DateTime
-  city_id      Int?
-  user_id      Int
-  request_type String
+  id          Int  @id @default(autoincrement())
+  panel_count Int?
 
-  user  User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  city  City?   @relation(fields: [city_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  battery_count Int?
+
+  battery_type String
+
+  inverter_count Int?
+
+  inverter_type String
+
+  created_at DateTime
+
+  status String
+
+  user_id Int
+
+  battery_note String?
+
+  inverter_note String?
+
+  note String?
+
+  panel_note String?
+
+  all_cities Boolean
+
+  battery_size Float?
+
+  city_id Int?
+
+  inverter_size Float?
+
+  total_battery_power Float
+
+  total_inverters_power Float
+
+  total_panel_power Int
+
+  panel_power Int?
+
   offer Offer[]
 
-  @@index([user_id], map: "offers_offerrequest_user_id_6ef3e215")
-  @@index([city_id], map: "offers_offerrequest_city_id_9f81a74d")
+  city    City?    @relation(fields: [city_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user    User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  systems System[]
+
+  @@index([city_id], map: "offers_offerrequest_city_id_e59f47a4")
+  @@index([user_id], map: "offers_offerrequest_user_id_0ae5478c")
   @@map("offers_offerrequest")
 }
 
 model Customer {
-  id         Int     @id @default(autoincrement())
-  name       String
-  phone      String
-  email      String?
-  address    String?
-  notes      String?
-  company_id Int
-  user_id    Int?
+  id           Int     @id @default(autoincrement())
+  phone_number String?
+
+  email String?
+
+  address String?
+
+  created_at DateTime
+
+  updated_at DateTime
 
   buyer_company_id Int?
 
-  company_shop_customer_company_idTocompany_company       Company  @relation("shop_customer_company_idTocompany_company", fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company_id Int
+
+  buyer_profile_id Int?
+
+  customer_type String
+
+  full_name String?
+
+  invoice Invoice[]
+
+  user_id Int?
+
   user                                                    User?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company_shop_customer_company_idTocompany_company       Company  @relation("shop_customer_company_idTocompany_company", fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   company_shop_customer_buyer_company_idTocompany_company Company? @relation("shop_customer_buyer_company_idTocompany_company", fields: [buyer_company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   order                                                   Order[]
 
-  @@index([user_id], map: "shop_customer_user_id_cc44eab8")
-  @@index([company_id], map: "shop_customer_company_id_1de10376")
-  @@index([buyer_company_id], map: "shop_customer_buyer_company_id_b42da182")
+  @@index([user_id], map: "shop_customer_buyer_profile_id_3556bc33")
+  @@index([company_id], map: "shop_customer_company_id_680bf201")
+  @@index([buyer_company_id], map: "shop_customer_buyer_company_id_72cbc331")
   @@map("shop_customer")
 }
 
 model Order {
-  id           Int      @id @default(autoincrement())
-  status       String
-  total_amount Decimal
-  created_at   DateTime
-  updated_at   DateTime
-  buyer_id     Int?
-  customer_id  Int?
+  id                  Int     @id @default(autoincrement())
+  order_number        Int?    @unique(map: "sqlite_autoindex_shop_order_1")
+  guest_customer_name String?
 
-  seller_company_id Int
+  order_type String
+
+  status String
+
+  payment_status String
+
+  total_amount Decimal
+
+  discount_amount Decimal
+
+  tax_amount Decimal
+
+  paid_amount Decimal
+
+  payment_method String
+
+  shipping_cost Decimal
+
+  shipping_method String?
+
+  shipping_address String?
+
+  cancellation_reason String?
+
+  currency_symbol String?
+
+  currency_code String?
+
+  created_offline Boolean
+
+  synced_at DateTime?
+
+  created_at DateTime
 
   buyer_company_id Int?
 
-  notes String?
+  buyer_user_id Int?
 
-  bill Invoice?
+  customer_id Int?
 
-  invoice Bill?
+  offer_id Int?
 
-  company_shop_order_seller_company_idTocompany_company Company    @relation("shop_order_seller_company_idTocompany_company", fields: [seller_company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  customer                                              Customer?  @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  company_shop_order_buyer_company_idTocompany_company  Company?   @relation("shop_order_buyer_company_idTocompany_company", fields: [buyer_company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user                                                  User?      @relation(fields: [buyer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  seller_company_id Int?
+
+  supplier_id Int?
+
+  buyer_receipt_confirmed Boolean
+
+  buyer_receipt_confirmed_at DateTime?
+
+  fulfilled_at DateTime?
+
+  stock_transferred_at DateTime?
+
+  updated_at DateTime
+
+  bill Bill?
+
+  invoice Invoice?
+
+  supplier                                              Supplier?   @relation(fields: [supplier_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company_shop_order_seller_company_idTocompany_company Company?    @relation("shop_order_seller_company_idTocompany_company", fields: [seller_company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  offer                                                 Offer?      @relation(fields: [offer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer                                              Customer?   @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user                                                  User?       @relation(fields: [buyer_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company_shop_order_buyer_company_idTocompany_company  Company?    @relation("shop_order_buyer_company_idTocompany_company", fields: [buyer_company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   orderItem                                             OrderItem[]
 
-  @@index([seller_company_id], map: "shop_order_seller_company_id_27f10b78")
-  @@index([customer_id], map: "shop_order_customer_id_ffaa0eb1")
-  @@index([buyer_company_id], map: "shop_order_buyer_company_id_95f87bdf")
-  @@index([buyer_id], map: "shop_order_buyer_id_bde2bf2b")
+  system System[]
+
+  @@index([supplier_id], map: "shop_order_supplier_id_0de7cccd")
+  @@index([seller_company_id], map: "shop_order_seller_company_id_34ee6430")
+  @@index([offer_id], map: "shop_order_offer_id_8e1d2a54")
+  @@index([customer_id], map: "shop_order_customer_id_f638df20")
+  @@index([buyer_user_id], map: "shop_order_buyer_user_id_6abf4c52")
+  @@index([buyer_company_id], map: "shop_order_buyer_company_id_2c552dce")
   @@map("shop_order")
 }
 
 model OrderItem {
-  id         Int     @id @default(autoincrement())
-  quantity   Int
-  price      Decimal
-  order_id   Int
-  product_id Int
+  id       Int @id @default(autoincrement())
+  quantity Int
 
-  product Product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  order   Order   @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  unit_price Decimal
 
-  @@index([product_id], map: "shop_orderitem_product_id_658c73d9")
-  @@index([order_id], map: "shop_orderitem_order_id_d72b22b6")
+  total_line_price Decimal
+
+  product_name_snapshot String?
+
+  selected_options String
+
+  order_id Int
+
+  product_id Int?
+
+  product Product? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order   Order    @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([product_id], map: "shop_orderitem_product_id_48153f22")
+  @@index([order_id], map: "shop_orderitem_order_id_2f1b00cf")
   @@map("shop_orderitem")
 }
 
 model Product {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String
-  price       Decimal
-  stock       Int
-  is_active   Boolean
-  status      String
-  company_id  Int
+  id   Int    @id @default(autoincrement())
+  name String
 
-  brand            String?
-  warranty_details String?
+  sku String?
 
-  company          Company            @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  orderItem        OrderItem[]
-  productCategories ProductCategories[]
-  productImage     ProductImage[]
-  systemItem       SystemItem[]
+  description String?
 
-  @@index([company_id], map: "shop_product_company_id_57ee13ce")
+  cost_price Decimal
+
+  retail_price Decimal
+
+  wholesale_price Decimal
+
+  discount Decimal
+
+  stock_quantity Int
+
+  min_stock_alert Int
+
+  specs String
+
+  status String
+
+  created_at DateTime
+
+  updated_at DateTime
+
+  category_id Int?
+
+  company_id Int?
+
+  source_product_id Int?
+
+  orderItem OrderItem[]
+
+  product            Product?            @relation("shop_productToshop_product", fields: [source_product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_shop_product Product[]           @relation("shop_productToshop_product")
+  company            Company?            @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  globalCategory     GlobalCategory?     @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  productCategories  ProductCategories[]
+
+  productImages ProductImages[]
+
+  productOption ProductOption[]
+
+  productPricingTier ProductPricingTier[]
+
+  @@index([source_product_id], map: "shop_product_source_product_id_38253679")
+  @@index([company_id], map: "shop_product_company_id_b5d45d67")
+  @@index([category_id], map: "shop_product_category_id_14d7eea8")
   @@map("shop_product")
 }
 
 model ProductCategories {
-  id                 Int @id @default(autoincrement())
-  product_id         Int
-  globalcategory_id  Int?
-  companycategory_id Int?
+  id         Int @id @default(autoincrement())
+  product_id Int
 
-  globalCategory  GlobalCategory?  @relation(fields: [globalcategory_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product         Product          @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  companyCategory CompanyCategory? @relation(fields: [companycategory_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  companycategory_id Int
 
-  @@index([globalcategory_id], map: "shop_product_categories_globalcategory_id_2b0c3fde")
-  @@index([companycategory_id], map: "shop_product_categories_companycategory_id_a73426e2")
-  @@index([product_id], map: "shop_product_categories_product_id_d5c589a1")
+  companyCategory CompanyCategory @relation(fields: [companycategory_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product         Product         @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([product_id, companycategory_id], map: "shop_prod_cat_prod_cmpcat_uniq")
+  @@index([companycategory_id], map: "shop_product_categories_companycategory_id_7af87745")
+  @@index([product_id], map: "shop_product_categories_product_id_59c38762")
   @@map("shop_product_categories")
 }
 
-model ProductImage {
-  id         Int    @id @default(autoincrement())
-  image      String
-  is_primary Boolean
+model ProductImages {
+  id         Int @id @default(autoincrement())
   product_id Int
 
-  product Product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  productimage_id Int
 
-  @@index([product_id], map: "shop_productimage_product_id_d2b380dc")
+  productImage ProductImage @relation(fields: [productimage_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product      Product      @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([product_id, productimage_id], map: "shop_product_images_product_id_productimage_id_1a752aae_uniq")
+  @@index([productimage_id], map: "shop_product_images_productimage_id_8202f8fa")
+  @@index([product_id], map: "shop_product_images_product_id_2558b27e")
+  @@map("shop_product_images")
+}
+
+model ProductImage {
+  id    Int    @id @default(autoincrement())
+  image String
+
+  name String?
+
+  created_at DateTime
+
+  productImages ProductImages[]
+
   @@map("shop_productimage")
 }
 
+model ProductOption {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  cost Decimal
+
+  retail_price Decimal
+
+  wholesale_price Decimal
+
+  is_required Boolean
+
+  created_at DateTime
+
+  product_id Int?
+
+  product Product? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([product_id], map: "shop_productoption_product_id_abed5a2d")
+  @@map("shop_productoption")
+}
+
+model ProductPricingTier {
+  id       Int @id @default(autoincrement())
+  quantity Int
+
+  unit_price Decimal
+
+  created_at DateTime
+
+  product_id Int?
+
+  product Product? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([product_id], map: "shop_productpricingtier_product_id_ce489ccb")
+  @@map("shop_productpricingtier")
+}
+
 model Supplier {
-  id         Int     @id @default(autoincrement())
-  name       String
-  phone      String
-  email      String?
-  address    String?
-  notes      String?
+  id            Int    @id @default(autoincrement())
+  supplier_type String
+
+  name String
+
+  contact_name String?
+
+  phone_number String?
+
+  email String?
+
+  address String?
+
+  tax_id String?
+
+  created_at DateTime
+
+  updated_at DateTime
+
   company_id Int
 
   seller_company_id Int?
 
   bill Bill[]
 
-  company_shop_supplier_seller_company_idTocompany_company  Company? @relation("shop_supplier_seller_company_idTocompany_company", fields: [seller_company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  company_shop_supplier_company_idTocompany_company         Company  @relation("shop_supplier_company_idTocompany_company", fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order Order[]
 
-  @@index([seller_company_id], map: "shop_supplier_seller_company_id_44bd5493")
-  @@index([company_id], map: "shop_supplier_company_id_42e47a96")
+  company_shop_supplier_seller_company_idTocompany_company Company? @relation("shop_supplier_seller_company_idTocompany_company", fields: [seller_company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company_shop_supplier_company_idTocompany_company        Company  @relation("shop_supplier_company_idTocompany_company", fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([seller_company_id], map: "shop_supplier_seller_company_id_6b075cfc")
+  @@index([company_id], map: "shop_supplier_company_id_50cec344")
   @@map("shop_supplier")
 }
 
 model System {
-  id            Int      @id @default(autoincrement())
-  name          String
-  description   String?
-  total_price   Decimal
-  status        String
-  created_at    DateTime
-  updated_at    DateTime
-  company_id    Int
-  customer_id   Int?
-  installer_id  Int?
-  creation_type String
+  id                   Int     @id @default(autoincrement())
+  user_phone_reference String?
 
-  company Company @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user    User?   @relation(fields: [installer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post    Post[]
+  user_status String
 
-  systemItem SystemItem[]
+  company_status String
 
-  @@index([installer_id], map: "systems_system_installer_id_c4014f3b")
-  @@index([customer_id], map: "systems_system_customer_id_cd59ffeb")
-  @@index([company_id], map: "systems_system_company_id_a4abf041")
+  panel_power Int
+
+  panel_count Int
+
+  panel_type String
+
+  panel_notes String?
+
+  battery_power Float
+
+  battery_count Int
+
+  battery_type String
+
+  battery_notes String?
+
+  inverter_power Int
+
+  inverter_count Int
+
+  inverter_type String
+
+  inverter_notes String?
+
+  system_type String
+
+  notes String?
+
+  lat Float?
+
+  lan Float?
+
+  address String?
+
+  city String?
+
+  country String?
+
+  installed_at DateTime?
+
+  created_at DateTime
+
+  updated_at DateTime
+
+  installed_by_id Int?
+
+  order_id Int?
+
+  user_id Int?
+
+  post Post[]
+
+  user           User?         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order          Order?        @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company        Company?      @relation(fields: [installed_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  offerRequest   OfferRequest? @relation(fields: [offerRequestId], references: [id])
+  offerRequestId Int?
+
+  @@index([user_id], map: "systems_system_user_id_1954582a")
+  @@index([order_id], map: "systems_system_order_id_75fd7e8f")
+  @@index([installed_by_id], map: "systems_system_installed_by_id_11e2537c")
   @@map("systems_system")
 }
 
-model SystemItem {
-  id         Int     @id @default(autoincrement())
-  quantity   Int
-  price      Decimal
-  product_id Int
-  system_id  Int
+model SMTPConfiguration {
+  id   Int    @id @default(autoincrement())
+  name String
 
-  system  System  @relation(fields: [system_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product Product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  email_host String
 
-  @@index([system_id], map: "systems_systemitem_system_id_c287a32b")
-  @@index([product_id], map: "systems_systemitem_product_id_e417a86f")
-  @@map("systems_systemitem")
+  email_port Int
+
+  use_tls Boolean
+
+  host_user String
+
+  host_password String
+
+  from_email String
+
+  is_active Boolean
+
+  created_at DateTime
+
+  updated_at DateTime
+
+  logo String?
+
+  @@map("users_smtpconfiguration")
 }
