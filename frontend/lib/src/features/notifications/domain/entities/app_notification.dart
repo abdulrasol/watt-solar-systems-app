@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class AppNotificationItem {
   final int id;
   final String title;
@@ -28,10 +29,10 @@ class AppNotificationItem {
       type: json['type'] ?? '',
       status: json['status'] ?? '',
       createdAt:
-          DateTime.tryParse(json['created_at'] ?? '') ??
+          safeParseDate(json['created_at']) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       sentAt: json['sent_at'] != null
-          ? DateTime.tryParse(json['sent_at'])
+          ? safeParseDate(json['sent_at'])
           : null,
     );
   }

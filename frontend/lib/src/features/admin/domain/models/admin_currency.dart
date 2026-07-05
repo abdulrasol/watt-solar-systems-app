@@ -1,3 +1,5 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
+
 class AdminCurrency {
   final int id;
   final String name;
@@ -22,9 +24,7 @@ class AdminCurrency {
       code: json['code']?.toString() ?? '',
       symbol: json['symbol']?.toString() ?? '',
       isDefault: json['is_default'] as bool? ?? false,
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'].toString())
-          : DateTime.now(),
+      createdAt: safeParseDate(json['created_at']) ?? DateTime.now(),
     );
   }
 

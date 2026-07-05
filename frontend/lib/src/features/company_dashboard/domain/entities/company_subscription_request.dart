@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class CompanySubscriptionRequest {
   const CompanySubscriptionRequest({
     required this.id,
@@ -48,14 +49,14 @@ class CompanySubscriptionRequest {
       notes: json['notes']?.toString(),
       image: json['image']?.toString(),
       createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'].toString())
+          ? safeParseDate(json['created_at'])
           : null,
       autoApproved: json['auto_approved'] == true,
       effectiveStart: json['effective_start'] != null
-          ? DateTime.tryParse(json['effective_start'].toString())
+          ? safeParseDate(json['effective_start'])
           : null,
       resultingExpiry: json['resulting_expiry'] != null
-          ? DateTime.tryParse(json['resulting_expiry'].toString())
+          ? safeParseDate(json['resulting_expiry'])
           : null,
       companySubscriptionPlanId:
           int.tryParse(json['company_subscription_plan_id']?.toString() ?? ''),

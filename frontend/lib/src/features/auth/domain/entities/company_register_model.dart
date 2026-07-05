@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 
 class CompanyRegistrationModel {
   final String name;
@@ -41,9 +40,6 @@ class CompanyRegistrationModel {
     if (city != null) data['city'] = city;
     if (currency != null) data['currency'] = currency;
     if (categories != null) data['categories'] = categories;
-    if (image != null && image!.isNotEmpty) {
-      data['image'] = await MultipartFile.fromFile(image!);
-    }
 
     return data;
   }

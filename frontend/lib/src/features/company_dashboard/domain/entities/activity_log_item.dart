@@ -1,3 +1,5 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
+
 enum ActivityActionType {
   productAdded,
   productUpdated,
@@ -39,9 +41,7 @@ class ActivityLogItem {
       title: json['title'] ?? '',
       subtitle: json['subtitle'] ?? json['description'] ?? '',
       actionType: _parseActionType(json['action_type']?.toString()),
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'])
-          : DateTime.now(),
+      createdAt: safeParseDate(json['created_at']) ?? DateTime.now(),
       entityType: json['entity_type']?.toString(),
       entityId: json['entity_id'],
     );

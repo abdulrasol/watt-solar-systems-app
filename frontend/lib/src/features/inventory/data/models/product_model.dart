@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:solar_hub/src/core/utils/date_parser.dart';
+import 'package:solar_hub/src/core/utils/number_parser.dart';
 import '../../domain/entities/product.dart';
 
 class ProductModel extends Product {
@@ -35,20 +38,22 @@ class ProductModel extends Product {
       sku: json['sku'] as String?,
       category: json['category'] != null ? ProductCategoryModel.fromJson(json['category']) : null,
       description: json['description'] as String?,
-      costPrice: (json['cost_price'] as num).toDouble(),
-      retailPrice: (json['retail_price'] as num).toDouble(),
-      wholesalePrice: (json['wholesale_price'] as num).toDouble(),
-      displayPrice: (json['display_price'] as num).toDouble(),
-      discount: (json['discount'] as num).toDouble(),
+      costPrice: parseDouble(json['cost_price']),
+      retailPrice: parseDouble(json['retail_price']),
+      wholesalePrice: parseDouble(json['wholesale_price']),
+      displayPrice: parseDouble(json['display_price']),
+      discount: parseDouble(json['discount']),
       stockQuantity: json['stock_quantity'] as int,
       minStockAlert: json['min_stock_alert'] as int? ?? 5,
       isAvailable: json['is_available'] as bool? ?? true,
-      specs: json['specs'] != null ? Map<String, dynamic>.from(json['specs']) : {},
+      specs: json['specs'] is Map 
+          ? Map<String, dynamic>.from(json['specs']) 
+          : (json['specs'] is String ? Map<String, dynamic>.from(jsonDecode(json['specs'])) : {}),
       status: json['status'] as String,
       options: json['options'] != null ? (json['options'] as List).map((e) => ProductOptionModel.fromJson(e)).toList() : [],
       pricingTiers: json['pricing_tiers'] != null ? (json['pricing_tiers'] as List).map((e) => ProductPricingTierModel.fromJson(e)).toList() : [],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      createdAt: safeParseDate(json['created_at']) ?? DateTime.now(),
+      updatedAt: safeParseDate(json['updated_at']) ?? DateTime.now(),
       images: json['images'] != null ? List<String>.from(json['images']) : [],
       globalCategory: json['global_category'] != null ? ProductCategoryModel.fromJson(json['global_category']) : null,
       internalCategories: json['internal_categories'] != null

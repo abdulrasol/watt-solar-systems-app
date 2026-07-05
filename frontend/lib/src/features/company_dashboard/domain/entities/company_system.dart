@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 /// A solar system installed by this company for a customer, as returned by
 /// `GET /companies/{id}/systems` — read-only from the company dashboard
 /// (systems are created via the customer-facing `/systems/` self-service
@@ -54,8 +55,8 @@ class CompanySystem {
       address: json['address']?.toString(),
       city: json['city']?.toString(),
       country: json['country']?.toString(),
-      installedAt: json['installed_at'] != null ? DateTime.tryParse(json['installed_at'].toString()) : null,
-      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at'].toString()) : null,
+      installedAt: json['installed_at'] != null ? safeParseDate(json['installed_at']) : null,
+      createdAt: json['created_at'] != null ? safeParseDate(json['created_at']) : null,
     );
   }
 }

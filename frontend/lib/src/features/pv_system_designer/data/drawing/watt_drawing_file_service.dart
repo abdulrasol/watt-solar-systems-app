@@ -4,9 +4,11 @@ import 'dart:typed_data';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/bom_item.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
 import 'package:solar_hub/src/features/pv_system_designer/domain/entities/row_frame_result.dart';
@@ -218,8 +220,8 @@ class WattDrawingFileService {
       title: _asString(json['title'], 'title'),
       documentType: _asString(json['documentType'], 'documentType'),
       schemaVersion: _asInt(json['schemaVersion'], 'schemaVersion'),
-      createdAt: DateTime.parse(_asString(json['createdAt'], 'createdAt')),
-      updatedAt: DateTime.parse(_asString(json['updatedAt'], 'updatedAt')),
+      createdAt: safeParseDate(json['createdAt']) ?? DateTime.now(),
+      updatedAt: safeParseDate(json['updatedAt']) ?? DateTime.now(),
       appVersion: _asString(json['appVersion'], 'appVersion'),
       state: PvSystemDesignState.fromJson(_asMap(pvSystem['state'], 'state')),
       frameResult: _resultFromJson(_asMap(pvSystem['frameResult'], 'frameResult')),

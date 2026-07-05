@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class CompanyService {
   final String serviceCode;
   final String serviceName;
@@ -42,19 +43,19 @@ class CompanyService {
       autoEnabledBy: json['auto_enabled_by'] ?? [],
       subscriptionId: json['subscription_id'],
       requestedAt: json['requested_at'] != null
-          ? DateTime.tryParse(json['requested_at'])
+          ? safeParseDate(json['requested_at'])
           : null,
       approvedAt: json['approved_at'] != null
-          ? DateTime.tryParse(json['approved_at'])
+          ? safeParseDate(json['approved_at'])
           : null,
       activatedAt: json['activated_at'] != null
-          ? DateTime.tryParse(json['activated_at'])
+          ? safeParseDate(json['activated_at'])
           : null,
       startsAt: json['starts_at'] != null
-          ? DateTime.tryParse(json['starts_at'])
+          ? safeParseDate(json['starts_at'])
           : null,
       endsAt: json['ends_at'] != null
-          ? DateTime.tryParse(json['ends_at'])
+          ? safeParseDate(json['ends_at'])
           : null,
       notes: json['notes'],
       meta: json['meta'] ?? {},

@@ -1,3 +1,4 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
 class AccountingOverview {
   final int invoicesTotal;
   final int billsTotal;
@@ -104,8 +105,8 @@ class AccountRecord {
       accountType: json['account_type']?.toString() ?? '',
       description: json['description']?.toString(),
       isActive: json['is_active'] != false,
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
     );
   }
 }
@@ -161,8 +162,8 @@ class InvoiceRecord {
       balanceDue: (json['balance_due'] as num?)?.toDouble() ?? 0,
       status: json['status']?.toString() ?? '',
       journalEntryId: json['journal_entry_id'],
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
     );
   }
 }
@@ -218,8 +219,8 @@ class BillRecord {
       balanceDue: (json['balance_due'] as num?)?.toDouble() ?? 0,
       status: json['status']?.toString() ?? '',
       journalEntryId: json['journal_entry_id'],
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
     );
   }
 }
@@ -263,7 +264,7 @@ class PaymentRecord {
       paymentMethod: json['payment_method']?.toString() ?? '',
       reference: json['reference']?.toString(),
       journalEntryId: json['journal_entry_id'],
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
     );
   }
 }
@@ -335,8 +336,8 @@ class JournalEntryRecord {
                 JournalLineRecord.fromJson(Map<String, dynamic>.from(line)),
           )
           .toList(),
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      createdAt: safeParseDate(json['created_at']),
+      updatedAt: safeParseDate(json['updated_at']),
     );
   }
 }

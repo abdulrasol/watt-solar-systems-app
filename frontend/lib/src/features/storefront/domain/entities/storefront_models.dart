@@ -1,3 +1,6 @@
+import 'package:solar_hub/src/core/utils/date_parser.dart';
+import 'dart:convert';
+
 enum StorefrontAudience { b2b, b2c }
 
 enum StorefrontCategoryType { global, company }
@@ -45,7 +48,7 @@ class StorefrontCompanyCategory {
       companyId: company?['id'] ?? json['company_id'],
       companyName: company?['name'],
       createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'])
+          ? safeParseDate(json['created_at'])
           : null,
     );
   }
@@ -237,17 +240,17 @@ class StorefrontProduct {
                 StorefrontCategory.fromJson(Map<String, dynamic>.from(item)),
           )
           .toList(),
-      retailPrice: (json['retail_price'] as num?)?.toDouble() ?? 0,
-      wholesalePrice: (json['wholesale_price'] as num?)?.toDouble() ?? 0,
-      displayPrice: (json['display_price'] as num?)?.toDouble() ?? 0,
-      discount: (json['discount'] as num?)?.toDouble() ?? 0,
+      retailPrice: double.tryParse(json['retail_price']?.toString() ?? '0') ?? 0,
+      wholesalePrice: double.tryParse(json['wholesale_price']?.toString() ?? '0') ?? 0,
+      displayPrice: double.tryParse(json['display_price']?.toString() ?? '0') ?? 0,
+      discount: double.tryParse(json['discount']?.toString() ?? '0') ?? 0,
       stockQuantity: json['stock_quantity'] ?? 0,
       minStockAlert: json['min_stock_alert'] ?? 0,
       isAvailable: json['is_available'] ?? false,
       status: json['status'] ?? 'inactive',
-      specs: json['specs'] == null
-          ? const {}
-          : Map<String, dynamic>.from(json['specs']),
+      specs: json['specs'] is Map
+          ? Map<String, dynamic>.from(json['specs'])
+          : (json['specs'] is String ? Map<String, dynamic>.from(jsonDecode(json['specs'])) : const {}),
       options: (json['options'] as List? ?? const [])
           .whereType<Map>()
           .map(
@@ -265,10 +268,10 @@ class StorefrontProduct {
           .toList(),
       images: List<String>.from(json['images'] as List? ?? const []),
       createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'])
+          ? safeParseDate(json['created_at'])
           : null,
       updatedAt: json['updated_at'] != null
-          ? DateTime.tryParse(json['updated_at'])
+          ? safeParseDate(json['updated_at'])
           : null,
     );
   }

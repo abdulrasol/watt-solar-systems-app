@@ -52,7 +52,7 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   final DioService _dioService = getIt<DioService>();
 
   void _throwIfFailed(BaseResponse response) {
-    if (response.status != 200 || response.error) {
+    if (response.status < 200 || response.status >= 300 || response.error) {
       dPrint(response.messageUser);
       throw Exception(response.messageUser.isNotEmpty ? response.messageUser : response.message);
     }
@@ -61,7 +61,7 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthResponse> login(String username, String password) async {
     try {
-      Response response = await _dioService.post(AppUrls.login, data: {'username': username, 'password': password});
+      Response response = await _dioService.post(AppUrls.login, data: {'identifier': username, 'password': password});
       _throwIfFailed(response);
       return AuthResponse.fromBase(response);
     } catch (e, stackTrace) {
@@ -89,7 +89,11 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
     try {
       BaseResponse response = await _dioService.get(AppUrls.profile);
       _throwIfFailed(response);
-      return User.fromJson(response.body);
+      dynamic body = response.body;
+      if (body is Map<String, dynamic> && body.containsKey('data')) {
+        body = body['data'];
+      }
+      return User.fromJson(body);
     } on DioException catch (e, stackTrace) {
       dPrint('fetchProfile error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       if (e.response?.statusCode == 401) {
@@ -109,7 +113,22 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
 
       Response response = await _dioService.multipartRequest(AppUrls.profile, file: FormData.fromMap(await userRegisterModel.toJson()), isPut: true);
       _throwIfFailed(response);
-      return User.fromJson(response.body);
+      
+      dynamic body = response.body;
+      if (body is Map<String, dynamic> && body.containsKey('data')) {
+        body = body['data'];
+      }
+
+      if (body == null || (body is List && body.isEmpty) || (body is Map && body['id'] == null)) {
+        final profileResponse = await _dioService.get(AppUrls.profile);
+        _throwIfFailed(profileResponse);
+        dynamic profileBody = profileResponse.body;
+        if (profileBody is Map<String, dynamic> && profileBody.containsKey('data')) {
+          profileBody = profileBody['data'];
+        }
+        return User.fromJson(profileBody);
+      }
+      return User.fromJson(body);
     } catch (e, stackTrace) {
       dPrint('updateProfile error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
@@ -210,10 +229,20 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<Company> registerCompany(CompanyRegistrationModel companyRegistrationModel) async {
     try {
-      BaseResponse response = await _dioService.multipartRequest(AppUrls.registerCompany, file: FormData.fromMap(await companyRegistrationModel.toJson()));
+      BaseResponse response = await _dioService.post(AppUrls.registerCompany, data: await companyRegistrationModel.toJson());
       _throwIfFailed(response);
       dPrint(response);
-      return Company.fromJson(response.body);
+      Company company = Company.fromJson(response.body);
+
+      // Upload logo if provided
+      if (companyRegistrationModel.image != null && companyRegistrationModel.image!.isNotEmpty) {
+        final formData = FormData.fromMap({
+          'logo': await MultipartFile.fromFile(companyRegistrationModel.image!),
+        });
+        await _dioService.multipartRequest('${AppUrls.registerCompany}/${company.id}/logo', file: formData);
+      }
+
+      return company;
     } catch (e, stackTrace) {
       dPrint('registerCompany error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
@@ -223,13 +252,22 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<Company> updateCompany({required int companyId, required CompanyRegistrationModel companyRegistrationModel}) async {
     try {
-      final response = await _dioService.multipartRequest(
+      final response = await _dioService.put(
         AppUrls.updateCompany(companyId),
-        file: FormData.fromMap(await companyRegistrationModel.toJson()),
-        isPut: true,
+        data: await companyRegistrationModel.toJson(),
       );
       _throwIfFailed(response);
-      return Company.fromJson(response.body);
+      Company company = Company.fromJson(response.body);
+
+      // Upload logo if provided
+      if (companyRegistrationModel.image != null && companyRegistrationModel.image!.isNotEmpty) {
+        final formData = FormData.fromMap({
+          'logo': await MultipartFile.fromFile(companyRegistrationModel.image!),
+        });
+        await _dioService.multipartRequest('${AppUrls.updateCompany(companyId)}/logo', file: formData);
+      }
+
+      return company;
     } catch (e, stackTrace) {
       dPrint('updateCompany error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;

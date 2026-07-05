@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:solar_hub/src/core/utils/date_parser.dart';
+
 class OfferRequestModel {
   final String id;
   final String? userId; // 'user' in JSON
@@ -32,9 +35,11 @@ class OfferRequestModel {
       batteryTotal: (json['battery'] as num?)?.toDouble() ?? 0.0,
       inverterTotal: (json['inverter'] as num?)?.toDouble() ?? 0.0,
       notes: json['notes'],
-      specs: RequestSpecs.fromJson(json['specs'] ?? {}),
+      specs: RequestSpecs.fromJson(
+        json['specs'] is String ? jsonDecode(json['specs']) : (json['specs'] ?? {}),
+      ),
       status: json['status'] ?? 'open',
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : DateTime.now(),
+      createdAt: safeParseDate(json['created_at']) ?? DateTime.now(),
     );
   }
 
