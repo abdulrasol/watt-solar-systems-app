@@ -125,7 +125,7 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/package.json": {
-    "mtime": 1783210584.6287801,
+    "mtime": 1783283712.8950555,
     "ast_hash": "31028b44e422cefc5346ea1db0623a99",
     "semantic_hash": ""
   },
@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/app-config/controllers/city.controller.ts": {
-    "mtime": 1783209986.6617494,
-    "ast_hash": "878e477b0a4c145aea4af7e9e9ef74c5",
+    "mtime": 1783280620.318621,
+    "ast_hash": "84cfd47afb5d9980adaa06b83f413860",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/app-config/controllers/config.controller.ts": {
@@ -170,8 +170,8 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/app-config/controllers/country.controller.ts": {
-    "mtime": 1783209986.6616826,
-    "ast_hash": "4addce00464d73ce7a23cd31d1586285",
+    "mtime": 1783280608.2952948,
+    "ast_hash": "5f3ac938384ea28603476bf9ab0dee67",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/app-config/controllers/currency.controller.ts": {
@@ -260,8 +260,8 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/auth/auth.controller.ts": {
-    "mtime": 1783205944.3288658,
-    "ast_hash": "e414b4b1582645f7027fd87a9f4ecce9",
+    "mtime": 1783280573.3574185,
+    "ast_hash": "f0d42e9c1d5384e21f34b859a1afd415",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/auth/auth.module.ts": {
@@ -340,8 +340,8 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/common/interceptors/response.interceptor.ts": {
-    "mtime": 1783279899.0248373,
-    "ast_hash": "24f873daa5a8bc09364c9f202ae0c8af",
+    "mtime": 1783280554.7051105,
+    "ast_hash": "5a671deb0c46bd5ca0745c1834501a8e",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/companies.module.ts": {
@@ -355,13 +355,13 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/companies.service.ts": {
-    "mtime": 1783279487.0444524,
-    "ast_hash": "a8127f973ba9b4678fd3a0078a9ab788",
+    "mtime": 1783280023.5030274,
+    "ast_hash": "01867c09a43bac4640d8ff4790538334",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/companies.controller.ts": {
-    "mtime": 1783278984.0196562,
-    "ast_hash": "f009a9716e500f6ac87ff7bc96957b86",
+    "mtime": 1783283866.737462,
+    "ast_hash": "e17acb8046365787275f224e3a2ec844",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/company-types.controller.ts": {
@@ -385,13 +385,13 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/members.controller.ts": {
-    "mtime": 1783211209.1422498,
-    "ast_hash": "7fed677a6a8f0bbd811097fef0d5bcab",
+    "mtime": 1783283119.7411134,
+    "ast_hash": "181c1d25e24c8d96c31907fc4a46b171",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/posters.controller.ts": {
-    "mtime": 1783279053.5866938,
-    "ast_hash": "6aed87c97e37265976c5d5968ce5c298",
+    "mtime": 1783283119.7414072,
+    "ast_hash": "7445717620c54f0f10efda27446cca43",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/public-services.controller.ts": {
@@ -400,18 +400,18 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/service-types.controller.ts": {
-    "mtime": 1783279922.6157925,
-    "ast_hash": "d54da0f61f9133a7ca928e768d22d745",
+    "mtime": 1783280036.6226532,
+    "ast_hash": "e832eb384c14d7b4716a1f2305e2edc5",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/services.controller.ts": {
-    "mtime": 1783211209.1423097,
-    "ast_hash": "8afb276c1bad6e5cbd40b21cd75139f0",
+    "mtime": 1783283119.7419612,
+    "ast_hash": "e75fc61f9c72f12bcf26bec40e3d8933",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/controllers/subscriptions.controller.ts": {
-    "mtime": 1783211209.142431,
-    "ast_hash": "b04fb779efd48ae6696d8d9c7a39743f",
+    "mtime": 1783283119.742055,
+    "ast_hash": "90825ad210843888cb2618c2acd6ccf7",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/companies/dto/company.dto.ts": {
@@ -440,13 +440,13 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/notifications/controllers/device.controller.ts": {
-    "mtime": 1783277198.7925696,
-    "ast_hash": "67dad6c4ee6521817c55ac94e9ad61ba",
+    "mtime": 1783283119.7398663,
+    "ast_hash": "5169dd693740ed020bfdd9f9255cb5ae",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/notifications/controllers/history.controller.ts": {
-    "mtime": 1783277207.0018003,
-    "ast_hash": "6b3905b3d0461ba076b12b5bc6df4b62",
+    "mtime": 1783283119.7403798,
+    "ast_hash": "1bde78d3de2694a94a485e048d1a7e6e",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/notifications/dto/notification.dto.ts": {
@@ -665,8 +665,8 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/shop/services/products.service.ts": {
-    "mtime": 1783279993.5749211,
-    "ast_hash": "eecf11fa479a0bdbcc0cc083980ab04f",
+    "mtime": 1783280052.1089804,
+    "ast_hash": "8b038c95d1fde9fb89c3405bf7eb0763",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/src/shop/shop.module.ts": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/swagger-output.json": {
-    "mtime": 1783279944.6195438,
-    "ast_hash": "2e975fb412b15dcaa215cf763622fa95",
+    "mtime": 1783283867.426121,
+    "ast_hash": "8469b4b09b63b5c023e035c13fe132ea",
     "semantic_hash": ""
   },
   "backend/solarhub-nestjs/test/app.e2e-spec.ts": {
@@ -1175,7 +1175,7 @@
     "semantic_hash": ""
   },
   "frontend/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift": {
-    "mtime": 1783279478.3823526,
+    "mtime": 1783282608.0965843,
     "ast_hash": "63bc00d19466662a75b7492ac07d5a97",
     "semantic_hash": ""
   },
@@ -31830,8 +31830,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/core/models/response.dart": {
-    "mtime": 1783248146.777332,
-    "ast_hash": "6a510bb089b864d8d74c2eb6d27eb525",
+    "mtime": 1783282374.0273488,
+    "ast_hash": "668e852acfb638a9263da089824879d9",
     "semantic_hash": ""
   },
   "frontend/lib/src/core/navigation/app_navigation.dart": {
@@ -31840,8 +31840,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/core/services/dio.dart": {
-    "mtime": 1783248146.7774942,
-    "ast_hash": "3cf84096a903f4b6d498535f7c306ca2",
+    "mtime": 1783280292.4985332,
+    "ast_hash": "3050e9b281606816cfb4660ed7b825f3",
     "semantic_hash": ""
   },
   "frontend/lib/src/core/services/network_status_service.dart": {
@@ -31910,8 +31910,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/accounting/domain/entities/accounting_models.dart": {
-    "mtime": 1783098613.511952,
-    "ast_hash": "041f6ad6e2a60d7016eb00867b62570e",
+    "mtime": 1783282598.0484169,
+    "ast_hash": "46f2552bb7b8ff19e3798395a374a615",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/accounting/domain/repositories/accounting_repository.dart": {
@@ -31960,8 +31960,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/admin/domain/entities/app_config.dart": {
-    "mtime": 1783005594.6890187,
-    "ast_hash": "99d8641c65cada4eaa10fc0ecafc6082",
+    "mtime": 1783282598.079559,
+    "ast_hash": "b4a2799564e6e49bde24c23402de4495",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/admin/domain/entities/notification.dart": {
@@ -31985,8 +31985,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/admin/domain/models/admin_currency.dart": {
-    "mtime": 1783098613.5130696,
-    "ast_hash": "9a3b3b29d6e4eaf1d0b3db98dbe73467",
+    "mtime": 1783282628.972051,
+    "ast_hash": "fc8a069b4b5ccc82b27db0d0ff078d43",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/admin/domain/models/admin_global_category.dart": {
@@ -32010,8 +32010,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/admin/domain/models/service_catalog_item.dart": {
-    "mtime": 1783005594.6774204,
-    "ast_hash": "067f208b355b5e8df199e49c4a1e6c40",
+    "mtime": 1783282598.0788012,
+    "ast_hash": "bcc480c61207c4908827acfa2cb393c3",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/admin/domain/repositories/admin_repository.dart": {
@@ -32295,8 +32295,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/data/data_sources/auth_remote_datasource.dart": {
-    "mtime": 1783098613.5180697,
-    "ast_hash": "6ac2b561b3529ceac574368e158dca27",
+    "mtime": 1783282904.2072425,
+    "ast_hash": "2726f0bd8d9dd5248a137daea5d1ba78",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/data/repositories/auth_repository_impl.dart": {
@@ -32310,8 +32310,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/domain/entities/city.dart": {
-    "mtime": 1783005594.5229158,
-    "ast_hash": "fccbd57aabfc57655db6c2a47bc3be92",
+    "mtime": 1783280869.8440385,
+    "ast_hash": "3d1bdcf3dae6b16fcece15a164a262e9",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/domain/entities/company.dart": {
@@ -32350,8 +32350,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/domain/entities/company_register_model.dart": {
-    "mtime": 1783005594.3724678,
-    "ast_hash": "b91be0c07f495bba8b732594b5d550df",
+    "mtime": 1783282956.4100566,
+    "ast_hash": "b031a2f6bf3576b7fcb1ebb6f4d56898",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/domain/entities/company_stats.dart": {
@@ -32395,13 +32395,13 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/presentation/screens/company_registration_page.dart": {
-    "mtime": 1783248146.780129,
-    "ast_hash": "3caba59da35c294145689af4e61b9184",
+    "mtime": 1783280927.0112598,
+    "ast_hash": "03cf7c2d35ea84385d9173e91c243fd9",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/presentation/screens/edit_profile_page.dart": {
-    "mtime": 1783098613.5193353,
-    "ast_hash": "452458731ad747ce19ce39dfff2064aa",
+    "mtime": 1783280932.7114227,
+    "ast_hash": "8ca68982ed807e006e75f695e359fae9",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/auth/presentation/screens/password_reset_page.dart": {
@@ -32425,8 +32425,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/calculations/data/models/offer_request_model.dart": {
-    "mtime": 1783005595.0386798,
-    "ast_hash": "503c4cb2149ab5dfe77913483b5ab601",
+    "mtime": 1783282429.0130086,
+    "ast_hash": "7f806c5c4729c9eb2a4a97058906e295",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/calculations/domain/entities/appliance_entity.dart": {
@@ -32435,13 +32435,13 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/calculations/domain/entities/calculated_system.dart": {
-    "mtime": 1783098613.5203595,
-    "ast_hash": "3cf04ecb5a33c193f5b41f5410b97583",
+    "mtime": 1783282480.5499988,
+    "ast_hash": "f809e53237258f2821645c3fe79a85d3",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/calculations/domain/entities/system_model.dart": {
-    "mtime": 1783098613.5206969,
-    "ast_hash": "6c4f69870acccd64bba58fdb3f88eeb8",
+    "mtime": 1783282598.0967524,
+    "ast_hash": "2cb5dcfd35cd06eab19e5522291361d6",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/calculations/domain/usecases/home_solar_system_calculator.dart": {
@@ -32645,13 +32645,13 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/activity_log_item.dart": {
-    "mtime": 1783098613.525109,
-    "ast_hash": "428966cabdb4aeecb61d7d53d26c2226",
+    "mtime": 1783282503.83172,
+    "ast_hash": "c8f48548e6bf903ae68aadedbcab2c14",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/company_activation_reminder_response.dart": {
-    "mtime": 1783005595.4720953,
-    "ast_hash": "ea70ed3ee54eef5b8af90e2e0ef17227",
+    "mtime": 1783282598.1172483,
+    "ast_hash": "1dfc0617320f015284552ae4e9048a29",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/company_service_request.dart": {
@@ -32660,23 +32660,23 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/company_subscription_plan.dart": {
-    "mtime": 1783005595.4838126,
-    "ast_hash": "6c7914f111972d0e28f4db76ace0e729",
+    "mtime": 1783282598.1192002,
+    "ast_hash": "508e8ca74b4da5c97ac7e17379d86e2e",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/company_subscription_request.dart": {
-    "mtime": 1783098613.5252147,
-    "ast_hash": "ae98895e855afc299dba5aaffd6c2595",
+    "mtime": 1783282598.119513,
+    "ast_hash": "12e730611b6b2b9de0070cf5e76caadf",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/company_system.dart": {
-    "mtime": 1783098613.525274,
-    "ast_hash": "4afd1bf70e3d67c46497467f3b13fe33",
+    "mtime": 1783282598.1184137,
+    "ast_hash": "be4ac470a652dba72955d23707007b90",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/service.dart": {
-    "mtime": 1783098613.5253594,
-    "ast_hash": "3344fb664fb6cdd54608e097d807a51d",
+    "mtime": 1783282598.118774,
+    "ast_hash": "64b6028b70c84b2aff636f4fb86b48ea",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_dashboard/domain/entities/summary.dart": {
@@ -33100,8 +33100,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_work/domain/entities/company_work.dart": {
-    "mtime": 1783098613.5323608,
-    "ast_hash": "52dddeefe3d59d26797441e6863fd27b",
+    "mtime": 1783282598.0873091,
+    "ast_hash": "b720da41d3f22dc88354e786562d7a6f",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/company_work/domain/repositories/company_work_repository.dart": {
@@ -33185,8 +33185,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/feedback/data/data_sourece/remote_data_source.dart": {
-    "mtime": 1783005594.881393,
-    "ast_hash": "09d5b10b9cc8e3dd8d538bdec08d7893",
+    "mtime": 1783280890.154784,
+    "ast_hash": "15bdfd3692944ed4be85228fac7ab8e6",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/feedback/data/repositories/feedback_repository_impl.dart": {
@@ -33285,8 +33285,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/inventory/data/models/product_model.dart": {
-    "mtime": 1783005594.9730554,
-    "ast_hash": "79b78938eb6bcf4ad7219d87c523568c",
+    "mtime": 1783282518.4152336,
+    "ast_hash": "c32c3444666e9b70d90c43b6aecde995",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/inventory/data/repositories/inventory_repository_impl.dart": {
@@ -33395,8 +33395,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/members/data/models/company_member_model.dart": {
-    "mtime": 1783005595.305776,
-    "ast_hash": "46f3e469cdaa98d9e3e37e56e9920b94",
+    "mtime": 1783282598.1081715,
+    "ast_hash": "d80e5f717bfb78cf27152f5f1f957744",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/members/data/models/member_invite_result_model.dart": {
@@ -33460,8 +33460,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/notifications/domain/entities/app_notification.dart": {
-    "mtime": 1783005595.3573809,
-    "ast_hash": "7aaa37df918c7f91c7e5e9a4394d4898",
+    "mtime": 1783282598.1099706,
+    "ast_hash": "3a502d55c8224f9134bc8d32697c3fde",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/notifications/domain/entities/notification_type.dart": {
@@ -33510,13 +33510,13 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/offers/data/models/solar_offer_model.dart": {
-    "mtime": 1783005593.9992185,
-    "ast_hash": "eb29899b1b63353bb61d22991a81397d",
+    "mtime": 1783282598.0601907,
+    "ast_hash": "ab2fb1a3dc1566ded316994417b55c66",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/offers/data/models/solar_request_model.dart": {
-    "mtime": 1783098613.5428233,
-    "ast_hash": "666c6ad2a8b6e23d0df8b9d7e1f00e1d",
+    "mtime": 1783282598.0595963,
+    "ast_hash": "d3eee2d60b2afc68d6faf744aeb04daf",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/offers/data/repositories/offers_repository_impl.dart": {
@@ -33680,8 +33680,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/orders_core/domain/entities/order_models.dart": {
-    "mtime": 1783098613.5497794,
-    "ast_hash": "7067a0fa28c3e23e5dc740cd3a5d2d27",
+    "mtime": 1783282598.092466,
+    "ast_hash": "5032e9bfd7b8f2587424989f443f4f5b",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/orders_core/domain/entities/order_queries.dart": {
@@ -33705,8 +33705,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/posters/data/models/poster_model.dart": {
-    "mtime": 1783248146.7874427,
-    "ast_hash": "1f06db26860eeac2310d0fcf6401b44e",
+    "mtime": 1783282532.0571766,
+    "ast_hash": "64aba2c12222325e4126dbd5300db1db",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/posters/domain/entities/poster_entity.dart": {
@@ -33745,8 +33745,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/posters/presentation/screens/user/poster_carousel.dart": {
-    "mtime": 1783248146.7887838,
-    "ast_hash": "0a4128bcbe9cc4562e331a4262a2734f",
+    "mtime": 1783282923.0249953,
+    "ast_hash": "d6b4cbdff13c26f045f9d55a858d66f9",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/posters/presentation/widgets/entity_picker_sheet.dart": {
@@ -33770,8 +33770,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/pv_system_designer/data/drawing/watt_drawing_file_service.dart": {
-    "mtime": 1783098613.5506008,
-    "ast_hash": "136259135cbf52ef0367837ac7a5b0d3",
+    "mtime": 1783282549.545453,
+    "ast_hash": "1723b97dba377eba9102fcae4706ae8a",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/pv_system_designer/data/inverter_catalog.dart": {
@@ -34255,8 +34255,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/storefront/domain/entities/storefront_models.dart": {
-    "mtime": 1783098613.5600939,
-    "ast_hash": "913cdb317c6da58b00d350b40058c7d3",
+    "mtime": 1783282598.068012,
+    "ast_hash": "aea02e7003ec11bac494f13e1feaa84d",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/storefront/domain/repositories/storefront_repository.dart": {
@@ -34465,8 +34465,8 @@
     "semantic_hash": ""
   },
   "frontend/lib/src/features/structure_design/data/drawing/watt_drawing_file_service.dart": {
-    "mtime": 1783098613.5677922,
-    "ast_hash": "ffb29411e2c510bee41753f9d0aaaa6f",
+    "mtime": 1783282566.8436484,
+    "ast_hash": "8f67305a63fee186919e1d3821c92479",
     "semantic_hash": ""
   },
   "frontend/lib/src/features/structure_design/data/location_service.dart": {
@@ -66407,6 +66407,91 @@
   "frontend/web/icons/Icon-maskable-512.png": {
     "mtime": 1776242519.620386,
     "ast_hash": "8578695e7c01c865e90ee7097e5b68c1",
+    "semantic_hash": ""
+  },
+  "backend/fix_user_id.dart": {
+    "mtime": 1783283019.6691709,
+    "ast_hash": "58e6b2d4ad77a7359217e329d41d2303",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/objective_c/9fb02c5622/dependencies.dependencies_hash_file.json": {
+    "mtime": 1783282594.5251448,
+    "ast_hash": "a1570d425aa5187793cfc9d90e1a53d3",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/objective_c/9fb02c5622/hook.dependencies_hash_file.json": {
+    "mtime": 1783282593.7741017,
+    "ast_hash": "a9d0d65124a31025eb566e545e13baba",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/objective_c/9fb02c5622/input.json": {
+    "mtime": 1783282593.7744858,
+    "ast_hash": "33b1245f4fb326a735b12b24f283cafa",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/objective_c/9fb02c5622/output.json": {
+    "mtime": 1783282594.5080376,
+    "ast_hash": "b6d785f3d5e6ec23fc955243f9f2d577",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/sqlite3/9fb02c5622/dependencies.dependencies_hash_file.json": {
+    "mtime": 1783282596.503658,
+    "ast_hash": "4a8d238c03e7e8cba2a9d6273fbd1887",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/sqlite3/9fb02c5622/hook.dependencies_hash_file.json": {
+    "mtime": 1783282595.0999565,
+    "ast_hash": "a9d0d65124a31025eb566e545e13baba",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/sqlite3/9fb02c5622/input.json": {
+    "mtime": 1783282595.1002514,
+    "ast_hash": "4d993d2f6034b67a39d1a17d1124a645",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/sqlite3/9fb02c5622/output.json": {
+    "mtime": 1783282596.4931989,
+    "ast_hash": "b851a51c3ebe819c6a0bbf20c4d7b539",
+    "semantic_hash": ""
+  },
+  "frontend/fix_dates.dart": {
+    "mtime": 1783282583.5588286,
+    "ast_hash": "275d17ee4786ccf763c4a53adbbade19",
+    "semantic_hash": ""
+  },
+  "frontend/lib/src/core/utils/date_parser.dart": {
+    "mtime": 1783282391.2519028,
+    "ast_hash": "3efed0fade43a9633bda81896503eb3f",
+    "semantic_hash": ""
+  },
+  "frontend/lib/src/core/utils/number_parser.dart": {
+    "mtime": 1783282446.2274628,
+    "ast_hash": "fa847ef08c0d12cf2e3cc524e1968a9b",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/objective_c/9fb02c5622/stderr.txt": {
+    "mtime": 1783282593.7747805,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/objective_c/9fb02c5622/stdout.txt": {
+    "mtime": 1783282594.5021002,
+    "ast_hash": "2871eca1617b6ee24a68cc100e3abc43",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/sqlite3/9fb02c5622/stderr.txt": {
+    "mtime": 1783282595.1004968,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/hooks_runner/sqlite3/9fb02c5622/stdout.txt": {
+    "mtime": 1783282595.101767,
+    "ast_hash": "381cd260bb89abee83e41d2f3af34fae",
+    "semantic_hash": ""
+  },
+  "frontend/.dart_tool/native_assets.yaml": {
+    "mtime": 1783282597.6169295,
+    "ast_hash": "e7506f18a3f49b3adbdae949f2805fa1",
     "semantic_hash": ""
   }
 }

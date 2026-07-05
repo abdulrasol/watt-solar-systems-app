@@ -1,16 +1,16 @@
 # Graph Report - watt  (2026-07-05)
 
 ## Corpus Check
-- 12852 files · ~12,981,095 words
+- 12864 files · ~12,982,208 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 14273 nodes · 19704 edges · 391 communities (372 shown, 19 thin omitted)
+- 15105 nodes · 21261 edges · 439 communities (420 shown, 19 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 8 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8a0a8b97`
+- Built from commit: `74d35142`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -392,35 +392,67 @@
 - [[_COMMUNITY_Community 374|Community 374]]
 - [[_COMMUNITY_Community 375|Community 375]]
 - [[_COMMUNITY_Community 383|Community 383]]
+- [[_COMMUNITY_Community 391|Community 391]]
+- [[_COMMUNITY_Community 392|Community 392]]
+- [[_COMMUNITY_Community 393|Community 393]]
+- [[_COMMUNITY_Community 394|Community 394]]
+- [[_COMMUNITY_Community 395|Community 395]]
+- [[_COMMUNITY_Community 396|Community 396]]
+- [[_COMMUNITY_Community 397|Community 397]]
+- [[_COMMUNITY_Community 398|Community 398]]
+- [[_COMMUNITY_Community 399|Community 399]]
+- [[_COMMUNITY_Community 400|Community 400]]
+- [[_COMMUNITY_Community 401|Community 401]]
+- [[_COMMUNITY_Community 402|Community 402]]
+- [[_COMMUNITY_Community 403|Community 403]]
+- [[_COMMUNITY_Community 404|Community 404]]
+- [[_COMMUNITY_Community 405|Community 405]]
+- [[_COMMUNITY_Community 406|Community 406]]
+- [[_COMMUNITY_Community 407|Community 407]]
+- [[_COMMUNITY_Community 408|Community 408]]
+- [[_COMMUNITY_Community 409|Community 409]]
+- [[_COMMUNITY_Community 410|Community 410]]
+- [[_COMMUNITY_Community 411|Community 411]]
+- [[_COMMUNITY_Community 412|Community 412]]
+- [[_COMMUNITY_Community 413|Community 413]]
+- [[_COMMUNITY_Community 414|Community 414]]
+- [[_COMMUNITY_Community 415|Community 415]]
+- [[_COMMUNITY_Community 416|Community 416]]
+- [[_COMMUNITY_Community 417|Community 417]]
+- [[_COMMUNITY_Community 418|Community 418]]
+- [[_COMMUNITY_Community 419|Community 419]]
+- [[_COMMUNITY_Community 420|Community 420]]
+- [[_COMMUNITY_Community 421|Community 421]]
+- [[_COMMUNITY_Community 422|Community 422]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `appColorsProvider` - 87 edges
-2. `offersProvider` - 44 edges
-3. `notifier` - 42 edges
-4. `_` - 41 edges
-5. `calculatorProvider` - 32 edges
-6. `widget` - 30 edges
-7. `pvSystemDesignerProvider` - 30 edges
-8. `companySummaryProvider` - 24 edges
-9. `roofSimulatorProvider` - 23 edges
-10. `map` - 22 edges
+2. `CompaniesService` - 80 edges
+3. `AppConfigService` - 54 edges
+4. `offersProvider` - 44 edges
+5. `notifier` - 42 edges
+6. `_` - 41 edges
+7. `calculatorProvider` - 32 edges
+8. `widget` - 30 edges
+9. `pvSystemDesignerProvider` - 30 edges
+10. `PrismaService` - 29 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `build` --references--> `appColorsProvider`  [EXTRACTED]
-  frontend/lib/src/features/company_dashboard/presentation/widgets/delivery/delivery_option_card.dart → frontend/lib/src/core/theme/app_colors.dart
-- `build` --references--> `appColorsProvider`  [EXTRACTED]
-  frontend/lib/src/features/company_dashboard/presentation/widgets/forms/category_form_sheet.dart → frontend/lib/src/core/theme/app_colors.dart
-- `build` --references--> `appColorsProvider`  [EXTRACTED]
-  frontend/lib/src/features/company_dashboard/presentation/widgets/forms/contact_form_sheet.dart → frontend/lib/src/core/theme/app_colors.dart
-- `build` --references--> `appColorsProvider`  [EXTRACTED]
-  frontend/lib/src/features/company_dashboard/presentation/widgets/forms/delivery_option_form_sheet.dart → frontend/lib/src/core/theme/app_colors.dart
-- `build` --references--> `appColorsProvider`  [EXTRACTED]
-  frontend/lib/src/features/company_dashboard/presentation/widgets/forms/expense_form_sheet.dart → frontend/lib/src/core/theme/app_colors.dart
+- `FeedbackController` --references--> `FeedbackState`  [EXTRACTED]
+  backend/solarhub-nestjs/src/app-config/controllers/feedback.controller.ts → frontend/lib/src/features/feedback/presentation/controllers/feedback_controller.dart
+- `FeedbackController` --inherits--> `notifier`  [EXTRACTED]
+  backend/solarhub-nestjs/src/app-config/controllers/feedback.controller.ts → frontend/lib/src/features/calculations/presentation/providers/calculator_controller.dart
+- `NotificationController` --inherits--> `notifier`  [EXTRACTED]
+  backend/solarhub-nestjs/src/app-config/controllers/notification.controller.ts → frontend/lib/src/features/calculations/presentation/providers/calculator_controller.dart
+- `AdminProductsController` --references--> `AdminProductsState`  [EXTRACTED]
+  backend/solarhub-nestjs/src/shop/controllers/admin-products.controller.ts → frontend/lib/src/features/admin/presentation/controllers/admin_products_controller.dart
+- `AdminProductsController` --inherits--> `notifier`  [EXTRACTED]
+  backend/solarhub-nestjs/src/shop/controllers/admin-products.controller.ts → frontend/lib/src/features/calculations/presentation/providers/calculator_controller.dart
 
 ## Import Cycles
 - None detected.
 
-## Communities (391 total, 19 thin omitted)
+## Communities (439 total, 19 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.00
@@ -428,11 +460,11 @@ Nodes (1354): app_localizations_ar.dart, app_localizations_en.dart, ac_single_ph
 
 ### Community 1 - "Community 1"
 Cohesion: 0.00
-Nodes (1344): app_localizations.dart, ac_single_phase, ac_system_voltage, ac_three_phase, accept_offer, access_limited, access_requested_successfully, account_created (+1336 more)
+Nodes (1343): ac_single_phase, ac_system_voltage, ac_three_phase, accept_offer, access_limited, access_requested_successfully, account_created, account_deleted_successfully (+1335 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.00
-Nodes (1343): ac_single_phase, ac_system_voltage, ac_three_phase, accept_offer, access_limited, access_requested_successfully, account_created, account_deleted_successfully (+1335 more)
+Nodes (1344): app_localizations.dart, ac_single_phase, ac_system_voltage, ac_three_phase, accept_offer, access_limited, access_requested_successfully, account_created (+1336 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.01
@@ -443,60 +475,60 @@ Cohesion: 0.02
 Nodes (132): acLoadCurrent, acSystemVoltage, acVoltageOptions, addAppliance, appliances, autonomyHours, averageLoadW, batteryCalcAmp (+124 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.02
-Nodes (115): EdgeInsets, StorefrontCategory, build, categories, error, _InlineMessage, isLoading, message (+107 more)
+Cohesion: 0.05
+Nodes (44): EdgeInsets, companyCategories, globalCategories, internalCategories, build, categories, onCategoryTap, onSeeAll (+36 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.02
-Nodes (100): build, category, CategoryChip, onDelete, CompanyPublicService, CompanyCategory, build, colors (+92 more)
+Nodes (121): Border?, build, category, CategoryChip, onDelete, CompanyPublicService, CompanyCategory, ConsumerWidget (+113 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.02
-Nodes (94): build, _buildMiniSpec, _formatNumber, offer, OfferCard, onTap, ../common_widgets.dart, Company (+86 more)
+Cohesion: 0.03
+Nodes (67): ../common_widgets.dart, Company, CompanySummary, info_contacts_tab.dart, allReady, build, _initializeFirebaseSafely, main (+59 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.02
 Nodes (104): box, clear, delete, deleteByPrefix, main, noSuchMethod, pumpAdminApp, save (+96 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.02
-Nodes (98): build, child, CompanyEmptyStateCard, CompanyFeatureBanner, CompanyInlineErrorCard, CompanySectionHeading, CompanySurfaceCard, icon (+90 more)
+Cohesion: 0.04
+Nodes (68): build, child, CompanyEmptyStateCard, CompanyFeatureBanner, CompanyInlineErrorCard, CompanySectionHeading, CompanySurfaceCard, icon (+60 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.02
 Nodes (103): addPolygonVertex, alignLayoutToSouth, applyPolygonSketch, autofillRoof, build, buildOfferRequestData, cleanup, clearGrid (+95 more)
 
 ### Community 11 - "Community 11"
-Cohesion: 0.04
-Nodes (90): authProvider, ConsumerWidget, activePostersProvider, notificationHistoryProvider, build, build, build, SolarHub (+82 more)
+Cohesion: 0.03
+Nodes (120): authProvider, companyCategoriesProvider, build, build, package:flutter_riverpod/legacy.dart, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_categories_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/categories/category_chip.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/category_form_sheet.dart (+112 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.03
-Nodes (85): category_chips.dart, package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart, package:solar_hub/src/features/storefront/presentation/screens/storefront_companies_screen.dart, package:solar_hub/src/features/storefront/presentation/screens/storefront_product_details_screen.dart, package:solar_hub/src/features/storefront/presentation/screens/storefront_products_screen.dart, package:solar_hub/src/features/storefront/presentation/utils/storefront_page_route.dart, package:solar_hub/src/features/storefront/presentation/utils/storefront_routes.dart, package:solar_hub/src/features/storefront/presentation/widgets/landing/storefront_categories_section.dart (+77 more)
+Cohesion: 0.10
+Nodes (21): package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_company_badges_row.dart, package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_products_grid.dart, package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_products_toolbar.dart, audience, companyId, createState, dispose, embedded (+13 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.03
-Nodes (80): pvSystemDesignerProvider, double, FacingDirectionPreference, build, MountType, package:printing/printing.dart, package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart, package:solar_hub/src/features/pv_system_designer/presentation/widgets/canvas/roof_grid_canvas.dart (+72 more)
+Nodes (71): build, _buildCell, createState, RoofGridCanvas, _RoofGridCanvasState, pvSystemDesignerProvider, FacingDirectionPreference, build (+63 more)
 
 ### Community 14 - "Community 14"
 Cohesion: 0.02
 Nodes (84): package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_structure_sketch_painter.dart, anchorCount, angles, appliedAzimuth, appliedTilt, baseOffset, brace, braceLength (+76 more)
 
 ### Community 15 - "Community 15"
-Cohesion: 0.03
-Nodes (79): box, cachedSummary, clear, _company, delete, deleteByPrefix, _FakeLocalDataSource, _FakeRemoteDataSource (+71 more)
+Cohesion: 0.04
+Nodes (71): _FakeRemoteDataSource, RemoteDataSourceImpl, getIt, setupDependencies, ../entities/notification.dart, package:dartz/dartz.dart, package:get_it/get_it.dart, package:solar_hub/src/core/errors/failure.dart (+63 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.03
-Nodes (73): createConfig, deleteConfig, dioService, getAllConfigs, toggleConfig, updateConfig, AppInitRemoteDataSource, AppInitRemoteDataSourceImpl (+65 more)
+Cohesion: 0.04
+Nodes (60): createConfig, deleteConfig, dioService, getAllConfigs, toggleConfig, updateConfig, CompanyWorkRemoteDataSource, CompanyWorkRemoteDataSourceImpl (+52 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.03
-Nodes (73): CompanyDashboard, actionLabel, build, company, CompanyWorksTab, message, onPressed, _WorksStatusCard (+65 more)
+Cohesion: 0.02
+Nodes (112): companySystemsProvider, activeForLocation, build, categories, CompanyWorkspaceModules, contacts, customers, fromService (+104 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.04
-Nodes (68): package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart, package:solar_hub/src/features/calculations/presentation/widgets/calculator_widgets.dart, package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart, package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart, package:solar_hub/src/features/calculations/presentation/widgets/home_appliance_row.dart, package:solar_hub/src/utils/app_explanations.dart, package:solar_hub/src/utils/app_theme.dart, build (+60 more)
+Cohesion: 0.02
+Nodes (147): ChangeNotifier, package:flutter_compass/flutter_compass.dart, package:solar_hub/src/features/admin/presentation/widgets/status_helper.dart, package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart, package:solar_hub/src/features/calculations/presentation/widgets/calculator_widgets.dart, package:solar_hub/src/features/calculations/presentation/widgets/explanation_button.dart, package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart, package:solar_hub/src/features/calculations/presentation/widgets/home_appliance_row.dart (+139 more)
 
 ### Community 19 - "Community 19"
 Cohesion: 0.03
@@ -504,7 +536,7 @@ Nodes (77): accountId, AccountingCounterparty, AccountingOverview, accountName, 
 
 ### Community 20 - "Community 20"
 Cohesion: 0.03
-Nodes (70): companyContactsProvider, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_contacts_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/providers/global_search_provider.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/contacts/contact_card.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/contact_form_sheet.dart, package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart, build, _buildDropdown (+62 more)
+Nodes (94): companyContactsProvider, ProductsFilter, ProductModel, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_contacts_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/providers/global_search_provider.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/contacts/contact_card.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/contact_form_sheet.dart, package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart (+86 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.03
@@ -515,36 +547,36 @@ Cohesion: 0.03
 Nodes (71): address, B2bOrderCreateRequest, B2cOrderCreateRequest, balance, BaseOrderCreateRequest, buyerCompany, buyerParty, buyerProfile (+63 more)
 
 ### Community 23 - "Community 23"
-Cohesion: 0.03
-Nodes (61): build, _buildSpecItem, _formatNumber, onConvertToLead, onTap, request, RequestCard, actionLabel (+53 more)
+Cohesion: 0.04
+Nodes (42): build, CompanyDetailsMode, CompanyModeSelector, currentMode, icon, label, _ModeChip, onModeChanged (+34 more)
 
 ### Community 24 - "Community 24"
 Cohesion: 0.03
 Nodes (66): _addInvolveRow, _batteryCountController, _batteryNoteController, _batterySectionTotal, _batterySizeController, _batteryType, _batteryUnitPriceController, build (+58 more)
 
 ### Community 25 - "Community 25"
-Cohesion: 0.03
-Nodes (59): BoxFit, BoxShape, build, company, CompanyHeroCard, build, currentIndex, heroTag (+51 more)
+Cohesion: 0.04
+Nodes (49): BoxFit, BoxShape, build, currentIndex, heroTag, images, onPageChanged, StorefrontProductGallery (+41 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.03
-Nodes (57): build, child, StorefrontFilterSection, title, build, child, explanationAr, explanationEn (+49 more)
+Cohesion: 0.04
+Nodes (47): build, child, StorefrontFilterSection, title, build, child, explanationAr, explanationEn (+39 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.03
-Nodes (59): OrientationService, StructureOrientationService, SystemOrientationService, SystemStructureOrientationService, build, CategoryFormSheet, _CategoryFormSheetState, createState (+51 more)
+Nodes (97): CompanyDashboard, ConsumerState, ConsumerStatefulWidget, adminAddressProvider, build, CategoryFormSheet, _CategoryFormSheetState, createState (+89 more)
 
 ### Community 28 - "Community 28"
-Cohesion: 0.04
-Nodes (58): _FakeCache, _FakeCache, AuthController, box, build, cache, clear, _companyMemberAuth (+50 more)
+Cohesion: 0.08
+Nodes (24): _FakeCache, _FakeCache, _FakeCache, CasheInterface, _FakeCache, casheInterface, _decodeSummary, getCompanySummary (+16 more)
 
 ### Community 29 - "Community 29"
-Cohesion: 0.03
-Nodes (59): build, _CardSection, child, onToggleOption, options, previewAudience, selectedOptionIds, showB2bPricing (+51 more)
+Cohesion: 0.04
+Nodes (46): build, _CardSection, child, onToggleOption, options, previewAudience, selectedOptionIds, showB2bPricing (+38 more)
 
 ### Community 30 - "Community 30"
-Cohesion: 0.04
-Nodes (54): ../entities/notification.dart, CacheFailure, Failure, message, NetworkFailure, ServerFailure, toString, Failure (+46 more)
+Cohesion: 0.06
+Nodes (35): AppInitLocalDataSource, AppInitLocalDataSourceImpl, cacheConfigs, cashedConfigs, casheInterface, _configCacheSchemaVersion, _decodeCache, getCachedConfigs (+27 more)
 
 ### Community 31 - "Community 31"
 Cohesion: 0.03
@@ -556,39 +588,39 @@ Nodes (61): address, allowsB2B, allowsB2C, canContactAdminForActivation, canMana
 
 ### Community 33 - "Community 33"
 Cohesion: 0.03
-Nodes (60): allowsB2b, allowsB2c, categoryId, cityCode, cityName, company, companyCategories, companyCategoryId (+52 more)
+Nodes (61): bool?, allowsB2b, allowsB2c, categoryId, cityCode, cityName, company, companyCategories (+53 more)
 
 ### Community 34 - "Community 34"
-Cohesion: 0.04
-Nodes (57): package:in_app_update/in_app_update.dart, package:package_info_plus/package_info_plus.dart, package:solar_hub/src/core/services/update_checker_service.dart, package:solar_hub/src/core/widgets/app_logo.dart, package:solar_hub/src/core/widgets/update_dialog.dart, package:solar_hub/src/features/splash/domain/usecases/get_cached_configs_usecase.dart, package:solar_hub/src/features/splash/domain/usecases/prepare_startup_usecase.dart, package:solar_hub/src/features/splash/domain/usecases/refresh_configs_usecase.dart (+49 more)
+Cohesion: 0.05
+Nodes (38): package:package_info_plus/package_info_plus.dart, package:solar_hub/src/core/services/update_checker_service.dart, package:solar_hub/src/core/widgets/app_logo.dart, package:solar_hub/src/core/widgets/update_dialog.dart, package:solar_hub/src/features/splash/domain/usecases/get_cached_configs_usecase.dart, package:solar_hub/src/features/splash/domain/usecases/prepare_startup_usecase.dart, package:solar_hub/src/features/splash/domain/usecases/refresh_configs_usecase.dart, configProvider (+30 more)
 
 ### Community 35 - "Community 35"
-Cohesion: 0.04
-Nodes (56): authenticatedCalls, box, cache, clear, container, delete, deleteByPrefix, emit (+48 more)
+Cohesion: 0.07
+Nodes (29): authenticatedCalls, box, cache, clear, container, delete, deleteByPrefix, emit (+21 more)
 
 ### Community 36 - "Community 36"
-Cohesion: 0.04
-Nodes (53): AuthState, AuthController, channel, count, items, PublicCompaniesResult, authState, colors (+45 more)
+Cohesion: 0.03
+Nodes (56): AuthState, AuthController, authState, colors, _DrawerFooter, _DrawerSection, location, section (+48 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.03
 Nodes (58): adminOffers, adminOffersFilter, adminOffersHasMore, adminOffersIsMoreLoading, adminOffersNextPage, adminRequests, adminRequestsFilter, adminRequestsHasMore (+50 more)
 
 ### Community 38 - "Community 38"
-Cohesion: 0.04
-Nodes (51): GetStorageCashe, cache, _FakePathProviderPlatform, getApplicationDocumentsPath, main, path, storageDirectory, dart:io (+43 more)
+Cohesion: 0.07
+Nodes (29): GetStorageCashe, cache, _FakePathProviderPlatform, getApplicationDocumentsPath, main, path, storageDirectory, Directory (+21 more)
 
 ### Community 39 - "Community 39"
 Cohesion: 0.06
-Nodes (55): BatteryCalculator, _BatteryCalculatorState, ConsumerState, ConsumerStatefulWidget, package:flutter_compass/flutter_compass.dart, calculatorProvider, AdminOffersScreen, _AdminOffersScreenState (+47 more)
+Nodes (31): package:solar_hub/src/features/storefront/presentation/providers/storefront_visibility.dart, package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_gallery.dart, package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_info_section.dart, package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_options_section.dart, package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_price_section.dart, audience, _baseUnitPriceFor, _bestTierForQuantity (+23 more)
 
 ### Community 40 - "Community 40"
 Cohesion: 0.04
-Nodes (52): ChangeNotifier, build, ResultsStep, AppLocalizations, _AppLocalizationsDelegate, AppLocalizationsAr, AppLocalizationsEn, of (+44 more)
+Nodes (48): build, ResultsStep, AppLocalizations, _AppLocalizationsDelegate, AppLocalizationsAr, AppLocalizationsEn, of, LocalizationsDelegate (+40 more)
 
 ### Community 41 - "Community 41"
-Cohesion: 0.04
-Nodes (53): package:simple_step_checkout/simple_step_checkout.dart, package:solar_hub/src/features/structure_design/presentation/screens/technical_sketch_page.dart, package:solar_hub/src/features/structure_design/presentation/widgets/sketch/sketch_viewer_page.dart, package:solar_hub/src/features/structure_design/presentation/widgets/steps/panels_step.dart, package:solar_hub/src/features/structure_design/presentation/widgets/steps/results_step.dart, package:solar_hub/src/features/structure_design/presentation/widgets/steps/site_step.dart, package:solar_hub/src/features/structure_design/presentation/widgets/wizard/stepper_shell.dart, package:solar_hub/src/features/structure_design/presentation/widgets/wizard/structure_wizard_bottom_bar.dart (+45 more)
+Cohesion: 0.05
+Nodes (47): package:solar_hub/src/features/structure_design/presentation/screens/technical_sketch_page.dart, package:solar_hub/src/features/structure_design/presentation/widgets/sketch/sketch_viewer_page.dart, package:solar_hub/src/features/structure_design/presentation/widgets/steps/panels_step.dart, package:solar_hub/src/features/structure_design/presentation/widgets/steps/results_step.dart, package:solar_hub/src/features/structure_design/presentation/widgets/steps/site_step.dart, package:solar_hub/src/features/structure_design/presentation/widgets/wizard/stepper_shell.dart, package:solar_hub/src/features/structure_design/presentation/widgets/wizard/structure_wizard_bottom_bar.dart, package:solar_hub/src/features/structure_design/presentation/widgets/wizard/wizard_scroll.dart (+39 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.04
@@ -596,7 +628,7 @@ Nodes (53): StorefrontMeta, StorefrontQuery, applyFilters, arg, audience, build,
 
 ### Community 43 - "Community 43"
 Cohesion: 0.04
-Nodes (47): Color, package:solar_hub/src/features/members/presentation/widgets/member_role_dialog.dart, package:solar_hub/src/utils/app_assets.dart, build, label, MetricRow, value, valueColor (+39 more)
+Nodes (47): Color, package:solar_hub/src/utils/app_assets.dart, build, label, MetricRow, value, valueColor, azimuthLabel (+39 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.04
@@ -623,40 +655,40 @@ Cohesion: 0.04
 Nodes (49): Debouncer, FrameResult? get, package:solar_hub/src/features/structure_design/presentation/utils/debounce_util.dart, activeRowCount, _calculator, checkLocationPermission, _debouncer, decrementColumns (+41 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 0.04
-Nodes (41): rootNavigatorKey, NavigatorState, package:flutter/material.dart, package:solar_hub/src/features/admin/presentation/widgets/status_helper.dart, build, costPriceCtrl, ProductPricingForm, retailPriceCtrl (+33 more)
+Cohesion: 0.06
+Nodes (29): build, company, CompanyHeroCard, build, categoryLabel, companyName, _InfoChip, isAvailable (+21 more)
 
 ### Community 51 - "Community 51"
 Cohesion: 0.04
-Nodes (42): build, CompanyDetailsMode, CompanyModeSelector, currentMode, icon, label, _ModeChip, onModeChanged (+34 more)
+Nodes (46): colors, icon, ServiceTypeVisual, IconData, AdminNavigationItem, icon, id, label (+38 more)
 
 ### Community 52 - "Community 52"
 Cohesion: 0.04
-Nodes (44): appliedTier, baseUnitPrice, build, canViewB2bDetails, _CardSection, child, _DetailRow, effectiveUnitPrice (+36 more)
+Nodes (51): appliedTier, baseUnitPrice, build, canViewB2bDetails, _CardSection, child, _DetailRow, effectiveUnitPrice (+43 more)
 
 ### Community 53 - "Community 53"
 Cohesion: 0.04
-Nodes (47): acLoadCurrent, acSystemVoltage, appliances, autonomyHours, averageLoadW, batteryParallelCount, batteryReservePercent, batterySeriesCount (+39 more)
+Nodes (49): acLoadCurrent, acSystemVoltage, appliances, autonomyHours, averageLoadW, batteryParallelCount, batteryReservePercent, batterySeriesCount (+41 more)
 
 ### Community 54 - "Community 54"
-Cohesion: 0.04
-Nodes (44): _FakeBox, _FakeCacheBox, _FakeCacheBox, box, CacheBox, CasheInterface, clear, delete (+36 more)
+Cohesion: 0.08
+Nodes (23): box, CasheInterface, clear, delete, deleteByPrefix, legacyHttpCachePrefix, listenKey, save (+15 more)
 
 ### Community 55 - "Community 55"
 Cohesion: 0.04
 Nodes (46): appVersion, createdAt, documentType, frameResult, message, schemaVersion, state, title (+38 more)
 
 ### Community 56 - "Community 56"
-Cohesion: 0.05
-Nodes (43): build, clearError, clearSuccess, _compressImage, copyWith, error, errorCode, errorDetail (+35 more)
+Cohesion: 0.09
+Nodes (21): ../../domain/entities/feedback_entity.dart, ../../domain/repositories/feedback_repository.dart, FeedbackRepository, package:solar_hub/src/features/feedback/data/data_sourece/remote_data_source.dart, package:solar_hub/src/features/feedback/domain/repositories/feedback_repository.dart, package:toastification/toastification.dart, deleteFeedback, FeedbackRepositoryImpl (+13 more)
 
 ### Community 57 - "Community 57"
 Cohesion: 0.04
-Nodes (44): AesGcm, _asNullableInt, _doubleList, encodeStructureDesign, _inputFromJson, _inputToJson, _mapList, _panelFromJson (+36 more)
+Nodes (45): AesGcm, _asNullableInt, _doubleList, encodeStructureDesign, _inputFromJson, _inputToJson, _mapList, _panelFromJson (+37 more)
 
 ### Community 58 - "Community 58"
 Cohesion: 0.06
-Nodes (40): AuthRepository, GlobalKey, package:rounded_loading_button_plus/rounded_loading_button.dart, package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart, package:solar_hub/src/features/auth/presentation/widgets/delete_account_sheet.dart, package:solar_hub/src/services/toast_service.dart, package:validatorless/validatorless.dart, AuthRepositoryImpl (+32 more)
+Nodes (36): AuthRepository, GlobalKey, package:rounded_loading_button_plus/rounded_loading_button.dart, AuthRepositoryImpl, RoundedLoadingButtonController, build, _confirmPasswordController, createState (+28 more)
 
 ### Community 59 - "Community 59"
 Cohesion: 0.05
@@ -667,28 +699,28 @@ Cohesion: 0.05
 Nodes (43): AdminRemoteDataSource, AdminRemoteDataSourceImpl, createAdminProduct, createCity, createCountry, createCurrency, createGlobalCategory, createServiceCatalogEntry (+35 more)
 
 ### Community 61 - "Community 61"
-Cohesion: 0.05
-Nodes (42): ../../domain/entities/product.dart, allowsB2B, allowsB2C, category, company, companyCategories, companyId, cost (+34 more)
+Cohesion: 0.04
+Nodes (47): dart:convert, allowsB2B, allowsB2C, category, company, companyCategories, companyId, cost (+39 more)
 
 ### Community 62 - "Community 62"
-Cohesion: 0.05
-Nodes (39): package:go_router/go_router.dart, package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_item.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/company_nav_tile.dart, build, _contactSupport, iconUrl, _launchSupportChannel, _normalizedPhone (+31 more)
+Cohesion: 0.07
+Nodes (28): _buildMiniSpec, _buildSpecGrid, _formatNumber, request, RequestDetailBottomSheet, build, _buildSpecItem, _formatNumber (+20 more)
 
 ### Community 63 - "Community 63"
 Cohesion: 0.05
-Nodes (42): AndroidFlutterLocalNotificationsPlugin, @pragma, FirebaseMessaging get, FlutterLocalNotificationsPlugin, package:firebase_messaging/firebase_messaging.dart, package:flutter_local_notifications/flutter_local_notifications.dart, _cache, _dioService (+34 more)
+Nodes (43): AndroidFlutterLocalNotificationsPlugin, @pragma, FirebaseMessaging get, FlutterLocalNotificationsPlugin, package:firebase_messaging/firebase_messaging.dart, package:flutter_local_notifications/flutter_local_notifications.dart, _cache, _dioService (+35 more)
 
 ### Community 64 - "Community 64"
 Cohesion: 0.05
 Nodes (39): CompanyService, build, company, CompanyCard, onTap, package:solar_hub/src/features/admin/domain/models/company_service.dart, package:solar_hub/src/features/admin/presentation/widgets/status_badge.dart, package:solar_hub/src/features/company_dashboard/domain/entities/service.dart (+31 more)
 
 ### Community 65 - "Community 65"
-Cohesion: 0.05
-Nodes (39): all, byId, InverterCatalog, suggestFor, annualCo2OffsetKg, avgTemperatureLossFraction, capacityFactor, co2PerKwh (+31 more)
+Cohesion: 0.06
+Nodes (30): all, byId, InverterCatalog, suggestFor, _archiveBaseUrl, _dio, fetchSolarData, _formatDate (+22 more)
 
 ### Community 66 - "Community 66"
 Cohesion: 0.05
-Nodes (39): ../data_sources/auth_remote_datasource.dart, ../../domain/entities/user_register_model.dart, ../../domain/repositories/auth_repository.dart, package:solar_hub/src/features/auth/domain/entities/auth_response.dart, package:solar_hub/src/features/auth/domain/entities/company_register_model.dart, package:solar_hub/src/features/auth/domain/entities/user_register_model.dart, package:solar_hub/src/shared/domain/company/company_type.dart, AuthRepository (+31 more)
+Nodes (38): ../data_sources/auth_remote_datasource.dart, ../../domain/repositories/auth_repository.dart, package:solar_hub/src/features/auth/domain/entities/auth_response.dart, package:solar_hub/src/features/auth/domain/entities/company_register_model.dart, package:solar_hub/src/features/auth/domain/entities/user_register_model.dart, package:solar_hub/src/shared/domain/company/company_type.dart, AuthRepository, confirmPasswordReset (+30 more)
 
 ### Community 67 - "Community 67"
 Cohesion: 0.05
@@ -719,16 +751,16 @@ Cohesion: 0.05
 Nodes (39): 10. Your Rights and Choices, 10. حقوقك وخياراتك, 11. External Publication, 11. النشر العام للسياسة, 12. Changes to This Policy, 12. التغييرات على هذه السياسة, 1. Introduction, 1. مقدمة (+31 more)
 
 ### Community 74 - "Community 74"
-Cohesion: 0.06
-Nodes (36): build, _buildMiniSpec, _buildSpecGrid, _formatNumber, request, RequestDetailBottomSheet, ../../domain/entities/solar_offer.dart, SolarOffer (+28 more)
+Cohesion: 0.10
+Nodes (19): build, _buildActionArea, _buildCompanyActionArea, _buildCompanyHeader, _buildGrandTotalRow, _buildInvolveItem, _buildPriceSection, _buildSpecList (+11 more)
 
 ### Community 75 - "Community 75"
-Cohesion: 0.06
-Nodes (37): _AdminServiceTypeFormSheet, _AdminServiceTypeFormSheetState, NavItemTile, package:flutter_animate/flutter_animate.dart, PasswordResetPage, _PasswordResetPageState, _CheckoutSheet, _CheckoutSheetState (+29 more)
+Cohesion: 0.15
+Nodes (13): ValueNotifier, build, createState, dispose, _dontShowAgain, ExplanationDialog, _ExplanationDialogState, explanations (+5 more)
 
 ### Community 76 - "Community 76"
 Cohesion: 0.05
-Nodes (38): package:solar_hub/src/features/admin/presentation/controllers/admin_products_controller.dart, _categoryIdController, companyId, _companyIdController, _costController, costPrice, createState, description (+30 more)
+Nodes (48): adminProductsProvider, package:solar_hub/src/features/admin/presentation/controllers/admin_products_controller.dart, _AdminProductFormSheet, _AdminProductFormSheetState, AdminProductsScreen, _AdminProductsScreenState, build, _buildContent (+40 more)
 
 ### Community 77 - "Community 77"
 Cohesion: 0.05
@@ -739,16 +771,16 @@ Cohesion: 0.05
 Nodes (36): package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/dimensions_list_view.dart, package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/sketch_view_container.dart, _applyScale, build, _buildInfoItem, _copyDimensionsToClipboard, createState, _currentScale (+28 more)
 
 ### Community 79 - "Community 79"
-Cohesion: 0.08
-Nodes (33): adminAddressProvider, AdminCountry, code, copyWith, fromJson, id, name, toJson (+25 more)
+Cohesion: 0.11
+Nodes (16): AdminCity, code, copyWith, country, fromJson, id, name, toJson (+8 more)
 
 ### Community 80 - "Community 80"
 Cohesion: 0.08
-Nodes (33): CustomerRecord, SupplierRecord, PaginationMeta, OffersState, package:solar_hub/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart, package:solar_hub/src/features/crm/presentation/providers/crm_providers.dart, companyId, copyWith (+25 more)
+Nodes (30): CustomerRecord, SupplierRecord, PaginationMeta, OffersState, package:solar_hub/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart, package:solar_hub/src/features/crm/presentation/providers/crm_providers.dart, companyId, copyWith (+22 more)
 
 ### Community 81 - "Community 81"
-Cohesion: 0.06
-Nodes (32): FrameResult, package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart, package:solar_hub/src/features/structure_design/presentation/widgets/results/bom_table.dart, package:solar_hub/src/features/structure_design/presentation/widgets/results/geometry_card.dart, package:solar_hub/src/features/structure_design/presentation/widgets/results/row_details_card.dart, package:solar_hub/src/features/structure_design/presentation/widgets/results/summary_card.dart, package:solar_hub/src/features/structure_design/presentation/widgets/sketch/sketch_card.dart, BomTable (+24 more)
+Cohesion: 0.07
+Nodes (26): FrameResult, package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart, BomTable, build, _formatQuantity, _getIconForItem, itemLabel, quantityLabel (+18 more)
 
 ### Community 82 - "Community 82"
 Cohesion: 0.06
@@ -759,8 +791,8 @@ Cohesion: 0.06
 Nodes (34): 1. Send Broadcast Endpoint, 1. **Send Notification Screen**, 2. **Admin Dashboard Integration**, 2. Update existing endpoints to return proper response format, 3. **State Management**, 4. **Device Statistics**, ✅ Admin Push Notifications Feature - Complete, Configuration (+26 more)
 
 ### Community 84 - "Community 84"
-Cohesion: 0.06
-Nodes (32): ResultsStep, package:pdf/pdf.dart, package:pdf/widgets.dart, package:solar_hub/src/features/pv_system_designer/domain/entities/energy_estimate.dart, package:solar_hub/src/features/pv_system_designer/domain/entities/financial_estimate.dart, package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart, package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/technical_sketch_page.dart, package:solar_hub/src/utils/price_format_utils.dart (+24 more)
+Cohesion: 0.05
+Nodes (38): ResultsStep, package:pdf/pdf.dart, package:pdf/widgets.dart, package:printing/printing.dart, package:solar_hub/src/features/pv_system_designer/domain/entities/energy_estimate.dart, package:solar_hub/src/features/pv_system_designer/domain/entities/financial_estimate.dart, package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart, package:solar_hub/src/features/pv_system_designer/presentation/widgets/inputs/section_card.dart (+30 more)
 
 ### Community 85 - "Community 85"
 Cohesion: 0.07
@@ -772,35 +804,35 @@ Nodes (34): activeTool, CellType, cols, copyWith, eastWallHeight, fromJson, grid
 
 ### Community 87 - "Community 87"
 Cohesion: 0.06
-Nodes (34): build, _buildLoginForm, _buildSignUpForm, _buildTextField, _cities, _countries, createState, dispose (+26 more)
+Nodes (36): AuthPage, _AuthPageState, build, _buildLoginForm, _buildSignUpForm, _buildTextField, _cities, _countries (+28 more)
 
 ### Community 88 - "Community 88"
-Cohesion: 0.06
-Nodes (32): _AdminServiceTypeCard, _AdminServiceTypeFormResult, AdminServiceTypesScreen, _AdminServiceTypesScreenState, build, createState, _deleteItem, _descriptionController (+24 more)
+Cohesion: 0.07
+Nodes (30): _AdminServiceTypeCard, _AdminServiceTypeFormResult, _AdminServiceTypeFormSheet, _AdminServiceTypeFormSheetState, AdminServiceTypesScreen, _AdminServiceTypesScreenState, build, createState (+22 more)
 
 ### Community 89 - "Community 89"
-Cohesion: 0.07
-Nodes (32): adminCurrencyProvider, AdminCurrency, code, copyWith, createdAt, fromJson, id, isDefault (+24 more)
+Cohesion: 0.12
+Nodes (22): adminCurrencyProvider, package:solar_hub/src/features/admin/presentation/controllers/admin_currency_controller.dart, AdminCurrencyScreen, _AdminCurrencyScreenState, build, _buildHeader, _codeController, _confirmDelete (+14 more)
 
 ### Community 90 - "Community 90"
-Cohesion: 0.06
-Nodes (32): CompanyManagementRemoteDataSource, CompanyManagementRemoteDataSourceImpl, createCategory, createContact, createDeliveryOption, createExpense, createPublicService, createSubscriptionRequest (+24 more)
+Cohesion: 0.07
+Nodes (28): DeliveryOption, CompanyManagementRemoteDataSource, CompanyManagementRemoteDataSourceImpl, createCategory, createContact, createDeliveryOption, createExpense, createPublicService (+20 more)
 
 ### Community 91 - "Community 91"
-Cohesion: 0.06
-Nodes (31): package:solar_hub/src/core/widgets/loading_widgets.dart, package:solar_hub/src/features/services/presentation/providers/public_services_provider.dart, package:solar_hub/src/features/services/presentation/widgets/company_card.dart, package:solar_hub/src/features/services/presentation/widgets/company_type_card.dart, package:solar_hub/src/features/services/presentation/widgets/services_header.dart, package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_filter_button.dart, activeFilterCount, build (+23 more)
+Cohesion: 0.04
+Nodes (45): package:solar_hub/src/core/widgets/loading_widgets.dart, package:solar_hub/src/features/services/presentation/providers/public_services_provider.dart, package:solar_hub/src/features/services/presentation/widgets/company_card.dart, package:solar_hub/src/features/services/presentation/widgets/services_header.dart, package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_filter_button.dart, activeFilterCount, build, onClearSearch (+37 more)
 
 ### Community 92 - "Community 92"
-Cohesion: 0.06
-Nodes (31): AuthRemoteDataSource, dart:convert, AppInitLocalDataSource, AppInitLocalDataSourceImpl, cacheConfigs, cashedConfigs, casheInterface, _configCacheSchemaVersion (+23 more)
+Cohesion: 0.10
+Nodes (21): AuthRemoteDataSource, AuthDjangoDataSourceImpl, AuthRemoteDataSource, confirmPasswordReset, deleteAccount, _dioService, fetchProfile, getCities (+13 more)
 
 ### Community 93 - "Community 93"
 Cohesion: 0.07
-Nodes (31): AdminSubscriptionsController, adminSubscriptionsProvider, AdminSubscriptionsState, build, clearError, copyWith, createPlan, deletePlan (+23 more)
+Nodes (32): AdminSubscriptionsController, adminSubscriptionsProvider, AdminSubscriptionsState, build, clearError, copyWith, createPlan, deletePlan (+24 more)
 
 ### Community 94 - "Community 94"
-Cohesion: 0.07
-Nodes (30): _dioService, _ensureSuccess, getCompanies, getCompanyCategories, getMeta, getProducts, _resolveProductEndpoint, StorefrontRemoteDataSource (+22 more)
+Cohesion: 0.09
+Nodes (23): _dioService, _ensureSuccess, getCompanies, getCompanyCategories, getMeta, getProducts, _resolveProductEndpoint, StorefrontRemoteDataSource (+15 more)
 
 ### Community 95 - "Community 95"
 Cohesion: 0.08
@@ -808,23 +840,23 @@ Nodes (30): OrderAudience, OrderRecord, package:solar_hub/src/features/admin/pre
 
 ### Community 96 - "Community 96"
 Cohesion: 0.06
-Nodes (32): TextEditingController get, autofocus, build, controller, createState, dispose, _effectiveController, enabled (+24 more)
+Nodes (34): TextEditingController get, AppTextField, _AppTextFieldState, autofocus, build, controller, createState, dispose (+26 more)
 
 ### Community 97 - "Community 97"
-Cohesion: 0.07
-Nodes (30): CompanySummary?, package:solar_hub/src/features/company_dashboard/domain/usecases/get_company_usecase.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/company_header_card.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/dashboard_charts.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/order_distribution_chart.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/recent_activity_list.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/service_card.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/stat_card.dart (+22 more)
+Cohesion: 0.12
+Nodes (16): CompanySummary?, package:solar_hub/src/features/company_dashboard/domain/usecases/get_company_usecase.dart, package:solar_hub/src/shared/domain/company/company_stats.dart, build, CompanySummaryNotifier, CompanySummaryState, copyWith, getSummary (+8 more)
 
 ### Community 98 - "Community 98"
 Cohesion: 0.06
 Nodes (31): CompanyType?, addressController, build, _cities, CompanyRegistrationPage, _CompanyRegistrationPageState, _companyTypes, _countries (+23 more)
 
 ### Community 99 - "Community 99"
-Cohesion: 0.08
-Nodes (29): companyPublicServicesProvider, companySystemsProvider, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_public_services_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_systems_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/public_service_form_sheet.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/public_services/public_service_card.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/systems/system_card.dart (+21 more)
+Cohesion: 0.03
+Nodes (18): AppConfigService, AdminCompanyController, CategoryController, CityController, ConfigController, CountryController, CurrencyController, SubscriptionController (+10 more)
 
 ### Community 100 - "Community 100"
 Cohesion: 0.06
-Nodes (30): batteryAh, batteryBrand, batteryCount, batteryNotes, batteryVoltage, createdAt, fromJson, id (+22 more)
+Nodes (31): batteryAh, batteryBrand, batteryCount, batteryNotes, batteryVoltage, createdAt, fromJson, id (+23 more)
 
 ### Community 101 - "Community 101"
 Cohesion: 0.06
@@ -835,16 +867,16 @@ Cohesion: 0.06
 Nodes (31): authController, build, _cities, _countries, createState, didChangeDependencies, _didLoadInitialData, dispose (+23 more)
 
 ### Community 103 - "Community 103"
-Cohesion: 0.06
-Nodes (29): BatteryType, batteryCount, batteryNote, batterySize, batteryType, company, createdAt, id (+21 more)
+Cohesion: 0.08
+Nodes (24): batteryCount, batteryNote, batterySize, batteryType, company, createdAt, id, inverterCount (+16 more)
 
 ### Community 104 - "Community 104"
-Cohesion: 0.07
-Nodes (29): AdminAddressController, AdminAddressState, build, cities, clearError, copyWith, countries, createCity (+21 more)
+Cohesion: 0.10
+Nodes (20): AdminAddressController, AdminAddressState, build, cities, clearError, copyWith, countries, createCity (+12 more)
 
 ### Community 105 - "Community 105"
-Cohesion: 0.07
-Nodes (29): build, copyWith, error, fetchHistory, fetchNextPage, _foregroundMessageSubscription, hasMore, isLoading (+21 more)
+Cohesion: 0.10
+Nodes (21): build, copyWith, error, fetchHistory, fetchNextPage, _foregroundMessageSubscription, hasMore, isLoading (+13 more)
 
 ### Community 106 - "Community 106"
 Cohesion: 0.07
@@ -855,12 +887,12 @@ Cohesion: 0.06
 Nodes (30): createCity, createCountry, createCurrency, createGlobalCategory, createServiceCatalogEntry, createSubscriptionPlan, deleteCity, deleteCountry (+22 more)
 
 ### Community 108 - "Community 108"
-Cohesion: 0.06
-Nodes (29): _compassOctantTowardSun, _cos, isCellShaded, isInSetbackZone, isPointInPolygon, obstaclesCount, _Octant, panelAreaM2 (+21 more)
+Cohesion: 0.05
+Nodes (40): dart:math, _compassOctantTowardSun, _cos, isCellShaded, isInSetbackZone, isPointInPolygon, obstaclesCount, _Octant (+32 more)
 
 ### Community 109 - "Community 109"
-Cohesion: 0.07
-Nodes (29): _authRepository, build, cities, companies, copyWith, _debounce, error, _fetchCompanies (+21 more)
+Cohesion: 0.08
+Nodes (25): _authRepository, build, cities, companies, copyWith, _debounce, error, _fetchCompanies (+17 more)
 
 ### Community 110 - "Community 110"
 Cohesion: 0.07
@@ -868,7 +900,7 @@ Nodes (29): build, _buildList, createState, _debounce, dispose, _error, _fallbac
 
 ### Community 111 - "Community 111"
 Cohesion: 0.07
-Nodes (26): Border?, EdgeInsetsGeometry, package:solar_hub/src/core/services/network_status_service.dart, AppCard, backgroundColor, border, borderRadius, build (+18 more)
+Nodes (17): CompanyTypesController, CompanyContactsController, CompanyDeliveryOptionsController, CompanyPublicServicesController, RawResponse(), CompanyTypeCreateDto, CompanyTypeUpdateDto, ServiceTypeCreateDto (+9 more)
 
 ### Community 112 - "Community 112"
 Cohesion: 0.07
@@ -883,12 +915,12 @@ Cohesion: 0.09
 Nodes (28): adminProvider, _buildContent, initState, AdminFeedbacksScreen, build, _buildContent, _buildFilterChip, createState (+20 more)
 
 ### Community 115 - "Community 115"
-Cohesion: 0.07
-Nodes (27): AdminServiceCatalogController, AdminServiceCatalogState, build, catalog, clearError, copyWith, createServiceCatalogEntry, deleteServiceCatalogEntry (+19 more)
+Cohesion: 0.11
+Nodes (19): _FakeAdminRepository, _FakeAdminRepository, AdminServiceCatalogController, AdminServiceCatalogState, build, catalog, clearError, copyWith (+11 more)
 
 ### Community 116 - "Community 116"
-Cohesion: 0.09
-Nodes (25): _dioService, getCompanies, getCompanyDetails, getTypes, PublicServicesRemoteDataSource, PublicServicesRemoteDataSourceImpl, package:solar_hub/src/features/services/data/data_sources/public_services_remote_data_source.dart, package:solar_hub/src/features/services/data/repositories/public_services_repository_impl.dart (+17 more)
+Cohesion: 0.08
+Nodes (31): PublicServicesRemoteDataSource, PublicServicesRemoteDataSourceImpl, package:solar_hub/src/features/services/data/data_sources/public_services_remote_data_source.dart, package:solar_hub/src/features/services/data/repositories/public_services_repository_impl.dart, package:solar_hub/src/features/services/domain/entities/public_companies_query.dart, package:solar_hub/src/features/services/domain/entities/public_companies_result.dart, package:solar_hub/src/features/services/domain/repositories/public_services_repository.dart, package:solar_hub/src/features/services/presentation/screens/company_details_screen.dart (+23 more)
 
 ### Community 117 - "Community 117"
 Cohesion: 0.07
@@ -899,8 +931,8 @@ Cohesion: 0.07
 Nodes (28): addProduct, allCarts, audiencesForCompany, _cache, cartForCompany, cartsForAudience, clearAudience, clearCompanyCart (+20 more)
 
 ### Community 119 - "Community 119"
-Cohesion: 0.07
-Nodes (27): allCities, batteryCount, batteryNote, batterySize, batteryType, calculateTotalPower, city, cityId (+19 more)
+Cohesion: 0.06
+Nodes (32): email, fromJson, image, name, phone, SolarProfile, toJson, allCities (+24 more)
 
 ### Community 120 - "Community 120"
 Cohesion: 0.07
@@ -923,28 +955,28 @@ Cohesion: 0.11
 Nodes (12): AdminCompanyList(), AppConfigList(), CategoryList(), CityList(), CountryList(), CurrencyList(), FeedbackList(), NotificationList() (+4 more)
 
 ### Community 125 - "Community 125"
-Cohesion: 0.07
-Nodes (25): build, _buildTabContent, createState, dispose, initState, key, pages, _tabController (+17 more)
+Cohesion: 0.09
+Nodes (22): package:simple_step_checkout/simple_step_checkout.dart, package:solar_hub/src/features/calculations/presentation/widgets/tabs/appliances_tab.dart, package:solar_hub/src/features/calculations/presentation/widgets/tabs/preferences_tab.dart, package:solar_hub/src/features/calculations/presentation/widgets/tabs/results_tab.dart, package:solar_hub/src/features/calculations/presentation/widgets/wizard_bottom_bar.dart, package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart, _buildRequestPrefill, createState (+14 more)
 
 ### Community 126 - "Community 126"
 Cohesion: 0.07
 Nodes (24): company, copyWith, createdAt, description, fromJson, id, price, title (+16 more)
 
 ### Community 127 - "Community 127"
-Cohesion: 0.08
-Nodes (25): map, AdminSubscriptionPlan, copyWith, durationDays, features, fromJson, id, isActive (+17 more)
+Cohesion: 0.14
+Nodes (14): build, ConfigNotifier, ConfigState, copyWith, hydrateFromSnapshot, initial, isEnabled, isHydrated (+6 more)
 
 ### Community 128 - "Community 128"
 Cohesion: 0.08
-Nodes (26): _openCatalogScreen, MaterialPageRoute, package:solar_hub/src/features/offers/presentation/screens/involves_catalog_screen.dart, package:solar_hub/src/features/offers/presentation/screens/offer_details_screen.dart, _showFullScreenSketch, _buildSystemItem, _availableScrollController, build (+18 more)
+Nodes (27): build, _openCatalogScreen, MaterialPageRoute, package:solar_hub/src/features/offers/presentation/screens/involves_catalog_screen.dart, package:solar_hub/src/features/offers/presentation/screens/offer_details_screen.dart, _showFullScreenSketch, _buildSystemItem, _availableScrollController (+19 more)
 
 ### Community 129 - "Community 129"
 Cohesion: 0.07
 Nodes (26): address, AdminModule, AdminModuleId, AdminModules, categories, companies, configs, currencies (+18 more)
 
 ### Community 130 - "Community 130"
-Cohesion: 0.08
-Nodes (23): package:crystal_navigation_bar/crystal_navigation_bar.dart, package:solar_hub/src/core/widgets/offline_status_banner.dart, package:solar_hub/src/features/home/presentation/providers/home_page_provider.dart, package:solar_hub/src/features/home/presentation/providers/user_dashboard_provider.dart, package:solar_hub/src/features/home/presentation/screen/user_dashboard.dart, package:solar_hub/src/features/home/presentation/widgets/drawer.dart, package:solar_hub/src/features/posters/presentation/controllers/active_posters_provider.dart, package:solar_hub/src/features/services/presentation/screens/services_explorer_screen.dart (+15 more)
+Cohesion: 0.03
+Nodes (78): dart:ui, rootNavigatorKey, NavigatorState, package:fl_chart/fl_chart.dart, package:flutter/material.dart, package:flutter_riverpod/flutter_riverpod.dart, package:go_router/go_router.dart, package:solar_hub/src/features/accounting/presentation/providers/accounting_providers.dart (+70 more)
 
 ### Community 131 - "Community 131"
 Cohesion: 0.08
@@ -955,27 +987,27 @@ Cohesion: 0.12
 Nodes (25): AccountingOverview?, LedgerSummary, package:solar_hub/src/features/accounting/domain/repositories/accounting_repository.dart, AccountingDashboardController, AccountingDashboardState, accountsProvider, billDetailProvider, billsProvider (+17 more)
 
 ### Community 133 - "Community 133"
-Cohesion: 0.09
-Nodes (24): CompanyWork, CompanyWorkImage, CompanyWorkImageModel, CompanyWorkModel, fromJson, package:solar_hub/src/features/company_work/domain/entities/company_work.dart, package:solar_hub/src/features/company_work/presentation/widgets/company_work_form_error_banner.dart, package:solar_hub/src/features/company_work/presentation/widgets/company_work_image_picker.dart (+16 more)
+Cohesion: 0.05
+Nodes (50): companyPublicServicesProvider, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_public_services_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/public_service_form_sheet.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/public_services/public_service_card.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/service_types/company_service_type_card.dart, package:solar_hub/src/features/company_work/presentation/widgets/company_work_form_error_banner.dart, package:solar_hub/src/features/company_work/presentation/widgets/company_work_image_picker.dart, package:solar_hub/src/services/toast_service.dart (+42 more)
 
 ### Community 134 - "Community 134"
-Cohesion: 0.08
-Nodes (23): code, Country, fromJson, hashCode, id, name, operator, toJson (+15 more)
+Cohesion: 0.12
+Nodes (15): code, Country, fromJson, hashCode, id, name, operator, toJson (+7 more)
 
 ### Community 135 - "Community 135"
-Cohesion: 0.08
-Nodes (23): actionLabel, fromString, localizedName, navigationRoute, NotificationType, unknown, offerRequest,
+Cohesion: 0.05
+Nodes (45): notificationHistoryProvider, actionLabel, fromString, localizedName, navigationRoute, NotificationType, unknown, offerRequest,
   offer,
   invite,
-  memberRemove,, package:solar_hub/src/features/notifications/domain/entities/notification_type.dart (+15 more)
+  memberRemove, (+37 more)
 
 ### Community 136 - "Community 136"
 Cohesion: 0.08
 Nodes (25): StorefrontCartItem, StorefrontCompanyCart, Route /storefront/order-result, audience, build, cart, _CartItemTile, _CompanyCartCard (+17 more)
 
 ### Community 137 - "Community 137"
-Cohesion: 0.08
-Nodes (25): ProductModel, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_basic_info_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_category_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_image_picker.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_inventory_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_options_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_tiers_form.dart (+17 more)
+Cohesion: 0.09
+Nodes (23): package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_basic_info_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_category_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_image_picker.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_inventory_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_options_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_form.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_tiers_form.dart, AddProductPage (+15 more)
 
 ### Community 138 - "Community 138"
 Cohesion: 0.08
@@ -990,28 +1022,28 @@ Cohesion: 0.08
 Nodes (25): AdminCompanyInspectorScreen, _AdminCompanyInspectorScreenState, build, _buildCompanyList, _buildDetailsBody, _buildInspectorView, _buildListBody, _companies (+17 more)
 
 ### Community 141 - "Community 141"
-Cohesion: 0.08
-Nodes (23): build, _buildCell, createState, RoofGridCanvas, _RoofGridCanvasState, calculate, columns, defaultSupportSpacingMeters (+15 more)
+Cohesion: 0.11
+Nodes (17): calculate, columns, defaultSupportSpacingMeters, _Layout, _maximizeLayout, _normalizeRowOffsets, _resolveAppliedAzimuth, rows (+9 more)
 
 ### Community 142 - "Community 142"
 Cohesion: 0.10
 Nodes (24): AdminCompanyDetailsScreen, _AdminCompanyDetailsScreenState, build, _buildContent, _buildHeroCard, _buildInfoSection, _buildMembersSection, _buildServicesSection (+16 more)
 
 ### Community 143 - "Community 143"
-Cohesion: 0.08
-Nodes (22): companyId, CompanyService, createdAt, description, fromJson, id, price, title (+14 more)
+Cohesion: 0.18
+Nodes (10): companyId, CompanyService, createdAt, description, fromJson, id, price, title (+2 more)
 
 ### Community 144 - "Community 144"
-Cohesion: 0.08
-Nodes (24): _actionType, _actionTypeLabel, _actionTypes, build, _buildActionTargetField, _buildActionTypeDropdown, _buildImagePicker, _buildSubmitButton (+16 more)
+Cohesion: 0.06
+Nodes (40): build, _buildFilterBar, _buildList, CompanyPostersScreen, _CompanyPostersScreenState, createState, dispose, embedded (+32 more)
 
 ### Community 145 - "Community 145"
 Cohesion: 0.08
 Nodes (24): CompanySubscriptionRequest?, _activationSentinel, build, CompanyActivationController, CompanyActivationState, companyId, copyWith, createSubscriptionRequest (+16 more)
 
 ### Community 146 - "Community 146"
-Cohesion: 0.08
-Nodes (23): CustomPainter, package:solar_hub/src/features/structure_design/presentation/widgets/results/metric_row.dart, package:solar_hub/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart, FrameSketchPainter, build, height, _meters, painter (+15 more)
+Cohesion: 0.15
+Nodes (12): package:solar_hub/src/features/structure_design/presentation/widgets/results/metric_row.dart, package:solar_hub/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart, build, height, _meters, painter, result, siteDepthMeters (+4 more)
 
 ### Community 147 - "Community 147"
 Cohesion: 0.09
@@ -1042,12 +1074,12 @@ Cohesion: 0.08
 Nodes (23): ../../../../core/errors/failure.dart, ../entities/involve.dart, ../entities/offers_filter.dart, ../entities/solar_offer.dart, ../entities/solar_request.dart, createInvolve, createRequest, deleteInvolve (+15 more)
 
 ### Community 154 - "Community 154"
-Cohesion: 0.08
-Nodes (21): dart:math, annualAvgDailyGhiKwhM2, approxMaxTempC, approxMinTempC, averagePeakSunHours, estimate, isRealData, latitude (+13 more)
+Cohesion: 0.10
+Nodes (19): @immutable, RoofSimulatorController, EnergyEstimate, FinancialEstimate, InverterSpec, annualAvgDailyGhiKwhM2, approxMaxTempC, approxMinTempC (+11 more)
 
 ### Community 155 - "Community 155"
-Cohesion: 0.08
-Nodes (23): createInvolve, createRequest, deleteInvolve, deleteOffer, deleteRequest, finishOffer, getAllOffers, getAllRequests (+15 more)
+Cohesion: 0.09
+Nodes (22): createInvolve, createRequest, deleteInvolve, deleteOffer, deleteRequest, finishOffer, getAllOffers, getAllRequests (+14 more)
 
 ### Community 156 - "Community 156"
 Cohesion: 0.08
@@ -1055,47 +1087,47 @@ Nodes (23): calculate, columns, defaultSupportSpacingMeters, _Layout, _maximizeL
 
 ### Community 157 - "Community 157"
 Cohesion: 0.08
-Nodes (23): build, _buildOffersTab, _buildRequestsTab, createState, dispose, _fetchOffers, _fetchRequests, _hasMoreOffers (+15 more)
+Nodes (25): AdminOffersScreen, _AdminOffersScreenState, build, _buildOffersTab, _buildRequestsTab, createState, dispose, _fetchOffers (+17 more)
 
 ### Community 158 - "Community 158"
-Cohesion: 0.09
-Nodes (21): build, _buildFormFields, _buildSystemVoltageSelector, createState, current, depthOfDischarge, divider, initState (+13 more)
+Cohesion: 0.11
+Nodes (19): build, _buildFormFields, _buildSystemVoltageSelector, createState, current, depthOfDischarge, divider, initState (+11 more)
 
 ### Community 159 - "Community 159"
-Cohesion: 0.09
-Nodes (22): Color get, PvSystemDesignerController, PvSystemDesignState, package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/sketch_dimensions.dart, _bgColor, _dimColor, _drawCompass, _drawFrontView (+14 more)
+Cohesion: 0.05
+Nodes (37): Color get, PvSystemDesignerController, PvSystemDesignState, package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/sketch_dimensions.dart, _bgColor, _dimColor, _drawCompass, _drawFrontView (+29 more)
 
 ### Community 160 - "Community 160"
 Cohesion: 0.09
 Nodes (22): accountant, analytics, CompanyPermissions, contacts, copyWith, customers, delivery, fromJson (+14 more)
 
 ### Community 161 - "Community 161"
-Cohesion: 0.09
-Nodes (22): AdminPostersController, AdminPostersState, build, copyWith, currentPage, _dataSource, error, extendPoster (+14 more)
+Cohesion: 0.04
+Nodes (53): AdminPostersController, AdminPostersState, build, copyWith, currentPage, _dataSource, error, extendPoster (+45 more)
 
 ### Community 162 - "Community 162"
 Cohesion: 0.10
-Nodes (21): roofSimulatorProvider, package:solar_hub/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart, _autofillRoof, _showExportDialog, _applyValue, build, didUpdateWidget, initState (+13 more)
+Nodes (21): roofSimulatorProvider, package:solar_hub/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart, _autofillRoof, _clearAll, _applyValue, build, didUpdateWidget, initState (+13 more)
 
 ### Community 163 - "Community 163"
-Cohesion: 0.09
-Nodes (20): dart:typed_data, package:solar_hub/src/features/structure_design/data/drawing/watt_drawing_file_service.dart, package:solar_hub/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart, package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart, package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart, package:solar_hub/src/features/structure_design/domain/services/structure_design_calculator.dart, build, l10n (+12 more)
+Cohesion: 0.14
+Nodes (14): dart:typed_data, package:solar_hub/src/features/structure_design/data/drawing/watt_drawing_file_service.dart, package:solar_hub/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart, package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart, package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart, package:solar_hub/src/features/structure_design/domain/services/structure_design_calculator.dart, buildInput, calculator (+6 more)
 
 ### Community 164 - "Community 164"
 Cohesion: 0.09
 Nodes (22): ../data_sources/offers_remote_data_source.dart, ../../domain/entities/involve.dart, ../../domain/repositories/offers_repository.dart, createInvolve, createRequest, deleteInvolve, deleteOffer, deleteRequest (+14 more)
 
 ### Community 165 - "Community 165"
-Cohesion: 0.09
-Nodes (21): FocusNode?, _applyValue, build, controller, createState, dispose, _focusNode, infoText (+13 more)
+Cohesion: 0.12
+Nodes (16): FocusNode?, _applyValue, build, controller, createState, dispose, _focusNode, infoText (+8 more)
 
 ### Community 166 - "Community 166"
 Cohesion: 0.09
 Nodes (22): package:solar_hub/src/features/company_dashboard/data/data_sources/company_management_remote_data_source.dart, createCategory, createContact, createDeliveryOption, createExpense, createPublicService, createSubscriptionRequest, deleteCategory (+14 more)
 
 ### Community 167 - "Community 167"
-Cohesion: 0.09
-Nodes (21): package:solar_hub/src/features/company_work/data/data_sources/company_work_remote_data_source.dart, package:solar_hub/src/features/company_work/domain/repositories/company_work_repository.dart, CompanyWorkRepository, createWork, deleteWork, deleteWorkImage, getCompanyWorks, getCompanyWorksCount (+13 more)
+Cohesion: 0.14
+Nodes (13): package:solar_hub/src/features/company_work/data/data_sources/company_work_remote_data_source.dart, package:solar_hub/src/features/company_work/domain/repositories/company_work_repository.dart, CompanyWorkRepository, CompanyWorkRepositoryImpl, createWork, deleteWork, deleteWorkImage, getCompanyWorks (+5 more)
 
 ### Community 168 - "Community 168"
 Cohesion: 0.10
@@ -1107,7 +1139,7 @@ Nodes (22): braceLengthLabel, build, _buildHeightRangeTile, _DimensionTile, fram
 
 ### Community 170 - "Community 170"
 Cohesion: 0.09
-Nodes (21): createInvolve, createRequest, deleteInvolve, deleteOffer, deleteRequest, _dioService, finishOffer, getAllOffers (+13 more)
+Nodes (22): createInvolve, createRequest, deleteInvolve, deleteOffer, deleteRequest, _dioService, finishOffer, getAllOffers (+14 more)
 
 ### Community 171 - "Community 171"
 Cohesion: 0.09
@@ -1118,16 +1150,16 @@ Cohesion: 0.09
 Nodes (21): 1. Overview, 2. Memory Leaks, 3. Performance, 4. Architecture & Structure, 5. Security, 6. Priority Action List, Clean / good practice, Clean / verified no issues (+13 more)
 
 ### Community 173 - "Community 173"
-Cohesion: 0.09
-Nodes (20): package:flutter_riverpod/legacy.dart, package:solar_hub/src/core/flags/feature_flags.dart, package:solar_hub/src/features/splash/presentation/providers/config_provider.dart, fromIndex, HomeNavigationState, HomeTab, indexValue, isVisible (+12 more)
+Cohesion: 0.03
+Nodes (9): CompaniesService, PublicCompaniesController, CompanyMembersController, CompanyServiceCatalogsController, CompanyServicesController, CompanyServiceCreateDto, CompanyServiceUpdateDto, CreateMemberDto (+1 more)
 
 ### Community 174 - "Community 174"
 Cohesion: 0.09
-Nodes (21): package:solar_hub/src/features/company_dashboard/domain/entities/company_activation_reminder_response.dart, createCategory, createContact, createDeliveryOption, createExpense, createPublicService, createSubscriptionRequest, deleteCategory (+13 more)
+Nodes (21): package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_request.dart, createCategory, createContact, createDeliveryOption, createExpense, createPublicService, createSubscriptionRequest, deleteCategory (+13 more)
 
 ### Community 175 - "Community 175"
-Cohesion: 0.10
-Nodes (21): package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_categories_picker.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_picker.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_filter_section.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_global_categories_picker.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_sort_picker.dart, _availability, _companiesScrollController, _companySearchController (+13 more)
+Cohesion: 0.06
+Nodes (41): package:solar_hub/src/features/storefront/presentation/screens/storefront_products_screen.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_categories_picker.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_picker.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_filter_section.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_global_categories_picker.dart, package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_sort_picker.dart, storefrontNotifierProvider, StorefrontScope (+33 more)
 
 ### Community 176 - "Community 176"
 Cohesion: 0.09
@@ -1142,8 +1174,8 @@ Cohesion: 0.10
 Nodes (20): @Deprecated, package:solar_hub/src/features/roof_simulator/domain/models/roof_simulator_state.dart, package:solar_hub/src/features/roof_simulator/presentation/widgets/boundary_walls_card.dart, package:solar_hub/src/features/roof_simulator/presentation/widgets/metrics_panel.dart, package:solar_hub/src/features/roof_simulator/presentation/widgets/parameter_inputs_card.dart, package:solar_hub/src/features/roof_simulator/presentation/widgets/simulation_time_slider.dart, package:solar_hub/src/features/roof_simulator/presentation/widgets/visual_grid_canvas.dart, Route /calculator/structure-design (+12 more)
 
 ### Community 179 - "Community 179"
-Cohesion: 0.10
-Nodes (19): code, CompanyType, copyWith, fromJson, id, name, props, toJson (+11 more)
+Cohesion: 0.17
+Nodes (11): code, CompanyType, copyWith, fromJson, id, name, props, toJson (+3 more)
 
 ### Community 180 - "Community 180"
 Cohesion: 0.10
@@ -1162,16 +1194,16 @@ Cohesion: 0.11
 Nodes (20): feedbackProvider, package:solar_hub/src/features/feedback/presentation/controllers/feedback_controller.dart, build, _buildErrorCard, _buildImageSection, _buildInfoCard, _buildMessageField, _buildNameField (+12 more)
 
 ### Community 184 - "Community 184"
-Cohesion: 0.10
+Cohesion: 0.09
 Nodes (20): build, clearError, clearSuccessMessage, copyWith, error, fetchStatistics, isLoadingStats, isSending (+12 more)
 
 ### Community 185 - "Community 185"
-Cohesion: 0.10
-Nodes (19): _archiveBaseUrl, _dio, fetchSolarData, _formatDate, OpenMeteoSolarDataSource, parseApiResponse, Dio, package:dio/dio.dart (+11 more)
+Cohesion: 0.09
+Nodes (22): dataSource, map, models, NetworkStatusService, package:solar_hub/src/core/di/get_it.dart, package:solar_hub/src/core/navigation/app_navigation.dart, package:solar_hub/src/core/services/network_status_service.dart, ApiServicesInterface (+14 more)
 
 ### Community 186 - "Community 186"
 Cohesion: 0.10
-Nodes (20): copyWith, FacingDirectionPreference, facingPreference, frontClearanceMeters, frontLegClearanceMeters, interRowGapMeters, latitude, manualColumns (+12 more)
+Nodes (19): copyWith, FacingDirectionPreference, facingPreference, frontClearanceMeters, frontLegClearanceMeters, interRowGapMeters, latitude, manualColumns (+11 more)
 
 ### Community 187 - "Community 187"
 Cohesion: 0.10
@@ -1182,12 +1214,12 @@ Cohesion: 0.10
 Nodes (20): InheritedWidget, actions, AdminContentLayout, _AdminHeader, AdminLayoutData, AdminLayoutScope, build, _buildContent (+12 more)
 
 ### Community 189 - "Community 189"
-Cohesion: 0.13
-Nodes (17): package:fl_chart/fl_chart.dart, package:solar_hub/src/features/accounting/presentation/providers/accounting_providers.dart, package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart, accountingDashboardProvider, canViewStorefrontB2bDetails, role, build, RevenueChart (+9 more)
+Cohesion: 0.06
+Nodes (15): AppConfigModule, CompaniesModule, AdminOffersController, AllExceptionsFilter, Response, ResponseInterceptor, NotificationsModule, NotifierService (+7 more)
 
 ### Community 190 - "Community 190"
-Cohesion: 0.10
-Nodes (20): package:solar_hub/src/features/inventory/domain/repositories/inventory_repository.dart, addProduct, build, copyWith, deleteProduct, error, fetchFilterOptions, fetchProducts (+12 more)
+Cohesion: 0.07
+Nodes (25): ../../domain/entities/filter_options.dart, ProductFilterOptions, fromJson, ProductFilterOptionsModel, package:solar_hub/src/features/inventory/domain/repositories/inventory_repository.dart, product_model.dart, addProduct, build (+17 more)
 
 ### Community 191 - "Community 191"
 Cohesion: 0.10
@@ -1198,8 +1230,8 @@ Cohesion: 0.11
 Nodes (20): membersProvider, build, AddMemberSheet, _AddMemberSheetState, build, _buildRoleDropdown, _buildTextField, companyId (+12 more)
 
 ### Community 193 - "Community 193"
-Cohesion: 0.10
-Nodes (20): _buildCounterRow, _buildInputRow, _buildIntInputRow, _buildNoteField, _buildSectionHeader, _buildStringDropdownRow, _cardDecoration, createState (+12 more)
+Cohesion: 0.04
+Nodes (28): CompaniesController, CompanyPostersController, CompanySubscriptionsController, CompanyCategoryDto, CompanyOfferCreateDto, CompanyOfferInvolvesDto, CompanyRegisterDto, CompanyServiceCatalogCreateDto (+20 more)
 
 ### Community 194 - "Community 194"
 Cohesion: 0.10
@@ -1213,20 +1245,20 @@ Nodes (18): accountant,
   inventory,, fromValue, MemberRole, sales, value, AdminUser, copyWith, email (+10 more)
 
 ### Community 196 - "Community 196"
-Cohesion: 0.11
-Nodes (19): _FakeAdminRepository, _FakeAdminRepository, AdminUsersController, AdminUsersState, build, clearError, copyWith, error (+11 more)
+Cohesion: 0.07
+Nodes (10): AuthController, AuthModule, AuthService, CurrentUser, LoginDto, DeleteAccountDto, LanguageUpdateDto, UpdateProfileDto (+2 more)
 
 ### Community 197 - "Community 197"
-Cohesion: 0.11
-Nodes (19): build, CompanyDeliveryController, CompanyDeliveryState, copyWith, createOption, deleteOption, error, fetchFirstPage (+11 more)
+Cohesion: 0.10
+Nodes (20): build, CompanyDeliveryController, CompanyDeliveryState, copyWith, createOption, deleteOption, error, fetchFirstPage (+12 more)
 
 ### Community 198 - "Community 198"
 Cohesion: 0.11
 Nodes (19): build, CompanyExpensesController, CompanyExpensesState, copyWith, createExpense, deleteExpense, error, fetchFirstPage (+11 more)
 
 ### Community 199 - "Community 199"
-Cohesion: 0.11
-Nodes (19): build, CompanyPostersController, CompanyPostersState, copyWith, currentPage, _dataSource, deletePoster, error (+11 more)
+Cohesion: 0.08
+Nodes (10): AdminNotificationController, DeviceController, HistoryController, BroadcastDto, GroupNotificationDto, SubscribeDto, UserNotificationDto, FirebaseService (+2 more)
 
 ### Community 200 - "Community 200"
 Cohesion: 0.11
@@ -1253,12 +1285,12 @@ Cohesion: 0.10
 Nodes (19): package:solar_hub/src/features/accounting/domain/entities/accounting_models.dart, AccountingRepository, createAccount, createPayment, deleteAccount, getBill, getInvoice, getLedger (+11 more)
 
 ### Community 206 - "Community 206"
-Cohesion: 0.11
-Nodes (18): package:solar_hub/src/features/company_dashboard/domain/entities/activity_log_item.dart, package:solar_hub/src/features/company_dashboard/presentation/providers/company_activity_provider.dart, package:solar_hub/src/features/offers/presentation/providers/offers_provider.dart, companyActivityFeedProvider, CompanyActivityState, error, inventoryState, isLoading (+10 more)
+Cohesion: 0.07
+Nodes (31): package:crystal_navigation_bar/crystal_navigation_bar.dart, package:solar_hub/src/core/widgets/offline_status_banner.dart, package:solar_hub/src/features/calculations/presentation/screens/calculator_landing_page.dart, package:solar_hub/src/features/home/presentation/screen/user_dashboard.dart, package:solar_hub/src/features/home/presentation/widgets/drawer.dart, package:solar_hub/src/features/services/presentation/screens/services_explorer_screen.dart, package:solar_hub/src/features/storefront/presentation/screens/storefront_cart_screen.dart, package:solar_hub/src/features/storefront/presentation/screens/storefront_companies_screen.dart (+23 more)
 
 ### Community 207 - "Community 207"
-Cohesion: 0.10
-Nodes (19): RoundedRectangleBorder, AppButton, AppButtonVariant, _backgroundColor, borderRadius, _borderSide, build, _buildContent (+11 more)
+Cohesion: 0.11
+Nodes (18): RoundedRectangleBorder, AppButtonVariant, _backgroundColor, borderRadius, _borderSide, build, _buildContent, _buildStyle (+10 more)
 
 ### Community 208 - "Community 208"
 Cohesion: 0.10
@@ -1277,16 +1309,16 @@ Cohesion: 0.11
 Nodes (18): batteryAh, batteryCount, batteryCurrent, batteryVoltage, build, _buildFormFields, _buildSystemVoltageSelector, CountCalculator (+10 more)
 
 ### Community 212 - "Community 212"
-Cohesion: 0.11
-Nodes (17): company, cost, createdAt, DeliveryOption, description, estimatedDaysMax, estimatedDaysMin, fromJson (+9 more)
+Cohesion: 0.17
+Nodes (11): company, cost, createdAt, description, estimatedDaysMax, estimatedDaysMin, fromJson, id (+3 more)
 
 ### Community 213 - "Community 213"
 Cohesion: 0.11
 Nodes (18): AdminCurrencyController, AdminCurrencyState, build, clearError, copyWith, createCurrency, currencies, deleteCurrency (+10 more)
 
 ### Community 214 - "Community 214"
-Cohesion: 0.12
-Nodes (17): ../data_sources/inventory_remote_data_source.dart, ../../domain/repositories/inventory_repository.dart, package:solar_hub/src/features/inventory/domain/entities/filter.dart, package:solar_hub/src/features/inventory/domain/entities/filter_options.dart, createProduct, deleteProduct, getFilterOptions, getProducts (+9 more)
+Cohesion: 0.11
+Nodes (18): ../data_sources/inventory_remote_data_source.dart, ../../domain/entities/product.dart, ../../domain/repositories/inventory_repository.dart, package:solar_hub/src/features/inventory/domain/entities/filter.dart, package:solar_hub/src/features/inventory/domain/entities/filter_options.dart, createProduct, deleteProduct, getFilterOptions (+10 more)
 
 ### Community 215 - "Community 215"
 Cohesion: 0.11
@@ -1297,8 +1329,8 @@ Cohesion: 0.11
 Nodes (18): actionId, actionType, approvedAt, companyId, companyName, createdAt, durationDays, expiresAt (+10 more)
 
 ### Community 217 - "Community 217"
-Cohesion: 0.11
-Nodes (17): StorefrontCompanyListItem, build, company, _CompanyAvatar, filterSheet, _InlineMessage, message, onCompanyTap (+9 more)
+Cohesion: 0.13
+Nodes (4): B2bCatalogController, StoreCatalogController, ShopFiltersDto, ProductsService
 
 ### Community 218 - "Community 218"
 Cohesion: 0.11
@@ -1321,8 +1353,8 @@ Cohesion: 0.11
 Nodes (18): package:solar_hub/src/features/accounting/data/data_sources/accounting_remote_data_source.dart, createAccount, createPayment, deleteAccount, getBill, getInvoice, getLedger, getOverview (+10 more)
 
 ### Community 223 - "Community 223"
-Cohesion: 0.11
-Nodes (18): package:solar_hub/src/features/calculations/presentation/widgets/slider_tile.dart, package:solar_hub/src/features/calculations/presentation/widgets/voltage_chips.dart, _acVoltageLabel, _batteryAhController, build, controller, createState, didUpdateWidget (+10 more)
+Cohesion: 0.07
+Nodes (29): box, cachedSummary, clear, _company, delete, deleteByPrefix, _FakeLocalDataSource, getCalls (+21 more)
 
 ### Community 224 - "Community 224"
 Cohesion: 0.11
@@ -1333,16 +1365,16 @@ Cohesion: 0.11
 Nodes (18): build, CalcInputRow, _CalcInputRowState, color, _controller, createState, didUpdateWidget, dispose (+10 more)
 
 ### Community 226 - "Community 226"
-Cohesion: 0.11
-Nodes (18): allLabel, build, categories, _CategoryChip, fromCompanyCategory, fromGlobalCategory, id, l10n (+10 more)
+Cohesion: 0.04
+Nodes (45): build, categories, onChanged, selectedCategoryId, StorefrontGlobalCategoriesPicker, build, onChanged, ordering (+37 more)
 
 ### Community 227 - "Community 227"
 Cohesion: 0.14
 Nodes (17): _saveSystem, SystemModel, package:solar_hub/src/features/calculations/domain/entities/system_model.dart, package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart, SystemsProvider, SystemsState, build, createState (+9 more)
 
 ### Community 228 - "Community 228"
-Cohesion: 0.15
-Nodes (16): AdminServiceCatalogScreen, _AdminServiceCatalogScreenState, build, _buildContent, _confirmDelete, createState, initState, _showServiceForm (+8 more)
+Cohesion: 0.19
+Nodes (14): AdminServiceCatalogScreen, _AdminServiceCatalogScreenState, build, _buildContent, _confirmDelete, createState, initState, _showServiceForm (+6 more)
 
 ### Community 229 - "Community 229"
 Cohesion: 0.12
@@ -1353,8 +1385,8 @@ Cohesion: 0.12
 Nodes (17): AdminCompaniesController, AdminCompaniesState, build, clearError, companies, copyWith, error, fetchCompanies (+9 more)
 
 ### Community 231 - "Community 231"
-Cohesion: 0.12
-Nodes (17): AppConfigController, AppConfigState, build, clearError, configs, copyWith, createConfig, deleteConfig (+9 more)
+Cohesion: 0.05
+Nodes (38): AppConfigController, AppConfigState, build, clearError, configs, copyWith, createConfig, deleteConfig (+30 more)
 
 ### Community 232 - "Community 232"
 Cohesion: 0.12
@@ -1401,8 +1433,8 @@ Cohesion: 0.11
 Nodes (17): actions, buildQuickActions, color, enabled, hasAccounting, hasInventory, hasMembers, hasOffers (+9 more)
 
 ### Community 243 - "Community 243"
-Cohesion: 0.16
-Nodes (16): AdminUser, adminUsersProvider, package:solar_hub/src/features/admin/domain/models/admin_user.dart, package:solar_hub/src/features/admin/presentation/controllers/admin_users_controller.dart, AdminUsersScreen, _AdminUsersScreenState, build, _buildHeader (+8 more)
+Cohesion: 0.08
+Nodes (31): AdminUser, AdminUsersController, adminUsersProvider, AdminUsersState, build, clearError, copyWith, error (+23 more)
 
 ### Community 244 - "Community 244"
 Cohesion: 0.12
@@ -1413,16 +1445,16 @@ Cohesion: 0.15
 Nodes (16): AdminCompaniesScreen, _AdminCompaniesScreenState, build, _buildContent, createState, dispose, _handleTabChange, initState (+8 more)
 
 ### Community 246 - "Community 246"
-Cohesion: 0.16
-Nodes (16): build, _buildFilterBar, _buildList, CompanyPostersScreen, _CompanyPostersScreenState, createState, dispose, embedded (+8 more)
+Cohesion: 0.09
+Nodes (5): CompanyOrdersController, UserOrdersController, OrderFormDto, OrderItemFormDto, OrdersService
 
 ### Community 247 - "Community 247"
 Cohesion: 0.12
 Nodes (16): CompanyStats, contacts, copyWith, customers, deliveryOptions, expenses, financialTransactions, fromJson (+8 more)
 
 ### Community 248 - "Community 248"
-Cohesion: 0.12
-Nodes (16): _adminDataSource, AdminProductsController, AdminProductsState, build, copyWith, createProduct, deleteProduct, error (+8 more)
+Cohesion: 0.10
+Nodes (17): _adminDataSource, AdminProductsController, AdminProductsState, build, copyWith, createProduct, deleteProduct, error (+9 more)
 
 ### Community 249 - "Community 249"
 Cohesion: 0.15
@@ -1437,12 +1469,12 @@ Cohesion: 0.16
 Nodes (16): companyDeliveryProvider, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_delivery_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/delivery/delivery_option_card.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/delivery_option_form_sheet.dart, build, CompanyDashboardDeliveryScreen, _CompanyDashboardDeliveryScreenState, createState (+8 more)
 
 ### Community 252 - "Community 252"
-Cohesion: 0.12
-Nodes (15): AppConfigRemoteDataSource, createConfig, deleteConfig, getAllConfigs, AppConfigRemoteDataSourceImpl, toggleConfig, updateConfig, package:solar_hub/src/features/admin/domain/entities/app_config.dart (+7 more)
+Cohesion: 0.07
+Nodes (22): build, clearError, clearSuccess, _compressImage, copyWith, error, errorCode, errorDetail (+14 more)
 
 ### Community 253 - "Community 253"
-Cohesion: 0.12
-Nodes (15): ApplianceEntity, copyWith, fromJson, hours, name, power, quantity, toJson (+7 more)
+Cohesion: 0.22
+Nodes (8): ApplianceEntity, copyWith, fromJson, hours, name, power, quantity, toJson
 
 ### Community 254 - "Community 254"
 Cohesion: 0.12
@@ -1450,15 +1482,15 @@ Nodes (16): AdminFeedbacksScreen, build, _buildFilterChip, createState, dispose,
 
 ### Community 255 - "Community 255"
 Cohesion: 0.14
-Nodes (16): InverterType, BatteryType, color, fromString, icon, InverterType, InverterTypeL10n, label (+8 more)
+Nodes (16): BatteryType, BatteryType, BatteryTypeL10n, color, fromString, icon, InverterType, label (+8 more)
 
 ### Community 256 - "Community 256"
-Cohesion: 0.12
-Nodes (16): activeForLocation, build, categories, CompanyWorkspaceModules, contacts, customers, fromService, _isServiceActive (+8 more)
+Cohesion: 0.07
+Nodes (27): _FakeCache, Company? get, authProvider, AuthState, build, cashe, company, copyWith (+19 more)
 
 ### Community 257 - "Community 257"
-Cohesion: 0.12
-Nodes (16): package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/battery_calculator_page.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/direction_calculator.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/inverter_calculator_page.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/panel_calculator_page.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/pump_calculator.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/wires_calculator_page.dart, package:solar_hub/src/features/pv_system_designer/presentation/screens/pv_system_designer_screen.dart (+8 more)
+Cohesion: 0.07
+Nodes (27): package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart, package:solar_hub/src/features/calculations/presentation/screens/system_calculator_wizard.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/battery_calculator_page.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/direction_calculator.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/inverter_calculator_page.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/panel_calculator_page.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/pump_calculator.dart, package:solar_hub/src/features/calculations/presentation/screens/tools/wires_calculator_page.dart (+19 more)
 
 ### Community 258 - "Community 258"
 Cohesion: 0.12
@@ -1469,24 +1501,24 @@ Cohesion: 0.13
 Nodes (16): publicCompanyDetailsProvider, build, company, CompanyDetailsScreen, companyId, createState, _DetailsBody, _DetailsBodyState (+8 more)
 
 ### Community 260 - "Community 260"
-Cohesion: 0.12
-Nodes (16): azimuthLabel, build, dimensionsLabel, footprintLabel, icon, iconColor, label, _MetricTile (+8 more)
+Cohesion: 0.07
+Nodes (29): devDependencies, eslint, eslint-config-prettier, @eslint/eslintrc, @eslint/js, eslint-plugin-prettier, globals, jest (+21 more)
 
 ### Community 261 - "Community 261"
 Cohesion: 0.12
 Nodes (16): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, noEmit, noFallthroughCasesInSwitch (+8 more)
 
 ### Community 262 - "Community 262"
-Cohesion: 0.12
-Nodes (16): build, createState, dispose, _horizontalGapCtrl, initState, _iscCtrl, _lengthCtrl, PanelPlacementStep (+8 more)
+Cohesion: 0.09
+Nodes (24): package:flutter_animate/flutter_animate.dart, package:solar_hub/src/features/company_dashboard/presentation/models/nav_item.dart, package:solar_hub/src/features/company_dashboard/presentation/providers/sidebar_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/dashboard_content.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/nav_item_tile.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/sidebar_content.dart, sidebarControllerProvider, build (+16 more)
 
 ### Community 263 - "Community 263"
 Cohesion: 0.12
 Nodes (16): AdminSupportChannel, AdminSupportChannelType, AdminSupportConfig, adminSupportEmail, adminSupportPhone, appAdminSupportConfig, channels, email (+8 more)
 
 ### Community 264 - "Community 264"
-Cohesion: 0.15
-Nodes (14): CompanyMember, CompanyMemberModel, fromJson, package:solar_hub/src/features/members/domain/entities/company_member.dart, package:solar_hub/src/features/members/domain/entities/member_role.dart, build, createState, _getRoleDescription (+6 more)
+Cohesion: 0.17
+Nodes (12): CompanyMember, MemberRole, CompanyMemberModel, build, createState, _getRoleDescription, _getRoleLabel, initState (+4 more)
 
 ### Community 265 - "Community 265"
 Cohesion: 0.13
@@ -1509,28 +1541,28 @@ Cohesion: 0.12
 Nodes (15): AdminCompanyDetails, categories, company, CompanyMember, copyWith, deliveryOptions, email, financials (+7 more)
 
 ### Community 270 - "Community 270"
-Cohesion: 0.12
-Nodes (15): category, code, copyWith, createdAt, description, fromJson, icon, id (+7 more)
+Cohesion: 0.13
+Nodes (14): category, code, copyWith, createdAt, description, fromJson, icon, id (+6 more)
 
 ### Community 271 - "Community 271"
-Cohesion: 0.12
-Nodes (15): package:solar_hub/src/features/crm/data/data_sources/crm_remote_data_source.dart, package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart, createCustomer, createLead, createSupplier, deleteCustomer, deleteSupplier, getCustomer (+7 more)
+Cohesion: 0.06
+Nodes (30): package:solar_hub/src/features/crm/data/data_sources/crm_remote_data_source.dart, package:solar_hub/src/features/crm/domain/entities/crm_models.dart, package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart, createCustomer, createLead, createSupplier, CrmRepository, deleteCustomer (+22 more)
 
 ### Community 272 - "Community 272"
-Cohesion: 0.12
-Nodes (15): package:solar_hub/src/features/crm/domain/entities/crm_models.dart, createCustomer, createLead, createSupplier, CrmRepository, deleteCustomer, deleteSupplier, getCustomer (+7 more)
+Cohesion: 0.13
+Nodes (3): InvolvementTemplatesController, InvolvementTemplateInDto, OffersService
 
 ### Community 273 - "Community 273"
 Cohesion: 0.13
 Nodes (15): package:solar_hub/src/features/offers/domain/repositories/offers_repository.dart, copyWith, createInvolve, deleteInvolve, error, getInvolves, InvolvesNotifier, InvolvesState (+7 more)
 
 ### Community 274 - "Community 274"
-Cohesion: 0.12
-Nodes (14): return, 1, 2, storefrontProductColumns, storefrontSquareGridColumns, storefrontTwoRowProductCount, storefrontTwoRowSquareCount, storefrontAudienceFromQuery (+6 more)
+Cohesion: 0.09
+Nodes (19): return, null, safeParseDate, defaultValue, parseDouble, parseInt, 1, 2 (+11 more)
 
 ### Community 275 - "Community 275"
-Cohesion: 0.14
-Nodes (14): Animation, package:solar_hub/src/features/calculations/presentation/widgets/detail_card.dart, package:solar_hub/src/features/calculations/presentation/widgets/result_item.dart, _animationController, _animCtrl, build, controller, createState (+6 more)
+Cohesion: 0.11
+Nodes (16): Animation, package:solar_hub/src/features/calculations/presentation/widgets/detail_card.dart, package:solar_hub/src/features/calculations/presentation/widgets/result_item.dart, _animationController, offset, T, _animCtrl, build (+8 more)
 
 ### Community 276 - "Community 276"
 Cohesion: 0.14
@@ -1541,36 +1573,36 @@ Cohesion: 0.13
 Nodes (14): DateTime? get, NetworkStatus, NetworkStatus get, isConnectivityError, isOffline, isOnline, _lastMessage, _lastTransitionAt (+6 more)
 
 ### Community 278 - "Community 278"
-Cohesion: 0.13
-Nodes (12): MemberInviteResult, message, messageUser, requiresRegistration, fromJson, MemberInviteResultModel, package:solar_hub/src/features/members/domain/entities/member_invite_result.dart, createMember (+4 more)
+Cohesion: 0.10
+Nodes (18): fromJson, package:solar_hub/src/features/members/data/data_sources/members_remote_data_source.dart, package:solar_hub/src/features/members/domain/entities/company_member.dart, package:solar_hub/src/features/members/domain/entities/member_invite_result.dart, package:solar_hub/src/features/members/domain/repositories/members_repository.dart, createMember, deleteMember, getMembers (+10 more)
 
 ### Community 279 - "Community 279"
 Cohesion: 0.13
 Nodes (14): copyWith, customerType, dateFrom, dateTo, ordering, OrderListQuery, orderType, page (+6 more)
 
 ### Community 280 - "Community 280"
-Cohesion: 0.14
-Nodes (13): PosterEntity, package:solar_hub/src/features/posters/domain/entities/poster_entity.dart, package:solar_hub/src/features/posters/presentation/widgets/poster_status_badge.dart, build, onDelete, onEdit, onTap, onToggleActive (+5 more)
+Cohesion: 0.22
+Nodes (8): package:solar_hub/src/features/posters/presentation/widgets/poster_status_badge.dart, build, onDelete, onEdit, onTap, onToggleActive, poster, PosterCard
 
 ### Community 281 - "Community 281"
-Cohesion: 0.14
-Nodes (14): package:solar_hub/src/features/company_dashboard/presentation/widgets/service_types/company_service_type_card.dart, build, _busyIds, CompanyDashboardServiceTypesScreen, _CompanyDashboardServiceTypesScreenState, createState, embedded, _error (+6 more)
+Cohesion: 0.09
+Nodes (22): AuthController, box, build, cache, clear, _companyMemberAuth, container, delete (+14 more)
 
 ### Community 282 - "Community 282"
-Cohesion: 0.15
-Nodes (14): package:solar_hub/src/features/inventory/presentation/widgets/inventory_filter_sheet.dart, package:solar_hub/src/features/inventory/presentation/widgets/inventory_search_bar.dart, package:solar_hub/src/features/inventory/presentation/widgets/product_card.dart, Route /inventory/add, build, _buildEmptyState, createState, dispose (+6 more)
+Cohesion: 0.09
+Nodes (22): compilerOptions, allowSyntheticDefaultImports, baseUrl, declaration, emitDecoratorMetadata, esModuleInterop, experimentalDecorators, forceConsistentCasingInFileNames (+14 more)
 
 ### Community 283 - "Community 283"
 Cohesion: 0.14
 Nodes (13): company, CompanyDeliveryOption, copyWith, cost, createdAt, description, estimatedDaysMax, estimatedDaysMin (+5 more)
 
 ### Community 284 - "Community 284"
-Cohesion: 0.20
-Nodes (13): companyCategoriesProvider, package:solar_hub/src/features/company_dashboard/presentation/controllers/company_categories_controller.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/categories/category_chip.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/category_form_sheet.dart, build, CompanyDashboardCategoriesScreen, _CompanyDashboardCategoriesScreenState, createState (+5 more)
+Cohesion: 0.10
+Nodes (21): _FakeBox, _FakeCacheBox, _FakeCacheBox, CacheBox, box, clear, delete, deleteByPrefix (+13 more)
 
 ### Community 285 - "Community 285"
-Cohesion: 0.15
-Nodes (13): build, CompanySystemsController, CompanySystemsState, copyWith, error, fetchSystems, isLoading, items (+5 more)
+Cohesion: 0.10
+Nodes (19): build, CompanySystemsController, CompanySystemsState, copyWith, error, fetchSystems, isLoading, items (+11 more)
 
 ### Community 286 - "Community 286"
 Cohesion: 0.14
@@ -1605,12 +1637,12 @@ Cohesion: 0.17
 Nodes (12): cancelMyOrder, confirmB2bReceipt, createB2bOrder, createB2cOrder, _dioService, getCompanyOrder, getMyOrder, listCompanyOrders (+4 more)
 
 ### Community 294 - "Community 294"
-Cohesion: 0.15
-Nodes (12): createPoster, deletePoster, _dio, extendPoster, fetchActivePosters, fetchAdminPosters, fetchCompanyPosters, PosterRemoteDataSource (+4 more)
+Cohesion: 0.20
+Nodes (4): CompanySuppliersController, Roles(), SupplierFormDto, RolesGuard
 
 ### Community 295 - "Community 295"
-Cohesion: 0.15
-Nodes (12): actionType, ActivityActionType, ActivityLogItem, createdAt, entityId, entityType, fromJson, id (+4 more)
+Cohesion: 0.05
+Nodes (38): DateTime?, actionType, ActivityActionType, ActivityLogItem, createdAt, entityId, entityType, fromJson (+30 more)
 
 ### Community 296 - "Community 296"
 Cohesion: 0.15
@@ -1621,8 +1653,8 @@ Cohesion: 0.15
 Nodes (12): city, email, firstName, image, lastName, password, phone, securityAnswer (+4 more)
 
 ### Community 298 - "Community 298"
-Cohesion: 0.17
-Nodes (12): build, ContactFormSheet, _ContactFormSheetState, createState, dispose, _emailController, _formKey, _isSubmitting (+4 more)
+Cohesion: 0.09
+Nodes (20): package:solar_hub/src/features/storefront/presentation/widgets/storefront_product_card.dart, build, CompanyProductsGrid, onProductTap, products, audience, build, embedded (+12 more)
 
 ### Community 299 - "Community 299"
 Cohesion: 0.15
@@ -1633,8 +1665,8 @@ Cohesion: 0.15
 Nodes (12): 1. What's already wired (don't touch), 2. Bucket A — backend capability with no Flutter code at all, 3. Bucket B — screens showing fake/misleading data instead of a real call, 4. Bucket C — wired but not paginated/filtered (CLAUDE.md violation), 5. Phased plan, 6. Suggested order of work, Company Dashboard — Backend Linking Plan, Phase 1 — Fix what's actively misleading (do first, no new endpoints needed) (+4 more)
 
 ### Community 301 - "Community 301"
-Cohesion: 0.17
-Nodes (12): package:solar_hub/src/features/company_dashboard/presentation/widgets/company_activation_notice.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/layout/company_mobile_drawer.dart, package:solar_hub/src/features/company_dashboard/presentation/widgets/layout/company_sidebar.dart, _activeItem, _activeSection, build, child, CompanyShell (+4 more)
+Cohesion: 0.16
+Nodes (3): CompanyCustomersController, CustomerFormDto, CrmService
 
 ### Community 302 - "Community 302"
 Cohesion: 0.17
@@ -1649,16 +1681,16 @@ Cohesion: 0.17
 Nodes (11): copyWith, createdAt, FeedbackEntity, fromJson, id, imageData, isRead, message (+3 more)
 
 ### Community 305 - "Community 305"
-Cohesion: 0.18
-Nodes (11): ProductsFilter, _buildAvailabilityFilters, _buildCompanyCategoryFilters, _buildGlobalCategoryFilters, _buildInternalCategoryFilters, _buildSectionTitle, _buildSortFilters, createState (+3 more)
+Cohesion: 0.11
+Nodes (18): build, _buildMiniSpec, _formatNumber, offer, OfferCard, onTap, ../../domain/entities/solar_offer.dart, SolarOffer (+10 more)
 
 ### Community 306 - "Community 306"
 Cohesion: 0.23
 Nodes (9): string, wchar_t, _In_, _In_opt_, wWinMain(), CreateAndAttachConsole(), GetCommandLineArguments(), Utf8FromUtf16() (+1 more)
 
 ### Community 307 - "Community 307"
-Cohesion: 0.17
-Nodes (12): Route /admin/address, Route /admin/categories, Route /admin/companies, Route /admin/configs, Route /admin/currencies, Route /admin/feedbacks, Route /admin-marketplace, Route /admin/service-catalog (+4 more)
+Cohesion: 0.10
+Nodes (18): package:solar_hub/src/features/offers/presentation/screens/form/widgets/form_sections.dart, accent, build, EquipmentSection, fields, fieldsPerRow, icon, noteField (+10 more)
 
 ### Community 308 - "Community 308"
 Cohesion: 0.17
@@ -1677,68 +1709,68 @@ Cohesion: 0.18
 Nodes (10): build, CompanyModeSelectorDelegate, currentMode, maxExtent, minExtent, onModeChanged, shouldRebuild, double get (+2 more)
 
 ### Community 312 - "Community 312"
-Cohesion: 0.18
-Nodes (9): ../../domain/entities/filter_options.dart, companyCategories, globalCategories, internalCategories, ProductFilterOptions, fromJson, ProductFilterOptionsModel, product.dart (+1 more)
+Cohesion: 0.10
+Nodes (19): PageController, build, controller, createState, dispose, embedded, file, _formatDate (+11 more)
 
 ### Community 313 - "Community 313"
 Cohesion: 0.18
 Nodes (10): companiesCount, copyWith, description, fromJson, id, image, isServed, name (+2 more)
 
 ### Community 314 - "Community 314"
-Cohesion: 0.18
-Nodes (10): AppNotificationItem, body, createdAt, data, fromJson, id, sentAt, status (+2 more)
+Cohesion: 0.17
+Nodes (11): AppNotificationItem, body, createdAt, data, fromJson, id, sentAt, status (+3 more)
 
 ### Community 315 - "Community 315"
-Cohesion: 0.18
-Nodes (10): CompanyWorkspaceItem, externalRoute, icon, iconUrl, id, isExternal, label, route (+2 more)
+Cohesion: 0.10
+Nodes (18): bool get, configs, ConfigSnapshot, copyWith, hasConfigs, isFromCache, lastUpdated, schemaVersion (+10 more)
 
 ### Community 316 - "Community 316"
-Cohesion: 0.20
-Nodes (11): _, build, CompanyNavigationRegistry, _contentSection, _financeSection, _inventorySection, _ordersSection, _overviewSection (+3 more)
+Cohesion: 0.07
+Nodes (28): _, build, CompanyNavigationRegistry, _contentSection, _financeSection, _inventorySection, _ordersSection, _overviewSection (+20 more)
 
 ### Community 317 - "Community 317"
-Cohesion: 0.20
-Nodes (10): package:solar_hub/src/features/services/presentation/screens/company_details_screen.dart, PublicServicesRepositoryImpl, PublicServicesRepository, getCompanies, getCompanyDetails, getCompanyDetailsCalls, getTypes, main (+2 more)
+Cohesion: 0.11
+Nodes (18): package:in_app_update/in_app_update.dart, availability, checkForUpdate, completeFlexibleUpdate, currentVersion, hasUpdate, _instance, isFlexibleUpdateAllowed (+10 more)
 
 ### Community 318 - "Community 318"
 Cohesion: 0.18
 Nodes (10): background_color, description, display, icons, name, orientation, prefer_related_applications, short_name (+2 more)
 
 ### Community 319 - "Community 319"
-Cohesion: 0.20
-Nodes (9): amount, category, CompanyExpense, createdAt, date, description, fromJson, id (+1 more)
+Cohesion: 0.13
+Nodes (13): amount, category, CompanyExpense, createdAt, date, description, fromJson, id (+5 more)
 
 ### Community 320 - "Community 320"
 Cohesion: 0.20
 Nodes (9): CompanyServiceRequest, createdAt, fromJson, id, imageUrl, notes, serviceCode, status (+1 more)
 
 ### Community 321 - "Community 321"
-Cohesion: 0.20
-Nodes (9): CompanySubscriptionPlan, createdAt, description, durationDays, fromJson, id, isActive, name (+1 more)
+Cohesion: 0.11
+Nodes (19): dependencies, bcrypt, class-transformer, class-validator, firebase-admin, multer, @nestjs/common, @nestjs/core (+11 more)
 
 ### Community 322 - "Community 322"
-Cohesion: 0.22
-Nodes (9): @immutable, RoofSimulatorController, EnergyEstimate, FinancialEstimate, InverterSpec, SolarIrradianceData, SystemLosses, RoofSimulatorState (+1 more)
+Cohesion: 0.12
+Nodes (15): dir, files, main, replacedFiles, dart:io, ../entities/feedback_entity.dart, File?, dir (+7 more)
 
 ### Community 323 - "Community 323"
-Cohesion: 0.22
-Nodes (8): bool get, configs, ConfigSnapshot, copyWith, hasConfigs, isFromCache, lastUpdated, schemaVersion
+Cohesion: 0.17
+Nodes (4): UserOfferRequestsController, InvolvementSnapshotInDto, OfferResponseInDto, OfferRequestInDto
 
 ### Community 324 - "Community 324"
 Cohesion: 0.22
 Nodes (8): fromJson, isDark, isNotificationEnabled, language, saveRolePageSelection, saveRolePageSelectionRoute, Settings, toJson
 
 ### Community 325 - "Community 325"
-Cohesion: 0.22
-Nodes (8): copyWith, description, fromJson, key, props, toJson, updatedAt, value
+Cohesion: 0.11
+Nodes (18): resolutions, @tiptap/core, @tiptap/extension-blockquote, @tiptap/extension-bold, @tiptap/extension-bullet-list, @tiptap/extension-code-block, @tiptap/extension-dropcursor, @tiptap/extension-heading (+10 more)
 
 ### Community 326 - "Community 326"
 Cohesion: 0.22
-Nodes (8): CompanyMember, copyWith, email, id, joinedAt, role, username, MemberRole
+Nodes (8): CompanyMember, copyWith, email, id, joinedAt, role, username, package:solar_hub/src/features/members/domain/entities/member_role.dart
 
 ### Community 327 - "Community 327"
-Cohesion: 0.25
-Nodes (8): build, _buildStatusOption, CompanyStatusForm, _CompanyStatusFormState, createState, currentStatus, initState, _status
+Cohesion: 0.10
+Nodes (24): build, _buildStatusOption, CompanyStatusForm, _CompanyStatusFormState, createState, currentStatus, initState, _status (+16 more)
 
 ### Community 328 - "Community 328"
 Cohesion: 0.22
@@ -1747,16 +1779,16 @@ Nodes (8): required BuildContext context,
   Color, text_helper_card.dart, textInputType, enabled, iconColor, inputField, type
 
 ### Community 329 - "Community 329"
-Cohesion: 0.25
-Nodes (8): adminProductsProvider, AdminProductsScreen, _AdminProductsScreenState, build, _buildContent, _confirmDelete, initState, _onScroll
+Cohesion: 0.12
+Nodes (16): annualCo2OffsetKg, avgTemperatureLossFraction, capacityFactor, co2PerKwh, copyWith, dailyKwh, empty, isRealWeatherData (+8 more)
 
 ### Community 330 - "Community 330"
 Cohesion: 0.25
 Nodes (7): copyWith, OffersFilter, page, pageSize, query, search, status
 
 ### Community 331 - "Community 331"
-Cohesion: 0.25
-Nodes (7): email, fromJson, image, name, phone, SolarProfile, toJson
+Cohesion: 0.12
+Nodes (16): accent, build, child, chips, FormDropdown, FormSectionTitle, FormSurface, HeroCard (+8 more)
 
 ### Community 332 - "Community 332"
 Cohesion: 0.25
@@ -1827,20 +1859,20 @@ Cohesion: 0.40
 Nodes (4): CompanySubscriptionRequestFormModel, imagePath, notes, subscriptionPlan
 
 ### Community 349 - "Community 349"
-Cohesion: 0.40
-Nodes (4): package:solar_hub/src/features/admin/presentation/models/admin_module.dart, package:solar_hub/src/features/admin/presentation/widgets/admin_dashboard_card.dart, AdminDashboard, build
+Cohesion: 0.10
+Nodes (18): package:solar_hub/src/features/admin/presentation/models/admin_module.dart, package:solar_hub/src/features/admin/presentation/widgets/admin_dashboard_card.dart, package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart, AdminCompanyTypesScreen, _AdminCompanyTypesScreenState, build, _buildBody, createState (+10 more)
 
 ### Community 350 - "Community 350"
-Cohesion: 0.40
-Nodes (4): offset, T, beginOffset, isRtl
+Cohesion: 0.13
+Nodes (15): category_chips.dart, package:solar_hub/src/features/storefront/presentation/screens/storefront_product_details_screen.dart, products_grid.dart, build, company, CompanyProductsSection, _CompanyProductsSectionState, createState (+7 more)
 
 ### Community 351 - "Community 351"
 Cohesion: 0.40
 Nodes (4): static const String, AppAssets, logo, _pngPath
 
 ### Community 352 - "Community 352"
-Cohesion: 0.40
-Nodes (4): canChangeOrderStatus, canEditOrderDetails, CompanyOrderPermissions, fromCompany
+Cohesion: 0.17
+Nodes (9): channel, count, items, PublicCompaniesResult, package:solar_hub/src/shared/domain/company/company.dart, canChangeOrderStatus, canEditOrderDetails, CompanyOrderPermissions (+1 more)
 
 ### Community 353 - "Community 353"
 Cohesion: 0.50
@@ -1862,25 +1894,153 @@ Nodes (3): Expanding the Oxlint configuration, React Compiler, React + TypeScrip
 Cohesion: 0.67
 Nodes (3): AdminFeedbacksScreen, _AdminFeedbacksScreenState, _AdminFeedbacksScreenState
 
+### Community 363 - "Community 363"
+Cohesion: 0.12
+Nodes (14): CompanyWork, CompanyWorkImage, CompanyWorkImageModel, CompanyWorkModel, fromJson, package:solar_hub/src/features/company_work/domain/entities/company_work.dart, createWork, deleteWork (+6 more)
+
+### Community 367 - "Community 367"
+Cohesion: 0.12
+Nodes (14): Involve, fromJson, InvolveModel, toJson, package:solar_hub/src/features/offers/domain/entities/involve.dart, package:solar_hub/src/features/offers/presentation/screens/form/models/selected_involve.dart, build, catalogItems (+6 more)
+
+### Community 373 - "Community 373"
+Cohesion: 0.12
+Nodes (15): build, child, color, icon, KeyValueRow, label, MetricTile, onTap (+7 more)
+
+### Community 375 - "Community 375"
+Cohesion: 0.14
+Nodes (14): BatteryCalculator, _BatteryCalculatorState, build, _buildTabContent, createState, dispose, initState, key (+6 more)
+
+### Community 391 - "Community 391"
+Cohesion: 0.14
+Nodes (14): build, _buildWallToggle, createState, dispose, _eastWallCtrl, initState, _northWallCtrl, RoofConfigStep (+6 more)
+
+### Community 392 - "Community 392"
+Cohesion: 0.14
+Nodes (13): package:solar_hub/src/features/admin/domain/entities/notification.dart, package:solar_hub/src/features/admin/domain/repositories/notification_repository.dart, _dioService, getStatistics, _mapDioFailure, NotificationRepositoryImpl, _parseSendResponse, _responseFailure (+5 more)
+
+### Community 393 - "Community 393"
+Cohesion: 0.14
+Nodes (14): scripts, build, createsuperuser, format, lint, start, start:debug, start:dev (+6 more)
+
+### Community 394 - "Community 394"
+Cohesion: 0.15
+Nodes (12): ServiceCatalogItem, build, _buildActiveToggle, _buildCategoryTag, _buildIcon, _buildRouteTag, index, item (+4 more)
+
+### Community 395 - "Community 395"
+Cohesion: 0.15
+Nodes (12): package:solar_hub/src/features/structure_design/presentation/widgets/results/bom_table.dart, package:solar_hub/src/features/structure_design/presentation/widgets/results/geometry_card.dart, package:solar_hub/src/features/structure_design/presentation/widgets/results/row_details_card.dart, package:solar_hub/src/features/structure_design/presentation/widgets/results/summary_card.dart, package:solar_hub/src/features/structure_design/presentation/widgets/sketch/sketch_card.dart, build, l10n, panelPowerWatts (+4 more)
+
+### Community 396 - "Community 396"
+Cohesion: 0.17
+Nodes (11): CustomPainter, FrameSketchPainter, StructureSketchPainter, TechnicalStructureSketchPainter, EnhancedTechnicalSketchPainter, cols, CustomPolygonPainter, paint (+3 more)
+
+### Community 397 - "Community 397"
+Cohesion: 0.20
+Nodes (3): CompanyWorksController, CompanyWorkCreateDto, CompanyWorkUpdateDto
+
+### Community 399 - "Community 399"
+Cohesion: 0.20
+Nodes (4): CompanyProductsController, ProductFormDto, ProductOptionDto, ProductPricingTierDto
+
+### Community 400 - "Community 400"
+Cohesion: 0.22
+Nodes (9): OrientationService, StructureOrientationService, SystemOrientationService, SystemStructureOrientationService, forceLandscape, restoreDefault, forceLandscape, restoreDefault (+1 more)
+
+### Community 401 - "Community 401"
+Cohesion: 0.18
+Nodes (10): AdminCurrency, code, copyWith, createdAt, fromJson, id, isDefault, name (+2 more)
+
+### Community 402 - "Community 402"
+Cohesion: 0.18
+Nodes (10): AdminSubscriptionPlan, copyWith, durationDays, features, fromJson, id, isActive, name (+2 more)
+
+### Community 403 - "Community 403"
+Cohesion: 0.20
+Nodes (9): build, categories, error, _InlineMessage, isLoading, message, onChanged, selectedCompanyCategoryId (+1 more)
+
+### Community 404 - "Community 404"
+Cohesion: 0.20
+Nodes (9): package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart, build, CompanyCategoryChip, CompanyCategoryChips, label, onSelected, onTap, selected (+1 more)
+
+### Community 405 - "Community 405"
+Cohesion: 0.20
+Nodes (9): Compile and run the project, Deployment, Description, License, Project setup, Resources, Run tests, Stay in touch (+1 more)
+
+### Community 406 - "Community 406"
+Cohesion: 0.22
+Nodes (8): channel, cityId, copyWith, props, search, serviceId, toQueryParameters, package:equatable/equatable.dart
+
+### Community 407 - "Community 407"
+Cohesion: 0.22
+Nodes (8): cost, DeliveryOptionFormModel, description, estimatedDaysMax, estimatedDaysMin, isActive, name, toJson
+
+### Community 408 - "Community 408"
+Cohesion: 0.22
+Nodes (8): package:solar_hub/src/features/notifications/domain/entities/app_notification.dart, fetchHistory, NotificationHistoryRepositoryImpl, items, markAllAsRead, NotificationHistoryPage, NotificationHistoryRepository, totalCount
+
+### Community 409 - "Community 409"
+Cohesion: 0.22
+Nodes (8): author, description, license, name, pnpm, onlyBuiltDependencies, private, version
+
+### Community 410 - "Community 410"
+Cohesion: 0.22
+Nodes (9): jest, collectCoverageFrom, coverageDirectory, moduleFileExtensions, rootDir, testEnvironment, testRegex, transform (+1 more)
+
+### Community 411 - "Community 411"
+Cohesion: 0.25
+Nodes (7): double?, formatPrice, formatWithCurrency, PriceExtension, PriceFormatUtils, toPrice, toPriceWithCurrency
+
+### Community 413 - "Community 413"
+Cohesion: 0.29
+Nodes (6): amount, category, CompanyExpenseFormModel, date, description, toJson
+
+### Community 414 - "Community 414"
+Cohesion: 0.53
+Nodes (6): activePostersProvider, activePostersProvider, isPosterEnabled, isPosterEnabled, build, PosterCarousel
+
+### Community 415 - "Community 415"
+Cohesion: 0.33
+Nodes (5): MemberInviteResult, message, messageUser, requiresRegistration, MemberInviteResultModel
+
+### Community 416 - "Community 416"
+Cohesion: 0.33
+Nodes (5): PosterEntity, package:solar_hub/src/features/posters/domain/entities/poster_entity.dart, build, poster, PosterStatusBadge
+
+### Community 417 - "Community 417"
+Cohesion: 0.33
+Nodes (5): build, collapse, expand, SidebarController, toggle
+
+### Community 418 - "Community 418"
+Cohesion: 0.33
+Nodes (5): collection, compilerOptions, deleteOutDir, $schema, sourceRoot
+
+### Community 419 - "Community 419"
+Cohesion: 0.40
+Nodes (4): description, imagePath, name, ServiceTypeFormPayload
+
+### Community 420 - "Community 420"
+Cohesion: 0.50
+Nodes (4): publicServiceTypesProvider, refreshPublicServiceTypes, build, ServicesExplorerScreen
+
 ## Knowledge Gaps
-- **11129 isolated node(s):** `Watt Backend -> Frontend Alignment Rule`, `Watt Backend -> Frontend Alignment Rule`, `$schema`, `plugins`, `react/rules-of-hooks` (+11124 more)
+- **11288 isolated node(s):** `dir`, `files`, `replacedFiles`, `main`, `Description` (+11283 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AppLocalizations` connect `Community 40` to `Community 24`, `Community 0`, `Community 163`, `Community 23`?**
-  _High betweenness centrality (0.027) - this node is a cross-community bridge._
-- **Why does `map` connect `Community 127` to `Community 135`, `Community 9`, `Community 140`, `Community 269`, `Community 15`, `Community 22`, `Community 150`, `Community 28`, `Community 32`, `Community 33`, `Community 35`, `Community 37`, `Community 48`, `Community 314`, `Community 61`, `Community 72`, `Community 202`, `Community 100`, `Community 118`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `storefrontNotifierProvider` connect `Community 12` to `Community 42`, `Community 259`, `Community 175`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **What connects `Watt Backend -> Frontend Alignment Rule`, `Watt Backend -> Frontend Alignment Rule`, `$schema` to the rest of the system?**
-  _11129 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `JwtAuthGuard` connect `Community 111` to `Community 184`, `Community 196`, `Community 252`, `Community 199`?**
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
+- **Why does `AppLocalizations` connect `Community 40` to `Community 0`, `Community 11`, `Community 81`, `Community 23`, `Community 24`?**
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+- **Why does `CompaniesService` connect `Community 173` to `Community 193`, `Community 397`, `Community 111`, `Community 412`, `Community 189`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **What connects `dir`, `files`, `replacedFiles` to the rest of the system?**
+  _11288 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.0014760147601476014 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.001486988847583643 - nodes in this community are weakly interconnected._
-- **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.001488095238095238 - nodes in this community are weakly interconnected._
+- **Should `Community 2` be split into smaller, more focused modules?**
+  _Cohesion score 0.001486988847583643 - nodes in this community are weakly interconnected._
