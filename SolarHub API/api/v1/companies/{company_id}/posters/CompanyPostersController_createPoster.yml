@@ -1,0 +1,63 @@
+info:
+  name: CompanyPostersController_createPoster
+  type: http
+  seq: 2
+  tags:
+    - Company Posters
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/companies/:company_id/posters"
+  params:
+    - name: company_id
+      value: ""
+      type: path
+  body:
+    type: multipart-form
+    data:
+      - name: text
+        type: text
+        value: ""
+      - name: action_type
+        type: text
+        value: ""
+      - name: action_id
+        type: text
+        value: ""
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/companies/:company_id/posters"
+      method: POST
+      params:
+        - name: company_id
+          value: ""
+          type: path
+      body:
+        type: multipart-form
+        data:
+          - name: text
+            type: text
+            value: ""
+          - name: action_type
+            type: text
+            value: ""
+          - name: action_id
+            type: text
+            value: ""
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

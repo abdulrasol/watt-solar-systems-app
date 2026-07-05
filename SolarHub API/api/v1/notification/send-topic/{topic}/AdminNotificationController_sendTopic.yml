@@ -1,0 +1,55 @@
+info:
+  name: AdminNotificationController_sendTopic
+  type: http
+  seq: 1
+  tags:
+    - Notifications - Admin
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/notification/send-topic/:topic"
+  params:
+    - name: topic
+      value: ""
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "title": "",
+        "body": "",
+        "data": {}
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/notification/send-topic/:topic"
+      method: POST
+      params:
+        - name: topic
+          value: ""
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+            "title": "",
+            "body": "",
+            "data": {}
+          }
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

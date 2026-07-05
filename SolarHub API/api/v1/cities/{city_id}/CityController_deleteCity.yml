@@ -1,0 +1,39 @@
+info:
+  name: CityController_deleteCity
+  type: http
+  seq: 2
+  tags:
+    - Cities
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/v1/cities/:city_id"
+  params:
+    - name: city_id
+      value: ""
+      type: path
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    request:
+      url: "{{baseUrl}}/api/v1/cities/:city_id"
+      method: DELETE
+      params:
+        - name: city_id
+          value: ""
+          type: path
+    response:
+      status: 200
+      statusText: OK
+      body:
+        type: text
+        data: ""

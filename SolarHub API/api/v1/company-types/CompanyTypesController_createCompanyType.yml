@@ -1,0 +1,45 @@
+info:
+  name: CompanyTypesController_createCompanyType
+  type: http
+  seq: 2
+  tags:
+    - Company Types
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/company-types"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "ctype": ""
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/company-types"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "ctype": ""
+          }
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

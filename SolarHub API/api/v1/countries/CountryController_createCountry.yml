@@ -1,0 +1,45 @@
+info:
+  name: CountryController_createCountry
+  type: http
+  seq: 2
+  tags:
+    - Countries
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/countries"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "code": ""
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/countries"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "code": ""
+          }
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

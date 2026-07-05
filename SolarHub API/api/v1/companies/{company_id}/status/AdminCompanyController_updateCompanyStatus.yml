@@ -1,0 +1,51 @@
+info:
+  name: AdminCompanyController_updateCompanyStatus
+  type: http
+  seq: 1
+  tags:
+    - Admin Companies
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/companies/:company_id/status"
+  params:
+    - name: company_id
+      value: ""
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "status": ""
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/companies/:company_id/status"
+      method: POST
+      params:
+        - name: company_id
+          value: ""
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+            "status": ""
+          }
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""

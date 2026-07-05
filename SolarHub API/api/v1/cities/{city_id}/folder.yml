@@ -1,0 +1,7 @@
+info:
+  name: "{city_id}"
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

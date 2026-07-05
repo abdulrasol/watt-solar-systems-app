@@ -1,0 +1,47 @@
+info:
+  name: CompanyProductsController_create
+  type: http
+  seq: 2
+  tags:
+    - Company Products
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/v1/shop/company-products"
+  headers:
+    - name: company-id
+      value: ""
+    - name: company-id
+      value: ""
+  body:
+    type: json
+    data: "{}"
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    request:
+      url: "{{baseUrl}}/api/v1/shop/company-products"
+      method: POST
+      headers:
+        - name: company-id
+          value: ""
+        - name: company-id
+          value: ""
+      body:
+        type: json
+        data: "{}"
+    response:
+      status: 201
+      statusText: Created
+      body:
+        type: text
+        data: ""
