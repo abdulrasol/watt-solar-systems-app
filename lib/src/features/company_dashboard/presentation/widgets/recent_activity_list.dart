@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
@@ -77,10 +76,10 @@ class RecentActivityList extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Container(
-      padding: EdgeInsets.all(24.r),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: Column(
@@ -97,9 +96,9 @@ class RecentActivityList extends ConsumerWidget {
           // nothing further to page into: the data isn't server-paginated.
           Text(
             l10n.recent_activity,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, fontFamily: AppTheme.fontFamily),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 16),
           if (state.isLoading)
             const Center(
               child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator(strokeWidth: 2)),
@@ -107,10 +106,10 @@ class RecentActivityList extends ConsumerWidget {
           else if (state.items.isEmpty)
             Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
+                padding: EdgeInsets.symmetric(vertical: 20),
                 child: Text(
                   l10n.no_data_available,
-                  style: TextStyle(color: Colors.grey, fontSize: 13.sp),
+                  style: TextStyle(color: Colors.grey, fontSize: 13),
                 ),
               ),
             )
@@ -126,41 +125,41 @@ class RecentActivityList extends ConsumerWidget {
 
   Widget _buildActivityItem(BuildContext context, ActivityLogItem item) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.h),
+      padding: EdgeInsets.symmetric(vertical: 12),
       child: InkWell(
         onTap: () {
           final route = _routeForItem(item);
           if (route != null) context.push(route);
         },
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
         child: Row(
           children: [
             Container(
-              padding: EdgeInsets.all(10.r),
+              padding: EdgeInsets.all(10),
               decoration: BoxDecoration(color: _colorForType(item.actionType).withValues(alpha: 0.1), shape: BoxShape.circle),
-              child: Icon(_iconForType(item.actionType), color: _colorForType(item.actionType), size: 20.sp),
+              child: Icon(_iconForType(item.actionType), color: _colorForType(item.actionType), size: 20),
             ),
-            SizedBox(width: 16.w),
+            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     item.title,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp, fontFamily: AppTheme.fontFamily),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, fontFamily: AppTheme.fontFamily),
                   ),
                   Text(
                     item.subtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.grey, fontSize: 12.sp, fontFamily: AppTheme.fontFamily),
+                    style: TextStyle(color: Colors.grey, fontSize: 12, fontFamily: AppTheme.fontFamily),
                   ),
                 ],
               ),
             ),
             Text(
               _timeAgo(item.createdAt),
-              style: TextStyle(color: Colors.grey, fontSize: 11.sp, fontFamily: AppTheme.fontFamily),
+              style: TextStyle(color: Colors.grey, fontSize: 11, fontFamily: AppTheme.fontFamily),
             ),
           ],
         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
@@ -189,7 +188,7 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
               ),
           ],
         ),
-        drawer: Drawer(width: 0.75.sw, child: sidebar),
+        drawer: Drawer(width: MediaQuery.of(context).size.width * 0.75, child: sidebar),
         floatingActionButton: FloatingActionButton(
           onPressed: () => showQuickCreateSheet(context, state, l10n),
           backgroundColor: AppTheme.primaryColor,
@@ -204,7 +203,7 @@ class _CompanyDashboardState extends ConsumerState<CompanyDashboard> {
         children: [
           AnimatedContainer(
             duration: 300.ms,
-            width: sidebarWidth.w,
+            width: sidebarWidth,
             decoration: BoxDecoration(
               color: AppTheme.lightSurface,
               border: Border(right: BorderSide(color: Colors.grey.withValues(alpha: 0.1))),

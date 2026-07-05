@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
@@ -76,12 +75,12 @@ class ServiceCard extends StatelessWidget {
           context.push('/service-status', extra: {'name': service.serviceName, 'code': service.serviceCode, 'status': service.status, 'icon': service.icon});
         }
       },
-      borderRadius: BorderRadius.circular(16.r),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: EdgeInsets.all(16.r),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: _getStatusColor(service.status).withValues(alpha: 0.2), width: 1.5),
           boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
         ),
@@ -93,35 +92,35 @@ class ServiceCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(8.r),
+                  padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(color: _getStatusColor(service.status).withValues(alpha: 0.1), shape: BoxShape.circle),
                   child: hasCustomIcon
                       ? WdImagePreview(imageUrl: service.icon!, size: 24, shape: BoxShape.circle)
-                      : Icon(_getServiceIcon(service.serviceCode), color: _getStatusColor(service.status), size: 20.sp),
+                      : Icon(_getServiceIcon(service.serviceCode), color: _getStatusColor(service.status), size: 20),
                 ),
-                if (!isActive) Icon(Iconsax.lock, color: Colors.grey.withValues(alpha: 0.5), size: 14.sp),
+                if (!isActive) Icon(Iconsax.lock, color: Colors.grey.withValues(alpha: 0.5), size: 14),
               ],
             ),
-            SizedBox(height: 12.h),
+            SizedBox(height: 12),
             Text(
               service.serviceName,
-              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 4.h),
+            SizedBox(height: 4),
             Row(
               children: [
                 Container(
-                  width: 6.w,
-                  height: 6.w,
+                  width: 6,
+                  height: 6,
                   decoration: BoxDecoration(color: _getStatusColor(service.status), shape: BoxShape.circle),
                 ),
-                SizedBox(width: 4.w),
+                SizedBox(width: 4),
                 Expanded(
                   child: Text(
                     _localizedStatusLabel(l10n, isActive),
-                    style: TextStyle(fontSize: 9.sp, color: Colors.grey, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
+                    style: TextStyle(fontSize: 9, color: Colors.grey, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

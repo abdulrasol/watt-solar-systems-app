@@ -4229,4 +4229,130 @@ class AppLocalizationsAr extends AppLocalizations {
   String formatSolarAdvice(String advice) {
     return 'زاوية الميل الموصى بها: $advice';
   }
+
+  @override
+  String get products => 'المنتجات';
+
+  @override
+  String get sales => 'المبيعات';
+
+  @override
+  String get finance => 'المالية';
+
+  @override
+  String get content_and_ads => 'المحتوى والإعلانات';
+
+  @override
+  String get service_unavailable_title => 'الخدمة غير متوفرة';
+
+  @override
+  String get service_unavailable_message =>
+      'هذه الميزة غير مفعلة لنوع شركتك الحالي.';
+
+  @override
+  String service_unavailable_for_company_type(String serviceName) {
+    return '$serviceName غير متوفر لنوع شركتك الحالي';
+  }
+
+  @override
+  String get admin_workspace => 'مساحة العمل';
+
+  @override
+  String get admin_core => 'الأساسيات';
+
+  @override
+  String get admin_company_admin => 'إدارة الشركات';
+
+  @override
+  String get admin_operations => 'العمليات';
+
+  @override
+  String get admin_commerce => 'التجارة';
+
+  @override
+  String get admin_tools => 'الأدوات';
+
+  @override
+  String get admin_app_configs => 'إعدادات التطبيق';
+
+  @override
+  String get admin_users => 'المستخدمون';
+
+  @override
+  String get admin_countries => 'الدول';
+
+  @override
+  String get admin_cities => 'المدن';
+
+  @override
+  String get admin_currencies => 'العملات';
+
+  @override
+  String get admin_subscription_plans => 'خطط الاشتراك';
+
+  @override
+  String get admin_global_categories => 'التصنيفات العامة';
+
+  @override
+  String get admin_company_types => 'أنواع الشركات';
+
+  @override
+  String get admin_inspector_details => 'مفتش التفاصيل';
+
+  @override
+  String get admin_inspector_services => 'مفتش الخدمات';
+
+  @override
+  String get admin_subscription_requests => 'طلبات الاشتراك';
+
+  @override
+  String get admin_service_catalog => 'كتالوج الخدمات';
+
+  @override
+  String get admin_feedbacks => 'التقييمات';
+
+  @override
+  String get admin_offers_requests => 'العروض والطلبات';
+
+  @override
+  String get admin_global_products => 'المنتجات العامة';
+
+  @override
+  String get admin_api_lab => 'معمل API';
+
+  @override
+  String get posters => 'الملصقات';
+
+  @override
+  String get posters_subtitle => 'إدارة الملصقات والبانرات الترويجية';
+
+  @override
+  String get posters_empty => 'لا توجد ملصقات';
+
+  @override
+  String get poster_create => 'إنشاء ملصق';
+
+  @override
+  String get poster_text => 'النص';
+
+  @override
+  String get poster_action_type => 'نوع الإجراء';
+
+  @override
+  String get poster_action_id => 'معرف الإجراء';
+
+  @override
+  String get poster_action_auto => 'يربط تلقائياً بصفحة شركتك';
+
+  @override
+  String get poster_select_product => 'اضغط لاختيار منتج';
+
+  @override
+  String get poster_select_work => 'اضغط لاختيار مشروع';
+
+  @override
+  String get poster_upload_image => 'رفع صورة';
+
+  @override
+  String get not_found => 'غير موجود';
 }

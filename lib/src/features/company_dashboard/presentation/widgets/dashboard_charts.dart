@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/accounting/presentation/providers/accounting_providers.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
@@ -25,11 +24,11 @@ class RevenueChart extends ConsumerWidget {
         .reduce((a, b) => a > b ? a : b);
 
     return Container(
-      height: 300.h,
-      padding: EdgeInsets.all(20.r),
+      height: 300,
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -44,12 +43,12 @@ class RevenueChart extends ConsumerWidget {
             Text(
               AppLocalizations.of(context)!.revenue_trend,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 16,
               fontWeight: FontWeight.w700,
               fontFamily: AppTheme.fontFamily,
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 20),
           Expanded(
             child: LineChart(
               LineChartData(

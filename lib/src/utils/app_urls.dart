@@ -172,6 +172,22 @@ class AppUrls {
   static String publicCompanyWorks(int companyId) =>
       '$publicCompanies/$companyId/works';
 
+  // Company Posters
+  static String companyPosters(int companyId) =>
+      '${company(companyId)}/posters';
+  static String companyPoster(int companyId, int posterId) =>
+      '${companyPosters(companyId)}/$posterId';
+  static String companyPosterToggle(int companyId, int posterId) =>
+      '${companyPoster(companyId, posterId)}/toggle-active';
+
+  // Public Posters
+  static String get activePosters => '$publicCompanies/posters';
+
+  // Admin Posters
+  static String get adminPosters => '$companies/posters';
+  static String adminPosterReview(int id) => '$adminPosters/$id/review';
+  static String adminPosterExtend(int id) => '$adminPosters/$id/extend';
+
   // ==================== SHOP ====================
   static String get shopBaseUrl => '$baseUrl/shop';
   static String get shopCatalogMeta => '$shopBaseUrl/catalog/meta';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_city.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_country.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_address_controller.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/admin_content_layout.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -40,60 +40,57 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
   @override
   Widget build(BuildContext context) {
     return AdminPageScaffold(
-      child: Column(
-        children: [
-          _buildHeader(),
-          TabBar(
-            controller: _tabController,
-            labelColor: AppTheme.primaryColor,
-            unselectedLabelColor: Colors.grey,
-            indicatorColor: AppTheme.primaryColor,
-            tabs: const [
-              Tab(text: 'Countries'),
-              Tab(text: 'Cities'),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(controller: _tabController, children: [_buildCountriesTab(), _buildCitiesTab()]),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Addresses',
-                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
-                ),
-                Text(
-                  'Manage Countries and Cities',
-                  style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
-                ),
+      actions: [
+        FilledButton.icon(
+          onPressed: () => _showAddDialog(),
+          icon: const Icon(Iconsax.add),
+          label: const Text('Add'),
+        ),
+      ],
+      child: Builder(builder: (context) {
+        final layout = AdminLayoutScope.of(context);
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(layout.padding, 12, layout.padding, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Addresses',
+                          style: TextStyle(fontSize: layout.isMobile ? 20 : 24, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Manage Countries and Cities',
+                          style: TextStyle(fontSize: 13, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            TabBar(
+              controller: _tabController,
+              labelColor: AppTheme.primaryColor,
+              unselectedLabelColor: Colors.grey,
+              indicatorColor: AppTheme.primaryColor,
+              tabs: const [
+                Tab(text: 'Countries'),
+                Tab(text: 'Cities'),
               ],
             ),
-          ),
-          ElevatedButton.icon(
-            onPressed: () => _showAddDialog(),
-            icon: Icon(Icons.add, size: 20.sp),
-            label: const Text('Add New'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+            Expanded(
+              child: TabBarView(controller: _tabController, children: [_buildCountriesTab(layout), _buildCitiesTab(layout)]),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
@@ -105,27 +102,24 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
     }
   }
 
-  Widget _buildCountriesTab() {
+  Widget _buildCountriesTab(AdminLayoutData layout) {
     final state = ref.watch(adminAddressProvider);
     if (state.isCountriesLoading) return const AdminLoadingState();
     if (state.countries.isEmpty) {
       return const AdminEmptyState(icon: Iconsax.global, title: 'No Countries');
     }
 
-    // Previously this tab had no RefreshIndicator at all — the only admin
-    // list missing pull-to-refresh entirely (Cities, right next to it,
-    // already had one).
     return RefreshIndicator(
       onRefresh: () => ref.read(adminAddressProvider.notifier).fetchCountries(),
       child: ListView.builder(
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.fromLTRB(layout.padding, 0, layout.padding, 24),
         itemCount: state.countries.length,
         itemBuilder: (context, index) => _CountryCard(country: state.countries[index]),
       ),
     );
   }
 
-  Widget _buildCitiesTab() {
+  Widget _buildCitiesTab(AdminLayoutData layout) {
     final state = ref.watch(adminAddressProvider);
     if (state.isCitiesLoading) return const AdminLoadingState();
     if (state.cities.isEmpty) {
@@ -136,7 +130,7 @@ class _AdminAddressScreenState extends ConsumerState<AdminAddressScreen> with Si
       onRefresh: () => ref.read(adminAddressProvider.notifier).fetchCities(),
       child: ListView.builder(
         controller: _cityScrollController,
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.fromLTRB(layout.padding, 0, layout.padding, 24),
         itemCount: state.cities.length,
         itemBuilder: (context, index) {
           return _CityCard(city: state.cities[index]);
@@ -153,7 +147,7 @@ class _CountryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      margin: EdgeInsets.only(bottom: 12.h),
+      margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: const Icon(Iconsax.global),
         title: Text(country.name),
@@ -206,7 +200,7 @@ class _CityCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      margin: EdgeInsets.only(bottom: 12.h),
+      margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: const Icon(Iconsax.building),
         title: Text(city.name),

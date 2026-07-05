@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
@@ -19,10 +18,10 @@ class CompanyHeaderCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(20.r),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [BoxShadow(color: AppTheme.primaryColor.withValues(alpha: 0.1), blurRadius: 20, offset: const Offset(0, 10))],
         gradient: LinearGradient(
           colors: [Theme.of(context).cardColor, AppTheme.primaryColor.withValues(alpha: 0.03)],
@@ -35,7 +34,7 @@ class CompanyHeaderCard extends StatelessWidget {
         crossAxisAlignment: isMobile ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: [
           WdImagePreview(imageUrl: company.logo ?? '', size: 80, shape: BoxShape.circle),
-          SizedBox(width: isMobile ? 0 : 20.w, height: isMobile ? 16.h : 0),
+          SizedBox(width: isMobile ? 0 : 20, height: isMobile ? 16 : 0),
           if (isMobile)
             _buildDetails(context, l10n, crossAxisAlignment: CrossAxisAlignment.start)
           else
@@ -54,25 +53,25 @@ class CompanyHeaderCard extends StatelessWidget {
             Expanded(
               child: Text(
                 company.name,
-                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            SizedBox(width: 8.w),
-            if (company.status.toLowerCase() == 'active') Icon(Iconsax.verify, color: Colors.blue, size: 20.sp),
+            SizedBox(width: 8),
+            if (company.status.toLowerCase() == 'active') Icon(Iconsax.verify, color: Colors.blue, size: 20),
           ],
         ),
-        SizedBox(height: 4.h),
+        SizedBox(height: 4),
         Text(
           company.description ?? l10n.solar_solutions_provider,
-          style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+          style: TextStyle(fontSize: 13, color: Colors.grey, fontFamily: AppTheme.fontFamily),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: 12),
         Wrap(
-          spacing: 8.w,
-          runSpacing: 8.h,
+          spacing: 8,
+          runSpacing: 8,
           children: [
             _buildChip(context, label: company.tier ?? l10n.standard, icon: Iconsax.crown, color: Colors.orange),
             _buildChip(context, label: company.type ?? l10n.company, icon: Iconsax.building, color: Colors.blue),
@@ -84,16 +83,16 @@ class CompanyHeaderCard extends StatelessWidget {
 
   Widget _buildChip(BuildContext context, {required String label, required IconData icon, required Color color}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10.r)),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 14.sp),
-          SizedBox(width: 4.w),
+          Icon(icon, color: color, size: 14),
+          SizedBox(width: 4),
           Text(
             label,
-            style: TextStyle(fontSize: 11.sp, color: color, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
           ),
         ],
       ),

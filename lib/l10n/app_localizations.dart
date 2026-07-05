@@ -7914,6 +7914,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recommended tilt: {advice}'**
   String formatSolarAdvice(String advice);
+
+  /// No description provided for @products.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get products;
+
+  /// No description provided for @sales.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales'**
+  String get sales;
+
+  /// No description provided for @finance.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get finance;
+
+  /// No description provided for @content_and_ads.
+  ///
+  /// In en, this message translates to:
+  /// **'Content & Ads'**
+  String get content_and_ads;
+
+  /// No description provided for @service_unavailable_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Service unavailable'**
+  String get service_unavailable_title;
+
+  /// No description provided for @service_unavailable_message.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is not enabled for your company type.'**
+  String get service_unavailable_message;
+
+  /// No description provided for @service_unavailable_for_company_type.
+  ///
+  /// In en, this message translates to:
+  /// **'{serviceName} is not available for your company type'**
+  String service_unavailable_for_company_type(String serviceName);
+
+  /// No description provided for @admin_workspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Workspace'**
+  String get admin_workspace;
+
+  /// No description provided for @admin_core.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Core'**
+  String get admin_core;
+
+  /// No description provided for @admin_company_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Admin'**
+  String get admin_company_admin;
+
+  /// No description provided for @admin_operations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get admin_operations;
+
+  /// No description provided for @admin_commerce.
+  ///
+  /// In en, this message translates to:
+  /// **'Commerce'**
+  String get admin_commerce;
+
+  /// No description provided for @admin_tools.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools'**
+  String get admin_tools;
+
+  /// No description provided for @admin_app_configs.
+  ///
+  /// In en, this message translates to:
+  /// **'App Configs'**
+  String get admin_app_configs;
+
+  /// No description provided for @admin_users.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get admin_users;
+
+  /// No description provided for @admin_countries.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries'**
+  String get admin_countries;
+
+  /// No description provided for @admin_cities.
+  ///
+  /// In en, this message translates to:
+  /// **'Cities'**
+  String get admin_cities;
+
+  /// No description provided for @admin_currencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Currencies'**
+  String get admin_currencies;
+
+  /// No description provided for @admin_subscription_plans.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Plans'**
+  String get admin_subscription_plans;
+
+  /// No description provided for @admin_global_categories.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Categories'**
+  String get admin_global_categories;
+
+  /// No description provided for @admin_company_types.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Types'**
+  String get admin_company_types;
+
+  /// No description provided for @admin_inspector_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details Inspector'**
+  String get admin_inspector_details;
+
+  /// No description provided for @admin_inspector_services.
+  ///
+  /// In en, this message translates to:
+  /// **'Services Inspector'**
+  String get admin_inspector_services;
+
+  /// No description provided for @admin_subscription_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Requests'**
+  String get admin_subscription_requests;
+
+  /// No description provided for @admin_service_catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Catalog'**
+  String get admin_service_catalog;
+
+  /// No description provided for @admin_feedbacks.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedbacks'**
+  String get admin_feedbacks;
+
+  /// No description provided for @admin_offers_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers & Requests'**
+  String get admin_offers_requests;
+
+  /// No description provided for @admin_global_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Products'**
+  String get admin_global_products;
+
+  /// No description provided for @admin_api_lab.
+  ///
+  /// In en, this message translates to:
+  /// **'API Lab'**
+  String get admin_api_lab;
+
+  /// No description provided for @posters.
+  ///
+  /// In en, this message translates to:
+  /// **'Posters'**
+  String get posters;
+
+  /// No description provided for @posters_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your promotional posters and banners'**
+  String get posters_subtitle;
+
+  /// No description provided for @posters_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No posters found'**
+  String get posters_empty;
+
+  /// No description provided for @poster_create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Poster'**
+  String get poster_create;
+
+  /// No description provided for @poster_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get poster_text;
+
+  /// No description provided for @poster_action_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Action Type'**
+  String get poster_action_type;
+
+  /// No description provided for @poster_action_id.
+  ///
+  /// In en, this message translates to:
+  /// **'Action ID'**
+  String get poster_action_id;
+
+  /// No description provided for @poster_action_auto.
+  ///
+  /// In en, this message translates to:
+  /// **'Links to your company page automatically'**
+  String get poster_action_auto;
+
+  /// No description provided for @poster_select_product.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select a product'**
+  String get poster_select_product;
+
+  /// No description provided for @poster_select_work.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select a project'**
+  String get poster_select_work;
+
+  /// No description provided for @poster_upload_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Image'**
+  String get poster_upload_image;
+
+  /// No description provided for @not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found'**
+  String get not_found;
 }
 
 class _AppLocalizationsDelegate

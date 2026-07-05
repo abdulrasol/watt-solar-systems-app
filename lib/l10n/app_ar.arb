@@ -1712,5 +1712,55 @@
         "type": "String"
       }
     }
-  }
+  },
+  "products": "المنتجات",
+  "sales": "المبيعات",
+  "finance": "المالية",
+  "content_and_ads": "المحتوى والإعلانات",
+  "service_unavailable_title": "الخدمة غير متوفرة",
+  "service_unavailable_message": "هذه الميزة غير مفعلة لنوع شركتك الحالي.",
+  "service_unavailable_for_company_type": "{serviceName} غير متوفر لنوع شركتك الحالي",
+  "@service_unavailable_for_company_type": {
+    "placeholders": {
+      "serviceName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "admin_workspace": "مساحة العمل",
+  "admin_core": "الأساسيات",
+  "admin_company_admin": "إدارة الشركات",
+  "admin_operations": "العمليات",
+  "admin_commerce": "التجارة",
+  "admin_tools": "الأدوات",
+  "admin_app_configs": "إعدادات التطبيق",
+  "admin_users": "المستخدمون",
+  "admin_countries": "الدول",
+  "admin_cities": "المدن",
+  "admin_currencies": "العملات",
+  "admin_subscription_plans": "خطط الاشتراك",
+  "admin_global_categories": "التصنيفات العامة",
+  "admin_company_types": "أنواع الشركات",
+  "admin_inspector_details": "مفتش التفاصيل",
+  "admin_inspector_services": "مفتش الخدمات",
+  "admin_subscription_requests": "طلبات الاشتراك",
+  "admin_service_catalog": "كتالوج الخدمات",
+  "admin_feedbacks": "التقييمات",
+  "admin_offers_requests": "العروض والطلبات",
+  "admin_global_products": "المنتجات العامة",
+  "admin_api_lab": "معمل API",
+
+  "posters": "الملصقات",
+  "posters_subtitle": "إدارة الملصقات والبانرات الترويجية",
+  "posters_empty": "لا توجد ملصقات",
+  "poster_create": "إنشاء ملصق",
+  "poster_text": "النص",
+  "poster_action_type": "نوع الإجراء",
+  "poster_action_id": "معرف الإجراء",
+  "poster_action_auto": "يربط تلقائياً بصفحة شركتك",
+  "poster_select_product": "اضغط لاختيار منتج",
+  "poster_select_work": "اضغط لاختيار مشروع",
+  "poster_upload_image": "رفع صورة",
+  "not_found": "غير موجود"
 }

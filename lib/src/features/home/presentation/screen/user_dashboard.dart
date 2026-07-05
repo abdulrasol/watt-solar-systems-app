@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/system_calculator_wizard.dart';
+import 'package:solar_hub/src/features/posters/presentation/screens/user/poster_carousel.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/home/presentation/providers/home_page_provider.dart';
 import 'package:solar_hub/src/features/home/presentation/providers/user_dashboard_provider.dart';
@@ -15,6 +16,8 @@ import 'package:solar_hub/src/features/home/presentation/widgets/user_dashboard_
 import 'package:solar_hub/src/features/home/presentation/widgets/solar_production_card.dart';
 import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
 import 'package:solar_hub/src/utils/app_explanations.dart';
+import 'package:solar_hub/src/core/flags/feature_flags.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class UserDashboard extends ConsumerStatefulWidget {
   const UserDashboard({super.key});
@@ -48,6 +51,7 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const UserDashboardHeroCard(),
+            const PosterCarousel(),
             SizedBox(height: 26.h),
             UserDashboardSectionHeader(title: l10n.quick_actions, subtitle: l10n.dashboard_quick_actions_subtitle),
             SizedBox(height: 14.h),
@@ -93,24 +97,26 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
 
   List<Widget> _calculatorActions(BuildContext context, AppLocalizations l10n) {
     final actions = <Widget>[
-      UserDashboardActionCard(
-        title: l10n.dashboard_fast_calculator,
-        subtitle: l10n.dashboard_fast_calculator_desc,
-        icon: Iconsax.flash_1,
-        accent: const Color(0xFF0BAA9D),
-        gradient: const [Color(0xFFE8FCF8), Color(0xFFF7FFFD)],
-        onTap: () => context.push('/calculator/fast-calculator'),
-      ),
-      UserDashboardActionCard(
-        title: l10n.dashboard_system_wizard,
-        subtitle: l10n.dashboard_system_wizard_desc,
-        icon: Iconsax.calculator,
-        accent: const Color(0xFFFF9800),
-        gradient: const [Color(0xFFFFF4E8), Color(0xFFFFFCF8)],
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SystemCalculatorWizard()));
-        },
-      ),
+      if (isFeatureEnabled(ref, AppFeature.calculatorFast))
+        UserDashboardActionCard(
+          title: l10n.dashboard_fast_calculator,
+          subtitle: l10n.dashboard_fast_calculator_desc,
+          icon: Iconsax.flash_1,
+          accent: const Color(0xFF0BAA9D),
+          gradient: const [Color(0xFFE8FCF8), Color(0xFFF7FFFD)],
+          onTap: () => context.push('/calculator/fast-calculator'),
+        ),
+      if (isFeatureEnabled(ref, AppFeature.calculatorPv))
+        UserDashboardActionCard(
+          title: l10n.dashboard_system_wizard,
+          subtitle: l10n.dashboard_system_wizard_desc,
+          icon: Iconsax.calculator,
+          accent: const Color(0xFFFF9800),
+          gradient: const [Color(0xFFFFF4E8), Color(0xFFFFFCF8)],
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SystemCalculatorWizard()));
+          },
+        ),
       if (ref.watch(isOffersEnabled))
         UserDashboardActionCard(
           title: l10n.dashboard_offer_wizard,

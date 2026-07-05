@@ -47,7 +47,7 @@ abstract class AdminRemoteDataSource {
   Future<api.Response> createSubscriptionPlan(Map<String, dynamic> data);
   Future<api.Response> updateSubscriptionPlan(int id, Map<String, dynamic> data);
   Future<api.Response> deleteSubscriptionPlan(int id);
-  
+
   // Feedbacks
   Future<api.PaginationResponse> listFeedbacks({int page = 1, int pageSize = 12});
   Future<api.Response> updateFeedbackStatus(int id, bool isRead);
@@ -92,7 +92,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
 
       final response = await _dioService.get(AppUrls.companies, queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -101,7 +101,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateCompanyStatus(int companyId, String status) async {
     try {
       return await _dioService.post(AppUrls.updateCompanyStatus(companyId), data: {'status': status});
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -111,7 +111,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     try {
       final response = await _dioService.get(AppUrls.adminServiceCatalog, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -120,7 +120,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> createServiceCatalogEntry(ServiceCatalogItem item) async {
     try {
       return await _dioService.post(AppUrls.adminServiceCatalog, data: item.toJson(includeCode: true));
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -129,7 +129,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data) async {
     try {
       return await _dioService.put(AppUrls.adminServiceCatalogItem(serviceCode), data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -138,7 +138,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> deleteServiceCatalogEntry(String serviceCode) async {
     try {
       return await _dioService.delete(AppUrls.adminServiceCatalogItem(serviceCode));
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -148,7 +148,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     try {
       final response = await _dioService.get(AppUrls.companyAdminServices(companyId), isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -157,11 +157,10 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> getCompanyDetails(int companyId) async {
     try {
       return await _dioService.get(AppUrls.companyAdminDetails(companyId)) as api.Response;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
-
 
   // Currencies
   @override
@@ -170,7 +169,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
       final response = await _dioService.get(AppUrls.currencies, queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -179,7 +178,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> createCurrency(Map<String, dynamic> data) async {
     try {
       return await _dioService.post(AppUrls.currencies, data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -188,7 +187,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateCurrency(int id, Map<String, dynamic> data) async {
     try {
       return await _dioService.put(AppUrls.currency(id), data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -197,7 +196,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> deleteCurrency(int id) async {
     try {
       return await _dioService.delete(AppUrls.currency(id));
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -208,7 +207,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     try {
       final response = await _dioService.get(AppUrls.countries, isList: true);
       return response as api.ListResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -217,7 +216,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> createCountry(Map<String, dynamic> data) async {
     try {
       return await _dioService.post(AppUrls.countries, data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -226,7 +225,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateCountry(int id, Map<String, dynamic> data) async {
     try {
       return await _dioService.put(AppUrls.country(id), data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -235,7 +234,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> deleteCountry(int id) async {
     try {
       return await _dioService.delete(AppUrls.country(id));
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -248,7 +247,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       if (countryId != null) queryParameters['country_id'] = countryId;
       final response = await _dioService.get(AppUrls.cities, queryParameters: queryParameters, isList: true);
       return response as api.ListResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -257,7 +256,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> createCity(Map<String, dynamic> data) async {
     try {
       return await _dioService.post(AppUrls.cities, data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -266,7 +265,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateCity(int id, Map<String, dynamic> data) async {
     try {
       return await _dioService.put(AppUrls.city(id), data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -275,7 +274,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> deleteCity(int id) async {
     try {
       return await _dioService.delete(AppUrls.city(id));
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -287,7 +286,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
       final response = await _dioService.get(AppUrls.globalCategories, queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -296,7 +295,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> createGlobalCategory(Map<String, dynamic> data) async {
     try {
       return await _dioService.post(AppUrls.globalCategories, data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -305,7 +304,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateGlobalCategory(int id, Map<String, dynamic> data) async {
     try {
       return await _dioService.put(AppUrls.globalCategory(id), data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -314,7 +313,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> deleteGlobalCategory(int id) async {
     try {
       return await _dioService.delete(AppUrls.globalCategory(id));
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -326,7 +325,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
       final response = await _dioService.get(AppUrls.allUsers, queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -335,7 +334,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> promoteUser(String username, bool promote) async {
     try {
       return await _dioService.post(AppUrls.promoteUser(username), data: {'promote': promote});
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -347,7 +346,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
       final response = await _dioService.get(AppUrls.adminSubscriptions, queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -356,7 +355,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> createSubscriptionPlan(Map<String, dynamic> data) async {
     try {
       return await _dioService.post(AppUrls.adminSubscriptions, data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -365,7 +364,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateSubscriptionPlan(int id, Map<String, dynamic> data) async {
     try {
       return await _dioService.put(AppUrls.adminSubscription(id), data: data);
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -374,7 +373,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> deleteSubscriptionPlan(int id) async {
     try {
       return await _dioService.delete(AppUrls.adminSubscription(id));
-  } catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -414,7 +413,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.PaginationResponse> listNotifications({int page = 1, int pageSize = 12}) async {
     try {
       final queryParameters = <String, dynamic>{'page': page, 'page_size': pageSize};
-      final response = await _dioService.get('${AppUrls.adminBaseUrl}/notifications', queryParameters: queryParameters, isPagination: true);
+      final response = await _dioService.get('${AppUrls.baseUrl}/notifications', queryParameters: queryParameters, isPagination: true);
       return response as api.PaginationResponse;
     } catch (e) {
       rethrow;

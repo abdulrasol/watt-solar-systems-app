@@ -6,6 +6,7 @@ import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/core/services/network_status_service.dart';
 import 'package:solar_hub/src/utils/app_urls.dart';
 import 'package:solar_hub/src/utils/helper_methods.dart';
+
 import 'package:solar_hub/src/services/toast_service.dart';
 
 abstract class ApiServicesInterface {
@@ -80,58 +81,69 @@ class DioService implements ApiServicesInterface {
             );
             return handler.next(error);
           }
-          final context = rootNavigatorKey.currentContext;
-          if (context != null) {
-            String title = 'Server Error';
-            String message = 'An unexpected error occurred';
-            dynamic detail = error.response?.data ?? error.message;
-
-            if (error.type == DioExceptionType.connectionTimeout ||
-                error.type == DioExceptionType.receiveTimeout) {
-              title = 'Connection Timeout';
-              message =
-                  'The server is taking too long to respond. Please check your internet connection.';
-            } else if (error.type == DioExceptionType.connectionError) {
-              title = 'Connection Error';
-              message =
-                  'Could not connect to the server. Please check your internet connection.';
-            } else if (error.response?.statusCode == 401) {
-              title = 'Unauthorized';
-              message = 'Your session has expired. Please login again.';
-            } else if (error.response?.data != null) {
-              final data = error.response?.data;
-              if (data is Map) {
-                if (data.containsKey('message') && data['message'] != null) {
-                  message = data['message'].toString();
-                } else if (data.containsKey('detail') &&
-                    data['detail'] != null) {
-                  final d = data['detail'];
-                  if (d is String) {
-                    message = d;
-                  } else if (d is List && d.isNotEmpty) {
-                    final first = d.first;
-                    if (first is Map && first.containsKey('msg')) {
-                      message = first['msg'].toString();
-                    } else if (first is Map && first.containsKey('type')) {
-                      message = 'Validation Error: ${first['type']}';
-                    }
+          String message = 'An unexpected error occurred';
+          String title = 'Server Error';
+          dynamic detail = error.response?.data; // Don't use error.message which contains the huge generic Dio text
+          
+          if (error.type == DioExceptionType.connectionTimeout ||
+              error.type == DioExceptionType.receiveTimeout) {
+            title = 'Connection Timeout';
+            message = 'The server is taking too long to respond. Please check your internet connection.';
+          } else if (error.type == DioExceptionType.connectionError) {
+            title = 'Connection Error';
+            message = 'Could not connect to the server. Please check your internet connection.';
+          } else if (error.response?.statusCode == 401) {
+            title = 'Unauthorized';
+            message = 'Your session has expired. Please login again.';
+          } else if (error.response?.data != null) {
+            final data = error.response?.data;
+            if (data is Map) {
+              if (data.containsKey('message') && data['message'] != null) {
+                message = data['message'].toString();
+              } else if (data.containsKey('detail') && data['detail'] != null) {
+                final d = data['detail'];
+                if (d is String) {
+                  message = d;
+                } else if (d is List && d.isNotEmpty) {
+                  final first = d.first;
+                  if (first is Map && first.containsKey('msg')) {
+                    message = first['msg'].toString();
+                  } else if (first is Map && first.containsKey('type')) {
+                    message = 'Validation Error: ${first['type']}';
                   }
                 }
               }
+            } else if (data is String && data.isNotEmpty && data.length < 100) {
+              message = data;
             }
+          }
 
-            ToastService.showErrorWithDetail(
-              context,
-              title: title,
-              message: message,
-              detail: detail,
-            );
+          // If detail is a string and it's HTML, don't show it
+          if (detail is String && detail.trim().startsWith('<')) {
+            detail = null;
+          }
+
+          final isServiceUnavailable = isServiceUnavailableForCompanyType(message);
+
+          final context = rootNavigatorKey.currentContext;
+          if (context != null) {
+            // Don't spam the user with toasts for features that are simply
+            // not enabled for their company type; those surfaces now render
+            // a friendly "service unavailable" state instead.
+            if (!isServiceUnavailable) {
+              ToastService.showErrorWithDetail(
+                context,
+                title: title,
+                message: message,
+                detail: detail,
+              );
+            }
           }
 
           dPrint(
             error.response?.data.toString(),
             tag: 'error',
-            stackTrace: error.stackTrace,
+            stackTrace: isServiceUnavailable ? null : error.stackTrace,
           );
           handler.next(error);
         },

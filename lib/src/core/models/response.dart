@@ -48,12 +48,21 @@ class Response extends BaseResponse {
       );
     }
 
+    int parsedStatus = 0;
+    if (json['status'] != null) {
+      if (json['status'] is int) {
+        parsedStatus = json['status'];
+      } else {
+        parsedStatus = int.tryParse(json['status'].toString()) ?? 0;
+      }
+    }
+
     return Response(
-      status: json['status'] ?? 0,
-      message: json['message'] ?? '',
+      status: parsedStatus,
+      message: json['message']?.toString() ?? '',
       body: json['body'],
-      error: json['error'] ?? false,
-      messageUser: json['message_user'] ?? '',
+      error: json['error'] == true || json['error'] == 'true',
+      messageUser: json['message_user']?.toString() ?? '',
     );
   }
 }

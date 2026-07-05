@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
@@ -48,11 +47,11 @@ class DashboardContent extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Iconsax.info_circle, color: AppTheme.errorColor, size: 48.sp),
-            SizedBox(height: 16.h),
+            Icon(Iconsax.info_circle, color: AppTheme.errorColor, size: 48),
+            SizedBox(height: 16),
             Text(
               l10n.error_loading_data,
-              style: TextStyle(color: AppTheme.errorColor, fontSize: 16.sp, fontFamily: AppTheme.fontFamily),
+              style: TextStyle(color: AppTheme.errorColor, fontSize: 16, fontFamily: AppTheme.fontFamily),
             ),
           ],
         ),
@@ -181,14 +180,14 @@ class DashboardContent extends ConsumerWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxWidth),
           child: Padding(
-            padding: EdgeInsets.only(top: 60.h),
+            padding: EdgeInsets.only(top: 60),
             child: Column(
               children: [
-                Icon(currentItem.icon, size: 64.sp, color: Colors.grey.withValues(alpha: 0.3)),
-                SizedBox(height: 16.h),
+                Icon(currentItem.icon, size: 64, color: Colors.grey.withValues(alpha: 0.3)),
+                SizedBox(height: 16),
                 Text(
                   l10n.section_label(currentItem.label),
-                  style: TextStyle(fontSize: 18.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                  style: TextStyle(fontSize: 18, color: Colors.grey, fontFamily: AppTheme.fontFamily),
                 ),
               ],
             ),
