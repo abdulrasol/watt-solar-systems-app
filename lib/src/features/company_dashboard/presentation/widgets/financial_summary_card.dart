@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/accounting/presentation/providers/accounting_providers.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 
 class FinancialSummaryCard extends ConsumerWidget {
   const FinancialSummaryCard({super.key});
@@ -19,12 +19,16 @@ class FinancialSummaryCard extends ConsumerWidget {
     final accountingState = ref.watch(accountingDashboardProvider(companyId));
     final overview = accountingState.overview;
 
+    if (accountingState.error != null && isServiceUnavailableForCompanyType(accountingState.error)) {
+      return _UnavailableCard(message: l10n.service_unavailable_message);
+    }
+
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(20.r),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
       ),
@@ -33,9 +37,9 @@ class FinancialSummaryCard extends ConsumerWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.financial_overview,
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 16),
           Row(
             children: [
               Expanded(
@@ -47,11 +51,11 @@ class FinancialSummaryCard extends ConsumerWidget {
                   color: Colors.blue,
                 ),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 12),
               Expanded(
                 child: _buildKpiCard(context, label: l10n.bills, value: _formatAmount(overview?.billsTotal ?? 0), icon: Iconsax.document, color: Colors.orange),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 12),
               Expanded(
                 child: _buildKpiCard(
                   context,
@@ -70,29 +74,29 @@ class FinancialSummaryCard extends ConsumerWidget {
 
   Widget _buildKpiCard(BuildContext context, {required String label, required String value, required IconData icon, required Color color}) {
     return Container(
-      padding: EdgeInsets.all(14.r),
+      padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: color.withValues(alpha: 0.12)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(6.r),
-            decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8.r)),
-            child: Icon(icon, color: color, size: 16.sp),
+            padding: EdgeInsets.all(6),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
+            child: Icon(icon, color: color, size: 16),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 12),
           Text(
             value,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(fontSize: 11.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+            style: TextStyle(fontSize: 11, color: Colors.grey, fontFamily: AppTheme.fontFamily),
           ),
         ],
       ),
@@ -107,5 +111,36 @@ class FinancialSummaryCard extends ConsumerWidget {
       return '${(amount / 1000).toStringAsFixed(1)}k';
     }
     return amount.toStringAsFixed(0);
+  }
+}
+
+class _UnavailableCard extends StatelessWidget {
+  final String message;
+
+  const _UnavailableCard({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.orange.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        children: [
+          Icon(Iconsax.lock, size: 20, color: Colors.orange),
+          SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(fontSize: 13, color: Colors.grey[600], fontFamily: AppTheme.fontFamily),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart' show StateProvider;
-import 'package:solar_hub/src/features/splash/presentation/providers/config_provider.dart';
-
+import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:solar_hub/src/core/flags/feature_flags.dart';
 enum HomeTab {
   dashboard(0),
   calculator(1),
@@ -54,19 +54,19 @@ final homePageIndexProvider = StateProvider<int>(
 );
 
 final homeNavigationProvider = Provider<HomeNavigationState>((ref) {
-  final configState = ref.watch(configProvider);
-  final values = configState.values;
-
   final visibleTabs = <HomeTab>[
     HomeTab.dashboard,
     HomeTab.calculator,
   ];
 
-  if (values['services'] ?? true) {
+  if (isFeatureEnabled(ref, AppFeature.services, defaultValue: true)) {
     visibleTabs.add(HomeTab.services);
   }
-  if (values['store'] ?? false) {
+  if (isFeatureEnabled(ref, AppFeature.store, defaultValue: false)) {
     visibleTabs.add(HomeTab.store);
+  }
+  if (isFeatureEnabled(ref, AppFeature.community, defaultValue: false)) {
+    visibleTabs.add(HomeTab.community);
   }
 
   return HomeNavigationState(visibleTabs: visibleTabs);

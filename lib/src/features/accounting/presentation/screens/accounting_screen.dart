@@ -9,7 +9,9 @@ import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart';
 import 'package:solar_hub/src/features/orders_core/presentation/widgets/order_widgets.dart';
+import 'package:solar_hub/src/shared/widgets/shared_widgets.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/services/pdf_service.dart';
 import 'package:solar_hub/src/core/di/get_it.dart';
 import 'package:printing/printing.dart';
@@ -58,7 +60,9 @@ class AccountingScreen extends ConsumerWidget {
             child: dashboard.isLoading && dashboard.overview == null
                 ? const Center(child: CircularProgressIndicator())
                 : dashboard.error != null
-                ? AdminErrorState(error: dashboard.error!, onRetry: () => ref.read(accountingDashboardProvider(companyId).notifier).fetch())
+                ? isServiceUnavailableForCompanyType(dashboard.error)
+                    ? AppServiceUnavailableState(serviceName: l10n.accounting)
+                    : AdminErrorState(error: dashboard.error!, onRetry: () => ref.read(accountingDashboardProvider(companyId).notifier).fetch())
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

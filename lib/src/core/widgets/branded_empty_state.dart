@@ -20,51 +20,56 @@ class BrandedEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(24.r),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.05),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                size: iconSize ?? 64.sp,
-                color: AppTheme.primaryColor.withValues(alpha: 0.2),
-              ),
-            ),
-            SizedBox(height: 24.h),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w800,
-                fontFamily: AppTheme.fontFamily,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            if (subtitle != null) ...[
-              SizedBox(height: 8.h),
-              Text(
-                subtitle!,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey,
-                  fontFamily: AppTheme.fontFamily,
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.3),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(24.r),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withValues(alpha: 0.05),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    size: iconSize ?? 64.sp,
+                    color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-            if (action != null) ...[
-              SizedBox(height: 24.h),
-              action!,
-            ],
-          ],
+                SizedBox(height: 24.h),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: AppTheme.fontFamily,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                if (subtitle != null) ...[
+                  SizedBox(height: 8.h),
+                  Text(
+                    subtitle!,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                      fontFamily: AppTheme.fontFamily,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+                if (action != null) ...[
+                  SizedBox(height: 24.h),
+                  action!,
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );

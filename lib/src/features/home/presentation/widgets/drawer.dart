@@ -210,21 +210,24 @@ class AppDrawer extends ConsumerWidget {
     // We can also use Theme.of(context) here if we want item colors to adapt
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
-          child: Icon(icon, color: AppTheme.primaryColor, size: 20),
+      child: Material(
+        color: Colors.transparent,
+        child: ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+            child: Icon(icon, color: AppTheme.primaryColor, size: 20),
+          ),
+          title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          onTap: () {
+            // Navigator.of(context).pop(); // Close drawer
+            if (onTap != null) onTap();
+            if (route != null) context.push(route);
+          },
+          splashColor: AppTheme.primaryColor.withValues(alpha: 0.1),
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        onTap: () {
-          // Navigator.of(context).pop(); // Close drawer
-          if (onTap != null) onTap();
-          if (route != null) context.push(route);
-        },
-        splashColor: AppTheme.primaryColor.withValues(alpha: 0.1),
       ),
     ).animate().fadeIn(duration: 50.ms).slideX(begin: -0.1);
   }

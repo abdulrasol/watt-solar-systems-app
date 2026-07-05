@@ -1725,5 +1725,55 @@
         "type": "String"
       }
     }
-  }
+  },
+  "products": "Products",
+  "sales": "Sales",
+  "finance": "Finance",
+  "content_and_ads": "Content & Ads",
+  "service_unavailable_title": "Service unavailable",
+  "service_unavailable_message": "This feature is not enabled for your company type.",
+  "service_unavailable_for_company_type": "{serviceName} is not available for your company type",
+  "@service_unavailable_for_company_type": {
+    "placeholders": {
+      "serviceName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "admin_workspace": "Workspace",
+  "admin_core": "Admin Core",
+  "admin_company_admin": "Company Admin",
+  "admin_operations": "Operations",
+  "admin_commerce": "Commerce",
+  "admin_tools": "Tools",
+  "admin_app_configs": "App Configs",
+  "admin_users": "Users",
+  "admin_countries": "Countries",
+  "admin_cities": "Cities",
+  "admin_currencies": "Currencies",
+  "admin_subscription_plans": "Subscription Plans",
+  "admin_global_categories": "Global Categories",
+  "admin_company_types": "Company Types",
+  "admin_inspector_details": "Details Inspector",
+  "admin_inspector_services": "Services Inspector",
+  "admin_subscription_requests": "Subscription Requests",
+  "admin_service_catalog": "Service Catalog",
+  "admin_feedbacks": "Feedbacks",
+  "admin_offers_requests": "Offers & Requests",
+  "admin_global_products": "Global Products",
+  "admin_api_lab": "API Lab",
+
+  "posters": "Posters",
+  "posters_subtitle": "Manage your promotional posters and banners",
+  "posters_empty": "No posters found",
+  "poster_create": "Create Poster",
+  "poster_text": "Text",
+  "poster_action_type": "Action Type",
+  "poster_action_id": "Action ID",
+  "poster_action_auto": "Links to your company page automatically",
+  "poster_select_product": "Tap to select a product",
+  "poster_select_work": "Tap to select a project",
+  "poster_upload_image": "Upload Image",
+  "not_found": "Not found"
 }

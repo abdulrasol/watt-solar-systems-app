@@ -14,7 +14,9 @@ import '../widgets/cards/offer_card.dart';
 import 'offer_details_screen.dart';
 
 class UserRequestsScreen extends ConsumerStatefulWidget {
-  const UserRequestsScreen({super.key});
+  final bool embedded;
+
+  const UserRequestsScreen({super.key, this.embedded = false});
 
   @override
   ConsumerState<UserRequestsScreen> createState() => _UserRequestsScreenState();
@@ -54,6 +56,39 @@ class _UserRequestsScreenState extends ConsumerState<UserRequestsScreen> {
     final state = ref.watch(offersProvider);
     final l10n = AppLocalizations.of(context)!;
 
+    final content = Column(
+      children: [
+        _buildFilterBar(),
+        if (state.error != null && state.userRequests.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 8.h),
+            child: Material(
+              color: AppTheme.errorColor.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(16.r),
+              child: ListTile(
+                leading: const Icon(Iconsax.warning_2, color: AppTheme.errorColor),
+                title: Text(
+                  state.error!,
+                  style: TextStyle(fontSize: 12.sp, color: AppTheme.errorColor),
+                ),
+                trailing: TextButton(onPressed: _refetchData, child: Text(l10n.retry)),
+              ),
+            ),
+          ),
+        Expanded(
+          child: state.isLoading && state.userRequests.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : state.userRequests.isEmpty
+              ? _buildEmptyState(state.error)
+              : _buildRequestList(state),
+        ),
+      ],
+    );
+
+    if (widget.embedded) {
+      return content;
+    }
+
     return PreScaffold(
       title: l10n.my_solar_project_inquiries,
       floatingActionButton: FloatingActionButton.extended(
@@ -61,34 +96,7 @@ class _UserRequestsScreenState extends ConsumerState<UserRequestsScreen> {
         icon: const Icon(Iconsax.add),
         label: Text(l10n.add_new_request),
       ),
-      child: Column(
-        children: [
-          _buildFilterBar(),
-          if (state.error != null && state.userRequests.isNotEmpty)
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 8.h),
-              child: Material(
-                color: AppTheme.errorColor.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(16.r),
-                child: ListTile(
-                  leading: const Icon(Iconsax.warning_2, color: AppTheme.errorColor),
-                  title: Text(
-                    state.error!,
-                    style: TextStyle(fontSize: 12.sp, color: AppTheme.errorColor),
-                  ),
-                  trailing: TextButton(onPressed: _refetchData, child: Text(l10n.retry)),
-                ),
-              ),
-            ),
-          Expanded(
-            child: state.isLoading && state.userRequests.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : state.userRequests.isEmpty
-                ? _buildEmptyState(state.error)
-                : _buildRequestList(state),
-          ),
-        ],
-      ),
+      child: content,
     );
   }
 

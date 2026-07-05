@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -90,47 +89,47 @@ class ServiceStatusPage extends StatelessWidget {
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(30.r),
+          padding: EdgeInsets.all(30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo Container
               Container(
-                    padding: EdgeInsets.all(24.r),
+                    padding: EdgeInsets.all(24),
                     decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.1), shape: BoxShape.circle),
                     child: hasCustomIcon
                         ? WdImagePreview(imageUrl: iconUrl!, size: 64, shape: BoxShape.circle)
-                        : Icon(fallbackIcon, color: statusColor, size: 64.sp),
+                        : Icon(fallbackIcon, color: statusColor, size: 64),
                   )
                   .animate(onPlay: (controller) => controller.repeat())
                   .shimmer(duration: 3.seconds, color: statusColor.withValues(alpha: 0.2))
                   .shake(hz: 1, curve: Curves.easeInOut),
 
-              SizedBox(height: 40.h),
+              SizedBox(height: 40),
 
               Text(
                 title,
-                style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily, color: statusColor),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily, color: statusColor),
                 textAlign: TextAlign.center,
               ).animate().fadeIn(delay: 100.ms).moveY(begin: 15),
 
-              SizedBox(height: 16.h),
+              SizedBox(height: 16),
 
               Text(
                 description,
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
                 textAlign: TextAlign.center,
               ).animate().fadeIn(delay: 300.ms).moveY(begin: 15),
 
-              SizedBox(height: 12.h),
+              SizedBox(height: 12),
 
               Text(
                 subDescription,
-                style: TextStyle(fontSize: 14.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                style: TextStyle(fontSize: 14, color: Colors.grey, fontFamily: AppTheme.fontFamily),
                 textAlign: TextAlign.center,
               ).animate().fadeIn(delay: 500.ms).moveY(begin: 15),
 
-              SizedBox(height: 60.h),
+              SizedBox(height: 60),
 
               // Action Buttons
               SizedBox(
@@ -141,8 +140,8 @@ class ServiceStatusPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: statusColor == AppTheme.primaryColor ? statusColor : Colors.black87,
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                     ),
                   ),
@@ -151,7 +150,7 @@ class ServiceStatusPage extends StatelessWidget {
               ).animate().fadeIn(delay: 700.ms).scale(),
 
               if (status != null && status != 'null' && status!.isNotEmpty) ...[
-                SizedBox(height: 12.h),
+                SizedBox(height: 12),
                 TextButton(onPressed: () => context.pop(), child: Text(l10n.maybe_later)).animate().fadeIn(delay: 900.ms),
               ],
             ],
@@ -165,17 +164,17 @@ class ServiceStatusPage extends StatelessWidget {
     final l10n = AppLocalizations.of(pageContext)!;
     showModalBottomSheet(
       context: pageContext,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (sheetContext) => Padding(
-        padding: EdgeInsets.all(24.r),
+        padding: EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               l10n.contact_support,
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18.sp),
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 20),
             ListTile(
               leading: const Icon(Iconsax.direct_right, color: Colors.blue),
               title: Text(l10n.email_support),

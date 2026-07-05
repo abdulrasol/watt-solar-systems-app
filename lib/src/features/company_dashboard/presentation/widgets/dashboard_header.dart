@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -31,11 +30,11 @@ class DashboardHeader extends ConsumerWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, fontFamily: AppTheme.fontFamily),
                 ),
                 Text(
                   AppLocalizations.of(context)!.monitor_growth_subscriptions,
-                  style: TextStyle(color: Colors.grey, fontSize: 14.sp, fontFamily: AppTheme.fontFamily),
+                  style: TextStyle(color: Colors.grey, fontSize: 14, fontFamily: AppTheme.fontFamily),
                 ),
               ],
             ),
@@ -46,16 +45,16 @@ class DashboardHeader extends ConsumerWidget {
           Expanded(
             flex: 3,
             child: Container(
-              height: 45.h,
-              margin: EdgeInsets.symmetric(horizontal: 20.w),
-              decoration: BoxDecoration(color: Colors.grey.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12.r)),
+              height: 45,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(color: Colors.grey.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12)),
               child: TextField(
                 onChanged: (value) => ref.read(globalSearchProvider.notifier).setQuery(value),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.search,
                   prefixIcon: const Icon(Iconsax.search_normal_1, size: 18),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10),
                 ),
               ),
             ),
@@ -74,11 +73,11 @@ class DashboardHeader extends ConsumerWidget {
                 label: Text('Add', style: const TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
-              SizedBox(width: 16.w),
+              SizedBox(width: 16),
             ],
             Builder(
               builder: (context) {
@@ -90,9 +89,9 @@ class DashboardHeader extends ConsumerWidget {
                 );
               },
             ),
-            SizedBox(width: 12.w),
+            SizedBox(width: 12),
             IconButton(icon: const Icon(Iconsax.setting_2), onPressed: () => context.push('/settings')),
-            SizedBox(width: 16.w),
+            SizedBox(width: 16),
             _buildUserAvatar(ref),
           ],
         ),
@@ -103,19 +102,19 @@ class DashboardHeader extends ConsumerWidget {
   Widget _buildUserAvatar(WidgetRef ref) {
     final user = ref.watch(authProvider).user;
     return Container(
-      padding: EdgeInsets.all(2.r),
+      padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.2)),
       ),
       child: CircleAvatar(
-        radius: 18.r,
+        radius: 18,
         backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
         backgroundImage: user?.image != null ? NetworkImage(user!.image!) : null,
         child: user?.image == null
             ? Text(
                 user?.username.isNotEmpty == true ? user!.username[0].toUpperCase() : 'U',
-                style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.bold, fontSize: 14),
               )
             : null,
       ),

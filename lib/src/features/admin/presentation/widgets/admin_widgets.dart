@@ -28,10 +28,11 @@ class AdminErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: EdgeInsets.all(24.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: EdgeInsets.all(20.w),
@@ -76,24 +77,29 @@ class AdminLoadingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (icon != null) ...[
-            Container(
-              padding: EdgeInsets.all(20.r),
-              decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
-              child: Icon(icon, size: 40.sp, color: AppTheme.primaryColor),
-            ),
-            SizedBox(height: 24.h),
-          ] else
-            LoadingWidget(size: 80.sp),
-          Text(
-            message,
-            style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily, letterSpacing: 0.5),
+    return SingleChildScrollView(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.3),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null) ...[
+                Container(
+                  padding: EdgeInsets.all(20.r),
+                  decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+                  child: Icon(icon, size: 40.sp, color: AppTheme.primaryColor),
+                ),
+                SizedBox(height: 24.h),
+              ] else
+                LoadingWidget(size: 80.sp),
+              Text(
+                message,
+                style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily, letterSpacing: 0.5),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

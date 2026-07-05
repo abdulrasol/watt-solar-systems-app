@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
@@ -491,10 +490,10 @@ class _SubscriptionRequestBottomSheetState extends State<_SubscriptionRequestBot
     final isSubmitting = _submitting || widget.isSubmitting;
 
     return Container(
-      padding: EdgeInsets.only(left: 24.w, top: 24.h, right: 24.w, bottom: MediaQuery.of(context).viewInsets.bottom + 24.h),
+      padding: EdgeInsets.only(left: 24, top: 24, right: 24, bottom: MediaQuery.of(context).viewInsets.bottom + 24),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -503,51 +502,51 @@ class _SubscriptionRequestBottomSheetState extends State<_SubscriptionRequestBot
           children: [
             Text(
               l10n.company_subscription_request_cta,
-              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 8),
             Text(
               widget.plan.name,
-              style: TextStyle(fontSize: 14.sp, color: Theme.of(context).hintColor, fontFamily: AppTheme.fontFamily),
+              style: TextStyle(fontSize: 14, color: Theme.of(context).hintColor, fontFamily: AppTheme.fontFamily),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 20),
             TextFormField(
               controller: _notesController,
               maxLines: 4,
               decoration: InputDecoration(labelText: l10n.company_subscription_notes, border: const OutlineInputBorder()),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 16),
             Text(
               l10n.company_subscription_image_optional,
               style: const TextStyle(fontFamily: AppTheme.fontFamily, fontWeight: FontWeight.w700),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 8),
             InkWell(
               onTap: _showSourceDialog,
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(12),
               child: Container(
-                height: 130.h,
+                height: 130,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey.withValues(alpha: 0.25)),
                 ),
                 child: _image == null
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Iconsax.image, size: 34.sp, color: Colors.grey),
-                          SizedBox(height: 8.h),
+                          Icon(Iconsax.image, size: 34, color: Colors.grey),
+                          SizedBox(height: 8),
                           Text(l10n.upload_logo),
                         ],
                       )
                     : ClipRRect(
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(12),
                         child: Image.file(_image!, fit: BoxFit.cover),
                       ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(

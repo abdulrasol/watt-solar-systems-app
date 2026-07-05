@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
+import 'package:solar_hub/src/core/theme/app_colors.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_header_card.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_service_card.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_workspace_stat_card.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/financial_summary_card.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/overview/overview_cta_card.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/overview/overview_section_title.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/overview/overview_services_grid.dart';
+import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/overview/overview_stats_grid.dart';
 
+/// Company dashboard overview landing page.
 class CompanyDashboardOverviewScreen extends ConsumerWidget {
   const CompanyDashboardOverviewScreen({super.key});
 
@@ -23,156 +24,54 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
     final state = ref.watch(companySummaryProvider);
     final authState = ref.watch(authProvider);
     final l10n = AppLocalizations.of(context)!;
+    final colors = ref.watch(appColorsProvider);
     final summary = state.summary;
     final company = authState.company;
 
-    return CompanyPageScaffold(
-      child: Stack(
-        children: [
-          if (state.isError && summary == null)
-            AdminErrorState(error: l10n.error_loading_data, onRetry: () => ref.read(companySummaryProvider.notifier).getSummary())
-          else if (summary == null && state.isLoading)
-            const AdminLoadingState(icon: Iconsax.buildings_2, message: 'Loading company workspace...')
-          else
-            SingleChildScrollView(
-              padding: AppBreakpoints.pagePadding(context),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (company != null) ...[
-                        CompanyWorkspaceHeaderCard(company: company, onEditPressed: () => context.push('/auth/company_registration')),
-                        const SizedBox(height: 24),
-                      ],
-                      _SectionTitle(title: l10n.quick_stats, subtitle: l10n.monitor_growth_subscriptions),
-                      const SizedBox(height: 16),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          final width = constraints.maxWidth;
-                          final columns = width >= 1180
-                              ? 5
-                              : width >= 760
-                              ? 3
-                              : 2;
+    if (state.isError && summary == null) {
+      return AdminErrorState(
+        error: l10n.error_loading_data,
+        onRetry: () => ref.read(companySummaryProvider.notifier).getSummary(),
+      );
+    }
 
-                          return GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: columns,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                            childAspectRatio: columns == 2 ? 1 : 1.5,
-                            children: [
-                              CompanyWorkspaceStatCard(title: l10n.members, value: '${summary?.members ?? 0}', icon: Iconsax.people, color: Colors.blue),
-                              CompanyWorkspaceStatCard(title: l10n.orders, value: '${summary?.orders ?? 0}', icon: Iconsax.shopping_cart, color: Colors.green),
-                              CompanyWorkspaceStatCard(title: l10n.offers, value: '${summary?.offers ?? 0}', icon: Iconsax.document, color: Colors.orange),
-                              CompanyWorkspaceStatCard(title: l10n.contacts, value: '${summary?.contactsCount ?? 0}', icon: Iconsax.call, color: Colors.purple),
-                            ],
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 28),
-                      _SectionTitle(title: l10n.services, subtitle: l10n.ready_to_scale_business),
-                      const SizedBox(height: 16),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          final width = constraints.maxWidth;
-                          final services = [...?summary?.services];
-                          final preview = services.take(width >= 1100 ? 4 : 2).toList();
-                          if (preview.isEmpty) {
-                            return AdminEmptyState(icon: Iconsax.category, title: l10n.services, subtitle: l10n.section_label(l10n.services));
-                          }
+    if (summary == null && state.isLoading) {
+      return const AdminLoadingState(icon: Iconsax.buildings_2, message: 'Loading company workspace...');
+    }
 
-                          final columns = width >= 1180
-                              ? 5
-                              : width >= 760
-                              ? 3
-                              : 2;
-
-                          return GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: preview.length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: columns,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                              childAspectRatio: columns == 2 ? 0.6.h : 0.98,
-                            ),
-                            itemBuilder: (context, index) {
-                              return CompanyWorkspaceServiceCard(
-                                service: preview[index],
-                                companyId: company?.id,
-                                canManageActions: company?.canManageWorkspace ?? false,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 28),
-                      const FinancialSummaryCard(),
-                      const SizedBox(height: 28),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.08)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(Iconsax.chart_2, color: AppTheme.primaryColor, size: 32),
-                            const SizedBox(height: 14),
-                            Text(
-                              l10n.ready_to_scale_business,
-                              style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 20, fontWeight: FontWeight.w800),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              l10n.monitor_growth_subscriptions,
-                              style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 13, height: 1.5, color: Theme.of(context).hintColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+    return RefreshIndicator(
+      color: colors.primary,
+      backgroundColor: colors.surface,
+      onRefresh: () async => ref.read(companySummaryProvider.notifier).getSummary(),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: AppBreakpoints.contentMaxWidth(context)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (company != null) ...[
+                  CompanyWorkspaceHeaderCard(company: company, onEditPressed: () => context.push('/auth/company_registration')),
+                  const SizedBox(height: 24),
+                ],
+                OverviewSectionTitle(title: l10n.quick_stats, subtitle: l10n.monitor_growth_subscriptions),
+                const SizedBox(height: 16),
+                OverviewStatsGrid(summary: summary),
+                const SizedBox(height: 28),
+                OverviewSectionTitle(title: l10n.services, subtitle: l10n.ready_to_scale_business),
+                const SizedBox(height: 16),
+                OverviewServicesGrid(summary: summary, company: company),
+                const SizedBox(height: 28),
+                const FinancialSummaryCard(),
+                const SizedBox(height: 28),
+                const OverviewCTACard(),
+                const SizedBox(height: 24),
+              ],
             ),
-          if (state.isLoading && summary != null)
-            const Positioned(top: 16, right: 16, child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))),
-        ],
+          ),
+        ),
       ),
-    );
-  }
-}
-
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.title, required this.subtitle});
-
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 18, fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          subtitle,
-          style: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 13, color: Theme.of(context).hintColor),
-        ),
-      ],
     );
   }
 }

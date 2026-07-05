@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/features/accounting/presentation/providers/accounting_providers.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
@@ -30,20 +29,20 @@ class OrderDistributionChart extends ConsumerWidget {
 
     if (accountingState.isLoading && overview == null) {
       return Container(
-        height: 300.h,
-        padding: EdgeInsets.all(20.r),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
+        height: 300,
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
         child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       );
     }
 
     if (total <= 0) {
       return Container(
-        height: 300.h,
-        padding: EdgeInsets.all(20.r),
+        height: 300,
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
         ),
         child: Column(
@@ -51,16 +50,16 @@ class OrderDistributionChart extends ConsumerWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.order_status,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700, fontFamily: AppTheme.fontFamily),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, fontFamily: AppTheme.fontFamily),
             ),
             Expanded(
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.pie_chart_outline_rounded, size: 40.sp, color: Colors.grey.withValues(alpha: 0.4)),
-                    SizedBox(height: 8.h),
-                    Text(l10n.no_data_available, style: TextStyle(fontSize: 12.sp, color: Colors.grey), textAlign: TextAlign.center),
+                    Icon(Icons.pie_chart_outline_rounded, size: 40, color: Colors.grey.withValues(alpha: 0.4)),
+                    SizedBox(height: 8),
+                    Text(l10n.no_data_available, style: TextStyle(fontSize: 12, color: Colors.grey), textAlign: TextAlign.center),
                   ],
                 ),
               ),
@@ -71,11 +70,11 @@ class OrderDistributionChart extends ConsumerWidget {
     }
 
     return Container(
-      height: 300.h,
-      padding: EdgeInsets.all(20.r),
+      height: 300,
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -90,12 +89,12 @@ class OrderDistributionChart extends ConsumerWidget {
           Text(
             AppLocalizations.of(context)!.order_status,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 16,
               fontWeight: FontWeight.w700,
               fontFamily: AppTheme.fontFamily,
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 20),
           Expanded(
             child: PieChart(
               PieChartData(
@@ -127,9 +126,9 @@ class OrderDistributionChart extends ConsumerWidget {
               ),
             ),
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 10),
           Wrap(
-            spacing: 16.w,
+            spacing: 16,
             children: [
               _buildLegend(l10n.invoices, Colors.blue),
               _buildLegend(l10n.bills, Colors.green),
@@ -145,9 +144,9 @@ class OrderDistributionChart extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(width: 10.w, height: 10.w, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-        SizedBox(width: 4.w),
-        Text(label, style: TextStyle(fontSize: 10.sp, color: Colors.grey)),
+        Container(width: 10, height: 10, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        SizedBox(width: 4),
+        Text(label, style: TextStyle(fontSize: 10, color: Colors.grey)),
       ],
     );
   }

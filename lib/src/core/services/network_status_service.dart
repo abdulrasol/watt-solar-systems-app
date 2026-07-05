@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -34,10 +35,18 @@ class NetworkStatusService extends ChangeNotifier {
 
   bool isConnectivityError(Object error) {
     if (error is DioException) {
-      return error.type == DioExceptionType.connectionError ||
+      if (error.type == DioExceptionType.connectionError ||
           error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.receiveTimeout ||
-          error.type == DioExceptionType.sendTimeout;
+          error.type == DioExceptionType.sendTimeout) {
+        return true;
+      }
+      if (error.error is SocketException) {
+        return true;
+      }
+    }
+    if (error is SocketException) {
+      return true;
     }
     return false;
   }

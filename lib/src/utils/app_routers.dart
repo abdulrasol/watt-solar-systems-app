@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
 import 'package:solar_hub/src/core/navigation/app_navigation.dart';
 import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
+import 'package:solar_hub/src/core/flags/feature_flags.dart';
+import 'package:solar_hub/src/utils/helper_methods.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_shell.dart';
 import 'package:solar_hub/src/features/calculations/presentation/screens/fast_calculator.dart';
 import 'package:solar_hub/src/shared/domain/service_type.dart';
@@ -41,6 +43,11 @@ import 'package:solar_hub/src/features/admin/presentation/screens/admin_users_sc
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_subscription_plans_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_products_screen.dart';
 import 'package:solar_hub/src/features/admin/presentation/screens/admin_systems_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_offers_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_company_types_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_subscription_requests_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_company_inspector_screen.dart';
+import 'package:solar_hub/src/features/admin/presentation/screens/admin_api_lab_screen.dart';
 import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/add_product_page.dart';
 import 'package:solar_hub/src/features/inventory/presentation/screens/product_details_page.dart';
@@ -79,6 +86,9 @@ import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_
 import 'package:solar_hub/src/features/services/presentation/screens/company_details_screen.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/companies_screen.dart';
 import 'package:solar_hub/src/features/services/presentation/screens/services_explorer_screen.dart';
+import 'package:solar_hub/src/features/posters/presentation/screens/admin/admin_posters_screen.dart';
+import 'package:solar_hub/src/features/posters/presentation/screens/company/company_posters_screen.dart';
+import 'package:solar_hub/src/features/posters/presentation/screens/company/poster_create_screen.dart';
 
 // Create a globally accessible provider for the GoRouter
 final routerProvider = Provider<GoRouter>((ref) {
@@ -93,7 +103,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: refreshListenable,
     redirect: (BuildContext context, GoRouterState state) {
       final authState = ref.read(authProvider);
-      return appRedirectForRoute(state.uri.path, authState);
+      return appRedirectForRoute(state.uri.path, authState, ref);
     },
     routes: <RouteBase>[
       GoRoute(
@@ -112,6 +122,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/home',
         builder: (BuildContext context, GoRouterState state) {
           return const Home();
+        },
+      ),
+      GoRoute(
+        path: '/feature-unavailable',
+        builder: (BuildContext context, GoRouterState state) {
+          return const _RouteRequirementPage(
+            title: 'Feature Unavailable',
+            message: 'This feature is currently disabled or unavailable.',
+          );
         },
       ),
       GoRoute(
@@ -183,87 +202,224 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
-            path: '/companies/dashboard/service-types',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyDashboardServiceTypesScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/members',
-            builder: (BuildContext context, GoRouterState state) {
-              return const MembersPage();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/contacts',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyDashboardContactsScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/public-services',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyDashboardPublicServicesScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/categories',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyDashboardCategoriesScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/orders',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyOrdersScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/orders/:id',
-            builder: (BuildContext context, GoRouterState state) {
-              final authState = ref.read(authProvider);
-              final id = int.tryParse(state.pathParameters['id'] ?? '');
-              if (id == null || authState.company?.id == null) {
-                return const _RouteRequirementPage(title: 'Order Unavailable', message: 'This order link is invalid or requires a company workspace session.');
-              }
-              return OrderDetailScreen(orderId: id, companyId: authState.company?.id, sellerView: true);
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/customers',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyCustomersScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/suppliers',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanySuppliersScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/accounting',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AccountingScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/delivery',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyDashboardDeliveryScreen();
-            },
-          ),
-          GoRoute(
-            path: '/companies/dashboard/expenses',
-            builder: (BuildContext context, GoRouterState state) {
-              return const CompanyDashboardExpensesScreen();
-            },
-          ),
-          GoRoute(
             path: '/companies/dashboard/systems',
             builder: (BuildContext context, GoRouterState state) {
               return const CompanyDashboardSystemsScreen();
             },
+          ),
+
+          // Legacy flat redirects to nested routes for backwards compatibility.
+          GoRoute(path: '/companies/dashboard/accounting', redirect: (context, state) => '/companies/dashboard/finance/accounting'),
+          GoRoute(path: '/companies/dashboard/delivery', redirect: (context, state) => '/companies/dashboard/orders/delivery'),
+          GoRoute(path: '/companies/dashboard/expenses', redirect: (context, state) => '/companies/dashboard/finance/expenses'),
+          GoRoute(path: '/companies/dashboard/categories', redirect: (context, state) => '/companies/dashboard/inventory/categories'),
+          GoRoute(path: '/companies/dashboard/customers', redirect: (context, state) => '/companies/dashboard/sales/customers'),
+          GoRoute(path: '/companies/dashboard/suppliers', redirect: (context, state) => '/companies/dashboard/inventory/suppliers'),
+          GoRoute(path: '/companies/dashboard/contacts', redirect: (context, state) => '/companies/dashboard/settings/contacts'),
+          GoRoute(path: '/companies/dashboard/public-services', redirect: (context, state) => '/companies/dashboard/settings/public-services'),
+          GoRoute(path: '/companies/dashboard/service-types', redirect: (context, state) => '/companies/dashboard/settings/service-types'),
+          GoRoute(path: '/companies/dashboard/members', redirect: (context, state) => '/companies/dashboard/settings/members'),
+
+          // Sales section
+          GoRoute(
+            path: '/companies/dashboard/sales',
+            redirect: (context, state) => state.uri.path == '/companies/dashboard/sales' ? '/companies/dashboard/sales/offers' : null,
+            routes: [
+              GoRoute(
+                path: 'offers',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyOffersHub(embedded: true);
+                },
+              ),
+              GoRoute(
+                path: 'requests',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const UserRequestsScreen(embedded: true);
+                },
+              ),
+              GoRoute(
+                path: 'customers',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyCustomersScreen(embedded: true);
+                },
+              ),
+            ],
+          ),
+
+          // Inventory section
+          GoRoute(
+            path: '/companies/dashboard/inventory',
+            redirect: (context, state) => state.uri.path == '/companies/dashboard/inventory' ? '/companies/dashboard/inventory/products' : null,
+            routes: [
+              GoRoute(
+                path: 'products',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const InventoryPage(embedded: true);
+                },
+              ),
+              GoRoute(
+                path: 'categories',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyDashboardCategoriesScreen();
+                },
+              ),
+              GoRoute(
+                path: 'suppliers',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanySuppliersScreen(embedded: true);
+                },
+              ),
+            ],
+          ),
+
+          // Orders & Logistics section
+          GoRoute(
+            path: '/companies/dashboard/orders',
+            redirect: (context, state) => state.uri.path == '/companies/dashboard/orders' ? '/companies/dashboard/orders/list' : null,
+            routes: [
+              GoRoute(
+                path: 'list',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyOrdersScreen(embedded: true);
+                },
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (BuildContext context, GoRouterState state) {
+                      final authState = ref.read(authProvider);
+                      final id = int.tryParse(state.pathParameters['id'] ?? '');
+                      if (id == null || authState.company?.id == null) {
+                        return const _RouteRequirementPage(
+                          title: 'Order Unavailable',
+                          message: 'This order link is invalid or requires a company workspace session.',
+                        );
+                      }
+                      return OrderDetailScreen(orderId: id, companyId: authState.company?.id, sellerView: true);
+                    },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'delivery',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyDashboardDeliveryScreen();
+                },
+              ),
+            ],
+          ),
+
+          // Legacy redirect for company works (moved to Content & Ads section).
+          GoRoute(path: '/companies/dashboard/orders/works', redirect: (_, state) => '/companies/dashboard/content/works'),
+
+          // Legacy order-detail redirect (placed after the orders section so it
+          // doesn't steal matches from /companies/dashboard/orders/list).
+          GoRoute(path: '/companies/dashboard/orders/:id', redirect: (_, state) => '/companies/dashboard/orders/list/${state.pathParameters['id']}'),
+
+          // Content & Ads section
+          GoRoute(
+            path: '/companies/dashboard/content',
+            redirect: (context, state) => state.uri.path == '/companies/dashboard/content' ? '/companies/dashboard/content/works' : null,
+            routes: [
+              GoRoute(
+                path: 'works',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyWorkPage(embedded: true);
+                },
+                routes: [
+                  GoRoute(
+                    path: 'add',
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const CompanyWorkFormPage(embedded: true);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'edit/:id',
+                    builder: (BuildContext context, GoRouterState state) {
+                      final work = state.extra is CompanyWork ? state.extra as CompanyWork : null;
+                      return CompanyWorkFormPage(embedded: true, work: work);
+                    },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'posters',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyPostersScreen(embedded: true);
+                },
+                routes: [
+                  GoRoute(
+                    path: 'create',
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const PosterCreateScreen(embedded: true);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'edit/:id',
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const PosterCreateScreen(embedded: true);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          // Finance section
+          GoRoute(
+            path: '/companies/dashboard/finance',
+            redirect: (context, state) => state.uri.path == '/companies/dashboard/finance' ? '/companies/dashboard/finance/expenses' : null,
+            routes: [
+              GoRoute(
+                path: 'expenses',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyDashboardExpensesScreen();
+                },
+              ),
+              GoRoute(
+                path: 'accounting',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const AccountingScreen(embedded: true);
+                },
+              ),
+            ],
+          ),
+
+          // Settings section
+          GoRoute(
+            path: '/companies/dashboard/settings',
+            redirect: (context, state) => state.uri.path == '/companies/dashboard/settings' ? '/companies/dashboard/settings/profile' : null,
+            routes: [
+              GoRoute(
+                path: 'members',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const MembersPage(embedded: true);
+                },
+              ),
+              GoRoute(
+                path: 'contacts',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyDashboardContactsScreen();
+                },
+              ),
+              GoRoute(
+                path: 'public-services',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyDashboardPublicServicesScreen();
+                },
+              ),
+              GoRoute(
+                path: 'service-types',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyDashboardServiceTypesScreen();
+                },
+              ),
+              GoRoute(
+                path: 'profile',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const CompanyRegistrationPage(embedded: true);
+                },
+              ),
+            ],
           ),
         ],
       ),
@@ -340,91 +496,54 @@ final routerProvider = Provider<GoRouter>((ref) {
               return const AdminDashboard();
             },
           ),
-          GoRoute(
-            path: '/admin/feedbacks',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminFeedbacksScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/configs',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AppConfigsScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/send-notification',
-            builder: (BuildContext context, GoRouterState state) {
-              return const SendNotificationScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/companies',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminCompaniesScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/companies/:id',
-            builder: (BuildContext context, GoRouterState state) {
-              final id = int.parse(state.pathParameters['id']!);
-              return AdminCompanyDetailsScreen(companyId: id);
-            },
-          ),
-          GoRoute(
-            path: '/admin/service-catalog',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminServiceCatalogScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/service-types',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminServiceTypesScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/currencies',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminCurrencyScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/categories',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminCategoriesScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/address',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminAddressScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/users',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminUsersScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/subscriptions',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminSubscriptionPlansScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/products',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminProductsScreen();
-            },
-          ),
-          GoRoute(
-            path: '/admin/systems',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AdminSystemsScreen();
-            },
-          ),
+
+          // ── Admin Core ──
+          GoRoute(path: '/admin/core/configs', builder: (context, state) => const AppConfigsScreen()),
+          GoRoute(path: '/admin/core/users', builder: (context, state) => const AdminUsersScreen()),
+          GoRoute(path: '/admin/core/countries', builder: (context, state) => const AdminAddressScreen()),
+          GoRoute(path: '/admin/core/cities', builder: (context, state) => const AdminAddressScreen()),
+          GoRoute(path: '/admin/core/currencies', builder: (context, state) => const AdminCurrencyScreen()),
+          GoRoute(path: '/admin/core/subscriptions', builder: (context, state) => const AdminSubscriptionPlansScreen()),
+          GoRoute(path: '/admin/core/categories', builder: (context, state) => const AdminCategoriesScreen()),
+
+          // ── Company Admin ──
+          GoRoute(path: '/admin/companies', builder: (context, state) => const AdminCompaniesScreen()),
+          GoRoute(path: '/admin/companies/:id', builder: (context, state) {
+            final id = int.parse(state.pathParameters['id']!);
+            return AdminCompanyDetailsScreen(companyId: id);
+          }),
+          GoRoute(path: '/admin/company-types', builder: (context, state) => const AdminCompanyTypesScreen()),
+          GoRoute(path: '/admin/service-types', builder: (context, state) => const AdminServiceTypesScreen()),
+          GoRoute(path: '/admin/inspector', builder: (context, state) => const AdminCompanyInspectorScreen()),
+          GoRoute(path: '/admin/inspector/details', redirect: (context, state) => '/admin/inspector'),
+          GoRoute(path: '/admin/inspector/services', redirect: (context, state) => '/admin/inspector'),
+          GoRoute(path: '/admin/subscription-requests', builder: (context, state) => const AdminSubscriptionRequestsScreen()),
+          GoRoute(path: '/admin/service-catalog', builder: (context, state) => const AdminServiceCatalogScreen()),
+
+          // ── Operations ──
+          GoRoute(path: '/admin/ops/systems', builder: (context, state) => const AdminSystemsScreen()),
+          GoRoute(path: '/admin/ops/notifications', builder: (context, state) => const SendNotificationScreen()),
+          GoRoute(path: '/admin/ops/feedbacks', builder: (context, state) => const AdminFeedbacksScreen()),
+          GoRoute(path: '/admin/ops/offers', builder: (context, state) => const AdminOffersScreen()),
+          GoRoute(path: '/admin/ops/posters', builder: (context, state) => const AdminPostersScreen()),
+
+          // ── Commerce ──
+          GoRoute(path: '/admin/commerce/products', builder: (context, state) => const AdminProductsScreen()),
+
+          // ── Tools ──
+          GoRoute(path: '/admin/tools/api-lab', builder: (context, state) => const AdminApiLabScreen()),
+
+          // ── Legacy Redirects (old flat routes → new nested routes) ──
+          GoRoute(path: '/admin/feedbacks', redirect: (context, state) => '/admin/ops/feedbacks'),
+          GoRoute(path: '/admin/configs', redirect: (context, state) => '/admin/core/configs'),
+          GoRoute(path: '/admin/send-notification', redirect: (context, state) => '/admin/ops/notifications'),
+          GoRoute(path: '/admin/currencies', redirect: (context, state) => '/admin/core/currencies'),
+          GoRoute(path: '/admin/categories', redirect: (context, state) => '/admin/core/categories'),
+          GoRoute(path: '/admin/address', redirect: (context, state) => '/admin/core/countries'),
+          GoRoute(path: '/admin/users', redirect: (context, state) => '/admin/core/users'),
+          GoRoute(path: '/admin/subscriptions', redirect: (context, state) => '/admin/core/subscriptions'),
+          GoRoute(path: '/admin/products', redirect: (context, state) => '/admin/commerce/products'),
+          GoRoute(path: '/admin/systems', redirect: (context, state) => '/admin/ops/systems'),
         ],
       ),
       GoRoute(
@@ -523,7 +642,11 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 });
 
-String? appRedirectForRoute(String path, AuthState authState) {
+String? appRedirectForRoute(String path, AuthState authState, [dynamic ref]) {
+  if (ref != null && _isFeatureDisabledForRoute(path, ref)) {
+    return '/feature-unavailable';
+  }
+
   if (routeRequiresAdmin(path) && !authState.isSuperUser) {
     return authState.isSigned ? '/home' : '/auth?redirect_to=$path';
   }
@@ -543,11 +666,47 @@ String? appRedirectForRoute(String path, AuthState authState) {
     }
   }
 
+  if (path.startsWith('/companies/dashboard/content/works/')) {
+    final projectsValue = authState.company?.permissions?.projects;
+    if (projectsValue == 'none' || projectsValue == null) {
+      return '/home';
+    }
+
+    if ((path == '/companies/dashboard/content/works/add' || path.startsWith('/companies/dashboard/content/works/edit/')) && projectsValue != 'write') {
+      return '/companies/dashboard/content/works';
+    }
+  }
+
   if (routeRequiresAuthenticatedUser(path) && !authState.isSigned) {
     return '/auth?redirect_to=$path';
   }
 
   return null;
+}
+
+bool _isFeatureDisabledForRoute(String path, Ref ref) {
+  // Global
+  if ((path == '/auth' || path.startsWith('/auth/')) && !isFeatureEnabled(ref, AppFeature.auth)) return true;
+  if (path == '/notifications' && !isFeatureEnabled(ref, AppFeature.notifications)) return true;
+  if (path == '/feedback' && !isFeatureEnabled(ref, AppFeature.feedback)) return true;
+  
+  // Dashboard & Calculators
+  if ((path == '/user-requests' || path.startsWith('/user-requests/')) && !isFeatureEnabled(ref, AppFeature.userRequests)) return true;
+  if (path == '/calculator/structure-design' && !isFeatureEnabled(ref, AppFeature.calculatorStructure)) return true;
+  if (path == '/calculator/roof-simulator' && !isFeatureEnabled(ref, AppFeature.calculatorRoof)) return true;
+  if (path == '/calculator/pv-system-designer' && !isFeatureEnabled(ref, AppFeature.calculatorPv)) return true;
+  if (path == '/calculator/fast-calculator' && !isFeatureEnabled(ref, AppFeature.calculatorFast)) return true;
+  if ((path == '/storefront' || path.startsWith('/storefront/')) && !isFeatureEnabled(ref, AppFeature.store, defaultValue: false)) return true;
+  if ((path == '/services' || path.startsWith('/services/')) && !isFeatureEnabled(ref, AppFeature.services)) return true;
+  
+  // Company Dashboard
+  if (path.startsWith('/companies/dashboard/sales') && !isFeatureEnabled(ref, AppFeature.companySales)) return true;
+  if (path.startsWith('/companies/dashboard/inventory') && !isFeatureEnabled(ref, AppFeature.companyInventory)) return true;
+  if (path.startsWith('/companies/dashboard/orders') && !isFeatureEnabled(ref, AppFeature.companyOrders)) return true;
+  if (path.startsWith('/companies/dashboard/content') && !isFeatureEnabled(ref, AppFeature.companyContent)) return true;
+  if (path.startsWith('/companies/dashboard/finance') && !isFeatureEnabled(ref, AppFeature.companyFinance)) return true;
+
+  return false;
 }
 
 // `/admin-marketplace` used to be excluded from this check (it doesn't

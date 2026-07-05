@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/src/features/admin/domain/models/admin_global_category.dart';
 import 'package:solar_hub/src/features/admin/presentation/controllers/admin_categories_controller.dart';
+import 'package:solar_hub/src/features/admin/presentation/widgets/admin_content_layout.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
 import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -40,74 +40,94 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(adminCategoriesProvider);
-
     return AdminPageScaffold(
-      child: Column(
-        children: [
-          _buildHeader(),
-          Expanded(
-            child: state.isLoading
-                ? const AdminLoadingState(message: 'Loading Categories...')
-                : state.error != null && state.categories.isEmpty
-                ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true))
-                : RefreshIndicator(
-                    onRefresh: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true),
-                    child: state.categories.isEmpty
-                        ? const AdminEmptyState(icon: Iconsax.category, title: 'No Categories', subtitle: 'Add a global category to get started')
-                        : ListView.builder(
-                            controller: _scrollController,
-                            padding: EdgeInsets.all(20.w),
-                            itemCount: state.categories.length + (state.isMoreLoading ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index == state.categories.length) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                                  child: const Center(child: CircularProgressIndicator()),
-                                );
-                              }
-                              return _CategoryCard(category: state.categories[index]);
-                            },
-                          ),
+      actions: [
+        FilledButton.icon(
+          onPressed: () => _showCategoryDialog(),
+          icon: const Icon(Iconsax.add),
+          label: const Text('Add'),
+        ),
+      ],
+      child: Builder(builder: (context) {
+        final layout = AdminLayoutScope.of(context);
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(layout.padding, 16, layout.padding, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Global Categories',
+                          style: TextStyle(fontSize: layout.isMobile ? 20 : 24, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'System-wide product/service categories',
+                          style: TextStyle(fontSize: 13, color: Colors.grey, fontFamily: AppTheme.fontFamily),
+                        ),
+                      ],
+                    ),
                   ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Global Categories',
-                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: AppTheme.fontFamily),
-                ),
-                Text(
-                  'System-wide product/service categories',
-                  style: TextStyle(fontSize: 13.sp, color: Colors.grey, fontFamily: AppTheme.fontFamily),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          ElevatedButton.icon(
-            onPressed: () => _showCategoryDialog(),
-            icon: Icon(Icons.add, size: 20.sp),
-            label: const Text('Add New'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+            const SizedBox(height: 16),
+            Expanded(
+              child: state.isLoading
+                  ? const AdminLoadingState(message: 'Loading Categories...')
+                  : state.error != null && state.categories.isEmpty
+                  ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true))
+                  : RefreshIndicator(
+                      onRefresh: () => ref.read(adminCategoriesProvider.notifier).fetchCategories(isRefresh: true),
+                      child: state.categories.isEmpty
+                          ? const AdminEmptyState(icon: Iconsax.category, title: 'No Categories', subtitle: 'Add a global category to get started')
+                          : LayoutBuilder(
+                              builder: (context, constraints) {
+                                final width = constraints.maxWidth;
+                                final columns = layout.isDesktop ? 3 : width >= 600 ? 2 : 1;
+  
+                                if (columns == 1) {
+                                  return ListView.builder(
+                                    controller: _scrollController,
+                                    padding: EdgeInsets.fromLTRB(layout.padding, 0, layout.padding, 24),
+                                    itemCount: state.categories.length + (state.isMoreLoading ? 1 : 0),
+                                    itemBuilder: (context, index) {
+                                      if (index == state.categories.length) {
+                                        return const Padding(padding: EdgeInsets.all(16), child: Center(child: CircularProgressIndicator()));
+                                      }
+                                      return _CategoryCard(category: state.categories[index]);
+                                    },
+                                  );
+                                }
+  
+                                return GridView.builder(
+                                  controller: _scrollController,
+                                  padding: EdgeInsets.fromLTRB(layout.padding, 0, layout.padding, 24),
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: columns,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                    childAspectRatio: columns >= 3 ? 1.6 : 2.0,
+                                  ),
+                                  itemCount: state.categories.length + (state.isMoreLoading ? 1 : 0),
+                                  itemBuilder: (context, index) {
+                                    if (index == state.categories.length) {
+                                      return const Center(child: CircularProgressIndicator());
+                                    }
+                                    return _CategoryCard(category: state.categories[index]);
+                                  },
+                                );
+                              },
+                            ),
+                    ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
@@ -128,36 +148,36 @@ class _CategoryCard extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(16.w),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1)),
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: Row(
         children: [
           Container(
-            width: 50.w,
-            height: 50.w,
-            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12.r)),
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
             child: Center(
               child: category.icon != null && category.icon!.isNotEmpty
                   ? Image.network(
                       category.icon!,
-                      width: 30.w,
-                      height: 30.w,
-                      errorBuilder: (context, error, stackTrace) => Icon(Iconsax.category, color: AppTheme.primaryColor, size: 24.sp),
+                      width: 30,
+                      height: 30,
+                      errorBuilder: (context, error, stackTrace) => const Icon(Iconsax.category, color: AppTheme.primaryColor, size: 24),
                     )
-                  : Icon(Iconsax.category, color: AppTheme.primaryColor, size: 24.sp),
+                  : const Icon(Iconsax.category, color: AppTheme.primaryColor, size: 24),
             ),
           ),
-          SizedBox(width: 16.w),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               category.name,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           PopupMenuButton<String>(

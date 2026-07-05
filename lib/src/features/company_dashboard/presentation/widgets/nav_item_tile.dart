@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
 import 'package:solar_hub/src/features/company_dashboard/presentation/models/nav_item.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
@@ -36,8 +35,8 @@ class _NavItemTileState extends State<NavItemTile> {
     final content = AnimatedContainer(
       duration: 200.ms,
       padding: EdgeInsets.symmetric(
-        horizontal: widget.isCollapsed ? 0 : 16.w,
-        vertical: 12.h,
+        horizontal: widget.isCollapsed ? 0 : 16,
+        vertical: 12,
       ),
       decoration: BoxDecoration(
         color: widget.isSelected
@@ -45,7 +44,7 @@ class _NavItemTileState extends State<NavItemTile> {
             : _isHovered
                 ? AppTheme.primaryColor.withValues(alpha: 0.1)
                 : Colors.transparent,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: widget.isSelected
             ? [
                 BoxShadow(
@@ -74,10 +73,10 @@ class _NavItemTileState extends State<NavItemTile> {
                   : _isHovered
                       ? AppTheme.primaryColor
                       : Colors.grey.shade600,
-              size: 20.sp,
+              size: 20,
             ),
           if (!widget.isCollapsed) ...[
-            SizedBox(width: 12.w),
+            SizedBox(width: 12),
             Expanded(
               child: Text(
                 widget.item.label,
@@ -88,7 +87,7 @@ class _NavItemTileState extends State<NavItemTile> {
                           ? AppTheme.primaryColor
                           : Colors.grey.shade700,
                   fontWeight: widget.isSelected ? FontWeight.w700 : FontWeight.w500,
-                  fontSize: 14.sp,
+                  fontSize: 14,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -100,7 +99,7 @@ class _NavItemTileState extends State<NavItemTile> {
     );
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 8.h),
+      padding: EdgeInsets.only(bottom: 8),
       child: MouseRegion(
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
@@ -108,21 +107,21 @@ class _NavItemTileState extends State<NavItemTile> {
           message: widget.isCollapsed ? widget.item.label : '',
           child: InkWell(
             onTap: widget.onTap,
-            borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
             hoverColor: Colors.transparent,
             splashColor: AppTheme.primaryColor.withValues(alpha: 0.1),
             child: Row(
               children: [
                 AnimatedContainer(
                   duration: 200.ms,
-                  width: widget.isSelected ? 4.w : 0,
-                  height: 24.h,
+                  width: widget.isSelected ? 4 : 0,
+                  height: 24,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(2.r),
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                if (widget.isSelected) SizedBox(width: 4.w),
+                if (widget.isSelected) SizedBox(width: 4),
                 Expanded(child: content),
               ],
             ),

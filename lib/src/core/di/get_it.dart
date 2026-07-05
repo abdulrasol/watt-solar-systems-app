@@ -32,6 +32,7 @@ import 'package:solar_hub/src/services/pdf_service.dart';
 
 import 'package:solar_hub/src/features/inventory/data/data_sources/inventory_remote_data_source.dart';
 import 'package:solar_hub/src/features/inventory/data/repositories/inventory_repository_impl.dart';
+import 'package:solar_hub/src/features/posters/data/data_sources/poster_remote_data_source.dart';
 import 'package:solar_hub/src/features/company_work/data/data_sources/company_work_remote_data_source.dart';
 import 'package:solar_hub/src/features/company_work/data/repositories/company_work_repository_impl.dart';
 import 'package:solar_hub/src/features/company_dashboard/data/data_sources/company_management_remote_data_source.dart';
@@ -313,6 +314,11 @@ void setupDependencies() {
   getIt.registerLazySingleton<AccountingRepository>(() {
     dPrint('init accounting repository', tag: 'getIt');
     return AccountingRepositoryImpl(getIt<AccountingRemoteDataSource>());
+  });
+
+  getIt.registerLazySingleton<PosterRemoteDataSource>(() {
+    dPrint('init poster remote data source', tag: 'getIt');
+    return PosterRemoteDataSource(getIt<DioService>());
   });
 
   getIt.registerLazySingleton<UpdateCheckerService>(() {

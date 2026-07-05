@@ -4257,4 +4257,130 @@ class AppLocalizationsEn extends AppLocalizations {
   String formatSolarAdvice(String advice) {
     return 'Recommended tilt: $advice';
   }
+
+  @override
+  String get products => 'Products';
+
+  @override
+  String get sales => 'Sales';
+
+  @override
+  String get finance => 'Finance';
+
+  @override
+  String get content_and_ads => 'Content & Ads';
+
+  @override
+  String get service_unavailable_title => 'Service unavailable';
+
+  @override
+  String get service_unavailable_message =>
+      'This feature is not enabled for your company type.';
+
+  @override
+  String service_unavailable_for_company_type(String serviceName) {
+    return '$serviceName is not available for your company type';
+  }
+
+  @override
+  String get admin_workspace => 'Workspace';
+
+  @override
+  String get admin_core => 'Admin Core';
+
+  @override
+  String get admin_company_admin => 'Company Admin';
+
+  @override
+  String get admin_operations => 'Operations';
+
+  @override
+  String get admin_commerce => 'Commerce';
+
+  @override
+  String get admin_tools => 'Tools';
+
+  @override
+  String get admin_app_configs => 'App Configs';
+
+  @override
+  String get admin_users => 'Users';
+
+  @override
+  String get admin_countries => 'Countries';
+
+  @override
+  String get admin_cities => 'Cities';
+
+  @override
+  String get admin_currencies => 'Currencies';
+
+  @override
+  String get admin_subscription_plans => 'Subscription Plans';
+
+  @override
+  String get admin_global_categories => 'Global Categories';
+
+  @override
+  String get admin_company_types => 'Company Types';
+
+  @override
+  String get admin_inspector_details => 'Details Inspector';
+
+  @override
+  String get admin_inspector_services => 'Services Inspector';
+
+  @override
+  String get admin_subscription_requests => 'Subscription Requests';
+
+  @override
+  String get admin_service_catalog => 'Service Catalog';
+
+  @override
+  String get admin_feedbacks => 'Feedbacks';
+
+  @override
+  String get admin_offers_requests => 'Offers & Requests';
+
+  @override
+  String get admin_global_products => 'Global Products';
+
+  @override
+  String get admin_api_lab => 'API Lab';
+
+  @override
+  String get posters => 'Posters';
+
+  @override
+  String get posters_subtitle => 'Manage your promotional posters and banners';
+
+  @override
+  String get posters_empty => 'No posters found';
+
+  @override
+  String get poster_create => 'Create Poster';
+
+  @override
+  String get poster_text => 'Text';
+
+  @override
+  String get poster_action_type => 'Action Type';
+
+  @override
+  String get poster_action_id => 'Action ID';
+
+  @override
+  String get poster_action_auto => 'Links to your company page automatically';
+
+  @override
+  String get poster_select_product => 'Tap to select a product';
+
+  @override
+  String get poster_select_work => 'Tap to select a project';
+
+  @override
+  String get poster_upload_image => 'Upload Image';
+
+  @override
+  String get not_found => 'Not found';
 }

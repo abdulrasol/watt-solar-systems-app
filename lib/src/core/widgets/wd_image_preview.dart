@@ -13,21 +13,28 @@ class WdImagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageUrl.isEmpty || imageUrl == 'null') return Icon(Iconsax.image, size: 28.sp, color: Colors.grey);
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isDesktop = screenWidth >= 700;
+
+    final finalSize = size == null ? null : (isDesktop ? size!.toDouble() : size!.w);
+    final borderRadius = shape == BoxShape.circle ? 999.0 : (isDesktop ? 24.0 : 24.r);
+    final borderWidth = isDesktop ? 1.0 : 1.r;
+    final iconSize = isDesktop ? 28.0 : 28.sp;
+
+    if (imageUrl.isEmpty || imageUrl == 'null') return Icon(Iconsax.image, size: iconSize, color: Colors.grey);
     return ClipRRect(
-      borderRadius: BorderRadius.circular(shape == BoxShape.circle ? 999.r : 24.r),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: Container(
-        width: size?.w,
-        height: size?.w,
+        width: finalSize,
+        height: finalSize,
         decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.primaryDarkColor, width: 1.r),
+          border: Border.all(color: AppTheme.primaryDarkColor, width: borderWidth),
           shape: shape,
-          // image: DecorationImage(image: CachedNetworkImageProvider(imageUrl), fit: fit),
         ),
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: fit,
-          errorWidget: (context, url, error) => Icon(Iconsax.building, color: AppTheme.primaryColor, size: 28.sp),
+          errorWidget: (context, url, error) => Icon(Iconsax.building, color: AppTheme.primaryColor, size: iconSize),
         ),
       ),
     );

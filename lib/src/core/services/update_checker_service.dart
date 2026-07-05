@@ -97,10 +97,11 @@ class UpdateCheckerService {
         isFlexibleUpdateAllowed: appUpdateInfo.flexibleUpdateAllowed,
       );
     } catch (e, s) {
+      final isNotOwnedError = e.toString().contains('ERROR_APP_NOT_OWNED');
       dPrint(
         'Error checking for updates: $e',
         tag: 'UpdateChecker',
-        stackTrace: s,
+        stackTrace: isNotOwnedError ? null : s,
       );
       return const UpdateInfo(availability: UpdateAvailability.unknown);
     }

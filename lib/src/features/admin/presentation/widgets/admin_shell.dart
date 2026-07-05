@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/admin_module.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:solar_hub/src/core/theme/app_colors.dart';
+import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
+import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_registry.dart';
+import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_item.dart';
+import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_section.dart';
 import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:solar_hub/src/utils/app_theme.dart';
 
@@ -13,15 +19,10 @@ class AdminShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeModule = AdminModules.fromLocation(location);
+    final l10n = AppLocalizations.of(context)!;
     final authState = ref.watch(authProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final workspaceColor = isDark
-        ? const Color(0xFF152321)
-        : const Color(0xFFF3F7F6);
-    final workspaceAccent = isDark
-        ? AppTheme.primaryColor.withValues(alpha: 0.12)
-        : AppTheme.primaryColor.withValues(alpha: 0.08);
+    final colors = ref.watch(appColorsProvider);
+    final sections = AdminNavigationRegistry.build(l10n);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -30,243 +31,247 @@ class AdminShell extends ConsumerWidget {
         final isTablet = width >= 700 && width < 1100;
 
         return Scaffold(
-          backgroundColor: workspaceColor,
+          backgroundColor: colors.background,
           drawer: isMobile
-              ? Drawer(
-                  child: _AdminNavigation(
-                    activeModule: activeModule,
-                    compact: false,
-                    authState: authState,
-                  ),
-                )
+              ? _AdminDrawer(sections: sections, location: location, authState: authState, colors: colors)
               : null,
-          appBar: AppBar(
-            title: Text(
-              activeModule.label,
-              style: const TextStyle(
-                fontFamily: AppTheme.fontFamily,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            centerTitle: isMobile,
-          ),
           body: SafeArea(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    workspaceColor,
-                    workspaceAccent,
-                    workspaceColor,
-                  ],
-                ),
-              ),
-              child: Row(
-                children: [
-                  if (!isMobile)
-                    _AdminNavigation(
-                      activeModule: activeModule,
-                      compact: isTablet,
-                      authState: authState,
-                    ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        isMobile ? 16 : 24,
-                        20,
-                        isMobile ? 16 : 24,
-                        20,
-                      ),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: width >= 1440 ? 1320 : 1180,
-                          ),
-                          child: child,
-                        ),
+            child: Row(
+              children: [
+                if (!isMobile)
+                  _AdminSidebar(
+                    sections: sections,
+                    location: location,
+                    authState: authState,
+                    compact: isTablet,
+                  ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(isMobile ? 12 : 24, isMobile ? 12 : 24, isMobile ? 12 : 24, 0),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: width >= 1440 ? 1320 : 1180),
+                        child: child,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
       },
     );
   }
+
 }
 
-class _AdminNavigation extends StatelessWidget {
-  const _AdminNavigation({
-    required this.activeModule,
-    required this.compact,
+class _AdminSidebar extends ConsumerWidget {
+  const _AdminSidebar({
+    required this.sections,
+    required this.location,
     required this.authState,
+    this.compact = false,
   });
 
-  final AdminModule activeModule;
-  final bool compact;
+  final List<AdminNavigationSection> sections;
+  final String location;
   final AuthState authState;
+  final bool compact;
 
   @override
-  Widget build(BuildContext context) {
-    final width = compact ? 96.0 : 260.0;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colors = ref.watch(appColorsProvider);
 
-    return Material(
-      color: Theme.of(context).cardColor,
-      child: Container(
-        width: width,
-        decoration: BoxDecoration(
-          border: Border(
-            right: BorderSide(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : Colors.black.withValues(alpha: 0.06),
+    return Container(
+      width: compact ? 88 : 280,
+      decoration: BoxDecoration(
+        color: colors.surface,
+        border: Border(right: BorderSide(color: colors.border)),
+      ),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: compact ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+          children: [
+            _SidebarHeader(compact: compact, colors: colors),
+            if (!compact)
+              _ModeSwitcher(authState: authState, colors: colors),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 16, vertical: 8),
+                itemCount: sections.length,
+                itemBuilder: (context, index) {
+                  final section = sections[index];
+                  return compact
+                      ? _CompactSection(section: section, location: location, colors: colors)
+                      : _ExpandedSection(section: section, location: location, colors: colors);
+                },
+              ),
             ),
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: compact
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  compact ? 12 : 20,
-                  16,
-                  compact ? 12 : 20,
-                  20,
-                ),
-                child: compact
-                    ? const CircleAvatar(
-                        radius: 22,
-                        backgroundColor: AppTheme.primaryColor,
-                        child: Icon(
-                          Icons.admin_panel_settings_rounded,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Solar Hub',
-                            style: TextStyle(
-                              fontFamily: AppTheme.fontFamily,
-                              fontSize: 14,
-                              color: AppTheme.primaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Admin Workspace',
-                            style: TextStyle(
-                              fontFamily: AppTheme.fontFamily,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Theme.of(context).textTheme.titleLarge?.color,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            'Open a module to fetch and manage its content.',
-                            style: TextStyle(
-                              fontFamily: AppTheme.fontFamily,
-                              fontSize: 12,
-                              color: Theme.of(context).hintColor,
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
-              if (!compact)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: _ModeSwitcher(authState: authState),
-                ),
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12),
-                  children: [
-                    for (final module in AdminModules.navItems)
-                      _AdminNavTile(
-                        module: module,
-                        active: module.id == activeModule.id,
-                        compact: compact,
-                      ),
-                    if (compact) ...[
-                      const SizedBox(height: 12),
-                      _CompactModeAction(
-                        icon: Icons.home_rounded,
-                        tooltip: 'User Mode',
-                        onTap: () => context.go('/home'),
-                      ),
-                      if (authState.isCompanyMember)
-                        _CompactModeAction(
-                          icon: Icons.business_rounded,
-                          tooltip: 'Company Mode',
-                          onTap: () => context.go('/companies/dashboard'),
-                        ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
+            if (!compact) _SidebarFooter(authState: authState, colors: colors),
+          ],
         ),
       ),
     );
   }
 }
 
-class _ModeSwitcher extends StatelessWidget {
-  const _ModeSwitcher({required this.authState});
+class _SidebarHeader extends StatelessWidget {
+  const _SidebarHeader({required this.compact, required this.colors});
 
-  final AuthState authState;
+  final bool compact;
+  final AppColors colors;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(18),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(compact ? 12 : 20, 20, compact ? 12 : 20, 16),
+      child: compact
+          ? Container(
+              height: 48,
+              width: 48,
+              decoration: BoxDecoration(
+                color: colors.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(Iconsax.shield, color: colors.primary),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'SolarHub',
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    fontSize: 14,
+                    color: colors.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  AppLocalizations.of(context)!.admin_dashboard,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: colors.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+}
+
+class _ModeSwitcher extends StatelessWidget {
+  const _ModeSwitcher({required this.authState, required this.colors});
+
+  final AuthState authState;
+  final AppColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: colors.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Switch Mode',
+              style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: colors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                OutlinedButton.icon(
+                  onPressed: () => context.go('/home'),
+                  icon: const Icon(Iconsax.home_2, size: 16),
+                  label: const Text('User'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: colors.primary,
+                    side: BorderSide(color: colors.primary.withValues(alpha: 0.3)),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    textStyle: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12),
+                  ),
+                ),
+                if (authState.isCompanyMember)
+                  FilledButton.icon(
+                    onPressed: () => context.go('/companies/dashboard'),
+                    icon: const Icon(Iconsax.building, size: 16),
+                    label: const Text('Company'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: colors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      textStyle: TextStyle(fontFamily: AppTheme.fontFamily, fontSize: 12),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _ExpandedSection extends StatelessWidget {
+  const _ExpandedSection({required this.section, required this.location, required this.colors});
+
+  final AdminNavigationSection section;
+  final String location;
+  final AppColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    final sectionActive = section.isActiveFor(location);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Switch Mode',
-            style: TextStyle(
-              fontFamily: AppTheme.fontFamily,
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+            child: Row(
+              children: [
+                Icon(section.icon, size: 16, color: sectionActive ? colors.primary : colors.textTertiary),
+                const SizedBox(width: 8),
+                Text(
+                  section.label,
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: sectionActive ? colors.primary : colors.textTertiary,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              OutlinedButton.icon(
-                onPressed: () => context.go('/home'),
-                icon: const Icon(Icons.home_rounded),
-                label: const Text('User'),
-              ),
-              if (authState.isCompanyMember)
-                FilledButton.icon(
-                  onPressed: () => context.go('/companies/dashboard'),
-                  icon: const Icon(Icons.business_rounded),
-                  label: Text(authState.company?.name ?? 'Company'),
-                ),
-            ],
+          ...section.items.map(
+            (item) => _NavItemTile(
+              item: item,
+              active: location == item.route || location.startsWith('${item.route}/'),
+              colors: colors,
+            ),
           ),
         ],
       ),
@@ -274,102 +279,327 @@ class _ModeSwitcher extends StatelessWidget {
   }
 }
 
-class _AdminNavTile extends StatelessWidget {
-  const _AdminNavTile({
-    required this.module,
-    required this.active,
-    required this.compact,
-  });
+class _CompactSection extends StatelessWidget {
+  const _CompactSection({required this.section, required this.location, required this.colors});
 
-  final AdminModule module;
-  final bool active;
-  final bool compact;
+  final AdminNavigationSection section;
+  final String location;
+  final AppColors colors;
 
   @override
   Widget build(BuildContext context) {
-    final tile = InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: () {
-        Navigator.of(context).maybePop();
-        context.go(module.route);
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        margin: const EdgeInsets.only(bottom: 8),
-        padding: EdgeInsets.symmetric(
-          horizontal: compact ? 10 : 14,
-          vertical: compact ? 12 : 14,
+    final active = section.isActiveFor(location);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Tooltip(
+        message: section.label,
+        child: InkWell(
+          onTap: () => context.go(section.items.first.route),
+          borderRadius: BorderRadius.circular(14),
+          child: Container(
+            height: 48,
+            width: 48,
+            decoration: BoxDecoration(
+              color: active ? colors.primary : colors.primary.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              section.icon,
+              size: 22,
+              color: active ? Colors.white : colors.primary,
+            ),
+          ),
         ),
-        decoration: BoxDecoration(
-          color: active
-              ? AppTheme.primaryColor.withValues(alpha: 0.12)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: compact
-            ? Icon(
-                module.icon,
-                color: active ? AppTheme.primaryColor : Theme.of(context).hintColor,
-              )
-            : Row(
-                children: [
-                  Icon(
-                    module.icon,
-                    color: active ? AppTheme.primaryColor : Theme.of(context).hintColor,
+      ),
+    );
+  }
+}
+
+class _NavItemTile extends StatelessWidget {
+  const _NavItemTile({required this.item, required this.active, required this.colors});
+
+  final AdminNavigationItem item;
+  final bool active;
+  final AppColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: InkWell(
+        onTap: () => context.go(item.route),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          decoration: BoxDecoration(
+            color: active ? colors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Icon(item.icon, size: 18, color: active ? Colors.white : colors.textSecondary),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  item.label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    fontSize: 13,
+                    fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                    color: active ? Colors.white : colors.textPrimary,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      module.label,
-                      style: TextStyle(
-                        fontFamily: AppTheme.fontFamily,
-                        fontSize: 14,
-                        fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-                        color: active
-                            ? AppTheme.primaryColor
-                            : Theme.of(context).textTheme.bodyLarge?.color,
-                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SidebarFooter extends StatelessWidget {
+  const _SidebarFooter({required this.authState, required this.colors});
+
+  final AuthState authState;
+  final AppColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    final user = authState.user;
+    final fullName = user?.fullName.trim();
+    final displayName = fullName == null || fullName.isEmpty
+        ? user?.username ?? AppLocalizations.of(context)!.guest_user
+        : fullName;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: colors.background,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            user?.image == null || user!.image!.isEmpty
+                ? CircleAvatar(
+                    radius: 18,
+                    backgroundColor: colors.primary.withValues(alpha: 0.12),
+                    child: Icon(Iconsax.user, size: 18, color: colors.primary),
+                  )
+                : WdImagePreview(imageUrl: user.image!, size: 36),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppTheme.fontFamily,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: colors.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.admin_dashboard,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppTheme.fontFamily,
+                      fontSize: 11,
+                      color: colors.textSecondary,
                     ),
                   ),
                 ],
               ),
+            ),
+          ],
+        ),
       ),
     );
-
-    if (!compact) return tile;
-
-    return Tooltip(message: module.label, child: tile);
   }
 }
 
-class _CompactModeAction extends StatelessWidget {
-  const _CompactModeAction({
-    required this.icon,
-    required this.tooltip,
-    required this.onTap,
+class _AdminDrawer extends StatelessWidget {
+  const _AdminDrawer({
+    required this.sections,
+    required this.location,
+    required this.authState,
+    required this.colors,
   });
 
-  final IconData icon;
-  final String tooltip;
-  final VoidCallback onTap;
+  final List<AdminNavigationSection> sections;
+  final String location;
+  final AuthState authState;
+  final AppColors colors;
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltip,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onTap,
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Icon(icon, color: AppTheme.primaryColor),
+    final l10n = AppLocalizations.of(context)!;
+
+    return Drawer(
+      child: SafeArea(
+        child: Column(
+          children: [
+            _DrawerHeader(authState: authState, colors: colors),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                children: [
+                  for (final section in sections) ...[
+                    _DrawerSection(
+                      section: section,
+                      location: location,
+                      colors: colors,
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                  const Divider(),
+                  ListTile(
+                    leading: Icon(Iconsax.home_2, color: colors.textSecondary),
+                    title: Text(l10n.home, style: TextStyle(fontFamily: AppTheme.fontFamily)),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      context.go('/home');
+                    },
+                  ),
+                  if (authState.isCompanyMember)
+                    ListTile(
+                      leading: Icon(Iconsax.building, color: colors.textSecondary),
+                      title: Text(
+                        authState.company?.name ?? l10n.company_dashboard,
+                        style: TextStyle(fontFamily: AppTheme.fontFamily),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.go('/companies/dashboard');
+                      },
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _DrawerHeader extends StatelessWidget {
+  const _DrawerHeader({required this.authState, required this.colors});
+
+  final AuthState authState;
+  final AppColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    final user = authState.user;
+    final displayName = user?.fullName.isNotEmpty == true
+        ? user!.fullName
+        : user?.username ?? AppLocalizations.of(context)!.guest_user;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [colors.primary, colors.primary.withValues(alpha: 0.7)],
+        ),
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: Colors.white,
+              child: user?.image?.isNotEmpty == true
+                  ? WdImagePreview(imageUrl: user!.image!, size: 48)
+                  : Icon(Iconsax.shield, size: 24, color: colors.primary),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                displayName,
+                style: const TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DrawerSection extends StatelessWidget {
+  const _DrawerSection({required this.section, required this.location, required this.colors});
+
+  final AdminNavigationSection section;
+  final String location;
+  final AppColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    final sectionActive = section.isActiveFor(location);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+          child: Text(
+            section.label,
+            style: TextStyle(
+              fontFamily: AppTheme.fontFamily,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: sectionActive ? colors.primary : colors.textTertiary,
+            ),
+          ),
+        ),
+        ...section.items.map(
+          (item) {
+            final active = location == item.route || location.startsWith('${item.route}/');
+            return ListTile(
+              dense: true,
+              leading: Icon(item.icon, size: 20, color: active ? colors.primary : colors.textSecondary),
+              title: Text(
+                item.label,
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
+                  fontSize: 14,
+                  fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                  color: active ? colors.primary : colors.textPrimary,
+                ),
+              ),
+              selected: active,
+              selectedTileColor: colors.primary.withValues(alpha: 0.08),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              onTap: () {
+                Navigator.of(context).pop();
+                context.go(item.route);
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }

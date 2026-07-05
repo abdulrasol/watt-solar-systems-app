@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:solar_hub/l10n/app_localizations.dart';
@@ -19,7 +18,7 @@ class SearchResultsContent extends ConsumerWidget {
     final searchState = ref.watch(globalSearchProvider);
 
     return Container(
-      padding: EdgeInsets.all(24.r),
+      padding: EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -27,11 +26,11 @@ class SearchResultsContent extends ConsumerWidget {
             children: [
               Text(
                 l10n.search_results_for,
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, fontFamily: AppTheme.fontFamily),
               ),
               Text(
                 '"${searchState.query}"',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800, color: AppTheme.primaryColor, fontFamily: AppTheme.fontFamily),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppTheme.primaryColor, fontFamily: AppTheme.fontFamily),
               ),
               const Spacer(),
               TextButton.icon(
@@ -41,7 +40,7 @@ class SearchResultsContent extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: 24),
           Expanded(child: _buildRealResults(context, ref, l10n)),
         ],
       ),
@@ -68,11 +67,11 @@ class SearchResultsContent extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Iconsax.search_normal_1, size: 64.r, color: Colors.grey.withValues(alpha: 0.3)),
-            SizedBox(height: 16.h),
+            Icon(Iconsax.search_normal_1, size: 64, color: Colors.grey.withValues(alpha: 0.3)),
+            SizedBox(height: 16),
             Text(
               l10n.no_results_found,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Colors.grey),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey),
             ),
           ],
         ),
@@ -92,7 +91,7 @@ class SearchResultsContent extends ConsumerWidget {
               onTap: () => context.push('/inventory'),
             ),
           ),
-          SizedBox(height: 16.h),
+            SizedBox(height: 16),
         ],
         if (requests.isNotEmpty) ...[
           _buildSectionHeader(context, l10n.marketplace_requests),
@@ -105,7 +104,7 @@ class SearchResultsContent extends ConsumerWidget {
               onTap: () => context.push('/offers'),
             ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 16),
         ],
         if (contacts.isNotEmpty) ...[
           _buildSectionHeader(context, l10n.contacts),
@@ -125,10 +124,10 @@ class SearchResultsContent extends ConsumerWidget {
 
   Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
+      padding: EdgeInsets.symmetric(vertical: 8),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w800, color: Colors.grey, letterSpacing: 1.2),
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: Colors.grey, letterSpacing: 1.2),
       ),
     );
   }
@@ -136,9 +135,9 @@ class SearchResultsContent extends ConsumerWidget {
   Widget _buildResultTile(BuildContext context, {required IconData icon, required String title, required String subtitle, required VoidCallback onTap}) {
     return ListTile(
       leading: Container(
-        padding: EdgeInsets.all(8.r),
-        decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10.r)),
-        child: Icon(icon, color: AppTheme.primaryColor, size: 20.sp),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+        child: Icon(icon, color: AppTheme.primaryColor, size: 20),
       ),
       title: Text(
         title,

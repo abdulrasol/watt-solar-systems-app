@@ -20,7 +20,9 @@ import 'package:solar_hub/src/services/toast_service.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CompanyRegistrationPage extends ConsumerStatefulWidget {
-  const CompanyRegistrationPage({super.key});
+  final bool embedded;
+
+  const CompanyRegistrationPage({super.key, this.embedded = false});
 
   @override
   ConsumerState<CompanyRegistrationPage> createState() => _CompanyRegistrationPageState();
@@ -76,20 +78,18 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
     final l10n = AppLocalizations.of(context)!;
     final company = ref.watch(authProvider).company;
     final remoteLogo = company?.logo;
-    return Scaffold(
-      appBar: AppBar(title: Text(_isEditMode ? l10n.edit_company : l10n.register_company), centerTitle: true),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(24.0.r),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                _isEditMode ? l10n.edit_company : AppLocalizations.of(context)!.start_your_solar_business,
-                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
+    final formContent = SingleChildScrollView(
+      padding: EdgeInsets.all(24.0.r),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              _isEditMode ? l10n.edit_company : AppLocalizations.of(context)!.start_your_solar_business,
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
               SizedBox(height: 8.h),
               Text(
                 _isEditMode ? l10n.company_profile_subtitle : AppLocalizations.of(context)!.register_company_details,
@@ -116,16 +116,23 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
                           : null,
                     ),
                     child: logoFile.value == null && (remoteLogo == null || remoteLogo.isEmpty)
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Iconsax.camera, size: 32.r, color: Colors.grey[600]),
-                              SizedBox(height: 4.h),
-                              Text(
-                                l10n.upload_logo,
-                                style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
+                        ? FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.r),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Iconsax.camera, size: 32.r, color: Colors.grey[600]),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    l10n.upload_logo,
+                                    style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           )
                         : null,
                   ),
@@ -287,7 +294,15 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
             ],
           ),
         ),
-      ),
+      );
+
+    if (widget.embedded) {
+      return formContent;
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Text(_isEditMode ? l10n.edit_company : l10n.register_company), centerTitle: true),
+      body: formContent,
     );
   }
 
@@ -324,7 +339,13 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
         });
         if (mounted) {
           ToastService.success(context, l10n.success, _isEditMode ? l10n.company_updated_successfully : l10n.company_registered_success);
-          context.pop();
+          if (widget.embedded) {
+            // Stay on the page if embedded in dashboard settings
+          } else if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/home');
+          }
         }
       } catch (error) {
         setState(() {

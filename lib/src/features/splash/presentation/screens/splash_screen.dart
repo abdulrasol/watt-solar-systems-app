@@ -200,37 +200,44 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           body: Stack(
             children: [
               Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Logo (Replace with your actual asset if available, or icon for now)
-                    const AppLogo(size: 80, withBorder: true),
-                    SizedBox(height: 24.h),
-                    Text(
-                      AppLocalizations.of(context)!.app_name_short,
-                      style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Logo (Replace with your actual asset if available, or icon for now)
+                        const AppLogo(size: 80, withBorder: true),
+                        SizedBox(height: 24.h),
+                        Text(
+                          AppLocalizations.of(context)!.app_name_short,
+                          style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.app_slug_short,
+                          style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 8.h),
+                        SizedBox(height: 24.h),
+                        LoadingWidget.widget(context: context, size: 30),
+                        SizedBox(height: 24.h),
+                        Text(
+                          AppLocalizations.of(context)!.loading,
+                          style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600]),
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          AppLocalizations.of(context)!.use_the_power_of_the_sun,
+                          style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600], fontSize: 18.sp),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    Text(
-                      AppLocalizations.of(context)!.app_slug_short,
-                      style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 8.h),
-                    SizedBox(height: 24.h),
-                    LoadingWidget.widget(context: context, size: 30),
-                    SizedBox(height: 24.h),
-                    Text(
-                      AppLocalizations.of(context)!.loading,
-                      style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600]),
-                    ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      AppLocalizations.of(context)!.use_the_power_of_the_sun,
-                      style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600], fontSize: 18.sp),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 ),
               ),
               if (_version.isNotEmpty)
