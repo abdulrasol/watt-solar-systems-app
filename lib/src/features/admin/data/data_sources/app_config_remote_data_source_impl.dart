@@ -12,10 +12,7 @@ class AppConfigRemoteDataSourceImpl implements AppConfigRemoteDataSource {
   @override
   Future<List<AppConfig>> getAllConfigs() async {
     try {
-      final response = await dioService.get(
-        AppUrls.appConfigs,
-        isList: true,
-      );
+      final response = await dioService.get(AppUrls.appConfigs);
       if (response.status == 200 && !response.error) {
         final List<dynamic> configsJson = response.body;
         return configsJson.map((json) => AppConfig.fromJson(json)).toList();
@@ -35,7 +32,7 @@ class AppConfigRemoteDataSourceImpl implements AppConfigRemoteDataSource {
         return AppConfig.fromJson(response.body);
       }
       throw Exception(response.messageUser.isNotEmpty ? response.messageUser : response.message);
-  } catch (e, stackTrace) {
+    } catch (e, stackTrace) {
       dPrint('createConfig error: $e', stackTrace: stackTrace, tag: 'AppConfigRemoteDataSourceImpl');
       rethrow;
     }
@@ -49,7 +46,7 @@ class AppConfigRemoteDataSourceImpl implements AppConfigRemoteDataSource {
         return AppConfig.fromJson(response.body);
       }
       throw Exception(response.messageUser.isNotEmpty ? response.messageUser : response.message);
-  } catch (e, stackTrace) {
+    } catch (e, stackTrace) {
       dPrint('updateConfig error: $e', stackTrace: stackTrace, tag: 'AppConfigRemoteDataSourceImpl');
       rethrow;
     }
@@ -77,7 +74,7 @@ class AppConfigRemoteDataSourceImpl implements AppConfigRemoteDataSource {
         return AppConfig.fromJson(response.body);
       }
       throw Exception(response.messageUser.isNotEmpty ? response.messageUser : response.message);
-  } catch (e, stackTrace) {
+    } catch (e, stackTrace) {
       dPrint('toggleConfig error: $e', stackTrace: stackTrace, tag: 'AppConfigRemoteDataSourceImpl');
       rethrow;
     }

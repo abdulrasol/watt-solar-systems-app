@@ -171,9 +171,8 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<List<Country>> getCountries() async {
     try {
-      ListResponse response = await _dioService.get(AppUrls.countries, isList: true) as ListResponse;
+      BaseResponse response = await _dioService.get(AppUrls.countries, isList: true);
       _throwIfFailed(response);
-      dPrint(response.body);
       return (response.body as List).map((e) => Country.fromJson(e)).toList();
     } catch (e, stackTrace) {
       dPrint('getCountries error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
@@ -184,9 +183,9 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<List<City>> getCities({int? countryId}) async {
     try {
-      ListResponse response = await _dioService.get(AppUrls.cities, isList: true) as ListResponse;
+      BaseResponse response = await _dioService.get(AppUrls.cities, isList: true);
       _throwIfFailed(response);
-      dPrint(response.body);
+
       return (response.body as List).map((e) => City.fromJson(e)).toList();
     } catch (e, stackTrace) {
       dPrint('getCities error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');

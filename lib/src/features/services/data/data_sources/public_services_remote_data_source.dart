@@ -12,8 +12,7 @@ abstract class PublicServicesRemoteDataSource {
   Future<Company> getCompanyDetails(int companyId);
 }
 
-class PublicServicesRemoteDataSourceImpl
-    implements PublicServicesRemoteDataSource {
+class PublicServicesRemoteDataSourceImpl implements PublicServicesRemoteDataSource {
   final DioService _dioService;
 
   PublicServicesRemoteDataSourceImpl(this._dioService);
@@ -21,20 +20,12 @@ class PublicServicesRemoteDataSourceImpl
   @override
   Future<List<ServiceType>> getTypes() async {
     try {
-      final response = await _dioService.get(
-        AppUrls.serviceTypesPublic,
-        isList: true,
-      );
-      return ((response as dynamic).body as List? ?? const [])
-          .whereType<Map>()
-          .map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item)))
-          .toList();
+      final response = await _dioService.get(AppUrls.serviceTypesPublic, isList: true);
+      dPrint(response.body);
+      dPrint(response.body.runtimeType);
+      return (response as dynamic).body.whereType<Map>().map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item))).toList();
     } catch (e, stackTrace) {
-      dPrint(
-        'getTypes error: $e',
-        stackTrace: stackTrace,
-        tag: 'PublicServicesRemoteDataSourceImpl',
-      );
+      dPrint('getTypes error: $e', stackTrace: stackTrace, tag: 'PublicServicesRemoteDataSourceImpl');
       rethrow;
     }
   }
@@ -42,39 +33,25 @@ class PublicServicesRemoteDataSourceImpl
   @override
   Future<PublicCompaniesResult> getCompanies(PublicCompaniesQuery query) async {
     try {
-      final response = await _dioService.getRawMap(
-        AppUrls.publicCompanies,
-        queryParameters: query.toQueryParameters(),
-      );
+      final response = await _dioService.getRawMap(AppUrls.publicCompanies, queryParameters: query.toQueryParameters());
       if ((response['status'] ?? 500) != 200 || response['error'] == true) {
-        throw Exception(
-          response['message_user'] ??
-              response['message'] ??
-              'Failed to load companies',
-        );
+        throw Exception(response['message_user'] ?? response['message'] ?? 'Failed to load companies');
       }
 
-      final body = Map<String, dynamic>.from(
-        response['body'] ?? const <String, dynamic>{},
-      );
-      final normalizedItems = (body['items'] as List? ?? const [])
-          .whereType<Map>()
-          .map((item) {
-            final map = Map<String, dynamic>.from(item);
-            // Only fall back to 'services' as 'public_services' if 'public_services' is missing
-            // and the data looks like public services (not system features)
-            if (map['public_services'] == null && map['services'] is List) {
-              final servicesList = map['services'] as List;
-              if (servicesList.isNotEmpty &&
-                  (servicesList.first as Map).containsKey('title')) {
-                map['public_services'] = map['services'];
-                map['services'] =
-                    const []; // Clear it only in this specific fallback case
-              }
-            }
-            return map;
-          })
-          .toList();
+      final body = Map<String, dynamic>.from(response['body'] ?? const <String, dynamic>{});
+      final normalizedItems = (body['items'] as List? ?? const []).whereType<Map>().map((item) {
+        final map = Map<String, dynamic>.from(item);
+        // Only fall back to 'services' as 'public_services' if 'public_services' is missing
+        // and the data looks like public services (not system features)
+        if (map['public_services'] == null && map['services'] is List) {
+          final servicesList = map['services'] as List;
+          if (servicesList.isNotEmpty && (servicesList.first as Map).containsKey('title')) {
+            map['public_services'] = map['services'];
+            map['services'] = const []; // Clear it only in this specific fallback case
+          }
+        }
+        return map;
+      }).toList();
 
       return PublicCompaniesResult(
         items: normalizedItems.map(Company.fromJson).toList(),
@@ -82,11 +59,7 @@ class PublicServicesRemoteDataSourceImpl
         channel: body['channel']?.toString() ?? query.channel,
       );
     } catch (e, stackTrace) {
-      dPrint(
-        'getCompanies error: $e',
-        stackTrace: stackTrace,
-        tag: 'PublicServicesRemoteDataSourceImpl',
-      );
+      dPrint('getCompanies error: $e', stackTrace: stackTrace, tag: 'PublicServicesRemoteDataSourceImpl');
       rethrow;
     }
   }
@@ -94,26 +67,17 @@ class PublicServicesRemoteDataSourceImpl
   @override
   Future<Company> getCompanyDetails(int companyId) async {
     try {
-      final response = await _dioService.getRawMap(
-        AppUrls.publicCompany(companyId),
-      );
+      final response = await _dioService.getRawMap(AppUrls.publicCompany(companyId));
       if ((response['status'] ?? 500) != 200 || response['error'] == true) {
-        throw Exception(
-          response['message_user'] ??
-              response['message'] ??
-              'Failed to load company details',
-        );
+        throw Exception(response['message_user'] ?? response['message'] ?? 'Failed to load company details');
       }
 
-      final body = Map<String, dynamic>.from(
-        response['body'] ?? const <String, dynamic>{},
-      );
+      final body = Map<String, dynamic>.from(response['body'] ?? const <String, dynamic>{});
 
       // Only fall back to 'services' as 'public_services' if 'public_services' is missing
       if (body['public_services'] == null && body['services'] is List) {
         final servicesList = body['services'] as List;
-        if (servicesList.isNotEmpty &&
-            (servicesList.first as Map).containsKey('title')) {
+        if (servicesList.isNotEmpty && (servicesList.first as Map).containsKey('title')) {
           body['public_services'] = body['services'];
           body['services'] = const [];
         }
@@ -121,11 +85,7 @@ class PublicServicesRemoteDataSourceImpl
 
       return Company.fromJson(body);
     } catch (e, stackTrace) {
-      dPrint(
-        'getCompanyDetails error: $e',
-        stackTrace: stackTrace,
-        tag: 'PublicServicesRemoteDataSourceImpl',
-      );
+      dPrint('getCompanyDetails error: $e', stackTrace: stackTrace, tag: 'PublicServicesRemoteDataSourceImpl');
       rethrow;
     }
   }

@@ -10,10 +10,7 @@ abstract class ServiceTypeRemoteDataSource {
   Future<List<ServiceType>> listPublicServiceTypes();
   Future<List<ServiceType>> listAdminServiceTypes();
   Future<ServiceType> createServiceType(ServiceTypeFormPayload payload);
-  Future<ServiceType> updateServiceType(
-    int serviceId,
-    ServiceTypeFormPayload payload,
-  );
+  Future<ServiceType> updateServiceType(int serviceId, ServiceTypeFormPayload payload);
   Future<void> deleteServiceType(int serviceId);
   Future<bool> toggleCompanyServiceType(int serviceId);
 }
@@ -26,21 +23,11 @@ class ServiceTypeRemoteDataSourceImpl implements ServiceTypeRemoteDataSource {
   @override
   Future<List<ServiceType>> listPublicServiceTypes() async {
     try {
-      final response = await _dioService.get(
-        AppUrls.serviceTypesPublic,
-        isList: true,
-      );
+      final response = await _dioService.get(AppUrls.serviceTypesPublic, isList: true);
       final body = (response as api.ListResponse).body as List? ?? const [];
-      return body
-          .whereType<Map>()
-          .map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item)))
-          .toList(growable: false);
+      return body.whereType<Map>().map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item))).toList(growable: false);
     } catch (e, stackTrace) {
-      dPrint(
-        'listPublicServiceTypes error: $e',
-        stackTrace: stackTrace,
-        tag: 'ServiceTypeRemoteDataSource',
-      );
+      dPrint('listPublicServiceTypes error: $e', stackTrace: stackTrace, tag: 'ServiceTypeRemoteDataSource');
       rethrow;
     }
   }
@@ -48,49 +35,27 @@ class ServiceTypeRemoteDataSourceImpl implements ServiceTypeRemoteDataSource {
   @override
   Future<List<ServiceType>> listAdminServiceTypes() async {
     try {
-      final response = await _dioService.get(
-        AppUrls.serviceTypes,
-        isList: true,
-      );
-      final body = (response as api.ListResponse).body as List? ?? const [];
-      return body
-          .whereType<Map>()
-          .map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item)))
-          .toList(growable: false);
+      final response = await _dioService.get(AppUrls.serviceTypes, isPagination: true);
+      final body = (response).body as List? ?? const [];
+      dPrint(body);
+      dPrint(body.runtimeType);
+      return body.whereType<Map>().map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item))).toList(growable: false);
     } catch (e, stackTrace) {
-      dPrint(
-        'listAdminServiceTypes error: $e',
-        stackTrace: stackTrace,
-        tag: 'ServiceTypeRemoteDataSource',
-      );
+      dPrint('listAdminServiceTypes error: $e', stackTrace: stackTrace, tag: 'ServiceTypeRemoteDataSource');
       rethrow;
     }
   }
 
   @override
   Future<ServiceType> createServiceType(ServiceTypeFormPayload payload) async {
-    final response = await _dioService.multipartRequest(
-      AppUrls.serviceTypes,
-      file: await _buildFormData(payload),
-    );
-    return ServiceType.fromJson(
-      Map<String, dynamic>.from(response.body as Map),
-    );
+    final response = await _dioService.multipartRequest(AppUrls.serviceTypes, file: await _buildFormData(payload));
+    return ServiceType.fromJson(Map<String, dynamic>.from(response.body as Map));
   }
 
   @override
-  Future<ServiceType> updateServiceType(
-    int serviceId,
-    ServiceTypeFormPayload payload,
-  ) async {
-    final response = await _dioService.multipartRequest(
-      AppUrls.serviceType(serviceId),
-      file: await _buildFormData(payload),
-      isPut: true,
-    );
-    return ServiceType.fromJson(
-      Map<String, dynamic>.from(response.body as Map),
-    );
+  Future<ServiceType> updateServiceType(int serviceId, ServiceTypeFormPayload payload) async {
+    final response = await _dioService.multipartRequest(AppUrls.serviceType(serviceId), file: await _buildFormData(payload), isPut: true);
+    return ServiceType.fromJson(Map<String, dynamic>.from(response.body as Map));
   }
 
   @override
@@ -100,9 +65,7 @@ class ServiceTypeRemoteDataSourceImpl implements ServiceTypeRemoteDataSource {
 
   @override
   Future<bool> toggleCompanyServiceType(int serviceId) async {
-    final response = await _dioService.post(
-      AppUrls.toggleServiceType(serviceId),
-    );
+    final response = await _dioService.post(AppUrls.toggleServiceType(serviceId));
     final body = response.body;
     if (body is Map<String, dynamic>) {
       return body['selected'] == true;
@@ -119,9 +82,7 @@ class ServiceTypeRemoteDataSourceImpl implements ServiceTypeRemoteDataSource {
       formData.fields.add(MapEntry('description', payload.description!));
     }
     if (payload.imagePath != null && payload.imagePath!.isNotEmpty) {
-      formData.files.add(
-        MapEntry('image', await MultipartFile.fromFile(payload.imagePath!)),
-      );
+      formData.files.add(MapEntry('image', await MultipartFile.fromFile(payload.imagePath!)));
     }
     return formData;
   }

@@ -18,10 +18,10 @@ class AppInitRemoteDataSourceImpl implements AppInitRemoteDataSource {
   @override
   Future<List<Config>> getConfigs() async {
     try {
-      final response = await _dioService.get(AppUrls.appConfigs, isList: true);
+      final response = await _dioService.get(AppUrls.appConfigs);
       final List<Config> configs = (response.body as List).map((e) => Config.fromJson(e)).toList();
       return configs;
-  } catch (e, stackTrace) {
+    } catch (e, stackTrace) {
       dPrint('getConfigs error: $e', stackTrace: stackTrace, tag: 'AppInitRemoteDataSourceImpl');
       rethrow;
     }
