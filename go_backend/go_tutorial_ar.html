@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليلك الكامل للانتقال من Django إلى Go</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --sidebar-bg: #ffffff;
+      --content-bg: #ffffff;
+      --text: #212529;
+      --muted: #6c757d;
+      --primary: #0d6efd;
+      --primary-dark: #0a58ca;
+      --accent: #6610f2;
+      --border: #dee2e6;
+      --code-bg: #1e1e1e;
+      --success-bg: #d1e7dd;
+      --success-text: #0f5132;
+      --warn-bg: #fff3cd;
+      --warn-text: #664d03;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      direction: rtl;
+    }
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 320px;
+      background: var(--sidebar-bg);
+      border-left: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      z-index: 100;
+    }
+    .sidebar h2 {
+      margin: 0 0 1rem;
+      font-size: 1.15rem;
+      color: var(--primary-dark);
+    }
+    .search-box {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+    .search-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+    }
+    .toc-item {
+      display: block;
+      padding: 0.4rem 0.6rem;
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 0.35rem;
+      transition: background 0.15s, color 0.15s;
+      font-size: 0.92rem;
+    }
+    .toc-item:hover {
+      background: #e7f1ff;
+      color: var(--primary-dark);
+    }
+    .toc-item.level-1 { font-weight: 700; margin-top: 0.6rem; }
+    .toc-item.level-2 { padding-right: 1.2rem; font-size: 0.88rem; color: #495057; }
+    .toc-item.level-3 { padding-right: 2.2rem; font-size: 0.84rem; color: var(--muted); }
+    .content {
+      margin-right: 320px;
+      padding: 2.5rem 3rem;
+      max-width: 900px;
+      width: 100%;
+    }
+    h1, h2, h3, h4 {
+      color: var(--primary-dark);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      scroll-margin-top: 1.5rem;
+    }
+    h1 { font-size: 2rem; border-bottom: 3px solid var(--primary); padding-bottom: 0.5rem; }
+    h2 { font-size: 1.6rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h3 { font-size: 1.25rem; color: var(--accent); }
+    p { margin: 1rem 0; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul, ol { padding-right: 1.5rem; margin: 1rem 0; }
+    li { margin-bottom: 0.5rem; }
+    code {
+      font-family: "Fira Code", Consolas, monospace;
+      background: #e9ecef;
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.25rem;
+      font-size: 0.9em;
+      direction: ltr;
+      display: inline-block;
+    }
+    pre {
+      background: var(--code-bg);
+      color: #d4d4d4;
+      padding: 1rem;
+      border-radius: 0.6rem;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      margin: 1.25rem 0;
+      box-shadow: var(--shadow);
+    }
+    pre code {
+      background: transparent;
+      padding: 0;
+      font-size: 0.88rem;
+      direction: ltr;
+    }
+    blockquote {
+      background: #e7f1ff;
+      border-right: 4px solid var(--primary);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-radius: 0.5rem;
+      color: #052c65;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--content-bg);
+      box-shadow: var(--shadow);
+      border-radius: 0.6rem;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    th, td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); text-align: right; }
+    th { background: #e9ecef; font-weight: 700; }
+    tr:hover { background: #f1f3f5; }
+    details {
+      background: #f8f9fa;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+    }
+    summary { font-weight: 700; cursor: pointer; color: var(--primary-dark); }
+    .quick-summary {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-right: 4px solid var(--success-text);
+      padding: 1rem 1.25rem;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+    .warning {
+      background: var(--warn-bg);
+      color: var(--warn-text);
+      border-right: 4px solid var(--warn-text);
+      padding: 1rem 1.25rem;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+    .top-bar {
+      display: none;
+    }
+    @media (max-width: 1100px) {
+      .sidebar {
+        width: 100%;
+        position: relative;
+        border-left: none;
+        border-bottom: 1px solid var(--border);
+        box-shadow: none;
+        max-height: 60vh;
+      }
+      .content {
+        margin-right: 0;
+        padding: 1.5rem;
+        max-width: 100%;
+      }
+      .layout { flex-direction: column; }
+    }
+    @media print {
+      .sidebar { display: none; }
+      .content { margin-right: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>الفهرس</h2>
+      <input type="text" class="search-box" id="tocSearch" placeholder="ابحث في الفهرس...">
+      <nav id="toc">
+<a href="#دليلك-الكامل-للانتقال-من-django-الى-go" class="toc-item level-1" data-text="دليلك الكامل للانتقال من django إلى go">دليلك الكامل للانتقال من Django إلى Go</a>
+<a href="#1-مقدمة" class="toc-item level-2" data-text="1. مقدمة">1. مقدمة</a>
+<a href="#11-لماذا-go" class="toc-item level-3" data-text="1.1 لماذا go؟">1.1 لماذا Go؟</a>
+<a href="#12-ما-تحتاجه-قبل-البدء" class="toc-item level-3" data-text="1.2 ما تحتاجه قبل البدء">1.2 ما تحتاجه قبل البدء</a>
+<a href="#13-كيف-تقرا-هذا-الدليل" class="toc-item level-3" data-text="1.3 كيف تقرأ هذا الدليل">1.3 كيف تقرأ هذا الدليل</a>
+<a href="#2-اول-يوم-في-go" class="toc-item level-2" data-text="2. أول يوم في go">2. أول يوم في Go</a>
+<a href="#21-تثبيت-go-و-vs-code" class="toc-item level-3" data-text="2.1 تثبيت go و vs code">2.1 تثبيت Go و VS Code</a>
+<a href="#22-hello-world" class="toc-item level-3" data-text="2.2 hello world">2.2 Hello World</a>
+<a href="#23-go-run-go-build-go-test" class="toc-item level-3" data-text="2.3 go run / go build / go test">2.3 go run / go build / go test</a>
+<a href="#24-gomod-وادارة-الاعتماديات" class="toc-item level-3" data-text="2.4 go.mod وإدارة الاعتماديات">2.4 go.mod وإدارة الاعتماديات</a>
+<a href="#25-انشاء-مشروع-go-جديد" class="toc-item level-3" data-text="2.5 إنشاء مشروع go جديد">2.5 إنشاء مشروع Go جديد</a>
+<a href="#3-من-javadartpython-الى-go" class="toc-item level-2" data-text="3. من java/dart/python إلى go">3. من Java/Dart/Python إلى Go</a>
+<a href="#31-المتغيرات-والانواع" class="toc-item level-3" data-text="3.1 المتغيرات والأنواع">3.1 المتغيرات والأنواع</a>
+<a href="#32-if-for-switch" class="toc-item level-3" data-text="3.2 if / for / switch">3.2 if / for / switch</a>
+<a href="#33-الدوال-والقيم-المرجعة-المتعددة" class="toc-item level-3" data-text="3.3 الدوال والقيم المرجعة المتعددة">3.3 الدوال والقيم المرجعة المتعددة</a>
+<a href="#34-structs-بدل-classes" class="toc-item level-3" data-text="3.4 structs بدل classes">3.4 Structs بدل Classes</a>
+<a href="#35-methods-و-interfaces" class="toc-item level-3" data-text="3.5 methods و interfaces">3.5 Methods و Interfaces</a>
+<a href="#36-pointers-بابسط-صورة" class="toc-item level-3" data-text="3.6 pointers بأبسط صورة">3.6 Pointers بأبسط صورة</a>
+<a href="#37-slices-و-maps-و-arrays" class="toc-item level-3" data-text="3.7 slices و maps و arrays">3.7 Slices و Maps و Arrays</a>
+<a href="#38-goroutines-و-channels-مفهوم" class="toc-item level-3" data-text="3.8 goroutines و channels (مفهوم)">3.8 Goroutines و Channels (مفهوم)</a>
+<a href="#39-ادارة-الاخطاء-لا-يوجد-try-catch" class="toc-item level-3" data-text="3.9 إدارة الأخطاء (لا يوجد try-catch)">3.9 إدارة الأخطاء (لا يوجد try-catch)</a>
+<a href="#310-packages-والاستيراد" class="toc-item level-3" data-text="3.10 packages والاستيراد">3.10 Packages والاستيراد</a>
+<a href="#311-defer" class="toc-item level-3" data-text="3.11 defer">3.11 defer</a>
+<a href="#4-هندسة-مشروع-go" class="toc-item level-2" data-text="4. هندسة مشروع go">4. هندسة مشروع Go</a>
+<a href="#41-شرح-المجلدات" class="toc-item level-3" data-text="4.1 شرح المجلدات">4.1 شرح المجلدات</a>
+<a href="#42-cmdservermaingo" class="toc-item level-3" data-text="4.2 cmd/server/main.go">4.2 cmd/server/main.go</a>
+<a href="#43-routes-تسجيل-المسارات" class="toc-item level-3" data-text="4.3 routes: تسجيل المسارات">4.3 Routes: تسجيل المسارات</a>
+<a href="#44-handlers-استقبال-http" class="toc-item level-3" data-text="4.4 handlers: استقبال http">4.4 Handlers: استقبال HTTP</a>
+<a href="#45-middleware" class="toc-item level-3" data-text="4.5 middleware">4.5 Middleware</a>
+<a href="#46-models-و-schemas" class="toc-item level-3" data-text="4.6 models و schemas">4.6 Models و Schemas</a>
+<a href="#47-response-تنسيق-الردود" class="toc-item level-3" data-text="4.7 response: تنسيق الردود">4.7 response: تنسيق الردود</a>
+<a href="#48-database-و-automigrate" class="toc-item level-3" data-text="4.8 database و automigrate">4.8 database و AutoMigrate</a>
+<a href="#49-servicesauth" class="toc-item level-3" data-text="4.9 services/auth">4.9 services/auth</a>
+<a href="#410-علاقات-gorm" class="toc-item level-3" data-text="4.10 علاقات gorm">4.10 علاقات GORM</a>
+<a href="#5-django-ninja-مقابل-go-gin" class="toc-item level-2" data-text="5. django ninja مقابل go gin">5. Django Ninja مقابل Go Gin</a>
+<a href="#51-router" class="toc-item level-3" data-text="5.1 router">5.1 Router</a>
+<a href="#52-دورة-حياة-الطلب" class="toc-item level-3" data-text="5.2 دورة حياة الطلب">5.2 دورة حياة الطلب</a>
+<a href="#53-views-handlers" class="toc-item level-3" data-text="5.3 views ↔ handlers">5.3 Views ↔ Handlers</a>
+<a href="#54-models" class="toc-item level-3" data-text="5.4 models">5.4 Models</a>
+<a href="#55-serializers-structs" class="toc-item level-3" data-text="5.5 serializers ↔ structs">5.5 Serializers ↔ Structs</a>
+<a href="#56-middleware-permissions" class="toc-item level-3" data-text="5.6 middleware &amp; permissions">5.6 Middleware &amp; Permissions</a>
+<a href="#57-migrations" class="toc-item level-3" data-text="5.7 migrations">5.7 Migrations</a>
+<a href="#6-جولة-عملية-على-اقسام-المشروع" class="toc-item level-2" data-text="6. جولة عملية على أقسام المشروع">6. جولة عملية على أقسام المشروع</a>
+<a href="#61-المصادقة" class="toc-item level-3" data-text="6.1 المصادقة">6.1 المصادقة</a>
+<a href="#62-الشركات-والاعضاء" class="toc-item level-3" data-text="6.2 الشركات والأعضاء">6.2 الشركات والأعضاء</a>
+<a href="#63-المتجر-والطلبات" class="toc-item level-3" data-text="6.3 المتجر والطلبات">6.3 المتجر والطلبات</a>
+<a href="#64-العروض-والانظمة" class="toc-item level-3" data-text="6.4 العروض والأنظمة">6.4 العروض والأنظمة</a>
+<a href="#65-المحاسبة" class="toc-item level-3" data-text="6.5 المحاسبة">6.5 المحاسبة</a>
+<a href="#66-المجتمع-والاشعارات" class="toc-item level-3" data-text="6.6 المجتمع والإشعارات">6.6 المجتمع والإشعارات</a>
+<a href="#7-دليل-عملي-اضف-feature-جديدة" class="toc-item level-2" data-text="7. دليل عملي: أضف feature جديدة">7. دليل عملي: أضف feature جديدة</a>
+<a href="#71-تعريف-model" class="toc-item level-3" data-text="7.1 تعريف model">7.1 تعريف Model</a>
+<a href="#72-تعريف-schema" class="toc-item level-3" data-text="7.2 تعريف schema">7.2 تعريف Schema</a>
+<a href="#73-كتابة-handler" class="toc-item level-3" data-text="7.3 كتابة handler">7.3 كتابة Handler</a>
+<a href="#74-تسجيل-route" class="toc-item level-3" data-text="7.4 تسجيل route">7.4 تسجيل Route</a>
+<a href="#75-automigrate" class="toc-item level-3" data-text="7.5 automigrate">7.5 AutoMigrate</a>
+<a href="#76-swagger" class="toc-item level-3" data-text="7.6 swagger">7.6 Swagger</a>
+<a href="#77-اختبار-الـ-endpoint" class="toc-item level-3" data-text="7.7 اختبار الـ endpoint">7.7 اختبار الـ Endpoint</a>
+<a href="#8-الاخطاء-الشايعة-والـ-debugging" class="toc-item level-2" data-text="8. الأخطاء الشائعة والـ debugging">8. الأخطاء الشائعة والـ Debugging</a>
+<a href="#81-401403-وصلاحيات-الشركة" class="toc-item level-3" data-text="8.1 401/403 وصلاحيات الشركة">8.1 401/403 وصلاحيات الشركة</a>
+<a href="#82-nil-pointer-dereference" class="toc-item level-3" data-text="8.2 nil pointer dereference">8.2 nil pointer dereference</a>
+<a href="#83-gorm-preload" class="toc-item level-3" data-text="8.3 gorm preload">8.3 GORM preload</a>
+<a href="#84-trailing-slash" class="toc-item level-3" data-text="8.4 trailing slash">8.4 Trailing slash</a>
+<a href="#85-swagger-لا-يتحدث" class="toc-item level-3" data-text="8.5 swagger لا يتحدث">8.5 Swagger لا يتحدث</a>
+<a href="#86-type-assertion-غير-امن" class="toc-item level-3" data-text="8.6 type assertion غير آمن">8.6 type assertion غير آمن</a>
+<a href="#87-import-cycle" class="toc-item level-3" data-text="8.7 import cycle">8.7 import cycle</a>
+<a href="#88-json-marshaling" class="toc-item level-3" data-text="8.8 json marshaling">8.8 JSON marshaling</a>
+<a href="#9-تمارين" class="toc-item level-2" data-text="9. تمارين">9. تمارين</a>
+<a href="#10-اجابات-التمارين" class="toc-item level-2" data-text="10. إجابات التمارين">10. إجابات التمارين</a>
+<a href="#11-ملحقات" class="toc-item level-2" data-text="11. ملحقات">11. ملحقات</a>
+<a href="#111-قايمة-اهم-الـ-endpoints" class="toc-item level-3" data-text="11.1 قائمة أهم الـ endpoints">11.1 قائمة أهم الـ endpoints</a>
+<a href="#112-مصادر-للتعمق" class="toc-item level-3" data-text="11.2 مصادر للتعمق">11.2 مصادر للتعمق</a>
+<a href="#113-قاموس-المصطلحات" class="toc-item level-3" data-text="11.3 قاموس المصطلحات">11.3 قاموس المصطلحات</a>
+      </nav>
+    </aside>
+    <main class="content">
+<h1 id="دليلك-الكامل-للانتقال-من-django-الى-go">دليلك الكامل للانتقال من Django إلى Go</h1>
+
+<blockquote>
+  <p><strong>هدف هذا الدليل:</strong> تعليمك قراءة Backend المكتوب بلغة Go والموجود في المشروع، وتعديله، وإضافة ميزات جديدة إليه، حتى تصل في النهاية إلى نقل كل المنصة من Django إلى Go.</p>
+  
+  <p><strong>الجمهور:</strong> مطوّر يجيد Java أو Dart أو Python/Django، ولا يعرف شيئًا عن Go.</p>
+  
+  <p><strong>سياق المشروع:</strong><br />
+  - جذر المشروع: <code>/Users/rasol/DevsTools/codes/python/solarhub</code><br />
+  - Backend Go: <code>/Users/rasol/DevsTools/codes/python/solarhub/go_backend</code><br />
+  - Backend Django: <code>/Users/rasol/DevsTools/codes/python/solar_hub</code><br />
+  - تقرير المقارنة: <code>/Users/rasol/DevsTools/codes/python/solarhub/api_migration_comparison.md</code><br />
+  - مسار Go API الأساسي: <code>/api/v1</code><br />
+  - Swagger: <code>/api/v1/docs</code><br />
+  - GoAdmin Dashboard: <code>/dashboard</code><br />
+  - Stack: Go 1.25, Gin, GORM, golang-jwt, swaggo/gin-swagger, GoAdmin, SQLite/MySQL</p>
+</blockquote>
+
+<hr />
+
+<h2 id="1-مقدمة">1. مقدمة</h2>
+
+<h3 id="11-لماذا-go">1.1 لماذا Go؟</h3>
+
+<p>Go (تُنطق <strong>Go</strong>، وليس Golang رسميًا) هي لغة برمجة صُمّمت في Google عام 2009 على يد Robert Griesemer وRob Pike وKen Thompson. ظهرت كرد فعل على تعقيد لغات أخرى مثل C++ وJava في المشاريع الضخمة، مع الحفاظ على الأداء العالي. منذ ذلك الحين، أصبحت Go واحدة من أكثر اللغات استخدامًا في الخوادم، وخدمات السحابة، وأدوات سطر الأوامر. شركات كبيرة مثل Google وUber وDropbox وCloudflare تعتمد عليها في أنظمةها الحرجة.</p>
+
+<p>تتميز Go بأربعة أمور تجعلها مثالية لكتابة الخوادم (Backend):</p>
+
+<ol>
+<li><strong>سرعة الترجمة والتنفيذ:</strong> يترجم Go إلى ملف تنفيذي أصلي (native binary)، لذلك يبدأ الخادم خلال جزء من الثانية ويستهلك ذاكرة أقل بكثير من Python أو Java. هذا مهم جدًا عند نشر التطبيقات في الحاويات (containers) حيث كل ميجابايت يهم.</li>
+<li><strong>تزامن بسيط (Concurrency):</strong> توفر goroutines و channels لمعالجة آلاف الطلبات في وقت واحد بأقل تعقيد من Java threads، وبدون الحاجة لـ async/await كما في Python. Goroutine خفيفة جدًا: يمكن تشغيل مئات الآلاف منها في نفس الوقت.</li>
+<li><strong>بنية بسيطة ومكتبة قياسية ضخمة:</strong> لا توجد طبقات من التعقيد الاصطلاحي (boilerplate) كما في Java Spring، ولا توجد نسخ متعددة من الـ runtime كما قد يحدث في Python. القواعد قليلة وواضحة.</li>
+<li><strong>توزيع سهل:</strong> ملف تنفيذي واحد يحتوي على كل شيء (بدون تبعيات خارجية في الغالب)، مما يسهل النشر على الخوادم أو الحاويات. لا حاجة لـ virtualenv أو متطلبات طويلة.</li>
+</ol>
+
+<p>بالنسبة لهذا المشروع، تم اختيار <strong>Go 1.25 + Gin + GORM</strong> لإعادة كتابة الـ Backend بدل Django Ninja لأسباب عملية:</p>
+
+<ul>
+<li><strong>أداء أفضل</strong> عند عدد كبير من الطلبات المتزامنة.</li>
+<li><strong>ملف تنفيذي واحد</strong> يمكن نشره بسهولة.</li>
+<li><strong>توافق كامل تقريبًا</strong> مع التطبيق المكتوب بلغة Dart/Flutter لأن كلاهما يتحدث JSON عبر HTTP.</li>
+<li><strong>GORM</strong> يجعل التعامل مع قاعدة البيانة قريبًا جدًا من Django ORM.</li>
+<li><strong>GoAdmin</strong> يوفر لوحة تحكم شبيهة بـ Django Admin دون الحاجة لكتابة واجهة من الصفر.</li>
+<li><strong>golang-jwt</strong> يوفر توافقًا مع توكنات Django JWT.</li>
+<li><strong>swaggo/gin-swagger</strong> يولّد توثيق Swagger من التعليقات في الكود.</li>
+</ul>
+
+<h3 id="12-ما-تحتاجه-قبل-البدء">1.2 ما تحتاجه قبل البدء</h3>
+
+<p>قبل أن تبدأ، تأكد من توفر ما يلي:</p>
+
+<ul>
+<li><strong>Go 1.25</strong> مثبتًا على جهازك. افتح الطرفية واكتب:<br />
+<pre><code class="language-bash">  go version</code></pre><br />
+يجب أن ترى شيئًا مثل <code>go version go1.25.0 darwin/arm64</code>.</li>
+<li><strong>VS Code</strong> مع الإضافتين:
+<ul>
+<li>Go (من Google)</li>
+<li>Error Lens (اختياري)</li>
+</ul></li>
+<li><strong>Postman</strong> أو <strong>Bruno</strong> لاختبار الـ endpoints.</li>
+<li><strong>Git</strong> للتحكم بالإصدارات.</li>
+<li><strong>معرفة عملية</strong> بـ HTTP/REST و JSON و SQL.</li>
+<li><strong>فهم جيد</strong> لـ Django Ninja و Django ORM.</li>
+</ul>
+
+<h3 id="13-كيف-تقرا-هذا-الدليل">1.3 كيف تقرأ هذا الدليل</h3>
+
+<p>هذا الدليل مُصمم ليقرأ من البداية إلى النهاية في المرة الأولى. الأقسام الأولى تعلمك لغة Go، والأقسام الوسطى تشرح هندسة المشروع، والأقسام الأخيرة تركز على العمل العملي وحل المشكلات. في نهاية كل قسم تجد <strong>"ملخص سريع"</strong> يلخّص النقاط الأساسية.</p>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> Go لغة حديثة وسريعة لكتابة الخوادم. في هذا المشروع، تعمل مع Gin (للـ HTTP) و GORM (لقواعد البيانات). لا حاجة لخبرة سابقة في Go؛ سنبدأ من الصفر.
+</p>
+
+<hr />
+
+<h2 id="2-اول-يوم-في-go">2. أول يوم في Go</h2>
+
+<h3 id="21-تثبيت-go-و-vs-code">2.1 تثبيت Go و VS Code</h3>
+
+<p>تثبيت Go بسيط جدًا. على macOS يمكنك استخدام Homebrew:</p>
+
+<pre><code class="language-bash">brew install go</code></pre>
+
+<p>على Linux:</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install golang-go</code></pre>
+
+<p>بعد التثبيت، تأكد من متغيرات البيئة:</p>
+
+<pre><code class="language-bash">go env GOPATH
+go env GOROOT</code></pre>
+
+<ul>
+<li><code>GOROOT</code>: مكان تثبيت Go.</li>
+<li><code>GOPATH</code>: مجلد العمل الافتراضي للمشاريع والحزم.</li>
+<li><code>go.mod</code>: يحل محل <code>GOPATH</code> في إدارة المشاريع الحديثة.</li>
+</ul>
+
+<p>في VS Code، شغّل <code>Ctrl+Shift+P</code> ثم <code>Go: Install/Update Tools</code> وثبّت جميع الأدوات المقترحة. هذه الأدوات تساعد في التنسيق التلقائي، والاستيراد التلقائي، والتنقل في الكود.</p>
+
+<h3 id="22-hello-world">2.2 Hello World</h3>
+
+<p>في أي مجلد فارغ، أنشئ ملفًا باسم <code>main.go</code>:</p>
+
+<pre><code class="language-go">package main
+
+import &quot;fmt&quot;
+
+func main() {
+    fmt.Println(&quot;مرحبًا بك في Go!&quot;)
+}</code></pre>
+
+<blockquote>
+  <p>ملاحظة: في Go يجب أن يبدأ اسم البرنامج التنفيذي من حزمة <code>package main</code> ودالة <code>main()</code>.</p>
+</blockquote>
+
+<p>شغّل الكود:</p>
+
+<pre><code class="language-bash">go run main.go</code></pre>
+
+<h3 id="23-go-run-go-build-go-test">2.3 go run / go build / go test</h3>
+
+<table>
+<thead>
+<tr>
+  <th>الأمر</th>
+  <th>الوظيفة</th>
+  <th>مثال</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>go run .</code></td>
+  <td>يترجم ويشغل مباشرة</td>
+  <td><code>go run main.go</code></td>
+</tr>
+<tr>
+  <td><code>go build .</code></td>
+  <td>ينتج ملف تنفيذي</td>
+  <td><code>go build -o app</code></td>
+</tr>
+<tr>
+  <td><code>go test ./...</code></td>
+  <td>يشغل اختبارات الحزم</td>
+  <td><code>go test ./internal/handlers/...</code></td>
+</tr>
+<tr>
+  <td><code>go fmt ./...</code></td>
+  <td>ينسّق الشيفرة</td>
+  <td><code>go fmt ./...</code></td>
+</tr>
+<tr>
+  <td><code>go mod tidy</code></td>
+  <td>ينظف الاعتماديات</td>
+  <td><code>go mod tidy</code></td>
+</tr>
+<tr>
+  <td><code>go get</code></td>
+  <td>يضيف حزمة جديدة</td>
+  <td><code>go get github.com/gin-gonic/gin</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="24-gomod-وادارة-الاعتماديات">2.4 go.mod وإدارة الاعتماديات</h3>
+
+<p>افتح <code>/Users/rasol/DevsTools/codes/python/solarhub/go_backend/go.mod</code>:</p>
+
+<pre><code class="language-go">module watt
+
+go 1.25.0
+
+require (
+    github.com/GoAdminGroup/go-admin v1.2.26
+    github.com/GoAdminGroup/themes v0.0.48
+    github.com/gin-gonic/gin v1.12.0
+    github.com/golang-jwt/jwt/v5 v5.3.1
+    github.com/google/uuid v1.6.0
+    github.com/joho/godotenv v1.5.1
+    github.com/swaggo/files v1.0.1
+    github.com/swaggo/gin-swagger v1.6.1
+    github.com/swaggo/swag v1.16.6
+    golang.org/x/crypto v0.53.0
+    gorm.io/datatypes v1.2.7
+    gorm.io/driver/mysql v1.6.0
+    gorm.io/driver/sqlite v1.6.0
+    gorm.io/gorm v1.31.2
+)</code></pre>
+
+<ul>
+<li><code>module watt</code>: اسم الوحدة. كل استيراد داخلي يبدأ بـ <code>watt/...</code>.</li>
+<li><code>go 1.25.0</code>: إصدار Go المطلوب.</li>
+<li><code>require</code>: قائمة الحزم الخارجية، مثل <code>requirements.txt</code> في Python.</li>
+<li><code>go.sum</code>: يحتوي على hashes للحزم لضمان تطابق الإصدارات.</li>
+</ul>
+
+<h3 id="25-انشاء-مشروع-go-جديد">2.5 إنشاء مشروع Go جديد</h3>
+
+<p>لإنشاء مشروع جديد:</p>
+
+<pre><code class="language-bash">mkdir myapp
+cd myapp
+go mod init myapp</code></pre>
+
+<p>ثم أنشئ <code>main.go</code> وشغّله.</p>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> كل برنامج Go يبدأ بـ <code>package main</code> ودالة <code>main()</code>. <code>go.mod</code> يدير الاعتماديات مثل <code>requirements.txt</code> أو <code>pubspec.yaml</code>.
+</p>
+
+<hr />
+
+<h2 id="3-من-javadartpython-الى-go">3. من Java/Dart/Python إلى Go</h2>
+
+<h3 id="31-المتغيرات-والانواع">3.1 المتغيرات والأنواع</h3>
+
+<p>في Go الأنواع ثابتة (statically typed)، مثل Java، ولكنها مختصرة.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Java</th>
+  <th>Dart</th>
+  <th>Python</th>
+  <th>Go</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>int x = 10;</code></td>
+  <td><code>int x = 10;</code></td>
+  <td><code>x = 10</code></td>
+  <td><code>var x int = 10</code></td>
+</tr>
+<tr>
+  <td><code>String name = "Ali";</code></td>
+  <td><code>String name = "Ali";</code></td>
+  <td><code>name = "Ali"</code></td>
+  <td><code>var name string = "Ali"</code></td>
+</tr>
+<tr>
+  <td><code>boolean ok = true;</code></td>
+  <td><code>bool ok = true;</code></td>
+  <td><code>ok = True</code></td>
+  <td><code>var ok bool = true</code></td>
+</tr>
+<tr>
+  <td><code>double price = 9.99;</code></td>
+  <td><code>double price = 9.99;</code></td>
+  <td><code>price = 9.99</code></td>
+  <td><code>var price float64 = 9.99</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>Go يدعم الاستنتاج (type inference) بـ <code>:=</code>:</p>
+
+<pre><code class="language-go">name := &quot;Ali&quot;   // string
+age := 30       // int
+price := 9.99   // float64
+active := true  // bool</code></pre>
+
+<p>يساوي:</p>
+
+<pre><code class="language-go">var name string = &quot;Ali&quot;
+var age int = 30
+var price float64 = 9.99
+var active bool = true</code></pre>
+
+<p>الثوابت:</p>
+
+<pre><code class="language-go">const Pi = 3.14159
+const AppName = &quot;SolarHub&quot;</code></pre>
+
+<p><strong>القيم الافتراضية (Zero Values):</strong></p>
+
+<p>في Go، كل نوع له قيمة افتراضية:</p>
+
+<pre><code class="language-go">var i int     // 0
+var s string  // &quot;&quot;
+var b bool    // false
+var p *int    // nil</code></pre>
+
+<h3 id="32-if-for-switch">3.2 if / for / switch</h3>
+
+<p><strong>if:</strong></p>
+
+<pre><code class="language-go">score := 85
+if score &gt;= 90 {
+    fmt.Println(&quot;ممتاز&quot;)
+} else if score &gt;= 75 {
+    fmt.Println(&quot;جيد جدًا&quot;)
+} else {
+    fmt.Println(&quot;يحتاج تحسين&quot;)
+}</code></pre>
+
+<p>يمكن تعريف متغير داخل if:</p>
+
+<pre><code class="language-go">if x := 10; x &gt; 5 {
+    fmt.Println(&quot;أكبر من 5&quot;)
+}</code></pre>
+
+<p><strong>for:</strong></p>
+
+<pre><code class="language-go">// for عادي
+for i := 0; i &lt; 5; i++ {
+    fmt.Println(i)
+}
+
+// while-style
+n := 0
+for n &lt; 5 {
+    fmt.Println(n)
+    n++
+}
+
+// for each على slice
+names := []string{&quot;أحمد&quot;, &quot;سارة&quot;, &quot;محمد&quot;}
+for index, name := range names {
+    fmt.Println(index, name)
+}</code></pre>
+
+<p><strong>switch:</strong></p>
+
+<pre><code class="language-go">lang := &quot;ar&quot;
+switch lang {
+case &quot;ar&quot;:
+    fmt.Println(&quot;العربية&quot;)
+case &quot;en&quot;:
+    fmt.Println(&quot;English&quot;)
+default:
+    fmt.Println(&quot;غير معروف&quot;)
+}</code></pre>
+
+<h3 id="33-الدوال-والقيم-المرجعة-المتعددة">3.3 الدوال والقيم المرجعة المتعددة</h3>
+
+<p>في Java/Dart تُرجع الدالة قيمة واحدة (أو Future). في Go يمكن إرجاع أكثر من قيمة. هذا أساسي لمعالجة الأخطاء.</p>
+
+<pre><code class="language-go">func add(a int, b int) int {
+    return a + b
+}
+
+// قيمتان مرجعتان
+func divide(a, b float64) (float64, error) {
+    if b == 0 {
+        return 0, fmt.Errorf(&quot;لا يمكن القسمة على صفر&quot;)
+    }
+    return a / b, nil
+}</code></pre>
+
+<p>استخدامها:</p>
+
+<pre><code class="language-go">result, err := divide(10, 2)
+if err != nil {
+    fmt.Println(&quot;خطأ:&quot;, err)
+} else {
+    fmt.Println(&quot;النتيجة:&quot;, result)
+}</code></pre>
+
+<h3 id="34-structs-بدل-classes">3.4 Structs بدل Classes</h3>
+
+<p>Go لا يحتوي على classes. بدلًا منها نستخدم <code>struct</code>:</p>
+
+<pre><code class="language-go">type User struct {
+    ID       uint
+    Username string
+    Email    string
+}
+
+func main() {
+    u := User{
+        ID:       1,
+        Username: &quot;ali&quot;,
+        Email:    &quot;ali@example.com&quot;,
+    }
+    fmt.Println(u.Username)
+}</code></pre>
+
+<p>هذا يكافئ في Python:</p>
+
+<pre><code class="language-python">@dataclass
+class User:
+    id: int
+    username: str
+    email: str</code></pre>
+
+<h3 id="35-methods-و-interfaces">3.5 Methods و Interfaces</h3>
+
+<p><strong>Methods:</strong> دوال مرتبطة بنوع ما.</p>
+
+<pre><code class="language-go">func (u User) FullName() string {
+    return u.Username + &quot;@app&quot;
+}</code></pre>
+
+<p><strong>Interfaces:</strong> مجموعة من الـ methods التي يجب أن ينفذها النوع.</p>
+
+<pre><code class="language-go">type Greeter interface {
+    Greet() string
+}
+
+type Person struct{ Name string }
+
+func (p Person) Greet() string {
+    return &quot;مرحبًا &quot; + p.Name
+}</code></pre>
+
+<p>في Go، يتحقق التنفيذ تلقائيًا (implicit interface)؛ لا حاجة لكتابة <code>implements</code>.</p>
+
+<h3 id="36-pointers-بابسط-صورة">3.6 Pointers بأبسط صورة</h3>
+
+<p>Pointer هو عنوان المتغير في الذاكرة. في Go نستخدم <code>&amp;</code> للحصول على العنوان و <code>*</code> للوصول للقيمة.</p>
+
+<pre><code class="language-go">func main() {
+    x := 10
+    p := &amp;x   // p هو *int (pointer to int)
+    *p = 20   // عدّلنا x عبر p
+    fmt.Println(x) // 20
+}</code></pre>
+
+<p>تُستخدم الـ pointers كثيرًا مع GORM لتمرير النماذج والـ structs.</p>
+
+<pre><code class="language-go">var user models.User
+database.DB.First(&amp;user, 1) // نمرر pointer ليملأه GORM</code></pre>
+
+<h3 id="37-slices-و-maps-و-arrays">3.7 Slices و Maps و Arrays</h3>
+
+<p><strong>Array:</strong> طول ثابت.</p>
+
+<pre><code class="language-go">var arr [3]int = [3]int{1, 2, 3}</code></pre>
+
+<p><strong>Slice:</strong> قائمة ديناميكية، تشبه <code>List</code> في Dart/Java.</p>
+
+<pre><code class="language-go">numbers := []int{1, 2, 3}
+numbers = append(numbers, 4)
+fmt.Println(numbers[0]) // 1</code></pre>
+
+<p><strong>Map:</strong> قاموس، يكافئ <code>Map</code> في Dart/Java أو <code>dict</code> في Python.</p>
+
+<pre><code class="language-go">ages := map[string]int{
+    &quot;أحمد&quot;: 25,
+    &quot;سارة&quot;: 30,
+}
+ages[&quot;علي&quot;] = 22
+fmt.Println(ages[&quot;أحمد&quot;])</code></pre>
+
+<h3 id="38-goroutines-و-channels-مفهوم">3.8 Goroutines و Channels (مفهوم)</h3>
+
+<p><strong>Goroutine:</strong> دالة تعمل بشكل متزامن بسيط جدًا.</p>
+
+<pre><code class="language-go">func sayHello() {
+    fmt.Println(&quot;Hello&quot;)
+}
+
+func main() {
+    go sayHello() // تشغيل متزامن
+    time.Sleep(time.Second)
+}</code></pre>
+
+<p><strong>Channel:</strong> قناة للتواصل بين goroutines.</p>
+
+<pre><code class="language-go">ch := make(chan string)
+go func() {
+    ch &lt;- &quot;تم&quot;
+}()
+msg := &lt;-ch
+fmt.Println(msg)</code></pre>
+
+<p>في هذا المشروع لا تحتاج لاستخدام goroutines بشكل مباشر في أغلب الـ handlers، لكن من الجيد معرفة المفهوم.</p>
+
+<h3 id="39-ادارة-الاخطاء-لا-يوجد-try-catch">3.9 إدارة الأخطاء (لا يوجد try-catch)</h3>
+
+<p>Go لا يحتوي على <code>try/catch</code>. كل دالة قد تفشل تُرجع <code>error</code> كقيمة ثانية.</p>
+
+<pre><code class="language-go">file, err := os.Open(&quot;data.txt&quot;)
+if err != nil {
+    log.Fatal(err)
+}
+defer file.Close()</code></pre>
+
+<p>في Django/Python:</p>
+
+<pre><code class="language-python">try:
+    file = open(&quot;data.txt&quot;)
+except Exception as e:
+    print(e)</code></pre>
+
+<p>في Go:</p>
+
+<pre><code class="language-go">if err := doSomething(); err != nil {
+    return err
+}</code></pre>
+
+<p>هذا النمط يظهر في كل handler في المشروع.</p>
+
+<h3 id="310-packages-والاستيراد">3.10 Packages والاستيراد</h3>
+
+<p>كل مجلد في Go هو package. اسم الحزمة يُكتب أول سطر في كل ملف.</p>
+
+<pre><code class="language-go">package handlers
+
+import (
+    &quot;net/http&quot;
+    &quot;github.com/gin-gonic/gin&quot;
+    &quot;watt/internal/models&quot;
+)</code></pre>
+
+<ul>
+<li><code>net/http</code>: مكتبة قياسية.</li>
+<li><code>github.com/gin-gonic/gin</code>: حزمة خارجية.</li>
+<li><code>watt/internal/models</code>: حزمة داخلية من المشروع.</li>
+</ul>
+
+<p><strong>الرؤية (Visibility):</strong> في Go، الاسم الذي يبدأ بحرف كبير يكون "مُصدَّر" (exported) أي عام، والاسم الذي يبدأ بحرف صغير يكون خاصًا للحزمة.</p>
+
+<pre><code class="language-go">type User struct { }   // عام
+func getUser() { }     // خاص</code></pre>
+
+<h3 id="311-defer">3.11 defer</h3>
+
+<p><code>defer</code> يؤجل تنفيذ دالة حتى نهاية الدالة الحالية. يُستخدم غالبًا لإغلاق الموارد.</p>
+
+<pre><code class="language-go">file, err := os.Open(&quot;data.txt&quot;)
+if err != nil {
+    return err
+}
+defer file.Close()
+// ... استخدم file</code></pre>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> Go تستخدم structs بدل classes، و pointers للمرجعيات، و slices/maps للمجموعات، و لا يوجد try-catch بل نتحقق من <code>error</code> يدويًا. الأسماء التي تبدأ بحرف كبير تكون عامة.
+</p>
+
+<hr />
+
+<h2 id="4-هندسة-مشروع-go">4. هندسة مشروع Go</h2>
+
+<h3 id="41-شرح-المجلدات">4.1 شرح المجلدات</h3>
+
+<pre><code class="language-text">go_backend/
+├── cmd/
+│   └── server/
+│       └── main.go          ← نقطة الدخول
+├── internal/
+│   ├── config/              ← إعدادات التطبيق
+│   ├── database/            ← اتصال GORM + AutoMigrate
+│   ├── handlers/            ← منطق استقبال HTTP
+│   ├── middleware/          ← Auth, Superuser, CompanyMember
+│   ├── models/              ← نماذج GORM + Schemas
+│   ├── response/            ← تنسيق الردود الموحّد
+│   ├── routes/              ← تسجيل المسارات
+│   ├── services/            ← JWT + Django password
+│   └── utils/               ← مساعدات عامة
+├── docs/                    ← ملفات Swagger المولدة
+├── go.mod / go.sum          ← الاعتماديات
+└── uploads/                 ← الملفات المرفوعة</code></pre>
+
+<h3 id="42-cmdservermaingo">4.2 cmd/server/main.go</h3>
+
+<p>هذا الملف هو قلب التطبيق. يبدأ الخادم ويُعدّ الـ router ويُفعّل GoAdmin.</p>
+
+<pre><code class="language-go">func main() {
+    cfg := config.LoadConfig()
+    database.Connect(cfg)
+
+    router := gin.Default()
+    router.RedirectTrailingSlash = false
+    router.RedirectFixedPath = false
+
+    // Initialize GoAdmin
+    eng := engine.Default()
+    adminPlugin := admin.NewAdmin(admin_tables.Generators)
+    // ...
+
+    apiGroup := router.Group(&quot;/api&quot;)
+    v1Group := apiGroup.Group(&quot;/v1&quot;)
+    v1Group.Use(trailingSlashMiddleware())
+
+    v1Group.GET(&quot;&quot;, root.Welcome)
+    v1Group.GET(&quot;/docs/*any&quot;, ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+    routes.SetupUserRoutes(v1Group, cfg)
+    routes.SetupCompanyRoutes(v1Group, cfg)
+    // ...
+
+    router.Run(&quot;:&quot; + cfg.Port)
+}</code></pre>
+
+<blockquote>
+  <p>ملاحظة: <code>trailingSlashMiddleware()</code> تزيل <code>/</code> الزائد من نهاية المسارات حتى يعمل التطبيق مثل Django.</p>
+</blockquote>
+
+<h3 id="43-routes-تسجيل-المسارات">4.3 Routes: تسجيل المسارات</h3>
+
+<p>افتح <code>internal/routes/users.go</code>:</p>
+
+<pre><code class="language-go">func SetupUserRoutes(rg *gin.RouterGroup, cfg *config.Config) {
+    usersGroup := rg.Group(&quot;/users&quot;)
+    h := handlers.NewUserHandler(cfg)
+
+    usersGroup.POST(&quot;/login&quot;, h.Login)
+    usersGroup.POST(&quot;/register&quot;, h.Register)
+
+    authGroup := usersGroup.Group(&quot;&quot;)
+    authGroup.Use(middleware.AuthMiddleware(cfg))
+    {
+        authGroup.GET(&quot;/profile&quot;, h.GetProfile)
+    }
+}</code></pre>
+
+<p>الـ <code>RouterGroup</code> يسمح بتجميع المسارات وتطبيق middleware عليها دفعة واحدة.</p>
+
+<h3 id="44-handlers-استقبال-http">4.4 Handlers: استقبال HTTP</h3>
+
+<p>Handlers هي "Views" في Django. مثال من <code>internal/handlers/users.go</code>:</p>
+
+<pre><code class="language-go">func (h *UserHandler) Login(c *gin.Context) {
+    var req models.LoginRequest
+    if err := c.ShouldBindJSON(&amp;req); err != nil {
+        msgUser := &quot;بيانات غير صالحة&quot;
+        response.Error(c, http.StatusBadRequest, &quot;Invalid request body&quot;, &amp;msgUser)
+        return
+    }
+
+    var user models.User
+    result := database.DB.Where(&quot;username = ? OR email = ?&quot;, req.Username, req.Username).First(&amp;user)
+    if result.Error != nil {
+        msgUser := &quot;اسم المستخدم أو كلمة المرور غير صحيحة&quot;
+        response.Error(c, http.StatusUnauthorized, &quot;User not found&quot;, &amp;msgUser)
+        return
+    }
+
+    // ... verify password &amp; return token
+}</code></pre>
+
+<ul>
+<li><code>c *gin.Context</code>: يحمل الطلب والاستجابة.</li>
+<li><code>c.ShouldBindJSON(&amp;req)</code>: يحول JSON body إلى struct.</li>
+<li><code>response.Error/response.Success</code>: يرسل ردًا موحد الشكل.</li>
+</ul>
+
+<h3 id="45-middleware">4.5 Middleware</h3>
+
+<p>Middleware هو "طبقة" تعمل قبل الـ handler. ثلاثة أنواع رئيسية في المشروع:</p>
+
+<ol>
+<li><strong>AuthMiddleware:</strong> يتحقق من JWT.</li>
+<li><strong>SuperuserMiddleware:</strong> يتحقق أن المستخدم <code>is_superuser = true</code>.</li>
+<li><strong>CompanyMemberMiddleware:</strong> يتحقق أن المستخدم عضو في الشركة المحددة في <code>company_id</code>.</li>
+</ol>
+
+<p>مثال من <code>internal/middleware/auth.go</code>:</p>
+
+<pre><code class="language-go">func AuthMiddleware(cfg *config.Config) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        authHeader := c.GetHeader(&quot;Authorization&quot;)
+        if authHeader == &quot;&quot; {
+            response.Error(c, http.StatusUnauthorized, &quot;Missing Authorization Header&quot;, &amp;msgUser)
+            c.Abort()
+            return
+        }
+        // ... parse JWT ...
+        c.Set(&quot;user_id&quot;, userID)
+        c.Next()
+    }
+}</code></pre>
+
+<ul>
+<li><code>c.Abort()</code> يوقف سلسلة المعالجة.</li>
+<li><code>c.Next()</code> يسمح للـ handler بالاستمرار.</li>
+</ul>
+
+<h3 id="46-models-و-schemas">4.6 Models و Schemas</h3>
+
+<p><strong>Models:</strong> تمثل جداول قاعدة البيانات. مثال <code>internal/models/user.go</code>:</p>
+
+<pre><code class="language-go">type User struct {
+    ID        uint      `gorm:&quot;primaryKey;column:id&quot;`
+    Username  string    `gorm:&quot;column:username;unique;not null&quot;`
+    Password  string    `gorm:&quot;column:password;not null&quot;`
+    Email     string    `gorm:&quot;column:email;unique;not null&quot;`
+    FirstName string    `gorm:&quot;column:first_name&quot;`
+    LastName  string    `gorm:&quot;column:last_name&quot;`
+    Phone     string    `gorm:&quot;column:phone&quot;`
+    CityID    *uint     `gorm:&quot;column:city_id&quot;`
+    Image     *string   `gorm:&quot;column:image&quot;`
+    IsActive  bool      `gorm:&quot;column:is_active;default:true&quot;`
+    IsStaff   bool      `gorm:&quot;column:is_staff;default:false&quot;`
+    IsSuperuser bool    `gorm:&quot;column:is_superuser;default:false&quot;`
+    LastLogin *time.Time
+    DateJoined time.Time
+}
+
+func (User) TableName() string {
+    return &quot;users&quot;
+}</code></pre>
+
+<blockquote>
+  <p>ملاحظة مهمة: تم دمج جدولي <code>auth_user</code> و <code>users_profile</code> من Django في جدول واحد <code>users</code>.</p>
+</blockquote>
+
+<p><strong>Schemas:</strong> structs تُستخدم لاستقبال JSON أو إرساله. مثال <code>internal/models/users_schemas.go</code>:</p>
+
+<pre><code class="language-go">type LoginRequest struct {
+    Username string `json:&quot;username&quot; binding:&quot;required&quot;`
+    Password string `json:&quot;password&quot; binding:&quot;required&quot;`
+}
+
+type ProfileOut struct {
+    ID       uint    `json:&quot;id&quot;`
+    Username string  `json:&quot;username&quot;`
+    Email    *string `json:&quot;email&quot;`
+}</code></pre>
+
+<h3 id="47-response-تنسيق-الردود">4.7 response: تنسيق الردود</h3>
+
+<p><code>internal/response/response.go</code> يضمن أن كل رد يتبع الشكل:</p>
+
+<pre><code class="language-json">{
+  &quot;status&quot;: 200,
+  &quot;message&quot;: &quot;Login successful&quot;,
+  &quot;body&quot;: { ... },
+  &quot;error&quot;: false,
+  &quot;message_user&quot;: null
+}</code></pre>
+
+<p>الملف:</p>
+
+<pre><code class="language-go">type APIResponse struct {
+    Status      int         `json:&quot;status&quot;`
+    Message     string      `json:&quot;message&quot;`
+    Body        interface{} `json:&quot;body&quot;`
+    Error       bool        `json:&quot;error&quot;`
+    MessageUser *string     `json:&quot;message_user&quot;`
+}
+
+func Success(c *gin.Context, status int, message string, body interface{}) {
+    c.JSON(status, APIResponse{...})
+}
+
+func Error(c *gin.Context, status int, message string, messageUser *string) {
+    c.JSON(status, APIResponse{...})
+}</code></pre>
+
+<h3 id="48-database-و-automigrate">4.8 database و AutoMigrate</h3>
+
+<p><code>internal/database/db.go</code> يُنشئ اتصال GORM ويُشغّل <code>AutoMigrate</code>:</p>
+
+<pre><code class="language-go">var DB *gorm.DB
+
+func Connect(cfg *config.Config) {
+    if strings.HasSuffix(cfg.DatabaseURL, &quot;.sqlite3&quot;) {
+        DB, _ = gorm.Open(sqlite.Open(cfg.DatabaseURL), &amp;gorm.Config{})
+    } else {
+        DB, _ = gorm.Open(mysql.Open(cfg.DatabaseURL), &amp;gorm.Config{})
+    }
+
+    DB.AutoMigrate(
+        &amp;models.User{},
+        &amp;models.Company{},
+        &amp;models.Product{},
+        // ...
+    )
+}</code></pre>
+
+<blockquote>
+  <p>ملاحظة: <code>AutoMigrate</code> لا يحذف أعمدة؛ يضيف فقط ما ينقص. إذا أردت تعديل عمود موجود، استخدم migrations يدوية.</p>
+</blockquote>
+
+<h3 id="49-servicesauth">4.9 services/auth</h3>
+
+<p><code>internal/services/auth.go</code> يتضمن:</p>
+
+<ul>
+<li><code>VerifyDjangoPassword</code>: للتحقق من كلمات مرور Django (<code>pbkdf2_sha256$...</code>).</li>
+<li><code>GenerateDjangoPassword</code>: لإنشاء هاش متوافق مع Django.</li>
+<li><code>GenerateJWT</code>: لتوليد access/refresh tokens.</li>
+</ul>
+
+<pre><code class="language-go">func VerifyDjangoPassword(plainPassword, djangoHash string) bool {
+    if strings.HasPrefix(djangoHash, &quot;$2a$&quot;) {
+        err := bcrypt.CompareHashAndPassword([]byte(djangoHash), []byte(plainPassword))
+        return err == nil
+    }
+    // ... pbkdf2_sha256 logic ...
+}</code></pre>
+
+<blockquote>
+  <p>ملاحظة: سر JWT الافتراضي مطابق لـ <code>SECRET_KEY</code> الافتراضي في Django لضمان توافق التوكنات في بيئة التطوير.</p>
+</blockquote>
+
+<h3 id="410-علاقات-gorm">4.10 علاقات GORM</h3>
+
+<p>GORM يدعم أنواع العلاقات نفسها التي يدعمها Django ORM:</p>
+
+<p><strong>One-to-One:</strong></p>
+
+<pre><code class="language-go">type User struct {
+    ID      uint
+    Profile Profile `gorm:&quot;foreignKey:UserID&quot;`
+}
+
+type Profile struct {
+    ID     uint
+    UserID uint
+}</code></pre>
+
+<p><strong>One-to-Many:</strong></p>
+
+<pre><code class="language-go">type Company struct {
+    ID      uint
+    Members []CompanyMember `gorm:&quot;foreignKey:CompanyID&quot;`
+}</code></pre>
+
+<p><strong>Many-to-Many:</strong></p>
+
+<pre><code class="language-go">type Product struct {
+    ID         uint
+    Categories []CompanyCategory `gorm:&quot;many2many:product_company_categories;&quot;`
+}</code></pre>
+
+<p><strong>Preload:</strong></p>
+
+<pre><code class="language-go">database.DB.Preload(&quot;Members&quot;).Preload(&quot;Members.User&quot;).First(&amp;company, id)</code></pre>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> المشروع مقسّم لحزم واضحة: <code>main.go</code> للتشغيل، <code>routes</code> للمسارات، <code>handlers</code> للمنطق، <code>models</code> للبيانات، <code>middleware</code> للصلاحيات، و <code>response</code> للردود الموحدة. GORM يدعم One-to-One و One-to-Many و Many-to-Many.
+</p>
+
+<hr />
+
+<h2 id="5-django-ninja-مقابل-go-gin">5. Django Ninja مقابل Go Gin</h2>
+
+<h3 id="51-router">5.1 Router</h3>
+
+<p><strong>Django Ninja:</strong></p>
+
+<pre><code class="language-python">from ninja import NinjaAPI
+api = NinjaAPI(urls_namespace=&quot;api&quot;, version=&quot;1.0&quot;)
+
+@api.get(&quot;/users&quot;)
+def list_users(request):
+    return User.objects.all()</code></pre>
+
+<p><strong>Go Gin:</strong></p>
+
+<pre><code class="language-go">router := gin.Default()
+users := router.Group(&quot;/users&quot;)
+users.GET(&quot;&quot;, handlers.GetUsers)</code></pre>
+
+<h3 id="52-دورة-حياة-الطلب">5.2 دورة حياة الطلب</h3>
+
+<p>عندما يصل طلب إلى الخادم، يحدث التالي:</p>
+
+<ol>
+<li>Gin يستقبل الطلب ويُنشئ <code>gin.Context</code>.</li>
+<li>يمر الطلب عبر الـ middleware المسجلة (مثل AuthMiddleware).</li>
+<li>يُطابق Router المسار المناسب.</li>
+<li>ينفذ الـ handler.</li>
+<li>يرسل الـ handler الرد عبر <code>response.Success</code> أو <code>response.Error</code>.</li>
+<li>يمكن للـ middleware ما بعد التنفيذ (post-middleware) أن تُجري عمليات إضافية.</li>
+</ol>
+
+<p>في Django Ninja، تُشبه العملية: middleware → view → response، لكن Gin يفصل Router و Handler بشكل أوضح.</p>
+
+<h3 id="53-views-handlers">5.3 Views ↔ Handlers</h3>
+
+<p><strong>Django:</strong></p>
+
+<pre><code class="language-python">def login(request, payload: LoginSchema):
+    user = authenticate(...)
+    return {&quot;token&quot;: token, &quot;user&quot;: user}</code></pre>
+
+<p><strong>Go:</strong></p>
+
+<pre><code class="language-go">func (h *UserHandler) Login(c *gin.Context) {
+    var req models.LoginRequest
+    c.ShouldBindJSON(&amp;req)
+    // ...
+    response.Success(c, http.StatusOK, &quot;Login successful&quot;, gin.H{
+        &quot;token&quot;: access,
+        &quot;user&quot;: buildProfileOut(&amp;user),
+    })
+}</code></pre>
+
+<h3 id="54-models">5.4 Models</h3>
+
+<p><strong>Django:</strong></p>
+
+<pre><code class="language-python">class User(AbstractUser):
+    phone = models.CharField(max_length=20)</code></pre>
+
+<p><strong>Go/GORM:</strong></p>
+
+<pre><code class="language-go">type User struct {
+    ID       uint   `gorm:&quot;primaryKey&quot;`
+    Username string `gorm:&quot;unique;not null&quot;`
+    Phone    string
+}</code></pre>
+
+<h3 id="55-serializers-structs">5.5 Serializers ↔ Structs</h3>
+
+<p><strong>Django Ninja Schema:</strong></p>
+
+<pre><code class="language-python">class UserOut(Schema):
+    id: int
+    username: str</code></pre>
+
+<p><strong>Go Struct:</strong></p>
+
+<pre><code class="language-go">type UserOut struct {
+    ID       uint   `json:&quot;id&quot;`
+    Username string `json:&quot;username&quot;`
+}</code></pre>
+
+<h3 id="56-middleware-permissions">5.6 Middleware &amp; Permissions</h3>
+
+<p><strong>Django:</strong></p>
+
+<pre><code class="language-python">@api.get(&quot;/admin/users&quot;, auth=AuthBearer(), permissions=[IsSuperuser])</code></pre>
+
+<p><strong>Go:</strong></p>
+
+<pre><code class="language-go">adminGroup := router.Group(&quot;/admin&quot;)
+adminGroup.Use(middleware.AuthMiddleware(cfg))
+adminGroup.Use(middleware.SuperuserMiddleware())
+adminGroup.GET(&quot;/users&quot;, handlers.GetUsers)</code></pre>
+
+<h3 id="57-migrations">5.7 Migrations</h3>
+
+<p><strong>Django:</strong></p>
+
+<pre><code class="language-bash">python manage.py makemigrations
+python manage.py migrate</code></pre>
+
+<p><strong>Go/GORM:</strong></p>
+
+<p>لا يوجد <code>makemigrations</code>. نستخدم <code>AutoMigrate</code> عند بدء التشغيل:</p>
+
+<pre><code class="language-go">DB.AutoMigrate(&amp;models.User{}, &amp;models.Company{})</code></pre>
+
+<p>للتعديلات المعقدة، يمكن استخدام ملفات migration بأداة مثل <code>golang-migrate/migrate</code>.</p>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> Django Ninja يستخدم decorators و ORM خاصًا، بينما Gin يستخدم groups و middleware chains. الـ structs في Go تلعب دور الـ serializers.
+</p>
+
+<hr />
+
+<h2 id="6-جولة-عملية-على-اقسام-المشروع">6. جولة عملية على أقسام المشروع</h2>
+
+<h3 id="61-المصادقة">6.1 المصادقة</h3>
+
+<p>مسارات المصادقة في <code>internal/routes/users.go</code>:</p>
+
+<pre><code class="language-go">usersGroup.POST(&quot;/login&quot;, h.Login)
+usersGroup.POST(&quot;/register&quot;, h.Register)
+usersGroup.GET(&quot;/:username&quot;, h.GetUser)</code></pre>
+
+<p>والمسارات المحمية:</p>
+
+<pre><code class="language-go">authGroup := usersGroup.Group(&quot;&quot;)
+authGroup.Use(middleware.AuthMiddleware(cfg))
+{
+    authGroup.GET(&quot;/profile&quot;, h.GetProfile)
+    authGroup.PUT(&quot;/profile&quot;, h.UpdateProfile)
+
+    adminGroup := authGroup.Group(&quot;&quot;)
+    adminGroup.Use(middleware.SuperuserMiddleware())
+    {
+        adminGroup.GET(&quot;&quot;, h.GetUsers)
+    }
+}</code></pre>
+
+<p>في <code>Login</code>، بعد التحقق من كلمة المرور بـ <code>VerifyDjangoPassword</code>، يُولّد <code>GenerateJWT</code> التوكن:</p>
+
+<pre><code class="language-go">access, _, err := services.GenerateJWT(&amp;user, h.cfg)
+response.Success(c, http.StatusOK, &quot;Login successful&quot;, gin.H{
+    &quot;token&quot;: access,
+    &quot;user&quot;:  buildProfileOut(&amp;user),
+})</code></pre>
+
+<h3 id="62-الشركات-والاعضاء">6.2 الشركات والأعضاء</h3>
+
+<p>نموذج <code>Company</code> يحتوي على علاقات كثيرة. انظر <code>internal/models/company.go</code>.</p>
+
+<p>تسجيل شركة جديدة في <code>internal/handlers/companies/public.go</code>:</p>
+
+<pre><code class="language-go">func RegisterCompany(c *gin.Context) {
+    userID, exists := c.Get(&quot;user_id&quot;)
+    // ...
+    tx := database.DB.Begin()
+    tx.Create(&amp;company)
+    tx.Create(&amp;models.CompanyMember{
+        CompanyID: company.ID,
+        UserID:    userID.(uint),
+        Role:      &quot;admin&quot;,
+    })
+    tx.Commit()
+}</code></pre>
+
+<blockquote>
+  <p>ملاحظة: يستخدم الكود <code>transaction</code> لضمان إنشاء الشركة والعضو معًا أو الرجوع عنهما معًا.</p>
+</blockquote>
+
+<p>CompanyMemberMiddleware يتحقق من صلاحية المستخدم:</p>
+
+<pre><code class="language-go">err := database.DB.Where(&quot;company_id = ? AND user_id = ?&quot;, companyID, userID).First(&amp;member).Error
+if err != nil {
+    response.Error(c, http.StatusForbidden, &quot;Forbidden&quot;, &amp;msgUser)
+    c.Abort()
+    return
+}</code></pre>
+
+<h3 id="63-المتجر-والطلبات">6.3 المتجر والطلبات</h3>
+
+<p>ملف <code>internal/models/shop.go</code> يحتوي على <code>Product</code> و <code>Order</code> و <code>OrderItem</code> و <code>Customer</code> و <code>Supplier</code>.</p>
+
+<p>مثال على علاقة One-to-Many:</p>
+
+<pre><code class="language-go">type Order struct {
+    ID      uint        `gorm:&quot;primaryKey&quot;`
+    Items   []OrderItem `gorm:&quot;foreignKey:OrderID&quot;`
+}</code></pre>
+
+<p>عند جلب طلب مع عناصره:</p>
+
+<pre><code class="language-go">database.DB.Preload(&quot;Items&quot;).First(&amp;order, orderID)</code></pre>
+
+<h3 id="64-العروض-والانظمة">6.4 العروض والأنظمة</h3>
+
+<ul>
+<li><strong>Offers:</strong> <code>internal/models/offers.go</code> و <code>internal/handlers/offers/</code></li>
+<li><strong>Systems:</strong> <code>internal/models/system.go</code> و <code>internal/handlers/systems/</code></li>
+</ul>
+
+<p>تستخدم هذه الأقسام نفس النمط: Models → Schemas → Handlers → Routes.</p>
+
+<h3 id="65-المحاسبة">6.5 المحاسبة</h3>
+
+<p>ملفات المحاسبة في <code>internal/handlers/accounting/</code> و <code>internal/models/accounting.go</code>:</p>
+
+<ul>
+<li><code>Account</code> (الحسابات)</li>
+<li><code>JournalEntry</code> و <code>JournalEntryLine</code> (القيود اليومية)</li>
+<li><code>Invoice</code> و <code>Bill</code> و <code>Payment</code></li>
+</ul>
+
+<h3 id="66-المجتمع-والاشعارات">6.6 المجتمع والإشعارات</h3>
+
+<p><strong>Community:</strong> <code>internal/handlers/community/posts.go</code> يتعامل مع المنشورات والتعليقات.</p>
+
+<pre><code class="language-go">func ListPosts(c *gin.Context) {
+    page, pageSize := parsePagination(c)
+    query := database.DB.Model(&amp;models.Post{}).Preload(&quot;Author&quot;).Preload(&quot;Company&quot;)
+    // ... filter + pagination
+}</code></pre>
+
+<p><strong>Notifications:</strong> <code>internal/handlers/notifications/</code> يتعامل مع تسجيل أجهزة FCM والسجل.</p>
+
+<blockquote>
+  <p>ملاحظة: التوصيل الفعلي لـ FCM غير مربوط في Go حاليًا؛ يتم فقط تخزين السجلات.</p>
+</blockquote>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> كل قسم يتبع النمط نفسه: Models → Schemas → Handlers → Routes. الصلاحيات تُدار عبر Middleware. العلاقات بين الجداول تُعرّف بـ tags في GORM.
+</p>
+
+<hr />
+
+<h2 id="7-دليل-عملي-اضف-feature-جديدة">7. دليل عملي: أضف feature جديدة</h2>
+
+<p>لنفترض أننا نريد إضافة <strong>ميزة "الأخبار" (News)</strong> التي تحتوي على عنوان ومحتوى وتاريخ نشر.</p>
+
+<h3 id="71-تعريف-model">7.1 تعريف Model</h3>
+
+<p>أنشئ أو أضف إلى <code>internal/models/news.go</code>:</p>
+
+<pre><code class="language-go">package models
+
+import &quot;time&quot;
+
+type News struct {
+    ID        uint      `gorm:&quot;primaryKey;autoIncrement&quot; json:&quot;id&quot;`
+    Title     string    `gorm:&quot;type:varchar(255);not null&quot; json:&quot;title&quot;`
+    Content   string    `gorm:&quot;type:text;not null&quot; json:&quot;content&quot;`
+    IsActive  bool      `gorm:&quot;default:true&quot; json:&quot;is_active&quot;`
+    CreatedAt time.Time `gorm:&quot;autoCreateTime&quot; json:&quot;created_at&quot;`
+    UpdatedAt time.Time `gorm:&quot;autoUpdateTime&quot; json:&quot;updated_at&quot;`
+}</code></pre>
+
+<h3 id="72-تعريف-schema">7.2 تعريف Schema</h3>
+
+<p>في <code>internal/models/news_schemas.go</code>:</p>
+
+<pre><code class="language-go">package models
+
+type NewsCreateSchema struct {
+    Title    string `json:&quot;title&quot; binding:&quot;required&quot;`
+    Content  string `json:&quot;content&quot; binding:&quot;required&quot;`
+    IsActive *bool  `json:&quot;is_active&quot;`
+}
+
+type NewsOut struct {
+    ID        uint      `json:&quot;id&quot;`
+    Title     string    `json:&quot;title&quot;`
+    Content   string    `json:&quot;content&quot;`
+    IsActive  bool      `json:&quot;is_active&quot;`
+    CreatedAt time.Time `json:&quot;created_at&quot;`
+}</code></pre>
+
+<h3 id="73-كتابة-handler">7.3 كتابة Handler</h3>
+
+<p>أنشئ <code>internal/handlers/news/news.go</code>:</p>
+
+<pre><code class="language-go">package news
+
+import (
+    &quot;net/http&quot;
+    &quot;github.com/gin-gonic/gin&quot;
+    &quot;watt/internal/database&quot;
+    &quot;watt/internal/models&quot;
+    &quot;watt/internal/response&quot;
+)
+
+func ListNews(c *gin.Context) {
+    var items []models.News
+    database.DB.Where(&quot;is_active = ?&quot;, true).Order(&quot;created_at desc&quot;).Find(&amp;items)
+    response.Success(c, http.StatusOK, &quot;News retrieved&quot;, items)
+}
+
+func CreateNews(c *gin.Context) {
+    var req models.NewsCreateSchema
+    if err := c.ShouldBindJSON(&amp;req); err != nil {
+        msgUser := &quot;بيانات غير صالحة&quot;
+        response.Error(c, http.StatusBadRequest, err.Error(), &amp;msgUser)
+        return
+    }
+
+    news := models.News{
+        Title:    req.Title,
+        Content:  req.Content,
+        IsActive: req.IsActive == nil || *req.IsActive,
+    }
+    database.DB.Create(&amp;news)
+    response.Success(c, http.StatusCreated, &quot;News created&quot;, news)
+}
+
+func UpdateNews(c *gin.Context) {
+    id, _ := strconv.Atoi(c.Param(&quot;id&quot;))
+    var req models.NewsCreateSchema
+    if err := c.ShouldBindJSON(&amp;req); err != nil {
+        msgUser := &quot;بيانات غير صالحة&quot;
+        response.Error(c, http.StatusBadRequest, err.Error(), &amp;msgUser)
+        return
+    }
+
+    var news models.News
+    if err := database.DB.First(&amp;news, id).Error; err != nil {
+        response.Error(c, http.StatusNotFound, &quot;News not found&quot;, nil)
+        return
+    }
+
+    news.Title = req.Title
+    news.Content = req.Content
+    if req.IsActive != nil {
+        news.IsActive = *req.IsActive
+    }
+    database.DB.Save(&amp;news)
+    response.Success(c, http.StatusOK, &quot;News updated&quot;, news)
+}
+
+func DeleteNews(c *gin.Context) {
+    id, _ := strconv.Atoi(c.Param(&quot;id&quot;))
+    if err := database.DB.Delete(&amp;models.News{}, id).Error; err != nil {
+        response.Error(c, http.StatusInternalServerError, &quot;Failed to delete&quot;, nil)
+        return
+    }
+    response.Success(c, http.StatusOK, &quot;News deleted&quot;, nil)
+}</code></pre>
+
+<h3 id="74-تسجيل-route">7.4 تسجيل Route</h3>
+
+<p>أنشئ <code>internal/routes/news.go</code>:</p>
+
+<pre><code class="language-go">package routes
+
+import (
+    &quot;github.com/gin-gonic/gin&quot;
+    &quot;watt/internal/config&quot;
+    &quot;watt/internal/handlers/news&quot;
+    &quot;watt/internal/middleware&quot;
+)
+
+func SetupNewsRoutes(router *gin.RouterGroup, cfg *config.Config) {
+    router.GET(&quot;/news&quot;, news.ListNews)
+
+    admin := router.Group(&quot;/admin/news&quot;)
+    admin.Use(middleware.AuthMiddleware(cfg))
+    admin.Use(middleware.SuperuserMiddleware())
+    {
+        admin.POST(&quot;&quot;, news.CreateNews)
+        admin.PUT(&quot;/:id&quot;, news.UpdateNews)
+        admin.DELETE(&quot;/:id&quot;, news.DeleteNews)
+    }
+}</code></pre>
+
+<p>ثم سجّلها في <code>cmd/server/main.go</code>:</p>
+
+<pre><code class="language-go">routes.SetupNewsRoutes(v1Group, cfg)</code></pre>
+
+<h3 id="75-automigrate">7.5 AutoMigrate</h3>
+
+<p>أضف <code>&amp;models.News{}</code> إلى <code>database.DB.AutoMigrate(...)</code> في <code>internal/database/db.go</code>.</p>
+
+<h3 id="76-swagger">7.6 Swagger</h3>
+
+<p>أضف تعليقات Swagger فوق الـ handler:</p>
+
+<pre><code class="language-go">// ListNews handles GET /api/v1/news
+// @Summary List active news
+// @Tags News
+// @Produce json
+// @Success 200 {object} response.APIResponse
+// @Router /news [get]
+func ListNews(c *gin.Context) { ... }</code></pre>
+
+<p>ثم شغّل:</p>
+
+<pre><code class="language-bash">swag init -g cmd/server/main.go</code></pre>
+
+<h3 id="77-اختبار-الـ-endpoint">7.7 اختبار الـ Endpoint</h3>
+
+<pre><code class="language-bash">curl http://localhost:8080/api/v1/news</code></pre>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> لإضافة feature جديد: أنشئ Model، ثم Schema، ثم Handler، ثم Route، ثم أضفه إلى AutoMigrate و main.go، وأخيرًا شغّل <code>swag init</code>.
+</p>
+
+<hr />
+
+<h2 id="8-الاخطاء-الشايعة-والـ-debugging">8. الأخطاء الشائعة والـ Debugging</h2>
+
+<h3 id="81-401403-وصلاحيات-الشركة">8.1 401/403 وصلاحيات الشركة</h3>
+
+<ul>
+<li><strong>401 Unauthorized:</strong> غالبًا لأن التوكن منتهي أو غير موجود. تأكد من إرسال <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+<li><strong>403 Forbidden:</strong> المستخدم مسجّل الدخول لكنه ليس عضوًا في الشركة. تأكد من تسجيل الشركة أو ضم المستخدم إليها.</li>
+</ul>
+
+<h3 id="82-nil-pointer-dereference">8.2 nil pointer dereference</h3>
+
+<p>يحدث عند محاولة الوصول لـ pointer غير مهيأ:</p>
+
+<pre><code class="language-go">var user *models.User
+fmt.Println(user.Username) // runtime error</code></pre>
+
+<p>الحل:</p>
+
+<pre><code class="language-go">if user != nil {
+    fmt.Println(user.Username)
+}</code></pre>
+
+<h3 id="83-gorm-preload">8.3 GORM preload</h3>
+
+<p>إذا كانت العلاقة فارغة في JSON، تأكد من استخدام <code>Preload</code>:</p>
+
+<pre><code class="language-go">database.DB.Preload(&quot;Items&quot;).Preload(&quot;Customer&quot;).First(&amp;order, id)</code></pre>
+
+<h3 id="84-trailing-slash">8.4 Trailing slash</h3>
+
+<p>Django يقبل <code>/users/</code> و <code>/users</code> كمسار واحد. في Gin هذا يختلف. المشروع يحل المشكلة عبر <code>trailingSlashMiddleware()</code> و <code>RedirectTrailingSlash = false</code>.</p>
+
+<h3 id="85-swagger-لا-يتحدث">8.5 Swagger لا يتحدث</h3>
+
+<p>بعد أي تعديل على التعليقات، شغّل:</p>
+
+<pre><code class="language-bash">swag init -g cmd/server/main.go</code></pre>
+
+<p>ثم أعد تشغيل الخادم.</p>
+
+<h3 id="86-type-assertion-غير-امن">8.6 type assertion غير آمن</h3>
+
+<p>عند استخراج قيمة من <code>gin.Context</code> بـ <code>c.Get("user_id")</code>، يجب التأكد من نوعها:</p>
+
+<pre><code class="language-go">userID, exists := c.Get(&quot;user_id&quot;)
+if !exists {
+    return
+}
+id, ok := userID.(uint)
+if !ok {
+    return
+}</code></pre>
+
+<h3 id="87-import-cycle">8.7 import cycle</h3>
+
+<p>إذا حاولت استيراد حزمة تستيرد الحزمة الحالية، تحصل على خطأ "import cycle not allowed". الحل: نقل الكود المشترك إلى حزمة ثالثة.</p>
+
+<h3 id="88-json-marshaling">8.8 JSON marshaling</h3>
+
+<p>إذا كان <code>Body</code> في الرد يحتوي على channel أو function، سيفشل JSON encoding. تأكد من أن كل القيم قابلة للتحويل إلى JSON.</p>
+
+<p dir="rtl">
+<b>ملخص سريع:</b> تحقق دائمًا من التوكن للـ 401، ومن عضوية الشركة للـ 403، ومن الـ pointers قبل استخدامها، ومن <code>Preload</code> للعلاقات، ولا تنس <code>swag init</code> بعد تعديل Swagger.
+</p>
+
+<hr />
+
+<h2 id="9-تمارين">9. تمارين</h2>
+
+<ol>
+<li>اكتب دالة Go ترجع مجموع عددين صحيحين.</li>
+<li>اكتب struct باسم <code>Book</code> يحتوي على <code>Title</code> و <code>Author</code> و <code>Pages</code>.</li>
+<li>اشرح الفرق بين <code>var x int</code> و <code>x := 10</code>.</li>
+<li>حوّل هذا الكود من Python إلى Go:<br />
+<pre><code class="language-python">   for i in range(5):
+       print(i)</code></pre></li>
+<li>اكتب دالة Go تستقبل slice من الأعداد وتُرجع أكبر قيمة وخطأ إذا كان فارغًا.</li>
+<li>أي package يمثل نقطة دخول التطبيق في Go؟</li>
+<li>ما الفرق بين Model و Schema في المشروع؟</li>
+<li>كيف تتحقق مما إذا كان المستخدم يحمل توكن صالحًا في Gin؟</li>
+<li>ما وظيفة <code>c.ShouldBindJSON(&amp;req)</code>؟</li>
+<li>اكتب كودًا لإنشاء شركة جديدة مع عضو admin في transaction واحدة.</li>
+<li>لماذا نستخدم <code>Preload</code> في GORM؟</li>
+<li>ما هي المشكلة في الكود التالي وكيف تُصلحه؟<br />
+<pre><code class="language-go">    var user *models.User
+    fmt.Println(user.Email)</code></pre></li>
+<li>كيف تُعيد توليد Swagger بعد تعديل handler؟</li>
+<li>ما الفرق بين <code>c.Abort()</code> و <code>c.Next()</code> في middleware؟</li>
+<li>اكتب route group محمي بـ AuthMiddleware و SuperuserMiddleware.</li>
+</ol>
+
+<hr />
+
+<h2 id="10-اجابات-التمارين">10. إجابات التمارين</h2>
+
+<details>
+<summary>إجابة السؤال 1</summary>
+
+<pre><code class="language-go">func sum(a, b int) int {
+    return a + b
+}</code></pre>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 2</summary>
+
+<pre><code class="language-go">type Book struct {
+    Title  string
+    Author string
+    Pages  int
+}</code></pre>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 3</summary>
+
+<ul>
+<li><code>var x int</code>: يُعلن عن متغير من نوع int بدون قيمة أولية (افتراضيًا 0).</li>
+<li><code>x := 10</code>: يُعلن عن متغير ويستنتج نوعه من القيمة (int هنا). لا يمكن استخدامه خارج دالة.</li>
+</ul>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 4</summary>
+
+<pre><code class="language-go">for i := 0; i &lt; 5; i++ {
+    fmt.Println(i)
+}</code></pre>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 5</summary>
+
+<pre><code class="language-go">func maxValue(nums []int) (int, error) {
+    if len(nums) == 0 {
+        return 0, fmt.Errorf(&quot;empty slice&quot;)
+    }
+    max := nums[0]
+    for _, n := range nums {
+        if n &gt; max {
+            max = n
+        }
+    }
+    return max, nil
+}</code></pre>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 6</summary>
+
+<p><code>package main</code> في <code>cmd/server/main.go</code>.</p>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 7</summary>
+
+<ul>
+<li><strong>Model:</strong> يمثل جدول قاعدة البيانات ويحتوي على tags لـ GORM.</li>
+<li><strong>Schema:</strong> يمثل شكل JSON المُستلم أو المُرسل، ويحتوي على tags لـ <code>json</code> و <code>binding</code>.</li>
+</ul>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 8</summary>
+
+<p>عبر <code>middleware.AuthMiddleware(cfg)</code> الذي يفك تشفير JWT ويضع <code>user_id</code> في context.</p>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 9</summary>
+
+<p>تقرأ body الطلب كـ JSON وتحاول تعبئته في الـ struct المُمرر. إذا فشلت، تُرجع error.</p>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 10</summary>
+
+<pre><code class="language-go">tx := database.DB.Begin()
+if err := tx.Create(&amp;company).Error; err != nil {
+    tx.Rollback()
+    return
+}
+member := models.CompanyMember{
+    CompanyID: company.ID,
+    UserID:    userID.(uint),
+    Role:      &quot;admin&quot;,
+}
+if err := tx.Create(&amp;member).Error; err != nil {
+    tx.Rollback()
+    return
+}
+tx.Commit()</code></pre>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 11</summary>
+
+<p>لتحميل العلاقات (relations) مع السجل الرئيسي في استعلام واحد بدلًا من إجراء استعلامات متعددة.</p>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 12</summary>
+
+<p><code>user</code> هو <code>nil</code> pointer. الحل:</p>
+
+<pre><code class="language-go">if user != nil {
+    fmt.Println(user.Email)
+}</code></pre>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 13</summary>
+
+<pre><code class="language-bash">swag init -g cmd/server/main.go</code></pre>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 14</summary>
+
+<ul>
+<li><code>c.Next()</code>: يكمل إلى الـ handler أو الـ middleware التالي.</li>
+<li><code>c.Abort()</code>: يوقف السلسلة ولا يدع الـ handler ينفذ.</li>
+</ul>
+
+</details>
+
+<details>
+<summary>إجابة السؤال 15</summary>
+
+<pre><code class="language-go">admin := router.Group(&quot;/admin&quot;)
+admin.Use(middleware.AuthMiddleware(cfg))
+admin.Use(middleware.SuperuserMiddleware())
+{
+    admin.GET(&quot;/users&quot;, handlers.GetUsers)
+}</code></pre>
+
+</details>
+
+<hr />
+
+<h2 id="11-ملحقات">11. ملحقات</h2>
+
+<h3 id="111-قايمة-اهم-الـ-endpoints">11.1 قائمة أهم الـ endpoints</h3>
+
+<p>بناءً على تقرير <code>api_migration_comparison.md</code>، تم نقل 227 endpoint من Django Ninja إلى Go/Gin.</p>
+
+<table>
+<thead>
+<tr>
+  <th>القسم</th>
+  <th>المسار الأساسي</th>
+  <th>أمثلة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Users</td>
+  <td><code>/api/v1/users/*</code></td>
+  <td><code>/login</code>, <code>/register</code>, <code>/profile</code></td>
+</tr>
+<tr>
+  <td>Companies</td>
+  <td><code>/api/v1/companies/*</code></td>
+  <td><code>/register</code>, <code>/:company_id/summary</code></td>
+</tr>
+<tr>
+  <td>Public</td>
+  <td><code>/api/v1/public/companies/*</code></td>
+  <td><code>/</code>, <code>/:company_id</code></td>
+</tr>
+<tr>
+  <td>Admin</td>
+  <td><code>/api/v1/admin/*</code></td>
+  <td><code>/companies</code>, <code>/config</code>, <code>/currencies</code></td>
+</tr>
+<tr>
+  <td>Shop</td>
+  <td><code>/api/v1/shop/*</code></td>
+  <td><code>/products</code>, <code>/orders</code></td>
+</tr>
+<tr>
+  <td>Accounting</td>
+  <td><code>/api/v1/accounting/*</code></td>
+  <td><code>/accounts</code>, <code>/invoices</code>, <code>/payments</code></td>
+</tr>
+<tr>
+  <td>Offers</td>
+  <td><code>/api/v1/offers/*</code></td>
+  <td><code>/</code>, <code>/:offer_id/requests</code></td>
+</tr>
+<tr>
+  <td>Systems</td>
+  <td><code>/api/v1/systems/*</code></td>
+  <td><code>/</code>, <code>/:system_id</code></td>
+</tr>
+<tr>
+  <td>Community</td>
+  <td><code>/api/v1/community/*</code></td>
+  <td><code>/posts/</code>, <code>/comments</code></td>
+</tr>
+<tr>
+  <td>Notifications</td>
+  <td><code>/api/v1/notification/*</code></td>
+  <td><code>/subscribe</code>, <code>/history</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="112-مصادر-للتعمق">11.2 مصادر للتعمق</h3>
+
+<ul>
+<li><a href="https://go.dev/tour/">A Tour of Go</a> — دورة Go الرسمية.</li>
+<li><a href="https://go.dev/doc/effective_go">Effective Go</a> — أفضل الممارسات.</li>
+<li><a href="https://gin-gonic.com/docs/">Gin Documentation</a> — توثيق إطار Gin.</li>
+<li><a href="https://gorm.io/docs/">GORM Guides</a> — توثيق ORM.</li>
+<li><a href="https://gobyexample.com/">go by example</a> — أمثلة عملية.</li>
+</ul>
+
+<h3 id="113-قاموس-المصطلحات">11.3 قاموس المصطلحات</h3>
+
+<table>
+<thead>
+<tr>
+  <th>المصطلح</th>
+  <th>الشرح</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Handler</td>
+  <td>دالة تستقبل طلب HTTP وتُرجع ردًا.</td>
+</tr>
+<tr>
+  <td>Middleware</td>
+  <td>طبقة تُنفذ قبل/بعد الـ handler.</td>
+</tr>
+<tr>
+  <td>Router</td>
+  <td>يحدد أي handler يُنفذ لكل مسار.</td>
+</tr>
+<tr>
+  <td>Model</td>
+  <td>struct يمثل جدول قاعدة البيانات.</td>
+</tr>
+<tr>
+  <td>Schema</td>
+  <td>struct يحدد شكل JSON المُستلم أو المُرسل.</td>
+</tr>
+<tr>
+  <td>GORM</td>
+  <td>ORM لـ Go يُدار قواعد البيانات.</td>
+</tr>
+<tr>
+  <td>Gin</td>
+  <td>إطار HTTP لـ Go.</td>
+</tr>
+<tr>
+  <td>JWT</td>
+  <td>توكن للمصادقة.</td>
+</tr>
+<tr>
+  <td>AutoMigrate</td>
+  <td>ميزة GORM لإنشاء/تحديث الجداول تلقائيًا.</td>
+</tr>
+<tr>
+  <td>Goroutine</td>
+  <td>دالة تعمل بشكل متزامن في Go.</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<p dir="rtl">
+<b>ختامًا:</b> Go لغة بسيطة وقوية. بفهمك للبنية العامة في هذا المشروع—Models و Schemas و Handlers و Routes و Middleware و Response—يمكنك الآن قراءة أي جزء من الكود، وتعديله، وإضافة ميزات جديدة، والمساهمة في إتمام الهجرة الكاملة من Django إلى Go.
+</p>
+
+      <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); text-align: center;">
+        تم إنشاء هذا الدليل تلقائيًا من <code>go_tutorial_ar.md</code>
+      </footer>
+    </main>
+  </div>
+  <script>
+    hljs.highlightAll();
+
+    const searchInput = document.getElementById('tocSearch');
+    const tocItems = document.querySelectorAll('.toc-item');
+    searchInput.addEventListener('input', function() {
+      const q = this.value.trim().toLowerCase();
+      tocItems.forEach(item => {
+        const text = item.getAttribute('data-text');
+        if (!q || text.includes(q)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+
+    // Smooth scroll for TOC links (IDs may start with digits, so getElementById is used)
+    document.querySelectorAll('#toc a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const id = decodeURIComponent(this.getAttribute('href').slice(1));
+        const target = document.getElementById(id);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+          history.replaceState(null, '', '#' + id);
+        }
+      });
+    });
+
+    // Scroll to initial hash on load
+    if (location.hash) {
+      const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (el) el.scrollIntoView();
+    }
+  </script>
+</body>
+</html>

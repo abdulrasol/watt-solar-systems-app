@@ -1,0 +1,47 @@
+--- internal/handlers/user_helpers.go	2026-07-06 13:19:17.000000000 +0300
++++ internal/handlers/user_helpers.go	2026-07-06 13:19:17.000000000 +0300
+@@ -4,6 +4,7 @@
+ 	"watt/internal/database"
+ 	"watt/internal/models"
++	"watt/internal/handlers/companies"
+ )
+ 
+ // buildProfileOut constructs the ProfileOut response matching Django's _serialize_profile
+@@ -52,19 +53,6 @@
+ 		}
+ 	}
+ 
+-	return models.ProfileOut{
+-		ID:               user.ID,
+-		Username:         username,
+-		Email:            email,
+-		FirstName:        &firstName,
+-		LastName:         &lastName,
+-		Phone:            &user.Phone,
+-		City:             cityOut,
+-		ImageURL:         user.Image,
+ 	isCompanyMember := false
+ 	var companyPayload interface{}
+ 
+@@ -80,18 +68,16 @@
+ 		isCompanyMember = true
+ 
+-		// We need to pass the member and company to the helper from companies package.
+-		// Since user_helpers is in handlers package, and companies is a subpackage, we need to import it.
+-		// Wait, I am modifying user_helpers.go in `handlers` package.
+-		// I will just use the same logic or import `watt/internal/handlers/companies`.
+-		// Let me verify import first!
+-		companyPayload = BuildCompanyMemberSummaryWrapper(&member.Company, &member)
++		companyPayload = companies.BuildCompanyMemberSummary(&member.Company, &member)
+ 	}
+ 
+ 	return models.ProfileOut{
+ 		ID:               user.ID,
+ 		Username:         username,
+ 		Email:            email,
+ 		FirstName:        &firstName,
+ 		LastName:         &lastName,
+ 		Phone:            &user.Phone,
+ 		City:             cityOut,
+ 		ImageURL:         user.Image,
+ 		IsSuperuser:      user.IsSuperuser,

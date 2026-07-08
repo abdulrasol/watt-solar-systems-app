@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل هجرة SolarHub إلى NestJS</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for beautiful Arabic typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+        }
+        pre {
+            direction: ltr;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .step-card {
+            transition: transform 0.2s;
+        }
+        .step-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#e11d48', // Rose-600
+                        secondary: '#1e293b', // Slate-800
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Header -->
+    <header class="bg-secondary text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold flex items-center gap-2">
+                    <span class="text-primary">SolarHub</span> Migration Guide
+                </h1>
+                <p class="text-sm text-slate-300 mt-1">من Django (Python) إلى NestJS (TypeScript)</p>
+            </div>
+            <div class="text-sm bg-slate-700 px-3 py-1 rounded-full border border-slate-600">
+                الحالة: <span class="text-green-400 font-semibold">تأسيس المشروع</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-8 flex flex-col lg:flex-row gap-8">
+        
+        <!-- Sidebar / Table of Contents -->
+        <aside class="lg:w-1/4">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 sticky top-24">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">فهرس المحتويات</h2>
+                <ul class="space-y-3">
+                    <li>
+                        <a href="#intro" class="text-slate-600 hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-primary"></span>
+                            مقدمة المشروع
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#architecture" class="text-slate-600 hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            هيكلية NestJS مقابل Django
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#swagger" class="text-slate-600 hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+                            التوثيق التلقائي للـ API
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-1" class="text-slate-600 hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                            الخطوة 1: تأسيس بيئة NestJS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-2" class="text-slate-600 hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                            الخطوة 2: إعداد قاعدة البيانات (Prisma)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#prisma-guide" class="text-slate-600 hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                            دليل Prisma لمطوري Django
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#auth-architecture" class="text-slate-600 hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            هيكلية التوثيق (Auth & Users)
+                        </a>
+                    </li>
+                    <li class="pt-2 mt-2 border-t border-slate-200">
+                        <a href="#lesson-1-auth" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
+                            الدرس 1: بناء Auth APIs 
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-2-swagger" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
+                            الدرس 2: توثيق Swagger
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-3-format" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]"></span>
+                            الدرس 3: توحيد مخرجات الـ API
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-4-auth-users" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
+                            الدرس 4: توثيق المستخدمين
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-7-refine" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
+                            الدرس 6: لوحة تحكم Refine
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-8-companies" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-teal-500 shadow-[0_0_8px_rgba(20,184,166,0.6)]"></span>
+                            الدرس 7: الشركات والإشعارات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-10-rbac-filters" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]"></span>
+                            الدرس 10: حماية الأدوار والفلاتر
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-11-deployment" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-slate-900 shadow-[0_0_8px_rgba(15,23,42,0.6)]"></span>
+                            الدرس 11: التصدير والرفع للـ VPS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lesson-9-offers" class="text-slate-800 font-bold hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
+                            الدرس 8: العروض (Offers)
+                        </a>
+                    </li>
+                    <!-- سيتم إضافة الروابط هنا لاحقاً -->
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:w-3/4 space-y-8">
+            
+            <!-- Section: Architecture Comparison -->
+            <section id="architecture" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">فهم الهيكلية: NestJS مقابل Django</h2>
+                </div>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p>
+                        لفهم NestJS، أفضل طريقة هي مقارنتها بما تعرفه مسبقاً في Django. في جانغو، أنت تقسم مشروعك إلى <strong>تطبيقات (Apps)</strong> (مثل: <code>users</code>, <code>accounting</code>). في NestJS، المفهوم المقابل تماماً يسمى <strong>الوحدات (Modules)</strong>.
+                    </p>
+                    
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-3">مقارنة الملفات الأساسية داخل كل App / Module:</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-right border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-50">
+                                    <th class="border border-slate-200 px-4 py-2">المسؤولية</th>
+                                    <th class="border border-slate-200 px-4 py-2">في Django</th>
+                                    <th class="border border-slate-200 px-4 py-2">في NestJS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-slate-200 px-4 py-2 font-bold text-slate-800">استقبال الـ API (الروابط)</td>
+                                    <td class="border border-slate-200 px-4 py-2"><code class="text-sm bg-slate-100 px-1 rounded">views.py</code> أو <code class="text-sm bg-slate-100 px-1 rounded">api.py</code></td>
+                                    <td class="border border-slate-200 px-4 py-2 text-blue-600 font-bold"><code class="text-sm bg-blue-50 px-1 rounded">*.controller.ts</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-200 px-4 py-2 font-bold text-slate-800">المنطق والعمليات (Logic)</td>
+                                    <td class="border border-slate-200 px-4 py-2"><code class="text-sm bg-slate-100 px-1 rounded">services.py</code> (إن وُجد)</td>
+                                    <td class="border border-slate-200 px-4 py-2 text-green-600 font-bold"><code class="text-sm bg-green-50 px-1 rounded">*.service.ts</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-200 px-4 py-2 font-bold text-slate-800">قاعدة البيانات (الجداول)</td>
+                                    <td class="border border-slate-200 px-4 py-2"><code class="text-sm bg-slate-100 px-1 rounded">models.py</code></td>
+                                    <td class="border border-slate-200 px-4 py-2 text-purple-600 font-bold"><code class="text-sm bg-purple-50 px-1 rounded">schema.prisma</code> (باستخدام Prisma)</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-200 px-4 py-2 font-bold text-slate-800">تسجيل الـ App</td>
+                                    <td class="border border-slate-200 px-4 py-2"><code class="text-sm bg-slate-100 px-1 rounded">INSTALLED_APPS</code> في Settings</td>
+                                    <td class="border border-slate-200 px-4 py-2 text-orange-600 font-bold"><code class="text-sm bg-orange-50 px-1 rounded">app.module.ts</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-8 mb-3">مثال عملي: كيف تتعامل مع هذه الملفات الثلاثة؟</h3>
+                    <p>لتفهم كيف تترابط هذه الملفات، تخيل أن تطبيق فلاتر أرسل طلباً لجلب قائمة المستخدمين (<code>GET /users</code>). هكذا يكون تسلسل العمل:</p>
+                    
+                    <div class="space-y-6 mt-4">
+                        <!-- Module -->
+                        <div class="border-l-4 border-orange-400 bg-orange-50/50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-orange-800 mb-2 flex items-center gap-2">
+                                <span class="bg-orange-200 text-orange-800 rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+                                الوحدة (users.module.ts)
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-2">دورها فقط أن تعرّف السيرفر بوجود الـ Controller والـ Service معاً. نادراً ما ستكتب كوداً معقداً هنا.</p>
+                            <pre class="m-0"><code class="language-typescript">@Module({
+  controllers: [UsersController],
+  providers: [UsersService],
+})
+export class UsersModule {}</code></pre>
+                        </div>
+
+                        <!-- Controller -->
+                        <div class="border-l-4 border-blue-400 bg-blue-50/50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+                                <span class="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+                                المتحكم (users.controller.ts)
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-2">هو <strong>"موظف الاستقبال"</strong>. يحدد شكل الرابط (مثلاً <code>@Get()</code>)، يستقبل الطلب، ولكنه <strong>لا يقوم بجلب البيانات بنفسه</strong>، بل يمرر المهمة إلى الـ Service.</p>
+                            <pre class="m-0"><code class="language-typescript">@Controller('users')
+export class UsersController {
+  // نقوم بحقن (Inject) الـ Service هنا لاستخدامها
+  constructor(private readonly usersService: UsersService) {}
+
+  @Get() // تعني أن هذا الرابط يعمل بطلب GET
+  getAllUsers() {
+    return this.usersService.findAll(); // اطلب من الـ Service العمل
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- Service -->
+                        <div class="border-l-4 border-green-400 bg-green-50/50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                                <span class="bg-green-200 text-green-800 rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+                                الخدمة (users.service.ts)
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-2">هو <strong>"الطباخ"</strong>. هنا نكتب كل الشغل الثقيل: الاتصال بقاعدة البيانات (Prisma)، الحسابات المعقدة، والمنطق الحقيقي، ثم يعيد النتيجة للـ Controller.</p>
+                            <pre class="m-0"><code class="language-typescript">@Injectable()
+export class UsersService {
+  findAll() {
+    // هنا لاحقاً سنستخدم Prisma لجلب البيانات من قاعدة البيانات
+    return [
+      { id: 1, name: 'Ahmed' },
+      { id: 2, name: 'Ali' }
+    ];
+  }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section: Introduction -->
+            <section id="intro" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">مقدمة المشروع وقواعد العمل</h2>
+                </div>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p>
+                        هذا الملف يعتبر المرجع الأساسي والدليل التعليمي الخاص بك لمشروع <strong>SolarHub</strong>. سيتم تحديث هذا الملف برمجياً مع كل خطوة ننجزها، ليحتوي على شرح الأكواد، القرارات المعمارية، وكيفية توافق الكود الجديد مع كود جانغو القديم.
+                    </p>
+                    
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-3">القواعد الصارمة التي نتبعها:</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>التطابق التام (Exact API Matching):</strong> أي مخرج API يجب أن يكون متطابقاً مع جانغو لكي لا نتعطل في تطبيق فلاتر.</li>
+                        <li><strong>مدير الحزم:</strong> نستخدم <code>pnpm</code> بدلاً من npm للسرعة وتوفير المساحة.</li>
+                        <li><strong>توثيق الشفرة:</strong> وضع تعليقات إنجليزية تشرح كل مكون جديد في NestJS وعلاقته بالكود القديم.</li>
+                        <li><strong>قاعدة البيانات:</strong> استخدام Prisma لقراءة الجداول القديمة دون المساس ببياناتها.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section: Swagger -->
+            <section id="swagger" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-yellow-100 text-yellow-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">التوثيق التلقائي (Swagger & OpenAPI)</h2>
+                </div>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p>
+                        تماماً مثلما كان يفعل <code>Django Ninja</code>، تمتلك بيئة <strong>NestJS</strong> دعماً رسمياً وممتازاً لتوليد توثيق الـ API بشكل تلقائي باستخدام <strong>Swagger</strong>.
+                    </p>
+                    <p>
+                        كل ما علينا فعله هو تثبيت حزمة <code>@nestjs/swagger</code>، وبمجرد كتابة الأنواع (Types) والـ (DTOs) في TypeScript، سيقوم NestJS تلقائياً بتوليد واجهة مستخدم (Swagger UI) جذابة يمكنك من خلالها تجربة الـ API، ويمكنك أيضاً تصدير ملف JSON جاهز ليتم استيراده بضغطة زر داخل <strong>Postman</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section: Step 1 (Setup) -->
+            <section id="step-1" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-slate-100 text-slate-600 p-2 rounded-lg font-bold">1</div>
+                        <h2 class="text-2xl font-bold text-slate-800">تأسيس بيئة NestJS</h2>
+                    </div>
+                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full border border-green-200">مكتمل</span>
+                </div>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <h3 class="text-lg font-bold text-slate-800 mt-4 mb-2">1. أمر إنشاء المشروع</h3>
+                    <p>لإنشاء المشروع نستخدم أداة <code>@nestjs/cli</code> ونحدد <code>pnpm</code> كمدير للحزم لضمان السرعة والتنظيم:</p>
+                    <pre><code class="language-bash">npx @nestjs/cli new solarhub-nestjs --package-manager pnpm</code></pre>
+                    
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">2. أوامر توليد الوحدات (Modules)</h3>
+                    <p>في NestJS، لا نكتب الملفات يدوياً من الصفر. نستخدم الـ CLI لتوليد الهيكلة الصحيحة. مثلاً، لتوليد تطبيق (Module) خاص بالمستخدمين:</p>
+                    <pre><code class="language-bash"># الدخول لمجلد المشروع
+cd solarhub-nestjs
+
+# توليد الوحدة (Module)
+npx nest g module users
+
+# توليد المتحكم (Controller) للروابط
+npx nest g controller users
+
+# توليد الخدمة (Service) للعمليات
+npx nest g service users</code></pre>
+                    <div class="bg-blue-50 border-r-4 border-blue-500 p-4 rounded mt-4">
+                        <p class="text-sm m-0"><strong>ملاحظة:</strong> حرف <code>g</code> هو اختصار لكلمة <code>generate</code>.</p>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">3. وظيفة الملفات الأساسية المتولدة</h3>
+                    <p>بعد إنشاء المشروع، ستجد مجلد <code>src</code> بداخله الملفات التالية:</p>
+                    <ul class="list-none space-y-3 p-0">
+                        <li class="flex items-start gap-3">
+                            <code class="bg-slate-100 px-2 py-1 rounded text-sm text-pink-600 whitespace-nowrap mt-1">main.ts</code>
+                            <div>
+                                <strong>قلب التطبيق (Entry File):</strong> يقابل <code>manage.py</code> أو <code>wsgi.py</code> في جانغو. وظيفته تشغيل السيرفر على بورت معين (مثل 3000) وربط كل شيء.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <code class="bg-slate-100 px-2 py-1 rounded text-sm text-pink-600 whitespace-nowrap mt-1">app.module.ts</code>
+                            <div>
+                                <strong>الوحدة الرئيسية (Root Module):</strong> يقابل قائمة <code>INSTALLED_APPS</code> في <code>settings.py</code>. يتم فيه تسجيل جميع الوحدات الفرعية وقواعد البيانات.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <code class="bg-slate-100 px-2 py-1 rounded text-sm text-pink-600 whitespace-nowrap mt-1">app.controller.ts</code>
+                            <div>
+                                <strong>واجهة الروابط الافتراضية:</strong> يحتوي على رابط برمجي بسيط (غالباً يعيد كلمة Hello World) للتأكد من عمل السيرفر. يقابل <code>urls.py</code> / <code>views.py</code>.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <code class="bg-slate-100 px-2 py-1 rounded text-sm text-pink-600 whitespace-nowrap mt-1">app.service.ts</code>
+                            <div>
+                                <strong>الخدمة الافتراضية:</strong> تحتوي على الكود أو المنطق الذي يعيد الجملة للـ Controller.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section: Step 2 (Prisma) -->
+            <section id="step-2" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-slate-100 text-slate-600 p-2 rounded-lg font-bold">2</div>
+                        <h2 class="text-2xl font-bold text-slate-800">إعداد قاعدة البيانات (Prisma ORM)</h2>
+                    </div>
+                    <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-full border border-yellow-200">قيد التنفيذ</span>
+                </div>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p>
+                        نحن لا نريد إنشاء الجداول من الصفر وفقدان البيانات القديمة. لذلك سنستخدم أداة <strong>Prisma</strong> التي ستقوم بالاتصال بقاعدة بيانات جانغو الحالية وتقرأ الجداول منها تلقائياً (عملية تسمى Introspection).
+                    </p>
+                    <h3 class="text-lg font-bold text-slate-800 mt-4 mb-2">أوامر التثبيت:</h3>
+                    <pre><code class="language-bash"># تأكد أنك داخل مجلد المشروع
+cd solarhub-nestjs
+
+# تثبيت Prisma
+pnpm add -D prisma
+pnpm add @prisma/client
+
+# تهيئة Prisma مع اختيار SQLite كقاعدة بيانات
+npx prisma init --datasource-provider sqlite</code></pre>
+                    <p>
+                        بعد تنفيذ هذه الأوامر، سيتولد مجلد <code>prisma</code> وملف <code>.env</code>. ستقوم بفتح ملف <code>.env</code> وتعديل رابط الاتصال ليؤشر على ملف <code>db.sqlite3</code> الخاص بجانغو هكذا:
+                    </p>
+                    <pre><code class="language-env">DATABASE_URL="file:../../solar_hub/db.sqlite3"</code></pre>
+                    <p>
+                        أخيراً، قم بتشغيل هذا الأمر لسحب جميع الجداول القديمة من جانغو وتحويلها إلى كود NestJS تلقائياً:
+                    </p>
+                    <pre><code class="language-bash">npx prisma db pull
+npx prisma generate</code></pre>
+                    <div class="bg-indigo-50 border-r-4 border-indigo-500 p-4 rounded mt-6">
+                        <h4 class="font-bold text-indigo-800 mb-1 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            نصيحة احترافية: الانتقال إلى MariaDB للإنتاج
+                        </h4>
+                        <p class="text-sm text-slate-700 m-0">بما أنك تستخدم <code>SQLite</code> في التطوير وستنتقل إلى <code>MariaDB</code> في الإنتاج، فإن Prisma يسهل عليك هذا جداً. عند الإطلاق للإنتاج، ستقوم بفتح ملف <code>schema.prisma</code> وتغيير <code>provider = "sqlite"</code> إلى <code>provider = "mysql"</code> (لأن MariaDB تتوافق مع محرك MySQL)، ثم تقوم بتغيير <code>DATABASE_URL</code> في ملف <code>.env</code> ليؤشر إلى سيرفر MariaDB. هذا كل شيء!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Prisma Guide -->
+            <section id="prisma-guide" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">دليل Prisma لمطوري Django</h2>
+                </div>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p>
+                        بما أنك قادم من بيئة جانغو، فأنت معتاد على ملف <code>models.py</code> حيث تعرّف الجداول (Classes)، وتستخدم أوامر مثل <code>makemigrations</code> لتطبيقها، و <code>Model.objects</code> للاستعلام. هنا سنقارن كل ذلك بـ <strong>Prisma</strong>.
+                    </p>
+                    
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">1. أين نكتب الجداول؟ (schema.prisma مقابل models.py)</h3>
+                    <p>في Prisma، لا يتم تشتيت الجداول في مجلدات (Apps) منفصلة، بل يتم كتابة <strong>جميع الجداول</strong> في ملف واحد مركزي هو <code>prisma/schema.prisma</code>. هذا يسهل رؤية العلاقات بشكل واضح جداً.</p>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">2. الدليل الشامل لأنواع البيانات (Data Types)</h3>
+                    <p>هذا الجدول يمثل مرجعك الشامل لتحويل أي حقل من جانغو إلى ما يقابله في Prisma:</p>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-sm text-right border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-300">
+                                    <th class="p-3 font-bold text-slate-800 border-l border-slate-200">حقل Django</th>
+                                    <th class="p-3 font-bold text-slate-800 border-l border-slate-200">حقل Prisma</th>
+                                    <th class="p-3 font-bold text-slate-800">ملاحظات هامة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- النصوص -->
+                                <tr class="bg-slate-50"><td colspan="3" class="p-2 font-bold text-slate-600">النصوص والأرقام الأساسية</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>CharField</code> / <code>TextField</code></td><td class="p-3 border-l border-slate-200"><code>String</code></td><td class="p-3">لا داعي لتحديد <code>max_length</code> في Prisma غالباً.</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>IntegerField</code></td><td class="p-3 border-l border-slate-200"><code>Int</code></td><td class="p-3">للأرقام الصحيحة.</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>BigAutoField</code></td><td class="p-3 border-l border-slate-200"><code>BigInt</code> (أو <code>Int</code>)</td><td class="p-3">يفضل استخدام <code>Int</code> لتجنب مشاكل JSON في NestJS.</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>FloatField</code></td><td class="p-3 border-l border-slate-200"><code>Float</code></td><td class="p-3">للأرقام العشرية.</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>DecimalField</code></td><td class="p-3 border-l border-slate-200"><code>Decimal</code></td><td class="p-3">يستخدم للأسعار والأموال لضمان الدقة (تتطلب حزمة Decimal.js).</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>BooleanField</code></td><td class="p-3 border-l border-slate-200"><code>Boolean</code></td><td class="p-3">يأخذ قيمة <code>true</code> أو <code>false</code>.</td></tr>
+                                
+                                <!-- التاريخ والوقت -->
+                                <tr class="bg-slate-50 border-y border-slate-300"><td colspan="3" class="p-2 font-bold text-slate-600">التاريخ والوقت (Dates)</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>DateTimeField</code> / <code>DateField</code></td><td class="p-3 border-l border-slate-200"><code>DateTime</code></td><td class="p-3">نوع واحد يشمل التاريخ والوقت معاً.</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>auto_now_add=True</code></td><td class="p-3 border-l border-slate-200"><code>@default(now())</code></td><td class="p-3">يأخذ تاريخ الإنشاء تلقائياً.</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>auto_now=True</code></td><td class="p-3 border-l border-slate-200"><code>@updatedAt</code></td><td class="p-3">يتحدث تلقائياً عند أي تعديل على السطر.</td></tr>
+
+                                <!-- الملفات والصور -->
+                                <tr class="bg-slate-50 border-y border-slate-300"><td colspan="3" class="p-2 font-bold text-slate-600">الصور والملفات (Files)</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>ImageField</code> / <code>FileField</code></td><td class="p-3 border-l border-slate-200"><code>String</code></td><td class="p-3"><strong>مهم جداً:</strong> Prisma ليست مسؤولة عن رفع الملفات. في قاعدة البيانات نكتفي بحفظ <strong>مسار أو رابط الصورة</strong> كنص (String). عملية الرفع تتم في Controller عبر مكتبة <code>Multer</code>.</td></tr>
+
+                                <!-- الأنواع المتقدمة -->
+                                <tr class="bg-slate-50 border-y border-slate-300"><td colspan="3" class="p-2 font-bold text-slate-600">الأنواع المعقدة والخيارات (Advanced)</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>JSONField</code></td><td class="p-3 border-l border-slate-200"><code>Json</code></td><td class="p-3">مدعوم في MySQL/MariaDB و Postgres لحفظ بيانات ديناميكية كـ JSON. (غير مدعوم في SQLite).</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>choices=...</code></td><td class="p-3 border-l border-slate-200"><code>enum Role { ADMIN USER }</code></td><td class="p-3">في جانغو نستخدم <code>choices</code>، في Prisma نصنع <code>enum</code> مخصص ونستخدمه كنوع بيانات. (ملاحظة: Enums مدعومة في MariaDB ولكنها غير مدعومة في SQLite).</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>null=True, blank=True</code></td><td class="p-3 border-l border-slate-200">إضافة <code>?</code> (مثال <code>String?</code>)</td><td class="p-3">يعني أن الحقل اختياري (Nullable).</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>default="..."</code></td><td class="p-3 border-l border-slate-200"><code>@default("...")</code></td><td class="p-3">لإعطاء قيمة افتراضية للحقل.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">3. المفاتيح، الفهارس، والقيود (Indexes & Constraints)</h3>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-sm text-right border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-300">
+                                    <th class="p-3 font-bold text-slate-800 border-l border-slate-200">في Django</th>
+                                    <th class="p-3 font-bold text-slate-800 border-l border-slate-200">في Prisma</th>
+                                    <th class="p-3 font-bold text-slate-800">الوصف</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>primary_key=True</code></td><td class="p-3 border-l border-slate-200"><code>@id</code></td><td class="p-3">يحدد المفتاح الأساسي للجدول (مثل: <code>id Int @id @default(autoincrement())</code>).</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>unique=True</code></td><td class="p-3 border-l border-slate-200"><code>@unique</code></td><td class="p-3">يمنع التكرار لهذا الحقل (مثال: رقم الهاتف أو الإيميل).</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>db_index=True</code></td><td class="p-3 border-l border-slate-200"><code>@@index([field])</code></td><td class="p-3">يُضاف في آخر الجدول لتسريع عملية البحث عن طريق هذا الحقل.</td></tr>
+                                <tr class="border-b border-slate-200"><td class="p-3 border-l border-slate-200"><code>unique_together = [...]</code></td><td class="p-3 border-l border-slate-200"><code>@@unique([field1, field2])</code></td><td class="p-3">يُضاف في آخر الجدول لمنع تكرار تركيبة من حقلين معاً.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">4. مقارنة العلاقات (Relationships) التفصيلية</h3>
+                    <p>في جانغو، عندما تنشئ علاقة (Foreign Key)، يتم وضع الحقل في جدول واحد فقط. أما في Prisma، فإن العلاقة <strong>مرئية من الطرفين</strong> بشكل يسهل فهمه جداً.</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div class="border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="bg-slate-100 px-4 py-2 font-bold text-slate-700 border-b border-slate-200">علاقة 1 إلى متعدد (Django)</div>
+                            <div class="p-4 bg-slate-50">
+                            <pre class="m-0"><code class="language-python">class User(models.Model):
+    name = models.CharField(max_length=100)
+    # لا يظهر هنا أن لديه مقالات
+
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)</code></pre>
+                            </div>
+                        </div>
+                        <div class="border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="bg-indigo-50 px-4 py-2 font-bold text-indigo-800 border-b border-indigo-100">نفس العلاقة في Prisma</div>
+                            <div class="p-4 bg-indigo-50/30">
+                            <pre class="m-0"><code class="language-typescript">model User {
+  id    Int    @id @default(autoincrement())
+  name  String
+  // العلاقة مرئية! المستخدم لديه مصفوفة مقالات
+  posts Post[] 
+}
+
+model Post {
+  id      Int    @id @default(autoincrement())
+  title   String
+  user_id Int
+  // ربط المفتاح الأجنبي وتحديد سلوك الحذف
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden">
+                        <div class="bg-indigo-50 px-4 py-2 font-bold text-indigo-800 border-b border-indigo-100">كيف نصنع علاقة متعدد إلى متعدد (Many-to-Many)؟</div>
+                        <div class="p-4 bg-indigo-50/30 text-sm">
+                            <p>في جانغو نستخدم <code>ManyToManyField</code>. في Prisma، ببساطة نضع مصفوفة <code>[]</code> في كلا الجدولين، وتقوم Prisma تلقائياً بإنشاء الجدول الوسيط المخفي لربطهما!</p>
+                            <pre class="m-0 mt-2"><code class="language-typescript">model Student {
+  id      Int      @id @default(autoincrement())
+  courses Course[] // مصفوفة دورات
+}
+
+model Course {
+  id       Int       @id @default(autoincrement())
+  students Student[] // مصفوفة طلاب
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">5. مقارنة الاستعلامات (Queries)</h3>
+                    <p>استعلامات Prisma تتميز بأنها <strong>Type-Safe</strong>، يعني أن المحرر (VSCode) سيعرف تماماً ما هي الحقول الموجودة في النتيجة ويكملها لك تلقائياً ولن يسمح لك بكتابة اسم حقل خاطئ.</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div class="border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="bg-slate-100 px-4 py-2 font-bold text-slate-700 border-b border-slate-200">في Django (ORM)</div>
+                            <div class="p-4 bg-slate-50">
+                            <pre class="m-0"><code class="language-python"># جلب كل المستخدمين
+User.objects.all()
+
+# جلب مستخدم واحد
+User.objects.get(id=1)
+
+# إنشاء مستخدم جديد
+User.objects.create(name="Ali")</code></pre>
+                            </div>
+                        </div>
+                        <div class="border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="bg-indigo-50 px-4 py-2 font-bold text-indigo-800 border-b border-indigo-100">في Prisma</div>
+                            <div class="p-4 bg-indigo-50/30">
+                            <pre class="m-0"><code class="language-typescript">// جلب كل المستخدمين
+await prisma.user.findMany()
+
+// جلب مستخدم واحد
+await prisma.user.findUnique({ where: { id: 1 } })
+
+// إنشاء مستخدم جديد
+await prisma.user.create({ data: { name: "Ali" } })</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">6. تطبيق التعديلات (Migrations)</h3>
+                    <p>في جانغو كنت تستخدم أمرين لتطبيق التعديلات على الجداول: <code>makemigrations</code> لصنع الملف، ثم <code>migrate</code> لتطبيقه.</p>
+                    <p>في Prisma، بعد أن تعدل ملف <code>schema.prisma</code> (مثلاً أضفت حقلاً جديداً)، تنفذ أمراً واحداً يجمع الإثنين معاً:</p>
+                    <pre><code class="language-bash">npx prisma migrate dev --name init</code></pre>
+                    <p>هذا الأمر يقوم بـ:</p>
+                    <ul class="list-disc list-inside space-y-1 mb-4">
+                        <li>إنشاء ملف SQL (مثل makemigrations).</li>
+                        <li>تطبيق التعديلات على قاعدة البيانات (مثل migrate).</li>
+                        <li>تحديث أنواع TypeScript فوراً لكي تظهر الحقول الجديدة في الكود (عبر أمر generate ضمناً).</li>
+                    </ul>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-8 mb-2">7. مثال شامل (Cheat Sheet) يجمع كل شيء</h3>
+                    <p>هذا نموذج مرجعي كامل يمكنك نسخه والرجوع إليه دائماً لمعرفة طريقة كتابة أي حقل أو علاقة:</p>
+                    <div class="border border-slate-200 rounded-lg overflow-hidden my-4">
+                        <div class="bg-slate-100 px-4 py-2 font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            نموذج FullExample
+                        </div>
+                        <div class="p-4 bg-slate-800 text-slate-100 overflow-x-auto text-sm leading-relaxed" style="direction: ltr;">
+<pre class="m-0 text-left"><code class="language-typescript">enum Role {
+  ADMIN
+  USER
+  COMPANY
+}
+
+model FullExample {
+  // المفتاح الأساسي (Primary Key)
+  id            Int       @id @default(autoincrement())
+  
+  // النصوص الأساسية
+  title         String    @unique // حقل فريد لا يتكرر (Unique)
+  description   String?   // حقل اختياري يقبل Null (Nullable)
+  
+  // الأرقام
+  views         Int       @default(0) // رقم صحيح مع قيمة افتراضية
+  price         Decimal   // رقم للأسعار والأموال (يحافظ على الدقة)
+  rating        Float?    // رقم عشري اختياري
+  
+  // القيم المنطقية (Boolean)
+  is_published  Boolean   @default(false)
+  
+  // القوائم والـ JSON والأنواع المخصصة
+  metadata      Json?     // لحفظ تفاصيل متغيرة (يعمل في MariaDB)
+  role          Role      @default(USER) // استخدام نوع Enum
+  
+  // التواريخ والأوقات
+  created_at    DateTime  @default(now()) // يأخذ تاريخ الإنشاء (auto_now_add)
+  updated_at    DateTime  @updatedAt      // يتحدث مع كل تعديل (auto_now)
+  
+  // العلاقات: واحد إلى متعدد (One-to-Many)
+  author_id     Int
+  author        User      @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  
+  // العلاقات: متعدد إلى متعدد (Many-to-Many)
+  tags          Tag[]     // مجرد تعريف مصفوفة هنا وفي جدول Tag
+  
+  // الفهارس والقيود (Indexes & Constraints)
+  @@index([author_id])             // لتسريع البحث عن طريق المؤلف (db_index)
+  @@unique([title, author_id])     // يمنع تكرار العنوان لنفس المؤلف (unique_together)
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Authentication -->
+            <section id="auth-architecture" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">هيكلية التوثيق والمستخدمين (Auth & Users)</h2>
+                </div>
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">1. دمج User و Profile (وداعاً للتعقيد!)</h3>
+                    <p>في جانغو، كنت مجبراً على استخدام جدول <code>User</code> الافتراضي الخاص بجانغو الذي يحتوي على حقول محددة. ولأنك لا تستطيع التعديل عليه بسهولة لإضافة حقول مخصصة (مثل الصورة، العنوان، وغيرها)، كنت تضطر لإنشاء جدول <code>Profile</code> وربطه بعلاقة <code>One-to-One</code>. هذا كان يسبب تعقيداً في الاستعلامات وبطئاً (استعلام مزدوج في كل مرة تريد جلب بيانات المستخدم).</p>
+                    <p><strong>في NestJS و Prisma: أنت المتحكم الوحيد!</strong></p>
+                    <p>بما أننا نبني النظام من الصفر هنا، لا يوجد جدول افتراضي يفرضه علينا إطار العمل. لذلك، القاعدة الذهبية هي: <strong>ادمج كل شيء في جدول <code>User</code> واحد!</strong></p>
+                    <p>نضع فيه الايميل، الباسورد، الصورة الشخصية، رقم الهاتف، وأي تفاصيل أخرى. هذا يجعل قاعدة البيانات أنظف بكثير واستعلاماتها أسرع بشكل ملحوظ لأنك لست بحاجة لعمل <code>JOIN</code> أو <code>include</code> لجلب تفاصيل الـ Profile أبداً.</p>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">2. كيف يعمل تسجيل الدخول (Authentication)؟</h3>
+                    <p>جانغو كان يستخدم (Session/Cookies) افتراضياً أو (Token Authentication) مع DRF. في NestJS، المعيار الصناعي الحديث لتطبيقات الموبايل (Flutter) والويب هو استخدام <strong>JWT (JSON Web Tokens)</strong>. هكذا دورة حياة التوثيق:</p>
+                    
+                    <div class="space-y-4 my-4">
+                        <div class="flex items-start gap-4 p-4 border border-slate-100 bg-slate-50 rounded-lg">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold">1</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 m-0">إنشاء التوكن (Login)</h4>
+                                <p class="text-sm text-slate-600 m-0 mt-1">عندما يرسل المستخدم إيميله والباسورد لـ <code>AuthController</code>، نقوم بالتحقق منها. إذا كانت صحيحة، نستخدم حزمة <code>@nestjs/jwt</code> لتوليد Token مشفر (يحتوي بداخله على الـ <code>id</code> الخاص به) ونرسله لتطبيق فلاتر ليحفظه عنده.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 border border-slate-100 bg-slate-50 rounded-lg">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold">2</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 m-0">حماية المسارات (AuthGuard)</h4>
+                                <p class="text-sm text-slate-600 m-0 mt-1">في جانغو كنا نكتب <code>@login_required</code> أو <code>permission_classes=[IsAuthenticated]</code>. في NestJS، نكتب <code>@UseGuards(AuthGuard)</code> فوق الـ Controller أو المسار. هذا الـ Guard هو "حارس أمن" يعترض أي طلب، يقرأ التوكن من الـ <code>Authorization Header</code>، يفك تشفيره، وإذا كان سليماً يسمح للطلب بالمرور.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 border border-slate-100 bg-slate-50 rounded-lg">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold">3</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 m-0">معرفة المستخدم الحالي (Current User)</h4>
+                                <p class="text-sm text-slate-600 m-0 mt-1">في جانغو كنت تستخدم <code>request.user</code> للوصول لبيانات صاحب الطلب. في NestJS، سنصنع أداة مخصصة (Custom Decorator) اسمها <code>@CurrentUser()</code> نضعها كمعامل في الدالة داخل الـ Controller لتسحب بيانات المستخدم فورا، مثلاً: <code>getProfile(@CurrentUser() user: User)</code>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">3. ميزة رائعة: إخفاء كلمة المرور تلقائياً</h3>
+                    <p>في قاعدة البيانات، سنقوم بتشفير كلمات المرور باستخدام <code>bcrypt</code> (تماما كما يفعل جانغو). لكن في Prisma، لا نريد أبداً أن تعود كلمة المرور المشفرة بالخطأ عند جلب بيانات المستخدم وإرسالها لـ API لكي لا يراها المخترقون. لذلك، سنتعلم كيفية عمل (Interceptor) أو تعديل إعدادات Prisma لكي تقوم بحذف حقل <code>password</code> تلقائياً من أي استعلام <code>findMany</code> أو <code>findUnique</code> قبل إرسال النتيجة للـ Controller.</p>
+                </div>
+            </section>
+            <!-- Lesson 1: Auth APIs -->
+            <section id="lesson-1-auth" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس الأول: تحويل نظام Users & Auth بالكامل (من الألف إلى الياء)</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">مرحباً بك يا صديقي في أول درس عملي واحترافي! بصفتي المدرس الخاص بك، قمت بتحليل دقيق لملف <code>users/api.py</code> القديم الخاص بك في جانغو. كان لديك 12 مساراً (Endpoint) رئيسياً (Login, Register, Profile, etc). اليوم سنتعلم كيف نحولها إلى <strong>NestJS</strong> بأعلى معايير الصناعة.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">1. المعمارية: كيف تختلف عن Django Ninja؟</h3>
+                    <p>في Django Ninja كنت تكتب: <code>Schema</code> ثم <code>@router.post</code> وتضع اللوجيك داخل الـ View. في NestJS نقسم العمل كالتالي:</p>
+                    <ul class="list-none space-y-2 mb-6">
+                        <li class="flex items-center gap-2"><span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-bold text-xs">DTOs</span> <span class="text-slate-700">بديل الـ (Schema). مسؤولة عن التحقق من صحة البيانات القادمة (Validation).</span></li>
+                        <li class="flex items-center gap-2"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-bold text-xs">Service</span> <span class="text-slate-700">هنا نكتب اللوجيك الصعب (مثل <code>User.objects.create()</code> و التشفير).</span></li>
+                        <li class="flex items-center gap-2"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded font-bold text-xs">Controller</span> <span class="text-slate-700">بديل الـ (Router). يستقبل الطلب، يرسله للـ Service، ثم يرجع النتيجة للعميل (Flutter).</span></li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">2. حزم أساسية يجب تثبيتها أولاً</h3>
+                    <p>جانغو كان يأتي جاهزاً بالتشفير ونظام المستخدمين. في NestJS، نحن نركب الأدوات التي نريدها بحرية:</p>
+                    <pre><code class="language-bash">pnpm add bcrypt @nestjs/jwt class-validator class-transformer
+pnpm add -D @types/bcrypt</code></pre>
+                    <ul class="list-disc list-inside mt-2 text-sm">
+                        <li><strong>bcrypt:</strong> لتشفير كلمات المرور والتحقق منها (بديل <code>make_password</code> و <code>check_password</code>).</li>
+                        <li><strong>@nestjs/jwt:</strong> لتوليد التوكن (بديل مكتبة <code>jwt</code> التي كنت تستخدمها).</li>
+                        <li><strong>class-validator:</strong> للتحقق من المدخلات (مثل التأكد أن الإيميل صحيح).</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">3. توليد الـ Module</h3>
+                    <p>لإنشاء التطبيق بالكامل بضغطة زر، نفذ هذا الأمر:</p>
+                    <pre><code class="language-bash">pnpm exec nest g resource auth</code></pre>
+                    <p><em>(اختر REST API، وسيسألك إذا كنت تريد توليد CRUD، اختر No لأننا سنكتب الـ Endpoints بأنفسنا).</em></p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">4. بناء الـ DTO (بديل LoginSchema و RegisterSchema)</h3>
+                    <p>في جانغو كنت تكتب: <code>class LoginSchema(Schema): username: str</code>. في NestJS سنصنع ملف <code>auth/dto/login.dto.ts</code>:</p>
+                    <pre><code class="language-typescript">import { IsString, IsNotEmpty, MinLength } from 'class-validator';
+
+export class LoginDto {
+  @IsString()
+  @IsNotEmpty({ message: 'اسم المستخدم مطلوب' })
+  username: string;
+
+  @IsString()
+  @MinLength(6, { message: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' })
+  password: string;
+}</code></pre>
+                    <p class="text-sm bg-yellow-50 text-yellow-800 p-3 rounded-lg border border-yellow-200 mt-2">
+                        💡 <strong>تلميح المحترفين:</strong> في NestJS، لكي تعمل هذه الشروط تلقائياً وترفض الطلبات الخاطئة قبل أن تصل للـ Controller، يجب تفعيل <code>ValidationPipe</code> عالمياً في ملف <code>main.ts</code>.
+                    </p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">5. بناء الـ Service (اللوجيك الحقيقي)</h3>
+                    <p>في جانغو، دالة <code>api_login</code> كانت تستخدم <code>authenticate()</code>. هنا سنبنيها خطوة بخطوة في <code>auth.service.ts</code>:</p>
+                    <pre><code class="language-typescript">import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
+
+const prisma = new PrismaClient(); // (يفضل عمل PrismaService مخصص لاحقاً)
+
+@Injectable()
+export class AuthService {
+  constructor(private jwtService: JwtService) {}
+
+  async login(data: LoginDto) {
+    // 1. البحث عن المستخدم (بديل User.objects.filter)
+    const user = await prisma.user.findUnique({
+      where: { username: data.username }
+    });
+
+    // 2. التحقق من المستخدم وكلمة المرور
+    if (!user || user.is_deleted || !user.is_active) {
+      throw new UnauthorizedException('الحساب غير موجود أو تم إيقافه.');
+    }
+
+    const isPasswordValid = await bcrypt.compare(data.password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('كلمة المرور غير صحيحة.');
+    }
+
+    // 3. توليد التوكن
+    const token = this.jwtService.sign({ id: user.id, username: user.username });
+
+    // 4. حذف كلمة المرور من النتيجة قبل إرجاعها (مهم أمنياً!)
+    const { password, ...userWithoutPassword } = user;
+
+    return {
+      message: "Login successful",
+      token,
+      user: userWithoutPassword
+    };
+  }
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">6. بناء الـ Controller (الروابط)</h3>
+                    <p>في جانغو كنت تكتب <code>@router.post("/login")</code>. في NestJS نكتبها في <code>auth.controller.ts</code>:</p>
+                    <pre><code class="language-typescript">import { Controller, Post, Body } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+
+@Controller('auth') // هذا يعني أن المسار يبدأ بـ /auth
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('login') // المسار النهائي: /auth/login
+  async login(@Body() body: LoginDto) {
+    return this.authService.login(body);
+  }
+
+  @Post('register')
+  async register(@Body() body: RegisterDto) {
+    return this.authService.register(body);
+  }
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">7. بديل json_response و الأخطاء (Exception Handling)</h3>
+                    <p>في جانغو كنت تستخدم دالة مخصصة <code>json_response(status=400, error=True)</code>.</p>
+                    <p>في NestJS، إذا أردت إرجاع خطأ، فقط قم برمي استثناء (Throw Exception) وNestJS سيتكفل بتحويله إلى JSON نظيف لتطبيق Flutter:</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li><code>throw new BadRequestException('Email already exists');</code> (يرجع Status 400)</li>
+                        <li><code>throw new NotFoundException('User not found');</code> (يرجع Status 404)</li>
+                        <li><code>throw new UnauthorizedException('Wrong password');</code> (يرجع Status 401)</li>
+                    </ul>
+                    <p>وإذا أردت توحيد شكل الاستجابة (مثلاً أن تكون دائماً <code>{ data, message, error }</code>)، يمكنك لاحقاً بناء <strong>Interceptor</strong> و <strong>Exception Filter</strong> ليقوم بتغليف كل الردود بهذا الشكل تلقائياً دون أن تكتبه في كل دالة!</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">8. التعامل مع الحماية (Guards) بدلاً من AuthBearer</h3>
+                    <p>في الـ <code>api.py</code> الخاص بك كان لديك: <code>@router.get("/profile", auth=AuthBearer())</code>.</p>
+                    <p>في NestJS، ستقوم بإنشاء كلاس اسمه <code>JwtAuthGuard</code> (يتحقق من التوكن)، وتضعه فوق المسار هكذا:</p>
+                    <pre><code class="language-typescript">import { UseGuards, Get } from '@nestjs/common';
+import { JwtAuthGuard } from './jwt-auth.guard'; // سنقوم بإنشائه لاحقاً
+
+@UseGuards(JwtAuthGuard)
+@Get('profile')
+async getProfile(@Request() req) {
+  // req.user يحتوي على بيانات المستخدم المستخرجة من التوكن
+  return req.user; 
+}</code></pre>
+
+                    <div class="mt-8 p-6 bg-slate-900 rounded-xl text-slate-200">
+                        <h4 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                            <span>🎯</span> خلاصة الدرس الأول للمحترفين
+                        </h4>
+                        <ol class="list-decimal list-inside space-y-2 mt-4 text-sm leading-relaxed text-slate-300">
+                            <li><strong>افصل اللوجيك:</strong> لا تكتب أكواد قواعد البيانات (Prisma) داخل الـ Controller أبداً. ضعها دائماً في الـ Service.</li>
+                            <li><strong>استخدم الـ DTOs دائماً:</strong> لا تستقبل أي <code>@Body()</code> بدون DTO قوي محمي بـ class-validator.</li>
+                            <li><strong>كلمات المرور:</strong> لا تنسَ تشفير كلمة المرور بـ <code>bcrypt.hash()</code> في مسار الـ Register، ولا ترجعها أبداً في الـ Response.</li>
+                            <li><strong>الـ JWT:</strong> قم بتخزين <code>JWT_SECRET</code> في ملف <code>.env</code> ولا تضعه في الكود مباشرة.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+            <!-- Lesson 2: Swagger -->
+            <section id="lesson-2-swagger" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-orange-100 text-orange-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس الثاني: توثيق الـ APIs باستخدام Swagger 📝</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">في Django Ninja، كان توثيق Swagger يُبنى تلقائياً بمجرد كتابة الـ <code>Schema</code>. في NestJS، الأمر مشابه جداً وقوي للغاية، لكنه يحتاج إلى تفعيل مبدئي وبعض اللمسات البسيطة ليكون احترافياً.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">1. تثبيت حزمة Swagger</h3>
+                    <p>أول خطوة هي تثبيت الحزمة الرسمية الخاصة بـ NestJS:</p>
+                    <pre><code class="language-bash">pnpm add @nestjs/swagger</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">2. تفعيل Swagger في ملف main.ts</h3>
+                    <p>لكي تعمل واجهة التوثيق، يجب إعدادها في ملف نقطة البداية <code>src/main.ts</code> قبل سطر <code>app.listen()</code>:</p>
+                    <pre><code class="language-typescript">import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  // === إعدادات Swagger ===
+  const config = new DocumentBuilder()
+    .setTitle('SolarHub API') // عنوان التوثيق
+    .setDescription('The SolarHub Backend API description') // وصف بسيط
+    .setVersion('1.0') // الإصدار
+    .addBearerAuth() // 👈 هذه مهمة جداً لكي يظهر زر إدخال التوكن (JWT) في الواجهة!
+    .build();
+    
+  const document = SwaggerModule.createDocument(app, config);
+  
+  // تحديد الرابط الذي سيفتح عليه التوثيق (هنا سيكون: localhost:3000/api-docs)
+  SwaggerModule.setup('api-docs', app, document);
+  // ========================
+
+  await app.listen(3000);
+}
+bootstrap();</code></pre>
+                    <p>بعد ذلك، بمجرد تشغيل السيرفر، ستتمكن من تصفح التوثيق عبر الرابط: <code>http://localhost:3000/api-docs</code></p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">3. كيف توثق المدخلات (DTOs) لكي تظهر في Swagger؟</h3>
+                    <p>في ملفات الـ DTO (مثل <code>login.dto.ts</code>)، يجب أن تخبر Swagger عن كل حقل باستخدام مزخرف <code>@ApiProperty()</code> لكي يعرف كيف يعرضه للمبرمجين الآخرين أو لتطبيق فلاتر:</p>
+                    <pre><code class="language-typescript">import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
+
+export class LoginDto {
+  @ApiProperty({
+    description: 'اسم المستخدم للعميل',
+    example: 'ali_ahmed' // مثال يظهر تلقائياً في التوثيق
+  })
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @ApiProperty({
+    description: 'كلمة المرور',
+    example: 'password123',
+    minLength: 6
+  })
+  @IsString()
+  password: string;
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">4. كيف توثق الـ Controller ومساراته؟</h3>
+                    <p>في ملف <code>auth.controller.ts</code>، نستخدم مجموعة من المزخرفات الجاهزة لترتيب شكل الواجهة:</p>
+                    <pre><code class="language-typescript">import { Controller, Post, Body } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+
+@ApiTags('Auth & Users') // 👈 هذا يجعل جميع المسارات تندرج تحت قسم واحد بهذا الاسم
+@Controller('auth')
+export class AuthController {
+  
+  @Post('login')
+  @ApiOperation({ summary: 'تسجيل الدخول', description: 'تستخدم للحصول على توكن جديد' })
+  @ApiResponse({ status: 201, description: 'تم تسجيل الدخول بنجاح' })
+  @ApiResponse({ status: 401, description: 'بيانات الدخول خاطئة' })
+  async login(@Body() body: LoginDto) {
+    // ...
+  }
+
+  @Post('profile')
+  @ApiBearerAuth() // 👈 هذا يُظهر قفل بجانب المسار في التوثيق ويعني أنه يحتاج Token
+  @ApiOperation({ summary: 'جلب بيانات المستخدم الحالي' })
+  async getProfile() {
+    // ...
+  }
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">5. حيلة رهيبة لتوفير الوقت (CLI Plugin) 🪄</h3>
+                    <p>إذا كان لديك 50 ملف DTO، كتابة <code>@ApiProperty()</code> فوق كل حقل سيكون أمراً مملاً جداً!
+                    NestJS توفر ميزة سحرية تقرأ ملفاتك وتضيف هذا التوثيق تلقائياً وقت التشغيل (خلف الكواليس).</p>
+                    
+                    <p>لتفعيلها، افتح ملف <code>nest-cli.json</code> في مجلد المشروع الجذري وعدّله ليصبح هكذا:</p>
+                    <pre><code class="language-json">{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "plugins": ["@nestjs/swagger"] 
+  }
+}</code></pre>
+                    <p><strong>ما فائدة هذا؟</strong> بمجرد تفعيله، لن تحتاج لكتابة <code>@ApiProperty()</code> إلا إذا كنت تريد إضافة وصف مخصص أو مثال معين. أما بقية الحقول فستظهر في Swagger تلقائياً بمجرد وجودها في ملف الـ DTO!</p>
+
+                </div>
+            </section>
+            <!-- Lesson 3: Global API Response Formatting -->
+            <section id="lesson-3-format" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-purple-100 text-purple-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس الثالث: توحيد مخرجات الـ API (Interceptors & Filters) 🌐</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">في تطبيقك القديم على Django، كان لديك شكل ثابت وموحد لكل رد يخرج من السيرفر لتطبيق Flutter، وكان يأخذ هذا الشكل:</p>
+                    <pre><code class="language-json">{
+  "status": 200,
+  "message": "Success",
+  "body": { ... },
+  "error": false,
+  "message_user": null
+}</code></pre>
+                    <p>في Django كنت تكتب دوال مثل <code>json_response()</code> وتستخدمها في كل مسار. في NestJS، نحن نعتمد على أدوات أكثر احترافية وذكاءً لا تتطلب منك تغيير الكود في كل Controllers الخاص بك. هذه الأدوات هي <strong>Interceptors</strong> للحالات الناجحة، و <strong>Exception Filters</strong> لحالات الخطأ.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">1. التعامل مع الاستجابات الناجحة (Response Interceptor)</h3>
+                    <p>الـ Interceptor هو كود يتدخل (يعترض) الرد القادم من الـ Controller قبل أن يتم إرساله إلى العميل (Flutter). هنا نقوم بتغليف البيانات بالشكل الموحد المطلوب:</p>
+                    <pre><code class="language-typescript">import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+@Injectable()
+export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const ctx = context.switchToHttp();
+    const response = ctx.getResponse();
+
+    return next.handle().pipe(
+      map(data => {
+        // إذا كان المطور قد أرجع رسالة مخصصة مع البيانات
+        const message = data?.message || 'Success';
+        const body = data?.message ? (data.user || data.data || data) : data;
+
+        return {
+          status: response.statusCode,
+          message: message,
+          body: body,
+          error: false,
+          message_user: null,
+        };
+      }),
+    );
+  }
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">2. التعامل مع الأخطاء والاستثناءات (Exception Filter)</h3>
+                    <p>الـ Exception Filter يتدخل فقط عندما يتم رمي خطأ أو استثناء في السيرفر (مثلاً عندما يضعف المطور كلمة المرور أو يخطئ في كتابة الإيميل). هذا يضمن أن تطبيق فلاتر سيتلقى نفس الهيكلية حتى عند حدوث مشكلة:</p>
+                    <pre><code class="language-typescript">import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
+
+@Catch()
+export class AllExceptionsFilter implements ExceptionFilter {
+  catch(exception: unknown, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+    
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message = 'Internal server error';
+
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      const res = exception.getResponse();
+      message = typeof res === 'string' ? res : (res as any).message || res;
+    } else if (exception instanceof Error) {
+      message = exception.message;
+    }
+
+    response.status(status).json({
+      status: status,
+      message: Array.isArray(message) ? message[0] : message, // تجنب مصفوفة الرسائل
+      body: null,
+      error: true,
+      message_user: null,
+    });
+  }
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">3. تفعيل هذه الأدوات لتعمل عالمياً (Globally)</h3>
+                    <p>لكي لا تضطر لإضافة هذه الأدوات في كل مسار أو Module، نذهب إلى ملف <code>main.ts</code> ونخبر NestJS بأن هذه القاعدة تطبق على المشروع كاملاً:</p>
+                    <pre><code class="language-typescript">import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { ValidationPipe } from '@nestjs/common';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  // تفعيل الـ Interceptor للاستجابات الناجحة
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  
+  // تفعيل الـ Filter لرسائل الخطأ
+  app.useGlobalFilters(new AllExceptionsFilter());
+  
+  // تفعيل الـ ValidationPipe لضمان تحقق الـ DTOs تلقائياً
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+  await app.listen(3000);
+}
+bootstrap();</code></pre>
+
+                    <div class="mt-8 p-6 bg-slate-900 rounded-xl text-slate-200">
+                        <h4 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                            <span>🎯</span> خلاصة الدرس الثالث
+                        </h4>
+                        <p class="text-sm leading-relaxed text-slate-300 mt-2">بهذا الإعداد الاحترافي، <strong>لا داعي للتفكير في شكل الاستجابة بعد الآن!</strong> في أي مسار أو Controller جديد، كل ما عليك فعله هو إرجاع البيانات <code>return user;</code> وسيتكفل NestJS بتغليفها بـ <code>{"status": 200, "message": "Success", "body": { ... }}</code> تلقائياً.</p>
+                        <p class="text-sm leading-relaxed text-slate-300 mt-2">وعندما تريد إرجاع خطأ، فقط اكتب <code>throw new BadRequestException('كلمة المرور ضعيفة')</code> وسيتكفل NestJS بتحويلها إلى شكل JSON موحد لتطبيق فلاتر.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Lesson 4: Auth & Users -->
+            <section id="lesson-4-auth-users" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card mt-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس الرابع: توثيق المستخدمين (Auth & Users) 🔐</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">تطبيق المستخدمين (Users App) كان يحتوي على العديد من الوظائف في Django، وقد نقلناها جميعاً إلى وحدة <code>AuthModule</code> في NestJS مع الالتزام التام بكيفية عملها سابقاً للحفاظ على توافق تطبيق فلاتر.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">1. تسجيل الدخول وتسجيل حساب جديد</h3>
+                    <p>في دالة تسجيل الدخول (Login)، قمنا ببناء الميزة بحيث تسمح بتسجيل الدخول باستخدام (الإيميل، رقم الهاتف، أو اسم المستخدم) بفضل دالة مساعدة تبحث عن المستخدم:</p>
+                    <pre><code class="language-typescript">private async findUserByIdentifier(identifier: string) {
+  return this.prisma.user.findFirst({
+    where: {
+      OR: [
+        { username: identifier },
+        { email: identifier },
+        { phone: identifier },
+      ],
+    },
+    include: { city: true },
+  });
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">2. استرجاع كلمة المرور (Forget Password)</h3>
+                    <p>استرجاع كلمة المرور يتبع نفس القاعدة: يمكنك استخدام (الإيميل، رقم الهاتف، أو اسم المستخدم) لطلب التوكن الخاص بإعادة تعيين الكلمة. يتم إنشاء توكن عشوائي وحفظه في جدول <code>ResetPasswordToken</code>، ثم يتم إرساله للمستخدم لإتمام عملية إعادة التعيين.</p>
+                    <pre><code class="language-typescript">@Post('password-reset')
+async requestPasswordReset(@Body() body: PasswordResetRequestDto) {
+  // يقوم بالبحث باستخدام الإيميل، رقم الهاتف، أو اسم المستخدم
+  // ثم يرسل الكود المكون من أرقام للبريد المرتبط
+}</code></pre>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">3. صورة المستخدم (Avatar) والصيغة الثابتة</h3>
+                    <p>بناءً على التوجيهات، قمنا بتوحيد شكل الملف الشخصي (Profile) عند إرجاعه بحيث يكون مطابقاً لمخرجات جانغو، مع إرجاع <code>image: null</code> دائماً لأنه تقرر حذف الصورة الشخصية من المستخدمين والاعتماد على صورة افتراضية في الواجهات:</p>
+                    <pre><code class="language-typescript">private serializeUser(user: any) {
+  return {
+    id: user.id,
+    username: user.username,
+    email: user.email,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    phone: user.phone,
+    city: user.city ? { id: user.city.id, name: user.city.name } : null,
+    image: null, // صورة فارغة افتراضية لجميع المستخدمين
+    is_superuser: user.is_superuser,
+    // ...
+  };
+}</code></pre>
+
+                    <div class="mt-8 p-6 bg-slate-900 rounded-xl text-slate-200">
+                        <h4 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                            <span>✅</span> ملخص الميزات المكتملة في Auth Module
+                        </h4>
+                        <ul class="list-disc list-inside space-y-2 mt-4 text-sm leading-relaxed text-slate-300">
+                            <li>تسجيل الدخول والتسجيل بنجاح وإنشاء <code>JWT Token</code>.</li>
+                            <li>جلب وتحديث بيانات المستخدم <code>/auth/profile</code>.</li>
+                            <li>ترقية مستخدم لمدير <code>/auth/promote</code> (محمية بصلاحيات Superuser).</li>
+                            <li>حذف الحساب مؤقتاً (Soft Delete) باستخدام <code>is_deleted</code>.</li>
+                            <li>تغيير وتأكيد كلمة المرور بالتوكن الرقمي <code>/auth/password-reset/confirm</code>.</li>
+                            <li>تغيير لغة المستخدم بين 'ar' و 'en' فقط <code>/auth/language</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <!-- Lesson 6: Admin Panel & CLI Commands -->
+            <section id="lesson-6-admin" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card mt-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-red-100 text-red-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس الخامس: لوحة التحكم (Admin Site) وصلاحيات الـ Superuser 👑</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">من أهم ميزات إدارة النظام في Django هو أمر <code>createsuperuser</code> لإنشاء مدير جديد بصلاحيات كاملة للتحكم بالنظام. لقد قمنا بتعويض هذه الميزة باحترافية في NestJS.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">إنشاء أمر createsuperuser (Command Line Interface)</h3>
+                    <p>في تطبيقنا الجديد، قمنا بكتابة ملف سكريبت منفصل في <code>src/scripts/create-superuser.ts</code> يتصل بقاعدة البيانات بشكل مباشر عبر Prisma ويسألك عن بياناتك.</p>
+                    <p>لتبسيط استخدامه، أضفنا هذا الاختصار في ملف <code>package.json</code>:</p>
+                    <pre><code class="language-json">"scripts": {
+  "createsuperuser": "ts-node -r tsconfig-paths/register src/scripts/create-superuser.ts"
+}</code></pre>
+                    <p>الآن لإنشاء حساب مدير بصلاحيات كاملة، كل ما عليك فعله هو كتابة هذا الأمر في الشاشة السوداء (Terminal):</p>
+                    <pre><code class="language-bash">pnpm run createsuperuser</code></pre>
+                    <p>السكريبت سيطلب منك إدخال:</p>
+                    <ul>
+                        <li>اسم المستخدم (Username)</li>
+                        <li>البريد الإلكتروني (Email)</li>
+                        <li>كلمة المرور (Password)</li>
+                    </ul>
+                    <p>وسيقوم بتشفير كلمة المرور بـ <code>bcrypt</code> وحفظ حسابك بصلاحيات <code>is_superuser = true</code> ليكون جاهزاً لإدارة النظام. يمكنك لاحقاً استخدام هذا الحساب لتسجيل الدخول إلى أي لوحة تحكم مخصصة يتم بناؤها.</p>
+                </div>
+            </section>
+            <!-- Lesson 7: Refine Admin Panel -->
+            <section id="lesson-7-refine" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card mt-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس السادس: لوحة التحكم المتقدمة باستخدام Refine 🚀</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">في نظام Django القديم، كانت لوحة التحكم (Admin Panel) جزءاً مدمجاً من كود الباك‌اند. أما الآن، فنحن نتبع المعايير الحديثة (Decoupled Architecture) بفصل الواجهة الأمامية تماماً.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">1. إطار عمل Refine</h3>
+                    <p>لقد اخترنا إطار <strong>Refine</strong> (المبني على React) لبناء لوحة التحكم. لماذا؟ لأنه مصمم خصيصاً لبناء الأنظمة الداخلية (Internal Tools) ولوحات التحكم بسرعة هائلة، ويدعم الربط المباشر مع واجهات REST API.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">2. الهيكلية الجديدة للمشروع</h3>
+                    <p>المشروع الآن مقسم إلى مجلدين رئيسيين جنباً إلى جنب:</p>
+                    <ul class="list-none space-y-2 mb-6">
+                        <li class="flex items-center gap-2"><span class="bg-slate-800 text-white px-2 py-1 rounded font-bold text-xs">solarhub-nestjs</span> <span class="text-slate-700">هذا هو السيرفر الأساسي. يعمل كـ API لخدمة تطبيق فلاتر ولوحة التحكم.</span></li>
+                        <li class="flex items-center gap-2"><span class="bg-blue-500 text-white px-2 py-1 rounded font-bold text-xs">solarhub-admin</span> <span class="text-slate-700">هذا هو مجلد لوحة التحكم. تطبيق React مستقل يتخاطب مع الباك‌اند لجلب وعرض البيانات.</span></li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">3. كيف يعملان معاً؟</h3>
+                    <p>في مرحلة التطوير، تقوم بتشغيل السيرفرين في وقت واحد (مثلاً: NestJS على المنفذ 3000 و Refine على 5173). يقوم تطبيق Refine بإرسال طلبات الـ HTTP إلى <code>localhost:3000/api</code>.</p>
+                    <p>أما في مرحلة الإنتاج (Production)، يتم عمل <code>build</code> لمشروع Refine وتحويله إلى ملفات ثابتة (Static Files)، ثم نقوم ببرمجة NestJS ليقوم بعرض هذه الملفات على الرابط <code>/admin</code>، بحيث يعود النظام ليعمل من سيرفر واحد تماماً كما كان يفعل Django!</p>
+                </div>
+            </section>
+            
+            <!-- Lesson 8: Companies & Notifications -->
+            <section id="lesson-8-companies" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card mt-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-teal-100 text-teal-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس السابع: هجرة الشركات والإشعارات (Companies & Notifications) 🏢</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">من أهم خطوات التحديث هو نقل الوحدات المعقدة التي تحتوي على العديد من مسارات الـ API مثل الشركات (Companies) وخدمة الإشعارات (Firebase Admin) من بيئة جانغو إلى بيئة NestJS مع الحفاظ على نفس مخرجات الـ API تماماً.</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">1. وحدة الإشعارات (Notifications Module)</h3>
+                    <p>في تطبيق جانغو، كنا نعتمد على <code>fcm-django</code> لتخزين توكنات الأجهزة وإرسال الإشعارات. في NestJS:</p>
+                    <ul class="list-disc list-inside space-y-2 mb-6">
+                        <li>تم استخدام مكتبة <code>firebase-admin</code> مباشرة وتهيئتها داخل <code>NotificationsService</code>.</li>
+                        <li>تم ربط الجداول القديمة الخاصة بـ <code>FCMDevice</code> و <code>NotificationMsg</code> باستخدام Prisma.</li>
+                        <li>قمنا بتقسيم الـ Controllers بحيث يكون لدينا <code>DeviceController</code> لإدارة أجهزة المستخدمين و <code>AdminNotificationController</code> لإرسال الإشعارات الجماعية بصلاحيات الـ Superuser.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">2. وحدة الشركات (Companies Module)</h3>
+                    <p>تطبيق الشركات في جانغو كان يحتوي على ملف <code>api.py</code> عملاق يضم حوالي 2000 سطر برمجي. لترتيب هذا الكود في NestJS:</p>
+                    <ul class="list-disc list-inside space-y-2 mb-6">
+                        <li><strong>تقسيم المتحكمات:</strong> قمنا بإنشاء 7 متحكمات منفصلة في مجلد <code>controllers</code> (مثل <code>CompaniesController</code>، <code>PublicCompaniesController</code>، <code>CompanyMembersController</code> وغيرها) ليسهل صيانتها.</li>
+                        <li><strong>توحيد البيانات (DTOs):</strong> قمنا بإنشاء جميع كلاسات <code>class-validator</code> (الـ DTOs) لتكون مطابقة تماماً للـ Schemas القديمة في جانغو.</li>
+                        <li><strong>معالجة العلاقات المعقدة في Prisma:</strong> تم تحويل عمليات الإنشاء والتحديث، مثل إضافة <code>CompanyMember</code> وتحديد التواريخ الافتراضية مثل <code>expire_date</code> إلى كود Type-Safe في خدمة <code>CompaniesService</code>.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Lesson 9: Offers -->
+            <section id="lesson-9-offers" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8 step-card mt-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-orange-100 text-orange-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">الدرس الثامن: العروض والمناقصات (Offers) 📝</h2>
+                </div>
+                
+                <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                    <p class="text-lg">تعتبر وحدة العروض <code>OffersModule</code> من أعقد الوحدات لأنها تربط المستخدمين بالشركات، وتحتوي على العديد من العمليات المتداخلة (طلبات العروض، الرد عليها، واختيار بنود العرض).</p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">كيف نقلنا وحدة العروض إلى NestJS؟</h3>
+                    <ul class="list-disc list-inside space-y-2 mb-6">
+                        <li><strong>تقسيم الـ Controllers:</strong> قمنا بإنشاء 4 متحكمات لتبسيط الكود:
+                            <ul>
+                                <li><code>UserOfferRequestsController</code>: لطلبات المستخدمين.</li>
+                                <li><code>CompanyOffersController</code>: لردود الشركات على الطلبات.</li>
+                                <li><code>InvolvementTemplatesController</code>: لإدارة كتالوج البنود الإضافية للشركات.</li>
+                                <li><code>AdminOffersController</code>: للوحة التحكم الإدارية.</li>
+                            </ul>
+                        </li>
+                        <li><strong>العلاقات مع قاعدة البيانات:</strong> تم استخدام <code>Prisma</code> للربط التلقائي وتوليد (Snapshot) لبنود العرض في <code>OfferInvolvement</code> و <code>OfferInvolves</code>.</li>
+                        <li><strong>التكامل مع الـ CRM (Customer):</strong> عند تقديم شركة لعرض، يتم تلقائياً تحويل المستخدم إلى <code>Lead</code> ضمن قاعدة عملاء الشركة (Customer) بنفس آلية جانغو.</li>
+                        <li><strong>الإشعارات (Notifications):</strong> تم ربط الخدمة بنظام الإشعارات المدمج لإرسال تنبيهات لحظية لكل من المستخدمين والشركات عند تفاعلهم.</li>
+                    </ul>
+                </div>
+            </section>
+
+        <!-- Lesson 9: Shop Module -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2 mb-6">الدرس التاسع: تهجير قسم المتجر (Shop) المعقد والفصل المنطقي</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4 text-right">المشكلة في الكود القديم:</h3>
+                <p class="text-gray-600 mb-4 text-right">
+                    في مشروع جانغو القديم، كان قسم الـ Shop يجمع كل شيء في ملفين ضخمين (`commerce_api.py` و `product_api.py`). هذه الملفات كانت تدير الكتالوج العام، منتجات الشركات، طلبات B2B، طلبات B2C، العملاء، والموردين دفعة واحدة. هذا التصميم يجعل الصيانة وتتبع الأخطاء أو إضافة ميزات جديدة أمراً بالغ الصعوبة.
+                </p>
+
+                <h3 class="text-xl font-semibold text-gray-700 mb-4 text-right mt-6">الحل في NestJS:</h3>
+                <p class="text-gray-600 mb-4 text-right">
+                    قررنا تطبيق مبدأ <strong>الفصل المنطقي (Separation of Concerns)</strong> وتقسيم قسم الـ Shop إلى 8 متحكمات (Controllers) منفصلة، كل منها يتعامل مع جزء محدد:
+                </p>
+                <ul class="list-disc list-inside text-gray-600 mb-4 text-right" dir="rtl">
+                    <li><code>store-catalog.controller.ts</code>: الكتالوج العام (للمشترين الأفراد B2C).</li>
+                    <li><code>b2b-catalog.controller.ts</code>: كتالوج الشركات (B2B).</li>
+                    <li><code>company-products.controller.ts</code>: إدارة الشركة لمنتجاتها.</li>
+                    <li><code>company-customers.controller.ts</code>: نظام الـ CRM للعملاء.</li>
+                    <li><code>company-suppliers.controller.ts</code>: نظام الـ CRM للموردين.</li>
+                    <li><code>company-orders.controller.ts</code>: إدارة مبيعات الشركة (الطلبات الواردة).</li>
+                    <li><code>user-orders.controller.ts</code>: إدارة مشتريات المستخدم (الطلبات الصادرة).</li>
+                    <li><code>admin-products.controller.ts</code>: لوحة تحكم الإدارة.</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-gray-700 mb-4 text-right mt-6">الدرس المستفاد:</h3>
+                <div class="bg-blue-50 border-r-4 border-blue-500 p-4 text-right">
+                    <p class="text-blue-700 font-semibold mb-2">أهمية استخدام سكريبتات التوليد (Code Generation):</p>
+                    <p class="text-blue-600">
+                        لأن قسم الـ Shop يحتوي على أكثر من 40 مسار (Endpoint)، فإن كتابة كل هذه المتحكمات والخدمات (Services) يدوياً كان سيستغرق أياماً وسيكون عرضة للخطأ البشري (مثل نسيان `@ApiBearerAuth()` الذي حدث معنا سابقاً). قمنا بكتابة سكريبتات Python لإنشاء جميع ملفات الـ Shop دفعة واحدة. هذا يضمن لنا:
+                        <ul class="list-disc list-inside mt-2">
+                            <li><strong>دقة 100%</strong> في تطبيق المزخرفات وحماية الروابط.</li>
+                            <li><strong>سرعة هائلة</strong> في تهجير الأقسام الضخمة.</li>
+                            <li><strong>أكواد نظيفة ومرتبة</strong> وفق قوالب موحدة.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lesson 10 -->
+        <section id="lesson-10-rbac-filters" class="mb-16 pt-8 border-t border-slate-200">
+            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-yellow-500 pb-2 mb-6">الدرس العاشر: حماية الأدوار (RBAC) والفلاتر والإشعارات</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4 text-right">التهجير النهائي لأقسام Offers و Shop:</h3>
+                <p class="text-gray-600 mb-4 text-right">
+                    بعد بناء الكود الأساسي، واجهتنا 3 تحديات ليكون الكود مطابقاً تماماً لـ Django:
+                </p>
+                <ol class="list-decimal list-inside text-gray-600 mb-4 text-right" dir="rtl">
+                    <li><strong>حماية الأدوار (CompanyMemberBearer):</strong> في جانغو كان هناك حماية قوية تتأكد من أن المستخدم ليس فقط مسجلاً الدخول، بل هو عضو في الشركة التي يحاول التحكم بها، ولديه دور (Role) محدد (مثلاً Manager). في NestJS، قمنا بإنشاء <code>RolesGuard</code> و مزخرف <code>@Roles()</code> يتفحص التوكن و <code>company-id</code> ويتأكد من الصلاحيات.</li>
+                    <li><strong>الفلاتر والبحث في المتجر:</strong> متجر B2C و B2B يحتوي على فلاتر (min_price, max_price, category_id, q). قمنا بإنشاء <code>ShopFiltersDto</code> واستخدام منشئ استعلامات ديناميكي في <code>Prisma</code> لفلترة المنتجات والتقسيم لصفحات (Pagination). وأضفنا <code>@ApiPropertyOptional</code> لتظهر في Swagger.</li>
+                    <li><strong>إشعارات Firebase (FCM):</strong> قمنا بنقل ملف <code>fcm-service-account.json</code> وتفعيل <code>firebase-admin</code> وبناء <code>NotifierService</code> ذكي يقرأ لغة المستخدم (عربي/إنجليزي) من قاعدة البيانات ويرسل الإشعار المترجم المناسب.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Lesson 11 -->
+        <section id="lesson-11-deployment" class="mb-16 pt-8 border-t border-slate-200">
+            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-slate-900 pb-2 mb-6">الدرس 11: التصدير وبناء التطبيق للرفع على VPS</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6 text-right" dir="rtl">
+                <p class="text-gray-600 mb-4 text-right">
+                    بعد الانتهاء من البرمجة، حان وقت إطلاق التطبيق. في NestJS، الكود المكتوب بـ TypeScript يجب أن يُبنى (Compile) ليتحول إلى JavaScript نقي وسريع يمكن لـ Node.js تشغيله على الـ VPS.
+                </p>
+
+                <h3 class="text-xl font-bold text-slate-800 mb-4">خطوات التحضير وبناء التطبيق (Build):</h3>
+                <ol class="list-decimal list-inside space-y-4 text-gray-700">
+                    <li>
+                        <strong>توليد نسخة الإنتاج (Build):</strong>
+                        <pre><code class="language-bash">pnpm run build</code></pre>
+                        هذا الأمر سيقوم بإنشاء مجلد جديد اسمه <code>dist</code> يحتوي على الكود الجاهز للإنتاج. هذا المجلد هو كل ما تحتاجه برمجياً للتشغيل.
+                    </li>
+                    <li>
+                        <strong>تحضير ملف البيئة (.env):</strong>
+                        ملف <code>.env</code> الحالي يحتوي على روابط التطوير. عند الرفع للـ VPS، ستحتاج لنسخه وتعديله ليحتوي على رابط قاعدة بيانات الإنتاج (PostgreSQL) الخاص بالسيرفر.
+                    </li>
+                    <li>
+                        <strong>تهيئة قاعدة البيانات (Migration):</strong>
+                        على سيرفر الـ VPS، بعد ربط قاعدة البيانات، قم بتشغيل:
+                        <pre><code class="language-bash">npx prisma migrate deploy</code></pre>
+                        ثم لتوليد الـ Client الخاص بالـ VPS:
+                        <pre><code class="language-bash">npx prisma generate</code></pre>
+                    </li>
+                </ol>
+
+                <h3 class="text-xl font-bold text-slate-800 mb-4 mt-8">خطوات التشغيل على سيرفر الـ VPS:</h3>
+                <p class="text-gray-600 mb-4">
+                    بمجرد نقل الملفات (مجلد dist، ملف package.json، ومجلد prisma)، اتبع التالي على السيرفر:
+                </p>
+                <ol class="list-decimal list-inside space-y-4 text-gray-700">
+                    <li>
+                        <strong>تثبيت الحزم:</strong>
+                        <pre><code class="language-bash">pnpm install --prod</code></pre>
+                    </li>
+                    <li>
+                        <strong>التشغيل باستمرار باستخدام PM2:</strong>
+                        أفضل طريقة لتشغيل تطبيقات Node.js على السيرفرات هي استخدام مدير عمليات مثل PM2 ليضمن إعادة تشغيل السيرفر تلقائياً في حال توقفه.
+                        <pre><code class="language-bash"># تثبيت PM2 عالمياً
+npm install -g pm2
+
+# تشغيل التطبيق
+pm2 start dist/main.js --name "solarhub-api"
+
+# حفظ الإعدادات لتعمل مع إعادة تشغيل السيرفر
+pm2 save
+pm2 startup</code></pre>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        </main>
+    </div>
+
+    <!-- Initialize Code Highlighting -->
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
