@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/models/response.dart' as local;
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/company_work/data/models/company_work_model.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/models/response.dart' as local;
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/company_work/data/models/company_work_model.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class CompanyWorkRemoteDataSource {
   Future<(List<CompanyWorkModel>, int)> getPublicWorks(

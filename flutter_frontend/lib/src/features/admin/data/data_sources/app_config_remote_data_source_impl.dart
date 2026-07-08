@@ -1,8 +1,8 @@
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/admin/data/data_sources/app_config_remote_data_source.dart';
-import 'package:solar_hub/src/features/admin/domain/entities/app_config.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/admin/data/data_sources/app_config_remote_data_source.dart';
+import 'package:watt/src/features/admin/domain/entities/app_config.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 class AppConfigRemoteDataSourceImpl implements AppConfigRemoteDataSource {
   final DioService dioService;

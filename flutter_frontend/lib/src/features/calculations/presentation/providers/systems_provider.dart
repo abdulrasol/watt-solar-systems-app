@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/enums/system_status.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/enums/system_status.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/calculations/domain/entities/system_model.dart';
 
 class SystemsState {
   final List<SystemModel> savedSystems;

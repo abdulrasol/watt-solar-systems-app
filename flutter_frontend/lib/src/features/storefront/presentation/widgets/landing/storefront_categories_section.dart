@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_layout.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/landing/storefront_category_grid_card.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/landing/storefront_section_header.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_products_empty_state.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/storefront/presentation/utils/storefront_layout.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/landing/storefront_category_grid_card.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/landing/storefront_section_header.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/products/storefront_products_empty_state.dart';
 
 class StorefrontCategoriesSection extends StatelessWidget {
   final List<StorefrontCategory> categories;

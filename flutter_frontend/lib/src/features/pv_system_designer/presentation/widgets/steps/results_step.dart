@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/energy_estimate.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/financial_estimate.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/wizard_intro_card.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/inputs/section_card.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/inputs/pv_number_field.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/combined_sketch_preview.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/technical_sketch_page.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/energy_estimate.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/frame_result.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/financial_estimate.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/wizard/wizard_intro_card.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/inputs/section_card.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/inputs/pv_number_field.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/sketch/combined_sketch_preview.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/sketch/technical_sketch_page.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class ResultsStep extends ConsumerStatefulWidget {
   const ResultsStep({super.key});

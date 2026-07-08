@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/calculations/domain/entities/system_model.dart';
+import 'package:watt/src/features/calculations/presentation/providers/systems_provider.dart';
 
 class SaveToSystemDialog extends ConsumerStatefulWidget {
   const SaveToSystemDialog({super.key});

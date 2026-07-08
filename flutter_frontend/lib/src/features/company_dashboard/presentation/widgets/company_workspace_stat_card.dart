@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class CompanyWorkspaceStatCard extends StatelessWidget {
   const CompanyWorkspaceStatCard({super.key, required this.title, required this.value, required this.icon, required this.color});

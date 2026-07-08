@@ -1,8 +1,8 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/orders_buyer/data/data_sources/orders_remote_data_source.dart';
-import 'package:solar_hub/src/features/orders_buyer/domain/repositories/orders_repository.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_queries.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/orders_buyer/data/data_sources/orders_remote_data_source.dart';
+import 'package:watt/src/features/orders_buyer/domain/repositories/orders_repository.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_queries.dart';
 
 class OrdersRepositoryImpl implements OrdersRepository {
   final OrdersRemoteDataSource _remoteDataSource;

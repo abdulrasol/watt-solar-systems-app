@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/enhanced_technical_sketch_painter.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/technical_view_mode.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/technical_sketch/enhanced_technical_sketch_painter.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/technical_sketch/technical_view_mode.dart';
 
 /// Container widget for sketch views with zoom/pan functionality
 class SketchViewContainer extends StatelessWidget {

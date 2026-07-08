@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
-import 'package:solar_hub/src/features/members/domain/entities/member_role.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/members/domain/entities/company_member.dart';
+import 'package:watt/src/features/members/domain/entities/member_role.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class MemberRoleDialog extends StatefulWidget {
   final CompanyMember member;

@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
 
 const wattDrawingExtension = 'wattd';
 const wattDrawingMimeType = 'application/vnd.watt.drawing';

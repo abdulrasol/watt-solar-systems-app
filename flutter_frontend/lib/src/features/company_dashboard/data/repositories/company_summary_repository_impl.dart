@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:solar_hub/src/core/errors/failure.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/data_sources/local_datasource.dart';
-import 'package:solar_hub/src/features/company_dashboard/data/data_sources/remote_datasource.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/repositories/dashboard_repository.dart';
+import 'package:watt/src/core/errors/failure.dart';
+import 'package:watt/src/features/company_dashboard/data/data_sources/local_datasource.dart';
+import 'package:watt/src/features/company_dashboard/data/data_sources/remote_datasource.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/summary.dart';
+import 'package:watt/src/features/company_dashboard/domain/repositories/dashboard_repository.dart';
 
 class CompanySummaryRepositoryImpl implements CompanySummaryRepository {
   final RemoteDataSource remoteDataSource;

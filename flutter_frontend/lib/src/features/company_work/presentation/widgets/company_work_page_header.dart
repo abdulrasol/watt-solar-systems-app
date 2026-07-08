@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
-import 'package:solar_hub/src/shared/widgets/shared_widgets.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
+import 'package:watt/src/shared/widgets/shared_widgets.dart';
 
 /// Header shown at the top of the embedded company works list,
 /// containing the section title/subtitle and the add action.

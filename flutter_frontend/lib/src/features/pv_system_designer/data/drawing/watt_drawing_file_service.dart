@@ -7,10 +7,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/bom_item.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/row_frame_result.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/bom_item.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/frame_result.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/row_frame_result.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 
 const wattDrawingExtension = 'wattd';
 const wattDrawingMimeType = 'application/vnd.watt.drawing';

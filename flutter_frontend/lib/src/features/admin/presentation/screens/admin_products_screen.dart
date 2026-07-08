@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/admin/presentation/controllers/admin_products_controller.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/price_format_utils.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/admin/presentation/controllers/admin_products_controller.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/utils/price_format_utils.dart';
 import 'package:toastification/toastification.dart';
 
 class AdminProductsScreen extends ConsumerStatefulWidget {

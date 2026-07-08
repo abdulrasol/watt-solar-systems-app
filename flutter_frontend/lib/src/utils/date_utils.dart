@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/l10n/app_localizations.dart';
 
 class AppDateUtils {
   static String formatDateTime(DateTime date) {

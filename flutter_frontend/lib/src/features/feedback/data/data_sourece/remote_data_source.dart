@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/models/response.dart' as api;
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/feedback/domain/entities/feedback_entity.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/models/response.dart' as api;
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/feedback/domain/entities/feedback_entity.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class FeedbackRemoteDataSource {
   Future<FeedbackEntity> submitFeedback({

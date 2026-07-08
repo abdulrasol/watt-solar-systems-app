@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/settings/presentation/providers/settings_provider.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
 
 class RoleSelectionPage extends ConsumerStatefulWidget {
   const RoleSelectionPage({super.key});

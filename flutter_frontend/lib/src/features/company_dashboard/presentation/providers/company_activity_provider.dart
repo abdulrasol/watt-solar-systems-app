@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/activity_log_item.dart';
-import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
-import 'package:solar_hub/src/features/offers/presentation/providers/offers_provider.dart';
-import 'package:solar_hub/src/features/notifications/presentation/controllers/notification_history_controller.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/activity_log_item.dart';
+import 'package:watt/src/features/inventory/presentation/providers/inventory_provider.dart';
+import 'package:watt/src/features/offers/presentation/providers/offers_provider.dart';
+import 'package:watt/src/features/notifications/presentation/controllers/notification_history_controller.dart';
 
 /// IMPORTANT: [ActivityLogItem.fromJson] exists (it parses `action_type`,
 /// `entity_type`, `entity_id`, `created_at`), which looks like it was built

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/navigation/navigation_models.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/navigation/navigation_models.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 /// Mobile drawer for the company dashboard.
 ///

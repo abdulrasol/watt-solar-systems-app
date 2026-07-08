@@ -6,17 +6,17 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/auth/domain/entities/country.dart';
+import 'package:watt/src/utils/helper_methods.dart';
+import 'package:watt/src/services/toast_service.dart';
 import 'package:validatorless/validatorless.dart';
 
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user_register_model.dart';
-import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/features/auth/domain/entities/user_register_model.dart';
+import 'package:watt/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});

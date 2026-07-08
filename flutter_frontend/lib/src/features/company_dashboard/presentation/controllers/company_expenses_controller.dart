@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/shared/domain/company/company_expense.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/models/company_expense_form_model.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/repositories/company_management_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/shared/domain/company/company_expense.dart';
+import 'package:watt/src/features/company_dashboard/domain/models/company_expense_form_model.dart';
+import 'package:watt/src/features/company_dashboard/domain/repositories/company_management_repository.dart';
 
 const int _kPageSize = 12;
 

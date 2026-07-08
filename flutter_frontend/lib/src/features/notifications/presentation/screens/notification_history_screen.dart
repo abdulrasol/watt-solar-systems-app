@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/notifications/domain/entities/app_notification.dart';
-import 'package:solar_hub/src/features/notifications/domain/entities/notification_type.dart';
-import 'package:solar_hub/src/features/notifications/presentation/controllers/notification_history_controller.dart';
-import 'package:solar_hub/src/features/notifications/presentation/widgets/notification_content_widget.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/notifications/domain/entities/app_notification.dart';
+import 'package:watt/src/features/notifications/domain/entities/notification_type.dart';
+import 'package:watt/src/features/notifications/presentation/controllers/notification_history_controller.dart';
+import 'package:watt/src/features/notifications/presentation/widgets/notification_content_widget.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationHistoryScreen extends ConsumerStatefulWidget {

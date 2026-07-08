@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
 
 bool canViewStorefrontB2bDetails(AuthState authState) {
   final role = authState.company?.memberRole?.toLowerCase();

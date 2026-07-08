@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/features/services/presentation/providers/public_services_provider.dart';
-import 'package:solar_hub/src/features/services/presentation/widgets/company_type_card.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/loading_widgets.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/services/presentation/providers/public_services_provider.dart';
+import 'package:watt/src/features/services/presentation/widgets/company_type_card.dart';
 
 class ServicesExplorerScreen extends ConsumerWidget {
   final bool embedded;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
 
 /// A reusable loading indicator used inside layouts.
 class AppLoadingIndicator extends ConsumerWidget {

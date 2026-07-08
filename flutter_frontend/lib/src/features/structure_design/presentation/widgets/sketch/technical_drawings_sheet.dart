@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_structure_sketch_painter.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/technical_structure_sketch_painter.dart';
 
 /// A comprehensive technical drawings sheet for construction use
 /// Displays all views with complete dimensions that technicians need

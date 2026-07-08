@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart';
-import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_products_screen.dart';
-import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_layout.dart';
-import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_page_route.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/landing/storefront_company_grid_card.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_products_empty_state.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/storefront/presentation/providers/storefront_provider.dart';
+import 'package:watt/src/features/storefront/presentation/screens/storefront_products_screen.dart';
+import 'package:watt/src/features/storefront/presentation/utils/storefront_layout.dart';
+import 'package:watt/src/features/storefront/presentation/utils/storefront_page_route.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/landing/storefront_company_grid_card.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/products/storefront_products_empty_state.dart';
 
 class StorefrontCompaniesScreen extends ConsumerStatefulWidget {
   final StorefrontAudience audience;

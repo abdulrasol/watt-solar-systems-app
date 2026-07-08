@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/accounting/domain/entities/accounting_models.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/accounting/domain/entities/accounting_models.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 abstract class AccountingRemoteDataSource {
   Future<AccountingOverview> getOverview(int companyId);

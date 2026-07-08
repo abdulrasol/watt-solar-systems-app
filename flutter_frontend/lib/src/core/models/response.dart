@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class BaseResponse {
   dynamic body;

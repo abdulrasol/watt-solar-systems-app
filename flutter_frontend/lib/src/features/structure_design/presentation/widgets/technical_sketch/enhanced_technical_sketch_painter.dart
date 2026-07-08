@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/technical_view_mode.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/technical_sketch/technical_view_mode.dart';
 
 /// Enhanced technical sketch painter with comprehensive dimensions
 class EnhancedTechnicalSketchPainter extends CustomPainter {

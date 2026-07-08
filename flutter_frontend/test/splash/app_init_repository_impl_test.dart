@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solar_hub/src/core/errors/failure.dart';
-import 'package:solar_hub/src/features/splash/data/data_sources/app_init_local_data_source.dart';
-import 'package:solar_hub/src/features/splash/data/data_sources/app_init_remote_data_source.dart';
-import 'package:solar_hub/src/features/splash/data/repositories/app_init_repository_impl.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config_snapshot.dart';
+import 'package:watt/src/core/errors/failure.dart';
+import 'package:watt/src/features/splash/data/data_sources/app_init_local_data_source.dart';
+import 'package:watt/src/features/splash/data/data_sources/app_init_remote_data_source.dart';
+import 'package:watt/src/features/splash/data/repositories/app_init_repository_impl.dart';
+import 'package:watt/src/features/splash/domain/entities/config.dart';
+import 'package:watt/src/features/splash/domain/entities/config_snapshot.dart';
 
 void main() {
   test('refreshConfigs caches and returns fresh remote configs', () async {

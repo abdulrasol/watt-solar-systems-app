@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class WorkGallerySheet extends StatelessWidget {
   const WorkGallerySheet({

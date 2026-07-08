@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter_options.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter_options.dart';
+import 'package:watt/src/features/inventory/domain/entities/product.dart';
 
 abstract class InventoryRepository {
   Future<List<Product>> getProducts(int companyId, {required ProductsFilter filter});

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/services/push_notification_service.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/auth_response.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/services/push_notification_service.dart';
+import 'package:watt/src/features/auth/domain/entities/auth_response.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
 
 class AuthState {
   final User? user;

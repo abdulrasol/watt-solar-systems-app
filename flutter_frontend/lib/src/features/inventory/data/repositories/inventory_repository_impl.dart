@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter_options.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter_options.dart';
 
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/inventory_repository.dart';

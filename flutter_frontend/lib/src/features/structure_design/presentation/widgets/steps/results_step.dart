@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/section_card.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/providers/structure_design_controller.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/metric_row.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/offset_field.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/result_summary_card.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/stepper_tile.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/section_card.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/presentation/providers/structure_design_controller.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/metric_row.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/offset_field.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/result_summary_card.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/stepper_tile.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart';
 
-import 'package:solar_hub/src/utils/app_explanations.dart';
+import 'package:watt/src/utils/app_explanations.dart';
 
 class ResultsStep extends ConsumerWidget {
   const ResultsStep({

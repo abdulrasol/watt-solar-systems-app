@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/models/response.dart' as local;
-import 'package:solar_hub/src/core/navigation/app_navigation.dart';
-import 'package:solar_hub/src/core/services/network_status_service.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/models/response.dart' as local;
+import 'package:watt/src/core/navigation/app_navigation.dart';
+import 'package:watt/src/core/services/network_status_service.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
-import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:watt/src/services/toast_service.dart';
 
 abstract class ApiServicesInterface {
   Future get(String url);

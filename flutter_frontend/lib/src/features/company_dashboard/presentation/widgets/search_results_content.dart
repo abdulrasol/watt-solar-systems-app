@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/controllers/company_contacts_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/global_search_provider.dart';
-import 'package:solar_hub/src/features/inventory/presentation/providers/inventory_provider.dart';
-import 'package:solar_hub/src/features/offers/presentation/providers/offers_provider.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/company_dashboard/presentation/controllers/company_contacts_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/global_search_provider.dart';
+import 'package:watt/src/features/inventory/presentation/providers/inventory_provider.dart';
+import 'package:watt/src/features/offers/presentation/providers/offers_provider.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class SearchResultsContent extends ConsumerWidget {
   const SearchResultsContent({super.key});

@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/members/domain/entities/member_role.dart';
+import 'package:watt/src/features/members/domain/entities/member_role.dart';
 
 class CompanyMember {
   final int id;

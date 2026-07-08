@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/admin_module.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/features/admin/presentation/models/admin_module.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class AdminDashboardCard extends StatelessWidget {
   const AdminDashboardCard({super.key, required this.module});

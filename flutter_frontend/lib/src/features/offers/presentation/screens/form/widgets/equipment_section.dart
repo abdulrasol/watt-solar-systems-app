@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/features/offers/presentation/screens/form/widgets/form_sections.dart';
+import 'package:watt/src/features/offers/presentation/screens/form/widgets/form_sections.dart';
 
 class EquipmentSection extends StatelessWidget {
   final String title;

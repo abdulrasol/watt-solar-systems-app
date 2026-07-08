@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
 
 
 class AdminSubscriptionRequestsScreen extends StatelessWidget {

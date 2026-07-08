@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_nav_tile.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/company_nav_tile.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class CompanyNavigation extends StatelessWidget {
   const CompanyNavigation({super.key, required this.activeModule, required this.navItems, required this.compact, required this.authState});

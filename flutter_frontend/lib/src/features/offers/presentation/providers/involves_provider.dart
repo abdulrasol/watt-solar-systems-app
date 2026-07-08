@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/offers/domain/entities/involve.dart';
-import 'package:solar_hub/src/features/offers/domain/repositories/offers_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/offers/domain/entities/involve.dart';
+import 'package:watt/src/features/offers/domain/repositories/offers_repository.dart';
 
 class InvolvesState {
   final bool isLoading;

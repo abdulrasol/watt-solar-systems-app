@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
-import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:watt/src/features/settings/domain/entiteis/settings.dart';
 
 final settingsProvider = NotifierProvider<SettingsProvider, Settings>(
   SettingsProvider.new,

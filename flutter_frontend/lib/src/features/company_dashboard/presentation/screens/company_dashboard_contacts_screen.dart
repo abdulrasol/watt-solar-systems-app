@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/controllers/company_contacts_controller.dart';
-import 'package:solar_hub/src/shared/domain/company/company_contact.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/contacts/contact_card.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/forms/contact_form_sheet.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/shared/widgets/shared_widgets.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/controllers/company_contacts_controller.dart';
+import 'package:watt/src/shared/domain/company/company_contact.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/contacts/contact_card.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/forms/contact_form_sheet.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/shared/widgets/shared_widgets.dart';
 
 /// Company contacts management screen.
 class CompanyDashboardContactsScreen extends ConsumerStatefulWidget {

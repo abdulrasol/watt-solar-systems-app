@@ -1,8 +1,8 @@
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
-import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/startup_bootstrap_result.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/features/settings/domain/entiteis/settings.dart';
+import 'package:watt/src/features/splash/domain/entities/startup_bootstrap_result.dart';
 
 class PrepareStartupUseCase {
   final CasheInterface _cache;

@@ -6,12 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
-import 'package:solar_hub/src/features/admin/presentation/controllers/admin_controller.dart';
-import 'package:solar_hub/src/features/feedback/domain/entities/feedback_entity.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/core/widgets/loading_widgets.dart';
+import 'package:watt/src/features/admin/presentation/controllers/admin_controller.dart';
+import 'package:watt/src/features/feedback/domain/entities/feedback_entity.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdminFeedbacksScreen extends ConsumerStatefulWidget {

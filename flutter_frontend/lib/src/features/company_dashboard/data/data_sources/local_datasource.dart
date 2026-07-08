@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/summary.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class LocalDataSource {
   Future<CompanySummary> getCompanySummary(int id);

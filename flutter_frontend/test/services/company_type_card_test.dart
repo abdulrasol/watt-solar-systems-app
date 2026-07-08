@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/services/presentation/widgets/company_type_card.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/services/presentation/widgets/company_type_card.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 void main() {
   testWidgets('renders narrow Arabic card without flex overflow', (

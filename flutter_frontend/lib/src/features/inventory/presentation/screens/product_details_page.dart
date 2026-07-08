@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
-import 'package:solar_hub/src/utils/app_strings.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/pre_scaffold.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:watt/src/utils/app_strings.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import '../../domain/entities/product.dart';
 import '../providers/inventory_provider.dart';
 

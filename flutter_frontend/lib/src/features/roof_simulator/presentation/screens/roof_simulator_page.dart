@@ -3,17 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/visual_grid_canvas.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/simulation_time_slider.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/parameter_inputs_card.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/boundary_walls_card.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/metrics_panel.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
+import 'package:watt/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart';
+import 'package:watt/src/features/roof_simulator/presentation/widgets/visual_grid_canvas.dart';
+import 'package:watt/src/features/roof_simulator/presentation/widgets/simulation_time_slider.dart';
+import 'package:watt/src/features/roof_simulator/presentation/widgets/parameter_inputs_card.dart';
+import 'package:watt/src/features/roof_simulator/presentation/widgets/boundary_walls_card.dart';
+import 'package:watt/src/features/roof_simulator/presentation/widgets/metrics_panel.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/domain/entities/panel_spec.dart';
 
 @Deprecated('Use PvSystemDesignerScreen instead. This feature has been merged into the unified PV System Designer.')
 class RoofSimulatorPage extends ConsumerStatefulWidget {

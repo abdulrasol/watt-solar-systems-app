@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/notifications/domain/entities/app_notification.dart';
-import 'package:solar_hub/src/features/notifications/domain/repositories/notification_history_repository.dart';
-import 'package:solar_hub/src/core/services/push_notification_service.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/notifications/domain/entities/app_notification.dart';
+import 'package:watt/src/features/notifications/domain/repositories/notification_history_repository.dart';
+import 'package:watt/src/core/services/push_notification_service.dart';
 
 const _notificationHistoryUnset = Object();
 

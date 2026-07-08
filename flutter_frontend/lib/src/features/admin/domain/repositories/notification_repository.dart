@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:solar_hub/src/core/errors/failure.dart';
+import 'package:watt/src/core/errors/failure.dart';
 
 import '../entities/notification.dart';
 

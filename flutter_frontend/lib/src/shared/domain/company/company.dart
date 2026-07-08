@@ -1,14 +1,14 @@
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/shared/domain/company/company_category.dart';
-import 'package:solar_hub/src/shared/domain/company/company_contact.dart';
-import 'package:solar_hub/src/shared/domain/company/company_currency.dart';
-import 'package:solar_hub/src/shared/domain/company/company_delivery_option.dart';
-import 'package:solar_hub/src/shared/domain/company/company_permissions.dart';
-import 'package:solar_hub/src/shared/domain/company/company_public_service.dart';
-import 'package:solar_hub/src/shared/domain/company/company_stats.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/shared/domain/company/company_category.dart';
+import 'package:watt/src/shared/domain/company/company_contact.dart';
+import 'package:watt/src/shared/domain/company/company_currency.dart';
+import 'package:watt/src/shared/domain/company/company_delivery_option.dart';
+import 'package:watt/src/shared/domain/company/company_permissions.dart';
+import 'package:watt/src/shared/domain/company/company_public_service.dart';
+import 'package:watt/src/shared/domain/company/company_stats.dart';
+import 'package:watt/src/shared/domain/company/company_type.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/service.dart';
 
 class Company {
   final int id;

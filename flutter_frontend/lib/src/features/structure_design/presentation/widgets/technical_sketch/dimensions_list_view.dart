@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
 
 /// Widget displaying a comprehensive list of all dimensions
 class DimensionsListView extends StatelessWidget {

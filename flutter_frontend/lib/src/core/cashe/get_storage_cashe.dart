@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
-import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/features/settings/domain/entiteis/settings.dart';
 
 class GetStorageCashe implements CasheInterface {
   late final GetStorage _storage;

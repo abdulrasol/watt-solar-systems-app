@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class CompanyNavTile extends StatelessWidget {
   const CompanyNavTile({super.key, required this.item, required this.active, required this.compact, required this.isMobile, required this.isTablet});

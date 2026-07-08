@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
-import 'package:solar_hub/src/utils/app_explanations.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/home_appliance_row.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/calculations/presentation/providers/calculator_controller.dart';
+import 'package:watt/src/utils/app_explanations.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/explanation_dialog.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/home_appliance_row.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class SystemAppliancesTab extends StatelessWidget {
   const SystemAppliancesTab({super.key, required this.controller});

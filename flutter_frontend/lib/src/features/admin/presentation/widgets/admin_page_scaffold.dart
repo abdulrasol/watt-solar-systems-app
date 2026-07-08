@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_registry.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_section.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_content_layout.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_registry.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_section.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_content_layout.dart';
 
 class AdminPageScaffold extends StatelessWidget {
   const AdminPageScaffold({super.key, required this.child, this.actions = const []});

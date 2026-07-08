@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/home/presentation/providers/home_page_provider.dart';
-import 'package:solar_hub/src/features/home/presentation/providers/user_dashboard_provider.dart';
-import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/home/presentation/providers/home_page_provider.dart';
+import 'package:watt/src/features/home/presentation/providers/user_dashboard_provider.dart';
+import 'package:watt/src/shared/presntations/providers/is_enabled_providers.dart';
 
 class UserDashboardActivitySection extends ConsumerWidget {
   const UserDashboardActivitySection({super.key, required this.storeEnabled, required this.notificationsEnabled, required this.authEnabled});

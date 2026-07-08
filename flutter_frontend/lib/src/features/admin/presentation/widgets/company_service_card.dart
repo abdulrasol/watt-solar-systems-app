@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/status_badge.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/features/admin/domain/models/company_service.dart';
+import 'package:watt/src/features/admin/presentation/widgets/status_badge.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class CompanyServiceCard extends StatelessWidget {
   const CompanyServiceCard({super.key, required this.service, this.onToggle});

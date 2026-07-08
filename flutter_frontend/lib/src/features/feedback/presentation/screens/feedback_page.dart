@@ -4,9 +4,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/feedback/presentation/controllers/feedback_controller.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/feedback/presentation/controllers/feedback_controller.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:toastification/toastification.dart';
 
 class FeedbackPage extends ConsumerStatefulWidget {

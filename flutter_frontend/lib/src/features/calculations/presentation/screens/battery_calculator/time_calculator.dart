@@ -3,15 +3,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
-//import 'package:solar_hub/controllers/data_controller.dart';
+import 'package:watt/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
+//import 'package:watt/controllers/data_controller.dart';
 
-import 'package:solar_hub/src/utils/app_constants.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/input_text.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/text_helper_card.dart';
+import 'package:watt/src/utils/app_constants.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/input_text.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/text_helper_card.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/l10n/app_localizations.dart';
 
 //final DataController dataContrller = Get.find();
 

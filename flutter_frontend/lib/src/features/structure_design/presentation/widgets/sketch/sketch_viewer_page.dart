@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/metric_row.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/metric_row.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart';
 
 class StructureSketchViewerPage extends StatelessWidget {
   const StructureSketchViewerPage({

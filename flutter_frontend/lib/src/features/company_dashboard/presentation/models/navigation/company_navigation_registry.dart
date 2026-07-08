@@ -1,9 +1,9 @@
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/navigation/company_navigation_item.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/navigation/company_navigation_section.dart';
-import 'package:solar_hub/src/core/flags/feature_flags.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/navigation/company_navigation_item.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/navigation/company_navigation_section.dart';
+import 'package:watt/src/core/flags/feature_flags.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Central registry for company dashboard navigation sections.

@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
-import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/calculations/presentation/providers/systems_provider.dart';
+import 'package:watt/src/features/settings/domain/entiteis/settings.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
 
 void main() {
   late _FakeCache cache;

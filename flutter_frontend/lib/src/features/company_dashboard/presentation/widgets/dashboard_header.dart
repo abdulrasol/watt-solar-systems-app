@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/core/layout/app_breakpoints.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/global_search_provider.dart';
-import 'package:solar_hub/src/features/notifications/presentation/controllers/notification_history_controller.dart';
-import 'package:solar_hub/src/features/notifications/presentation/widgets/notification_center_bottom_sheet.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/quick_create_actions.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/global_search_provider.dart';
+import 'package:watt/src/features/notifications/presentation/controllers/notification_history_controller.dart';
+import 'package:watt/src/features/notifications/presentation/widgets/notification_center_bottom_sheet.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/quick_create_actions.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 
 class DashboardHeader extends ConsumerWidget {
   final String title;

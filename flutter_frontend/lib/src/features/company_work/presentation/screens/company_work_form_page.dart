@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
-import 'package:solar_hub/src/features/company_work/presentation/providers/company_work_provider.dart';
-import 'package:solar_hub/src/features/company_work/presentation/widgets/company_work_form_error_banner.dart';
-import 'package:solar_hub/src/features/company_work/presentation/widgets/company_work_image_picker.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/shared/widgets/shared_widgets.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/features/company_work/presentation/providers/company_work_provider.dart';
+import 'package:watt/src/features/company_work/presentation/widgets/company_work_form_error_banner.dart';
+import 'package:watt/src/features/company_work/presentation/widgets/company_work_image_picker.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/shared/widgets/shared_widgets.dart';
 import 'package:validatorless/validatorless.dart';
 
 /// Create / edit company work form.

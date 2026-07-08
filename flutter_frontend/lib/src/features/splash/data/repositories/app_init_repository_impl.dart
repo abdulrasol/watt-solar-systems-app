@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/errors/failure.dart';
-import 'package:solar_hub/src/features/splash/data/data_sources/app_init_remote_data_source.dart';
-import 'package:solar_hub/src/features/splash/data/data_sources/app_init_local_data_source.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config_snapshot.dart';
-import 'package:solar_hub/src/features/splash/domain/repositories/app_init_repository.dart';
+import 'package:watt/src/core/errors/failure.dart';
+import 'package:watt/src/features/splash/data/data_sources/app_init_remote_data_source.dart';
+import 'package:watt/src/features/splash/data/data_sources/app_init_local_data_source.dart';
+import 'package:watt/src/features/splash/domain/entities/config_snapshot.dart';
+import 'package:watt/src/features/splash/domain/repositories/app_init_repository.dart';
 
 class AppInitRepositoryImpl implements AppInitRepository {
   final AppInitRemoteDataSource remoteDataSource;

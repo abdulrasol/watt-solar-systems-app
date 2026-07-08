@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
-import 'package:solar_hub/src/features/settings/domain/entiteis/settings.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/features/settings/domain/entiteis/settings.dart';
 
 const legacyHttpCachePrefix = '_http_cache_';
 

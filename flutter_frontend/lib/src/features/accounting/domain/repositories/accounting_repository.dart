@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/accounting/domain/entities/accounting_models.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/accounting/domain/entities/accounting_models.dart';
 
 abstract class AccountingRepository {
   Future<AccountingOverview> getOverview(int companyId);

@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/offers/presentation/screens/involves_catalog_screen.dart';
-import 'package:solar_hub/src/features/offers/presentation/screens/offer_details_screen.dart';
-import 'package:solar_hub/src/utils/app_enums.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/offers/presentation/screens/involves_catalog_screen.dart';
+import 'package:watt/src/features/offers/presentation/screens/offer_details_screen.dart';
+import 'package:watt/src/utils/app_enums.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import '../providers/offers_provider.dart';
 import '../widgets/cards/request_card.dart';
 import '../widgets/cards/offer_card.dart';
-import 'package:solar_hub/src/core/widgets/branded_empty_state.dart';
-import 'package:solar_hub/src/features/offers/domain/entities/solar_request.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/core/widgets/branded_empty_state.dart';
+import 'package:watt/src/features/offers/domain/entities/solar_request.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
 import '../widgets/bottomsheets/request_detail_bottom_sheet.dart';
 
 class CompanyOffersHub extends ConsumerStatefulWidget {

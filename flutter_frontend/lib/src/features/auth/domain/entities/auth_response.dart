@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
 
 class AuthResponse extends BaseResponse {
   final String? token;

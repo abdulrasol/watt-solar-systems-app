@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/services/network_status_service.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/services/network_status_service.dart';
 
 class OfflineStatusBanner extends StatelessWidget {
   const OfflineStatusBanner({super.key, this.padding, this.message});

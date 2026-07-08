@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/admin/data/data_sources/admin_remote_data_source.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/admin/data/data_sources/admin_remote_data_source.dart';
+import 'package:watt/src/features/calculations/domain/entities/system_model.dart';
 
 class AdminSystemsState {
   final bool isLoading;

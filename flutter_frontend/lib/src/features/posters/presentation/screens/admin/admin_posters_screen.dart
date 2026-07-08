@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/branded_empty_state.dart';
-import 'package:solar_hub/src/features/posters/domain/entities/poster_entity.dart';
-import 'package:solar_hub/src/features/posters/presentation/controllers/admin_posters_provider.dart';
-import 'package:solar_hub/src/features/posters/presentation/widgets/poster_status_badge.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/branded_empty_state.dart';
+import 'package:watt/src/features/posters/domain/entities/poster_entity.dart';
+import 'package:watt/src/features/posters/presentation/controllers/admin_posters_provider.dart';
+import 'package:watt/src/features/posters/presentation/widgets/poster_status_badge.dart';
 
 class AdminPostersScreen extends ConsumerStatefulWidget {
   const AdminPostersScreen({super.key});

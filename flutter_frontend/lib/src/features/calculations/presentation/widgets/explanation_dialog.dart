@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/utils/app_explanations.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/utils/app_explanations.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ExplanationDialog extends StatefulWidget {

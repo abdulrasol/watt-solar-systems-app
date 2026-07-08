@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart' show FutureProvider;
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/accounting/domain/entities/accounting_models.dart';
-import 'package:solar_hub/src/features/accounting/domain/repositories/accounting_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/accounting/domain/entities/accounting_models.dart';
+import 'package:watt/src/features/accounting/domain/repositories/accounting_repository.dart';
 
 class AccountingDashboardState {
   final bool isLoading;

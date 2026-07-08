@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/members/domain/entities/member_invite_result.dart';
+import 'package:watt/src/features/members/domain/entities/member_invite_result.dart';
 
 class MemberInviteResultModel extends MemberInviteResult {
   const MemberInviteResultModel({

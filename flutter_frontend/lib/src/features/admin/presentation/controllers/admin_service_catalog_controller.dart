@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
-import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/admin/domain/models/service_catalog_item.dart';
+import 'package:watt/src/features/admin/domain/repositories/admin_repository.dart';
 
 class AdminServiceCatalogState {
   final bool isLoading;

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/solar_irradiance_data.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/solar_irradiance_data.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 /// Fetches real historical solar-irradiance and temperature climate data
 /// for a site from Open-Meteo's free, no-API-key Historical Weather

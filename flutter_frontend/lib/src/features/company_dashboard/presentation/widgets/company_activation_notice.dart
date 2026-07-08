@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_subscription_plan.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/models/company_subscription_request_form_model.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/controllers/company_activation_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/utils/app_constants.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/company_subscription_plan.dart';
+import 'package:watt/src/features/company_dashboard/domain/models/company_subscription_request_form_model.dart';
+import 'package:watt/src/features/company_dashboard/presentation/controllers/company_activation_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/utils/app_constants.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CompanyActivationNotice extends ConsumerStatefulWidget {

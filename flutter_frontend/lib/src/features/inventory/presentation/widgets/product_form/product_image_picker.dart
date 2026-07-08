@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/inventory/presentation/providers/product_form_provider.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/inventory/presentation/providers/product_form_provider.dart';
 
 class ProductImagePicker extends ConsumerWidget {
   const ProductImagePicker({super.key});

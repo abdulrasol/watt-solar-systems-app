@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class StepIndicator extends StatelessWidget {
   const StepIndicator({super.key, required this.currentStep, required this.totalSteps, required this.stepLabels});

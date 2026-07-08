@@ -2,13 +2,13 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:solar_hub/src/features/accounting/domain/entities/accounting_models.dart';
-import 'package:solar_hub/src/utils/price_format_utils.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/energy_estimate.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/financial_estimate.dart';
+import 'package:watt/src/features/accounting/domain/entities/accounting_models.dart';
+import 'package:watt/src/utils/price_format_utils.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/frame_result.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/energy_estimate.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/financial_estimate.dart';
 
 class PdfService {
   Future<Uint8List> generateInvoice({

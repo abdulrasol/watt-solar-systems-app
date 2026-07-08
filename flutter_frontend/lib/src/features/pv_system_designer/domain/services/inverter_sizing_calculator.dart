@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
 
 /// Validates a DC panel array against an inverter's MPPT voltage window and
 /// max input current, and estimates a sensible series/parallel string

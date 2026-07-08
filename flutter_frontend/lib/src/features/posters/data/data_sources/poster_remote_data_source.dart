@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/models/response.dart' as api;
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/posters/data/models/poster_model.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
+import 'package:watt/src/core/models/response.dart' as api;
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/posters/data/models/poster_model.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 class PosterRemoteDataSource {
   final DioService _dio;

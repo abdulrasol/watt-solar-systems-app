@@ -3,16 +3,16 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/input_text.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/save_to_system_dialog.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/text_helper_card.dart';
-import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
-import 'package:solar_hub/src/utils/app_constants.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/systems_provider.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/system_model.dart';
+import 'package:watt/src/features/calculations/domain/usecases/home_solar_system_calculator.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/input_text.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/save_to_system_dialog.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/text_helper_card.dart';
+import 'package:watt/src/shared/presntations/providers/is_enabled_providers.dart';
+import 'package:watt/src/utils/app_constants.dart';
+import 'package:watt/src/features/calculations/presentation/providers/systems_provider.dart';
+import 'package:watt/src/features/calculations/domain/entities/system_model.dart';
 import 'package:validatorless/validatorless.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/l10n/app_localizations.dart';
 
 class CountCalculator extends ConsumerStatefulWidget {
   const CountCalculator({super.key});

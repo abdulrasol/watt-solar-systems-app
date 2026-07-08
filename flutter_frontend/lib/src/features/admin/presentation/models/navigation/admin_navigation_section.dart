@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_item.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_item.dart';
 
 class AdminNavigationSection {
   const AdminNavigationSection({

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/bom_table.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/geometry_card.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/summary_card.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/results/row_details_card.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/sketch_card.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/bom_table.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/geometry_card.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/summary_card.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/results/row_details_card.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/sketch_card.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/structure_sketch_painter.dart';
 
 /// Main results view widget that combines all result components
 class StructureResultsView extends StatelessWidget {

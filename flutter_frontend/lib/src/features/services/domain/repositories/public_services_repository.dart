@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_query.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_result.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_query.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_result.dart';
 
 abstract class PublicServicesRepository {
   Future<List<ServiceType>> getTypes({bool forceRefresh = false});

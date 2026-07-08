@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/services/network_status_service.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_query.dart';
-import 'package:solar_hub/src/features/services/domain/repositories/public_services_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/services/network_status_service.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_query.dart';
+import 'package:watt/src/features/services/domain/repositories/public_services_repository.dart';
 import 'package:equatable/equatable.dart';
 
 final publicServiceTypesProvider = FutureProvider<List<ServiceType>>((

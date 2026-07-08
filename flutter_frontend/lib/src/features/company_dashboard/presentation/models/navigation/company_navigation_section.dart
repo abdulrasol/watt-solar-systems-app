@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/navigation/company_navigation_item.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/navigation/company_navigation_item.dart';
 
 /// A top-level navigation section for the company dashboard.
 ///

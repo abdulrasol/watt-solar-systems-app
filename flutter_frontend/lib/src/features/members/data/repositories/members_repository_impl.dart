@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/features/members/data/data_sources/members_remote_data_source.dart';
-import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
-import 'package:solar_hub/src/features/members/domain/entities/member_invite_result.dart';
-import 'package:solar_hub/src/features/members/domain/repositories/members_repository.dart';
+import 'package:watt/src/features/members/data/data_sources/members_remote_data_source.dart';
+import 'package:watt/src/features/members/domain/entities/company_member.dart';
+import 'package:watt/src/features/members/domain/entities/member_invite_result.dart';
+import 'package:watt/src/features/members/domain/repositories/members_repository.dart';
 
 class MembersRepositoryImpl implements MembersRepository {
   final MembersRemoteDataSource remoteDataSource;

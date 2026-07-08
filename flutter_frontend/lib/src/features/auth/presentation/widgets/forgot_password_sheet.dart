@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:validatorless/validatorless.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:watt/src/services/toast_service.dart';
 
 class ForgotPasswordSheet extends StatefulWidget {
   const ForgotPasswordSheet({super.key});

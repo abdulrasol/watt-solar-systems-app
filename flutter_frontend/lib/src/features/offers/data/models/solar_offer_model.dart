@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/features/offers/data/models/involve_model.dart';
-import 'package:solar_hub/src/features/offers/domain/entities/involve.dart';
-import 'package:solar_hub/src/utils/app_enums.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/offers/data/models/involve_model.dart';
+import 'package:watt/src/features/offers/domain/entities/involve.dart';
+import 'package:watt/src/utils/app_enums.dart';
 import '../../domain/entities/solar_offer.dart';
 
 class SolarOfferModel extends SolarOffer {

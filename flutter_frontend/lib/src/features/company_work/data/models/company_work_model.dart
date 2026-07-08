@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
 
 class CompanyWorkImageModel extends CompanyWorkImage {
   const CompanyWorkImageModel({

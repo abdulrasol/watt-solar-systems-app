@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/calculated_system.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
-import 'package:solar_hub/src/features/calculations/presentation/screens/system_calculator_wizard.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/calculations/domain/entities/calculated_system.dart';
+import 'package:watt/src/features/calculations/presentation/providers/calculator_controller.dart';
+import 'package:watt/src/features/calculations/presentation/screens/system_calculator_wizard.dart';
 import 'package:intl/intl.dart';
 
 class CalculatedSystemsPage extends ConsumerStatefulWidget {

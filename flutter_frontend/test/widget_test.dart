@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/calculated_system.dart';
+import 'package:watt/src/features/calculations/domain/entities/calculated_system.dart';
 
 void main() {
   test('parseCalculatedSystems ignores malformed cache entries', () {

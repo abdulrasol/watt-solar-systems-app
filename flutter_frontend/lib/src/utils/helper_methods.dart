@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show debugPrint, debugPrintStack, kDebugMode;
-import 'package:solar_hub/src/features/splash/presentation/providers/config_provider.dart';
-import 'package:solar_hub/src/core/flags/feature_flags.dart';
+import 'package:watt/src/features/splash/presentation/providers/config_provider.dart';
+import 'package:watt/src/core/flags/feature_flags.dart';
 void dPrint(dynamic message, {String tag = 'debbuging', StackTrace? stackTrace}) {
   if (!kDebugMode) {
     return;

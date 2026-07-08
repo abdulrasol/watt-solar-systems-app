@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/sketch_dimensions.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/frame_result.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/sketch/sketch_dimensions.dart';
 
 enum SketchViewMode { top, side, front, isometric, all }
 

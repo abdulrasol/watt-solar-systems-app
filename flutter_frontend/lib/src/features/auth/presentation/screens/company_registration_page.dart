@@ -7,16 +7,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/company_register_model.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
-import 'package:solar_hub/src/features/auth/domain/repositories/auth_repository.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/features/auth/domain/entities/company_register_model.dart';
+import 'package:watt/src/shared/domain/company/company_type.dart';
+import 'package:watt/src/features/auth/domain/entities/country.dart';
+import 'package:watt/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/services/toast_service.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CompanyRegistrationPage extends ConsumerStatefulWidget {

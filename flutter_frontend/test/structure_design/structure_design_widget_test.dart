@@ -9,11 +9,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:geolocator/geolocator.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/calculations/presentation/screens/calculator_landing_page.dart';
-import 'package:solar_hub/src/features/structure_design/data/location_service.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/providers/structure_design_controller.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/screens/structure_design_screen.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/calculations/presentation/screens/calculator_landing_page.dart';
+import 'package:watt/src/features/structure_design/data/location_service.dart';
+import 'package:watt/src/features/structure_design/presentation/providers/structure_design_controller.dart';
+import 'package:watt/src/features/structure_design/presentation/screens/structure_design_screen.dart';
 
 class _FakeLocationService implements LocationService {
   _FakeLocationService({this.error});

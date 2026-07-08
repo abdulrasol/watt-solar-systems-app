@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
+import 'package:watt/src/features/structure_design/domain/entities/panel_spec.dart';
 
 enum MountType { ground, flatRoof, pitchedRoof, custom }
 

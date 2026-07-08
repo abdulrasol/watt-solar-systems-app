@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/features/structure_design/domain/entities/bom_item.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/row_frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/domain/entities/bom_item.dart';
+import 'package:watt/src/features/structure_design/domain/entities/panel_spec.dart';
+import 'package:watt/src/features/structure_design/domain/entities/row_frame_result.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
 
 class FrameResult {
   const FrameResult({

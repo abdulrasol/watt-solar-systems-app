@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/errors/exceptions.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config_snapshot.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/errors/exceptions.dart';
+import 'package:watt/src/features/splash/domain/entities/config.dart';
+import 'package:watt/src/features/splash/domain/entities/config_snapshot.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class AppInitLocalDataSource {
   Future<ConfigSnapshot> getCachedConfigs();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/l10n/app_localizations.dart';
 
 class StorefrontSortPicker extends StatelessWidget {
   final String ordering;

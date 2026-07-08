@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:solar_hub/src/features/admin/domain/entities/app_config.dart';
+import 'package:watt/src/features/admin/domain/entities/app_config.dart';
 
 abstract class AppConfigRepository {
   Future<Either<Exception, List<AppConfig>>> getAllConfigs();

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/wizard_bottom_bar.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/wizard/step_indicator.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/site_setup_step.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/roof_config_step.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/panel_placement_step.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/shadows_obstacles_step.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/structure_design_step.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/results_step.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/steps/export_step.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/wizard/wizard_bottom_bar.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/wizard/step_indicator.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/steps/site_setup_step.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/steps/roof_config_step.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/steps/panel_placement_step.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/steps/shadows_obstacles_step.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/steps/structure_design_step.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/steps/results_step.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/steps/export_step.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/services/toast_service.dart';
 
 class PvSystemDesignerScreen extends ConsumerStatefulWidget {
   const PvSystemDesignerScreen({super.key});

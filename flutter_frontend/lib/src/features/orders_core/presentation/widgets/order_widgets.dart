@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class ResponsiveContent extends StatelessWidget {
   final Widget child;

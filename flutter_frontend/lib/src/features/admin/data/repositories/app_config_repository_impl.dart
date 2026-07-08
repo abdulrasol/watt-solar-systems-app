@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:solar_hub/src/features/admin/data/data_sources/app_config_remote_data_source.dart';
-import 'package:solar_hub/src/features/admin/domain/entities/app_config.dart';
-import 'package:solar_hub/src/features/admin/domain/repositories/app_config_repository.dart';
+import 'package:watt/src/features/admin/data/data_sources/app_config_remote_data_source.dart';
+import 'package:watt/src/features/admin/domain/entities/app_config.dart';
+import 'package:watt/src/features/admin/domain/repositories/app_config_repository.dart';
 
 class AppConfigRepositoryImpl implements AppConfigRepository {
   final AppConfigRemoteDataSource remoteDataSource;

@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
+import 'package:watt/src/features/auth/domain/entities/country.dart';
 
 class City {
   final int id;

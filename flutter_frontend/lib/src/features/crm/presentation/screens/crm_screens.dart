@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart';
-import 'package:solar_hub/src/features/crm/presentation/providers/crm_providers.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
-import 'package:solar_hub/src/features/orders_core/presentation/widgets/order_widgets.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart';
+import 'package:watt/src/features/crm/presentation/providers/crm_providers.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/features/orders_core/presentation/widgets/order_widgets.dart';
 
 class CompanyCustomersScreen extends ConsumerWidget {
   final bool embedded;

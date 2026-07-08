@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
-import 'package:solar_hub/src/features/orders_core/presentation/widgets/order_widgets.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/features/orders_core/presentation/widgets/order_widgets.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class OrderCheckoutResultScreen extends StatelessWidget {
   final OrderRecord order;

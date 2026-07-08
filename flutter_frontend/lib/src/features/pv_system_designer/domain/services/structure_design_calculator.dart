@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/bom_item.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/row_frame_result.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/bom_item.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/frame_result.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/row_frame_result.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
 
 class StructureDesignCalculator {
   static const double defaultSupportSpacingMeters = 1.6;

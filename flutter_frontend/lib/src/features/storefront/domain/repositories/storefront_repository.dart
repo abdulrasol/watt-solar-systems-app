@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
 
 abstract class StorefrontRepository {
   Future<StorefrontMeta> getMeta();

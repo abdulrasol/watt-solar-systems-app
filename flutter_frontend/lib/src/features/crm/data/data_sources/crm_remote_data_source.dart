@@ -1,8 +1,8 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/crm/domain/entities/crm_models.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/crm/domain/entities/crm_models.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 abstract class CrmRemoteDataSource {
   Future<PaginatedItemsResponse<CustomerRecord>> listCustomers(

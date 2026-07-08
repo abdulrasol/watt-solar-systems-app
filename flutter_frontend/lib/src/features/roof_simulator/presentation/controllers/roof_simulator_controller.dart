@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:solar_hub/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
+import 'package:watt/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
 
 class RoofSimulatorController extends Notifier<RoofSimulatorState> {
   @override

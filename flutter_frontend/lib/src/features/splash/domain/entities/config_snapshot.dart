@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/splash/domain/entities/config.dart';
+import 'package:watt/src/features/splash/domain/entities/config.dart';
 
 class ConfigSnapshot {
   final List<Config> configs;

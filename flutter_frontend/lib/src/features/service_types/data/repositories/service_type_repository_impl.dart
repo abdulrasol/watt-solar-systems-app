@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/features/service_types/data/data_sources/service_type_remote_data_source.dart';
-import 'package:solar_hub/src/features/service_types/domain/models/service_type_form_payload.dart';
-import 'package:solar_hub/src/features/service_types/domain/repositories/service_type_repository.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/service_types/data/data_sources/service_type_remote_data_source.dart';
+import 'package:watt/src/features/service_types/domain/models/service_type_form_payload.dart';
+import 'package:watt/src/features/service_types/domain/repositories/service_type_repository.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
 
 class ServiceTypeRepositoryImpl implements ServiceTypeRepository {
   final ServiceTypeRemoteDataSource _remoteDataSource;

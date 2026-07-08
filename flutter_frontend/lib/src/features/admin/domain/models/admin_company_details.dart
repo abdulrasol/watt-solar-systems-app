@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/admin/domain/models/company_service.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
 
 class AdminCompanyDetails {
   final Company company;

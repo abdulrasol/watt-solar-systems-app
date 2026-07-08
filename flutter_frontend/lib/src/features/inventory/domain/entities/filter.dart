@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/utils/app_ints.dart';
+import 'package:watt/src/utils/app_ints.dart';
 
 class ProductsFilter {
   final String? status;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/feedback/domain/repositories/feedback_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/feedback/domain/repositories/feedback_repository.dart';
 import 'package:toastification/toastification.dart';
 
 class ToastService {

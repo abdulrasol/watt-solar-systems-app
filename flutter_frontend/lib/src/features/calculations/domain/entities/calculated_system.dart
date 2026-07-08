@@ -1,6 +1,6 @@
-import 'package:solar_hub/src/features/calculations/domain/entities/appliance_entity.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
-import 'package:solar_hub/src/utils/app_enums.dart';
+import 'package:watt/src/features/calculations/domain/entities/appliance_entity.dart';
+import 'package:watt/src/features/calculations/presentation/providers/calculator_controller.dart';
+import 'package:watt/src/utils/app_enums.dart';
 
 class CalculatedSystem {
   final String id;

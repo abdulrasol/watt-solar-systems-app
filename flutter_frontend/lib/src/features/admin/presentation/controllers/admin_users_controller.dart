@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
-import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/admin/domain/models/admin_user.dart';
+import 'package:watt/src/features/admin/domain/repositories/admin_repository.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 class AdminUsersState {
   final bool isLoading;

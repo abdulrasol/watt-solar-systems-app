@@ -1,7 +1,7 @@
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_item.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_section.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_item.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_section.dart';
 
 class AdminNavigationRegistry {
   const AdminNavigationRegistry._();

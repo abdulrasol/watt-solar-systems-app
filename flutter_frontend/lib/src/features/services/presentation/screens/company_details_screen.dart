@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
-import 'package:solar_hub/src/features/services/presentation/providers/public_services_provider.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
+import 'package:watt/src/core/widgets/loading_widgets.dart';
+import 'package:watt/src/features/services/presentation/providers/public_services_provider.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/storefront/presentation/providers/storefront_provider.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
 import '../widgets/company_details/hero_card.dart';
 import '../widgets/company_details/mode_selector.dart';
 import '../widgets/company_details/mode_selector_delegate.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/l10n/app_localizations.dart';
 
 class ProductInventoryForm extends ConsumerWidget {
   final TextEditingController stockCtrl;

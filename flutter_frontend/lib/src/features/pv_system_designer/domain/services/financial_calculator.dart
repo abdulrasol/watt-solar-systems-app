@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/financial_estimate.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/financial_estimate.dart';
 
 /// Simple payback/ROI estimate for a designed system. Deliberately kept to
 /// the handful of inputs a homeowner actually has at design time (cost,

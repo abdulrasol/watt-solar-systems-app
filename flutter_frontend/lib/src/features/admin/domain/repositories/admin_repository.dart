@@ -1,14 +1,14 @@
 
-import 'package:solar_hub/src/features/admin/domain/models/admin_city.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_company_details.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_country.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_currency.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_global_category.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_subscription_plan.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_user.dart';
-import 'package:solar_hub/src/features/admin/domain/models/company_service.dart';
-import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/admin/domain/models/admin_city.dart';
+import 'package:watt/src/features/admin/domain/models/admin_company_details.dart';
+import 'package:watt/src/features/admin/domain/models/admin_country.dart';
+import 'package:watt/src/features/admin/domain/models/admin_currency.dart';
+import 'package:watt/src/features/admin/domain/models/admin_global_category.dart';
+import 'package:watt/src/features/admin/domain/models/admin_subscription_plan.dart';
+import 'package:watt/src/features/admin/domain/models/admin_user.dart';
+import 'package:watt/src/features/admin/domain/models/company_service.dart';
+import 'package:watt/src/features/admin/domain/models/service_catalog_item.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
 
 abstract class AdminRepository {
   Future<List<Company>> listCompanies({String? status, int page = 1, int pageSize = 12});

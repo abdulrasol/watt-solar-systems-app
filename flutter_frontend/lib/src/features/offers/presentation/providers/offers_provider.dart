@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:watt/src/core/di/get_it.dart';
 import '../../domain/entities/solar_offer.dart';
 import '../../domain/entities/solar_request.dart';
 import '../../domain/entities/offers_filter.dart';
 import '../../domain/repositories/offers_repository.dart';
-import 'package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart';
-import 'package:solar_hub/src/features/crm/domain/entities/crm_models.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/features/crm/domain/repositories/crm_repository.dart';
+import 'package:watt/src/features/crm/domain/entities/crm_models.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 class OffersState {
   final bool isLoading;

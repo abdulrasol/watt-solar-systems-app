@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
-import 'package:solar_hub/src/features/members/domain/entities/member_role.dart';
-import 'package:solar_hub/src/features/members/presentation/widgets/member_role_dialog.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/members/domain/entities/company_member.dart';
+import 'package:watt/src/features/members/domain/entities/member_role.dart';
+import 'package:watt/src/features/members/presentation/widgets/member_role_dialog.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class MemberCard extends StatelessWidget {
   const MemberCard({super.key, required this.member, required this.canRemove, required this.isRemoving, required this.onRemove, this.onRoleUpdate});

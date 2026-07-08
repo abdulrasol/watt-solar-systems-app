@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
 
 class CompanyHeroCard extends StatelessWidget {
   final Company company;

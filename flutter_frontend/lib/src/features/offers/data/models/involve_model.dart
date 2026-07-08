@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/offers/domain/entities/involve.dart';
+import 'package:watt/src/features/offers/domain/entities/involve.dart';
 
 class InvolveModel extends Involve {
   InvolveModel({

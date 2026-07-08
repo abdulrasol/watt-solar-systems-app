@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
 
 class CompanyOrderPermissions {
   final bool canChangeOrderStatus;

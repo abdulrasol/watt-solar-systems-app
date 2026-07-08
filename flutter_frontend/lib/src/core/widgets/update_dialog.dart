@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/services/update_checker_service.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/services/update_checker_service.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Dialog to notify user about available update

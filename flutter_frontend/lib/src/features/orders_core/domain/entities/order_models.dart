@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_cart.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_cart.dart';
 
 enum OrderAudience { b2c, b2b }
 

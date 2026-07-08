@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class QuickAction {
   final IconData icon;

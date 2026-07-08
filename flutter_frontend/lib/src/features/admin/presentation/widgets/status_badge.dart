@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/status_helper.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/features/admin/presentation/widgets/status_helper.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 /// Reusable status badge widget
 class StatusBadge extends StatelessWidget {

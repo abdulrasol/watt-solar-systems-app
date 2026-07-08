@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/company_system.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/repositories/company_management_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/company_system.dart';
+import 'package:watt/src/features/company_dashboard/domain/repositories/company_management_repository.dart';
 
 class CompanySystemsState {
   const CompanySystemsState({

@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/admin/domain/entities/app_config.dart';
+import 'package:watt/src/features/admin/domain/entities/app_config.dart';
 
 abstract class AppConfigRemoteDataSource {
   Future<List<AppConfig>> getAllConfigs();

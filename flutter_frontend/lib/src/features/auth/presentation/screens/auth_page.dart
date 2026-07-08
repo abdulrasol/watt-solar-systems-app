@@ -4,17 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/features/auth/domain/entities/country.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
 import '../../domain/entities/user_register_model.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../widgets/forgot_password_sheet.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:watt/src/services/toast_service.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   final String? redirectTo;

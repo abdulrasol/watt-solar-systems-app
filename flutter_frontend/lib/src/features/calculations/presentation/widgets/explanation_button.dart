@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
-import 'package:solar_hub/src/utils/app_explanations.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/explanation_dialog.dart';
+import 'package:watt/src/utils/app_explanations.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class ExplanationButton extends StatelessWidget {
   const ExplanationButton({

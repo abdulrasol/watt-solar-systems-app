@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 class UserDashboardSummary {
   final int requestCount;

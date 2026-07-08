@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/energy_estimate.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/solar_irradiance_data.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/system_losses.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/services/solar_position_calculator.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/energy_estimate.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/solar_irradiance_data.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/system_losses.dart';
+import 'package:watt/src/features/pv_system_designer/domain/services/solar_position_calculator.dart';
 
 /// Estimates monthly/annual AC energy production for the array.
 ///

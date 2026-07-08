@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/core/enums/system_status.dart';
+import 'package:watt/src/core/enums/system_status.dart';
 
 class SystemModel {
   final String? id;

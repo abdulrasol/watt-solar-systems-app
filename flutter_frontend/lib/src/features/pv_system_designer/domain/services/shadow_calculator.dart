@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/services/solar_position_calculator.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/pv_system_design_state.dart';
+import 'package:watt/src/features/pv_system_designer/domain/services/solar_position_calculator.dart';
 
 /// Determines which grid cells are shaded, using the sun's real position
 /// (elevation + azimuth) rather than the previous arbitrary

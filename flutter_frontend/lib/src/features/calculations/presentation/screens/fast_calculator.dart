@@ -6,12 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
-import 'package:solar_hub/src/features/offers/presentation/screens/form/solar_request_form.dart';
-import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
-import 'package:solar_hub/src/utils/app_explanations.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/core/widgets/pre_scaffold.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/explanation_dialog.dart';
+import 'package:watt/src/features/offers/presentation/screens/form/solar_request_form.dart';
+import 'package:watt/src/shared/presntations/providers/is_enabled_providers.dart';
+import 'package:watt/src/utils/app_explanations.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class FastCalculator extends ConsumerStatefulWidget {
   const FastCalculator({super.key});

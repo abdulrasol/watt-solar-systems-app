@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:solar_hub/src/core/flags/feature_flags.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/flags/feature_flags.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 final isAuthEnabled = StateProvider<bool>((ref) => isFeatureEnabled(ref, AppFeature.auth));
 final isStoreEnabled = StateProvider<bool>((ref) => isFeatureEnabled(ref, AppFeature.store));

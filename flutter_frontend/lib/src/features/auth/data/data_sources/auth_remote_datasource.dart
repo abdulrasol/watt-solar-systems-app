@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart' hide Response;
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/errors/exceptions.dart';
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/auth_response.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/company_register_model.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/errors/exceptions.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/auth/domain/entities/auth_response.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/auth/domain/entities/country.dart';
+import 'package:watt/src/features/auth/domain/entities/company_register_model.dart';
+import 'package:watt/src/shared/domain/company/company_type.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 import '../../domain/entities/user_register_model.dart';
 
 abstract class AuthRemoteDataSource {

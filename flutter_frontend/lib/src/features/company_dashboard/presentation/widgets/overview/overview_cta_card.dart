@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 /// Call-to-action card shown at the bottom of the overview page.
 class OverviewCTACard extends ConsumerWidget {

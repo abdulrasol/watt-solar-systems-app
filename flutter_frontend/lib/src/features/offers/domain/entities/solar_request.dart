@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/utils/app_enums.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/utils/app_enums.dart';
 import 'solar_profile.dart';
 
 class SolarRequest {

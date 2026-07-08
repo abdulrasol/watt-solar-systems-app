@@ -3,11 +3,11 @@ import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/appliance_entity.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/calculated_system.dart';
-import 'package:solar_hub/src/utils/app_enums.dart';
+import 'package:watt/src/features/calculations/domain/entities/appliance_entity.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/calculations/domain/entities/calculated_system.dart';
+import 'package:watt/src/utils/app_enums.dart';
 
 // Given the high number of fields, using a ChangeNotifier for this specific controller
 // is more practical than creating a massive immutable state class.

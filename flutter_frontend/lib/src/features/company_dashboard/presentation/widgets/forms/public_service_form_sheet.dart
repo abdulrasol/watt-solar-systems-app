@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/models/company_public_service_form_model.dart';
-import 'package:solar_hub/src/shared/domain/company/company_public_service.dart';
-import 'package:solar_hub/src/shared/widgets/shared_widgets.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/features/company_dashboard/domain/models/company_public_service_form_model.dart';
+import 'package:watt/src/shared/domain/company/company_public_service.dart';
+import 'package:watt/src/shared/widgets/shared_widgets.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:validatorless/validatorless.dart';
 
 /// Bottom sheet form for adding or editing a public service.

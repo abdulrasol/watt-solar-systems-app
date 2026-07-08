@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/features/service_types/domain/models/service_type_form_payload.dart';
-import 'package:solar_hub/src/features/service_types/domain/repositories/service_type_repository.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/features/service_types/domain/models/service_type_form_payload.dart';
+import 'package:watt/src/features/service_types/domain/repositories/service_type_repository.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class AdminServiceTypesScreen extends ConsumerStatefulWidget {

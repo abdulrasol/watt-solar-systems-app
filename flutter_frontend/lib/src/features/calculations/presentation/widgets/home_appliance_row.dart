@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/calculations/domain/entities/appliance_entity.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/src/features/calculations/domain/entities/appliance_entity.dart';
+import 'package:watt/src/features/calculations/presentation/providers/calculator_controller.dart';
+import 'package:watt/l10n/app_localizations.dart';
 
 class HomeApplianceRow extends ConsumerWidget {
   const HomeApplianceRow({

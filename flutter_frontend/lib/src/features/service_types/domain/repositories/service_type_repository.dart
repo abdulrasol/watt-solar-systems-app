@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/features/service_types/domain/models/service_type_form_payload.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/service_types/domain/models/service_type_form_payload.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
 
 abstract class ServiceTypeRepository {
   Future<List<ServiceType>> listPublicServiceTypes();

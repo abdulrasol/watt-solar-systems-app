@@ -1,11 +1,11 @@
-import 'package:solar_hub/src/features/auth/domain/entities/auth_response.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/country.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/company_register_model.dart';
-import 'package:solar_hub/src/shared/domain/company/company_type.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user.dart';
-import 'package:solar_hub/src/features/auth/domain/entities/user_register_model.dart';
+import 'package:watt/src/features/auth/domain/entities/auth_response.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/auth/domain/entities/country.dart';
+import 'package:watt/src/features/auth/domain/entities/company_register_model.dart';
+import 'package:watt/src/shared/domain/company/company_type.dart';
+import 'package:watt/src/features/auth/domain/entities/user.dart';
+import 'package:watt/src/features/auth/domain/entities/user_register_model.dart';
 
 abstract class AuthRepository {
   Future<AuthResponse> login(String username, String password);

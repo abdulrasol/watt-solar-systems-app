@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class CompanyStatusForm extends StatefulWidget {
   final String currentStatus;

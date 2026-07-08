@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart' show StateProvider;
-import 'package:solar_hub/src/utils/helper_methods.dart';
-import 'package:solar_hub/src/core/flags/feature_flags.dart';
+import 'package:watt/src/utils/helper_methods.dart';
+import 'package:watt/src/core/flags/feature_flags.dart';
 enum HomeTab {
   dashboard(0),
   calculator(1),

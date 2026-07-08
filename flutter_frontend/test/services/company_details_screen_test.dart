@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_query.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_result.dart';
-import 'package:solar_hub/src/features/services/domain/repositories/public_services_repository.dart';
-import 'package:solar_hub/src/features/services/presentation/screens/company_details_screen.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_query.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_result.dart';
+import 'package:watt/src/features/services/domain/repositories/public_services_repository.dart';
+import 'package:watt/src/features/services/presentation/screens/company_details_screen.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
 
 void main() {
   late _ThrowingPublicServicesRepository repository;

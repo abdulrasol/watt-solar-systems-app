@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/models/response.dart' as api;
-import 'package:solar_hub/src/features/posters/data/data_sources/poster_remote_data_source.dart';
-import 'package:solar_hub/src/features/posters/data/models/poster_model.dart';
-import 'package:solar_hub/src/features/posters/domain/entities/poster_entity.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/models/response.dart' as api;
+import 'package:watt/src/features/posters/data/data_sources/poster_remote_data_source.dart';
+import 'package:watt/src/features/posters/data/models/poster_model.dart';
+import 'package:watt/src/features/posters/domain/entities/poster_entity.dart';
 
 class CompanyPostersState {
   final bool isLoading;

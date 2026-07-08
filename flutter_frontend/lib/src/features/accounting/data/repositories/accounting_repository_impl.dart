@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/accounting/data/data_sources/accounting_remote_data_source.dart';
-import 'package:solar_hub/src/features/accounting/domain/entities/accounting_models.dart';
-import 'package:solar_hub/src/features/accounting/domain/repositories/accounting_repository.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/accounting/data/data_sources/accounting_remote_data_source.dart';
+import 'package:watt/src/features/accounting/domain/entities/accounting_models.dart';
+import 'package:watt/src/features/accounting/domain/repositories/accounting_repository.dart';
 
 class AccountingRepositoryImpl implements AccountingRepository {
   final AccountingRemoteDataSource _remoteDataSource;

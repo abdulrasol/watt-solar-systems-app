@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/models/response.dart' as api;
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/service_types/domain/models/service_type_form_payload.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/models/response.dart' as api;
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/service_types/domain/models/service_type_form_payload.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class ServiceTypeRemoteDataSource {
   Future<List<ServiceType>> listPublicServiceTypes();

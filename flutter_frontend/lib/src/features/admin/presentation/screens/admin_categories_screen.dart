@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_global_category.dart';
-import 'package:solar_hub/src/features/admin/presentation/controllers/admin_categories_controller.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_content_layout.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/features/admin/domain/models/admin_global_category.dart';
+import 'package:watt/src/features/admin/presentation/controllers/admin_categories_controller.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_content_layout.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class AdminCategoriesScreen extends ConsumerStatefulWidget {
   const AdminCategoriesScreen({super.key});

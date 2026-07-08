@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/shared/domain/company/company_contact.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/company/company_contact.dart';
+import 'package:watt/src/utils/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../common_widgets.dart';
 

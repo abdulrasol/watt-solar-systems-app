@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/features/auth/domain/entities/city.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
+import 'package:watt/src/features/auth/domain/entities/city.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
 
 class User {
   final int id;

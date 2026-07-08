@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/company_work/presentation/providers/company_work_provider.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/company_work/presentation/providers/company_work_provider.dart';
+import 'package:watt/src/services/toast_service.dart';
 
 class CompanyWorkImagePicker extends ConsumerWidget {
   const CompanyWorkImagePicker({super.key});

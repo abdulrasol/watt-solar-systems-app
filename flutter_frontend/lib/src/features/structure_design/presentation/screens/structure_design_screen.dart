@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:simple_step_checkout/simple_step_checkout.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/providers/structure_design_controller.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/screens/technical_sketch_page.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/sketch_viewer_page.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/steps/panels_step.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/steps/results_step.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/steps/site_step.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/wizard/stepper_shell.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/wizard/structure_wizard_bottom_bar.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/wizard/wizard_scroll.dart';
-import 'package:solar_hub/src/utils/app_explanations.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/pre_scaffold.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/explanation_dialog.dart';
+import 'package:watt/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/presentation/providers/structure_design_controller.dart';
+import 'package:watt/src/features/structure_design/presentation/screens/technical_sketch_page.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/sketch_viewer_page.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/steps/panels_step.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/steps/results_step.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/steps/site_step.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/wizard/stepper_shell.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/wizard/structure_wizard_bottom_bar.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/wizard/wizard_scroll.dart';
+import 'package:watt/src/utils/app_explanations.dart';
 
 @Deprecated('Use PvSystemDesignerScreen instead. This feature has been merged into the unified PV System Designer.')
 class StructureDesignScreen extends ConsumerStatefulWidget {

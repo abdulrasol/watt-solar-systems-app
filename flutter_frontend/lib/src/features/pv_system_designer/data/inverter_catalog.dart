@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/inverter_spec.dart';
 
 /// A small built-in catalog of common string/hybrid inverter power classes
 /// with representative electrical limits, used to give users a real

@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:watt/src/core/di/get_it.dart';
 import '../../../feedback/domain/entities/feedback_entity.dart';
 import '../../../feedback/domain/repositories/feedback_repository.dart';
 

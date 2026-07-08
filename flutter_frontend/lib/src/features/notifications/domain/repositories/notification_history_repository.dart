@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/notifications/domain/entities/app_notification.dart';
+import 'package:watt/src/features/notifications/domain/entities/app_notification.dart';
 
 class NotificationHistoryPage {
   final List<AppNotificationItem> items;

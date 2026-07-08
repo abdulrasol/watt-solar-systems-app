@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/dimensions_list_view.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/sketch_view_container.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/widgets/technical_sketch/technical_view_mode.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/sketch/technical_drawings_sheet.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/technical_sketch/dimensions_list_view.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/technical_sketch/sketch_view_container.dart';
+import 'package:watt/src/features/structure_design/presentation/widgets/technical_sketch/technical_view_mode.dart';
 
 /// Full-screen technical sketch page with zoom/pan and comprehensive dimensions
 class TechnicalSketchPage extends StatefulWidget {

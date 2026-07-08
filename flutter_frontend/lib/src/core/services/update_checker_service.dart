@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:in_app_update/in_app_update.dart' as in_app_update;
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 /// Result of checking for app updates
 enum UpdateAvailability {

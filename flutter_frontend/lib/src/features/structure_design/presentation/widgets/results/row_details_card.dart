@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
 
 /// A card displaying per-row details for non-uniform designs
 class RowDetailsCard extends StatelessWidget {

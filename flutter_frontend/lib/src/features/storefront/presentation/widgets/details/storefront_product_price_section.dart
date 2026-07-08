@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_cart.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_cart.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
 
 class StorefrontProductPriceSection extends StatelessWidget {
   final StorefrontProduct product;

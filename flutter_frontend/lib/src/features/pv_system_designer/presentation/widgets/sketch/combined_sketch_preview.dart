@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
-import 'package:solar_hub/src/features/pv_system_designer/presentation/widgets/sketch/frame_sketch_painter.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/controllers/pv_system_designer_controller.dart';
+import 'package:watt/src/features/pv_system_designer/presentation/widgets/sketch/frame_sketch_painter.dart';
 
 class CombinedSketchPreview extends ConsumerWidget {
   const CombinedSketchPreview({super.key, this.height});

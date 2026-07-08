@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
-import 'package:solar_hub/src/features/members/domain/entities/member_role.dart';
-import 'package:solar_hub/src/features/members/presentation/providers/members_provider.dart';
-import 'package:solar_hub/src/features/members/presentation/widgets/add_member_sheet.dart';
-import 'package:solar_hub/src/features/members/presentation/widgets/member_card.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/pre_scaffold.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/members/domain/entities/company_member.dart';
+import 'package:watt/src/features/members/domain/entities/member_role.dart';
+import 'package:watt/src/features/members/presentation/providers/members_provider.dart';
+import 'package:watt/src/features/members/presentation/widgets/add_member_sheet.dart';
+import 'package:watt/src/features/members/presentation/widgets/member_card.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class MembersPage extends ConsumerStatefulWidget {
   final bool embedded;

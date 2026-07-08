@@ -1,8 +1,8 @@
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/notifications/domain/entities/app_notification.dart';
-import 'package:solar_hub/src/features/notifications/domain/repositories/notification_history_repository.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/notifications/domain/entities/app_notification.dart';
+import 'package:watt/src/features/notifications/domain/repositories/notification_history_repository.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 class NotificationHistoryRepositoryImpl
     implements NotificationHistoryRepository {

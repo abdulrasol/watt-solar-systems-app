@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/admin/domain/models/admin_country.dart';
+import 'package:watt/src/features/admin/domain/models/admin_country.dart';
 
 class AdminCity {
   final int id;

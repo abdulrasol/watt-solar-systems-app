@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:solar_hub/src/features/pv_system_designer/domain/entities/system_losses.dart';
+import 'package:watt/src/features/pv_system_designer/domain/entities/system_losses.dart';
 
 @immutable
 class EnergyEstimate {

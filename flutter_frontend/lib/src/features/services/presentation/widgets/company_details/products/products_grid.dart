@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_product_card.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/storefront_product_card.dart';
 
 class CompanyProductsGrid extends StatelessWidget {
   final List<StorefrontProduct> products;

@@ -1,6 +1,6 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/crm/domain/entities/crm_models.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/crm/domain/entities/crm_models.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
 
 abstract class CrmRepository {
   Future<PaginatedItemsResponse<CustomerRecord>> listCustomers(

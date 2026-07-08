@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
-import 'package:solar_hub/src/features/structure_design/domain/services/structure_design_calculator.dart';
+import 'package:watt/src/features/structure_design/domain/entities/panel_spec.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/domain/services/structure_design_calculator.dart';
 
 void main() {
   final calculator = StructureDesignCalculator();

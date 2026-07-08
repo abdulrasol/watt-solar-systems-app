@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/features/posters/domain/entities/poster_entity.dart';
-import 'package:solar_hub/src/features/posters/presentation/widgets/poster_status_badge.dart';
+import 'package:watt/src/features/posters/domain/entities/poster_entity.dart';
+import 'package:watt/src/features/posters/presentation/widgets/poster_status_badge.dart';
 
 class PosterCard extends StatelessWidget {
   final PosterEntity poster;

@@ -3,14 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:solar_hub/src/features/structure_design/data/drawing/watt_drawing_file_service.dart';
-import 'package:solar_hub/src/features/structure_design/data/location_service.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
-import 'package:solar_hub/src/features/structure_design/domain/services/structure_design_calculator.dart';
-import 'package:solar_hub/src/features/structure_design/presentation/utils/debounce_util.dart';
+import 'package:watt/src/features/structure_design/data/drawing/watt_drawing_file_service.dart';
+import 'package:watt/src/features/structure_design/data/location_service.dart';
+import 'package:watt/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/domain/entities/panel_spec.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/domain/services/structure_design_calculator.dart';
+import 'package:watt/src/features/structure_design/presentation/utils/debounce_util.dart';
 
 final structureDesignCalculatorProvider = Provider<StructureDesignCalculator>((ref) {
   return StructureDesignCalculator();

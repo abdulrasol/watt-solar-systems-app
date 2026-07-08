@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/calculations/presentation/providers/calculator_controller.dart';
-import 'package:solar_hub/src/features/offers/presentation/providers/offers_provider.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/src/features/calculations/presentation/providers/calculator_controller.dart';
+import 'package:watt/src/features/offers/presentation/providers/offers_provider.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
 import 'package:toastification/toastification.dart';
 
 class SystemRequestConfirmationSheet extends ConsumerWidget {

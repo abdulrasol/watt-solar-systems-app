@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/utils/app_constants.dart';
+import 'package:watt/src/utils/app_constants.dart';
 import 'text_helper_card.dart';
 
 Widget inputField(

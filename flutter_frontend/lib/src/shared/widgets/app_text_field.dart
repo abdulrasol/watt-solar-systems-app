@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 /// A reusable text field widget used for all text inputs in the app.
 ///

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/features/crm/domain/entities/crm_models.dart';
-import 'package:solar_hub/src/features/crm/domain/repositories/crm_repository.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/features/crm/domain/entities/crm_models.dart';
+import 'package:watt/src/features/crm/domain/repositories/crm_repository.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
 
 class CrmState<T> {
   final bool isLoading;

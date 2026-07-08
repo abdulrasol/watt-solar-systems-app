@@ -1,4 +1,4 @@
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
 
 class StorefrontCartSelectedOption {
   final int id;

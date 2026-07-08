@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
-import 'package:solar_hub/src/features/company_work/domain/repositories/company_work_repository.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/features/company_work/domain/repositories/company_work_repository.dart';
 
 class CompanyWorkState {
   const CompanyWorkState({

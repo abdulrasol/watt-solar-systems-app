@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart';
+import 'package:watt/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart';
 
 class MetricsPanel extends ConsumerWidget {
   const MetricsPanel({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/usecases/get_company_usecase.dart';
-import 'package:solar_hub/src/shared/domain/company/company_stats.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/summary.dart';
+import 'package:watt/src/features/company_dashboard/domain/usecases/get_company_usecase.dart';
+import 'package:watt/src/shared/domain/company/company_stats.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/service.dart';
 
 class CompanySummaryState {
   final bool isLoading;

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
-import 'package:solar_hub/src/features/members/domain/entities/member_role.dart';
-import 'package:solar_hub/src/features/members/domain/repositories/members_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/members/domain/entities/company_member.dart';
+import 'package:watt/src/features/members/domain/entities/member_role.dart';
+import 'package:watt/src/features/members/domain/repositories/members_repository.dart';
 
 class MembersFallbackState {
   final bool requiresRegistration;

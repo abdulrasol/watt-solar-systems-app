@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:solar_hub/src/features/company_work/data/data_sources/company_work_remote_data_source.dart';
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
-import 'package:solar_hub/src/features/company_work/domain/repositories/company_work_repository.dart';
+import 'package:watt/src/features/company_work/data/data_sources/company_work_remote_data_source.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/features/company_work/domain/repositories/company_work_repository.dart';
 
 class CompanyWorkRepositoryImpl implements CompanyWorkRepository {
   CompanyWorkRepositoryImpl(this._remoteDataSource);

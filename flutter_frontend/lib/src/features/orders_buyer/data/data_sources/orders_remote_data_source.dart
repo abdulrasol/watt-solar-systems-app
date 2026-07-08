@@ -1,8 +1,8 @@
-import 'package:solar_hub/src/core/models/response.dart';
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_models.dart';
-import 'package:solar_hub/src/features/orders_core/domain/entities/order_queries.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
+import 'package:watt/src/core/models/response.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
+import 'package:watt/src/features/orders_core/domain/entities/order_queries.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 abstract class OrdersRemoteDataSource {
   Future<OrderRecord> createB2cOrder(B2cOrderCreateRequest request);

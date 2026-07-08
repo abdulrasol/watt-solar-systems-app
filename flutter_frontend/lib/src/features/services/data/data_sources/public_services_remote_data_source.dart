@@ -1,10 +1,10 @@
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_query.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_result.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_query.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_result.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class PublicServicesRemoteDataSource {
   Future<List<ServiceType>> getTypes();

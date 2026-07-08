@@ -1,7 +1,7 @@
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/splash/domain/entities/config.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class AppInitRemoteDataSource {
   /// Calls the endpoint to get the app configurations.

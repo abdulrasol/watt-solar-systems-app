@@ -6,7 +6,7 @@ import '../models/solar_offer_model.dart';
 import '../models/involve_model.dart';
 import '../../domain/entities/offers_filter.dart';
 import 'offers_remote_data_source.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 class OffersRemoteDataSourceImpl implements OffersRemoteDataSource {
   final DioService _dioService;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/src/utils/app_assets.dart';
+import 'package:watt/src/utils/app_assets.dart';
 
 class AppLogo extends StatelessWidget {
   const AppLogo({super.key, this.size = 50, this.withBorder = false, this.isCircle = true, this.withBorderColor});

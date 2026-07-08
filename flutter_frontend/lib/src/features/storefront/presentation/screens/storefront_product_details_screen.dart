@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_cart.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
-import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_visibility.dart';
-import 'package:solar_hub/src/features/storefront/presentation/screens/storefront_cart_screen.dart';
-import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_page_route.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_gallery.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_info_section.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_options_section.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/details/storefront_product_price_section.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/storefront_cart_button.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_cart.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
+import 'package:watt/src/features/storefront/presentation/providers/storefront_visibility.dart';
+import 'package:watt/src/features/storefront/presentation/screens/storefront_cart_screen.dart';
+import 'package:watt/src/features/storefront/presentation/utils/storefront_page_route.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/details/storefront_product_gallery.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/details/storefront_product_info_section.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/details/storefront_product_options_section.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/details/storefront_product_price_section.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/storefront_cart_button.dart';
 
 class StorefrontProductDetailsScreen extends ConsumerStatefulWidget {
   final StorefrontProduct product;

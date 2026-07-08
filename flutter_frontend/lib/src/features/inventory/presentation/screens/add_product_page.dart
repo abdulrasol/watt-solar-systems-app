@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
-import 'package:solar_hub/src/features/inventory/presentation/providers/product_form_provider.dart';
-import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_basic_info_form.dart';
-import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_form.dart';
-import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_inventory_form.dart';
-import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_category_form.dart';
-import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_image_picker.dart';
-import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_options_form.dart';
-import 'package:solar_hub/src/features/inventory/presentation/widgets/product_form/product_pricing_tiers_form.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/pre_scaffold.dart';
+import 'package:watt/src/features/inventory/domain/entities/product.dart';
+import 'package:watt/src/features/inventory/presentation/providers/product_form_provider.dart';
+import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_basic_info_form.dart';
+import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_pricing_form.dart';
+import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_inventory_form.dart';
+import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_category_form.dart';
+import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_image_picker.dart';
+import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_options_form.dart';
+import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_pricing_tiers_form.dart';
 
 class AddProductPage extends ConsumerStatefulWidget {
   final Product? product;

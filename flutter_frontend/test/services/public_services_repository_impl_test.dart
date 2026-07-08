@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solar_hub/src/features/services/data/data_sources/public_services_remote_data_source.dart';
-import 'package:solar_hub/src/features/services/data/repositories/public_services_repository_impl.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_query.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_result.dart';
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/services/data/data_sources/public_services_remote_data_source.dart';
+import 'package:watt/src/features/services/data/repositories/public_services_repository_impl.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_query.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_result.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
 
 void main() {
   test('service types are fetched fresh on every request', () async {

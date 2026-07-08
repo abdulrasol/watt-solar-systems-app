@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/features/inventory/data/models/filter_options_model.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter.dart';
+import 'package:watt/src/features/inventory/data/models/filter_options_model.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter.dart';
 import '../../../../core/models/response.dart' as local;
 import '../../../../core/services/dio.dart';
 import '../../../../utils/app_urls.dart';

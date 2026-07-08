@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_filter_button.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/products/storefront_filter_button.dart';
 
 class StorefrontProductsToolbar extends StatelessWidget {
   final TextEditingController searchController;

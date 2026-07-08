@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/loading_widgets.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/features/storefront/presentation/utils/storefront_layout.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_product_card.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/products/storefront_products_empty_state.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/loading_widgets.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/storefront/presentation/utils/storefront_layout.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/products/storefront_product_card.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/products/storefront_products_empty_state.dart';
 
 class StorefrontProductsGridSliver extends StatelessWidget {
   final bool isLoading;

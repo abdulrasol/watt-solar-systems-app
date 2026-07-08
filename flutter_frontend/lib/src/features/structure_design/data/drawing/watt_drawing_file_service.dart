@@ -7,12 +7,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/bom_item.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/panel_spec.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/row_frame_result.dart';
-import 'package:solar_hub/src/features/structure_design/domain/entities/structure_design_input.dart';
+import 'package:watt/src/features/structure_design/domain/entities/bom_item.dart';
+import 'package:watt/src/features/structure_design/domain/entities/drawing/watt_drawing_document.dart';
+import 'package:watt/src/features/structure_design/domain/entities/frame_result.dart';
+import 'package:watt/src/features/structure_design/domain/entities/panel_spec.dart';
+import 'package:watt/src/features/structure_design/domain/entities/row_frame_result.dart';
+import 'package:watt/src/features/structure_design/domain/entities/structure_design_input.dart';
 
 class WattDrawingFileService {
   WattDrawingFileService({AesGcm? algorithm, SecretKey? secretKey, DateTime Function()? now})

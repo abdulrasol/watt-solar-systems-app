@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_registry.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_item.dart';
-import 'package:solar_hub/src/features/admin/presentation/models/navigation/admin_navigation_section.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_registry.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_item.dart';
+import 'package:watt/src/features/admin/presentation/models/navigation/admin_navigation_section.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class AdminShell extends ConsumerWidget {
   const AdminShell({super.key, required this.child, required this.location});

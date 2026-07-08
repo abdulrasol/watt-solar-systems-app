@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/posters/presentation/controllers/active_posters_provider.dart';
-import 'package:solar_hub/src/shared/presntations/providers/is_enabled_providers.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/posters/presentation/controllers/active_posters_provider.dart';
+import 'package:watt/src/shared/presntations/providers/is_enabled_providers.dart';
 
 class PosterCarousel extends ConsumerWidget {
   const PosterCarousel({super.key});

@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart';
-import 'package:solar_hub/src/features/roof_simulator/presentation/widgets/custom_polygon_painter.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/features/roof_simulator/domain/models/roof_simulator_state.dart';
+import 'package:watt/src/features/roof_simulator/presentation/controllers/roof_simulator_controller.dart';
+import 'package:watt/src/features/roof_simulator/presentation/widgets/custom_polygon_painter.dart';
 
 class VisualGridCanvas extends ConsumerStatefulWidget {
   const VisualGridCanvas({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config.dart';
-import 'package:solar_hub/src/features/splash/domain/entities/config_snapshot.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/features/splash/domain/entities/config.dart';
+import 'package:watt/src/features/splash/domain/entities/config_snapshot.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 /// Provides access to the app's global configurations.
 final configProvider = NotifierProvider<ConfigNotifier, ConfigState>(ConfigNotifier.new);

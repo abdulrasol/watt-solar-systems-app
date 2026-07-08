@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/features/settings/presentation/providers/settings_provider.dart';
+import 'package:watt/src/features/settings/presentation/providers/settings_provider.dart';
 
 /// Centralized color palette for the SolarHub application.
 ///

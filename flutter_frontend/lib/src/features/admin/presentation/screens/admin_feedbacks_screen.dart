@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/admin/presentation/controllers/admin_controller.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/features/feedback/domain/entities/feedback_entity.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/admin/presentation/controllers/admin_controller.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/features/feedback/domain/entities/feedback_entity.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class AdminFeedbacksScreen extends ConsumerStatefulWidget {
   const AdminFeedbacksScreen({super.key});

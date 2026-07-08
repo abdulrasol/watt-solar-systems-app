@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/errors/failure.dart';
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/summary.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/errors/failure.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/summary.dart';
+import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
 abstract class RemoteDataSource {
   Future<Either<Failure, CompanySummary>> getCompanySummary(int id);

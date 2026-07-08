@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
-import 'package:solar_hub/src/core/theme/app_colors.dart';
-import 'package:solar_hub/src/features/admin/presentation/widgets/admin_widgets.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/service_types/company_service_type_card.dart';
-import 'package:solar_hub/src/features/service_types/domain/repositories/service_type_repository.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/shared/widgets/shared_widgets.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/core/theme/app_colors.dart';
+import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/service_types/company_service_type_card.dart';
+import 'package:watt/src/features/service_types/domain/repositories/service_type_repository.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/shared/widgets/shared_widgets.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 /// Company service types selection screen.
 class CompanyDashboardServiceTypesScreen extends ConsumerStatefulWidget {

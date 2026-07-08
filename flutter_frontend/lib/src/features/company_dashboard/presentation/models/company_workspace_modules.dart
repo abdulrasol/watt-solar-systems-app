@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/entities/service.dart';
-import 'package:solar_hub/src/utils/app_strings.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/company_dashboard/domain/entities/service.dart';
+import 'package:watt/src/utils/app_strings.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/company_workspace_item.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 
 class CompanyWorkspaceModules {
   static CompanyWorkspaceItem overview(AppLocalizations l10n) =>

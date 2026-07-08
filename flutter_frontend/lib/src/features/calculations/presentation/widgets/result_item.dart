@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 /// Single metric cell inside the results hero card.
 class ResultItem extends StatelessWidget {

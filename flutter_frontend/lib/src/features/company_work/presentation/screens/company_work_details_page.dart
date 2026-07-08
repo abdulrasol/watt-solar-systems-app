@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/widgets/pre_scaffold.dart';
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
-import 'package:solar_hub/src/features/company_work/presentation/providers/company_work_provider.dart';
-import 'package:solar_hub/src/features/company_work/presentation/widgets/work_gallery_sheet.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
-import 'package:solar_hub/src/utils/app_strings.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/pre_scaffold.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/features/company_work/presentation/providers/company_work_provider.dart';
+import 'package:watt/src/features/company_work/presentation/widgets/work_gallery_sheet.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:watt/src/utils/app_strings.dart';
 
 class CompanyWorkDetailsPage extends ConsumerWidget {
   const CompanyWorkDetailsPage({

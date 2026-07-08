@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/features/notifications/domain/entities/notification_type.dart';
+import 'package:watt/src/features/notifications/domain/entities/notification_type.dart';
 
 /// Renders the `data.content` map from a notification as structured UI,
 /// adapting layout to each notification type.

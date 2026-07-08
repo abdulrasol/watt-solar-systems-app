@@ -1,9 +1,9 @@
-import 'package:solar_hub/src/shared/domain/company/company.dart';
-import 'package:solar_hub/src/shared/domain/service_type.dart';
-import 'package:solar_hub/src/features/services/data/data_sources/public_services_remote_data_source.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_query.dart';
-import 'package:solar_hub/src/features/services/domain/entities/public_companies_result.dart';
-import 'package:solar_hub/src/features/services/domain/repositories/public_services_repository.dart';
+import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/shared/domain/service_type.dart';
+import 'package:watt/src/features/services/data/data_sources/public_services_remote_data_source.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_query.dart';
+import 'package:watt/src/features/services/domain/entities/public_companies_result.dart';
+import 'package:watt/src/features/services/domain/repositories/public_services_repository.dart';
 
 class PublicServicesRepositoryImpl implements PublicServicesRepository {
   final PublicServicesRemoteDataSource _remoteDataSource;

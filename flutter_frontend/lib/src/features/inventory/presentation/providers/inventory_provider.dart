@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter_options.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
-import 'package:solar_hub/src/features/inventory/domain/repositories/inventory_repository.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter_options.dart';
+import 'package:watt/src/features/inventory/domain/entities/product.dart';
+import 'package:watt/src/features/inventory/domain/repositories/inventory_repository.dart';
 
 class InventoryState {
   final List<Product> products;

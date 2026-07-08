@@ -3,19 +3,19 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/layout/app_breakpoints.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/nav_item.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/summary_provider.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/dashboard_content.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/sidebar_content.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/quick_create_actions.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/helper_methods.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/nav_item.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/dashboard_content.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/sidebar_content.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/quick_create_actions.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/utils/helper_methods.dart';
 
-import 'package:solar_hub/src/utils/app_strings.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/providers/sidebar_controller.dart';
+import 'package:watt/src/utils/app_strings.dart';
+import 'package:watt/src/features/company_dashboard/presentation/providers/sidebar_controller.dart';
 
 class CompanyDashboard extends ConsumerStatefulWidget {
   const CompanyDashboard({super.key});

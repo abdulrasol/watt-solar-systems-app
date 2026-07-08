@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/shared/domain/company/company_contact.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/models/company_contact_form_model.dart';
-import 'package:solar_hub/src/features/company_dashboard/domain/repositories/company_management_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/shared/domain/company/company_contact.dart';
+import 'package:watt/src/features/company_dashboard/domain/models/company_contact_form_model.dart';
+import 'package:watt/src/features/company_dashboard/domain/repositories/company_management_repository.dart';
 
 class CompanyContactsState {
   const CompanyContactsState({

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_city.dart';
-import 'package:solar_hub/src/features/admin/domain/models/admin_country.dart';
-import 'package:solar_hub/src/features/admin/domain/repositories/admin_repository.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/admin/domain/models/admin_city.dart';
+import 'package:watt/src/features/admin/domain/models/admin_country.dart';
+import 'package:watt/src/features/admin/domain/repositories/admin_repository.dart';
 
 
 class AdminAddressState {

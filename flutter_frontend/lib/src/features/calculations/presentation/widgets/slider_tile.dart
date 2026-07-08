@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/app_explanations.dart';
-import 'package:solar_hub/src/features/calculations/presentation/widgets/explanation_dialog.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/utils/app_explanations.dart';
+import 'package:watt/src/features/calculations/presentation/widgets/explanation_dialog.dart';
 
 /// Slider row with a label and an animated value pill badge.
 class SliderTile extends StatelessWidget {

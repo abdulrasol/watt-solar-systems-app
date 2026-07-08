@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:solar_hub/src/core/cashe/cashe_interface.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_cart.dart';
-import 'package:solar_hub/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/core/cashe/cashe_interface.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_cart.dart';
+import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
 
 class StorefrontCartController extends ChangeNotifier {
   static const _storageKey = 'storefront_company_carts_v2';

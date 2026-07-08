@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/storefront/presentation/providers/storefront_provider.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_categories_picker.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_company_picker.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_filter_section.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_global_categories_picker.dart';
-import 'package:solar_hub/src/features/storefront/presentation/widgets/filters/storefront_sort_picker.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/storefront/presentation/providers/storefront_provider.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/filters/storefront_company_categories_picker.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/filters/storefront_company_picker.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/filters/storefront_filter_section.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/filters/storefront_global_categories_picker.dart';
+import 'package:watt/src/features/storefront/presentation/widgets/filters/storefront_sort_picker.dart';
 
 class StorefrontFiltersSheet extends ConsumerStatefulWidget {
   final StorefrontScope scope;

@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/core/di/get_it.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/filter.dart';
-import 'package:solar_hub/src/features/inventory/domain/entities/product.dart';
-import 'package:solar_hub/src/features/inventory/domain/repositories/inventory_repository.dart';
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
-import 'package:solar_hub/src/features/company_work/domain/repositories/company_work_repository.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/di/get_it.dart';
+import 'package:watt/src/features/inventory/domain/entities/filter.dart';
+import 'package:watt/src/features/inventory/domain/entities/product.dart';
+import 'package:watt/src/features/inventory/domain/repositories/inventory_repository.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/features/company_work/domain/repositories/company_work_repository.dart';
 
 Future<PickerItem?> showProductPicker(BuildContext context, int companyId) {
   return showModalBottomSheet<PickerItem>(

@@ -1,5 +1,5 @@
-import 'package:solar_hub/src/features/members/domain/entities/company_member.dart';
-import 'package:solar_hub/src/features/members/domain/entities/member_invite_result.dart';
+import 'package:watt/src/features/members/domain/entities/company_member.dart';
+import 'package:watt/src/features/members/domain/entities/member_invite_result.dart';
 
 abstract class MembersRepository {
   Future<List<CompanyMember>> getMembers(int companyId);

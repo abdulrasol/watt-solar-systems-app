@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/offers/domain/entities/solar_request.dart';
-import 'package:solar_hub/src/utils/app_enums.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
-import 'package:solar_hub/src/utils/date_utils.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/offers/domain/entities/solar_request.dart';
+import 'package:watt/src/utils/app_enums.dart';
+import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/utils/date_utils.dart';
 
 class RequestCard extends StatelessWidget {
   final SolarRequest request;

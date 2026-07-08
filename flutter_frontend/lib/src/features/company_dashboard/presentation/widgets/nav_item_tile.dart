@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:solar_hub/src/core/widgets/wd_image_preview.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/models/nav_item.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
+import 'package:watt/src/features/company_dashboard/presentation/models/nav_item.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 class NavItemTile extends StatefulWidget {
   final NavItem item;

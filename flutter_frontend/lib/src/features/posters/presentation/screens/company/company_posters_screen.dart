@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/l10n/app_localizations.dart';
-import 'package:solar_hub/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:solar_hub/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
-import 'package:solar_hub/src/features/posters/presentation/controllers/company_posters_provider.dart';
-import 'package:solar_hub/src/features/posters/presentation/widgets/poster_card.dart';
-import 'package:solar_hub/src/features/posters/presentation/widgets/poster_delete_dialog.dart';
-import 'package:solar_hub/src/core/widgets/branded_empty_state.dart';
-import 'package:solar_hub/src/services/toast_service.dart';
-import 'package:solar_hub/src/shared/widgets/app_button.dart';
+import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/company_dashboard/presentation/widgets/company_management_widgets.dart';
+import 'package:watt/src/features/posters/presentation/controllers/company_posters_provider.dart';
+import 'package:watt/src/features/posters/presentation/widgets/poster_card.dart';
+import 'package:watt/src/features/posters/presentation/widgets/poster_delete_dialog.dart';
+import 'package:watt/src/core/widgets/branded_empty_state.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/shared/widgets/app_button.dart';
 
 class CompanyPostersScreen extends ConsumerStatefulWidget {
   final bool embedded;

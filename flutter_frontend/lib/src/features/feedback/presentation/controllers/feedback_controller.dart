@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
-import 'package:solar_hub/src/core/di/get_it.dart';
+import 'package:watt/src/core/di/get_it.dart';
 import '../../domain/repositories/feedback_repository.dart';
 
 class FeedbackState {

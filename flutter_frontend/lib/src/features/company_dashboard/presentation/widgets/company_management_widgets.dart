@@ -1,7 +1,7 @@
-import 'package:solar_hub/l10n/app_localizations.dart';
+import 'package:watt/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:solar_hub/src/utils/app_theme.dart';
+import 'package:watt/src/utils/app_theme.dart';
 
 Future<bool?> showCompanyDeleteDialog({required BuildContext context, required String title, required String message}) {
   return showDialog<bool>(

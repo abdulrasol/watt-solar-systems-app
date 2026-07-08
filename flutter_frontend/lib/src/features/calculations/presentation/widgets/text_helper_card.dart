@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solar_hub/src/utils/app_constants.dart';
+import 'package:watt/src/utils/app_constants.dart';
 
 /// Custom input field widget with help text
 Container textHelperCard(BuildContext context, {String? text, String? title}) {

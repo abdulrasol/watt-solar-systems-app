@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:solar_hub/src/core/services/dio.dart';
-import 'package:solar_hub/src/core/models/response.dart' as api;
-import 'package:solar_hub/src/features/admin/domain/models/service_catalog_item.dart';
-import 'package:solar_hub/src/utils/app_urls.dart';
+import 'package:watt/src/core/services/dio.dart';
+import 'package:watt/src/core/models/response.dart' as api;
+import 'package:watt/src/features/admin/domain/models/service_catalog_item.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 abstract class AdminRemoteDataSource {
   Future<api.PaginationResponse> listCompanies({String? status, int page = 1, int pageSize = 12});

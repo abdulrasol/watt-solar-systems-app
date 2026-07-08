@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:solar_hub/src/features/company_work/domain/entities/company_work.dart';
+import 'package:watt/src/features/company_work/domain/entities/company_work.dart';
 
 abstract class CompanyWorkRepository {
   Future<List<CompanyWork>> getPublicWorks(
