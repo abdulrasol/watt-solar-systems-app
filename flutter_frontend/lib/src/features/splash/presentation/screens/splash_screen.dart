@@ -50,6 +50,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       });
     }
 
+    bool configRefreshed = false;
     try {
       final configProviderNotifier = ref.read(configProvider.notifier);
 
@@ -61,6 +62,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           },
           (snapshot) {
             configProviderNotifier.hydrateFromSnapshot(snapshot);
+            configRefreshed = true;
           },
         );
       } on TimeoutException {
@@ -73,7 +75,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       if (!mounted) return;
       context.go(bootstrap.route);
-      _startBackgroundInitialization(bootstrap);
+      _startBackgroundInitialization(bootstrap, configAlreadyRefreshed: configRefreshed);
     } catch (e, s) {
       dPrint('Initialization error: $e', tag: 'splash_screen', stackTrace: s);
       await _ensureMinimumSplashTime(splashStartedAt);
@@ -93,8 +95,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     );
   }
 
-  void _startBackgroundInitialization(StartupBootstrapResult bootstrap) {
-    if (bootstrap.shouldRefreshConfigs) {
+  void _startBackgroundInitialization(StartupBootstrapResult bootstrap, {required bool configAlreadyRefreshed}) {
+    if (bootstrap.shouldRefreshConfigs && !configAlreadyRefreshed) {
       unawaited(_refreshConfigsInBackground());
     }
     unawaited(_initializePushNotifications());

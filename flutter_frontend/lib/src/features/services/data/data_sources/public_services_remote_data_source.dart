@@ -1,3 +1,4 @@
+import 'package:watt/src/core/models/response.dart';
 import 'package:watt/src/core/services/dio.dart';
 import 'package:watt/src/shared/domain/company/company.dart';
 import 'package:watt/src/shared/domain/service_type.dart';
@@ -21,9 +22,8 @@ class PublicServicesRemoteDataSourceImpl implements PublicServicesRemoteDataSour
   Future<List<ServiceType>> getTypes() async {
     try {
       final response = await _dioService.get(AppUrls.serviceTypesPublic, isList: true);
-      dPrint(response.body);
-      dPrint(response.body.runtimeType);
-      return (response as dynamic).body.whereType<Map>().map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item))).toList();
+      final body = (response as ListResponse).body as List? ?? const [];
+      return body.whereType<Map>().map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item))).toList();
     } catch (e, stackTrace) {
       dPrint('getTypes error: $e', stackTrace: stackTrace, tag: 'PublicServicesRemoteDataSourceImpl');
       rethrow;

@@ -137,7 +137,25 @@ class DioService implements ApiServicesInterface {
     Response response = await _dio.get(url, queryParameters: queryParameters);
 
     if (isList) {
-      return local.ListResponse.fromList(response.data as List);
+      final data = response.data;
+      if (data is List) {
+        return local.ListResponse.fromList(data);
+      } else if (data is Map) {
+        final body = data['body'];
+        if (body is List) {
+          return local.ListResponse.fromList(body);
+        } else if (body is Map) {
+          final items = body['items'];
+          if (items is List) {
+            return local.ListResponse.fromList(items);
+          }
+        }
+        final items = data['items'];
+        if (items is List) {
+          return local.ListResponse.fromList(items);
+        }
+      }
+      throw TypeError();
     } else if (isPagination) {
       return local.PaginationResponse.fromJson(response.data);
     } else {
