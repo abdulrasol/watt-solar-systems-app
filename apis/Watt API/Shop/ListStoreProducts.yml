@@ -1,0 +1,134 @@
+info:
+  name: ListStoreProducts
+  type: http
+  seq: 40
+  tags:
+    - Shop
+
+http:
+  method: GET
+  url: "{{baseUrl}}/shop/store/products"
+  params:
+    - name: page
+      value: ""
+      type: query
+      description: Page
+      disabled: true
+    - name: page_size
+      value: ""
+      type: query
+      description: Page size
+      disabled: true
+    - name: search
+      value: ""
+      type: query
+      description: Search
+      disabled: true
+    - name: company_id
+      value: ""
+      type: query
+      description: Company ID
+      disabled: true
+    - name: global_category_id
+      value: ""
+      type: query
+      description: Global category ID
+      disabled: true
+    - name: company_category_id
+      value: ""
+      type: query
+      description: Company category ID
+      disabled: true
+    - name: min_price
+      value: ""
+      type: query
+      description: Min price
+      disabled: true
+    - name: max_price
+      value: ""
+      type: query
+      description: Max price
+      disabled: true
+    - name: ordering
+      value: ""
+      type: query
+      description: Ordering
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/shop/store/products"
+      method: GET
+      params:
+        - name: page
+          value: ""
+          type: query
+          description: Page
+          disabled: true
+        - name: page_size
+          value: ""
+          type: query
+          description: Page size
+          disabled: true
+        - name: search
+          value: ""
+          type: query
+          description: Search
+          disabled: true
+        - name: company_id
+          value: ""
+          type: query
+          description: Company ID
+          disabled: true
+        - name: global_category_id
+          value: ""
+          type: query
+          description: Global category ID
+          disabled: true
+        - name: company_category_id
+          value: ""
+          type: query
+          description: Company category ID
+          disabled: true
+        - name: min_price
+          value: ""
+          type: query
+          description: Min price
+          disabled: true
+        - name: max_price
+          value: ""
+          type: query
+          description: Max price
+          disabled: true
+        - name: ordering
+          value: ""
+          type: query
+          description: Ordering
+          disabled: true
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: List B2C storefront products

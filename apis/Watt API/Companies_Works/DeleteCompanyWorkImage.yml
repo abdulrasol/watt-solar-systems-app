@@ -1,0 +1,70 @@
+info:
+  name: DeleteCompanyWorkImage
+  type: http
+  seq: 3
+  tags:
+    - Companies Works
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/companies/:company_id/works/images/:image_id"
+  headers:
+    - name: Authorization
+      value: "{{apiKey}}"
+  params:
+    - name: company_id
+      value: ""
+      type: path
+      description: company_id
+    - name: image_id
+      value: ""
+      type: path
+      description: image_id
+  auth:
+    type: apikey
+    key: Authorization
+    value: "{{apiKey}}"
+    placement: header
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/companies/:company_id/works/images/:image_id"
+      method: DELETE
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      params:
+        - name: company_id
+          value: ""
+          type: path
+          description: company_id
+        - name: image_id
+          value: ""
+          type: path
+          description: image_id
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: DeleteCompanyWorkImage

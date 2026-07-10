@@ -1,0 +1,382 @@
+info:
+  name: Update user profile
+  type: http
+  seq: 8
+  tags:
+    - Users
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/users/profile"
+  headers:
+    - name: Authorization
+      value: "{{apiKey}}"
+  body:
+    type: multipart-form
+    data:
+      - name: username
+        type: text
+        value: ""
+        description: Username
+      - name: first_name
+        type: text
+        value: ""
+        description: First Name
+      - name: last_name
+        type: text
+        value: ""
+        description: Last Name
+      - name: email
+        type: text
+        value: ""
+        description: Email
+      - name: phone
+        type: text
+        value: ""
+        description: Phone
+      - name: city_id
+        type: text
+        value: ""
+        description: City ID
+      - name: security_question
+        type: text
+        value: ""
+        description: Security Question
+      - name: security_answer
+        type: text
+        value: ""
+        description: Security Answer
+      - name: image
+        type: file
+        value: []
+        description: Profile Image
+  auth:
+    type: apikey
+    key: Authorization
+    value: "{{apiKey}}"
+    placement: header
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/users/profile"
+      method: PUT
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      body:
+        type: multipart-form
+        data:
+          - name: username
+            type: text
+            value: ""
+            description: Username
+          - name: first_name
+            type: text
+            value: ""
+            description: First Name
+          - name: last_name
+            type: text
+            value: ""
+            description: Last Name
+          - name: email
+            type: text
+            value: ""
+            description: Email
+          - name: phone
+            type: text
+            value: ""
+            description: Phone
+          - name: city_id
+            type: text
+            value: ""
+            description: City ID
+          - name: security_question
+            type: text
+            value: ""
+            description: Security Question
+          - name: security_answer
+            type: text
+            value: ""
+            description: Security Answer
+          - name: image
+            type: file
+            value: []
+            description: Profile Image
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+  - name: 400 Response
+    description: Bad Request
+    request:
+      url: "{{baseUrl}}/users/profile"
+      method: PUT
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      body:
+        type: multipart-form
+        data:
+          - name: username
+            type: text
+            value: ""
+            description: Username
+          - name: first_name
+            type: text
+            value: ""
+            description: First Name
+          - name: last_name
+            type: text
+            value: ""
+            description: Last Name
+          - name: email
+            type: text
+            value: ""
+            description: Email
+          - name: phone
+            type: text
+            value: ""
+            description: Phone
+          - name: city_id
+            type: text
+            value: ""
+            description: City ID
+          - name: security_question
+            type: text
+            value: ""
+            description: Security Question
+          - name: security_answer
+            type: text
+            value: ""
+            description: Security Answer
+          - name: image
+            type: file
+            value: []
+            description: Profile Image
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+  - name: 401 Response
+    description: Unauthorized
+    request:
+      url: "{{baseUrl}}/users/profile"
+      method: PUT
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      body:
+        type: multipart-form
+        data:
+          - name: username
+            type: text
+            value: ""
+            description: Username
+          - name: first_name
+            type: text
+            value: ""
+            description: First Name
+          - name: last_name
+            type: text
+            value: ""
+            description: Last Name
+          - name: email
+            type: text
+            value: ""
+            description: Email
+          - name: phone
+            type: text
+            value: ""
+            description: Phone
+          - name: city_id
+            type: text
+            value: ""
+            description: City ID
+          - name: security_question
+            type: text
+            value: ""
+            description: Security Question
+          - name: security_answer
+            type: text
+            value: ""
+            description: Security Answer
+          - name: image
+            type: file
+            value: []
+            description: Profile Image
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+  - name: 404 Response
+    description: Not Found
+    request:
+      url: "{{baseUrl}}/users/profile"
+      method: PUT
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      body:
+        type: multipart-form
+        data:
+          - name: username
+            type: text
+            value: ""
+            description: Username
+          - name: first_name
+            type: text
+            value: ""
+            description: First Name
+          - name: last_name
+            type: text
+            value: ""
+            description: Last Name
+          - name: email
+            type: text
+            value: ""
+            description: Email
+          - name: phone
+            type: text
+            value: ""
+            description: Phone
+          - name: city_id
+            type: text
+            value: ""
+            description: City ID
+          - name: security_question
+            type: text
+            value: ""
+            description: Security Question
+          - name: security_answer
+            type: text
+            value: ""
+            description: Security Answer
+          - name: image
+            type: file
+            value: []
+            description: Profile Image
+    response:
+      status: 404
+      statusText: Not Found
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+  - name: 500 Response
+    description: Internal Server Error
+    request:
+      url: "{{baseUrl}}/users/profile"
+      method: PUT
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      body:
+        type: multipart-form
+        data:
+          - name: username
+            type: text
+            value: ""
+            description: Username
+          - name: first_name
+            type: text
+            value: ""
+            description: First Name
+          - name: last_name
+            type: text
+            value: ""
+            description: Last Name
+          - name: email
+            type: text
+            value: ""
+            description: Email
+          - name: phone
+            type: text
+            value: ""
+            description: Phone
+          - name: city_id
+            type: text
+            value: ""
+            description: City ID
+          - name: security_question
+            type: text
+            value: ""
+            description: Security Question
+          - name: security_answer
+            type: text
+            value: ""
+            description: Security Answer
+          - name: image
+            type: file
+            value: []
+            description: Profile Image
+    response:
+      status: 500
+      statusText: Internal Server Error
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: Updates the authenticated user's profile information (multipart/form-data supported)

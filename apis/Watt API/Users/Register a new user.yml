@@ -1,0 +1,132 @@
+info:
+  name: Register a new user
+  type: http
+  seq: 9
+  tags:
+    - Users
+
+http:
+  method: POST
+  url: "{{baseUrl}}/users/register"
+  body:
+    type: json
+    data: |-
+      {
+        "city_id": 0,
+        "email": "",
+        "first_name": "",
+        "last_name": "",
+        "password": "",
+        "phone": "",
+        "username": ""
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 201 Response
+    description: Created
+    request:
+      url: "{{baseUrl}}/users/register"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "city_id": 0,
+            "email": "",
+            "first_name": "",
+            "last_name": "",
+            "password": "",
+            "phone": "",
+            "username": ""
+          }
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+  - name: 400 Response
+    description: Bad Request
+    request:
+      url: "{{baseUrl}}/users/register"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "city_id": 0,
+            "email": "",
+            "first_name": "",
+            "last_name": "",
+            "password": "",
+            "phone": "",
+            "username": ""
+          }
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+  - name: 500 Response
+    description: Internal Server Error
+    request:
+      url: "{{baseUrl}}/users/register"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "city_id": 0,
+            "email": "",
+            "first_name": "",
+            "last_name": "",
+            "password": "",
+            "phone": "",
+            "username": ""
+          }
+    response:
+      status: 500
+      statusText: Internal Server Error
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: Registers a new user and returns a user_id

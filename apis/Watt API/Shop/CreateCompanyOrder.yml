@@ -1,0 +1,128 @@
+info:
+  name: CreateCompanyOrder
+  type: http
+  seq: 7
+  tags:
+    - Shop
+
+http:
+  method: POST
+  url: "{{baseUrl}}/companies/:company_id/orders"
+  headers:
+    - name: Authorization
+      value: "{{apiKey}}"
+  params:
+    - name: company_id
+      value: ""
+      type: path
+      description: company_id
+  body:
+    type: json
+    data: |-
+      {
+        "buyer_company_id": 0,
+        "buyer_user_id": 0,
+        "currency_code": "",
+        "currency_symbol": "",
+        "customer_id": 0,
+        "discount_amount": 0,
+        "guest_customer_name": "",
+        "items": [
+          {
+            "product_id": 0,
+            "quantity": 0,
+            "selected_options": [
+              {}
+            ]
+          }
+        ],
+        "notes": "",
+        "order_type": "",
+        "paid_amount": 0,
+        "payment_method": "",
+        "payment_status": "",
+        "shipping_address": "",
+        "shipping_cost": 0,
+        "shipping_method": "",
+        "status": "",
+        "supplier_id": 0,
+        "tax_amount": 0,
+        "total_amount": 0
+      }
+  auth:
+    type: apikey
+    key: Authorization
+    value: "{{apiKey}}"
+    placement: header
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/companies/:company_id/orders"
+      method: POST
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      params:
+        - name: company_id
+          value: ""
+          type: path
+          description: company_id
+      body:
+        type: json
+        data: |-
+          {
+            "buyer_company_id": 0,
+            "buyer_user_id": 0,
+            "currency_code": "",
+            "currency_symbol": "",
+            "customer_id": 0,
+            "discount_amount": 0,
+            "guest_customer_name": "",
+            "items": [
+              {
+                "product_id": 0,
+                "quantity": 0,
+                "selected_options": [
+                  {}
+                ]
+              }
+            ],
+            "notes": "",
+            "order_type": "",
+            "paid_amount": 0,
+            "payment_method": "",
+            "payment_status": "",
+            "shipping_address": "",
+            "shipping_cost": 0,
+            "shipping_method": "",
+            "status": "",
+            "supplier_id": 0,
+            "tax_amount": 0,
+            "total_amount": 0
+          }
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: Create an offline order for a seller company

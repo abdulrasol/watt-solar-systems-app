@@ -1,0 +1,7 @@
+info:
+  name: Company_Operations
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

@@ -1,0 +1,62 @@
+info:
+  name: GetMyStoreOrder
+  type: http
+  seq: 37
+  tags:
+    - Shop
+
+http:
+  method: GET
+  url: "{{baseUrl}}/shop/store/my-orders/:order_id"
+  headers:
+    - name: Authorization
+      value: "{{apiKey}}"
+  params:
+    - name: order_id
+      value: ""
+      type: path
+      description: order_id
+  auth:
+    type: apikey
+    key: Authorization
+    value: "{{apiKey}}"
+    placement: header
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/shop/store/my-orders/:order_id"
+      method: GET
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      params:
+        - name: order_id
+          value: ""
+          type: path
+          description: order_id
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: Get authenticated user's B2C order

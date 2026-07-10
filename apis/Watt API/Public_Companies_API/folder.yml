@@ -1,0 +1,7 @@
+info:
+  name: Public_Companies_API
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

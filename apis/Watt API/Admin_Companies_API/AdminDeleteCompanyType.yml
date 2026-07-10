@@ -1,0 +1,62 @@
+info:
+  name: AdminDeleteCompanyType
+  type: http
+  seq: 15
+  tags:
+    - Admin Companies API
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/admin/companies/types/:id"
+  headers:
+    - name: Authorization
+      value: "{{apiKey}}"
+  params:
+    - name: id
+      value: ""
+      type: path
+      description: id
+  auth:
+    type: apikey
+    key: Authorization
+    value: "{{apiKey}}"
+    placement: header
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/admin/companies/types/:id"
+      method: DELETE
+      headers:
+        - name: Authorization
+          value: "{{apiKey}}"
+      params:
+        - name: id
+          value: ""
+          type: path
+          description: id
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: AdminDeleteCompanyType

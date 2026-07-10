@@ -1,0 +1,7 @@
+info:
+  name: Users_-_Admin
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

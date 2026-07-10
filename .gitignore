@@ -67,7 +67,11 @@ graphify-out/
 go_backend/go_backend
 go_backend/main
 go_backend/*.db
+go_backend/uploads
 go_backend/*.sqlite3
 *.exe
 *.test
 *.out
+
+# Ignore python scripts in the backend
+go_backend/*.py

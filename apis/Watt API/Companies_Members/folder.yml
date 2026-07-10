@@ -1,0 +1,7 @@
+info:
+  name: Companies_Members
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

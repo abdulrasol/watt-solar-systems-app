@@ -1,0 +1,52 @@
+info:
+  name: ListB2BCompanyProducts
+  type: http
+  seq: 22
+  tags:
+    - Shop
+
+http:
+  method: GET
+  url: "{{baseUrl}}/shop/b2b/companies/:id/products"
+  params:
+    - name: id
+      value: ""
+      type: path
+      description: company_id
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/shop/b2b/companies/:id/products"
+      method: GET
+      params:
+        - name: id
+          value: ""
+          type: path
+          description: company_id
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "body": "",
+            "error": false,
+            "message": "",
+            "message_user": "",
+            "status": 0
+          }
+
+docs: List products for a specific B2B company
