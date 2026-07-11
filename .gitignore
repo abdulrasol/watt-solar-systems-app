@@ -75,3 +75,10 @@ go_backend/*.sqlite3
 
 # Ignore python scripts in the backend
 go_backend/*.py
+.DS_Store
+go_backend/server
+go_backend/solarhub_go.sqlite3
+
+# Firebase FCM Service Account Secrets
+go_backend/fcm-service-account.json
+go_backend/fcm-service-account-old.json
