@@ -2,6 +2,7 @@ package admin
 
 import (
 	"embed"
+	"encoding/json"
 	"html/template"
 	"math"
 	"net/http"
@@ -15,13 +16,35 @@ import (
 //go:embed crud_section.html form_template.html
 var crudTemplateFS embed.FS
 
-var crudSectionTemplate = template.Must(template.New("crud_section.html").Funcs(template.FuncMap{
+var templateFuncs = template.FuncMap{
 	"add": func(a, b int) int { return a + b },
 	"sub": func(a, b int) int { return a - b },
 	"seq": func(n int) []int { r := make([]int, n); for i := 0; i < n; i++ { r[i] = i + 1 }; return r },
-}).ParseFS(crudTemplateFS, "crud_section.html"))
+	"inJSON": func(data map[string]string, key, value string) bool {
+		raw, ok := data[key]
+		if !ok || raw == "" {
+			return false
+		}
+		var m map[string]interface{}
+		if json.Unmarshal([]byte(raw), &m) == nil {
+			v, ok := m[value]
+			return ok && v == true
+		}
+		var arr []string
+		if json.Unmarshal([]byte(raw), &arr) == nil {
+			for _, v := range arr {
+				if v == value {
+					return true
+				}
+			}
+		}
+		return raw == value
+	},
+}
 
-var formTemplate = template.Must(template.New("form_template.html").ParseFS(crudTemplateFS, "form_template.html"))
+var crudSectionTemplate = template.Must(template.New("crud_section.html").Funcs(templateFuncs).ParseFS(crudTemplateFS, "crud_section.html"))
+
+var formTemplate = template.Must(template.New("form_template.html").Funcs(templateFuncs).ParseFS(crudTemplateFS, "form_template.html"))
 
 type SelectOption struct {
 	Value string

@@ -20,6 +20,16 @@
       <option value="{{.Value}}" {{if eq (index $.Data .Value) .Value}}selected{{end}}>{{.Label}}</option>
       {{end}}
     </select>
+    {{else if eq .Type "checkboxes"}}
+    <div class="checkbox-group">
+      {{range .Options}}
+      <label class="checkbox-label">
+        <input type="checkbox" name="{{$.Key}}" value="{{.Value}}"
+               {{if inJSON $.Data $.Key .Value}}checked{{end}}>
+        <span>{{.Label}}</span>
+      </label>
+      {{end}}
+    </div>
     {{else if eq .Type "textarea"}}
     <textarea id="field_{{.Key}}" name="{{.Key}}" {{if .Required}}required{{end}}>{{index $.Data .Key}}</textarea>
     {{else if eq .Type "json"}}

@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -285,19 +286,37 @@ func DeleteCurrency(c *gin.Context) {
 // SUBSCRIPTION PLANS CRUD
 // ──────────────────────────────────────────────
 
-var subFormFields = []FieldDef{
-	{Key: "name", Label: "الاسم", Type: "text", Required: true},
-	{Key: "duration_days", Label: "المدة (يوم)", Type: "number", Required: true},
-	{Key: "price", Label: "السعر", Type: "number", Required: true},
-	{Key: "description", Label: "الوصف", Type: "textarea"},
-	{Key: "is_active", Label: "مفعل", Type: "bool"},
-	{Key: "features", Label: "الميزات (JSON)", Type: "json"},
+func subFormFieldsWithFeatures() []FieldDef {
+	serviceOpts := []SelectOption{}
+	for _, s := range models.AllAvailableServices {
+		serviceOpts = append(serviceOpts, SelectOption{Value: s.Code, Label: s.Name})
+	}
+	return []FieldDef{
+		{Key: "name", Label: "الاسم", Type: "text", Required: true},
+		{Key: "duration_days", Label: "المدة (يوم)", Type: "number", Required: true},
+		{Key: "price", Label: "السعر", Type: "number", Required: true},
+		{Key: "description", Label: "الوصف", Type: "textarea"},
+		{Key: "is_active", Label: "مفعل", Type: "bool"},
+		{Key: "features", Label: "الخدمات المضمنة", Type: "checkboxes", Options: serviceOpts},
+	}
+}
+
+func buildFeaturesMap(checked []string, all []SelectOption) datatypes.JSON {
+	m := map[string]bool{}
+	for _, opt := range all {
+		m[opt.Value] = false
+	}
+	for _, v := range checked {
+		m[v] = true
+	}
+	raw, _ := json.Marshal(m)
+	return datatypes.JSON(raw)
 }
 
 func CreateSubscriptionForm(c *gin.Context) {
 	renderForm(c, FormData{
 		Action: "/admin/config/subscriptions/create", Method: "post",
-		Fields: subFormFields, Data: map[string]string{},
+		Fields: subFormFieldsWithFeatures(), Data: map[string]string{},
 	})
 }
 
@@ -307,12 +326,12 @@ func CreateSubscription(c *gin.Context) {
 	priceStr := c.PostForm("price")
 	desc := c.PostForm("description")
 	isActive := c.PostForm("is_active") == "true"
-	featuresStr := c.PostForm("features")
+	featuresArr := c.PostFormArray("features")
 
 	if name == "" || durationStr == "" || priceStr == "" {
 		renderFormError(c, FormData{
 			Action: "/admin/config/subscriptions/create", Method: "post",
-			Fields: subFormFields,
+			Fields: subFormFieldsWithFeatures(),
 			Data:   map[string]string{"name": name, "duration_days": durationStr, "price": priceStr},
 		}, "الحقول المطلوبة ناقصة")
 		return
@@ -323,10 +342,7 @@ func CreateSubscription(c *gin.Context) {
 	if desc != "" {
 		descPtr = &desc
 	}
-	features := datatypes.JSON([]byte(featuresStr))
-	if featuresStr == "" {
-		features = datatypes.JSON([]byte("{}"))
-	}
+	features := buildFeaturesMap(featuresArr, subFormFieldsWithFeatures()[5].Options)
 	database.DB.Create(&models.SubscriptionPlan{
 		Name: name, DurationDays: duration, Price: price,
 		Description: descPtr, IsActive: isActive, Features: features,
@@ -355,7 +371,7 @@ func EditSubscriptionForm(c *gin.Context) {
 	}
 	renderForm(c, FormData{
 		Action: "/admin/config/subscriptions/" + idStr + "/edit", Method: "put",
-		Fields: subFormFields,
+		Fields: subFormFieldsWithFeatures(),
 		Data: map[string]string{
 			"name": plan.Name, "duration_days": strconv.Itoa(plan.DurationDays),
 			"price": strconv.FormatFloat(plan.Price, 'f', 2, 64),
@@ -377,12 +393,12 @@ func EditSubscription(c *gin.Context) {
 	priceStr := c.PostForm("price")
 	desc := c.PostForm("description")
 	isActive := c.PostForm("is_active") == "true"
-	featuresStr := c.PostForm("features")
+	featuresArr := c.PostFormArray("features")
 
 	if name == "" || durationStr == "" || priceStr == "" {
 		renderFormError(c, FormData{
 			Action: "/admin/config/subscriptions/" + idStr + "/edit", Method: "put",
-			Fields: subFormFields,
+			Fields: subFormFieldsWithFeatures(),
 			Data:   map[string]string{"name": name, "duration_days": durationStr, "price": priceStr},
 		}, "الحقول المطلوبة ناقصة")
 		return
@@ -393,10 +409,7 @@ func EditSubscription(c *gin.Context) {
 	if desc != "" {
 		descPtr = &desc
 	}
-	features := datatypes.JSON([]byte(featuresStr))
-	if featuresStr == "" {
-		features = datatypes.JSON([]byte("{}"))
-	}
+	features := buildFeaturesMap(featuresArr, subFormFieldsWithFeatures()[5].Options)
 	database.DB.Model(&plan).Updates(map[string]interface{}{
 		"name": name, "duration_days": duration, "price": price,
 		"description": descPtr, "is_active": isActive, "features": features,
@@ -422,7 +435,7 @@ func ctFormFieldOptions() []FieldDef {
 	return []FieldDef{
 		{Key: "name", Label: "الاسم", Type: "text", Required: true},
 		{Key: "ctype", Label: "المفتاح", Type: "text", Required: true},
-		{Key: "allowed_features", Label: "الخدمات المسموحة", Type: "select", Options: serviceOpts},
+		{Key: "allowed_features", Label: "الخدمات المسموحة", Type: "checkboxes", Options: serviceOpts},
 	}
 }
 
@@ -436,7 +449,7 @@ func CreateCompanyTypeForm(c *gin.Context) {
 func CreateCompanyType(c *gin.Context) {
 	name := strings.TrimSpace(c.PostForm("name"))
 	ctype := strings.TrimSpace(c.PostForm("ctype"))
-	featuresStr := c.PostForm("allowed_features")
+	featuresArr := c.PostFormArray("allowed_features")
 	if name == "" || ctype == "" {
 		renderFormError(c, FormData{
 			Action: "/admin/config/company-types/create", Method: "post",
@@ -445,12 +458,9 @@ func CreateCompanyType(c *gin.Context) {
 		}, "جميع الحقول مطلوبة")
 		return
 	}
-	features := datatypes.JSON([]byte(featuresStr))
-	if featuresStr == "" {
-		features = datatypes.JSON([]byte("[]"))
-	}
+	featuresJSON, _ := json.Marshal(featuresArr)
 	database.DB.Create(&models.CompanyType{
-		Name: name, CType: ctype, AllowedFeatures: features,
+		Name: name, CType: ctype, AllowedFeatures: datatypes.JSON(featuresJSON),
 	})
 	c.Redirect(http.StatusFound, "/admin/config/section/company-types")
 }
@@ -484,7 +494,7 @@ func EditCompanyType(c *gin.Context) {
 	}
 	name := strings.TrimSpace(c.PostForm("name"))
 	ctype := strings.TrimSpace(c.PostForm("ctype"))
-	featuresStr := c.PostForm("allowed_features")
+	featuresArr := c.PostFormArray("allowed_features")
 	if name == "" || ctype == "" {
 		renderFormError(c, FormData{
 			Action: "/admin/config/company-types/" + idStr + "/edit", Method: "put",
@@ -493,12 +503,9 @@ func EditCompanyType(c *gin.Context) {
 		}, "جميع الحقول مطلوبة")
 		return
 	}
-	features := datatypes.JSON([]byte(featuresStr))
-	if featuresStr == "" {
-		features = datatypes.JSON([]byte("[]"))
-	}
+	featuresJSON, _ := json.Marshal(featuresArr)
 	database.DB.Model(&ct).Updates(map[string]interface{}{
-		"name": name, "c_type": ctype, "allowed_features": features,
+		"name": name, "c_type": ctype, "allowed_features": featuresJSON,
 	})
 	c.Redirect(http.StatusFound, "/admin/config/section/company-types")
 }
