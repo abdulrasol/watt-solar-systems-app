@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/datatypes"
+)
 
 // ConfigOut schema
 type ConfigOut struct {
@@ -77,8 +81,9 @@ type SubscriptionPlanSchema struct {
 	Name         string  `json:"name" binding:"required"`
 	DurationDays int     `json:"duration_days" binding:"required"`
 	Price        float64 `json:"price"`
-	Description  *string `json:"description"`
-	IsActive     bool    `json:"is_active"`
+	Description  *string                `json:"description"`
+	IsActive     bool                   `json:"is_active"`
+	Features     map[string]interface{} `json:"features"`
 }
 
 // SubscriptionPlanOut schema
@@ -87,9 +92,10 @@ type SubscriptionPlanOut struct {
 	Name         string    `json:"name"`
 	DurationDays int       `json:"duration_days"`
 	Price        float64   `json:"price"`
-	Description  *string   `json:"description"`
-	IsActive     bool      `json:"is_active"`
-	CreatedAt    time.Time `json:"created_at"`
+	Description  *string        `json:"description"`
+	IsActive     bool           `json:"is_active"`
+	Features     datatypes.JSON `json:"features"`
+	CreatedAt    time.Time      `json:"created_at"`
 }
 
 // GlobalCategorySchema schema

@@ -182,14 +182,18 @@ func RequestSubscription(c *gin.Context) {
 		return
 	}
 
+	// Preload CompanyType and AllowedSubscriptionPlans
+	var cType models.CompanyType
+	if company.CompanyTypeID != nil {
+		database.DB.Preload("AllowedSubscriptionPlans").First(&cType, *company.CompanyTypeID)
+	}
+
 	// Check allowed for company type
 	allowed := false
-	if company.CompanyType != nil {
-		for _, p := range company.CompanyType.AllowedSubscriptionPlans {
-			if p.ID == plan.ID {
-				allowed = true
-				break
-			}
+	for _, p := range cType.AllowedSubscriptionPlans {
+		if p.ID == plan.ID {
+			allowed = true
+			break
 		}
 	}
 	if !allowed {

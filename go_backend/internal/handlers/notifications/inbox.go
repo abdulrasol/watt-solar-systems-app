@@ -10,7 +10,18 @@ import (
 	"watt/internal/response"
 )
 
-// GetMyNotifications handles GET /api/v1/notifications
+// GetMyNotifications godoc
+// @Summary      Get user notifications
+// @Description  Get a paginated list of notifications for the current user
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        page    query     int  false  "Page number" default(1)
+// @Param        limit   query     int  false  "Page size" default(12)
+// @Success      200     {object}  response.APIResponse
+// @Failure      401     {object}  response.APIResponse
+// @Router       /api/v1/notifications [get]
+// @Security     BearerAuth
 func GetMyNotifications(c *gin.Context) {
 	user, ok := currentUser(c)
 	if !ok {
@@ -35,7 +46,19 @@ func GetMyNotifications(c *gin.Context) {
 	response.Success(c, http.StatusOK, "Notifications retrieved successfully", paginationResponse(page, pageSize, total, items))
 }
 
-// MarkNotificationRead handles POST /api/v1/notifications/:id/read
+// MarkNotificationRead godoc
+// @Summary      Mark notification as read
+// @Description  Mark a specific notification as read by its ID
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        id      path      int  true  "Notification ID"
+// @Success      200     {object}  response.APIResponse
+// @Failure      400     {object}  response.APIResponse
+// @Failure      401     {object}  response.APIResponse
+// @Failure      404     {object}  response.APIResponse
+// @Router       /api/v1/notifications/{id}/read [post]
+// @Security     BearerAuth
 func MarkNotificationRead(c *gin.Context) {
 	user, ok := currentUser(c)
 	if !ok {

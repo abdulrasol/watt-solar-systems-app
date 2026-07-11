@@ -1,6 +1,6 @@
 basePath: /api/v1
 definitions:
-  handlers.DeleteAccountSchema:
+  internal_handlers.DeleteAccountSchema:
     properties:
       password:
         type: string
@@ -10,14 +10,14 @@ definitions:
     - password
     - reason
     type: object
-  handlers.LanguageUpdateSchema:
+  internal_handlers.LanguageUpdateSchema:
     properties:
       language:
         type: string
     required:
     - language
     type: object
-  handlers.PasswordResetConfirmSchema:
+  internal_handlers.PasswordResetConfirmSchema:
     properties:
       password:
         type: string
@@ -27,29 +27,37 @@ definitions:
     - password
     - token
     type: object
-  handlers.PasswordResetRequestSchema:
+  internal_handlers.PasswordResetRequestSchema:
     properties:
       email:
         type: string
     required:
     - email
     type: object
-  handlers.PasswordResetTokenSchema:
+  internal_handlers.PasswordResetTokenSchema:
     properties:
       token:
         type: string
     required:
     - token
     type: object
-  handlers.PromoteUserRequest:
+  internal_handlers.PromoteUserRequest:
     properties:
       promote:
         type: boolean
       user_id:
         type: integer
     type: object
-  models.AdminCompanyTypeCreateSchema:
+  watt_internal_models.AdminCompanyTypeCreateSchema:
     properties:
+      allowed_features:
+        items:
+          type: string
+        type: array
+      allowed_subscription_plans:
+        items:
+          type: integer
+        type: array
       ctype:
         type: string
       name:
@@ -58,14 +66,22 @@ definitions:
     - ctype
     - name
     type: object
-  models.AdminCompanyTypeUpdateSchema:
+  watt_internal_models.AdminCompanyTypeUpdateSchema:
     properties:
+      allowed_features:
+        items:
+          type: string
+        type: array
+      allowed_subscription_plans:
+        items:
+          type: integer
+        type: array
       ctype:
         type: string
       name:
         type: string
     type: object
-  models.B2BOrderCreateSchema:
+  watt_internal_models.B2BOrderCreateSchema:
     properties:
       currency_code:
         type: string
@@ -78,7 +94,7 @@ definitions:
         type: string
       items:
         items:
-          $ref: '#/definitions/models.OrderItemCreateSchema'
+          $ref: '#/definitions/watt_internal_models.OrderItemCreateSchema'
         type: array
       payment_method:
         default: credit
@@ -98,7 +114,7 @@ definitions:
     - items
     - seller_company_id
     type: object
-  models.B2COrderCreateSchema:
+  watt_internal_models.B2COrderCreateSchema:
     properties:
       currency_code:
         type: string
@@ -109,7 +125,7 @@ definitions:
         type: number
       items:
         items:
-          $ref: '#/definitions/models.OrderItemCreateSchema'
+          $ref: '#/definitions/watt_internal_models.OrderItemCreateSchema'
         type: array
       payment_method:
         default: cash
@@ -129,12 +145,43 @@ definitions:
     - items
     - seller_company_id
     type: object
-  models.CityOut:
+  watt_internal_models.BroadcastSchema:
+    properties:
+      body:
+        type: string
+      data:
+        additionalProperties: true
+        type: object
+      title:
+        type: string
+    required:
+    - body
+    - title
+    type: object
+  watt_internal_models.CartValidateRequest:
+    properties:
+      delivery_option_id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/watt_internal_models.OrderItemCreateSchema'
+        type: array
+      order_type:
+        description: b2b or b2c
+        type: string
+      seller_company_id:
+        type: integer
+    required:
+    - items
+    - order_type
+    - seller_company_id
+    type: object
+  watt_internal_models.CityOut:
     properties:
       code:
         type: string
       country:
-        $ref: '#/definitions/models.CountryOut'
+        $ref: '#/definitions/watt_internal_models.CountryOut'
       created_at:
         type: string
       id:
@@ -142,7 +189,7 @@ definitions:
       name:
         type: string
     type: object
-  models.CitySchema:
+  watt_internal_models.CitySchema:
     properties:
       code:
         type: string
@@ -155,7 +202,7 @@ definitions:
     - country_id
     - name
     type: object
-  models.CityUpdateSchema:
+  watt_internal_models.CityUpdateSchema:
     properties:
       code:
         type: string
@@ -164,14 +211,14 @@ definitions:
       name:
         type: string
     type: object
-  models.CompanyCategorySchema:
+  watt_internal_models.CompanyCategorySchema:
     properties:
       name:
         type: string
     required:
     - name
     type: object
-  models.CompanyServiceCatalogCreateSchema:
+  watt_internal_models.CompanyServiceCatalogCreateSchema:
     properties:
       category:
         default: general
@@ -196,7 +243,7 @@ definitions:
     - code
     - name
     type: object
-  models.CompanyServiceCatalogUpdateSchema:
+  watt_internal_models.CompanyServiceCatalogUpdateSchema:
     properties:
       category:
         type: string
@@ -213,7 +260,7 @@ definitions:
       sort_order:
         type: integer
     type: object
-  models.CompanyServiceCreateSchema:
+  watt_internal_models.CompanyServiceCreateSchema:
     properties:
       description:
         type: string
@@ -224,7 +271,7 @@ definitions:
     required:
     - title
     type: object
-  models.CompanyServiceUpdateSchema:
+  watt_internal_models.CompanyServiceUpdateSchema:
     properties:
       description:
         type: string
@@ -233,21 +280,30 @@ definitions:
       title:
         type: string
     type: object
-  models.CompanyStatusActionSchema:
+  watt_internal_models.CompanyStatusActionSchema:
     properties:
       status:
         type: string
     required:
     - status
     type: object
-  models.CompanyWorkUpdateSchema:
+  watt_internal_models.CompanySubscriptionRequestReviewSchema:
+    properties:
+      notes:
+        type: string
+      status:
+        type: string
+    required:
+    - status
+    type: object
+  watt_internal_models.CompanyWorkUpdateSchema:
     properties:
       body:
         type: string
       title:
         type: string
     type: object
-  models.ConfigCreateSchema:
+  watt_internal_models.ConfigCreateSchema:
     properties:
       description:
         type: string
@@ -258,7 +314,7 @@ definitions:
     required:
     - key
     type: object
-  models.ConfigOut:
+  watt_internal_models.ConfigOut:
     properties:
       description:
         type: string
@@ -269,14 +325,14 @@ definitions:
       value:
         type: boolean
     type: object
-  models.ConfigUpdateSchema:
+  watt_internal_models.ConfigUpdateSchema:
     properties:
       description:
         type: string
       value:
         type: boolean
     type: object
-  models.ContactSchema:
+  watt_internal_models.ContactSchema:
     properties:
       company:
         type: integer
@@ -296,7 +352,7 @@ definitions:
     - name
     - phone
     type: object
-  models.CountryOut:
+  watt_internal_models.CountryOut:
     properties:
       code:
         type: string
@@ -310,7 +366,7 @@ definitions:
     - code
     - name
     type: object
-  models.CreateMemberSchema:
+  watt_internal_models.CreateMemberSchema:
     properties:
       email:
         type: string
@@ -332,7 +388,7 @@ definitions:
     - password
     - username
     type: object
-  models.CurrencyOut:
+  watt_internal_models.CurrencyOut:
     properties:
       code:
         type: string
@@ -347,7 +403,7 @@ definitions:
       symbol:
         type: string
     type: object
-  models.CurrencySchema:
+  watt_internal_models.CurrencySchema:
     properties:
       code:
         type: string
@@ -362,7 +418,7 @@ definitions:
     - name
     - symbol
     type: object
-  models.CustomerCreateSchema:
+  watt_internal_models.CustomerCreateSchema:
     properties:
       address:
         type: string
@@ -381,7 +437,7 @@ definitions:
     required:
     - customer_type
     type: object
-  models.CustomerUpdateSchema:
+  watt_internal_models.CustomerUpdateSchema:
     properties:
       address:
         type: string
@@ -392,7 +448,7 @@ definitions:
       phone_number:
         type: string
     type: object
-  models.DeliveryOptionSchema:
+  watt_internal_models.DeliveryOptionSchema:
     properties:
       company:
         type: integer
@@ -413,7 +469,7 @@ definitions:
       name:
         type: string
     type: object
-  models.ExpenseSchema:
+  watt_internal_models.ExpenseSchema:
     properties:
       amount:
         type: number
@@ -428,7 +484,7 @@ definitions:
       id:
         type: integer
     type: object
-  models.FeedbackSchema:
+  watt_internal_models.FeedbackSchema:
     properties:
       created_at:
         type: string
@@ -445,14 +501,14 @@ definitions:
       phone_number:
         type: integer
     type: object
-  models.FeedbackUpdateFormSchema:
+  watt_internal_models.FeedbackUpdateFormSchema:
     properties:
       is_read:
         type: boolean
     required:
     - is_read
     type: object
-  models.FinancialTransactionSchema:
+  watt_internal_models.FinancialTransactionSchema:
     properties:
       amount:
         type: number
@@ -477,7 +533,7 @@ definitions:
     - category
     - type
     type: object
-  models.GlobalCategoryOut:
+  watt_internal_models.GlobalCategoryOut:
     properties:
       icon:
         type: string
@@ -486,7 +542,25 @@ definitions:
       name:
         type: string
     type: object
-  models.InviteMemberSchema:
+  watt_internal_models.GroupNotificationSchema:
+    properties:
+      body:
+        type: string
+      data:
+        additionalProperties: true
+        type: object
+      group_id: {}
+      group_type:
+        type: string
+      title:
+        type: string
+    required:
+    - body
+    - group_id
+    - group_type
+    - title
+    type: object
+  watt_internal_models.InviteMemberSchema:
     properties:
       email:
         type: string
@@ -496,7 +570,7 @@ definitions:
     required:
     - email
     type: object
-  models.LoginRequest:
+  watt_internal_models.LoginRequest:
     properties:
       password:
         type: string
@@ -506,7 +580,7 @@ definitions:
     - password
     - username
     type: object
-  models.NotificationOut:
+  watt_internal_models.NotificationOut:
     properties:
       body:
         type: string
@@ -527,7 +601,7 @@ definitions:
       user_id:
         type: integer
     type: object
-  models.OrderItemCreateSchema:
+  watt_internal_models.OrderItemCreateSchema:
     properties:
       product_id:
         type: integer
@@ -542,14 +616,14 @@ definitions:
     - product_id
     - quantity
     type: object
-  models.PosterExtendSchema:
+  watt_internal_models.PosterExtendSchema:
     properties:
       expires_at:
         type: string
     required:
     - expires_at
     type: object
-  models.PosterReviewSchema:
+  watt_internal_models.PosterReviewSchema:
     properties:
       duration_days:
         default: 7
@@ -559,7 +633,7 @@ definitions:
     required:
     - status
     type: object
-  models.RegisterRequest:
+  watt_internal_models.RegisterRequest:
     properties:
       city_id:
         type: integer
@@ -583,7 +657,7 @@ definitions:
     - phone
     - username
     type: object
-  models.SellerOrderCreateSchema:
+  watt_internal_models.SellerOrderCreateSchema:
     properties:
       buyer_company_id:
         type: integer
@@ -602,7 +676,7 @@ definitions:
         type: string
       items:
         items:
-          $ref: '#/definitions/models.OrderItemCreateSchema'
+          $ref: '#/definitions/watt_internal_models.OrderItemCreateSchema'
         type: array
       notes:
         type: string
@@ -636,7 +710,7 @@ definitions:
         default: 0
         type: number
     type: object
-  models.SellerOrderUpdateSchema:
+  watt_internal_models.SellerOrderUpdateSchema:
     properties:
       cancellation_reason:
         type: string
@@ -650,7 +724,21 @@ definitions:
       status:
         type: string
     type: object
-  models.SubscriptionPlanOut:
+  watt_internal_models.SubscribeSchema:
+    properties:
+      app_version:
+        type: string
+      device_id:
+        type: string
+      platform:
+        type: string
+      token:
+        type: string
+    required:
+    - platform
+    - token
+    type: object
+  watt_internal_models.SubscriptionPlanOut:
     properties:
       created_at:
         type: string
@@ -658,6 +746,10 @@ definitions:
         type: string
       duration_days:
         type: integer
+      features:
+        items:
+          type: integer
+        type: array
       id:
         type: integer
       is_active:
@@ -667,12 +759,15 @@ definitions:
       price:
         type: number
     type: object
-  models.SubscriptionPlanSchema:
+  watt_internal_models.SubscriptionPlanSchema:
     properties:
       description:
         type: string
       duration_days:
         type: integer
+      features:
+        additionalProperties: true
+        type: object
       is_active:
         type: boolean
       name:
@@ -683,7 +778,7 @@ definitions:
     - duration_days
     - name
     type: object
-  models.SupplierCreateSchema:
+  watt_internal_models.SupplierCreateSchema:
     properties:
       address:
         type: string
@@ -705,7 +800,7 @@ definitions:
     required:
     - name
     type: object
-  models.SupplierUpdateSchema:
+  watt_internal_models.SupplierUpdateSchema:
     properties:
       address:
         type: string
@@ -720,7 +815,36 @@ definitions:
       tax_id:
         type: string
     type: object
-  response.APIResponse:
+  watt_internal_models.TopicNotificationSchema:
+    properties:
+      body:
+        type: string
+      data:
+        additionalProperties: true
+        type: object
+      title:
+        type: string
+    required:
+    - body
+    - title
+    type: object
+  watt_internal_models.UserNotificationSchema:
+    properties:
+      body:
+        type: string
+      data:
+        additionalProperties: true
+        type: object
+      title:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - body
+    - title
+    - user_id
+    type: object
+  watt_internal_response.APIResponse:
     properties:
       body: {}
       error:
@@ -735,7 +859,7 @@ definitions:
 info:
   contact: {}
   description: SolarHub Backend API in Go
-  title: SolarHub API
+  title: Watt API
   version: "1.0"
 paths:
   /admin/categories:
@@ -748,11 +872,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.GlobalCategoryOut'
+                    $ref: '#/definitions/watt_internal_models.GlobalCategoryOut'
                   type: array
               type: object
       security:
@@ -781,10 +905,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.GlobalCategoryOut'
+                  $ref: '#/definitions/watt_internal_models.GlobalCategoryOut'
               type: object
       security:
       - Bearer: []
@@ -806,7 +930,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Delete a category
@@ -837,10 +961,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.GlobalCategoryOut'
+                  $ref: '#/definitions/watt_internal_models.GlobalCategoryOut'
               type: object
       security:
       - Bearer: []
@@ -862,11 +986,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.CityOut'
+                    $ref: '#/definitions/watt_internal_models.CityOut'
                   type: array
               type: object
       security:
@@ -884,7 +1008,7 @@ paths:
         name: city
         required: true
         schema:
-          $ref: '#/definitions/models.CitySchema'
+          $ref: '#/definitions/watt_internal_models.CitySchema'
       produces:
       - application/json
       responses:
@@ -892,10 +1016,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.CityOut'
+                  $ref: '#/definitions/watt_internal_models.CityOut'
               type: object
       security:
       - Bearer: []
@@ -932,7 +1056,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminListCompanies
@@ -953,7 +1077,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminGetCompany
@@ -974,7 +1098,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminGetCompanyDetails
@@ -995,7 +1119,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminGetCompanyMembers
@@ -1016,7 +1140,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminGetCompanyPosters
@@ -1037,7 +1161,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminGetCompanyServices
@@ -1054,7 +1178,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CompanyStatusActionSchema'
+          $ref: '#/definitions/watt_internal_models.CompanyStatusActionSchema'
       - description: company_id
         in: path
         name: company_id
@@ -1066,10 +1190,44 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminUpdateCompanyStatus
+      tags:
+      - Admin Companies API
+  /admin/companies/{company_id}/subscription-requests/{request_id}/review:
+    post:
+      consumes:
+      - application/json
+      description: Review a company's subscription request (active/rejected)
+      parameters:
+      - description: company_id
+        in: path
+        name: company_id
+        required: true
+        type: integer
+      - description: request_id
+        in: path
+        name: request_id
+        required: true
+        type: integer
+      - description: Review payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/watt_internal_models.CompanySubscriptionRequestReviewSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - Bearer: []
+      summary: AdminReviewSubscriptionRequest
       tags:
       - Admin Companies API
   /admin/companies/catalog/services:
@@ -1081,7 +1239,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminListCatalogServices
@@ -1097,14 +1255,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CompanyServiceCatalogCreateSchema'
+          $ref: '#/definitions/watt_internal_models.CompanyServiceCatalogCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminCreateCatalogService
@@ -1127,7 +1285,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminDeleteCatalogService
@@ -1143,7 +1301,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CompanyServiceCatalogUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.CompanyServiceCatalogUpdateSchema'
       - description: service_code
         in: path
         name: service_code
@@ -1155,7 +1313,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminUpdateCatalogService
@@ -1191,7 +1349,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminListAdminPosters
@@ -1213,14 +1371,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.PosterExtendSchema'
+          $ref: '#/definitions/watt_internal_models.PosterExtendSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminExtendPoster
@@ -1242,14 +1400,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.PosterReviewSchema'
+          $ref: '#/definitions/watt_internal_models.PosterReviewSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminReviewPoster
@@ -1280,7 +1438,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminCreateServiceType
@@ -1303,7 +1461,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminDeleteServiceType
@@ -1337,10 +1495,40 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminUpdateServiceType
+      tags:
+      - Admin Companies API
+  /admin/companies/subscription-requests:
+    get:
+      consumes:
+      - application/json
+      description: List all subscription requests
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: page_size
+        in: query
+        name: page_size
+        type: integer
+      - description: status (pending, active, rejected)
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - Bearer: []
+      summary: AdminListSubscriptionRequests
       tags:
       - Admin Companies API
   /admin/companies/types:
@@ -1354,14 +1542,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.AdminCompanyTypeCreateSchema'
+          $ref: '#/definitions/watt_internal_models.AdminCompanyTypeCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminCreateCompanyType
@@ -1384,7 +1572,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminDeleteCompanyType
@@ -1400,7 +1588,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.AdminCompanyTypeUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.AdminCompanyTypeUpdateSchema'
       - description: id
         in: path
         name: id
@@ -1412,7 +1600,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminUpdateCompanyType
@@ -1430,11 +1618,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.ConfigOut'
+                    $ref: '#/definitions/watt_internal_models.ConfigOut'
                   type: array
               type: object
       summary: Get all app configs
@@ -1450,7 +1638,7 @@ paths:
         name: config
         required: true
         schema:
-          $ref: '#/definitions/models.ConfigCreateSchema'
+          $ref: '#/definitions/watt_internal_models.ConfigCreateSchema'
       produces:
       - application/json
       responses:
@@ -1458,10 +1646,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.ConfigOut'
+                  $ref: '#/definitions/watt_internal_models.ConfigOut'
               type: object
       security:
       - Bearer: []
@@ -1484,7 +1672,7 @@ paths:
         name: config
         required: true
         schema:
-          $ref: '#/definitions/models.ConfigUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.ConfigUpdateSchema'
       produces:
       - application/json
       responses:
@@ -1492,10 +1680,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.ConfigOut'
+                  $ref: '#/definitions/watt_internal_models.ConfigOut'
               type: object
       security:
       - Bearer: []
@@ -1512,11 +1700,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.CountryOut'
+                    $ref: '#/definitions/watt_internal_models.CountryOut'
                   type: array
               type: object
       security:
@@ -1534,7 +1722,7 @@ paths:
         name: country
         required: true
         schema:
-          $ref: '#/definitions/models.CountryOut'
+          $ref: '#/definitions/watt_internal_models.CountryOut'
       produces:
       - application/json
       responses:
@@ -1542,10 +1730,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.CountryOut'
+                  $ref: '#/definitions/watt_internal_models.CountryOut'
               type: object
       security:
       - Bearer: []
@@ -1567,7 +1755,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Delete a country
@@ -1588,7 +1776,7 @@ paths:
         name: country
         required: true
         schema:
-          $ref: '#/definitions/models.CountryOut'
+          $ref: '#/definitions/watt_internal_models.CountryOut'
       produces:
       - application/json
       responses:
@@ -1596,10 +1784,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.CountryOut'
+                  $ref: '#/definitions/watt_internal_models.CountryOut'
               type: object
       security:
       - Bearer: []
@@ -1616,11 +1804,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.CurrencyOut'
+                    $ref: '#/definitions/watt_internal_models.CurrencyOut'
                   type: array
               type: object
       security:
@@ -1638,7 +1826,7 @@ paths:
         name: currency
         required: true
         schema:
-          $ref: '#/definitions/models.CurrencySchema'
+          $ref: '#/definitions/watt_internal_models.CurrencySchema'
       produces:
       - application/json
       responses:
@@ -1646,10 +1834,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.CurrencyOut'
+                  $ref: '#/definitions/watt_internal_models.CurrencyOut'
               type: object
       security:
       - Bearer: []
@@ -1672,7 +1860,7 @@ paths:
         name: currency
         required: true
         schema:
-          $ref: '#/definitions/models.CurrencySchema'
+          $ref: '#/definitions/watt_internal_models.CurrencySchema'
       produces:
       - application/json
       responses:
@@ -1680,10 +1868,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.CurrencyOut'
+                  $ref: '#/definitions/watt_internal_models.CurrencyOut'
               type: object
       security:
       - Bearer: []
@@ -1700,11 +1888,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.FeedbackSchema'
+                    $ref: '#/definitions/watt_internal_models.FeedbackSchema'
                   type: array
               type: object
       security:
@@ -1722,11 +1910,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.NotificationOut'
+                    $ref: '#/definitions/watt_internal_models.NotificationOut'
                   type: array
               type: object
       security:
@@ -1743,7 +1931,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminListProducts
@@ -1769,7 +1957,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminCreateProduct
@@ -1790,7 +1978,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminDeleteProduct
@@ -1810,7 +1998,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminGetProduct
@@ -1841,7 +2029,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: AdminUpdateProduct
@@ -1857,11 +2045,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
                   items:
-                    $ref: '#/definitions/models.SubscriptionPlanOut'
+                    $ref: '#/definitions/watt_internal_models.SubscriptionPlanOut'
                   type: array
               type: object
       security:
@@ -1879,7 +2067,7 @@ paths:
         name: subscription
         required: true
         schema:
-          $ref: '#/definitions/models.SubscriptionPlanSchema'
+          $ref: '#/definitions/watt_internal_models.SubscriptionPlanSchema'
       produces:
       - application/json
       responses:
@@ -1887,10 +2075,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.SubscriptionPlanOut'
+                  $ref: '#/definitions/watt_internal_models.SubscriptionPlanOut'
               type: object
       security:
       - Bearer: []
@@ -1912,7 +2100,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Delete a subscription
@@ -1933,7 +2121,7 @@ paths:
         name: subscription
         required: true
         schema:
-          $ref: '#/definitions/models.SubscriptionPlanSchema'
+          $ref: '#/definitions/watt_internal_models.SubscriptionPlanSchema'
       produces:
       - application/json
       responses:
@@ -1941,10 +2129,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.SubscriptionPlanOut'
+                  $ref: '#/definitions/watt_internal_models.SubscriptionPlanOut'
               type: object
       security:
       - Bearer: []
@@ -1966,7 +2154,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - BearerAuth: []
       summary: Delete a city
@@ -1987,7 +2175,7 @@ paths:
         name: city
         required: true
         schema:
-          $ref: '#/definitions/models.CityUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.CityUpdateSchema'
       produces:
       - application/json
       responses:
@@ -1995,10 +2183,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.CityOut'
+                  $ref: '#/definitions/watt_internal_models.CityOut'
               type: object
       security:
       - Bearer: []
@@ -2020,7 +2208,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - BearerAuth: []
       summary: Delete an app config
@@ -2041,7 +2229,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - BearerAuth: []
       summary: Delete a currency
@@ -2062,7 +2250,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - BearerAuth: []
       summary: Delete a feedback
@@ -2084,7 +2272,7 @@ paths:
         name: feedback
         required: true
         schema:
-          $ref: '#/definitions/models.FeedbackUpdateFormSchema'
+          $ref: '#/definitions/watt_internal_models.FeedbackUpdateFormSchema'
       produces:
       - application/json
       responses:
@@ -2092,10 +2280,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.FeedbackSchema'
+                  $ref: '#/definitions/watt_internal_models.FeedbackSchema'
               type: object
       security:
       - BearerAuth: []
@@ -2133,14 +2321,321 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.FeedbackSchema'
+                  $ref: '#/definitions/watt_internal_models.FeedbackSchema'
               type: object
       summary: Create a feedback
       tags:
       - Admin API
+  /api/v1/notification/devices:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of registered push notification devices for the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: List active push devices
+      tags:
+      - Notifications
+  /api/v1/notification/send-broadcast:
+    post:
+      consumes:
+      - application/json
+      description: Send a push notification to all active devices (Superuser only)
+      parameters:
+      - description: Broadcast Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/watt_internal_models.BroadcastSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Send broadcast notification
+      tags:
+      - Notifications
+  /api/v1/notification/send-group:
+    post:
+      consumes:
+      - application/json
+      description: Send a push notification to a specific group of users (Superuser
+        only)
+      parameters:
+      - description: Group Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/watt_internal_models.GroupNotificationSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Send notification to a group
+      tags:
+      - Notifications
+  /api/v1/notification/send-topic/{topic}:
+    post:
+      consumes:
+      - application/json
+      description: Send a push notification to an FCM topic (Superuser only)
+      parameters:
+      - description: Topic Name
+        in: path
+        name: topic
+        required: true
+        type: string
+      - description: Topic Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/watt_internal_models.TopicNotificationSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Send notification to a topic
+      tags:
+      - Notifications
+  /api/v1/notification/send-user:
+    post:
+      consumes:
+      - application/json
+      description: Send a push notification to a single user (Superuser only)
+      parameters:
+      - description: User Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/watt_internal_models.UserNotificationSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Send notification to a specific user
+      tags:
+      - Notifications
+  /api/v1/notification/subscribe:
+    post:
+      consumes:
+      - application/json
+      description: Register a device token for push notifications (FCM)
+      parameters:
+      - description: Subscribe Payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/watt_internal_models.SubscribeSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Subscribe device to push notifications
+      tags:
+      - Notifications
+  /api/v1/notification/tokens/{token_id}/deactivate:
+    post:
+      consumes:
+      - application/json
+      description: Deactivate a push notification token by its ID
+      parameters:
+      - description: Device Token ID
+        in: path
+        name: token_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Deactivate a specific device token
+      tags:
+      - Notifications
+  /api/v1/notification/unsubscribe:
+    post:
+      consumes:
+      - application/json
+      description: Deactivates push notification tokens for the current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Unsubscribe device from push notifications
+      tags:
+      - Notifications
+  /api/v1/notifications:
+    get:
+      consumes:
+      - application/json
+      description: Get a paginated list of notifications for the current user
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 12
+        description: Page size
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user notifications
+      tags:
+      - Notifications
+  /api/v1/notifications/{id}/read:
+    post:
+      consumes:
+      - application/json
+      description: Mark a specific notification as read by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Mark notification as read
+      tags:
+      - Notifications
   /companies/{company_id}:
     put:
       consumes:
@@ -2198,19 +2693,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdateCompany
@@ -2233,7 +2728,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ActivationReminder
@@ -2254,7 +2749,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyAnalytics
@@ -2269,7 +2764,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyCategories
@@ -2285,14 +2780,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CompanyCategorySchema'
+          $ref: '#/definitions/watt_internal_models.CompanyCategorySchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateCompanyCategory
@@ -2311,7 +2806,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteCompanyCategory
@@ -2330,7 +2825,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetContacts
@@ -2346,7 +2841,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.ContactSchema'
+          $ref: '#/definitions/watt_internal_models.ContactSchema'
       - description: company_id
         in: path
         name: company_id
@@ -2358,7 +2853,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateContact
@@ -2382,7 +2877,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteContact
@@ -2403,7 +2898,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ListCompanyCustomers
@@ -2419,14 +2914,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CustomerCreateSchema'
+          $ref: '#/definitions/watt_internal_models.CustomerCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateCompanyCustomer
@@ -2447,7 +2942,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteCompanyCustomer
@@ -2467,7 +2962,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyCustomer
@@ -2488,14 +2983,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CustomerUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.CustomerUpdateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdateCompanyCustomer
@@ -2514,7 +3009,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetDeliveryOptions
@@ -2530,7 +3025,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.DeliveryOptionSchema'
+          $ref: '#/definitions/watt_internal_models.DeliveryOptionSchema'
       - description: company_id
         in: path
         name: company_id
@@ -2542,7 +3037,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateDeliveryOption
@@ -2566,7 +3061,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteDeliveryOption
@@ -2585,7 +3080,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetExpenses
@@ -2601,7 +3096,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.ExpenseSchema'
+          $ref: '#/definitions/watt_internal_models.ExpenseSchema'
       - description: company_id
         in: path
         name: company_id
@@ -2613,7 +3108,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateExpense
@@ -2637,7 +3132,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteExpense
@@ -2656,7 +3151,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetFinancialTransactions
@@ -2672,7 +3167,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.FinancialTransactionSchema'
+          $ref: '#/definitions/watt_internal_models.FinancialTransactionSchema'
       - description: company_id
         in: path
         name: company_id
@@ -2684,7 +3179,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateFinancialTransaction
@@ -2708,7 +3203,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteFinancialTransaction
@@ -2727,7 +3222,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyMembers
@@ -2751,10 +3246,40 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: RemoveMember
+      tags:
+      - Companies Members
+    patch:
+      description: UpdateMemberRole
+      parameters:
+      - description: company_id
+        in: path
+        name: company_id
+        required: true
+        type: integer
+      - description: member_id
+        in: path
+        name: member_id
+        required: true
+        type: integer
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - Bearer: []
+      summary: UpdateMemberRole
       tags:
       - Companies Members
   /companies/{company_id}/members/create:
@@ -2768,7 +3293,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CreateMemberSchema'
+          $ref: '#/definitions/watt_internal_models.CreateMemberSchema'
       - description: company_id
         in: path
         name: company_id
@@ -2780,7 +3305,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateNewMember
@@ -2797,7 +3322,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.InviteMemberSchema'
+          $ref: '#/definitions/watt_internal_models.InviteMemberSchema'
       - description: company_id
         in: path
         name: company_id
@@ -2809,7 +3334,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: InviteMember
@@ -2830,7 +3355,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ListCompanyOrders
@@ -2851,14 +3376,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.SellerOrderCreateSchema'
+          $ref: '#/definitions/watt_internal_models.SellerOrderCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateCompanyOrder
@@ -2879,7 +3404,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyOrder
@@ -2900,14 +3425,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.SellerOrderUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.SellerOrderUpdateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdateCompanyOrder
@@ -2922,7 +3447,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyPosters
@@ -2956,7 +3481,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreatePoster
@@ -2975,7 +3500,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeletePoster
@@ -3013,7 +3538,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdatePoster
@@ -3032,7 +3557,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: TogglePosterActive
@@ -3053,7 +3578,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ListCompanyProducts
@@ -3084,7 +3609,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateCompanyProduct
@@ -3105,7 +3630,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteCompanyProduct
@@ -3125,7 +3650,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyProduct
@@ -3156,7 +3681,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdateCompanyProduct
@@ -3177,7 +3702,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyProductFilterOptions
@@ -3192,7 +3717,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetPublicServices
@@ -3208,14 +3733,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CompanyServiceCreateSchema'
+          $ref: '#/definitions/watt_internal_models.CompanyServiceCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreatePublicService
@@ -3234,7 +3759,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeletePublicService
@@ -3255,32 +3780,17 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CompanyServiceUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.CompanyServiceUpdateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdatePublicService
-      tags:
-      - Company Operations
-  /companies/{company_id}/services:
-    get:
-      description: Get service catalog status for a company
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.APIResponse'
-      security:
-      - Bearer: []
-      summary: GetCompanyServices
       tags:
       - Company Operations
   /companies/{company_id}/subscription-request:
@@ -3314,7 +3824,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: RequestSubscription
@@ -3333,7 +3843,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanySummary
@@ -3354,7 +3864,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ListCompanySuppliers
@@ -3370,14 +3880,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.SupplierCreateSchema'
+          $ref: '#/definitions/watt_internal_models.SupplierCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateCompanySupplier
@@ -3398,7 +3908,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteCompanySupplier
@@ -3418,7 +3928,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanySupplier
@@ -3439,14 +3949,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.SupplierUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.SupplierUpdateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdateCompanySupplier
@@ -3467,7 +3977,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanySystems
@@ -3490,7 +4000,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ToggleCompanyActive
@@ -3509,7 +4019,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetCompanyWorks
@@ -3543,7 +4053,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateCompanyWork
@@ -3567,7 +4077,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteCompanyWork
@@ -3583,7 +4093,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CompanyWorkUpdateSchema'
+          $ref: '#/definitions/watt_internal_models.CompanyWorkUpdateSchema'
       - description: company_id
         in: path
         name: company_id
@@ -3600,7 +4110,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: UpdateCompanyWork
@@ -3624,7 +4134,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: DeleteCompanyWorkImage
@@ -3637,7 +4147,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetServiceCatalog
@@ -3693,7 +4203,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: RegisterCompany
@@ -3706,7 +4216,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: GetServiceTypes
       tags:
       - Companies
@@ -3723,7 +4233,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: GetServiceTypeByID
       tags:
       - Companies
@@ -3744,7 +4254,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ToggleCompanyServiceType
@@ -3757,7 +4267,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetSubscriptionPlans
@@ -3770,7 +4280,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: GetCompanyTypes
       tags:
       - Companies
@@ -3784,10 +4294,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.APIResponse'
+            - $ref: '#/definitions/watt_internal_response.APIResponse'
             - properties:
                 body:
-                  $ref: '#/definitions/models.CurrencyOut'
+                  $ref: '#/definitions/watt_internal_models.CurrencyOut'
               type: object
       summary: Get default currency
       tags:
@@ -3843,7 +4353,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: PublicListCompanies
       tags:
       - Public Companies API
@@ -3860,7 +4370,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: PublicGetCompany
       tags:
       - Public Companies API
@@ -3877,7 +4387,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: PublicGetCompanyServices
       tags:
       - Public Companies API
@@ -3898,7 +4408,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: PublicListCompanyWorks
       tags:
       - Public Companies API
@@ -3909,7 +4419,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: PublicListPosters
       tags:
       - Public Companies API
@@ -3923,7 +4433,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListServiceTypes
       tags:
       - Service Types
@@ -3947,7 +4457,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListB2BCategoryProducts
       tags:
       - Shop
@@ -3966,7 +4476,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListB2BCompanyProducts
       tags:
       - Shop
@@ -3979,7 +4489,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ListMyB2BOrders
@@ -4000,7 +4510,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetMyB2BOrder
@@ -4021,7 +4531,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CancelMyB2BOrder
@@ -4042,7 +4552,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ConfirmB2BReceipt
@@ -4059,14 +4569,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.B2BOrderCreateSchema'
+          $ref: '#/definitions/watt_internal_models.B2BOrderCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateB2BOrder
@@ -4081,7 +4591,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListB2BProducts
       tags:
       - Shop
@@ -4094,8 +4604,32 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListB2BSearch
+      tags:
+      - Shop
+  /shop/cart/validate:
+    post:
+      consumes:
+      - application/json
+      description: Validate cart and return calculated totals
+      parameters:
+      - description: Cart Validation Payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/watt_internal_models.CartValidateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/watt_internal_response.APIResponse'
+      security:
+      - Bearer: []
+      summary: ValidateCart
       tags:
       - Shop
   /shop/catalog/meta:
@@ -4107,7 +4641,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: StoreCatalogMeta
       tags:
       - Shop
@@ -4131,7 +4665,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListStoreCategoryProducts
       tags:
       - Shop
@@ -4165,7 +4699,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListStoreCompanies
       tags:
       - Shop
@@ -4184,7 +4718,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListStoreCompanyCategories
       tags:
       - Shop
@@ -4203,7 +4737,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListStoreCompanyProducts
       tags:
       - Shop
@@ -4216,7 +4750,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: ListMyStoreOrders
@@ -4237,7 +4771,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: GetMyStoreOrder
@@ -4258,7 +4792,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CancelMyStoreOrder
@@ -4275,14 +4809,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.B2COrderCreateSchema'
+          $ref: '#/definitions/watt_internal_models.B2COrderCreateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: CreateStoreOrder
@@ -4334,7 +4868,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListStoreProducts
       tags:
       - Shop
@@ -4347,7 +4881,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: ListStoreSearch
       tags:
       - Shop
@@ -4360,7 +4894,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: List all users
@@ -4381,7 +4915,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: Get user by username
       tags:
       - Users
@@ -4396,14 +4930,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.DeleteAccountSchema'
+          $ref: '#/definitions/internal_handlers.DeleteAccountSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Delete account
@@ -4420,14 +4954,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.LanguageUpdateSchema'
+          $ref: '#/definitions/internal_handlers.LanguageUpdateSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Update language
@@ -4444,26 +4978,26 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.LoginRequest'
+          $ref: '#/definitions/watt_internal_models.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: Login user
       tags:
       - Users
@@ -4478,14 +5012,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.PasswordResetRequestSchema'
+          $ref: '#/definitions/internal_handlers.PasswordResetRequestSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: Request password reset
       tags:
       - Users
@@ -4500,14 +5034,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.PasswordResetConfirmSchema'
+          $ref: '#/definitions/internal_handlers.PasswordResetConfirmSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: Confirm password reset
       tags:
       - Users
@@ -4522,14 +5056,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.PasswordResetTokenSchema'
+          $ref: '#/definitions/internal_handlers.PasswordResetTokenSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: Validate reset token
       tags:
       - Users
@@ -4542,15 +5076,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Get user profile
@@ -4604,23 +5138,23 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Update user profile
@@ -4642,14 +5176,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.PromoteUserRequest'
+          $ref: '#/definitions/internal_handlers.PromoteUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       security:
       - Bearer: []
       summary: Promote user
@@ -4666,22 +5200,22 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.RegisterRequest'
+          $ref: '#/definitions/watt_internal_models.RegisterRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.APIResponse'
+            $ref: '#/definitions/watt_internal_response.APIResponse'
       summary: Register a new user
       tags:
       - Users

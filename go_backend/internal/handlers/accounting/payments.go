@@ -43,7 +43,7 @@ func ListPayments(c *gin.Context) {
 		query = query.Where("payment_date <= ?", to)
 	}
 	if search := c.Query("search"); search != "" {
-		query = query.Where("reference ILIKE ?", "%"+search+"%")
+		query = query.Where("reference LIKE ?", "%"+search+"%")
 	}
 
 	orderCol := "payment_date desc"

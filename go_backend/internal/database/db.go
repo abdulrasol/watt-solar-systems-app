@@ -21,7 +21,7 @@ func Connect(cfg *config.Config) {
 		log.Println("Connecting to SQLite database:", cfg.DatabaseURL)
 		DB, err = gorm.Open(sqlite.Open(cfg.DatabaseURL), &gorm.Config{})
 	} else {
-		log.Println("Connecting to MariaDB/MySQL database...")
+		log.Println("Connecting to MariaDB/MySQL database..")
 		DB, err = gorm.Open(mysql.Open(cfg.DatabaseURL), &gorm.Config{})
 	}
 

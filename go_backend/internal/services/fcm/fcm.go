@@ -77,34 +77,21 @@ func SendMulticast(tokens []string, title, body string, data map[string]interfac
 		return 0, 0, nil
 	}
 
-	const batchSize = 500
 	stringData := stringifyData(data)
 
-	for i := 0; i < len(uniqueTokens); i += batchSize {
-		end := i + batchSize
-		if end > len(uniqueTokens) {
-			end = len(uniqueTokens)
-		}
-		batch := uniqueTokens[i:end]
-
-		msg := &messaging.MulticastMessage{
-			Tokens:       batch,
+	for _, token := range uniqueTokens {
+		msg := &messaging.Message{
+			Token:        token,
 			Notification: &messaging.Notification{Title: title, Body: body},
 			Data:         stringData,
 		}
-
-		resp, sendErr := client.SendMulticast(ctx, msg)
+		
+		_, sendErr := client.Send(ctx, msg)
 		if sendErr != nil {
-			return successCount, failureCount, fmt.Errorf("fcm multicast send failed: %w", sendErr)
-		}
-
-		for idx, r := range resp.Responses {
-			if r.Success {
-				successCount++
-			} else {
-				failureCount++
-				deactivateIfInvalid(batch[idx], r.Error)
-			}
+			failureCount++
+			deactivateIfInvalid(token, sendErr)
+		} else {
+			successCount++
 		}
 	}
 

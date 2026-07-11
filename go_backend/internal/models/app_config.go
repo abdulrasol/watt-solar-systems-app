@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/datatypes"
 )
 
 // AppConfig represents a global application configuration key-value pair
@@ -50,8 +52,9 @@ type SubscriptionPlan struct {
 	DurationDays int       `gorm:"column:duration_days;not null"`
 	Price        float64   `gorm:"column:price;default:0"`
 	Description  *string   `gorm:"column:description"`
-	IsActive     bool      `gorm:"column:is_active;default:true"`
-	CreatedAt    time.Time `gorm:"column:created_at;autoCreateTime"`
+	IsActive     bool           `gorm:"column:is_active;default:true"`
+	Features     datatypes.JSON `gorm:"type:json;column:features"`
+	CreatedAt    time.Time      `gorm:"column:created_at;autoCreateTime"`
 }
 
 // Feedback represents a user contact/feedback message

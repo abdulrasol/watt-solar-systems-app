@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,6 +34,7 @@ func (h *AdminHandler) GetSubscriptions(c *gin.Context) {
 			Price:        sub.Price,
 			Description:  sub.Description,
 			IsActive:     sub.IsActive,
+			Features:     sub.Features,
 			CreatedAt:    sub.CreatedAt,
 		})
 	}
@@ -66,6 +68,10 @@ func (h *AdminHandler) CreateSubscription(c *gin.Context) {
 		Description:  req.Description,
 		IsActive:     req.IsActive,
 	}
+	if req.Features != nil {
+		featuresJSON, _ := json.Marshal(req.Features)
+		sub.Features = featuresJSON
+	}
 
 	database.DB.Create(&sub)
 
@@ -76,6 +82,7 @@ func (h *AdminHandler) CreateSubscription(c *gin.Context) {
 		Price:        sub.Price,
 		Description:  sub.Description,
 		IsActive:     sub.IsActive,
+		Features:     sub.Features,
 		CreatedAt:    sub.CreatedAt,
 	})
 }
@@ -110,6 +117,10 @@ func (h *AdminHandler) UpdateSubscription(c *gin.Context) {
 	sub.Price = req.Price
 	sub.Description = req.Description
 	sub.IsActive = req.IsActive
+	if req.Features != nil {
+		featuresJSON, _ := json.Marshal(req.Features)
+		sub.Features = featuresJSON
+	}
 
 	database.DB.Save(&sub)
 
@@ -120,6 +131,7 @@ func (h *AdminHandler) UpdateSubscription(c *gin.Context) {
 		Price:        sub.Price,
 		Description:  sub.Description,
 		IsActive:     sub.IsActive,
+		Features:     sub.Features,
 		CreatedAt:    sub.CreatedAt,
 	})
 }

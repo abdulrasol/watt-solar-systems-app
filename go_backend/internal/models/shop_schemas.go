@@ -6,7 +6,7 @@ import "time"
 type OrderItemCreateSchema struct {
 	ProductID        uint                   `json:"product_id" binding:"required"`
 	Quantity         int                    `json:"quantity" binding:"required"`
-	SelectedOptions  []map[string]interface{} `json:"selected_options"`
+	SelectedOptions  []uint `json:"selected_options"`
 }
 
 // B2COrderCreateSchema schema
@@ -178,4 +178,21 @@ type ProductUpdateSchema struct {
 type AdminProductUpdateSchema struct {
 	ProductUpdateSchema
 	CompanyID *uint `json:"company_id"`
+}
+
+// CartValidateRequest schema
+type CartValidateRequest struct {
+	SellerCompanyID  uint                    `json:"seller_company_id" binding:"required"`
+	OrderType        string                  `json:"order_type" binding:"required"` // b2b or b2c
+	Items            []OrderItemCreateSchema `json:"items" binding:"required"`
+	DeliveryOptionID *uint                   `json:"delivery_option_id"`
+}
+
+// CartValidateResponse schema
+type CartValidateResponse struct {
+	Subtotal      float64  `json:"subtotal"`
+	DeliveryCost  float64  `json:"delivery_cost"`
+	Tax           float64  `json:"tax"`
+	Total         float64  `json:"total"`
+	Errors        []string `json:"errors"`
 }

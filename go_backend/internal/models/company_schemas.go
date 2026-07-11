@@ -47,6 +47,7 @@ type CompanyOut struct {
 	UpdatedAt          *time.Time          `json:"updated_at"`
 	UserPermission     map[string]any      `json:"user_permission"`
 	Services           []map[string]any    `json:"services"`
+	AllowedFeatures    []string            `json:"allowed_features"`
 }
 
 type CompanyMiniOut struct {
@@ -366,11 +367,15 @@ type PosterExtendSchema struct {
 }
 
 type AdminCompanyTypeCreateSchema struct {
-	CType string `json:"ctype" binding:"required"`
-	Name  string `json:"name" binding:"required"`
+	CType                    string `json:"ctype" binding:"required"`
+	Name                     string `json:"name" binding:"required"`
+	AllowedFeatures          []string `json:"allowed_features"`
+	AllowedSubscriptionPlans []uint `json:"allowed_subscription_plans"`
 }
 
 type AdminCompanyTypeUpdateSchema struct {
-	CType string `json:"ctype"`
-	Name  string `json:"name"`
+	CType                    string `json:"ctype"`
+	Name                     string `json:"name"`
+	AllowedFeatures          []string `json:"allowed_features"`
+	AllowedSubscriptionPlans []uint `json:"allowed_subscription_plans"`
 }

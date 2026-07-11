@@ -11,7 +11,18 @@ import (
 	"watt/internal/response"
 )
 
-// Subscribe handles POST /api/v1/notification/subscribe
+// Subscribe godoc
+// @Summary      Subscribe device to push notifications
+// @Description  Register a device token for push notifications (FCM)
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        payload body      models.SubscribeSchema true "Subscribe Payload"
+// @Success      200     {object}  response.APIResponse
+// @Success      201     {object}  response.APIResponse
+// @Failure      400     {object}  response.APIResponse
+// @Router       /api/v1/notification/subscribe [post]
+// @Security     BearerAuth
 func Subscribe(c *gin.Context) {
 	cfgVal, ok := c.Get("cfg")
 	if !ok {
@@ -67,7 +78,16 @@ func Subscribe(c *gin.Context) {
 	response.Success(c, status, "Device subscribed successfully", map[string]interface{}{"device_id": device.ID})
 }
 
-// Unsubscribe handles POST /api/v1/notification/unsubscribe
+// Unsubscribe godoc
+// @Summary      Unsubscribe device from push notifications
+// @Description  Deactivates push notification tokens for the current user
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Success      200     {object}  response.APIResponse
+// @Failure      401     {object}  response.APIResponse
+// @Router       /api/v1/notification/unsubscribe [post]
+// @Security     BearerAuth
 func Unsubscribe(c *gin.Context) {
 	user, ok := currentUser(c)
 	if !ok {
@@ -79,7 +99,16 @@ func Unsubscribe(c *gin.Context) {
 	response.Success(c, http.StatusOK, "Successfully unsubscribed from notifications", nil)
 }
 
-// ListDevices handles GET /api/v1/notification/devices
+// ListDevices godoc
+// @Summary      List active push devices
+// @Description  Get a list of registered push notification devices for the user
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Success      200     {object}  map[string]interface{}
+// @Failure      401     {object}  response.APIResponse
+// @Router       /api/v1/notification/devices [get]
+// @Security     BearerAuth
 func ListDevices(c *gin.Context) {
 	user, ok := currentUser(c)
 	if !ok {
@@ -101,7 +130,18 @@ func ListDevices(c *gin.Context) {
 	})
 }
 
-// DeactivateDevice handles POST /api/v1/notification/tokens/:token_id/deactivate
+// DeactivateDevice godoc
+// @Summary      Deactivate a specific device token
+// @Description  Deactivate a push notification token by its ID
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        token_id path      int  true  "Device Token ID"
+// @Success      200     {object}  response.APIResponse
+// @Failure      401     {object}  response.APIResponse
+// @Failure      404     {object}  response.APIResponse
+// @Router       /api/v1/notification/tokens/{token_id}/deactivate [post]
+// @Security     BearerAuth
 func DeactivateDevice(c *gin.Context) {
 	user, ok := currentUser(c)
 	if !ok {

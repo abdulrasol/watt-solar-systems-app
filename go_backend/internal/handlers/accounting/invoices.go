@@ -39,7 +39,7 @@ func ListInvoices(c *gin.Context) {
 		query = query.Where("issue_date <= ?", to)
 	}
 	if search := c.Query("search"); search != "" {
-		query = query.Where("invoice_number ILIKE ? OR EXISTS (SELECT 1 FROM shop_customers sc WHERE sc.id = invoices.customer_id AND sc.full_name ILIKE ?)", "%"+search+"%", "%"+search+"%")
+		query = query.Where("invoice_number LIKE ? OR EXISTS (SELECT 1 FROM shop_customers sc WHERE sc.id = invoices.customer_id AND sc.full_name LIKE ?)", "%"+search+"%", "%"+search+"%")
 	}
 
 	orderCol := "created_at desc"

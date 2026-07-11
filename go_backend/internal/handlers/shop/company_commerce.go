@@ -198,7 +198,7 @@ func ListCompanyOrders(c *gin.Context) {
 		like := "%" + search + "%"
 		query = query.Joins("LEFT JOIN companies bc ON bc.id = orders.buyer_company_id").
 			Joins("LEFT JOIN users bu ON bu.id = orders.buyer_user_id").
-			Where("orders.order_number::text ILIKE ? OR bc.name ILIKE ? OR bu.username ILIKE ?", like, like, like)
+			Where("orders.order_number::text LIKE ? OR bc.name LIKE ? OR bu.username LIKE ?", like, like, like)
 	}
 
 	var total int64
@@ -406,7 +406,7 @@ func ListCompanyCustomers(c *gin.Context) {
 		like := "%" + search + "%"
 		query = query.Joins("LEFT JOIN companies bc ON bc.id = customers.buyer_company_id").
 			Joins("LEFT JOIN users bu ON bu.id = customers.buyer_profile_id").
-			Where("customers.full_name ILIKE ? OR bc.name ILIKE ? OR bu.username ILIKE ? OR customers.phone_number ILIKE ?", like, like, like, like)
+			Where("customers.full_name LIKE ? OR bc.name LIKE ? OR bu.username LIKE ? OR customers.phone_number LIKE ?", like, like, like, like)
 	}
 
 	var total int64
@@ -617,7 +617,7 @@ func ListCompanySuppliers(c *gin.Context) {
 	if search != "" {
 		like := "%" + search + "%"
 		query = query.Joins("LEFT JOIN companies sc ON sc.id = suppliers.seller_company_id").
-			Where("suppliers.name ILIKE ? OR sc.name ILIKE ? OR suppliers.phone_number ILIKE ?", like, like, like)
+			Where("suppliers.name LIKE ? OR sc.name LIKE ? OR suppliers.phone_number LIKE ?", like, like, like)
 	}
 
 	var total int64

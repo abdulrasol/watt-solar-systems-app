@@ -1,6 +1,9 @@
 package companies
 
 import (
+	"log"
+
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -28,15 +31,40 @@ func AdminCreateCompanyType(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Invalid JSON payload", nil)
 		return
 	}
-
 	ctype := models.CompanyType{
 		CType: payload.CType,
 		Name:  payload.Name,
 	}
+	
+	if payload.AllowedFeatures != nil {
+		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
+		ctype.AllowedFeatures = featuresJSON
+	}
+
+	
+	if payload.AllowedFeatures != nil {
+		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
+		ctype.AllowedFeatures = featuresJSON
+	}
+
+	
+	if payload.AllowedFeatures != nil {
+		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
+		ctype.AllowedFeatures = featuresJSON
+	}
+
 
 	if err := database.DB.Create(&ctype).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to create company type", nil)
 		return
+	}
+
+
+
+	if payload.AllowedSubscriptionPlans != nil {
+		var plans []*models.SubscriptionPlan
+		database.DB.Where("id IN ?", payload.AllowedSubscriptionPlans).Find(&plans)
+		database.DB.Model(&ctype).Association("AllowedSubscriptionPlans").Append(plans)
 	}
 
 	response.Success(c, http.StatusCreated, "Company type created successfully", ctype)
@@ -69,17 +97,43 @@ func AdminUpdateCompanyType(c *gin.Context) {
 		response.Error(c, http.StatusNotFound, "Company type not found", nil)
 		return
 	}
-
 	if payload.CType != "" {
 		ctype.CType = payload.CType
 	}
 	if payload.Name != "" {
 		ctype.Name = payload.Name
 	}
+	if payload.AllowedFeatures != nil {
+		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
+		ctype.AllowedFeatures = featuresJSON
+	}
+
+	if payload.AllowedFeatures != nil {
+		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
+		ctype.AllowedFeatures = featuresJSON
+	}
+
+	if payload.AllowedFeatures != nil {
+		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
+		ctype.AllowedFeatures = featuresJSON
+	}
+
 
 	if err := database.DB.Save(&ctype).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to update company type", nil)
 		return
+	}
+
+
+
+	if payload.AllowedSubscriptionPlans != nil {
+		var plans []*models.SubscriptionPlan
+		database.DB.Where("id IN ?", payload.AllowedSubscriptionPlans).Find(&plans)
+		log.Printf("Plans found: %v (IDs: %v)", len(plans), payload.AllowedSubscriptionPlans)
+		err := database.DB.Model(&ctype).Association("AllowedSubscriptionPlans").Replace(plans)
+		if err != nil {
+			log.Printf("Error replacing plans: %v", err)
+		}
 	}
 
 	response.Success(c, http.StatusOK, "Company type updated successfully", ctype)

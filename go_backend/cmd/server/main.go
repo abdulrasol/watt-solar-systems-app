@@ -5,18 +5,19 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "watt/docs" // Import generated docs
 	"watt/internal/config"
 	"watt/internal/database"
 	"watt/internal/handlers/root"
 	"watt/internal/routes"
 	"watt/internal/services/fcm"
+
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title SolarHub API
+// @title Watt API
 // @version 1.0
 // @description SolarHub Backend API in Go
 // @BasePath /api/v1
@@ -51,6 +52,9 @@ func main() {
 	router := gin.Default()
 	router.RedirectTrailingSlash = false
 	router.RedirectFixedPath = false
+
+	// Serve static files (uploads)
+	router.Static("/uploads", "./uploads")
 
 	// Create API grouping
 	apiGroup := router.Group("/api")

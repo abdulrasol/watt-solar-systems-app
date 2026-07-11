@@ -39,7 +39,7 @@ func ListBills(c *gin.Context) {
 		query = query.Where("issue_date <= ?", to)
 	}
 	if search := c.Query("search"); search != "" {
-		query = query.Where("bill_number ILIKE ? OR EXISTS (SELECT 1 FROM shop_suppliers ss WHERE ss.id = bills.supplier_id AND ss.name ILIKE ?)", "%"+search+"%", "%"+search+"%")
+		query = query.Where("bill_number LIKE ? OR EXISTS (SELECT 1 FROM shop_suppliers ss WHERE ss.id = bills.supplier_id AND ss.name LIKE ?)", "%"+search+"%", "%"+search+"%")
 	}
 
 	orderCol := "created_at desc"

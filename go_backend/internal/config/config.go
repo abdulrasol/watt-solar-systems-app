@@ -19,7 +19,7 @@ type Config struct {
 
 func LoadConfig() *Config {
 	// Try loading from .env file, ignore if not found
-	err := godotenv.Load("../solar_hub/.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Println("Warning: No .env file found or error loading it, using system environment variables")
 	}

@@ -36,7 +36,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -44,7 +44,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.GlobalCategoryOut"
+                                                "$ref": "#/definitions/watt_internal_models.GlobalCategoryOut"
                                             }
                                         }
                                     }
@@ -92,13 +92,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.GlobalCategoryOut"
+                                            "$ref": "#/definitions/watt_internal_models.GlobalCategoryOut"
                                         }
                                     }
                                 }
@@ -153,13 +153,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.GlobalCategoryOut"
+                                            "$ref": "#/definitions/watt_internal_models.GlobalCategoryOut"
                                         }
                                     }
                                 }
@@ -195,7 +195,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -230,7 +230,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -238,7 +238,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.CityOut"
+                                                "$ref": "#/definitions/watt_internal_models.CityOut"
                                             }
                                         }
                                     }
@@ -272,7 +272,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CitySchema"
+                            "$ref": "#/definitions/watt_internal_models.CitySchema"
                         }
                     }
                 ],
@@ -282,13 +282,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.CityOut"
+                                            "$ref": "#/definitions/watt_internal_models.CityOut"
                                         }
                                     }
                                 }
@@ -348,7 +348,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -373,7 +373,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -402,7 +402,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CompanyServiceCatalogCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CompanyServiceCatalogCreateSchema"
                         }
                     }
                 ],
@@ -410,7 +410,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -441,7 +441,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CompanyServiceCatalogUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CompanyServiceCatalogUpdateSchema"
                         }
                     },
                     {
@@ -456,7 +456,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -491,7 +491,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -548,7 +548,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -586,7 +586,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.PosterExtendSchema"
+                            "$ref": "#/definitions/watt_internal_models.PosterExtendSchema"
                         }
                     }
                 ],
@@ -594,7 +594,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -632,7 +632,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.PosterReviewSchema"
+                            "$ref": "#/definitions/watt_internal_models.PosterReviewSchema"
                         }
                     }
                 ],
@@ -640,7 +640,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -689,7 +689,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -744,7 +744,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -779,7 +779,55 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/subscription-requests": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List all subscription requests",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminListSubscriptionRequests",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page_size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "status (pending, active, rejected)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -810,7 +858,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.AdminCompanyTypeCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.AdminCompanyTypeCreateSchema"
                         }
                     }
                 ],
@@ -818,7 +866,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -849,7 +897,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.AdminCompanyTypeUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.AdminCompanyTypeUpdateSchema"
                         }
                     },
                     {
@@ -864,7 +912,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -899,7 +947,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -933,7 +981,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -967,7 +1015,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1001,7 +1049,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1035,7 +1083,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1069,7 +1117,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1100,7 +1148,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CompanyStatusActionSchema"
+                            "$ref": "#/definitions/watt_internal_models.CompanyStatusActionSchema"
                         }
                     },
                     {
@@ -1115,7 +1163,60 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}/subscription-requests/{request_id}/review": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Review a company's subscription request (active/rejected)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminReviewSubscriptionRequest",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "request_id",
+                        "name": "request_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Review payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CompanySubscriptionRequestReviewSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1140,7 +1241,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1148,7 +1249,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.ConfigOut"
+                                                "$ref": "#/definitions/watt_internal_models.ConfigOut"
                                             }
                                         }
                                     }
@@ -1182,7 +1283,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ConfigCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.ConfigCreateSchema"
                         }
                     }
                 ],
@@ -1192,13 +1293,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.ConfigOut"
+                                            "$ref": "#/definitions/watt_internal_models.ConfigOut"
                                         }
                                     }
                                 }
@@ -1240,7 +1341,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ConfigUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.ConfigUpdateSchema"
                         }
                     }
                 ],
@@ -1250,13 +1351,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.ConfigOut"
+                                            "$ref": "#/definitions/watt_internal_models.ConfigOut"
                                         }
                                     }
                                 }
@@ -1287,7 +1388,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1295,7 +1396,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.CountryOut"
+                                                "$ref": "#/definitions/watt_internal_models.CountryOut"
                                             }
                                         }
                                     }
@@ -1329,7 +1430,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CountryOut"
+                            "$ref": "#/definitions/watt_internal_models.CountryOut"
                         }
                     }
                 ],
@@ -1339,13 +1440,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.CountryOut"
+                                            "$ref": "#/definitions/watt_internal_models.CountryOut"
                                         }
                                     }
                                 }
@@ -1387,7 +1488,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CountryOut"
+                            "$ref": "#/definitions/watt_internal_models.CountryOut"
                         }
                     }
                 ],
@@ -1397,13 +1498,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.CountryOut"
+                                            "$ref": "#/definitions/watt_internal_models.CountryOut"
                                         }
                                     }
                                 }
@@ -1439,7 +1540,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1466,7 +1567,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1474,7 +1575,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.CurrencyOut"
+                                                "$ref": "#/definitions/watt_internal_models.CurrencyOut"
                                             }
                                         }
                                     }
@@ -1508,7 +1609,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CurrencySchema"
+                            "$ref": "#/definitions/watt_internal_models.CurrencySchema"
                         }
                     }
                 ],
@@ -1518,13 +1619,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.CurrencyOut"
+                                            "$ref": "#/definitions/watt_internal_models.CurrencyOut"
                                         }
                                     }
                                 }
@@ -1566,7 +1667,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CurrencySchema"
+                            "$ref": "#/definitions/watt_internal_models.CurrencySchema"
                         }
                     }
                 ],
@@ -1576,13 +1677,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.CurrencyOut"
+                                            "$ref": "#/definitions/watt_internal_models.CurrencyOut"
                                         }
                                     }
                                 }
@@ -1613,7 +1714,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1621,7 +1722,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.FeedbackSchema"
+                                                "$ref": "#/definitions/watt_internal_models.FeedbackSchema"
                                             }
                                         }
                                     }
@@ -1653,7 +1754,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1661,7 +1762,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.NotificationOut"
+                                                "$ref": "#/definitions/watt_internal_models.NotificationOut"
                                             }
                                         }
                                     }
@@ -1691,7 +1792,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1732,7 +1833,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1766,7 +1867,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1814,7 +1915,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1846,7 +1947,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -1873,7 +1974,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1881,7 +1982,7 @@ const docTemplate = `{
                                         "body": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.SubscriptionPlanOut"
+                                                "$ref": "#/definitions/watt_internal_models.SubscriptionPlanOut"
                                             }
                                         }
                                     }
@@ -1915,7 +2016,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SubscriptionPlanSchema"
+                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanSchema"
                         }
                     }
                 ],
@@ -1925,13 +2026,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.SubscriptionPlanOut"
+                                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanOut"
                                         }
                                     }
                                 }
@@ -1973,7 +2074,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SubscriptionPlanSchema"
+                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanSchema"
                         }
                     }
                 ],
@@ -1983,13 +2084,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.SubscriptionPlanOut"
+                                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanOut"
                                         }
                                     }
                                 }
@@ -2025,7 +2126,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2063,7 +2164,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CityUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CityUpdateSchema"
                         }
                     }
                 ],
@@ -2073,13 +2174,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.CityOut"
+                                            "$ref": "#/definitions/watt_internal_models.CityOut"
                                         }
                                     }
                                 }
@@ -2115,7 +2216,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2149,7 +2250,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2183,7 +2284,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2221,7 +2322,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.FeedbackUpdateFormSchema"
+                            "$ref": "#/definitions/watt_internal_models.FeedbackUpdateFormSchema"
                         }
                     }
                 ],
@@ -2231,13 +2332,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.FeedbackSchema"
+                                            "$ref": "#/definitions/watt_internal_models.FeedbackSchema"
                                         }
                                     }
                                 }
@@ -2275,7 +2376,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2328,17 +2429,502 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.FeedbackSchema"
+                                            "$ref": "#/definitions/watt_internal_models.FeedbackSchema"
                                         }
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/devices": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a list of registered push notification devices for the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "List active push devices",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-broadcast": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to all active devices (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send broadcast notification",
+                "parameters": [
+                    {
+                        "description": "Broadcast Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.BroadcastSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-group": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to a specific group of users (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send notification to a group",
+                "parameters": [
+                    {
+                        "description": "Group Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.GroupNotificationSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-topic/{topic}": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to an FCM topic (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send notification to a topic",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic Name",
+                        "name": "topic",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Topic Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.TopicNotificationSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-user": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to a single user (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send notification to a specific user",
+                "parameters": [
+                    {
+                        "description": "User Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.UserNotificationSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/subscribe": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Register a device token for push notifications (FCM)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Subscribe device to push notifications",
+                "parameters": [
+                    {
+                        "description": "Subscribe Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SubscribeSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/tokens/{token_id}/deactivate": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deactivate a push notification token by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Deactivate a specific device token",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Device Token ID",
+                        "name": "token_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/unsubscribe": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deactivates push notification tokens for the current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Unsubscribe device from push notifications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of notifications for the current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Get user notifications",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 12,
+                        "description": "Page size",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/{id}/read": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Mark a specific notification as read by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Mark notification as read",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2360,7 +2946,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2446,7 +3032,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2463,7 +3049,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2489,7 +3075,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2526,7 +3112,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2548,7 +3134,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2565,7 +3151,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2662,25 +3248,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2717,7 +3303,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2751,7 +3337,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2776,7 +3362,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2805,7 +3391,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CompanyCategorySchema"
+                            "$ref": "#/definitions/watt_internal_models.CompanyCategorySchema"
                         }
                     }
                 ],
@@ -2813,7 +3399,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2844,7 +3430,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2875,7 +3461,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2904,7 +3490,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ContactSchema"
+                            "$ref": "#/definitions/watt_internal_models.ContactSchema"
                         }
                     },
                     {
@@ -2919,7 +3505,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2957,7 +3543,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -2991,7 +3577,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3020,7 +3606,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CustomerCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CustomerCreateSchema"
                         }
                     }
                 ],
@@ -3028,7 +3614,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3062,7 +3648,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3098,7 +3684,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CustomerUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CustomerUpdateSchema"
                         }
                     }
                 ],
@@ -3106,7 +3692,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3138,7 +3724,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3169,7 +3755,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3198,7 +3784,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.DeliveryOptionSchema"
+                            "$ref": "#/definitions/watt_internal_models.DeliveryOptionSchema"
                         }
                     },
                     {
@@ -3213,7 +3799,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3251,7 +3837,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3282,7 +3868,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3311,7 +3897,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ExpenseSchema"
+                            "$ref": "#/definitions/watt_internal_models.ExpenseSchema"
                         }
                     },
                     {
@@ -3326,7 +3912,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3364,7 +3950,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3395,7 +3981,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3424,7 +4010,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.FinancialTransactionSchema"
+                            "$ref": "#/definitions/watt_internal_models.FinancialTransactionSchema"
                         }
                     },
                     {
@@ -3439,7 +4025,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3477,7 +4063,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3508,7 +4094,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3539,7 +4125,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateMemberSchema"
+                            "$ref": "#/definitions/watt_internal_models.CreateMemberSchema"
                         }
                     },
                     {
@@ -3554,7 +4140,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3585,7 +4171,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.InviteMemberSchema"
+                            "$ref": "#/definitions/watt_internal_models.InviteMemberSchema"
                         }
                     },
                     {
@@ -3600,7 +4186,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3638,7 +4224,53 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "UpdateMemberRole",
+                "tags": [
+                    "Companies Members"
+                ],
+                "summary": "UpdateMemberRole",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "member_id",
+                        "name": "member_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3672,7 +4304,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3708,7 +4340,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SellerOrderCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.SellerOrderCreateSchema"
                         }
                     }
                 ],
@@ -3716,7 +4348,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3750,7 +4382,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3786,7 +4418,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SellerOrderUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.SellerOrderUpdateSchema"
                         }
                     }
                 ],
@@ -3794,7 +4426,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3819,7 +4451,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3872,7 +4504,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3933,7 +4565,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3962,7 +4594,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -3993,7 +4625,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4027,7 +4659,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4075,7 +4707,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4109,7 +4741,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4143,7 +4775,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4191,7 +4823,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4223,7 +4855,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4248,7 +4880,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4277,7 +4909,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CompanyServiceCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CompanyServiceCreateSchema"
                         }
                     }
                 ],
@@ -4285,7 +4917,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4323,7 +4955,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CompanyServiceUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CompanyServiceUpdateSchema"
                         }
                     }
                 ],
@@ -4331,7 +4963,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4360,32 +4992,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/companies/{company_id}/services": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Get service catalog status for a company",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Company Operations"
-                ],
-                "summary": "GetCompanyServices",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4441,7 +5048,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4472,7 +5079,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4506,7 +5113,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4535,7 +5142,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SupplierCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.SupplierCreateSchema"
                         }
                     }
                 ],
@@ -4543,7 +5150,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4577,7 +5184,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4613,7 +5220,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SupplierUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.SupplierUpdateSchema"
                         }
                     }
                 ],
@@ -4621,7 +5228,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4653,7 +5260,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4687,7 +5294,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4724,7 +5331,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4755,7 +5362,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4808,7 +5415,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4846,7 +5453,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4877,7 +5484,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CompanyWorkUpdateSchema"
+                            "$ref": "#/definitions/watt_internal_models.CompanyWorkUpdateSchema"
                         }
                     },
                     {
@@ -4899,7 +5506,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4935,7 +5542,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -4957,13 +5564,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.APIResponse"
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "body": {
-                                            "$ref": "#/definitions/models.CurrencyOut"
+                                            "$ref": "#/definitions/watt_internal_models.CurrencyOut"
                                         }
                                     }
                                 }
@@ -5050,7 +5657,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5067,7 +5674,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5093,7 +5700,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5119,7 +5726,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5151,7 +5758,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5171,7 +5778,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5207,7 +5814,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5236,7 +5843,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5261,7 +5868,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5295,7 +5902,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5329,7 +5936,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5363,7 +5970,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5394,7 +6001,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.B2BOrderCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.B2BOrderCreateSchema"
                         }
                     }
                 ],
@@ -5402,7 +6009,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5422,7 +6029,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5442,7 +6049,46 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/cart/validate": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Validate cart and return calculated totals",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ValidateCart",
+                "parameters": [
+                    {
+                        "description": "Cart Validation Payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CartValidateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5462,7 +6108,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5498,7 +6144,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5550,7 +6196,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5579,7 +6225,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5608,7 +6254,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5633,7 +6279,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5667,7 +6313,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5701,7 +6347,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5732,7 +6378,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.B2COrderCreateSchema"
+                            "$ref": "#/definitions/watt_internal_models.B2COrderCreateSchema"
                         }
                     }
                 ],
@@ -5740,7 +6386,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5816,7 +6462,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5836,7 +6482,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5861,7 +6507,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5892,7 +6538,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.DeleteAccountSchema"
+                            "$ref": "#/definitions/internal_handlers.DeleteAccountSchema"
                         }
                     }
                 ],
@@ -5900,7 +6546,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5931,7 +6577,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.LanguageUpdateSchema"
+                            "$ref": "#/definitions/internal_handlers.LanguageUpdateSchema"
                         }
                     }
                 ],
@@ -5939,7 +6585,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -5965,7 +6611,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.LoginRequest"
+                            "$ref": "#/definitions/watt_internal_models.LoginRequest"
                         }
                     }
                 ],
@@ -5973,25 +6619,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6017,7 +6663,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PasswordResetRequestSchema"
+                            "$ref": "#/definitions/internal_handlers.PasswordResetRequestSchema"
                         }
                     }
                 ],
@@ -6025,7 +6671,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6051,7 +6697,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PasswordResetConfirmSchema"
+                            "$ref": "#/definitions/internal_handlers.PasswordResetConfirmSchema"
                         }
                     }
                 ],
@@ -6059,7 +6705,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6085,7 +6731,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PasswordResetTokenSchema"
+                            "$ref": "#/definitions/internal_handlers.PasswordResetTokenSchema"
                         }
                     }
                 ],
@@ -6093,7 +6739,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6118,19 +6764,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6212,31 +6858,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6274,7 +6920,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PromoteUserRequest"
+                            "$ref": "#/definitions/internal_handlers.PromoteUserRequest"
                         }
                     }
                 ],
@@ -6282,7 +6928,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6308,7 +6954,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.RegisterRequest"
+                            "$ref": "#/definitions/watt_internal_models.RegisterRequest"
                         }
                     }
                 ],
@@ -6316,19 +6962,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6357,7 +7003,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.APIResponse"
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
                         }
                     }
                 }
@@ -6365,7 +7011,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handlers.DeleteAccountSchema": {
+        "internal_handlers.DeleteAccountSchema": {
             "type": "object",
             "required": [
                 "password",
@@ -6380,7 +7026,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.LanguageUpdateSchema": {
+        "internal_handlers.LanguageUpdateSchema": {
             "type": "object",
             "required": [
                 "language"
@@ -6391,7 +7037,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.PasswordResetConfirmSchema": {
+        "internal_handlers.PasswordResetConfirmSchema": {
             "type": "object",
             "required": [
                 "password",
@@ -6406,7 +7052,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.PasswordResetRequestSchema": {
+        "internal_handlers.PasswordResetRequestSchema": {
             "type": "object",
             "required": [
                 "email"
@@ -6417,7 +7063,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.PasswordResetTokenSchema": {
+        "internal_handlers.PasswordResetTokenSchema": {
             "type": "object",
             "required": [
                 "token"
@@ -6428,7 +7074,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.PromoteUserRequest": {
+        "internal_handlers.PromoteUserRequest": {
             "type": "object",
             "properties": {
                 "promote": {
@@ -6439,13 +7085,25 @@ const docTemplate = `{
                 }
             }
         },
-        "models.AdminCompanyTypeCreateSchema": {
+        "watt_internal_models.AdminCompanyTypeCreateSchema": {
             "type": "object",
             "required": [
                 "ctype",
                 "name"
             ],
             "properties": {
+                "allowed_features": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allowed_subscription_plans": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "ctype": {
                     "type": "string"
                 },
@@ -6454,9 +7112,21 @@ const docTemplate = `{
                 }
             }
         },
-        "models.AdminCompanyTypeUpdateSchema": {
+        "watt_internal_models.AdminCompanyTypeUpdateSchema": {
             "type": "object",
             "properties": {
+                "allowed_features": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allowed_subscription_plans": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "ctype": {
                     "type": "string"
                 },
@@ -6465,7 +7135,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.B2BOrderCreateSchema": {
+        "watt_internal_models.B2BOrderCreateSchema": {
             "type": "object",
             "required": [
                 "items",
@@ -6488,7 +7158,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.OrderItemCreateSchema"
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
                     }
                 },
                 "payment_method": {
@@ -6512,7 +7182,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.B2COrderCreateSchema": {
+        "watt_internal_models.B2COrderCreateSchema": {
             "type": "object",
             "required": [
                 "items",
@@ -6532,7 +7202,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.OrderItemCreateSchema"
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
                     }
                 },
                 "payment_method": {
@@ -6556,14 +7226,59 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CityOut": {
+        "watt_internal_models.BroadcastSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CartValidateRequest": {
+            "type": "object",
+            "required": [
+                "items",
+                "order_type",
+                "seller_company_id"
+            ],
+            "properties": {
+                "delivery_option_id": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
+                    }
+                },
+                "order_type": {
+                    "description": "b2b or b2c",
+                    "type": "string"
+                },
+                "seller_company_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_models.CityOut": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "string"
                 },
                 "country": {
-                    "$ref": "#/definitions/models.CountryOut"
+                    "$ref": "#/definitions/watt_internal_models.CountryOut"
                 },
                 "created_at": {
                     "type": "string"
@@ -6576,7 +7291,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CitySchema": {
+        "watt_internal_models.CitySchema": {
             "type": "object",
             "required": [
                 "code",
@@ -6595,7 +7310,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CityUpdateSchema": {
+        "watt_internal_models.CityUpdateSchema": {
             "type": "object",
             "properties": {
                 "code": {
@@ -6609,7 +7324,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CompanyCategorySchema": {
+        "watt_internal_models.CompanyCategorySchema": {
             "type": "object",
             "required": [
                 "name"
@@ -6620,7 +7335,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CompanyServiceCatalogCreateSchema": {
+        "watt_internal_models.CompanyServiceCatalogCreateSchema": {
             "type": "object",
             "required": [
                 "code",
@@ -6656,7 +7371,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CompanyServiceCatalogUpdateSchema": {
+        "watt_internal_models.CompanyServiceCatalogUpdateSchema": {
             "type": "object",
             "properties": {
                 "category": {
@@ -6682,7 +7397,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CompanyServiceCreateSchema": {
+        "watt_internal_models.CompanyServiceCreateSchema": {
             "type": "object",
             "required": [
                 "title"
@@ -6699,7 +7414,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CompanyServiceUpdateSchema": {
+        "watt_internal_models.CompanyServiceUpdateSchema": {
             "type": "object",
             "properties": {
                 "description": {
@@ -6713,7 +7428,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CompanyStatusActionSchema": {
+        "watt_internal_models.CompanyStatusActionSchema": {
             "type": "object",
             "required": [
                 "status"
@@ -6724,7 +7439,21 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CompanyWorkUpdateSchema": {
+        "watt_internal_models.CompanySubscriptionRequestReviewSchema": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "notes": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CompanyWorkUpdateSchema": {
             "type": "object",
             "properties": {
                 "body": {
@@ -6735,7 +7464,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ConfigCreateSchema": {
+        "watt_internal_models.ConfigCreateSchema": {
             "type": "object",
             "required": [
                 "key"
@@ -6752,7 +7481,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ConfigOut": {
+        "watt_internal_models.ConfigOut": {
             "type": "object",
             "properties": {
                 "description": {
@@ -6769,7 +7498,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ConfigUpdateSchema": {
+        "watt_internal_models.ConfigUpdateSchema": {
             "type": "object",
             "properties": {
                 "description": {
@@ -6780,7 +7509,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ContactSchema": {
+        "watt_internal_models.ContactSchema": {
             "type": "object",
             "required": [
                 "name",
@@ -6810,7 +7539,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CountryOut": {
+        "watt_internal_models.CountryOut": {
             "type": "object",
             "required": [
                 "code",
@@ -6831,7 +7560,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CreateMemberSchema": {
+        "watt_internal_models.CreateMemberSchema": {
             "type": "object",
             "required": [
                 "email",
@@ -6862,7 +7591,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CurrencyOut": {
+        "watt_internal_models.CurrencyOut": {
             "type": "object",
             "properties": {
                 "code": {
@@ -6885,7 +7614,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CurrencySchema": {
+        "watt_internal_models.CurrencySchema": {
             "type": "object",
             "required": [
                 "code",
@@ -6907,7 +7636,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CustomerCreateSchema": {
+        "watt_internal_models.CustomerCreateSchema": {
             "type": "object",
             "required": [
                 "customer_type"
@@ -6936,7 +7665,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CustomerUpdateSchema": {
+        "watt_internal_models.CustomerUpdateSchema": {
             "type": "object",
             "properties": {
                 "address": {
@@ -6953,7 +7682,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.DeliveryOptionSchema": {
+        "watt_internal_models.DeliveryOptionSchema": {
             "type": "object",
             "properties": {
                 "company": {
@@ -6985,7 +7714,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ExpenseSchema": {
+        "watt_internal_models.ExpenseSchema": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -7008,7 +7737,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.FeedbackSchema": {
+        "watt_internal_models.FeedbackSchema": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -7034,7 +7763,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.FeedbackUpdateFormSchema": {
+        "watt_internal_models.FeedbackUpdateFormSchema": {
             "type": "object",
             "required": [
                 "is_read"
@@ -7045,7 +7774,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.FinancialTransactionSchema": {
+        "watt_internal_models.FinancialTransactionSchema": {
             "type": "object",
             "required": [
                 "amount",
@@ -7081,7 +7810,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.GlobalCategoryOut": {
+        "watt_internal_models.GlobalCategoryOut": {
             "type": "object",
             "properties": {
                 "icon": {
@@ -7095,7 +7824,32 @@ const docTemplate = `{
                 }
             }
         },
-        "models.InviteMemberSchema": {
+        "watt_internal_models.GroupNotificationSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "group_id",
+                "group_type",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "group_id": {},
+                "group_type": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.InviteMemberSchema": {
             "type": "object",
             "required": [
                 "email"
@@ -7110,7 +7864,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.LoginRequest": {
+        "watt_internal_models.LoginRequest": {
             "type": "object",
             "required": [
                 "password",
@@ -7125,7 +7879,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.NotificationOut": {
+        "watt_internal_models.NotificationOut": {
             "type": "object",
             "properties": {
                 "body": {
@@ -7157,7 +7911,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.OrderItemCreateSchema": {
+        "watt_internal_models.OrderItemCreateSchema": {
             "type": "object",
             "required": [
                 "product_id",
@@ -7179,7 +7933,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.PosterExtendSchema": {
+        "watt_internal_models.PosterExtendSchema": {
             "type": "object",
             "required": [
                 "expires_at"
@@ -7190,7 +7944,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.PosterReviewSchema": {
+        "watt_internal_models.PosterReviewSchema": {
             "type": "object",
             "required": [
                 "status"
@@ -7205,7 +7959,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.RegisterRequest": {
+        "watt_internal_models.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -7239,7 +7993,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SellerOrderCreateSchema": {
+        "watt_internal_models.SellerOrderCreateSchema": {
             "type": "object",
             "properties": {
                 "buyer_company_id": {
@@ -7267,7 +8021,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.OrderItemCreateSchema"
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
                     }
                 },
                 "notes": {
@@ -7314,7 +8068,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SellerOrderUpdateSchema": {
+        "watt_internal_models.SellerOrderUpdateSchema": {
             "type": "object",
             "properties": {
                 "cancellation_reason": {
@@ -7335,7 +8089,28 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SubscriptionPlanOut": {
+        "watt_internal_models.SubscribeSchema": {
+            "type": "object",
+            "required": [
+                "platform",
+                "token"
+            ],
+            "properties": {
+                "app_version": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "platform": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.SubscriptionPlanOut": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -7346,6 +8121,12 @@ const docTemplate = `{
                 },
                 "duration_days": {
                     "type": "integer"
+                },
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "id": {
                     "type": "integer"
@@ -7361,7 +8142,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SubscriptionPlanSchema": {
+        "watt_internal_models.SubscriptionPlanSchema": {
             "type": "object",
             "required": [
                 "duration_days",
@@ -7374,6 +8155,10 @@ const docTemplate = `{
                 "duration_days": {
                     "type": "integer"
                 },
+                "features": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
                 "is_active": {
                     "type": "boolean"
                 },
@@ -7385,7 +8170,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SupplierCreateSchema": {
+        "watt_internal_models.SupplierCreateSchema": {
             "type": "object",
             "required": [
                 "name"
@@ -7418,7 +8203,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SupplierUpdateSchema": {
+        "watt_internal_models.SupplierUpdateSchema": {
             "type": "object",
             "properties": {
                 "address": {
@@ -7441,7 +8226,49 @@ const docTemplate = `{
                 }
             }
         },
-        "response.APIResponse": {
+        "watt_internal_models.TopicNotificationSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.UserNotificationSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "title",
+                "user_id"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_response.APIResponse": {
             "type": "object",
             "properties": {
                 "body": {},
@@ -7475,7 +8302,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "SolarHub API",
+	Title:            "Watt API",
 	Description:      "SolarHub Backend API in Go",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

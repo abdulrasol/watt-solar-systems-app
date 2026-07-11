@@ -24,7 +24,7 @@ type CompanyType struct {
 	Name      string    `gorm:"type:varchar(255);not null" json:"name"`
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 
-	AllowedServices          []*CompanyServiceCatalog `gorm:"many2many:company_type_services;" json:"allowed_services"`
+	AllowedFeatures datatypes.JSON `gorm:"type:json" json:"allowed_features"`
 	AllowedSubscriptionPlans []*SubscriptionPlan      `gorm:"many2many:company_type_subscription_plans;" json:"allowed_subscription_plans"`
 }
 

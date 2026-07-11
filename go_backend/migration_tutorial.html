@@ -877,7 +877,7 @@ async function bootstrap() {
 
   // === إعدادات Swagger ===
   const config = new DocumentBuilder()
-    .setTitle('SolarHub API') // عنوان التوثيق
+    .setTitle('Watt API') // عنوان التوثيق
     .setDescription('The SolarHub Backend API description') // وصف بسيط
     .setVersion('1.0') // الإصدار
     .addBearerAuth() // 👈 هذه مهمة جداً لكي يظهر زر إدخال التوكن (JWT) في الواجهة!
@@ -1364,6 +1364,30 @@ pm2 start dist/main.js --name "solarhub-api"
 # حفظ الإعدادات لتعمل مع إعادة تشغيل السيرفر
 pm2 save
 pm2 startup</code></pre>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Troubleshooting Section -->
+        <section id="troubleshooting" class="mb-16 pt-8 border-t border-slate-200">
+            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-red-500 pb-2 mb-6 text-right">استكشاف الأخطاء وإصلاحها (Troubleshooting)</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6 text-right" dir="rtl">
+                <h3 class="text-xl font-bold text-slate-800 mb-4">كيفية إيقاف سيرفر يعمل في الخلفية (منفذ مستخدم مسبقاً)</h3>
+                <p class="text-gray-600 mb-4">
+                    إذا واجهت خطأ يفيد بأن المنفذ قيد الاستخدام بالفعل (مثلاً: <code>listen tcp :8080: bind: address already in use</code>)، فهذا يعني أن هناك نسخة سابقة من السيرفر لا تزال تعمل. يمكنك إيقافها باتباع الخطوات التالية في نظام macOS / Linux:
+                </p>
+                <ol class="list-decimal list-inside space-y-4 text-gray-700">
+                    <li>
+                        <strong>البحث عن رقم العملية (PID):</strong>
+                        <pre><code class="language-bash">lsof -i :8080</code></pre>
+                        هذا الأمر سيقوم بعرض العمليات التي تستخدم المنفذ 8080. ابحث عن الرقم تحت عمود <code>PID</code>.
+                    </li>
+                    <li>
+                        <strong>إنهاء العملية (Kill):</strong>
+                        <pre><code class="language-bash">kill -9 &lt;PID&gt;</code></pre>
+                        استبدل <code>&lt;PID&gt;</code> بالرقم الذي وجدته في الخطوة السابقة.
                     </li>
                 </ol>
             </div>

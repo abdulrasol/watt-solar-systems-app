@@ -36,7 +36,7 @@ func AdminListProducts(c *gin.Context) {
 	if search != "" {
 		like := "%" + search + "%"
 		query = query.Joins("LEFT JOIN companies c ON c.id = products.company_id").
-			Where("products.name ILIKE ? OR products.sku ILIKE ? OR c.name ILIKE ?", like, like, like)
+			Where("products.name LIKE ? OR products.sku LIKE ? OR c.name LIKE ?", like, like, like)
 	}
 	if companyID != nil {
 		query = query.Where("products.company_id = ?", *companyID)
@@ -49,7 +49,7 @@ func AdminListProducts(c *gin.Context) {
 	query.Count(&total)
 
 	var products []models.Product
-	if err := query.Order("created_at desc").Limit(pageSize).Offset(offset).Find(&products).Error; err != nil {
+	if err := query.Order("products.created_at desc").Limit(pageSize).Offset(offset).Find(&products).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to fetch products", nil)
 		return
 	}

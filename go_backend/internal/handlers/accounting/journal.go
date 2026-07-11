@@ -30,7 +30,7 @@ func ListJournalEntries(c *gin.Context) {
 		query = query.Where("date <= ?", to)
 	}
 	if search := c.Query("search"); search != "" {
-		query = query.Where("description ILIKE ? OR reference ILIKE ?", "%"+search+"%", "%"+search+"%")
+		query = query.Where("description LIKE ? OR reference LIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 
 	orderCol := "date desc"

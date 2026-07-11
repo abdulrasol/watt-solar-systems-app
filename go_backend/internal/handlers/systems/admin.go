@@ -20,7 +20,7 @@ func AdminListSystems(c *gin.Context) {
 		query = query.Where("user_status = ?", status)
 	}
 	if city := c.Query("city"); city != "" {
-		query = query.Where("city ILIKE ?", "%"+city+"%")
+		query = query.Where("city LIKE ?", "%"+city+"%")
 	}
 
 	var total int64

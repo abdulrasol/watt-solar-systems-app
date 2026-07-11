@@ -58,7 +58,6 @@ func PublicListCompanies(c *gin.Context) {
 	var companies []models.Company
 	query := database.DB.
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		Preload("City").
 		Preload("ServiceTypes").
 		Preload("SubscriptionPlan").
@@ -66,7 +65,7 @@ func PublicListCompanies(c *gin.Context) {
 
 	if search != "" {
 		like := "%" + search + "%"
-		query = query.Where("name ILIKE ? OR description ILIKE ?", like, like)
+		query = query.Where("name LIKE ? OR description LIKE ?", like, like)
 	}
 
 	if companyType != "" {
@@ -218,7 +217,6 @@ func PublicGetCompany(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		Preload("City").
 		Preload("Currency").
 		Preload("ServiceTypes").
@@ -265,7 +263,6 @@ func PublicListCompanyWorks(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		First(&comp, id).Error; err != nil {
 		msgUser := "الشركة غير موجودة"
 		response.Error(c, http.StatusNotFound, "Company not found", &msgUser)
@@ -358,7 +355,6 @@ func PublicGetCompanyServices(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		Preload("ServiceTypes").
 		First(&comp, id).Error; err != nil {
 		msgUser := "الشركة غير موجودة"

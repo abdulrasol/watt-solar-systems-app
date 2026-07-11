@@ -12,7 +12,9 @@ func SetupSystemsRoutes(router *gin.RouterGroup, cfg *config.Config) {
 	group := router.Group("/systems")
 	group.Use(middleware.AuthMiddleware(cfg))
 	{
+		group.GET("", systems.ListMySystems)
 		group.GET("/", systems.ListMySystems)
+		group.POST("", systems.CreateMySystem)
 		group.POST("/", systems.CreateMySystem)
 		group.GET("/:sys_id", systems.GetMySystem)
 		group.PUT("/:sys_id", systems.UpdateMySystem)
@@ -23,6 +25,7 @@ func SetupSystemsRoutes(router *gin.RouterGroup, cfg *config.Config) {
 	admin.Use(middleware.AuthMiddleware(cfg))
 	admin.Use(middleware.SuperuserMiddleware())
 	{
+		admin.GET("", systems.AdminListSystems)
 		admin.GET("/", systems.AdminListSystems)
 		admin.PUT("/:sys_id/status", systems.AdminUpdateSystemStatus)
 	}

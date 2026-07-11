@@ -39,7 +39,9 @@ func SetupOffersRoutes(router *gin.RouterGroup, cfg *config.Config) {
 	involvesGroup := router.Group("/involves")
 	involvesGroup.Use(middleware.AuthMiddleware(cfg))
 	{
+		involvesGroup.GET("", offers.ListInvolvementTemplates)
 		involvesGroup.GET("/", offers.ListInvolvementTemplates)
+		involvesGroup.POST("", offers.CreateInvolvementTemplate)
 		involvesGroup.POST("/", offers.CreateInvolvementTemplate)
 		involvesGroup.PUT("/:id", offers.UpdateInvolvementTemplate)
 		involvesGroup.DELETE("/:id", offers.DeleteInvolvementTemplate)
@@ -51,6 +53,7 @@ func SetupOffersRoutes(router *gin.RouterGroup, cfg *config.Config) {
 	companyOffers.Use(middleware.CompanyMemberMiddleware())
 	{
 		companyOffers.GET("/requests", offers.CompanyListOfferRequests)
+		companyOffers.GET("", offers.CompanyListOffers)
 		companyOffers.GET("/", offers.CompanyListOffers)
 		companyOffers.POST("/requests/:request_id/reply", offers.CompanyReplyToOfferRequest)
 		companyOffers.PUT("/:offer_id", offers.CompanyUpdateOffer)

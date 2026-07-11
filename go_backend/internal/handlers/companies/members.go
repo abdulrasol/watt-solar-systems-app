@@ -263,3 +263,54 @@ func RemoveMember(c *gin.Context) {
 
 	response.Success(c, http.StatusOK, "Member removed successfully", map[string]interface{}{})
 }
+
+// UpdateMemberRole handles PATCH /api/company/{company_id}/members/{member_id}
+// @Security Bearer
+// @Summary UpdateMemberRole
+// @Description UpdateMemberRole
+// @Tags Companies Members
+// @Param company_id path int true "company_id"
+// @Param member_id path int true "member_id"
+// @Param body body map[string]interface{} true "body"
+// @Success 200 {object} response.APIResponse
+// @Router /companies/{company_id}/members/{member_id} [patch]
+func UpdateMemberRole(c *gin.Context) {
+	member, ok := getCompanyFromContext(c)
+	if !ok {
+		return
+	}
+
+	memberIDStr := c.Param("member_id")
+	memberID, err := strconv.Atoi(memberIDStr)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "Invalid Member ID", nil)
+		return
+	}
+
+	var req struct {
+		Role string `json:"role" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, http.StatusBadRequest, "Invalid request body", nil)
+		return
+	}
+
+	var targetMember models.CompanyMember
+	if err := database.DB.Where("id = ? AND company_id = ?", memberID, member.CompanyID).First(&targetMember).Error; err != nil {
+		msgUser := "العضو غير موجود"
+		response.Error(c, http.StatusNotFound, "Member not found", &msgUser)
+		return
+	}
+
+	if targetMember.Role == "admin" && member.Role != "admin" {
+		msgUser := "لا يمكن تعديل صلاحيات الأدمن"
+		response.Error(c, http.StatusForbidden, "Cannot update admin role", &msgUser)
+		return
+	}
+
+	targetMember.Role = req.Role
+	database.DB.Save(&targetMember)
+
+	response.Success(c, http.StatusOK, "Member role updated successfully", map[string]interface{}{})
+}

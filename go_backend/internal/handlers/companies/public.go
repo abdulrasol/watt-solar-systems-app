@@ -2,6 +2,8 @@ package companies
 
 import (
 	"fmt"
+	"log"
+	"encoding/json"
 	"net/http"
 	"path/filepath"
 
@@ -176,23 +178,18 @@ func RegisterCompany(c *gin.Context) {
 func GetCompanyTypes(c *gin.Context) {
 	var companyTypes []models.CompanyType
 	// Preload AllowedServices and AllowedSubscriptionPlans
-	if err := database.DB.Preload("AllowedServices", "is_active = ?", true).
-		Preload("AllowedSubscriptionPlans", "is_active = ?", true).
+	if err := database.DB.Preload("AllowedSubscriptionPlans", "is_active = ?", true).
 		Find(&companyTypes).Error; err != nil {
-		msgUser := "حدث خطأ أثناء جلب أنواع الشركات"
-		response.Error(c, http.StatusInternalServerError, "Failed to fetch company types", &msgUser)
+		log.Printf("Error fetching company types: %v", err)
+		response.Error(c, http.StatusInternalServerError, "Failed to fetch company types", nil)
 		return
 	}
 
 	data := make([]map[string]interface{}, 0, len(companyTypes))
 	for _, ct := range companyTypes {
-		allowedServices := []map[string]interface{}{}
-		for _, s := range ct.AllowedServices {
-			allowedServices = append(allowedServices, map[string]interface{}{
-				"id":   s.ID,
-				"code": s.Code,
-				"name": s.Name,
-			})
+		var allowedFeatures []string
+		if len(ct.AllowedFeatures) > 0 {
+			_ = json.Unmarshal(ct.AllowedFeatures, &allowedFeatures)
 		}
 
 		allowedPlans := []map[string]interface{}{}
@@ -207,7 +204,7 @@ func GetCompanyTypes(c *gin.Context) {
 			"id":                         ct.ID,
 			"code":                       ct.CType,
 			"name":                       ct.Name,
-			"allowed_services":           allowedServices,
+			"allowed_features":           allowedFeatures,
 			"allowed_subscription_plans": allowedPlans,
 		})
 	}

@@ -50,7 +50,7 @@ func ListCompanyProducts(c *gin.Context) {
 
 	if search != "" {
 		like := "%" + search + "%"
-		query = query.Where("name ILIKE ? OR sku ILIKE ? OR description ILIKE ?", like, like, like)
+		query = query.Where("name LIKE ? OR sku LIKE ? OR description LIKE ?", like, like, like)
 	}
 	if status != "" {
 		query = query.Where("status = ?", status)
@@ -73,7 +73,7 @@ func ListCompanyProducts(c *gin.Context) {
 	query.Model(&models.Product{}).Count(&total)
 
 	var products []models.Product
-	if err := query.Order("created_at desc").Limit(pageSize).Offset(offset).Find(&products).Error; err != nil {
+	if err := query.Order("products.created_at desc").Limit(pageSize).Offset(offset).Find(&products).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to fetch products", nil)
 		return
 	}

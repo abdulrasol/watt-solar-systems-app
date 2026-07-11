@@ -1,8 +1,10 @@
 package shop
 
 import (
+	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"watt/internal/database"
@@ -61,12 +63,11 @@ func ListStoreCompanies(c *gin.Context) {
 	query := database.DB.
 		Preload("City").
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		Where("status = ?", "active")
 
 	if search != "" {
 		like := "%" + search + "%"
-		query = query.Where("name ILIKE ? OR phone ILIKE ?", like, like)
+		query = query.Where("name LIKE ? OR phone LIKE ?", like, like)
 	}
 
 	var total int64
@@ -109,7 +110,7 @@ func ListStoreCompanyCategories(c *gin.Context) {
 	}
 
 	var comp models.Company
-	if err := database.DB.Preload("CompanyType").Preload("CompanyType.AllowedServices").First(&comp, id).Error; err != nil {
+	if err := database.DB.Preload("CompanyType").First(&comp, id).Error; err != nil {
 		response.Error(c, http.StatusNotFound, "Company not found", nil)
 		return
 	}
@@ -298,7 +299,6 @@ func listPublicProducts(c *gin.Context, channel string) {
 	query := database.DB.
 		Preload("Company").
 		Preload("Company.CompanyType").
-		Preload("Company.CompanyType.AllowedServices").
 		Preload("Company.City").
 		Preload("Company.City.Country").
 		Preload("Company.Currency").
@@ -307,8 +307,11 @@ func listPublicProducts(c *gin.Context, channel string) {
 		Preload("Options").
 		Preload("PricingTiers").
 		Preload("Images").
-		Where("status = ?", "active").
-		Where("stock_quantity > ?", 0)
+		Joins("JOIN companies c ON products.company_id = c.id").
+		Where("products.status = ?", "active").
+		Where("products.stock_quantity > ?", 0).
+		Where("c.status = ?", "active").
+		Where("c.expire_date > ?", time.Now())
 
 	if companyID != nil {
 		query = query.Where("company_id = ?", *companyID)
@@ -331,7 +334,7 @@ func listPublicProducts(c *gin.Context, channel string) {
 	if search != "" {
 		like := "%" + search + "%"
 		query = query.Joins("LEFT JOIN companies sc ON sc.id = products.company_id").
-			Where("products.name ILIKE ? OR products.sku ILIKE ? OR products.description ILIKE ? OR sc.name ILIKE ?",
+			Where("products.name LIKE ? OR products.sku LIKE ? OR products.description LIKE ? OR sc.name LIKE ?",
 				like, like, like, like)
 	}
 
@@ -349,6 +352,9 @@ func listPublicProducts(c *gin.Context, channel string) {
 	if orderCol != "created_at" && orderCol != "updated_at" && orderCol != "name" && orderCol != "retail_price" && orderCol != "wholesale_price" {
 		orderCol = "created_at"
 	}
+
+	// Prefix with products to avoid ambiguous column error with joined companies table
+	orderCol = "products." + orderCol
 	order := orderCol + " asc"
 	if desc {
 		order = orderCol + " desc"
@@ -356,6 +362,7 @@ func listPublicProducts(c *gin.Context, channel string) {
 
 	var products []models.Product
 	if err := query.Limit(pageSize).Offset(offset).Order(order).Find(&products).Error; err != nil {
+		log.Printf("Error fetching products: %v", err)
 		response.Error(c, http.StatusInternalServerError, "Failed to fetch products", nil)
 		return
 	}
@@ -371,3 +378,61 @@ func listPublicProducts(c *gin.Context, channel string) {
 	response.Success(c, http.StatusOK, "Products retrieved successfully", paginationResponse(page, pageSize, total, items))
 }
 
+// GetStoreProduct handles GET /api/v1/shop/store/products/:id
+// @Summary GetStoreProduct
+// @Description Get a storefront product
+// @Tags Shop
+// @Produce json
+// @Param id path int true "product_id"
+// @Success 200 {object} response.APIResponse
+// @Router /shop/store/products/{id} [get]
+func GetStoreProduct(c *gin.Context) {
+	getPublicProduct(c, "b2c")
+}
+
+// GetB2BProduct handles GET /api/v1/shop/b2b/products/:id
+// @Summary GetB2BProduct
+// @Description Get a B2B storefront product
+// @Tags Shop
+// @Produce json
+// @Param id path int true "product_id"
+// @Success 200 {object} response.APIResponse
+// @Router /shop/b2b/products/{id} [get]
+func GetB2BProduct(c *gin.Context) {
+	getPublicProduct(c, "b2b")
+}
+
+func getPublicProduct(c *gin.Context, channel string) {
+	id := c.Param("id")
+
+	var p models.Product
+	query := database.DB.
+		Preload("Company").
+		Preload("Company.CompanyType").
+		Preload("Company.City").
+		Preload("Company.City.Country").
+		Preload("Company.Currency").
+		Preload("GlobalCategory").
+		Preload("Categories").
+		Preload("Options").
+		Preload("PricingTiers").
+		Preload("Images").
+		Joins("JOIN companies c ON products.company_id = c.id").
+		Where("products.status = ?", "active").
+		Where("products.stock_quantity > ?", 0).
+		Where("c.status = ?", "active").
+		Where("products.id = ?", id).
+		First(&p)
+
+	if err := query.Error; err != nil {
+		response.Error(c, http.StatusNotFound, "Product not found", nil)
+		return
+	}
+
+	if p.Company == nil || !companies.IsCompanyPubliclyVisible(p.Company, channel) {
+		response.Error(c, http.StatusNotFound, "Product not found", nil)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "Product retrieved successfully", serializeProduct(&p, channel, false))
+}

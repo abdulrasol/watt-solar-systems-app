@@ -76,7 +76,7 @@ func AdminListCompanies(c *gin.Context) {
 	}
 	if search != "" {
 		like := "%" + search + "%"
-		query = query.Where("name ILIKE ? OR phone ILIKE ?", like, like)
+		query = query.Where("name LIKE ? OR phone LIKE ?", like, like)
 	}
 
 	query.Count(&total)
@@ -123,7 +123,6 @@ func AdminGetCompany(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		Preload("City").
 		Preload("Currency").
 		Preload("ServiceTypes").
@@ -161,7 +160,6 @@ func AdminGetCompanyServices(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		Preload("ServiceTypes").
 		First(&comp, id).Error; err != nil {
 		msgUser := "الشركة غير موجودة"
@@ -192,7 +190,6 @@ func AdminGetCompanyDetails(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("CompanyType.AllowedServices").
 		Preload("City").
 		Preload("City.Country").
 		Preload("Currency").
@@ -300,7 +297,7 @@ func AdminListAdminPosters(c *gin.Context) {
 	if search != "" {
 		like := "%" + search + "%"
 		query = query.Joins("JOIN companies c ON posters.company_id = c.id").
-			Where("c.name ILIKE ? OR posters.text ILIKE ?", like, like)
+			Where("c.name LIKE ? OR posters.text LIKE ?", like, like)
 	}
 	now := time.Now()
 	switch validity {
@@ -528,3 +525,92 @@ func formatTimePtr(t *time.Time) interface{} {
 }
 
 
+
+// AdminListSubscriptionRequests handles GET /api/v1/admin/companies/subscription-requests
+// @Summary AdminListSubscriptionRequests
+// @Description List all subscription requests
+// @Tags Admin Companies API
+// @Accept json
+// @Produce json
+// @Param page query int false "page"
+// @Param page_size query int false "page_size"
+// @Param status query string false "status (pending, active, rejected)"
+// @Security Bearer
+// @Success 200 {object} response.APIResponse
+// @Router /admin/companies/subscription-requests [get]
+func AdminListSubscriptionRequests(c *gin.Context) {
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "12"))
+	status := c.Query("status")
+
+	query := database.DB.Model(&models.CompanySubscriptionRequest{})
+
+	if status != "" {
+		query = query.Where("status = ?", status)
+	}
+
+	var count int64
+	query.Count(&count)
+
+	var requests []models.CompanySubscriptionRequest
+	offset := (page - 1) * pageSize
+
+	if err := query.Preload("Company").
+		Preload("SubscriptionPlan").
+		Preload("RequestedBy").
+		Order("created_at desc").
+		Limit(pageSize).
+		Offset(offset).
+		Find(&requests).Error; err != nil {
+		msgUser := "خطأ أثناء جلب طلبات الاشتراك"
+		response.Error(c, http.StatusInternalServerError, "Failed to fetch subscription requests", &msgUser)
+		return
+	}
+
+	var out []models.CompanySubscriptionRequestOut
+	for _, r := range requests {
+		reqOut := models.CompanySubscriptionRequestOut{
+			ID:                   r.ID,
+			CompanyID:            r.CompanyID,
+			CompanyName:          r.Company.Name,
+			SubscriptionPlanID:   r.SubscriptionPlanID,
+			SubscriptionPlanName: r.SubscriptionPlan.Name,
+			Status:               r.Status,
+			Notes:                nil,
+			Image:                r.Image,
+			CreatedAt:            r.CreatedAt,
+		}
+
+		if r.Notes != "" {
+			reqOut.Notes = &r.Notes
+		}
+
+		if r.RequestedBy != nil {
+			var fullName string
+			if r.RequestedBy.FirstName != "" {
+				fullName += r.RequestedBy.FirstName
+			}
+			if r.RequestedBy.LastName != "" {
+				if fullName != "" {
+					fullName += " "
+				}
+				fullName += r.RequestedBy.LastName
+			}
+			if fullName == "" {
+				fullName = r.RequestedBy.Phone
+			}
+			reqOut.RequestedBy = &fullName
+		}
+
+		out = append(out, reqOut)
+	}
+
+	paginationData := map[string]interface{}{
+		"items":     out,
+		"page":      page,
+		"page_size": pageSize,
+		"count":     count,
+	}
+
+	response.Success(c, http.StatusOK, "Subscription requests retrieved successfully", paginationData)
+}

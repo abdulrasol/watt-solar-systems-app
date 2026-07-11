@@ -18,6 +18,7 @@ func SetupShopRoutes(router *gin.RouterGroup, cfg *config.Config) {
 			storeGroup.GET("/companies", shop.ListStoreCompanies)
 			storeGroup.GET("/companies/:id/company-categories", shop.ListStoreCompanyCategories)
 			storeGroup.GET("/products", shop.ListStoreProducts)
+			storeGroup.GET("/products/:id", shop.GetStoreProduct)
 			storeGroup.GET("/companies/:id/products", shop.ListStoreCompanyProducts)
 			storeGroup.GET("/categories/:type/:id/products", shop.ListStoreCategoryProducts)
 			storeGroup.GET("/search", shop.ListStoreSearch)
@@ -26,6 +27,7 @@ func SetupShopRoutes(router *gin.RouterGroup, cfg *config.Config) {
 		b2bGroup := shopGroup.Group("/b2b")
 		{
 			b2bGroup.GET("/products", shop.ListB2BProducts)
+			b2bGroup.GET("/products/:id", shop.GetB2BProduct)
 			b2bGroup.GET("/companies/:id/products", shop.ListB2BCompanyProducts)
 			b2bGroup.GET("/categories/:type/:id/products", shop.ListB2BCategoryProducts)
 			b2bGroup.GET("/search", shop.ListB2BSearch)
@@ -44,6 +46,7 @@ func SetupShopRoutes(router *gin.RouterGroup, cfg *config.Config) {
 			authShop.GET("/b2b/my-orders/:order_id", shop.GetMyB2BOrder)
 			authShop.POST("/b2b/my-orders/:order_id/cancel", shop.CancelMyB2BOrder)
 			authShop.POST("/b2b/my-orders/:order_id/confirm-receipt", shop.ConfirmB2BReceipt)
+			authShop.POST("/cart/validate", shop.ValidateCart)
 		}
 	}
 

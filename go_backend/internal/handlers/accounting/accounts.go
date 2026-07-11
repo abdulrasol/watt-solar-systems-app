@@ -30,7 +30,7 @@ func ListAccounts(c *gin.Context) {
 		query = query.Where("is_active = ?", active == "true")
 	}
 	if search := c.Query("search"); search != "" {
-		query = query.Where("name ILIKE ? OR code ILIKE ?", "%"+search+"%", "%"+search+"%")
+		query = query.Where("name LIKE ? OR code LIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 
 	orderCol := "code"

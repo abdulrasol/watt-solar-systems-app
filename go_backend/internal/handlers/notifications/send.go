@@ -13,7 +13,18 @@ import (
 	"watt/internal/services/fcm"
 )
 
-// SendBroadcast handles POST /api/v1/notification/send-broadcast
+// SendBroadcast godoc
+// @Summary      Send broadcast notification
+// @Description  Send a push notification to all active devices (Superuser only)
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        payload body      models.BroadcastSchema true "Broadcast Payload"
+// @Success      200     {object}  response.APIResponse
+// @Failure      400     {object}  response.APIResponse
+// @Failure      503     {object}  response.APIResponse
+// @Router       /api/v1/notification/send-broadcast [post]
+// @Security     BearerAuth
 func SendBroadcast(c *gin.Context) {
 	if !requireSuperuser(c) {
 		return
@@ -65,7 +76,18 @@ func SendBroadcast(c *gin.Context) {
 	})
 }
 
-// SendGroup handles POST /api/v1/notification/send-group
+// SendGroup godoc
+// @Summary      Send notification to a group
+// @Description  Send a push notification to a specific group of users (Superuser only)
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        payload body      models.GroupNotificationSchema true "Group Payload"
+// @Success      200     {object}  response.APIResponse
+// @Failure      400     {object}  response.APIResponse
+// @Failure      503     {object}  response.APIResponse
+// @Router       /api/v1/notification/send-group [post]
+// @Security     BearerAuth
 func SendGroup(c *gin.Context) {
 	if !requireSuperuser(c) {
 		return
@@ -130,7 +152,18 @@ func SendGroup(c *gin.Context) {
 	})
 }
 
-// SendUser handles POST /api/v1/notification/send-user
+// SendUser godoc
+// @Summary      Send notification to a specific user
+// @Description  Send a push notification to a single user (Superuser only)
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        payload body      models.UserNotificationSchema true "User Payload"
+// @Success      200     {object}  response.APIResponse
+// @Failure      400     {object}  response.APIResponse
+// @Failure      503     {object}  response.APIResponse
+// @Router       /api/v1/notification/send-user [post]
+// @Security     BearerAuth
 func SendUser(c *gin.Context) {
 	if !requireSuperuser(c) {
 		return
@@ -184,7 +217,19 @@ func SendUser(c *gin.Context) {
 	})
 }
 
-// SendTopic handles POST /api/v1/notification/send-topic/:topic
+// SendTopic godoc
+// @Summary      Send notification to a topic
+// @Description  Send a push notification to an FCM topic (Superuser only)
+// @Tags         Notifications
+// @Accept       json
+// @Produce      json
+// @Param        topic   path      string true "Topic Name"
+// @Param        payload body      models.TopicNotificationSchema true "Topic Payload"
+// @Success      200     {object}  response.APIResponse
+// @Failure      400     {object}  response.APIResponse
+// @Failure      503     {object}  response.APIResponse
+// @Router       /api/v1/notification/send-topic/{topic} [post]
+// @Security     BearerAuth
 func SendTopic(c *gin.Context) {
 	if !requireSuperuser(c) {
 		return

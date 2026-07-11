@@ -13,6 +13,7 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 	// Public service types
 	serviceTypesPublicGroup := router.Group("/service-types")
 	{
+		serviceTypesPublicGroup.GET("", companies.ListServiceTypes)
 		serviceTypesPublicGroup.GET("/", companies.ListServiceTypes)
 		serviceTypesPublicGroup.GET("/public", companies.ListServiceTypes)
 	}
@@ -20,11 +21,11 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 	// Public APIs
 	publicGroup := router.Group("/public/companies")
 	{
+		publicGroup.GET("", companies.PublicListCompanies)
 		publicGroup.GET("/", companies.PublicListCompanies)
 		publicGroup.GET("/posters", companies.PublicListPosters)
 		publicGroup.GET("/:company_id", companies.PublicGetCompany)
 		publicGroup.GET("/:company_id/works", companies.PublicListCompanyWorks)
-		publicGroup.GET("/:company_id/services", companies.PublicGetCompanyServices)
 	}
 
 	// Superuser Admin APIs
@@ -35,7 +36,6 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 		superAdminGroup.GET("", companies.AdminListCompanies)
 		superAdminGroup.POST("/:company_id/status", companies.AdminUpdateCompanyStatus)
 		superAdminGroup.GET("/:company_id", companies.AdminGetCompany)
-		superAdminGroup.GET("/:company_id/services", companies.AdminGetCompanyServices)
 		superAdminGroup.GET("/:company_id/members", companies.AdminGetCompanyMembers)
 		superAdminGroup.GET("/:company_id/posters", companies.AdminGetCompanyPosters)
 		superAdminGroup.POST("/posters/:poster_id/review", companies.AdminReviewPoster)
@@ -59,6 +59,7 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 
 		superAdminGroup.GET("/:company_id/details", companies.AdminGetCompanyDetails)
 		superAdminGroup.GET("/posters", companies.AdminListAdminPosters)
+		superAdminGroup.GET("/subscription-requests", companies.AdminListSubscriptionRequests)
 		superAdminGroup.POST("/:company_id/subscription-requests/:request_id/review", companies.AdminReviewSubscriptionRequest)
 	}
 
@@ -90,7 +91,6 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 		companyGroup.POST("/subscription-request", companies.RequestSubscription)
 		companyGroup.POST("/activation-reminder", companies.ActivationReminder)
 		companyGroup.POST("/toggle-active", companies.ToggleCompanyActive)
-		companyGroup.GET("/services", companies.GetCompanyServices)
 		companyGroup.GET("/systems", companies.GetCompanySystems)
 		companyGroup.GET("/analytics", companies.GetCompanyAnalytics)
 		companyGroup.GET("/public-services", companies.GetPublicServices)
@@ -140,6 +140,7 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 		{
 			adminGroup.POST("/members/invite", companies.InviteMember)
 			adminGroup.POST("/members/create", companies.CreateNewMember)
+			adminGroup.PATCH("/members/:member_id", companies.UpdateMemberRole)
 			adminGroup.DELETE("/members/:member_id", companies.RemoveMember)
 		}
 	}

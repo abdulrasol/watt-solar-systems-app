@@ -1,7 +1,7 @@
 package companies
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 	"time"
 
@@ -35,6 +35,12 @@ func BuildCompanyMemberSummary(company *models.Company, member *models.CompanyMe
 	if company.CompanyType != nil {
 		companyOut.Type = &company.CompanyType.CType
 		companyOut.TypeName = &company.CompanyType.Name
+		
+		var allowedFeatures []string
+		if len(company.CompanyType.AllowedFeatures) > 0 {
+			_ = json.Unmarshal(company.CompanyType.AllowedFeatures, &allowedFeatures)
+		}
+		companyOut.AllowedFeatures = allowedFeatures
 	}
 
 	if company.SubscriptionPlanID != nil {
@@ -107,6 +113,7 @@ func BuildCompanyMemberSummary(company *models.Company, member *models.CompanyMe
 		"name":                       companyOut.Name,
 		"type":                       companyOut.Type,
 		"type_name":                  companyOut.TypeName,
+		"allowed_features":           companyOut.AllowedFeatures,
 		"description":                companyOut.Description,
 		"address":                    companyOut.Address,
 		"phone":                      companyOut.Phone,
@@ -199,13 +206,9 @@ func SerializeCompanyType(companyType *models.CompanyType) map[string]interface{
 		return nil
 	}
 
-	var allowedServices []map[string]interface{}
-	for _, s := range companyType.AllowedServices {
-		allowedServices = append(allowedServices, map[string]interface{}{
-			"id":   s.ID,
-			"code": s.Code,
-			"name": s.Name,
-		})
+	var allowedFeatures []string
+	if len(companyType.AllowedFeatures) > 0 {
+		_ = json.Unmarshal(companyType.AllowedFeatures, &allowedFeatures)
 	}
 
 	var allowedPlans []map[string]interface{}
@@ -220,7 +223,7 @@ func SerializeCompanyType(companyType *models.CompanyType) map[string]interface{
 		"id":                         companyType.ID,
 		"code":                       companyType.CType,
 		"name":                       companyType.Name,
-		"allowed_services":           allowedServices,
+		"allowed_features":           allowedFeatures,
 		"allowed_subscription_plans": allowedPlans,
 	}
 }
@@ -286,14 +289,13 @@ func IsCompanyPubliclyVisible(company *models.Company, channel string) bool {
 		return false
 	}
 
-	requiredService := "storefront_b2c"
-	if channel == "b2b" {
-		requiredService = "storefront_b2b"
-	}
-
 	if company.CompanyType != nil {
-		for _, s := range company.CompanyType.AllowedServices {
-			if s.Code == requiredService {
+		var allowedFeatures []string
+		if len(company.CompanyType.AllowedFeatures) > 0 {
+			_ = json.Unmarshal(company.CompanyType.AllowedFeatures, &allowedFeatures)
+		}
+		for _, f := range allowedFeatures {
+			if f == "store" {
 				return true
 			}
 		}
@@ -304,92 +306,8 @@ func IsCompanyPubliclyVisible(company *models.Company, channel string) bool {
 
 // GetCompanyServicesStatus returns the service catalog status for a company (Django shape).
 func GetCompanyServicesStatus(company *models.Company) []map[string]interface{} {
-	if company.CompanyTypeID == nil {
-		return []map[string]interface{}{}
-	}
-
-	var catalogServices []models.CompanyServiceCatalog
-	if err := database.DB.
-		Joins("JOIN company_type_services cts ON cts.company_service_catalog_id = company_service_catalogs.id").
-		Where("cts.company_type_id = ?", *company.CompanyTypeID).
-		Where("company_service_catalogs.is_active = ?", true).
-		Order("company_service_catalogs.sort_order asc, company_service_catalogs.name asc").
-		Find(&catalogServices).Error; err != nil {
-		return []map[string]interface{}{}
-	}
-
-	var subscriptions []models.CompanyServiceSubscription
-	database.DB.Where("company_id = ?", company.ID).Find(&subscriptions)
-
-	subMap := make(map[uint]*models.CompanyServiceSubscription)
-	for i := range subscriptions {
-		subMap[subscriptions[i].ServiceID] = &subscriptions[i]
-	}
-
-	var requests []models.CompanyServiceRequest
-	database.DB.Where("company_id = ? AND status = ?", company.ID, "pending").Find(&requests)
-
-	requestMap := make(map[uint]*models.CompanyServiceRequest)
-	for i := range requests {
-		requestMap[requests[i].ServiceID] = &requests[i]
-	}
-
-	result := make([]map[string]interface{}, 0, len(catalogServices))
-	for _, svc := range catalogServices {
-		isAllowed := false
-		if company.CompanyType != nil {
-			for _, allowed := range company.CompanyType.AllowedServices {
-				if allowed.ID == svc.ID {
-					isAllowed = true
-					break
-				}
-			}
-		}
-
-		status := "inactive"
-		subscriptionID := ""
-		var requestedAt, approvedAt, activatedAt, startsAt, endsAt *time.Time
-		notes := ""
-		var meta interface{}
-
-		if sub, ok := subMap[svc.ID]; ok {
-			status = sub.Status
-			subscriptionID = fmt.Sprintf("%d", sub.ID)
-			requestedAt = sub.RequestedAt
-			approvedAt = sub.ApprovedAt
-			activatedAt = sub.ActivatedAt
-			startsAt = sub.StartsAt
-			endsAt = sub.EndsAt
-			notes = sub.Notes
-			meta = sub.Meta
-		} else if req, ok := requestMap[svc.ID]; ok {
-			status = req.Status
-			requestedAt = &req.RequestedAt
-			notes = req.Notes
-			meta = req.Meta
-		}
-
-		result = append(result, map[string]interface{}{
-			"service_code":     svc.Code,
-			"service_name":     svc.Name,
-			"is_allowed":       isAllowed,
-			"status":           status,
-			"is_auto_enabled":  false,
-			"auto_enabled_by":  []interface{}{},
-			"subscription_id":  subscriptionID,
-			"requested_at":     formatTime(requestedAt),
-			"approved_at":      formatTime(approvedAt),
-			"activated_at":     formatTime(activatedAt),
-			"starts_at":        formatTime(startsAt),
-			"ends_at":          formatTime(endsAt),
-			"notes":            notes,
-			"meta":             meta,
-			"route":            svc.Route,
-			"icon":             svc.Icon,
-		})
-	}
-
-	return result
+	// Obsolete, replaced by allowedFeatures
+	return []map[string]interface{}{}
 }
 
 func formatTime(t *time.Time) *string {
@@ -539,11 +457,17 @@ func SerializeCompanyForAdmin(company *models.Company) map[string]interface{} {
 		subPlanID = *company.SubscriptionPlanID
 	}
 
+	var allowedFeatures []string
+	if len(company.CompanyType.AllowedFeatures) > 0 {
+		_ = json.Unmarshal(company.CompanyType.AllowedFeatures, &allowedFeatures)
+	}
+
 	return map[string]interface{}{
 		"id":                    company.ID,
 		"name":                  company.Name,
 		"type":                  company.CompanyType.CType,
 		"type_name":             company.CompanyType.Name,
+		"allowed_features":      allowedFeatures,
 		"service_types":         SerializeServiceTypes(company.ServiceTypes, company),
 		"description":           company.Description,
 		"address":               company.Address,

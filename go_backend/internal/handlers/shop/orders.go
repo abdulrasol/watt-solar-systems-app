@@ -11,6 +11,7 @@ import (
 	"watt/internal/handlers/companies"
 	"watt/internal/models"
 	"watt/internal/response"
+	"watt/internal/services"
 	notifsvc "watt/internal/services/notifications"
 )
 
@@ -70,7 +71,7 @@ func CreateB2BOrder(c *gin.Context) {
 
 func createOrder(c *gin.Context, buyerUserID uint, orderType string, sellerCompanyID uint, items []models.OrderItemCreateSchema, paymentMethod string, shippingCost float64, shippingMethod *string, shippingAddress interface{}, discountAmount, taxAmount float64, currencyCode, currencySymbol *string, dueDate *time.Time) error {
 	var seller models.Company
-	if err := database.DB.Preload("CompanyType").Preload("CompanyType.AllowedServices").First(&seller, sellerCompanyID).Error; err != nil {
+	if err := database.DB.Preload("CompanyType").First(&seller, sellerCompanyID).Error; err != nil {
 		response.Error(c, http.StatusBadRequest, "Seller company not found", nil)
 		return err
 	}
@@ -141,7 +142,7 @@ func createOrder(c *gin.Context, buyerUserID uint, orderType string, sellerCompa
 	var subtotal float64
 	for _, item := range items {
 		var product models.Product
-		if err := database.DB.First(&product, item.ProductID).Error; err != nil {
+		if err := database.DB.Preload("PricingTiers").First(&product, item.ProductID).Error; err != nil {
 			response.Error(c, http.StatusBadRequest, "Product not found", nil)
 			return err
 		}
@@ -154,10 +155,40 @@ func createOrder(c *gin.Context, buyerUserID uint, orderType string, sellerCompa
 			return fmt.Errorf("product unavailable")
 		}
 
+		// Determine base unit price
 		unitPrice := product.RetailPrice
 		if orderType == "b2b" {
 			unitPrice = product.WholesalePrice
 		}
+
+		// Apply pricing tiers
+		tierPrice := unitPrice
+		highestTierQty := 0
+		for _, tier := range product.PricingTiers {
+			if item.Quantity >= tier.Quantity && tier.Quantity > highestTierQty {
+				tierPrice = tier.UnitPrice
+				highestTierQty = tier.Quantity
+			}
+		}
+		if highestTierQty > 0 {
+			unitPrice = tierPrice
+		}
+
+		// Add options cost
+		optionsCost := 0.0
+		if len(item.SelectedOptions) > 0 {
+			var options []models.ProductOption
+			database.DB.Where("id IN ?", item.SelectedOptions).Find(&options)
+			for _, opt := range options {
+				if orderType == "b2b" {
+					optionsCost += opt.WholesalePrice
+				} else {
+					optionsCost += opt.RetailPrice
+				}
+			}
+		}
+
+		unitPrice += optionsCost
 		totalLinePrice := unitPrice * float64(item.Quantity)
 		subtotal += totalLinePrice
 
@@ -522,7 +553,7 @@ func listMyOrders(c *gin.Context, userID uint, orderType string) {
 	if search := c.Query("search"); search != "" {
 		like := "%" + search + "%"
 		query = query.Joins("LEFT JOIN companies ocomp ON ocomp.id = orders.seller_company_id").
-			Where("orders.order_number::text ILIKE ? OR ocomp.name ILIKE ?", like, like)
+			Where("orders.order_number::text LIKE ? OR ocomp.name LIKE ?", like, like)
 	}
 
 	var total int64
@@ -615,5 +646,41 @@ func cancelMyOrder(c *gin.Context, userID uint, orderType string) {
 	notifsvc.SendBuyerOrderStatusNotification(&order)
 
 	response.Success(c, http.StatusOK, "Order cancelled successfully", serializeOrder(&order))
+}
+
+// ValidateCart handles POST /api/v1/shop/cart/validate
+// @Summary ValidateCart
+// @Description Validate cart and return calculated totals
+// @Tags Shop
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param request body models.CartValidateRequest true "Cart Validation Payload"
+// @Success 200 {object} response.APIResponse
+// @Router /shop/cart/validate [post]
+func ValidateCart(c *gin.Context) {
+	userID, ok := getUserID(c)
+	if !ok {
+		return
+	}
+
+	var payload models.CartValidateRequest
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		response.Error(c, http.StatusBadRequest, "Invalid payload", nil)
+		return
+	}
+
+	// Assuming shopservice is the package name. Oh wait, I named it `services` and imported `watt/internal/services` inside handlers.
+	// But `shop_service.go` is in `watt/internal/services`. I need to import it here.
+	// We'll update the imports later in this file.
+	// Wait, the `orders.go` doesn't import `watt/internal/services` directly yet, only `watt/internal/services/notifications`.
+	// Let's modify the code below after adding import.
+	resp, err := services.ValidateCart(payload, userID)
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, err.Error(), nil)
+		return
+	}
+
+	response.Success(c, http.StatusOK, "Cart validated", resp)
 }
 
