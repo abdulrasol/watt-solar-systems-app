@@ -1,3 +1,4 @@
+import 'package:watt/src/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -88,7 +89,7 @@ class SearchResultsContent extends ConsumerWidget {
               icon: Iconsax.box,
               title: p.name,
               subtitle: 'SKU: ${p.sku ?? "N/A"} • Stock: ${p.stockQuantity}',
-              onTap: () => context.push('/inventory'),
+              onTap: () => context.push(AppRoutes.companyInventoryProducts),
             ),
           ),
             SizedBox(height: 16),

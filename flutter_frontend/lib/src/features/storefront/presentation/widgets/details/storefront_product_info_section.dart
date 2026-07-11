@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/status_badge.dart';
 
 class StorefrontProductInfoSection extends StatelessWidget {
   final String companyName;
   final String? categoryLabel;
-  final bool isAvailable;
+  final int stockQuantity;
+  final int minStockAlert;
 
   const StorefrontProductInfoSection({
     super.key,
     required this.companyName,
     required this.categoryLabel,
-    required this.isAvailable,
+    required this.stockQuantity,
+    required this.minStockAlert,
   });
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     return Wrap(
       spacing: 8.w,
       runSpacing: 8.h,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         _InfoChip(label: companyName),
-        _InfoChip(label: isAvailable ? l10n.available : l10n.unavailable),
+        // Replaces the old plain available/unavailable boolean chip with the
+        // shared stock-status badge, so buyers see in-stock/low-stock/out-of-
+        // stock instead of a flat available/unavailable label.
+        StockStatusBadge(stockQuantity: stockQuantity, minStockAlert: minStockAlert),
         if ((categoryLabel ?? '').isNotEmpty) _InfoChip(label: categoryLabel!),
       ],
     );

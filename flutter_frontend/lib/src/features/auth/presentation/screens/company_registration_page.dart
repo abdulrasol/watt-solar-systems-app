@@ -388,10 +388,10 @@ class _CompanyRegistrationPageState extends ConsumerState<CompanyRegistrationPag
     }
     final company = ref.read(authProvider).company;
     if (_selectedCity != null) {
-      _selectedCountry = _countries.firstWhere((element) => element.id == _selectedCity!.country.id, orElse: () => _countries.first);
+      _selectedCountry = _countries.firstWhere((element) => element.id == _selectedCity?.country?.id, orElse: () => _countries.first);
       await _fetchCities(countryId: _selectedCountry?.id);
       if (company?.city != null) {
-        _selectedCity = _cities.where((city) => city.id == company!.city!.id).firstOrNull;
+        _selectedCity = _cities.where((city) => city.id == company!.city?.id).firstOrNull;
       }
     }
     setState(() {

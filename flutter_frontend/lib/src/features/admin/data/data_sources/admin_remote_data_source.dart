@@ -47,6 +47,8 @@ abstract class AdminRemoteDataSource {
   Future<api.Response> createSubscriptionPlan(Map<String, dynamic> data);
   Future<api.Response> updateSubscriptionPlan(int id, Map<String, dynamic> data);
   Future<api.Response> deleteSubscriptionPlan(int id);
+  Future<api.PaginationResponse> listSubscriptionRequests({String? status, int page = 1, int pageSize = 12});
+  Future<api.Response> reviewSubscriptionRequest(int companyId, int requestId, String status, {String? notes});
 
   // Feedbacks
   Future<api.PaginationResponse> listFeedbacks({int page = 1, int pageSize = 12});
@@ -363,7 +365,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   @override
   Future<api.Response> updateSubscriptionPlan(int id, Map<String, dynamic> data) async {
     try {
-      return await _dioService.put(AppUrls.adminSubscription(id), data: data);
+      return await _dioService.put('${AppUrls.adminSubscriptions}/$id', data: data);
     } catch (e) {
       rethrow;
     }
@@ -372,7 +374,35 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   @override
   Future<api.Response> deleteSubscriptionPlan(int id) async {
     try {
-      return await _dioService.delete(AppUrls.adminSubscription(id));
+      return await _dioService.delete('${AppUrls.adminSubscriptions}/$id');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.PaginationResponse> listSubscriptionRequests({String? status, int page = 1, int pageSize = 12}) async {
+    try {
+      final queryParameters = <String, dynamic>{
+        'page': page,
+        'page_size': pageSize,
+        'status': ?status,
+      };
+      final response = await _dioService.get(AppUrls.adminSubscriptionRequests, queryParameters: queryParameters, isPagination: true);
+      return response as api.PaginationResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<api.Response> reviewSubscriptionRequest(int companyId, int requestId, String status, {String? notes}) async {
+    try {
+      final data = <String, dynamic>{'status': status};
+      if (notes != null) {
+        data['notes'] = notes;
+      }
+      return await _dioService.post(AppUrls.adminReviewSubscriptionRequest(companyId, requestId), data: data);
     } catch (e) {
       rethrow;
     }

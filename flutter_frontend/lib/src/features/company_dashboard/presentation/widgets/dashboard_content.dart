@@ -15,7 +15,6 @@ import 'package:watt/src/features/company_dashboard/presentation/screens/company
 import 'package:watt/src/features/company_dashboard/presentation/screens/company_dashboard_contacts_screen.dart';
 import 'package:watt/src/features/company_dashboard/presentation/screens/company_dashboard_public_services_screen.dart';
 import 'package:watt/src/features/company_dashboard/presentation/screens/company_dashboard_service_types_screen.dart';
-import 'package:watt/src/features/company_dashboard/presentation/screens/company_dashboard_services_screen.dart';
 import 'package:watt/src/features/company_work/presentation/screens/company_work_page.dart';
 import 'package:watt/src/features/crm/presentation/screens/crm_screens.dart';
 import 'package:watt/src/features/inventory/presentation/screens/inventory_page.dart';
@@ -107,9 +106,7 @@ class DashboardContent extends ConsumerWidget {
     }
 
     // Core Dashboard Modules
-    if (currentItem.id == 'services') {
-      return const CompanyDashboardServicesScreen(embedded: true);
-    }
+
     if (currentItem.id == 'service_types') {
       return const CompanyDashboardServiceTypesScreen(embedded: true);
     }

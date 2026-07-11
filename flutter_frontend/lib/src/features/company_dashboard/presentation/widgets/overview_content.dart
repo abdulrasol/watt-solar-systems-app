@@ -1,3 +1,4 @@
+import 'package:watt/src/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,11 +6,9 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:watt/l10n/app_localizations.dart';
 import 'package:watt/src/core/layout/app_breakpoints.dart';
 import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:watt/src/features/company_dashboard/domain/entities/service.dart';
 import 'package:watt/src/features/company_dashboard/presentation/providers/summary_provider.dart';
 import 'package:watt/src/utils/app_strings.dart';
 import 'package:watt/src/features/company_dashboard/presentation/widgets/company_header_card.dart';
-import 'package:watt/src/features/company_dashboard/presentation/widgets/service_card.dart';
 import 'package:watt/src/features/company_dashboard/presentation/widgets/stat_card.dart';
 import 'package:watt/src/utils/app_theme.dart';
 import 'package:watt/src/features/company_dashboard/presentation/widgets/dashboard_charts.dart';
@@ -27,47 +26,9 @@ class OverviewContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authProvider).user;
     final company = user?.company;
-    final rawServices = ref.watch(companyServicesProvider);
     final statsGridCount = AppBreakpoints.adaptiveGridCount(context, mobile: 2, tablet: 2, desktop: 4);
-    final servicesGridCount = AppBreakpoints.adaptiveGridCount(context, mobile: 2, tablet: 3, desktop: 4);
     final l10n = AppLocalizations.of(context)!;
-    final services = [...rawServices];
-    final summaryState = ref.watch(companySummaryProvider);
-    final hasProjectsRead = summaryState.hasReadPermission(AppStrings.projectsPermission);
-    if (!hasProjectsRead) {
-      services.removeWhere((s) => s.serviceCode == 'company_work');
-    }
-
-    final hasActiveOffers = services.any((service) => service.serviceCode == 'offers' && service.isActive);
-    if (hasActiveOffers) {
-      services.add(
-        CompanyService(
-          serviceCode: 'offers_catalog',
-          serviceName: l10n.offers_catalog,
-          status: 'active',
-          isAutoEnabled: true,
-          autoEnabledBy: const [],
-          meta: const {},
-          route: '/offers/catalog',
-        ),
-      );
-    }
-
-    for (var index = 0; index < services.length; index++) {
-      final service = services[index];
-      if (service.serviceCode == 'company_work') {
-        services[index] = CompanyService(
-          serviceCode: service.serviceCode,
-          serviceName: service.serviceName.isEmpty ? l10n.company_work_title : service.serviceName,
-          status: service.status,
-          isAutoEnabled: service.isAutoEnabled,
-          autoEnabledBy: service.autoEnabledBy,
-          meta: service.meta,
-          route: '/company-work',
-          icon: service.icon,
-        );
-      }
-    }
+    
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,29 +106,7 @@ class OverviewContent extends ConsumerWidget {
         const RecentActivityList(),
         SizedBox(height: 30),
 
-        // Services Grid
-        Text(
-          l10n.services,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, fontFamily: AppTheme.fontFamily),
-        ),
-        SizedBox(height: 16),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: servicesGridCount,
-            childAspectRatio: AppBreakpoints.isDesktop(context) ? 1.18 : 1.02,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-          ),
-          itemCount: services.length,
-          itemBuilder: (context, index) {
-            final service = services[index];
-            return ServiceCard(service: service, companyId: companyId);
-          },
-        ),
-        SizedBox(height: 30),
-
+        
         // Help Center / Call to action
         _buildCTA(context),
       ],
@@ -228,7 +167,7 @@ class OverviewContent extends ConsumerWidget {
                   // stock from the existing edit flow — there's no separate
                   // "quick restock" endpoint/dialog, so this reuses the real
                   // product editing screen rather than being a no-op.
-                  onPressed: () => context.push('/inventory/product/${product.id}', extra: product),
+                  onPressed: () => context.push('${AppRoutes.companyInventoryProductDetails}/${product.id}', extra: product),
                   child: Text(l10n.restock),
                 ),
               );
@@ -242,7 +181,7 @@ class OverviewContent extends ConsumerWidget {
                 // low-stock-only filter/query param, so this opens the full
                 // inventory list rather than doing nothing — see the
                 // company dashboard linking plan for adding a proper filter.
-                onPressed: () => context.push('/inventory'),
+                onPressed: () => context.push(AppRoutes.companyInventoryProducts),
                 child: Text(l10n.view_all_alerts),
               ),
             ),

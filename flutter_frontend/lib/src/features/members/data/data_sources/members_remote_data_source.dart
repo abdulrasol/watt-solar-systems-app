@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:watt/src/core/models/response.dart' as local;
 import 'package:watt/src/core/services/dio.dart';
 import 'package:watt/src/features/members/data/models/company_member_model.dart';
@@ -68,10 +69,19 @@ class MembersRemoteDataSourceImpl implements MembersRemoteDataSource {
     Map<String, dynamic> payload,
   ) async {
     try {
-      final response = await _dioService.post(
-        AppUrls.inviteMember(companyId),
-        data: payload,
-      );
+      local.Response response;
+      try {
+        response = await _dioService.post(
+          AppUrls.inviteMember(companyId),
+          data: payload,
+        );
+      } on DioException catch (e) {
+        if (e.response != null && e.response!.statusCode == 404) {
+          response = local.Response.fromJson(e.response!.data);
+        } else {
+          rethrow;
+        }
+      }
 
       if (response.status != 200 && response.status != 404) {
         throw Exception(

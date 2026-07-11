@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
+  String get community => 'Community';
+
+  @override
   String get good_morning => 'Good morning,';
 
   @override
@@ -272,6 +275,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get storefront_b2c_subtitle =>
       'Open storefront for all users with public product access.';
+
+  @override
+  String get storefront_preview => 'Storefront Preview';
+
+  @override
+  String get storefront_preview_subtitle =>
+      'See your storefront exactly as buyers do.';
 
   @override
   String get storefront_unified_subtitle =>
@@ -535,6 +545,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String cart_items_count(Object count) {
     return '$count items';
+  }
+
+  @override
+  String products_found_count(Object count) {
+    return '$count products found';
   }
 
   @override
@@ -1919,6 +1934,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String get place_order => 'Place Order';
 
   @override
+  String get checkout => 'Checkout';
+
+  @override
+  String get step_review_items => 'Review Items';
+
+  @override
+  String get step_delivery_payment => 'Delivery & Payment';
+
+  @override
+  String get step_confirm => 'Confirm';
+
+  @override
+  String get shipping_address => 'Shipping Address';
+
+  @override
+  String get address_line => 'Address Line';
+
+  @override
+  String get additional_notes_optional => 'Additional notes (optional)';
+
+  @override
+  String get order_summary => 'Order Summary';
+
+  @override
+  String get confirm_and_place_order => 'Confirm & Place Order';
+
+  @override
+  String get contact_details => 'Contact Details';
+
+  @override
+  String get delivery_details => 'Delivery Details';
+
+  @override
+  String get order_placed_subtitle =>
+      'We\'ve received your order and the seller will process it shortly.';
+
+  @override
+  String get continue_shopping => 'Continue Shopping';
+
+  @override
+  String get estimated_total => 'Estimated Total';
+
+  @override
+  String get review_your_order => 'Review your order before confirming';
+
+  @override
+  String get address_required_for_delivery =>
+      'An address is required for this delivery method.';
+
+  @override
   String get payment_status => 'Payment Status';
 
   @override
@@ -2521,6 +2586,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get status_completed => 'Completed';
+
+  @override
+  String get status_processing => 'Processing';
+
+  @override
+  String get status_shipped => 'Shipped';
+
+  @override
+  String get status_delivered => 'Delivered';
+
+  @override
+  String get stock_in_stock => 'In Stock';
+
+  @override
+  String get stock_out_of_stock => 'Out of Stock';
 
   @override
   String get status_unavailable => 'Unavailable';
@@ -3933,6 +4013,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productSaved => 'Product saved successfully';
 
   @override
+  String get productStepBasics => 'Basics';
+
+  @override
+  String get productStepPricing => 'Pricing & Stock';
+
+  @override
+  String get productStepCategoriesOptions => 'Categories & Options';
+
+  @override
+  String get productStepReview => 'Review';
+
+  @override
   String get noTiers => 'No tiers added yet';
 
   @override
@@ -4383,4 +4475,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get not_found => 'Not found';
+
+  @override
+  String get create_post => 'Create Post';
+
+  @override
+  String get post_content_hint => 'What\'s on your mind?';
+
+  @override
+  String get post_button => 'Post';
+
+  @override
+  String get b2b_discount_applied => 'B2B Pricing Applied';
+
+  @override
+  String get delivery_fees => 'Delivery Fees';
+
+  @override
+  String get delivery_option => 'Delivery Option';
+
+  @override
+  String get select_delivery => 'Select Delivery Method';
+
+  @override
+  String get order_total => 'Order Total';
+
+  @override
+  String get taxes => 'Taxes';
+
+  @override
+  String get checkout_step_address => 'Address';
+
+  @override
+  String get checkout_step_delivery => 'Delivery';
+
+  @override
+  String get checkout_step_review => 'Review';
+
+  @override
+  String get checkout_step_confirm => 'Confirm';
+
+  @override
+  String get cart_is_empty => 'Your cart is empty';
+
+  @override
+  String get cart_validation_failed =>
+      'Cart validation failed. Please review your cart.';
+
+  @override
+  String get more_options => 'More';
 }

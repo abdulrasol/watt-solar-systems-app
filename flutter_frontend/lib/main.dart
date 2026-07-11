@@ -59,7 +59,7 @@ class SolarHub extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     // Use cachedRouterProvider to avoid recreating GoRouter on every rebuild
     final router = ref.watch(routerProvider);
-
+    // dPrint(getIt<CasheInterface>().get('token'), tag: 'TOKEN');
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,

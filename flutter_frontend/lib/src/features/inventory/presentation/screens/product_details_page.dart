@@ -1,3 +1,4 @@
+import 'package:watt/src/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -28,7 +29,7 @@ class ProductDetailsPage extends ConsumerWidget {
         if (hasInventoryPermission) ...[
           IconButton(
             icon: const Icon(Icons.edit_outlined),
-            onPressed: () => context.push('/inventory/edit/${product.id}', extra: product),
+            onPressed: () => context.push('${AppRoutes.companyInventoryEdit}/${product.id}', extra: product),
           ),
           IconButton(
             icon: const Icon(Icons.delete_outline, color: Colors.redAccent),

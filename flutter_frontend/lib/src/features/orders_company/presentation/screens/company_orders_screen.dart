@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:watt/l10n/app_localizations.dart';
 import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/core/widgets/status_badge.dart';
 import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:watt/src/features/company_dashboard/presentation/widgets/company_page_scaffold.dart';
@@ -55,6 +56,24 @@ class CompanyOrdersScreen extends ConsumerWidget {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 16),
+                      // Quick status shortcuts, color-coded to match the
+                      // OrderStatusBadge used everywhere else. A true
+                      // "N pending / N processing" stats header would need
+                      // a backend aggregate-count endpoint that doesn't
+                      // exist yet, so this gives fast one-tap filtering
+                      // instead of a (potentially misleading, page-scoped)
+                      // count.
+                      _QuickStatusFilterRow(
+                        selected: state.query.status,
+                        onSelected: (status) => ref
+                            .read(companyOrdersProvider(companyId).notifier)
+                            .updateFilters(state.query.copyWith(
+                              page: 1,
+                              status: status,
+                              clearStatus: status == null,
+                            )),
+                      ),
+                      const SizedBox(height: 12),
                       _CompanyOrderFilters(
                         state: state,
                         onChanged: (query) => ref
@@ -86,6 +105,47 @@ class CompanyOrdersScreen extends ConsumerWidget {
 
     return CompanyPageScaffold(
       child: content,
+    );
+  }
+}
+
+class _QuickStatusFilterRow extends StatelessWidget {
+  final String? selected;
+  final ValueChanged<String?> onSelected;
+
+  const _QuickStatusFilterRow({required this.selected, required this.onSelected});
+
+  static const _statuses = <String>['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'completed'];
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return SizedBox(
+      height: 36,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: _statuses.length + 1,
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return ChoiceChip(
+              label: Text(l10n.all),
+              selected: selected == null,
+              onSelected: (_) => onSelected(null),
+            );
+          }
+          final status = _statuses[index - 1];
+          final isSelected = selected == status;
+          return GestureDetector(
+            onTap: () => onSelected(status),
+            child: Opacity(
+              opacity: isSelected ? 1 : 0.55,
+              child: OrderStatusBadge(status: status, compact: true),
+            ),
+          );
+        },
+      ),
     );
   }
 }

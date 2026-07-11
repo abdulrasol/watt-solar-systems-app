@@ -85,9 +85,7 @@ class _DetailsBodyState extends ConsumerState<_DetailsBody> {
 
   bool get _canShowProducts {
     final hasB2C = widget.company.allowsB2C;
-    final hasStorefront = widget.company.services.any(
-      (s) => s.serviceCode == 'storefront_b2c' && s.status == 'active',
-    );
+    final hasStorefront = widget.company.allowedFeatures.contains('store');
     return hasB2C && hasStorefront;
   }
 

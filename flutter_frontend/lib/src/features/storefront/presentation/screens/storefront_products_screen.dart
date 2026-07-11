@@ -272,6 +272,16 @@ class _StorefrontProductsScreenState
                     onCategorySelected: notifier.updateCompanyCategory,
                   ),
                 ],
+                // Surfaces how many results the current search/filters
+                // actually matched, since previously the only filter
+                // feedback was the small numeric badge on the filter icon.
+                if (!state.isLoading && state.products.isNotEmpty) ...[
+                  SizedBox(height: 12.h),
+                  Text(
+                    l10n.products_found_count(state.pagination.totalItems),
+                    style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                  ),
+                ],
               ]),
             ),
           ),

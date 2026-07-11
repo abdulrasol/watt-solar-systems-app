@@ -36,4 +36,16 @@ class StorefrontRepositoryImpl implements StorefrontRepository {
       companyId: companyId,
     );
   }
+
+  @override
+  Future<StorefrontProduct> getProduct(int id, StorefrontAudience audience) {
+    return _remoteDataSource.getProduct(id, audience);
+  }
+
+  @override
+  Future<StorefrontCartValidateResponse> validateCart(
+    StorefrontCartValidateRequest request,
+  ) {
+    return _remoteDataSource.validateCart(request);
+  }
 }

@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
 import 'package:watt/src/shared/domain/company/company.dart';
 
 class CompanyHeroCard extends StatelessWidget {
@@ -32,11 +32,7 @@ class CompanyHeroCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.12),
                   child: company.logo == null || company.logo!.isEmpty
                       ? Icon(Iconsax.building, size: 34.sp, color: Colors.white)
-                      : CachedNetworkImage(
-                          imageUrl: company.logo!,
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) => Icon(Iconsax.building, size: 34.sp, color: Colors.white),
-                        ),
+                      : WdImagePreview(imageUrl: company.logo!, fit: BoxFit.cover),
                 ),
               ),
               SizedBox(width: 14.w),

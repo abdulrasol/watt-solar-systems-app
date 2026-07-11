@@ -1,3 +1,4 @@
+import 'package:watt/src/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -171,7 +172,7 @@ class RecentActivityList extends ConsumerWidget {
     switch (item.actionType) {
       case ActivityActionType.productAdded:
       case ActivityActionType.productUpdated:
-        return '/inventory';
+        return AppRoutes.companyInventoryProducts;
       case ActivityActionType.offerCreated:
       case ActivityActionType.offerAccepted:
       case ActivityActionType.offerUpdated:

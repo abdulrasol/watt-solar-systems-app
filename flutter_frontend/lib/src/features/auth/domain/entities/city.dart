@@ -3,13 +3,13 @@ import 'package:watt/src/features/auth/domain/entities/country.dart';
 class City {
   final int id;
   final String name;
-  final Country country;
+  final Country? country;
   final String? code;
 
   City({
     required this.id,
     required this.name,
-    required this.country,
+    this.country,
     this.code,
   });
 
@@ -17,13 +17,13 @@ class City {
     return City(
       id: json['id'],
       name: json['name'],
-      country: Country.fromJson(json['country']),
+      country: json['country'] != null ? Country.fromJson(json['country']) : null,
       code: json['code'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'country': country.toJson(), 'code': code};
+    return {'id': id, 'name': name, 'country': country?.toJson(), 'code': code};
   }
 
   @override

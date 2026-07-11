@@ -8,7 +8,8 @@ import 'package:watt/src/shared/domain/company/company_public_service.dart';
 import 'package:watt/src/shared/domain/company/company_stats.dart';
 import 'package:watt/src/shared/domain/company/company_type.dart';
 import 'package:watt/src/shared/domain/service_type.dart';
-import 'package:watt/src/features/company_dashboard/domain/entities/service.dart';
+
+import 'package:watt/src/utils/helper_methods.dart';
 
 class Company {
   final int id;
@@ -36,7 +37,7 @@ class Company {
   final List<CompanyDeliveryOption> deliveryOptions;
   final List<CompanyPublicService> publicServices;
   final List<ServiceType> serviceTypes;
-  final List<CompanyService> services;
+  final List<String> allowedFeatures;
   final String? memberRole;
   final CompanyPermissions? permissions;
   final CompanyStats? stats;
@@ -67,7 +68,7 @@ class Company {
     this.deliveryOptions = const [],
     this.publicServices = const [],
     this.serviceTypes = const [],
-    this.services = const [],
+    this.allowedFeatures = const [],
     this.memberRole,
     this.permissions,
     this.stats,
@@ -103,7 +104,7 @@ class Company {
       allowsB2C: json['allows_b2c'] ?? false,
       status: json['status']?.toString() ?? 'active',
       tier: json['tier']?.toString(),
-      logo: json['logo']?.toString(),
+      logo: resolveImageUrl(json['logo']?.toString()),
       city: json['city'] != null ? City.fromJson(json['city']) : null,
       currency: json['currency'] is Map<String, dynamic>
           ? CompanyCurrency.fromJson(json['currency'])
@@ -147,11 +148,8 @@ class Company {
           .whereType<Map>()
           .map((item) => ServiceType.fromJson(Map<String, dynamic>.from(item)))
           .toList(),
-      services: (json['services'] as List? ?? const [])
-          .whereType<Map>()
-          .map(
-            (item) => CompanyService.fromJson(Map<String, dynamic>.from(item)),
-          )
+      allowedFeatures: (json['allowed_features'] as List? ?? const [])
+          .map((e) => e.toString())
           .toList(),
       memberRole: json['member_role']?.toString(),
       permissions: permissionsJson is Map<String, dynamic>
@@ -192,7 +190,7 @@ class Company {
           .map((service) => service.toJson())
           .toList(),
       'service_types': serviceTypes.map((type) => type.toJson()).toList(),
-      'services': services.map((service) => service.toJson()).toList(),
+      'allowed_features': allowedFeatures,
       'member_role': memberRole,
       'permissions': permissions?.toJson(),
       'stats': stats?.toJson(),
@@ -272,7 +270,7 @@ class Company {
     List<CompanyDeliveryOption>? deliveryOptions,
     List<CompanyPublicService>? publicServices,
     List<ServiceType>? serviceTypes,
-    List<CompanyService>? services,
+    List<String>? allowedFeatures,
     String? memberRole,
     CompanyPermissions? permissions,
     CompanyStats? stats,
@@ -303,7 +301,7 @@ class Company {
       deliveryOptions: deliveryOptions ?? this.deliveryOptions,
       publicServices: publicServices ?? this.publicServices,
       serviceTypes: serviceTypes ?? this.serviceTypes,
-      services: services ?? this.services,
+      allowedFeatures: allowedFeatures ?? this.allowedFeatures,
       memberRole: memberRole ?? this.memberRole,
       permissions: permissions ?? this.permissions,
       stats: stats ?? this.stats,

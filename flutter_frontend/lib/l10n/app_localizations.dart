@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
+  /// No description provided for @community.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get community;
+
   /// No description provided for @good_morning.
   ///
   /// In en, this message translates to:
@@ -589,6 +595,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open storefront for all users with public product access.'**
   String get storefront_b2c_subtitle;
+
+  /// No description provided for @storefront_preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Storefront Preview'**
+  String get storefront_preview;
+
+  /// No description provided for @storefront_preview_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'See your storefront exactly as buyers do.'**
+  String get storefront_preview_subtitle;
 
   /// No description provided for @storefront_unified_subtitle.
   ///
@@ -1081,6 +1099,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} items'**
   String cart_items_count(Object count);
+
+  /// No description provided for @products_found_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} products found'**
+  String products_found_count(Object count);
 
   /// No description provided for @clear_cart.
   ///
@@ -3679,6 +3703,102 @@ abstract class AppLocalizations {
   /// **'Place Order'**
   String get place_order;
 
+  /// No description provided for @checkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Checkout'**
+  String get checkout;
+
+  /// No description provided for @step_review_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Items'**
+  String get step_review_items;
+
+  /// No description provided for @step_delivery_payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery & Payment'**
+  String get step_delivery_payment;
+
+  /// No description provided for @step_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get step_confirm;
+
+  /// No description provided for @shipping_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping Address'**
+  String get shipping_address;
+
+  /// No description provided for @address_line.
+  ///
+  /// In en, this message translates to:
+  /// **'Address Line'**
+  String get address_line;
+
+  /// No description provided for @additional_notes_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional notes (optional)'**
+  String get additional_notes_optional;
+
+  /// No description provided for @order_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Summary'**
+  String get order_summary;
+
+  /// No description provided for @confirm_and_place_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & Place Order'**
+  String get confirm_and_place_order;
+
+  /// No description provided for @contact_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Details'**
+  String get contact_details;
+
+  /// No description provided for @delivery_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Details'**
+  String get delivery_details;
+
+  /// No description provided for @order_placed_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve received your order and the seller will process it shortly.'**
+  String get order_placed_subtitle;
+
+  /// No description provided for @continue_shopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Shopping'**
+  String get continue_shopping;
+
+  /// No description provided for @estimated_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Total'**
+  String get estimated_total;
+
+  /// No description provided for @review_your_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your order before confirming'**
+  String get review_your_order;
+
+  /// No description provided for @address_required_for_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'An address is required for this delivery method.'**
+  String get address_required_for_delivery;
+
   /// No description provided for @payment_status.
   ///
   /// In en, this message translates to:
@@ -4776,6 +4896,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Completed'**
   String get status_completed;
+
+  /// No description provided for @status_processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get status_processing;
+
+  /// No description provided for @status_shipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipped'**
+  String get status_shipped;
+
+  /// No description provided for @status_delivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get status_delivered;
+
+  /// No description provided for @stock_in_stock.
+  ///
+  /// In en, this message translates to:
+  /// **'In Stock'**
+  String get stock_in_stock;
+
+  /// No description provided for @stock_out_of_stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of Stock'**
+  String get stock_out_of_stock;
 
   /// No description provided for @status_unavailable.
   ///
@@ -7333,6 +7483,30 @@ abstract class AppLocalizations {
   /// **'Product saved successfully'**
   String get productSaved;
 
+  /// No description provided for @productStepBasics.
+  ///
+  /// In en, this message translates to:
+  /// **'Basics'**
+  String get productStepBasics;
+
+  /// No description provided for @productStepPricing.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing & Stock'**
+  String get productStepPricing;
+
+  /// No description provided for @productStepCategoriesOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories & Options'**
+  String get productStepCategoriesOptions;
+
+  /// No description provided for @productStepReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get productStepReview;
+
   /// No description provided for @noTiers.
   ///
   /// In en, this message translates to:
@@ -8160,6 +8334,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not found'**
   String get not_found;
+
+  /// No description provided for @create_post.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Post'**
+  String get create_post;
+
+  /// No description provided for @post_content_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s on your mind?'**
+  String get post_content_hint;
+
+  /// No description provided for @post_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get post_button;
+
+  /// No description provided for @b2b_discount_applied.
+  ///
+  /// In en, this message translates to:
+  /// **'B2B Pricing Applied'**
+  String get b2b_discount_applied;
+
+  /// No description provided for @delivery_fees.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Fees'**
+  String get delivery_fees;
+
+  /// No description provided for @delivery_option.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Option'**
+  String get delivery_option;
+
+  /// No description provided for @select_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Delivery Method'**
+  String get select_delivery;
+
+  /// No description provided for @order_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Total'**
+  String get order_total;
+
+  /// No description provided for @taxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxes'**
+  String get taxes;
+
+  /// No description provided for @checkout_step_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get checkout_step_address;
+
+  /// No description provided for @checkout_step_delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get checkout_step_delivery;
+
+  /// No description provided for @checkout_step_review.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get checkout_step_review;
+
+  /// No description provided for @checkout_step_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get checkout_step_confirm;
+
+  /// No description provided for @cart_is_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get cart_is_empty;
+
+  /// No description provided for @cart_validation_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart validation failed. Please review your cart.'**
+  String get cart_validation_failed;
+
+  /// No description provided for @more_options.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more_options;
 }
 
 class _AppLocalizationsDelegate

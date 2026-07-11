@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:watt/src/features/posters/domain/entities/poster_entity.dart';
 import 'package:watt/src/features/posters/presentation/widgets/poster_status_badge.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
 
 class PosterCard extends StatelessWidget {
   final PosterEntity poster;
@@ -32,7 +33,7 @@ class PosterCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: poster.imageUrl != null
-                    ? Image.network(poster.imageUrl!, width: 80, height: 80, fit: BoxFit.cover, cacheWidth: 160, cacheHeight: 160)
+                    ? WdImagePreview(imageUrl: poster.imageUrl!, size: 80, shape: BoxShape.rectangle)
                     : Container(width: 80, height: 80, color: Colors.grey[200], child: const Icon(Icons.image, color: Colors.grey)),
               ),
               const SizedBox(width: 12),

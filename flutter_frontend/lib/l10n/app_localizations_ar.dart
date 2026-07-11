@@ -90,6 +90,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get home => 'الرئيسية';
 
   @override
+  String get community => 'المجتمع';
+
+  @override
   String get good_morning => 'صباح الخير،';
 
   @override
@@ -272,6 +275,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get storefront_b2c_subtitle =>
       'واجهة متجر مفتوحة لجميع المستخدمين مع وصول عام للمنتجات.';
+
+  @override
+  String get storefront_preview => 'معاينة واجهة المتجر';
+
+  @override
+  String get storefront_preview_subtitle =>
+      'شاهد واجهة متجرك تماماً كما يراها المشترون.';
 
   @override
   String get storefront_unified_subtitle =>
@@ -535,6 +545,11 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String cart_items_count(Object count) {
     return '$count عنصر';
+  }
+
+  @override
+  String products_found_count(Object count) {
+    return 'تم العثور على $count منتج';
   }
 
   @override
@@ -1910,6 +1925,56 @@ class AppLocalizationsAr extends AppLocalizations {
   String get place_order => 'تنفيذ الطلب';
 
   @override
+  String get checkout => 'إتمام الشراء';
+
+  @override
+  String get step_review_items => 'مراجعة العناصر';
+
+  @override
+  String get step_delivery_payment => 'التوصيل والدفع';
+
+  @override
+  String get step_confirm => 'التأكيد';
+
+  @override
+  String get shipping_address => 'عنوان الشحن';
+
+  @override
+  String get address_line => 'العنوان التفصيلي';
+
+  @override
+  String get additional_notes_optional => 'ملاحظات إضافية (اختياري)';
+
+  @override
+  String get order_summary => 'ملخص الطلب';
+
+  @override
+  String get confirm_and_place_order => 'تأكيد وتنفيذ الطلب';
+
+  @override
+  String get contact_details => 'بيانات التواصل';
+
+  @override
+  String get delivery_details => 'تفاصيل التوصيل';
+
+  @override
+  String get order_placed_subtitle =>
+      'تم استلام طلبك وسيقوم البائع بمعالجته قريباً.';
+
+  @override
+  String get continue_shopping => 'متابعة التسوق';
+
+  @override
+  String get estimated_total => 'الإجمالي التقديري';
+
+  @override
+  String get review_your_order => 'راجع طلبك قبل التأكيد';
+
+  @override
+  String get address_required_for_delivery =>
+      'يلزم إدخال عنوان لطريقة التوصيل هذه.';
+
+  @override
   String get payment_status => 'حالة الدفع';
 
   @override
@@ -2503,6 +2568,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get status_completed => 'مكتمل';
+
+  @override
+  String get status_processing => 'قيد المعالجة';
+
+  @override
+  String get status_shipped => 'تم الشحن';
+
+  @override
+  String get status_delivered => 'تم التسليم';
+
+  @override
+  String get stock_in_stock => 'متوفر';
+
+  @override
+  String get stock_out_of_stock => 'غير متوفر';
 
   @override
   String get status_unavailable => 'غير متاح';
@@ -3907,6 +3987,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get productSaved => 'تم حفظ المنتج بنجاح';
 
   @override
+  String get productStepBasics => 'الأساسيات';
+
+  @override
+  String get productStepPricing => 'التسعير والمخزون';
+
+  @override
+  String get productStepCategoriesOptions => 'التصنيفات والخيارات';
+
+  @override
+  String get productStepReview => 'المراجعة';
+
+  @override
   String get noTiers => 'لم يتم إضافة فئات سعرية بعد';
 
   @override
@@ -4355,4 +4447,53 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get not_found => 'غير موجود';
+
+  @override
+  String get create_post => 'إنشاء منشور';
+
+  @override
+  String get post_content_hint => 'بماذا تفكر؟';
+
+  @override
+  String get post_button => 'نشر';
+
+  @override
+  String get b2b_discount_applied => 'تم تطبيق تسعير الشركات';
+
+  @override
+  String get delivery_fees => 'رسوم التوصيل';
+
+  @override
+  String get delivery_option => 'خيار التوصيل';
+
+  @override
+  String get select_delivery => 'اختر طريقة التوصيل';
+
+  @override
+  String get order_total => 'إجمالي الطلب';
+
+  @override
+  String get taxes => 'الضرائب';
+
+  @override
+  String get checkout_step_address => 'العنوان';
+
+  @override
+  String get checkout_step_delivery => 'التوصيل';
+
+  @override
+  String get checkout_step_review => 'المراجعة';
+
+  @override
+  String get checkout_step_confirm => 'تأكيد';
+
+  @override
+  String get cart_is_empty => 'سلة التسوق فارغة';
+
+  @override
+  String get cart_validation_failed =>
+      'فشل التحقق من صحة السلة. يرجى مراجعة السلة.';
+
+  @override
+  String get more_options => 'المزيد';
 }

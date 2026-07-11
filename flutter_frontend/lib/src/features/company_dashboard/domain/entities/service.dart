@@ -40,7 +40,9 @@ class CompanyService {
       status: json['status'],
       isAutoEnabled: json['is_auto_enabled'] ?? false,
       autoEnabledBy: json['auto_enabled_by'] ?? [],
-      subscriptionId: json['subscription_id'],
+      subscriptionId: json['subscription_id'] != null
+          ? int.tryParse(json['subscription_id'].toString())
+          : null,
       requestedAt: json['requested_at'] != null
           ? DateTime.tryParse(json['requested_at'])
           : null,

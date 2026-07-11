@@ -4,7 +4,7 @@ import 'package:watt/src/features/auth/presentation/controllers/auth_controller.
 import 'package:watt/src/features/company_dashboard/domain/entities/summary.dart';
 import 'package:watt/src/features/company_dashboard/domain/usecases/get_company_usecase.dart';
 import 'package:watt/src/shared/domain/company/company_stats.dart';
-import 'package:watt/src/features/company_dashboard/domain/entities/service.dart';
+
 
 class CompanySummaryState {
   final bool isLoading;
@@ -88,6 +88,3 @@ final companyStatsProvider = Provider<CompanyStats?>((ref) {
   return ref.watch(companySummaryProvider.select((s) => s.summary?.stats));
 });
 
-final companyServicesProvider = Provider<List<CompanyService>>((ref) {
-  return ref.watch(companySummaryProvider.select((s) => s.summary?.services ?? const []));
-});

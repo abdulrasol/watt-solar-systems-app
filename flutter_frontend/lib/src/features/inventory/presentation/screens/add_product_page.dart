@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:watt/l10n/app_localizations.dart';
 import 'package:watt/src/core/widgets/pre_scaffold.dart';
+import 'package:watt/src/core/widgets/wizard_bottom_bar.dart';
+import 'package:watt/src/core/widgets/wizard_step_indicator.dart';
 import 'package:watt/src/features/inventory/domain/entities/product.dart';
 import 'package:watt/src/features/inventory/presentation/providers/product_form_provider.dart';
 import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_basic_info_form.dart';
@@ -13,7 +15,20 @@ import 'package:watt/src/features/inventory/presentation/widgets/product_form/pr
 import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_image_picker.dart';
 import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_options_form.dart';
 import 'package:watt/src/features/inventory/presentation/widgets/product_form/product_pricing_tiers_form.dart';
+import 'package:watt/src/shared/widgets/app_card.dart';
 
+/// Company-side add/edit product screen.
+///
+/// Previously this was a single ~500px-tall scrolling `Form` stacking all
+/// 7 sections (basic info, images, pricing, inventory, categories, options,
+/// pricing tiers) on top of each other — a "massive single-file UI widget"
+/// pattern the project's own conventions call out to avoid. It's now a
+/// 4-step wizard (Basics -> Pricing & Stock -> Categories & Options ->
+/// Review) using the same `WizardStepIndicator`/`WizardBottomBar` shell as
+/// the PV System Designer, and the hardcoded `Colors.white` /
+/// `Colors.blueGrey` / manual `boxShadow` card styling has been replaced
+/// with the shared `AppCard` (theme card color + themed border), matching
+/// the visual language the rest of the storefront/company screens use.
 class AddProductPage extends ConsumerStatefulWidget {
   final Product? product;
 
@@ -23,8 +38,12 @@ class AddProductPage extends ConsumerStatefulWidget {
   ConsumerState<AddProductPage> createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends ConsumerState<AddProductPage> {
+class _AddProductPageState extends ConsumerState<AddProductPage> with SingleTickerProviderStateMixin {
+  static const int _totalSteps = 4;
+
   final _formKey = GlobalKey<FormState>();
+  late final TabController _tabController;
+  int _currentStep = 0;
 
   final _nameCtrl = TextEditingController();
   final _skuCtrl = TextEditingController();
@@ -38,6 +57,12 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: _totalSteps, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return;
+      setState(() => _currentStep = _tabController.index);
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(productFormNotifierProvider.notifier).initializeWithProduct(widget.product);
 
@@ -56,6 +81,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _nameCtrl.dispose();
     _skuCtrl.dispose();
     _descCtrl.dispose();
@@ -67,81 +93,118 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     super.dispose();
   }
 
+  void _goToStep(int step) => _tabController.animateTo(step);
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(productFormNotifierProvider);
     final l10n = AppLocalizations.of(context)!;
     final isEditing = widget.product != null;
 
+    final stepLabels = [
+      l10n.productStepBasics,
+      l10n.productStepPricing,
+      l10n.productStepCategoriesOptions,
+      l10n.productStepReview,
+    ];
+
     return PreScaffold(
       title: isEditing ? l10n.editProduct : l10n.addProduct,
       child: state.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: EdgeInsets.all(16.r),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    if (state.error != null)
-                      Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.only(bottom: 16.h),
-                        padding: EdgeInsets.all(12.r),
-                        decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12.r)),
-                        child: Text(state.error!, style: const TextStyle(color: Colors.red)),
-                      ),
-                    
-                    _buildSection(l10n.basicInformation, ProductBasicInfoForm(nameCtrl: _nameCtrl, descCtrl: _descCtrl, skuCtrl: _skuCtrl)),
-                    SizedBox(height: 20.h),
-                    _buildSection(l10n.productImages, const ProductImagePicker()),
-                    SizedBox(height: 20.h),
-                    _buildSection(l10n.pricing, ProductPricingForm(retailPriceCtrl: _retailPriceCtrl, costPriceCtrl: _costPriceCtrl, wholesalePriceCtrl: _wholesalePriceCtrl)),
-                    SizedBox(height: 20.h),
-                    _buildSection(l10n.inventory, ProductInventoryForm(stockCtrl: _stockCtrl, minStockCtrl: _minStockCtrl)),
-                    SizedBox(height: 20.h),
-                    _buildSection(l10n.all_categories, const ProductCategoryForm()),
-                    SizedBox(height: 20.h),
-                    _buildSection(l10n.productOptions, const ProductOptionsForm()),
-                    SizedBox(height: 20.h),
-                    _buildSection(l10n.pricing_tiers, const ProductPricingTiersForm()),
-                    
-                    SizedBox(height: 40.h),
-                    SizedBox(
+          : Column(
+              children: [
+                WizardStepIndicator(currentStep: _currentStep, totalSteps: _totalSteps, stepLabels: stepLabels),
+                if (state.error != null)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Container(
                       width: double.infinity,
-                      height: 50.h,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                        ),
-                        onPressed: _submit,
-                        child: state.isSubmitting 
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : Text(isEditing ? l10n.saveProduct : l10n.addProduct, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-                      ),
+                      margin: EdgeInsets.only(bottom: 12.h),
+                      padding: EdgeInsets.all(12.r),
+                      decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12.r)),
+                      child: Text(state.error!, style: const TextStyle(color: Colors.red)),
                     ),
-                    SizedBox(height: 60.h),
-                  ],
+                  ),
+                Expanded(
+                  child: Form(
+                    key: _formKey,
+                    child: TabBarView(
+                      controller: _tabController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _StepScroll(children: [
+                          _buildSection(l10n.basicInformation, ProductBasicInfoForm(nameCtrl: _nameCtrl, descCtrl: _descCtrl, skuCtrl: _skuCtrl)),
+                          SizedBox(height: 20.h),
+                          _buildSection(l10n.productImages, const ProductImagePicker()),
+                        ]),
+                        _StepScroll(children: [
+                          _buildSection(l10n.pricing, ProductPricingForm(retailPriceCtrl: _retailPriceCtrl, costPriceCtrl: _costPriceCtrl, wholesalePriceCtrl: _wholesalePriceCtrl)),
+                          SizedBox(height: 20.h),
+                          _buildSection(l10n.inventory, ProductInventoryForm(stockCtrl: _stockCtrl, minStockCtrl: _minStockCtrl)),
+                        ]),
+                        _StepScroll(children: [
+                          _buildSection(l10n.all_categories, const ProductCategoryForm()),
+                          SizedBox(height: 20.h),
+                          _buildSection(l10n.productOptions, const ProductOptionsForm()),
+                          SizedBox(height: 20.h),
+                          _buildSection(l10n.pricing_tiers, const ProductPricingTiersForm()),
+                        ]),
+                        _StepScroll(children: [_buildReviewStep(l10n)]),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                WizardBottomBar(
+                  currentStep: _currentStep,
+                  totalSteps: _totalSteps,
+                  onBack: () => _goToStep(_currentStep - 1),
+                  onNext: () => _goToStep(_currentStep + 1),
+                  onFinish: _submit,
+                  finishLabel: isEditing ? l10n.saveProduct : l10n.addProduct,
+                  finishIcon: Icons.check_circle_outline_rounded,
+                  isSubmitting: state.isSubmitting,
+                ),
+              ],
             ),
     );
   }
 
-  Widget _buildSection(String title, Widget child) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
-      ),
+  Widget _buildReviewStep(AppLocalizations l10n) {
+    return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey[800])),
+          Text(l10n.productStepReview, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+          const Divider(height: 24),
+          _reviewRow(l10n.productName, _nameCtrl.text),
+          _reviewRow(l10n.sku, _skuCtrl.text),
+          _reviewRow(l10n.retail_price, _retailPriceCtrl.text),
+          _reviewRow(l10n.wholesale_price, _wholesalePriceCtrl.text),
+          _reviewRow(l10n.stockQuantity, _stockCtrl.text),
+        ],
+      ),
+    );
+  }
+
+  Widget _reviewRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.h),
+      child: Row(
+        children: [
+          Expanded(child: Text(label, style: TextStyle(color: Colors.grey.shade600))),
+          Text(value.isEmpty ? '-' : value, style: TextStyle(fontWeight: FontWeight.w700)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSection(String title, Widget child) {
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
           const Divider(height: 24),
           child,
         ],
@@ -170,6 +233,24 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.productSaved)));
         context.pop();
       }
+    } else {
+      // Validation failed somewhere in the form — jump back to the first
+      // step so the user isn't stuck on Review wondering what's wrong.
+      _goToStep(0);
     }
+  }
+}
+
+class _StepScroll extends StatelessWidget {
+  final List<Widget> children;
+
+  const _StepScroll({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(16.r),
+      child: Column(children: children),
+    );
   }
 }

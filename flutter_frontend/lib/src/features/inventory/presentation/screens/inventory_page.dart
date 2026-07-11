@@ -1,3 +1,4 @@
+import 'package:watt/src/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,7 +84,7 @@ class _InventoryPageState extends ConsumerState<InventoryPage> {
 
     return PreScaffold(
       title: l10n.inventory,
-      actions: [IconButton(icon: const Icon(Icons.add), onPressed: () => context.push('/inventory/add'))],
+      actions: [IconButton(icon: const Icon(Icons.add), onPressed: () => context.push(AppRoutes.companyInventoryAdd))],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(context: context, isScrollControlled: true, useSafeArea: true, builder: (context) => const InventoryFilterSheet());
@@ -100,7 +101,7 @@ class _InventoryPageState extends ConsumerState<InventoryPage> {
       title: l10n.noProducts,
       subtitle: 'Start adding products to your inventory to manage stock.',
       action: ElevatedButton.icon(
-        onPressed: () => context.push('/inventory/add'),
+        onPressed: () => context.push(AppRoutes.companyInventoryAdd),
         icon: const Icon(Iconsax.add, color: Colors.white),
         label: const Text('Add Product', style: TextStyle(color: Colors.white)),
         style: ElevatedButton.styleFrom(

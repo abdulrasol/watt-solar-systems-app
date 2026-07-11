@@ -62,12 +62,11 @@ class _OfferReplyFormState extends ConsumerState<OfferReplyForm> {
   bool get _isEditMode => widget.offer != null;
   SolarRequest? get _request => widget.request;
   SolarOffer? get _offer => widget.offer;
-  late final AppLocalizations l10n;
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
 
   @override
   void initState() {
     super.initState();
-    l10n = AppLocalizations.of(context)!;
     final sourceRequest = _request;
     final sourceOffer = _offer;
     final panelPower = sourceOffer?.panelPower ?? sourceRequest?.panelPower ?? 0;

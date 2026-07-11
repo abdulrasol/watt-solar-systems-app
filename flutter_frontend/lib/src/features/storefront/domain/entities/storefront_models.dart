@@ -486,3 +486,72 @@ class StorefrontCompanyQuery {
     };
   }
 }
+
+class StorefrontCartValidateRequestItem {
+  final int productId;
+  final int quantity;
+  final List<int> selectedOptions;
+
+  const StorefrontCartValidateRequestItem({
+    required this.productId,
+    required this.quantity,
+    this.selectedOptions = const [],
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'product_id': productId,
+      'quantity': quantity,
+      'selected_options': selectedOptions,
+    };
+  }
+}
+
+class StorefrontCartValidateRequest {
+  final String audience;
+  final int companyId;
+  final List<StorefrontCartValidateRequestItem> items;
+  final int? deliveryOptionId;
+
+  const StorefrontCartValidateRequest({
+    required this.audience,
+    required this.companyId,
+    required this.items,
+    this.deliveryOptionId,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'order_type': audience,
+      'seller_company_id': companyId,
+      'items': items.map((e) => e.toJson()).toList(),
+      if (deliveryOptionId != null) 'delivery_option_id': deliveryOptionId,
+    };
+  }
+}
+
+class StorefrontCartValidateResponse {
+  final double subtotal;
+  final double deliveryCost;
+  final double total;
+  final bool valid;
+  final String? message;
+
+  const StorefrontCartValidateResponse({
+    required this.subtotal,
+    required this.deliveryCost,
+    required this.total,
+    required this.valid,
+    this.message,
+  });
+
+  factory StorefrontCartValidateResponse.fromJson(Map<String, dynamic> json) {
+    return StorefrontCartValidateResponse(
+      subtotal: (json['subtotal'] as num?)?.toDouble() ?? 0,
+      deliveryCost: (json['delivery_cost'] as num?)?.toDouble() ?? 0,
+      total: (json['total'] as num?)?.toDouble() ?? 0,
+      valid: (json['errors'] as List?)?.isEmpty ?? true,
+      message: (json['errors'] as List?)?.isNotEmpty == true ? (json['errors'] as List).first.toString() : null,
+    );
+  }
+}

@@ -46,7 +46,7 @@ class CompanyPostersState {
 }
 
 class CompanyPostersController extends Notifier<CompanyPostersState> {
-  late final PosterRemoteDataSource _dataSource;
+  late PosterRemoteDataSource _dataSource;
 
   @override
   CompanyPostersState build() {

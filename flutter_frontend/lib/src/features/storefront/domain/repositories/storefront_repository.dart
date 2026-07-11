@@ -13,4 +13,8 @@ abstract class StorefrontRepository {
     required StorefrontQuery query,
     int? companyId,
   });
+  Future<StorefrontProduct> getProduct(int id, StorefrontAudience audience);
+  Future<StorefrontCartValidateResponse> validateCart(
+    StorefrontCartValidateRequest request,
+  );
 }

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:watt/src/utils/app_theme.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 class WdImagePreview extends StatelessWidget {
   const WdImagePreview({super.key, this.size, required this.imageUrl, this.shape = BoxShape.circle, this.fit = BoxFit.cover});
@@ -32,7 +33,7 @@ class WdImagePreview extends StatelessWidget {
           shape: shape,
         ),
         child: CachedNetworkImage(
-          imageUrl: imageUrl,
+          imageUrl: AppUrls.resolveMediaUrl(imageUrl),
           fit: fit,
           errorWidget: (context, url, error) => Icon(Iconsax.building, color: AppTheme.primaryColor, size: iconSize),
         ),

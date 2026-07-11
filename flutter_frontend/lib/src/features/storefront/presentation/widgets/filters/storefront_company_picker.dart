@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/widgets/wd_image_preview.dart';
 import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:watt/src/features/storefront/presentation/providers/storefront_provider.dart';
 import 'package:watt/src/utils/app_theme.dart';
@@ -41,9 +41,7 @@ class StorefrontCompanyPicker extends StatelessWidget {
       child: ListView.separated(
         controller: scrollController,
         shrinkWrap: true,
-        itemCount:
-            filterSheet.companies.length +
-            (filterSheet.isLoadingMoreCompanies ? 1 : 0),
+        itemCount: filterSheet.companies.length + (filterSheet.isLoadingMoreCompanies ? 1 : 0),
         separatorBuilder: (_, _) => Divider(height: 1.h),
         itemBuilder: (context, index) {
           if (index >= filterSheet.companies.length) {
@@ -60,21 +58,9 @@ class StorefrontCompanyPicker extends StatelessWidget {
             onTap: () => onCompanyTap(company),
             contentPadding: EdgeInsets.zero,
             leading: _CompanyAvatar(company: company),
-            title: Text(
-              company.name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: company.cityName == null
-                ? null
-                : Text(
-                    company.cityName!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-            trailing: selected
-                ? Icon(Icons.check_circle_rounded, color: AppTheme.primaryColor)
-                : null,
+            title: Text(company.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+            subtitle: company.cityName == null ? null : Text(company.cityName!, maxLines: 1, overflow: TextOverflow.ellipsis),
+            trailing: selected ? Icon(Icons.check_circle_rounded, color: AppTheme.primaryColor) : null,
           );
         },
       ),
@@ -92,21 +78,13 @@ class _CompanyAvatar extends StatelessWidget {
     if ((company.logo ?? '').isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(14.r),
-        child: CachedNetworkImage(
-          imageUrl: company.logo!,
-          width: 44.r,
-          height: 44.r,
-          fit: BoxFit.cover,
-        ),
+        child: WdImagePreview(imageUrl: company.logo!, fit: BoxFit.cover, size: 44),
       );
     }
 
     return CircleAvatar(
       backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.12),
-      child: Text(
-        company.name.isEmpty ? '?' : company.name.substring(0, 1),
-        style: const TextStyle(fontWeight: FontWeight.w800),
-      ),
+      child: Text(company.name.isEmpty ? '?' : company.name.substring(0, 1), style: const TextStyle(fontWeight: FontWeight.w800)),
     );
   }
 }

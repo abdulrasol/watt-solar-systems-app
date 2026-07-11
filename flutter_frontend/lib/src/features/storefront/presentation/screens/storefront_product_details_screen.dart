@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:watt/l10n/app_localizations.dart';
+import 'package:watt/src/core/di/get_it.dart';
 import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:watt/src/features/services/domain/repositories/public_services_repository.dart';
 import 'package:watt/src/features/storefront/domain/entities/storefront_cart.dart';
 import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
 import 'package:watt/src/features/storefront/presentation/providers/storefront_cart_controller.dart';
@@ -203,7 +206,10 @@ class _StorefrontProductDetailsScreenState
             categoryLabel: widget.product.categoryLabel.isEmpty
                 ? null
                 : widget.product.categoryLabel,
-            isAvailable: widget.product.isAvailable,
+            // A product manually marked unavailable by the seller should
+            // read as out-of-stock regardless of the raw quantity on hand.
+            stockQuantity: widget.product.isAvailable ? widget.product.stockQuantity : 0,
+            minStockAlert: widget.product.minStockAlert,
           ),
           SizedBox(height: 20.h),
           StorefrontProductPriceSection(
@@ -216,6 +222,8 @@ class _StorefrontProductDetailsScreenState
             canViewB2bDetails: canViewB2bDetails,
             appliedTier: canViewB2bDetails ? appliedTier : null,
           ),
+          SizedBox(height: 16.h),
+          _DeliveryEstimateRow(companyId: widget.product.company.id, companyName: widget.product.company.name),
           if ((widget.product.description ?? '').trim().isNotEmpty) ...[
             SizedBox(height: 16.h),
             _CardSection(
@@ -272,32 +280,99 @@ class _StorefrontProductDetailsScreenState
       ),
       bottomNavigationBar: SafeArea(
         minimum: EdgeInsets.all(16.r),
-        child: ElevatedButton.icon(
-          onPressed: () async {
-            final audience = await _resolveAudienceForAddToCart(
-              isCompanyMember: isCompanyMember,
-            );
-            await storefrontCart.addProduct(
-              widget.product,
-              audience: audience,
-              quantity: _quantity,
-              selectedOptions: _selectedOptions,
-            );
-            if (!context.mounted) return;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  audience == StorefrontAudience.b2b
-                      ? l10n.added_to_b2b_cart
-                      : l10n.added_to_b2c_cart,
-                ),
+        child: Row(
+          children: [
+            // Live line-total (unit price x quantity) so the button's price
+            // impact is visible without scrolling back up to the price
+            // section — the old bar only ever showed a static label.
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(l10n.line_total, style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600)),
+                  Text(
+                    l10n.iqd_price(NumberFormat.decimalPattern().format(lineTotal)),
+                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
+                  ),
+                ],
               ),
-            );
-          },
-          icon: const Icon(Icons.add_shopping_cart_rounded),
-          label: Text(l10n.add_to_cart),
+            ),
+            SizedBox(width: 12.w),
+            ElevatedButton.icon(
+              onPressed: () async {
+                final audience = await _resolveAudienceForAddToCart(
+                  isCompanyMember: isCompanyMember,
+                );
+                await storefrontCart.addProduct(
+                  widget.product,
+                  audience: audience,
+                  quantity: _quantity,
+                  selectedOptions: _selectedOptions,
+                );
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      audience == StorefrontAudience.b2b
+                          ? l10n.added_to_b2b_cart
+                          : l10n.added_to_b2c_cart,
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add_shopping_cart_rounded),
+              label: Text(l10n.add_to_cart),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+/// Shows "Estimated: X-Y days from {company}" sourced from the company's
+/// fastest active delivery option, so buyers see a delivery expectation
+/// before adding to cart instead of only discovering delivery timing later
+/// at checkout. Silently renders nothing if the company has no delivery
+/// options configured or the lookup fails, since this is a supplementary
+/// hint rather than a required field.
+class _DeliveryEstimateRow extends StatelessWidget {
+  final int companyId;
+  final String companyName;
+
+  const _DeliveryEstimateRow({required this.companyId, required this.companyName});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return FutureBuilder(
+      future: getIt<PublicServicesRepository>().getCompanyDetails(companyId),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return const SizedBox.shrink();
+
+        final options = snapshot.data!.deliveryOptions.where((option) => option.isActive && option.estimatedDaysMin != null).toList();
+        if (options.isEmpty) return const SizedBox.shrink();
+
+        options.sort((a, b) => (a.estimatedDaysMin ?? 0).compareTo(b.estimatedDaysMin ?? 0));
+        final fastest = options.first;
+        final min = fastest.estimatedDaysMin ?? 0;
+        final max = fastest.estimatedDaysMax ?? min;
+
+        return Row(
+          children: [
+            Icon(Icons.local_shipping_outlined, size: 16.sp, color: Colors.grey.shade600),
+            SizedBox(width: 6.w),
+            Expanded(
+              child: Text(
+                '${l10n.services_estimated_days(min, max)} • $companyName',
+                style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

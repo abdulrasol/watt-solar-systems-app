@@ -1,3 +1,5 @@
+import 'package:watt/src/features/company_dashboard/domain/entities/company_subscription_request.dart';
+
 
 import 'package:watt/src/features/admin/domain/models/admin_city.dart';
 import 'package:watt/src/features/admin/domain/models/admin_company_details.dart';
@@ -53,4 +55,6 @@ abstract class AdminRepository {
   Future<AdminSubscriptionPlan> createSubscriptionPlan(Map<String, dynamic> data);
   Future<AdminSubscriptionPlan> updateSubscriptionPlan(int id, Map<String, dynamic> data);
   Future<void> deleteSubscriptionPlan(int id);
+  Future<List<CompanySubscriptionRequest>> listSubscriptionRequests({String? status, int page = 1, int pageSize = 12});
+  Future<void> reviewSubscriptionRequest(int companyId, int requestId, String status, {String? notes});
 }

@@ -6,6 +6,9 @@ import 'package:watt/src/core/models/response.dart' as api;
 import 'package:watt/src/features/admin/presentation/widgets/admin_page_scaffold.dart';
 import 'package:watt/src/features/admin/presentation/widgets/admin_widgets.dart';
 import 'package:watt/src/utils/app_urls.dart';
+import 'package:watt/src/services/toast_service.dart';
+import 'package:watt/src/utils/helper_methods.dart';
+import 'package:watt/src/features/admin/presentation/widgets/dialogs/company_type_dialog.dart';
 
 class AdminCompanyTypesScreen extends ConsumerStatefulWidget {
   const AdminCompanyTypesScreen({super.key});
@@ -45,9 +48,56 @@ class _AdminCompanyTypesScreenState extends ConsumerState<AdminCompanyTypesScree
     }
   }
 
+  Future<void> _showCompanyTypeDialog({Map<String, dynamic>? type}) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => CompanyTypeDialog(type: type),
+    );
+    if (result == true) {
+      _fetchTypes();
+    }
+  }
+
+  Future<void> _confirmDelete(Map<String, dynamic> type) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Company Type'),
+        content: Text('Are you sure you want to delete ${type['name']}?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      setState(() => _loading = true);
+      try {
+        final dio = DioService();
+        await dio.delete(AppUrls.adminCompanyType(type['id'] as int));
+        if (mounted) ToastService.success(context, 'Success', 'Company type deleted successfully');
+        _fetchTypes();
+      } catch (e) {
+        dPrint('Error deleting company type: $e', tag: 'AdminCompanyTypesScreen');
+        setState(() => _loading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdminPageScaffold(
+      actions: [
+        FilledButton.icon(
+          onPressed: () => _showCompanyTypeDialog(),
+          icon: const Icon(Iconsax.add),
+          label: const Text('Add'),
+        ),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -63,7 +113,7 @@ class _AdminCompanyTypesScreenState extends ConsumerState<AdminCompanyTypesScree
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Read-only list. CRUD management is available via Django admin panel.',
+            child: Text('Manage company types allowed in the system.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey)),
           ),
           const SizedBox(height: 16),
@@ -121,6 +171,28 @@ class _AdminCompanyTypesScreenState extends ConsumerState<AdminCompanyTypesScree
               ),
               title: Text(type['name']?.toString() ?? 'Unnamed'),
               subtitle: Text('${services.length} services | ${plans.length} plans'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      if (value == 'edit') {
+                        _showCompanyTypeDialog(type: type);
+                      } else if (value == 'delete') {
+                        _confirmDelete(type);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(value: 'edit', child: Text('Edit')),
+                      const PopupMenuItem(
+                        value: 'delete',
+                        child: Text('Delete', style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  ),
+                  const Icon(Icons.keyboard_arrow_down),
+                ],
+              ),
               children: [
                 if (services.isNotEmpty) ...[
                   Padding(padding: const EdgeInsets.fromLTRB(16, 0, 16, 4), child: Align(alignment: Alignment.centerLeft, child: Text('Services:', style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).primaryColor)))),
@@ -155,3 +227,4 @@ class _AdminCompanyTypesScreenState extends ConsumerState<AdminCompanyTypesScree
     return trimmed.length >= 2 ? trimmed.substring(0, 2).toUpperCase() : trimmed.toUpperCase();
   }
 }
+

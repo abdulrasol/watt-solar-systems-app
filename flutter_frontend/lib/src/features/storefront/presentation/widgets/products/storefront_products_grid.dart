@@ -40,9 +40,15 @@ class StorefrontProductsGridSliver extends StatelessWidget {
     final crossAxisCount = storefrontProductColumns(width);
 
     if (isLoading && products.isEmpty) {
-      return SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(child: LoadingWidget.widget(context: context)),
+      // A shimmering grid placeholder that mirrors the real card layout
+      // reads as "content is coming" much faster than a bare spinner,
+      // which used to leave the whole page blank while the first page
+      // of products loaded.
+      return SliverPadding(
+        padding: padding.copyWith(top: 0),
+        sliver: SliverToBoxAdapter(
+          child: ProductGridSkeleton(itemCount: crossAxisCount * 3, crossAxisCount: crossAxisCount),
+        ),
       );
     }
 

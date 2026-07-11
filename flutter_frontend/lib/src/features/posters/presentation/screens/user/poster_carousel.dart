@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:watt/l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:watt/src/features/posters/presentation/controllers/active_posters_provider.dart';
 import 'package:watt/src/shared/presntations/providers/is_enabled_providers.dart';
+import 'package:watt/src/utils/app_urls.dart';
 
 class PosterCarousel extends ConsumerWidget {
   const PosterCarousel({super.key});
@@ -13,7 +15,6 @@ class PosterCarousel extends ConsumerWidget {
     if (!enabled) return const SizedBox.shrink();
 
     final async = ref.watch(activePostersProvider);
-    final l10n = AppLocalizations.of(context);
     return async.when(
       loading: () => const SizedBox(height: 180, child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
       error: (_, _) => const SizedBox.shrink(),
@@ -23,13 +24,7 @@ class PosterCarousel extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Text(
-                l10n?.posters ?? 'Company Posters',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
+            SizedBox(height: 10),
             SizedBox(
               height: 200,
               child: ListView.builder(
@@ -45,18 +40,9 @@ class PosterCarousel extends ConsumerWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 6),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4))],
                         image: poster.imageUrl != null
-                            ? DecorationImage(
-                                image: NetworkImage(poster.imageUrl!),
-                                fit: BoxFit.cover,
-                              )
+                            ? DecorationImage(image: CachedNetworkImageProvider(AppUrls.resolveMediaUrl(poster.imageUrl!)), fit: BoxFit.cover)
                             : null,
                         color: poster.imageUrl == null ? Colors.teal.shade800 : null,
                       ),
@@ -75,10 +61,7 @@ class PosterCarousel extends ConsumerWidget {
                                   gradient: LinearGradient(
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
-                                    colors: [
-                                      Colors.black.withValues(alpha: 0.8),
-                                      Colors.transparent,
-                                    ],
+                                    colors: [Colors.black.withValues(alpha: 0.8), Colors.transparent],
                                   ),
                                 ),
                               ),
@@ -95,17 +78,11 @@ class PosterCarousel extends ConsumerWidget {
                                   if (poster.text != null && poster.text!.isNotEmpty)
                                     Text(
                                       poster.text!,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                        height: 1.3,
-                                      ),
+                                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16, height: 1.3),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                  if (poster.text != null && poster.text!.isNotEmpty)
-                                    const SizedBox(height: 6),
+                                  if (poster.text != null && poster.text!.isNotEmpty) const SizedBox(height: 6),
                                   Row(
                                     children: [
                                       Container(
@@ -122,11 +99,7 @@ class PosterCarousel extends ConsumerWidget {
                                             const SizedBox(width: 4),
                                             Text(
                                               poster.companyName ?? '',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                                             ),
                                           ],
                                         ),
@@ -153,18 +126,18 @@ class PosterCarousel extends ConsumerWidget {
   void _handlePosterTap(BuildContext context, dynamic poster) {
     if (poster.actionType == 'company_profile' || poster.actionType == 'post') {
       // post: fallback to company profile until community is active
-      Navigator.pushNamed(context, '/services/company/${poster.companyId}');
+      context.push('/services/company/${poster.companyId}');
     } else if (poster.actionType == 'work') {
       if (poster.actionId != null) {
-        Navigator.pushNamed(context, '/company-work/${poster.actionId}');
+        context.push('/company-work/${poster.actionId}');
       } else {
-        Navigator.pushNamed(context, '/company-work');
+        context.push('/company-work');
       }
     } else if (poster.actionType == 'product') {
       if (poster.actionId != null) {
-        Navigator.pushNamed(context, '/storefront/product/${poster.actionId}');
+        context.push('/storefront/product/${poster.actionId}');
       } else {
-        Navigator.pushNamed(context, '/storefront/products', arguments: {'audience': 'b2c'});
+        context.push('/storefront/products', extra: {'audience': 'b2c'});
       }
     }
   }

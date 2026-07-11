@@ -104,7 +104,7 @@ class _AdminSubscriptionPlansScreenState extends ConsumerState<AdminSubscription
             if (plan.features.isNotEmpty) ...[
               SizedBox(height: 4.h),
               Text(
-                plan.features.entries.map((e) => '${e.key}: ${e.value}').join(', '),
+                plan.features.containsKey('disabled') ? 'Disabled: ${(plan.features['disabled'] as List).join(', ')}' : 'No disabled features',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 12.sp, color: Colors.grey),
@@ -134,57 +134,87 @@ class _AdminSubscriptionPlansScreenState extends ConsumerState<AdminSubscription
     final priceController = TextEditingController(text: plan?.price.toString());
     final durationController = TextEditingController(text: plan?.durationDays.toString() ?? '30');
 
+    final availableFeatures = ['store', 'offers', 'contacts', 'ads', 'accounting'];
+    List<String> disabledFeatures = [];
+    if (plan != null && plan.features['disabled'] is List) {
+      disabledFeatures = List<String>.from(plan.features['disabled']);
+    }
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(plan == null ? 'Add Subscription Plan' : 'Edit Plan'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Plan Name (e.g. Pro)'),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: Text(plan == null ? 'Add Subscription Plan' : 'Edit Plan'),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(labelText: 'Plan Name (e.g. Pro)'),
+                  ),
+                  TextField(
+                    controller: priceController,
+                    decoration: const InputDecoration(labelText: 'Price'),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    controller: durationController,
+                    decoration: const InputDecoration(labelText: 'Duration (days)'),
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Disabled Features:', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ...availableFeatures.map((feature) {
+                    return CheckboxListTile(
+                      title: Text(feature),
+                      value: disabledFeatures.contains(feature),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == true) {
+                            disabledFeatures.add(feature);
+                          } else {
+                            disabledFeatures.remove(feature);
+                          }
+                        });
+                      },
+                    );
+                  }),
+                ],
               ),
-              TextField(
-                controller: priceController,
-                decoration: const InputDecoration(labelText: 'Price'),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                controller: durationController,
-                decoration: const InputDecoration(labelText: 'Duration (days)'),
-                keyboardType: TextInputType.number,
+            ),
+            actions: [
+              TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+              ElevatedButton(
+                onPressed: () async {
+                  final data = {
+                    'name': nameController.text,
+                    'price': double.tryParse(priceController.text) ?? 0.0,
+                    'duration_days': int.tryParse(durationController.text) ?? 30,
+                    'is_active': true,
+                    'features': {
+                      'disabled': disabledFeatures,
+                    },
+                  };
+
+                  try {
+                    if (plan == null) {
+                      await ref.read(adminSubscriptionsProvider.notifier).createPlan(data);
+                    } else {
+                      await ref.read(adminSubscriptionsProvider.notifier).updatePlan(plan.id, data);
+                    }
+                    if (context.mounted) Navigator.pop(context);
+                  } catch (e) {
+                    if (context.mounted) dPrint('Error saving plan: $e');
+                  }
+                },
+                child: const Text('Save'),
               ),
             ],
-          ),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () async {
-              final data = {
-                'name': nameController.text,
-                'price': double.tryParse(priceController.text) ?? 0.0,
-                'duration_days': int.tryParse(durationController.text) ?? 30,
-                'is_active': true,
-                'features': plan?.features ?? {},
-              };
-
-              try {
-                if (plan == null) {
-                  await ref.read(adminSubscriptionsProvider.notifier).createPlan(data);
-                } else {
-                  await ref.read(adminSubscriptionsProvider.notifier).updatePlan(plan.id, data);
-                }
-                if (context.mounted) Navigator.pop(context);
-              } catch (e) {
-                if (context.mounted) dPrint('Error saving plan: $e');
-              }
-            },
-            child: const Text('Save'),
-          ),
-        ],
+          );
+        }
       ),
     );
   }

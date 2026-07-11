@@ -104,66 +104,102 @@ class _AppConfigsScreenState extends ConsumerState<AppConfigsScreen> {
   }
 
   Future<void> _showConfigDialog(BuildContext context, {AppConfig? config}) async {
-    final keyController = TextEditingController(text: config?.key ?? '');
-    final descriptionController = TextEditingController(text: config?.description ?? '');
-    var value = config?.value ?? false;
-
     await showDialog<void>(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: Text(config == null ? 'Create Config' : 'Edit Config'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              StatefulBuilder(
-                builder: (context, setInternalState) => TextField(
-                  controller: keyController,
-                  enabled: config == null,
-                  decoration: InputDecoration(labelText: 'Key', errorText: keyController.text.trim().isEmpty ? 'Key cannot be empty' : null),
-                  onChanged: (_) => setInternalState(() {}),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: descriptionController,
-                maxLines: 3,
-                decoration: const InputDecoration(labelText: 'Description'),
-              ),
-              const SizedBox(height: 12),
-              SwitchListTile(
-                value: value,
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Enabled'),
-                onChanged: (nextValue) => setState(() => value = nextValue),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-            FilledButton(
-              onPressed: () {
-                final key = keyController.text.trim();
-                if (key.isEmpty) return;
+      builder: (context) => _ConfigDialog(config: config),
+    );
+  }
+}
 
-                if (config == null) {
-                  ref.read(appConfigProvider.notifier).createConfig(key: key, value: value, description: descriptionController.text.trim());
-                } else {
-                  ref
-                      .read(appConfigProvider.notifier)
-                      .updateConfig(oldKey: config.key, newKey: key, value: value, description: descriptionController.text.trim());
-                }
-                Navigator.pop(context);
-              },
-              child: Text(config == null ? 'Create' : 'Save'),
+class _ConfigDialog extends ConsumerStatefulWidget {
+  const _ConfigDialog({this.config});
+
+  final AppConfig? config;
+
+  @override
+  ConsumerState<_ConfigDialog> createState() => _ConfigDialogState();
+}
+
+class _ConfigDialogState extends ConsumerState<_ConfigDialog> {
+  late final TextEditingController keyController;
+  late final TextEditingController descriptionController;
+  late bool value;
+
+  @override
+  void initState() {
+    super.initState();
+    keyController = TextEditingController(text: widget.config?.key ?? '');
+    descriptionController = TextEditingController(text: widget.config?.description ?? '');
+    value = widget.config?.value ?? false;
+  }
+
+  @override
+  void dispose() {
+    keyController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.config == null ? 'Create Config' : 'Edit Config'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: keyController,
+              enabled: widget.config == null,
+              decoration: InputDecoration(
+                labelText: 'Key',
+                errorText: keyController.text.trim().isEmpty ? 'Key cannot be empty' : null,
+              ),
+              onChanged: (_) => setState(() {}),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: descriptionController,
+              maxLines: 3,
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+            const SizedBox(height: 12),
+            SwitchListTile(
+              value: value,
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Enabled'),
+              onChanged: (nextValue) => setState(() => value = nextValue),
             ),
           ],
         ),
       ),
-    );
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        FilledButton(
+          onPressed: () {
+            final key = keyController.text.trim();
+            if (key.isEmpty) return;
 
-    keyController.dispose();
-    descriptionController.dispose();
+            if (widget.config == null) {
+              ref.read(appConfigProvider.notifier).createConfig(
+                    key: key,
+                    value: value,
+                    description: descriptionController.text.trim(),
+                  );
+            } else {
+              ref.read(appConfigProvider.notifier).updateConfig(
+                    oldKey: widget.config!.key,
+                    newKey: key,
+                    value: value,
+                    description: descriptionController.text.trim(),
+                  );
+            }
+            Navigator.pop(context);
+          },
+          child: Text(widget.config == null ? 'Create' : 'Save'),
+        ),
+      ],
+    );
   }
 }
 

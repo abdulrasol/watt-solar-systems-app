@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:watt/l10n/app_localizations.dart';
 import 'package:watt/src/core/layout/app_breakpoints.dart';
+import 'package:watt/src/core/widgets/status_badge.dart';
 import 'package:watt/src/features/orders_core/domain/entities/order_models.dart';
 import 'package:watt/src/utils/app_theme.dart';
 
@@ -143,9 +144,14 @@ class OrderListTile extends StatelessWidget {
                   Wrap(
                     spacing: 8.w,
                     runSpacing: 8.h,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       _pill(context, order.orderType.toUpperCase()),
-                      _pill(context, order.status),
+                      // Color-coded per status (pending/processing/shipped/...)
+                      // instead of the old flat text pill, so a buyer or
+                      // seller scanning a list can tell order stages apart
+                      // at a glance.
+                      OrderStatusBadge(status: order.status, compact: true),
                       _pill(context, order.paymentMethod),
                     ],
                   ),

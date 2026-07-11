@@ -1,3 +1,4 @@
+import 'package:watt/src/core/routes/app_routes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,7 +38,7 @@ class ProductCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          context.push('/inventory/product/${product.id}', extra: product);
+          context.push('${AppRoutes.companyInventoryProductDetails}/${product.id}', extra: product);
         },
         child: Padding(
           padding: EdgeInsets.all(12.r),

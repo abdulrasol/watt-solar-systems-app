@@ -12,10 +12,9 @@ import 'package:watt/src/features/auth/presentation/controllers/auth_controller.
 import 'package:watt/src/utils/app_theme.dart';
 
 class AdminShell extends ConsumerWidget {
-  const AdminShell({super.key, required this.child, required this.location});
+  const AdminShell({super.key, required this.navigationShell});
 
-  final Widget child;
-  final String location;
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +22,7 @@ class AdminShell extends ConsumerWidget {
     final authState = ref.watch(authProvider);
     final colors = ref.watch(appColorsProvider);
     final sections = AdminNavigationRegistry.build(l10n);
+    final location = GoRouterState.of(context).uri.path;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -34,6 +34,14 @@ class AdminShell extends ConsumerWidget {
           backgroundColor: colors.background,
           drawer: isMobile
               ? _AdminDrawer(sections: sections, location: location, authState: authState, colors: colors)
+              : null,
+          bottomNavigationBar: isMobile 
+              ? _AdminBottomNav(
+                  sections: sections, 
+                  location: location, 
+                  colors: colors, 
+                  onTap: (index) => _onTap(context, index, sections),
+                )
               : null,
           body: SafeArea(
             child: Row(
@@ -52,7 +60,7 @@ class AdminShell extends ConsumerWidget {
                       alignment: Alignment.topCenter,
                       child: ConstrainedBox(
                         constraints: BoxConstraints(maxWidth: width >= 1440 ? 1320 : 1180),
-                        child: child,
+                        child: navigationShell,
                       ),
                     ),
                   ),
@@ -65,6 +73,57 @@ class AdminShell extends ConsumerWidget {
     );
   }
 
+  void _onTap(BuildContext context, int index, List<AdminNavigationSection> sections) {
+    if (index < 4) { // Main 4 sections
+      context.go(sections[index].items.first.route);
+    } else {
+      Scaffold.of(context).openDrawer();
+    }
+  }
+}
+
+class _AdminBottomNav extends StatelessWidget {
+  const _AdminBottomNav({
+    required this.sections,
+    required this.location,
+    required this.colors,
+    required this.onTap,
+  });
+
+  final List<AdminNavigationSection> sections;
+  final String location;
+  final AppColors colors;
+  final ValueChanged<int> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final navSections = sections.take(4).toList();
+    
+    int currentIndex = navSections.indexWhere((s) => s.isActiveFor(location));
+    if (currentIndex == -1) currentIndex = 4; // 'More'
+
+    return NavigationBar(
+      selectedIndex: currentIndex,
+      onDestinationSelected: onTap,
+      backgroundColor: colors.surface,
+      indicatorColor: colors.primary.withValues(alpha: 0.15),
+      destinations: [
+        ...navSections.map((section) {
+          final active = section.isActiveFor(location);
+          return NavigationDestination(
+            icon: Icon(section.icon, color: active ? colors.primary : colors.textSecondary),
+            selectedIcon: Icon(section.icon, color: colors.primary),
+            label: section.label,
+          );
+        }),
+        NavigationDestination(
+          icon: Icon(Iconsax.menu, color: currentIndex == 4 ? colors.primary : colors.textSecondary),
+          selectedIcon: Icon(Iconsax.menu, color: colors.primary),
+          label: AppLocalizations.of(context)!.more_options,
+        ),
+      ],
+    );
+  }
 }
 
 class _AdminSidebar extends ConsumerWidget {

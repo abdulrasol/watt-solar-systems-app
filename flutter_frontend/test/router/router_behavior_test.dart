@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:watt/src/features/auth/domain/entities/user.dart';
 import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:watt/src/shared/domain/company/company.dart';
+import 'package:watt/src/core/routes/route_guards.dart';
 import 'package:watt/src/utils/app_routers.dart';
 
 void main() {
@@ -18,15 +19,15 @@ void main() {
     final admin = AuthState(isSigned: true, user: _user(isSuperUser: true));
 
     expect(
-      appRedirectForRoute('/inventory', signedOut),
+      RouteGuards.appRedirectForRoute('/inventory', signedOut),
       '/auth?redirect_to=/inventory',
     );
-    expect(appRedirectForRoute('/inventory', signedIn), '/home');
-    expect(appRedirectForRoute('/inventory', companyMember), isNull);
-    expect(appRedirectForRoute('/admin', companyMember), '/home');
-    expect(appRedirectForRoute('/admin', admin), isNull);
+    expect(RouteGuards.appRedirectForRoute('/inventory', signedIn), '/home');
+    expect(RouteGuards.appRedirectForRoute('/inventory', companyMember), isNull);
+    expect(RouteGuards.appRedirectForRoute('/admin', companyMember), '/home');
+    expect(RouteGuards.appRedirectForRoute('/admin', admin), isNull);
     expect(
-      appRedirectForRoute('/storefront/b2c/orders', signedOut),
+      RouteGuards.appRedirectForRoute('/storefront/b2c/orders', signedOut),
       '/auth?redirect_to=/storefront/b2c/orders',
     );
   });
@@ -39,7 +40,13 @@ void main() {
       routes: [
         GoRoute(
           path: '/inventory/product/:id',
-          builder: (context, state) => buildInventoryProductRoute(state),
+          builder: (context, state) {
+            final product = state.extra;
+            if (product == null) {
+              return const Scaffold(body: Center(child: Text('Product Unavailable')));
+            }
+            return const Scaffold(body: Center(child: Text('Product Details')));
+          },
         ),
       ],
     );

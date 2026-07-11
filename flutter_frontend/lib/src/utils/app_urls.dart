@@ -16,6 +16,16 @@ class AppUrls {
     return 'http://127.0.0.1:8080/api/v1';
   }
 
+  // Resolves media path (e.g. /uploads/...) to full URL
+  static String resolveMediaUrl(String path) {
+    if (path.isEmpty || path == 'null') return '';
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    
+    final baseServerUrl = baseUrl.replaceAll('/api/v1', '');
+    if (!path.startsWith('/')) path = '/$path';
+    return '$baseServerUrl$path';
+  }
+
   // ==================== AUTH & USERS ====================
   static String get authBaseUrl => '$baseUrl/users';
   static String get login => '$authBaseUrl/login';
@@ -40,8 +50,11 @@ class AppUrls {
   static String currency(int id) => '$currencies/$id';
   static String get globalCategories => '$adminBaseUrl/categories';
   static String globalCategory(int id) => '$globalCategories/$id';
+  // Admin Subscriptions
   static String get adminSubscriptions => '$adminBaseUrl/subscriptions';
   static String adminSubscription(int id) => '$adminSubscriptions/$id';
+  static String get adminSubscriptionRequests => '$companies/subscription-requests';
+  static String adminReviewSubscriptionRequest(int companyId, int requestId) => '$companies/$companyId/subscription-requests/$requestId/review';
   static String get adminProducts => '$adminBaseUrl/shop/products';
   static String adminProduct(int id) => '$adminProducts/$id';
   static String get adminSystems => '$adminBaseUrl/systems';
@@ -59,6 +72,8 @@ class AppUrls {
   static String companyAdminDetails(int id) => '$companies/$id/details';
   static String updateCompanyStatus(int id) => '$companies/$id/status';
   static String companyAdminServices(int id) => '$companies/$id/services';
+  static String get adminCompanyTypes => '$adminBaseUrl/companies/types';
+  static String adminCompanyType(int id) => '$adminCompanyTypes/$id';
 
   // Service Catalog (Admin)
   static String get adminServiceCatalog => '$adminBaseUrl/companies/catalog/services';
@@ -155,12 +170,14 @@ class AppUrls {
 
   // ==================== SHOP ====================
   static String get shopBaseUrl => '$baseUrl/shop';
+  static String get shopCartValidate => '$shopBaseUrl/cart/validate';
   static String get shopCatalogMeta => '$shopBaseUrl/catalog/meta';
   static String get storefront => '$shopBaseUrl/frontstore';
   static String get storefrontProducts => '$shopBaseUrl/frontstore/products';
   static String get storefrontCompanies => '$shopBaseUrl/store/companies';
   static String storefrontCompanyCategories(int companyId) => '$shopBaseUrl/store/companies/$companyId/company-categories';
   static String get b2cProducts => '$shopBaseUrl/store/products';
+  static String b2cProduct(int id) => '$shopBaseUrl/store/products/$id';
   static String get b2cSearch => '$shopBaseUrl/store/search';
   static String get b2cOrders => '$shopBaseUrl/store/orders';
   static String get b2cMyOrders => '$shopBaseUrl/store/my-orders';
@@ -169,6 +186,7 @@ class AppUrls {
   static String b2cCompanyProducts(int companyId) => '$shopBaseUrl/store/companies/$companyId/products';
   static String b2cCategoryProducts(String categoryType, int categoryId) => '$shopBaseUrl/store/categories/$categoryType/$categoryId/products';
   static String get b2bProducts => '$shopBaseUrl/b2b/products';
+  static String b2bProduct(int id) => '$shopBaseUrl/b2b/products/$id';
   static String get b2bSearch => '$shopBaseUrl/b2b/search';
   static String get b2bOrders => '$shopBaseUrl/b2b/orders';
   static String get b2bMyOrders => '$shopBaseUrl/b2b/my-orders';
@@ -181,21 +199,14 @@ class AppUrls {
 
   // ==================== COMMUNITY ====================
   static String get communityBaseUrl => '$baseUrl/community';
-  static String get allPosts => '$communityBaseUrl/posts';
-  static String get createPost => '$communityBaseUrl/posts/create';
-  static String postById(int postId) => '$communityBaseUrl/posts/$postId';
-  static String updatePost(int postId) => '$communityBaseUrl/posts/$postId/update';
-  static String deletePost(int postId) => '$communityBaseUrl/posts/$postId/delete';
-  static String postComments(int postId) => '$communityBaseUrl/posts/$postId/comments';
-  static String createComment(int postId) => '$communityBaseUrl/posts/$postId/comments/create';
-  static String commentById(int postId, int commentId) => '$communityBaseUrl/posts/$postId/comments/$commentId';
-  static String updateComment(int postId, int commentId) => '$communityBaseUrl/posts/$postId/comments/$commentId/update';
-  static String deleteComment(int postId, int commentId) => '$communityBaseUrl/posts/$postId/comments/$commentId/delete';
-  static String commentReplies(int postId, int commentId) => '$communityBaseUrl/posts/$postId/comments/$commentId/replies';
-  static String createReply(int postId, int commentId) => '$communityBaseUrl/posts/$postId/comments/$commentId/replies/create';
-  static String replyById(int postId, int commentId, int replyId) => '$communityBaseUrl/posts/$postId/comments/$commentId/replies/$replyId';
-  static String deleteReply(int postId, int commentId, int replyId) => '$communityBaseUrl/posts/$postId/comments/$commentId/replies/$replyId/delete';
-  static String get filteredPosts => '$communityBaseUrl/posts/filter';
+  
+  // Posts
+  static String get posts => '$communityBaseUrl/posts/'; // GET, POST
+  static String postById(int postId) => '$communityBaseUrl/posts/$postId'; // GET, PUT, DELETE
+  
+  // Comments
+  static String postComments(int postId) => '$communityBaseUrl/posts/$postId/comments'; // GET, POST
+  static String commentById(int commentId) => '$communityBaseUrl/comments/$commentId'; // PUT, DELETE
 
   // ==================== ACCOUNTING ====================
   static String get accountingBaseUrl => '$baseUrl/accounting';

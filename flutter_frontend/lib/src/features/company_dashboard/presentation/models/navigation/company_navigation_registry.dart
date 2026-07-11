@@ -2,9 +2,8 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:watt/l10n/app_localizations.dart';
 import 'package:watt/src/features/company_dashboard/presentation/models/navigation/company_navigation_item.dart';
 import 'package:watt/src/features/company_dashboard/presentation/models/navigation/company_navigation_section.dart';
-import 'package:watt/src/core/flags/feature_flags.dart';
-import 'package:watt/src/utils/helper_methods.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watt/src/features/auth/presentation/controllers/auth_controller.dart';
 
 /// Central registry for company dashboard navigation sections.
 ///
@@ -13,14 +12,23 @@ class CompanyNavigationRegistry {
   const CompanyNavigationRegistry._();
 
   static List<CompanyNavigationSection> build(AppLocalizations l10n, WidgetRef ref) {
+    final company = ref.watch(authProvider).company;
+    final features = company?.allowedFeatures ?? [];
+
+    final hasStore = features.contains('store');
+    final hasOffers = features.contains('offers');
+    final hasContacts = features.contains('contacts');
+    final hasAds = features.contains('ads');
+    final hasAccounting = features.contains('accounting');
+
     return [
       _overviewSection(l10n),
-      if (isFeatureEnabled(ref, AppFeature.companySales)) _salesSection(l10n, ref),
-      if (isFeatureEnabled(ref, AppFeature.companyInventory)) _inventorySection(l10n, ref),
-      if (isFeatureEnabled(ref, AppFeature.companyOrders)) _ordersSection(l10n, ref),
-      if (isFeatureEnabled(ref, AppFeature.companyContent)) _contentSection(l10n, ref),
-      if (isFeatureEnabled(ref, AppFeature.companyFinance)) _financeSection(l10n, ref),
-      _settingsSection(l10n, ref),
+      if (hasOffers || hasContacts) _salesSection(l10n, hasOffers, hasContacts),
+      if (hasStore) _inventorySection(l10n),
+      if (hasStore) _ordersSection(l10n),
+      if (hasAds) _contentSection(l10n),
+      if (hasAccounting) _financeSection(l10n),
+      _settingsSection(l10n, hasContacts),
     ];
   }
 
@@ -41,27 +49,28 @@ class CompanyNavigationRegistry {
     );
   }
 
-  static CompanyNavigationSection _salesSection(AppLocalizations l10n, WidgetRef ref) {
+  static CompanyNavigationSection _salesSection(AppLocalizations l10n, bool hasOffers, bool hasContacts) {
     return CompanyNavigationSection(
       id: 'sales',
       label: l10n.sales,
       icon: Iconsax.money_change,
-      defaultRoute: '/companies/dashboard/sales/offers',
+      defaultRoute: hasOffers ? '/companies/dashboard/sales/offers' : '/companies/dashboard/sales/customers',
       items: [
-        if (isFeatureEnabled(ref, AppFeature.offers))
+        if (hasOffers)
           CompanyNavigationItem(
             id: 'offers',
             label: l10n.offers,
             route: '/companies/dashboard/sales/offers',
             icon: Iconsax.document_text,
           ),
-        CompanyNavigationItem(
-          id: 'requests',
-          label: l10n.my_requests,
-          route: '/companies/dashboard/sales/requests',
-          icon: Iconsax.task_square,
-        ),
-        if (isFeatureEnabled(ref, AppFeature.companyCrm))
+        if (hasOffers)
+          CompanyNavigationItem(
+            id: 'requests',
+            label: l10n.my_requests,
+            route: '/companies/dashboard/sales/requests',
+            icon: Iconsax.task_square,
+          ),
+        if (hasContacts)
           CompanyNavigationItem(
             id: 'customers',
             label: l10n.customers,
@@ -72,14 +81,13 @@ class CompanyNavigationRegistry {
     );
   }
 
-  static CompanyNavigationSection _inventorySection(AppLocalizations l10n, WidgetRef ref) {
+  static CompanyNavigationSection _inventorySection(AppLocalizations l10n) {
     return CompanyNavigationSection(
       id: 'inventory',
       label: l10n.inventory,
       icon: Iconsax.box,
       defaultRoute: '/companies/dashboard/inventory/products',
       items: [
-        if (isFeatureEnabled(ref, AppFeature.companyProducts))
           CompanyNavigationItem(
             id: 'products',
             label: l10n.products,
@@ -102,7 +110,7 @@ class CompanyNavigationRegistry {
     );
   }
 
-  static CompanyNavigationSection _ordersSection(AppLocalizations l10n, WidgetRef ref) {
+  static CompanyNavigationSection _ordersSection(AppLocalizations l10n) {
     return CompanyNavigationSection(
       id: 'orders',
       label: l10n.orders,
@@ -125,7 +133,7 @@ class CompanyNavigationRegistry {
     );
   }
 
-  static CompanyNavigationSection _contentSection(AppLocalizations l10n, WidgetRef ref) {
+  static CompanyNavigationSection _contentSection(AppLocalizations l10n) {
     return CompanyNavigationSection(
       id: 'content',
       label: l10n.content_and_ads,
@@ -148,7 +156,7 @@ class CompanyNavigationRegistry {
     );
   }
 
-  static CompanyNavigationSection _financeSection(AppLocalizations l10n, WidgetRef ref) {
+  static CompanyNavigationSection _financeSection(AppLocalizations l10n) {
     return CompanyNavigationSection(
       id: 'finance',
       label: l10n.finance,
@@ -171,7 +179,7 @@ class CompanyNavigationRegistry {
     );
   }
 
-  static CompanyNavigationSection _settingsSection(AppLocalizations l10n, WidgetRef ref) {
+  static CompanyNavigationSection _settingsSection(AppLocalizations l10n, bool hasContacts) {
     return CompanyNavigationSection(
       id: 'settings',
       label: l10n.settings,
@@ -184,14 +192,15 @@ class CompanyNavigationRegistry {
           route: '/companies/dashboard/settings/profile',
           icon: Iconsax.building_4,
         ),
-        if (isFeatureEnabled(ref, AppFeature.companyMembers))
+        if (hasContacts)
           CompanyNavigationItem(
             id: 'members',
             label: l10n.members,
             route: '/companies/dashboard/settings/members',
             icon: Iconsax.people,
           ),
-        CompanyNavigationItem(
+        if (hasContacts)
+          CompanyNavigationItem(
           id: 'contacts',
           label: l10n.contacts,
           route: '/companies/dashboard/settings/contacts',

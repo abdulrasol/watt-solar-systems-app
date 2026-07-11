@@ -108,7 +108,18 @@ class _SendNotificationScreenState extends ConsumerState<SendNotificationScreen>
 
     Map<String, dynamic>? data;
     if (_dataController.text.trim().isNotEmpty) {
-      data = jsonDecode(_dataController.text) as Map<String, dynamic>;
+      try {
+        data = jsonDecode(_dataController.text) as Map<String, dynamic>;
+      } catch (e) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          title: const Text('Error'),
+          description: const Text('Invalid JSON in Custom Data field.'),
+          autoCloseDuration: const Duration(seconds: 4),
+        );
+        return;
+      }
     }
 
     final title = _titleController.text.trim();

@@ -1,3 +1,4 @@
+import 'package:watt/src/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -16,28 +17,24 @@ class QuickAction {
 }
 
 List<QuickAction> buildQuickActions(CompanySummaryState summaryState, AppLocalizations l10n) {
-  final services = [...?summaryState.summary?.services];
+  final features = summaryState.summary?.allowedFeatures ?? [];
   final actions = <QuickAction>[];
 
-  final hasInventory = services.any((s) => s.serviceCode == 'inventory' && s.isActive);
-  final hasOffers = services.any((s) => s.serviceCode == 'offers' && s.isActive);
-  final hasMembers = services.any((s) => s.serviceCode == 'multi_member' && s.isActive);
-  final hasStorefrontB2C = services.any((s) => s.serviceCode == 'storefront_b2c' && s.isActive);
-  final hasAccounting = services.any((s) => s.serviceCode == 'accounting' && s.isActive);
-  final hasStorefrontB2B = services.any((s) => s.serviceCode == 'storefront_b2b' && s.isActive);
-  final hasProjects = services.any((s) => s.serviceCode == 'company_work' && s.isActive) && summaryState.hasReadPermission('projects');
+  final hasStore = features.contains('store');
+  final hasOffers = features.contains('offers');
+  final hasContacts = features.contains('contacts');
+  final hasAccounting = features.contains('accounting');
+  final hasAds = features.contains('ads');
+  final hasProjects = hasAds && summaryState.hasReadPermission('projects');
 
-  if (hasInventory) {
-    actions.add(QuickAction(icon: Iconsax.box_add, label: l10n.add_product, color: Colors.blue, route: '/inventory/add'));
+  if (hasStore) {
+    actions.add(QuickAction(icon: Iconsax.box_add, label: l10n.add_product, color: Colors.blue, route: AppRoutes.companyInventoryAdd));
   }
   if (hasOffers) {
     actions.add(QuickAction(icon: Iconsax.document, label: l10n.create_offer, color: Colors.green, route: '/offers'));
   }
-  if (hasMembers) {
+  if (hasContacts) {
     actions.add(QuickAction(icon: Iconsax.user_add, label: l10n.invite_member, color: Colors.orange, route: '/companies/dashboard/members'));
-  }
-  if (hasStorefrontB2C || hasStorefrontB2B) {
-    actions.add(QuickAction(icon: Iconsax.shop_add, label: l10n.add_product, color: Colors.pink, route: '/inventory/add'));
   }
   if (hasAccounting) {
     actions.add(QuickAction(icon: Iconsax.receipt_add, label: l10n.create_invoice, color: Colors.purple, route: '/companies/dashboard/accounting'));
@@ -47,7 +44,7 @@ List<QuickAction> buildQuickActions(CompanySummaryState summaryState, AppLocaliz
   }
 
   if (actions.isEmpty) {
-    actions.add(QuickAction(icon: Iconsax.box_add, label: l10n.add_product, color: Colors.blue, route: '/inventory/add', enabled: false));
+    actions.add(QuickAction(icon: Iconsax.box_add, label: l10n.add_product, color: Colors.blue, route: AppRoutes.companyInventoryAdd, enabled: false));
   }
 
   return actions;

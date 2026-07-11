@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:watt/src/features/settings/presentation/providers/settings_provider.dart';
 
-/// Centralized color palette for the SolarHub application.
+/// Centralized color palette for the Watt application.
 ///
 /// Follows the same pattern as the reference `meaad` project, adapted to
 /// SolarHub's existing teal primary color.
@@ -27,6 +26,26 @@ class AppColors {
   final Color shadow;
   final Color overlay;
 
+  // Order-status tokens (storefront/orders UX pass). Kept separate from the
+  // generic success/warning/error/info tokens above because a single order
+  // status maps to a specific stage, not a generic severity level.
+  final Color orderPending;
+  final Color orderProcessing;
+  final Color orderShipped;
+  final Color orderDelivered;
+  final Color orderCancelled;
+  final Color orderCompleted;
+
+  // Stock-availability tokens.
+  final Color stockInStock;
+  final Color stockLowStock;
+  final Color stockOutOfStock;
+
+  // B2B / B2C audience accent tints, used to visually separate the two
+  // cart/order contexts a company member can have at the same time.
+  final Color audienceB2b;
+  final Color audienceB2c;
+
   const AppColors({
     required this.primary,
     required this.primaryLight,
@@ -45,6 +64,17 @@ class AppColors {
     required this.info,
     required this.shadow,
     required this.overlay,
+    required this.orderPending,
+    required this.orderProcessing,
+    required this.orderShipped,
+    required this.orderDelivered,
+    required this.orderCancelled,
+    required this.orderCompleted,
+    required this.stockInStock,
+    required this.stockLowStock,
+    required this.stockOutOfStock,
+    required this.audienceB2b,
+    required this.audienceB2c,
   });
 
   /// Light mode color scheme.
@@ -67,6 +97,17 @@ class AppColors {
       info: Color(0xFF3B82F6),
       shadow: Color(0x1F000000),
       overlay: Color(0x99000000),
+      orderPending: Color(0xFFF59E0B),
+      orderProcessing: Color(0xFF3B82F6),
+      orderShipped: Color(0xFF8B5CF6),
+      orderDelivered: Color(0xFF10B981),
+      orderCancelled: Color(0xFFEF4444),
+      orderCompleted: Color(0xFF10B981),
+      stockInStock: Color(0xFF10B981),
+      stockLowStock: Color(0xFFF59E0B),
+      stockOutOfStock: Color(0xFFEF4444),
+      audienceB2b: Color(0xFF3B82F6),
+      audienceB2c: Color(0xFFFFAB40),
     );
   }
 
@@ -90,6 +131,17 @@ class AppColors {
       info: Color(0xFF60A5FA),
       shadow: Color(0x66000000),
       overlay: Color(0xB3000000),
+      orderPending: Color(0xFFFCD34D),
+      orderProcessing: Color(0xFF60A5FA),
+      orderShipped: Color(0xFFA78BFA),
+      orderDelivered: Color(0xFF34D399),
+      orderCancelled: Color(0xFFF87171),
+      orderCompleted: Color(0xFF34D399),
+      stockInStock: Color(0xFF34D399),
+      stockLowStock: Color(0xFFFCD34D),
+      stockOutOfStock: Color(0xFFF87171),
+      audienceB2b: Color(0xFF60A5FA),
+      audienceB2c: Color(0xFFFFAB40),
     );
   }
 }

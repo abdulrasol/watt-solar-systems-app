@@ -41,11 +41,11 @@ class _AdminCompanyDetailsScreenState extends ConsumerState<AdminCompanyDetailsS
         if (state.details != null)
           FilledButton.icon(onPressed: () => _showStatusUpdateForm(context), icon: const Icon(Iconsax.edit), label: const Text('Update Status')),
       ],
-      child: state.isLoading && state.details == null
-          ? const AdminLoadingState(icon: Iconsax.building, message: 'Loading company details...')
-          : state.error != null && state.details == null
+      child: state.error != null && state.details == null
           ? AdminErrorState(error: state.error!, onRetry: () => ref.read(adminCompanyDetailsProvider.notifier).fetchDetails())
-          : _buildContent(context, state.details!),
+          : state.details == null
+              ? const AdminLoadingState(icon: Iconsax.building, message: 'Loading company details...')
+              : _buildContent(context, state.details!),
     );
   }
 

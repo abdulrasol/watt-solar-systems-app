@@ -16,7 +16,7 @@ class CompanyExpenseFormModel {
       'amount': amount,
       'category': category,
       'description': description,
-      'date': (date ?? DateTime.now()).toIso8601String(),
+      'date': (date ?? DateTime.now()).toIso8601String().split('T')[0],
     };
   }
 }

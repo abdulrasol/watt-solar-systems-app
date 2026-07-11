@@ -12,7 +12,6 @@ import 'package:watt/src/features/company_dashboard/presentation/widgets/company
 import 'package:watt/src/features/company_dashboard/presentation/widgets/financial_summary_card.dart';
 import 'package:watt/src/features/company_dashboard/presentation/widgets/overview/overview_cta_card.dart';
 import 'package:watt/src/features/company_dashboard/presentation/widgets/overview/overview_section_title.dart';
-import 'package:watt/src/features/company_dashboard/presentation/widgets/overview/overview_services_grid.dart';
 import 'package:watt/src/features/company_dashboard/presentation/widgets/overview/overview_stats_grid.dart';
 
 /// Company dashboard overview landing page.
@@ -29,10 +28,7 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
     final company = authState.company;
 
     if (state.isError && summary == null) {
-      return AdminErrorState(
-        error: l10n.error_loading_data,
-        onRetry: () => ref.read(companySummaryProvider.notifier).getSummary(),
-      );
+      return AdminErrorState(error: l10n.error_loading_data, onRetry: () => ref.read(companySummaryProvider.notifier).getSummary());
     }
 
     if (summary == null && state.isLoading) {
@@ -59,11 +55,7 @@ class CompanyDashboardOverviewScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
                 OverviewStatsGrid(summary: summary),
                 const SizedBox(height: 28),
-                OverviewSectionTitle(title: l10n.services, subtitle: l10n.ready_to_scale_business),
-                const SizedBox(height: 16),
-                OverviewServicesGrid(summary: summary, company: company),
-                const SizedBox(height: 28),
-                const FinancialSummaryCard(),
+                                const FinancialSummaryCard(),
                 const SizedBox(height: 28),
                 const OverviewCTACard(),
                 const SizedBox(height: 24),

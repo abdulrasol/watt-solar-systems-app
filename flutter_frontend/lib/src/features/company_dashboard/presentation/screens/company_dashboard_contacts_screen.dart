@@ -94,10 +94,7 @@ class _CompanyDashboardContactsScreenState extends ConsumerState<CompanyDashboar
                             final contact = state.contacts[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 16),
-                              child: ContactCard(
-                                contact: contact,
-                                onDelete: canManage ? () => _deleteContact(context, companyId, contact) : null,
-                              ),
+                              child: ContactCard(contact: contact, onDelete: canManage ? () => _deleteContact(context, companyId, contact) : null),
                             );
                           },
                         ),

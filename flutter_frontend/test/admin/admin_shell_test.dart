@@ -1,3 +1,5 @@
+import 'package:watt/src/features/company_dashboard/domain/entities/company_subscription_request.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -69,12 +71,7 @@ class _FakeCache implements CasheInterface {
   }
 
   @override
-  Settings settings() => Settings(
-    isDark: false,
-    isNotificationEnabled: true,
-    language: 'en',
-    saveRolePageSelection: false,
-  );
+  Settings settings() => Settings(isDark: false, isNotificationEnabled: true, language: 'en', saveRolePageSelection: false);
 
   @override
   String? token() => _values['token'] as String?;
@@ -93,11 +90,15 @@ class _FakeAdminRepository implements AdminRepository {
   int listCompaniesCalls = 0;
 
   @override
-  Future<List<Company>> listCompanies({
-    String? status,
-    int page = 1,
-    int pageSize = 20,
-  }) async {
+  Future<List<CompanySubscriptionRequest>> listSubscriptionRequests({String? status, int page = 1, int pageSize = 12}) async {
+    return [];
+  }
+
+  @override
+  Future<void> reviewSubscriptionRequest(int companyId, int requestId, String status, {String? notes}) async {}
+
+  @override
+  Future<List<Company>> listCompanies({String? status, int page = 1, int pageSize = 20}) async {
     listCompaniesCalls++;
     return [];
   }
@@ -115,24 +116,16 @@ class _FakeAdminRepository implements AdminRepository {
   @override
   Future<List<ServiceCatalogItem>> listServiceCatalog() async => [];
 
-
   @override
-  Future<ServiceCatalogItem> createServiceCatalogEntry(
-    ServiceCatalogItem item,
-  ) {
+  Future<ServiceCatalogItem> createServiceCatalogEntry(ServiceCatalogItem item) {
     throw UnimplementedError();
   }
 
   @override
   Future<void> deleteServiceCatalogEntry(String serviceCode) async {}
 
-
- 
   @override
-  Future<ServiceCatalogItem> updateServiceCatalogEntry(
-    String serviceCode,
-    Map<String, dynamic> data,
-  ) {
+  Future<ServiceCatalogItem> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data) {
     throw UnimplementedError();
   }
 
@@ -204,28 +197,22 @@ void main() {
     await getIt.reset();
   });
 
-  Future<void> pumpAdminApp(
-    WidgetTester tester, {
-    required String initialLocation,
-    required Size size,
-  }) async {
+  Future<void> pumpAdminApp(WidgetTester tester, {required String initialLocation, required Size size}) async {
     await tester.binding.setSurfaceSize(size);
 
     final router = GoRouter(
       initialLocation: initialLocation,
       routes: [
-        ShellRoute(
-          builder: (context, state, child) {
-            return AdminShell(location: state.uri.path, child: child);
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            return AdminShell(navigationShell: navigationShell);
           },
-          routes: [
-            GoRoute(
-              path: '/admin',
-              builder: (context, state) => const AdminDashboard(),
+          branches: [
+            StatefulShellBranch(
+              routes: [GoRoute(path: '/admin', builder: (context, state) => const AdminDashboard())],
             ),
-            GoRoute(
-              path: '/admin/companies',
-              builder: (context, state) => const AdminCompaniesScreen(),
+            StatefulShellBranch(
+              routes: [GoRoute(path: '/admin/companies', builder: (context, state) => const AdminCompaniesScreen())],
             ),
           ],
         ),
@@ -241,14 +228,8 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('dashboard route does not trigger company loading', (
-    tester,
-  ) async {
-    await pumpAdminApp(
-      tester,
-      initialLocation: '/admin',
-      size: const Size(390, 844),
-    );
+  testWidgets('dashboard route does not trigger company loading', (tester) async {
+    await pumpAdminApp(tester, initialLocation: '/admin', size: const Size(390, 844));
 
     expect(find.byType(AdminDashboard), findsOneWidget);
     expect(find.byType(AdminDashboardCard), findsWidgets);
@@ -257,11 +238,7 @@ void main() {
   });
 
   testWidgets('companies route lazy-loads only when opened', (tester) async {
-    await pumpAdminApp(
-      tester,
-      initialLocation: '/admin/companies',
-      size: const Size(1280, 900),
-    );
+    await pumpAdminApp(tester, initialLocation: '/admin/companies', size: const Size(1280, 900));
 
     expect(find.text('Companies'), findsWidgets);
     expect(find.text('No companies found'), findsOneWidget);

@@ -170,10 +170,7 @@ class ServiceStatusPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              l10n.contact_support,
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-            ),
+            Text(l10n.contact_support, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
             SizedBox(height: 20),
             ListTile(
               leading: const Icon(Iconsax.direct_right, color: Colors.blue),

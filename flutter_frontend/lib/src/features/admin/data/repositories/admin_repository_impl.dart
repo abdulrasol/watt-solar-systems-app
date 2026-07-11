@@ -1,3 +1,5 @@
+import 'package:watt/src/features/company_dashboard/domain/entities/company_subscription_request.dart';
+
 import 'package:watt/src/features/admin/data/data_sources/admin_remote_data_source.dart';
 
 import 'package:watt/src/features/admin/domain/models/admin_city.dart';
@@ -218,5 +220,18 @@ class AdminRepositoryImpl implements AdminRepository {
   @override
   Future<void> deleteSubscriptionPlan(int id) async {
     await _remoteDataSource.deleteSubscriptionPlan(id);
+  }
+
+  @override
+  Future<List<CompanySubscriptionRequest>> listSubscriptionRequests({String? status, int page = 1, int pageSize = 12}) async {
+    final response = await _remoteDataSource.listSubscriptionRequests(status: status, page: page, pageSize: pageSize);
+    final body = response.body;
+    if (body is! List) throw Exception('Expected List but got ${body.runtimeType}');
+    return body.map((e) => CompanySubscriptionRequest.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  @override
+  Future<void> reviewSubscriptionRequest(int companyId, int requestId, String status, {String? notes}) async {
+    await _remoteDataSource.reviewSubscriptionRequest(companyId, requestId, status, notes: notes);
   }
 }

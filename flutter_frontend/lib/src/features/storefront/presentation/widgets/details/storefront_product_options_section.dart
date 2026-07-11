@@ -65,13 +65,16 @@ class _CardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(18.r),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(20.r),
+    return Material(
+      color: Theme.of(context).cardColor,
+      borderRadius: BorderRadius.circular(22.r),
+      clipBehavior: Clip.antiAlias,
+      elevation: 2,
+      shadowColor: Colors.black.withValues(alpha: 0.2),
+      child: Padding(
+        padding: EdgeInsets.all(20.r),
+        child: child,
       ),
-      child: child,
     );
   }
 }

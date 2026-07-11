@@ -2,17 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:watt/src/features/storefront/domain/entities/storefront_models.dart';
+import 'package:watt/src/utils/app_urls.dart';
 import 'package:watt/src/utils/app_theme.dart';
 
 class StorefrontCompanyGridCard extends StatelessWidget {
   final StorefrontCompanyListItem company;
   final VoidCallback onTap;
 
-  const StorefrontCompanyGridCard({
-    super.key,
-    required this.company,
-    required this.onTap,
-  });
+  const StorefrontCompanyGridCard({super.key, required this.company, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +22,7 @@ class StorefrontCompanyGridCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.08),
-            ),
+            border: Border.all(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.08)),
           ),
           child: Padding(
             padding: EdgeInsets.all(16.r),
@@ -43,10 +36,7 @@ class StorefrontCompanyGridCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w800,
-                  ),
+                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w800),
                 ),
                 if ((company.cityName ?? '').isNotEmpty) ...[
                   SizedBox(height: 6.h),
@@ -55,12 +45,7 @@ class StorefrontCompanyGridCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.60),
-                    ),
+                    style: TextStyle(fontSize: 12.sp, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.60)),
                   ),
                 ],
               ],
@@ -82,30 +67,18 @@ class _CompanyAvatar extends StatelessWidget {
     if ((company.logo ?? '').isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(18.r),
-        child: CachedNetworkImage(
-          imageUrl: company.logo!,
-          width: 56.r,
-          height: 56.r,
-          fit: BoxFit.cover,
-        ),
+        child: CachedNetworkImage(imageUrl: AppUrls.resolveMediaUrl(company.logo!), width: 56.r, height: 56.r, fit: BoxFit.cover),
       );
     }
 
     return Container(
       width: 56.r,
       height: 56.r,
-      decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(18.r),
-      ),
+      decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.10), borderRadius: BorderRadius.circular(18.r)),
       alignment: Alignment.center,
       child: Text(
         company.name.isEmpty ? '?' : company.name.substring(0, 1),
-        style: TextStyle(
-          color: AppTheme.primaryColor,
-          fontWeight: FontWeight.w900,
-          fontSize: 20.sp,
-        ),
+        style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w900, fontSize: 20.sp),
       ),
     );
   }

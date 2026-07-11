@@ -17,6 +17,7 @@ import 'package:watt/src/features/storefront/presentation/screens/storefront_car
 import 'package:watt/src/features/storefront/presentation/screens/storefront_screen.dart';
 import 'package:watt/src/features/storefront/presentation/utils/storefront_page_route.dart';
 import 'package:watt/src/features/services/presentation/screens/services_explorer_screen.dart';
+import 'package:watt/src/features/community/presentation/screens/community_feed_screen.dart';
 import 'package:watt/src/utils/app_theme.dart';
 
 class Home extends ConsumerWidget {
@@ -40,6 +41,7 @@ class Home extends ConsumerWidget {
       const CalculatorLandingPage(showAppBar: false),
       const ServicesExplorerScreen(embedded: true),
       const StorefrontScreen(audience: StorefrontAudience.b2c),
+      const CommunityFeedScreen(),
     ];
     final navItems = navigation.visibleTabs.map((tab) => _buildNavItem(tab, context)).toList();
     final navIndex = navigation.navIndexFor(effectiveIndex);
@@ -65,11 +67,7 @@ class Home extends ConsumerWidget {
       case HomeTab.dashboard:
         return CrystalNavigationBarItem(icon: Iconsax.home, unselectedIcon: Iconsax.home, selectedColor: Theme.of(context).primaryColor);
       case HomeTab.calculator:
-        return CrystalNavigationBarItem(
-          icon: Iconsax.calculator,
-          unselectedIcon: Iconsax.calculator,
-          selectedColor: Theme.of(context).primaryColor,
-        );
+        return CrystalNavigationBarItem(icon: Iconsax.calculator, unselectedIcon: Iconsax.calculator, selectedColor: Theme.of(context).primaryColor);
       case HomeTab.services:
         return CrystalNavigationBarItem(icon: Iconsax.category_2, unselectedIcon: Iconsax.category_2, selectedColor: Theme.of(context).primaryColor);
       case HomeTab.store:
@@ -108,7 +106,7 @@ class Home extends ConsumerWidget {
       case HomeTab.store:
         return AppLocalizations.of(context)!.store;
       case HomeTab.community:
-        return AppLocalizations.of(context)!.home;
+        return AppLocalizations.of(context)!.community;
     }
   }
 
