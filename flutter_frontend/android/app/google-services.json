@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "919552016311",
+    "project_id": "watt-pv-app",
+    "storage_bucket": "watt-pv-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919552016311:android:1851deb3742afabee47232",
+        "android_client_info": {
+          "package_name": "io.github.abdulrasol.watt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpWWoOiWdEXsyB9dpbR2QSbB-roMXoghU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

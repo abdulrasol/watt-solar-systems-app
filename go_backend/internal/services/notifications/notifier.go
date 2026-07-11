@@ -75,6 +75,50 @@ func SendCompanySubscriptionNotification(subscription *models.CompanyServiceSubs
 	}()
 }
 
+// SendNewCompanyRegistrationNotification notifies superusers about a new company registration.
+func SendNewCompanyRegistrationNotification(company *models.Company) {
+	go func() {
+		if company == nil {
+			return
+		}
+		var c models.Company
+		if err := database.DB.First(&c, company.ID).Error; err != nil {
+			return
+		}
+		bodyArgs := map[string]interface{}{
+			"company_name": c.Name,
+		}
+		data := map[string]interface{}{
+			"content": serializeCompany(&c),
+			"type":    "company_registration",
+		}
+		superuserIDs := getSuperuserIDs()
+		notifyUserIDsByLanguage(superuserIDs, "new_company_registration", bodyArgs, data, "info", "Company", &c.ID)
+	}()
+}
+
+// SendCompanyUpdateNotification notifies superusers when a company's profile is updated.
+func SendCompanyUpdateNotification(company *models.Company) {
+	go func() {
+		if company == nil {
+			return
+		}
+		var c models.Company
+		if err := database.DB.First(&c, company.ID).Error; err != nil {
+			return
+		}
+		bodyArgs := map[string]interface{}{
+			"company_name": c.Name,
+		}
+		data := map[string]interface{}{
+			"content": serializeCompany(&c),
+			"type":    "company_updated",
+		}
+		superuserIDs := getSuperuserIDs()
+		notifyUserIDsByLanguage(superuserIDs, "company_updated", bodyArgs, data, "info", "Company", &c.ID)
+	}()
+}
+
 // SendNewCompanySubscriptionRequestNotification notifies superusers about a new subscription request.
 func SendNewCompanySubscriptionRequestNotification(req *models.CompanySubscriptionRequest) {
 	go func() {

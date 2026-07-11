@@ -6,6 +6,14 @@ import (
 	"watt/internal/models"
 )
 
+func serializeCompany(c *models.Company) map[string]interface{} {
+	return map[string]interface{}{
+		"id":     c.ID,
+		"name":   c.Name,
+		"status": c.Status,
+	}
+}
+
 func serializeSubscription(s *models.CompanyServiceSubscription) map[string]interface{} {
 	return map[string]interface{}{
 		"id":            s.ID,

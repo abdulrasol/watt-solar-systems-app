@@ -52,9 +52,10 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
   final DioService _dioService = getIt<DioService>();
 
   void _throwIfFailed(BaseResponse response) {
-    if (response.status != 200 || response.error) {
+    if ((response.status != 200 && response.status != 201) || response.error) {
       dPrint(response.messageUser);
-      throw Exception(response.messageUser.isNotEmpty ? response.messageUser : response.message);
+      final msg = response.messageUser.isNotEmpty ? response.messageUser : response.message;
+      throw ApiException(msg, statusCode: response.status);
     }
   }
 
@@ -64,6 +65,12 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
       Response response = await _dioService.post(AppUrls.login, data: {'username': username, 'password': password});
       _throwIfFailed(response);
       return AuthResponse.fromBase(response);
+    } on DioException catch (e) {
+      if (e.response != null && e.response!.data != null) {
+        final response = Response.fromJson(e.response!.data);
+        _throwIfFailed(response);
+      }
+      rethrow;
     } catch (e, stackTrace) {
       dPrint('login error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;
@@ -78,6 +85,12 @@ class AuthDjangoDataSourceImpl implements AuthRemoteDataSource {
       _throwIfFailed(response);
       dPrint(response);
       return AuthResponse.fromBase(response);
+    } on DioException catch (e) {
+      if (e.response != null && e.response!.data != null) {
+        final response = Response.fromJson(e.response!.data);
+        _throwIfFailed(response);
+      }
+      rethrow;
     } catch (e, stackTrace) {
       dPrint('register error: $e', stackTrace: stackTrace, tag: 'AuthRemoteDataSource');
       rethrow;

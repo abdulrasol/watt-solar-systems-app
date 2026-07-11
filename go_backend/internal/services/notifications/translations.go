@@ -7,6 +7,14 @@ import (
 
 // translationMap mirrors Django notifier.TRANSLATIONS.
 var translationMap = map[string]map[string]map[string]string{
+	"new_company_registration": {
+		"title": {"en": "New Company Registration", "ar": "تسجيل شركة جديدة"},
+		"body":  {"en": "Company '{company_name}' has registered and is pending approval.", "ar": "قامت شركة '{company_name}' بالتسجيل وهي بانتظار الموافقة."},
+	},
+	"company_updated": {
+		"title": {"en": "Company Profile Updated", "ar": "تحديث بيانات شركة"},
+		"body":  {"en": "Company '{company_name}' updated its profile.", "ar": "قامت شركة '{company_name}' بتحديث بياناتها."},
+	},
 	"invite": {
 		"title": {"en": "Company Invitation", "ar": "دعوة للانضمام إلى شركة"},
 		"body":  {"en": "You have been added to '{company_name}' as a {role}.", "ar": "تمت إضافتك إلى '{company_name}' بصفتك {role}."},

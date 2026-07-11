@@ -12,6 +12,7 @@ import (
 	"watt/internal/database"
 	"watt/internal/models"
 	"watt/internal/response"
+	notifsvc "watt/internal/services/notifications"
 )
 
 // RegisterCompany handles POST /api/companies/register
@@ -122,20 +123,7 @@ func RegisterCompany(c *gin.Context) {
 	}
 
 	// Notify Superusers
-	var superusers []models.User
-	tx.Where("is_superuser = ?", true).Find(&superusers)
-	for _, su := range superusers {
-		relatedType := "Company"
-		notif := models.Notification{
-			UserID:            su.ID,
-			Title:             "New Company Registration",
-			Body:              fmt.Sprintf("Company '%s' has registered and is pending approval.", company.Name),
-			NotificationType:  "info",
-			RelatedEntityType: &relatedType,
-			RelatedEntityID:   &company.ID,
-		}
-		tx.Create(&notif)
-	}
+	notifsvc.SendNewCompanyRegistrationNotification(&company)
 
 	tx.Commit()
 

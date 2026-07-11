@@ -140,6 +140,10 @@ func UpdateCompany(c *gin.Context) {
 	}
 
 	database.DB.Preload("CompanyType").Preload("City").Preload("Currency").First(&company)
+	
+	// Notify superusers about the update
+	notifsvc.SendCompanyUpdateNotification(&company)
+	
 	response.Success(c, http.StatusOK, "Company updated successfully", SerializeCompanyForAdmin(&company))
 }
 
@@ -381,7 +385,10 @@ func ToggleCompanyActive(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Company status toggled successfully", map[string]interface{}{
+	// Notify superusers about the status toggle
+	notifsvc.SendCompanyUpdateNotification(company)
+
+	response.Success(c, http.StatusOK, "Status toggled successfully", map[string]interface{}{
 		"id":     company.ID,
 		"status": company.Status,
 	})

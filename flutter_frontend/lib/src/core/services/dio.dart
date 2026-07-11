@@ -82,13 +82,12 @@ class DioService implements ApiServicesInterface {
           } else if (error.type == DioExceptionType.connectionError) {
             title = 'Connection Error';
             message = 'Could not connect to the server. Please check your internet connection.';
-          } else if (error.response?.statusCode == 401) {
-            title = 'Unauthorized';
-            message = 'Your session has expired. Please login again.';
           } else if (error.response?.data != null) {
             final data = error.response?.data;
             if (data is Map) {
-              if (data.containsKey('message') && data['message'] != null) {
+              if (data.containsKey('message_user') && data['message_user'] != null && data['message_user'].toString().isNotEmpty) {
+                message = data['message_user'].toString();
+              } else if (data.containsKey('message') && data['message'] != null) {
                 message = data['message'].toString();
               } else if (data.containsKey('detail') && data['detail'] != null) {
                 final d = data['detail'];
@@ -108,6 +107,13 @@ class DioService implements ApiServicesInterface {
             }
           }
 
+          if (error.response?.statusCode == 401) {
+            title = 'Unauthorized';
+            if (message == 'An unexpected error occurred' || message.isEmpty) {
+              message = 'Your session has expired. Please login again.';
+            }
+          }
+
           // If detail is a string and it's HTML, don't show it
           if (detail is String && detail.trim().startsWith('<')) {
             detail = null;
@@ -115,12 +121,14 @@ class DioService implements ApiServicesInterface {
 
           final isServiceUnavailable = isServiceUnavailableForCompanyType(message);
 
+          final isAuthEndpoint = error.requestOptions.path.contains('/users/login') || error.requestOptions.path.contains('/users/register');
+
           final context = rootNavigatorKey.currentContext;
           if (context != null) {
             // Don't spam the user with toasts for features that are simply
             // not enabled for their company type; those surfaces now render
             // a friendly "service unavailable" state instead.
-            if (!isServiceUnavailable) {
+            if (!isServiceUnavailable && !isAuthEndpoint) {
               ToastService.showErrorWithDetail(context, title: title, message: message, detail: detail);
             }
           }
