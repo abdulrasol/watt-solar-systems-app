@@ -12,11 +12,18 @@ http:
     type: json
     data: |-
       {
-        "body": "",
+        "body": "rrr",
         "data": {},
-        "title": ""
+        "title": "rrr"
       }
-  auth: inherit
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODM3NjUwNjcsImlhdCI6MTc4MzY3ODY2NywianRpIjoiMjFiNmRmMTgzMjliYjQ0YmUxYjQ3OWRhNGMxOTM4NjAiLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.ynVoI2mk49x8tJ4E9hxgCOpKl6kGOqHgwuiqm9HsfKc
+
+runtime:
+  variables:
+    - name: baseUrl
+      value: http://localhost:8080
 
 settings:
   encodeUrl: true

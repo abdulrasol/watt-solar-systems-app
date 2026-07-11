@@ -10,17 +10,15 @@ http:
   url: "{{baseUrl}}/companies/:company_id/summary"
   headers:
     - name: Authorization
-      value: "{{apiKey}}"
+      value: "{{token}}"
   params:
     - name: company_id
-      value: ""
+      value: "2"
       type: path
       description: company_id
   auth:
-    type: apikey
-    key: Authorization
-    value: "{{apiKey}}"
-    placement: header
+    type: bearer
+    token: "{{token}}"
 
 settings:
   encodeUrl: true

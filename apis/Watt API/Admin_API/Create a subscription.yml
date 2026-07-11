@@ -15,11 +15,20 @@ http:
     type: json
     data: |-
       {
-        "description": "",
-        "duration_days": 0,
-        "is_active": false,
-        "name": "",
-        "price": 0
+        "description": "test",
+        "duration_days": 10,
+        "is_active": true,
+        "name": "test 10 days",
+        "price": 0,
+        "features": {
+              "disabled": [
+                "accounting"
+                // "store",
+                // "offers",
+                // "contacts",
+                // "ads"
+              ]
+            }
       }
   auth:
     type: apikey

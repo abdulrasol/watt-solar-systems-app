@@ -1,4 +1,8 @@
 name: Environment
 variables:
   - name: baseUrl
-    value: /api/v1
+    value: http://localhost:8080/api/v1
+  - name: token
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODM3NjUwNjcsImlhdCI6MTc4MzY3ODY2NywianRpIjoiMjFiNmRmMTgzMjliYjQ0YmUxYjQ3OWRhNGMxOTM4NjAiLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.ynVoI2mk49x8tJ4E9hxgCOpKl6kGOqHgwuiqm9HsfKc
+  - name: apiKey
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODM3NjUwNjcsImlhdCI6MTc4MzY3ODY2NywianRpIjoiMjFiNmRmMTgzMjliYjQ0YmUxYjQ3OWRhNGMxOTM4NjAiLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.ynVoI2mk49x8tJ4E9hxgCOpKl6kGOqHgwuiqm9HsfKc

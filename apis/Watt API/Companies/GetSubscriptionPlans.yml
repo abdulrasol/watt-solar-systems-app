@@ -10,7 +10,7 @@ http:
   url: "{{baseUrl}}/companies/subscriptions"
   headers:
     - name: Authorization
-      value: "{{apiKey}}"
+      value: "{{token}}"
   auth:
     type: apikey
     key: Authorization

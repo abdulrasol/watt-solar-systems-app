@@ -13,14 +13,20 @@ http:
       value: "{{apiKey}}"
   params:
     - name: id
-      value: ""
+      value: "1"
       type: path
       description: id
   body:
     type: json
     data: |-
       {
-        "allowed_services": [],
+        "allowed_features": [
+            "store",
+            "offers",
+            "ads",
+            "contacts"
+            // "accounting"
+          ],
         "allowed_subscription_plans": [],
         "ctype": "",
         "name": ""

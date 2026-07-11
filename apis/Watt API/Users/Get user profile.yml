@@ -14,7 +14,7 @@ http:
   auth:
     type: apikey
     key: Authorization
-    value: "{{apiKey}}"
+    value: "{{token}}"
     placement: header
 
 settings:

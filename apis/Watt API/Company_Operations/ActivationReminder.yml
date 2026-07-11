@@ -13,7 +13,7 @@ http:
       value: "{{apiKey}}"
   params:
     - name: company_id
-      value: ""
+      value: "1"
       type: path
       description: company_id
   auth:
