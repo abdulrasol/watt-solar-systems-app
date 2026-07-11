@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	_ "watt/docs" // Import generated docs
+	"watt/internal/admin"
 	"watt/internal/config"
 	"watt/internal/database"
 	"watt/internal/handlers/root"
@@ -84,6 +85,9 @@ func main() {
 	routes.SetupAccountingRoutes(v1Group, cfg)
 	routes.SetupCommunityRoutes(v1Group, cfg)
 	routes.SetupNotificationsRoutes(v1Group, cfg)
+
+	// Admin dashboard routes (under /admin/config)
+	admin.RegisterRoutes(router.Group("/"))
 
 	// Start server
 	log.Printf("Starting server on port %s...\n", cfg.Port)

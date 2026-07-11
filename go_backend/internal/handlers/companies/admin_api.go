@@ -68,8 +68,7 @@ func AdminListCompanies(c *gin.Context) {
 	query := database.DB.Model(&models.Company{}).
 		Preload("CompanyType").
 		Preload("City").
-		Preload("Currency").
-		Preload("ServiceTypes")
+		Preload("Currency")
 
 	if status != "" {
 		query = query.Where("status = ?", status)
@@ -125,7 +124,7 @@ func AdminGetCompany(c *gin.Context) {
 		Preload("CompanyType").
 		Preload("City").
 		Preload("Currency").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed.
 		Preload("Categories").
 		Preload("Contacts").
 		Preload("DeliveryOptions").
@@ -160,7 +159,7 @@ func AdminGetCompanyServices(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed.
 		First(&comp, id).Error; err != nil {
 		msgUser := "الشركة غير موجودة"
 		response.Error(c, http.StatusNotFound, "Company not found", &msgUser)
@@ -193,7 +192,7 @@ func AdminGetCompanyDetails(c *gin.Context) {
 		Preload("City").
 		Preload("City.Country").
 		Preload("Currency").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed.
 		Preload("Categories").
 		Preload("DeliveryOptions").
 		Preload("Contacts").

@@ -35,12 +35,7 @@ func BuildCompanyMemberSummary(company *models.Company, member *models.CompanyMe
 	if company.CompanyType != nil {
 		companyOut.Type = &company.CompanyType.CType
 		companyOut.TypeName = &company.CompanyType.Name
-		
-		var allowedFeatures []string
-		if len(company.CompanyType.AllowedFeatures) > 0 {
-			_ = json.Unmarshal(company.CompanyType.AllowedFeatures, &allowedFeatures)
-		}
-		companyOut.AllowedFeatures = allowedFeatures
+		companyOut.AllowedFeatures = company.CompanyType.GetCompanyAllowedServices()
 	}
 
 	if company.SubscriptionPlanID != nil {
@@ -129,7 +124,7 @@ func BuildCompanyMemberSummary(company *models.Company, member *models.CompanyMe
 		"expire_date":                nil,
 		"created_at":                 companyOut.CreatedAt,
 		"updated_at":                 companyOut.UpdatedAt,
-		"service_types":              SerializeServiceTypes(company.ServiceTypes, company),
+		"service_types":              []interface{}{},
 		"categories":                 categories,
 		"contacts":                   contacts,
 		"delivery_options":           deliveryOptions,
@@ -200,15 +195,10 @@ func SerializeCountry(country *models.Country) *models.CountryOut {
 	}
 }
 
-// SerializeCompanyType converts a CompanyType model to Django-like map
+// SerializeCompanyType converts a CompanyType model to a map.
 func SerializeCompanyType(companyType *models.CompanyType) map[string]interface{} {
 	if companyType == nil {
 		return nil
-	}
-
-	var allowedFeatures []string
-	if len(companyType.AllowedFeatures) > 0 {
-		_ = json.Unmarshal(companyType.AllowedFeatures, &allowedFeatures)
 	}
 
 	var allowedPlans []map[string]interface{}
@@ -223,43 +213,22 @@ func SerializeCompanyType(companyType *models.CompanyType) map[string]interface{
 		"id":                         companyType.ID,
 		"code":                       companyType.CType,
 		"name":                       companyType.Name,
-		"allowed_features":           allowedFeatures,
+		"allowed_features":           companyType.GetCompanyAllowedServices(),
 		"allowed_subscription_plans": allowedPlans,
 	}
 }
 
-// SerializeServiceType converts a ServiceType model to Django-like map
+// SerializeServiceType converts a ServiceType model to a map.
 func SerializeServiceType(st *models.ServiceType, company *models.Company) map[string]interface{} {
-	companiesCount := 0
-	if st.Companies != nil {
-		for _, c := range st.Companies {
-			if c.Status == "active" && c.HasValidSubscription() {
-				companiesCount++
-			}
-		}
-	}
-
-	isServed := false
-	if company != nil {
-		for _, s := range company.ServiceTypes {
-			if s.ID == st.ID {
-				isServed = true
-				break
-			}
-		}
-	}
-
 	return map[string]interface{}{
-		"id":              st.ID,
-		"name":            st.Name,
-		"description":     st.Description,
-		"image":           st.Image,
-		"companies_count": companiesCount,
-		"is_served":       isServed,
+		"id":          st.ID,
+		"name":        st.Name,
+		"description": st.Description,
+		"image":       st.Image,
 	}
 }
 
-// SerializeServiceTypes converts a slice of ServiceType models
+// SerializeServiceTypes converts a slice of ServiceType models.
 func SerializeServiceTypes(serviceTypes []*models.ServiceType, company *models.Company) []map[string]interface{} {
 	result := make([]map[string]interface{}, 0, len(serviceTypes))
 	for _, st := range serviceTypes {
@@ -290,11 +259,7 @@ func IsCompanyPubliclyVisible(company *models.Company, channel string) bool {
 	}
 
 	if company.CompanyType != nil {
-		var allowedFeatures []string
-		if len(company.CompanyType.AllowedFeatures) > 0 {
-			_ = json.Unmarshal(company.CompanyType.AllowedFeatures, &allowedFeatures)
-		}
-		for _, f := range allowedFeatures {
+		for _, f := range company.CompanyType.GetCompanyAllowedServices() {
 			if f == "store" {
 				return true
 			}
@@ -304,10 +269,57 @@ func IsCompanyPubliclyVisible(company *models.Company, channel string) bool {
 	return false
 }
 
-// GetCompanyServicesStatus returns the service catalog status for a company (Django shape).
+// GetCompanyServicesStatus returns the available services for a company.
+// Logic:
+// 1. Get allowed features from CompanyType.AllowedFeatures
+// 2. Get disabled_services from SubscriptionPlan.Features
+// 3. Return: allowed services minus disabled ones, each with status
 func GetCompanyServicesStatus(company *models.Company) []map[string]interface{} {
-	// Obsolete, replaced by allowedFeatures
-	return []map[string]interface{}{}
+	if company.CompanyTypeID == nil {
+		return []map[string]interface{}{}
+	}
+
+	allowedFeatures := company.CompanyType.GetCompanyAllowedServices()
+	if len(allowedFeatures) == 0 {
+		return []map[string]interface{}{}
+	}
+
+	// Build disabled set from subscription plan features.disabled_services
+	disabledSet := make(map[string]bool)
+	if company.SubscriptionPlan != nil && company.SubscriptionPlan.Features != nil {
+		var featData struct {
+			DisabledServices []string `json:"disabled_services"`
+		}
+		if err := json.Unmarshal(company.SubscriptionPlan.Features, &featData); err == nil {
+			for _, d := range featData.DisabledServices {
+				disabledSet[d] = true
+			}
+		}
+	}
+
+	hasValidSub := company.HasValidSubscription()
+	result := make([]map[string]interface{}, 0)
+
+	for _, svcCode := range allowedFeatures {
+		svc := models.GetServiceByName(svcCode)
+		if svc == nil {
+			continue
+		}
+
+		isDisabled := disabledSet[svcCode]
+		status := "active"
+		if isDisabled || !hasValidSub {
+			status = "inactive"
+		}
+
+		result = append(result, map[string]interface{}{
+			"service_code": svc.Code,
+			"service_name": svc.Name,
+			"status":       status,
+			"route":        svc.Code,
+		})
+	}
+	return result
 }
 
 func formatTime(t *time.Time) *string {
@@ -457,18 +469,13 @@ func SerializeCompanyForAdmin(company *models.Company) map[string]interface{} {
 		subPlanID = *company.SubscriptionPlanID
 	}
 
-	var allowedFeatures []string
-	if len(company.CompanyType.AllowedFeatures) > 0 {
-		_ = json.Unmarshal(company.CompanyType.AllowedFeatures, &allowedFeatures)
-	}
-
 	return map[string]interface{}{
 		"id":                    company.ID,
 		"name":                  company.Name,
 		"type":                  company.CompanyType.CType,
 		"type_name":             company.CompanyType.Name,
-		"allowed_features":      allowedFeatures,
-		"service_types":         SerializeServiceTypes(company.ServiceTypes, company),
+		"allowed_features":      company.CompanyType.GetCompanyAllowedServices(),
+		"service_types":         []interface{}{},
 		"description":           company.Description,
 		"address":               company.Address,
 		"phone":                 company.Phone,
@@ -550,7 +557,7 @@ func SerializePublicCompany(company *models.Company) map[string]interface{} {
 		"allows_b2b":            company.AllowsB2B,
 		"allows_b2c":            company.AllowsB2C,
 		"company_type":          SerializeCompanyType(company.CompanyType),
-		"service_types":         SerializeServiceTypes(company.ServiceTypes, company),
+		"service_types":         []interface{}{},
 		"city":                  SerializeCity(company.City),
 		"currency":              SerializeCurrency(company.Currency),
 		"contacts":              contacts,

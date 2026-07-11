@@ -35,31 +35,16 @@ func AdminCreateCompanyType(c *gin.Context) {
 		CType: payload.CType,
 		Name:  payload.Name,
 	}
-	
+
 	if payload.AllowedFeatures != nil {
 		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
 		ctype.AllowedFeatures = featuresJSON
 	}
-
-	
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
-	
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
 
 	if err := database.DB.Create(&ctype).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to create company type", nil)
 		return
 	}
-
-
 
 	if payload.AllowedSubscriptionPlans != nil {
 		var plans []*models.SubscriptionPlan
@@ -108,23 +93,10 @@ func AdminUpdateCompanyType(c *gin.Context) {
 		ctype.AllowedFeatures = featuresJSON
 	}
 
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
-
 	if err := database.DB.Save(&ctype).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to update company type", nil)
 		return
 	}
-
-
 
 	if payload.AllowedSubscriptionPlans != nil {
 		var plans []*models.SubscriptionPlan

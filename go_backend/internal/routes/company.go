@@ -36,6 +36,7 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 		superAdminGroup.GET("", companies.AdminListCompanies)
 		superAdminGroup.POST("/:company_id/status", companies.AdminUpdateCompanyStatus)
 		superAdminGroup.GET("/:company_id", companies.AdminGetCompany)
+		superAdminGroup.GET("/:company_id/services", companies.AdminGetCompanyServices)
 		superAdminGroup.GET("/:company_id/members", companies.AdminGetCompanyMembers)
 		superAdminGroup.GET("/:company_id/posters", companies.AdminGetCompanyPosters)
 		superAdminGroup.POST("/posters/:poster_id/review", companies.AdminReviewPoster)
@@ -51,12 +52,6 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 		superAdminGroup.PUT("/service-types/:id", companies.AdminUpdateServiceType)
 		superAdminGroup.DELETE("/service-types/:id", companies.AdminDeleteServiceType)
 
-		// Catalog Services (use service_code in path)
-		superAdminGroup.GET("/catalog/services", companies.AdminListCatalogServices)
-		superAdminGroup.POST("/catalog/services", companies.AdminCreateCatalogService)
-		superAdminGroup.PUT("/catalog/services/:service_code", companies.AdminUpdateCatalogService)
-		superAdminGroup.DELETE("/catalog/services/:service_code", companies.AdminDeleteCatalogService)
-
 		superAdminGroup.GET("/:company_id/details", companies.AdminGetCompanyDetails)
 		superAdminGroup.GET("/posters", companies.AdminListAdminPosters)
 		superAdminGroup.GET("/subscription-requests", companies.AdminListSubscriptionRequests)
@@ -67,17 +62,13 @@ func SetupCompanyRoutes(router *gin.RouterGroup, cfg *config.Config) {
 	companiesGroup := router.Group("/companies")
 	{
 		companiesGroup.GET("/types", companies.GetCompanyTypes)
-		companiesGroup.GET("/service-types", companies.GetServiceTypes)
 
 		// Authenticated Routes
 		authCompanies := companiesGroup.Group("")
 		authCompanies.Use(middleware.AuthMiddleware(cfg))
 		{
 			authCompanies.POST("/register", companies.RegisterCompany)
-			authCompanies.GET("/catalog/services", companies.GetServiceCatalog)
 			authCompanies.GET("/subscriptions", companies.GetSubscriptionPlans)
-			authCompanies.GET("/service-types/:id", companies.GetServiceTypeByID)
-			authCompanies.POST("/service-types/:id/toggle", companies.ToggleCompanyServiceType)
 			authCompanies.PUT("/:company_id", companies.UpdateCompany)
 		}
 	}
