@@ -9,7 +9,6 @@ import 'package:watt/src/core/cashe/cashe_interface.dart';
 import 'package:watt/src/core/di/get_it.dart';
 import 'package:watt/src/features/admin/domain/models/admin_company_details.dart';
 import 'package:watt/src/features/admin/domain/models/company_service.dart';
-import 'package:watt/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:watt/src/features/admin/domain/models/admin_city.dart';
 import 'package:watt/src/features/admin/domain/models/admin_country.dart';
 import 'package:watt/src/features/admin/domain/models/admin_currency.dart';
@@ -110,22 +109,6 @@ class _FakeAdminRepository implements AdminRepository {
 
   @override
   Future<List<CompanyService>> listCompanyServices(int companyId) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<ServiceCatalogItem>> listServiceCatalog() async => [];
-
-  @override
-  Future<ServiceCatalogItem> createServiceCatalogEntry(ServiceCatalogItem item) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteServiceCatalogEntry(String serviceCode) async {}
-
-  @override
-  Future<ServiceCatalogItem> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data) {
     throw UnimplementedError();
   }
 

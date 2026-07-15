@@ -13,28 +13,6 @@ import (
 	notifsvc "watt/internal/services/notifications"
 )
 
-// AdminListCatalogServices handles GET /api/v1/admin/companies/catalog/services
-// @Summary AdminListCatalogServices
-// @Description List all catalog services (including inactive)
-// @Tags Admin Companies API
-// @Produce json
-// @Security Bearer
-// @Success 200 {object} response.APIResponse
-// @Router /admin/companies/catalog/services [get]
-func AdminListCatalogServices(c *gin.Context) {
-	var services []models.CompanyServiceCatalog
-	if err := database.DB.Order("sort_order asc, name asc").Find(&services).Error; err != nil {
-		msgUser := "حدث خطأ أثناء جلب دليل الخدمات"
-		response.Error(c, http.StatusInternalServerError, "Failed to fetch catalog services", &msgUser)
-		return
-	}
-
-	response.Success(c, http.StatusOK, "Service catalog retrieved successfully", map[string]interface{}{
-		"items": services,
-		"count": len(services),
-	})
-}
-
 // AdminListCompanies handles GET /api/v1/admin/companies
 // @Accept json
 // @Produce json

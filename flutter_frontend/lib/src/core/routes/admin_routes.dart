@@ -7,7 +7,6 @@ import 'package:watt/src/features/admin/presentation/screens/app_configs_screen.
 import 'package:watt/src/features/admin/presentation/screens/send_notification_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/companies/admin_company_details_screen.dart';
-import 'package:watt/src/features/admin/presentation/screens/companies/admin_service_catalog_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/companies/admin_service_types_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/admin_currency_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/admin_categories_screen.dart';
@@ -75,7 +74,6 @@ class AdminRoutes {
           GoRoute(path: '/admin/inspector/details', redirect: (context, state) => AppRoutes.adminInspector),
           GoRoute(path: '/admin/inspector/services', redirect: (context, state) => AppRoutes.adminInspector),
           GoRoute(path: AppRoutes.adminSubscriptionRequests, builder: (context, state) => const AdminSubscriptionRequestsScreen()),
-          GoRoute(path: AppRoutes.adminServiceCatalog, builder: (context, state) => const AdminServiceCatalogScreen()),
         ],
       ),
       // Branch 4: Operations

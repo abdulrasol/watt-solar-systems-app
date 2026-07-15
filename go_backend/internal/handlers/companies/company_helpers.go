@@ -469,11 +469,18 @@ func SerializeCompanyForAdmin(company *models.Company) map[string]interface{} {
 		subPlanID = *company.SubscriptionPlanID
 	}
 
+	cTypeName := ""
+	cTypeCode := ""
+	if company.CompanyType != nil {
+		cTypeCode = company.CompanyType.CType
+		cTypeName = company.CompanyType.Name
+	}
+
 	return map[string]interface{}{
 		"id":                    company.ID,
 		"name":                  company.Name,
-		"type":                  company.CompanyType.CType,
-		"type_name":             company.CompanyType.Name,
+		"type":                  cTypeCode,
+		"type_name":             cTypeName,
 		"allowed_features":      company.CompanyType.GetCompanyAllowedServices(),
 		"service_types":         []interface{}{},
 		"description":           company.Description,

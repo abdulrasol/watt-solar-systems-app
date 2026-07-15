@@ -75,10 +75,6 @@ class AppUrls {
   static String get adminCompanyTypes => '$adminBaseUrl/companies/types';
   static String adminCompanyType(int id) => '$adminCompanyTypes/$id';
 
-  // Service Catalog (Admin)
-  static String get adminServiceCatalog => '$adminBaseUrl/companies/catalog/services';
-  static String adminServiceCatalogItem(String serviceCode) => '$adminServiceCatalog/$serviceCode';
-
   // ==================== COMPANIES ====================
   static String get companiesBaseUrl => '$baseUrl/companies';
   static String get registerCompany => '$companiesBaseUrl/register';

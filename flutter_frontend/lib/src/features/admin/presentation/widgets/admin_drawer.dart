@@ -91,16 +91,7 @@ class AdminDrawer extends ConsumerWidget {
                   },
                   delay: 205,
                 ),
-                _buildDrawerItem(
-                  context: context,
-                  icon: Iconsax.category_2,
-                  title: 'Service Catalog',
-                  onTap: () {
-                    _closeIfDrawer(context);
-                    context.go('/admin/service-catalog');
-                  },
-                  delay: 210,
-                ),
+
                 _buildDrawerItem(
                   context: context,
                   icon: Iconsax.user,
