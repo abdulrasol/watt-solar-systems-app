@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول — لوحة التحكم Watt</title>
+<link rel="stylesheet" href="/admin/static/css/admin.css">
+</head>
+<body class="login-body">
+<div class="login-container">
+	<div class="login-card">
+		<div class="login-brand">
+			<div class="login-brand-mark">W</div>
+			<h1>لوحة التحكم</h1>
+			<p class="login-subtitle">Watt</p>
+		</div>
+		{{if .Error}}
+		<div class="flash-error">{{.Error}}</div>
+		{{end}}
+		<form method="POST" action="/admin/login" class="login-form">
+			<div class="form-group">
+				<label for="username">اسم المستخدم</label>
+				<input type="text" id="username" name="username" required autocomplete="username" placeholder="أدخل اسم المستخدم">
+			</div>
+			<div class="form-group">
+				<label for="password">كلمة المرور</label>
+				<input type="password" id="password" name="password" required autocomplete="current-password" placeholder="أدخل كلمة المرور">
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">تسجيل الدخول</button>
+		</form>
+	</div>
+</div>
+</body>
+</html>

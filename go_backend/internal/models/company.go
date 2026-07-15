@@ -1,20 +1,91 @@
 package models
 
 import (
+	"encoding/json"
 	"time"
 
 	"gorm.io/datatypes"
 )
 
-// ServiceType maps to Company ServiceType
+// FixedService is a constant definition for a system service module.
+type FixedService struct {
+	Code string
+	Name string
+	Icon string
+}
+
+// AllAvailableServices defines the complete, fixed list of service modules
+// that the system supports. No database table needed — these are constants.
+var AllAvailableServices = []FixedService{
+	{Code: "store", Name: "المتجر", Icon: "shopping"},
+	{Code: "offers", Name: "العروض", Icon: "megaphone"},
+	{Code: "ads", Name: "الإعلانات", Icon: "megaphone"},
+	{Code: "contacts", Name: "جهات الاتصال", Icon: "contacts"},
+	{Code: "accounting", Name: "الحسابات", Icon: "wallet"},
+}
+
+// GetServiceByName returns a FixedService by code.
+func GetServiceByName(code string) *FixedService {
+	for _, s := range AllAvailableServices {
+		if s.Code == code {
+			return &s
+		}
+	}
+	return nil
+}
+
+// ServiceType maps to Company ServiceType (e.g. solar installation, maintenance).
+// This is a separate concept from the dashboard service modules.
 type ServiceType struct {
 	ID          uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	Name        string    `gorm:"type:varchar(255);not null" json:"name"`
 	Image       *string   `gorm:"type:varchar(255)" json:"image"`
 	Description *string   `gorm:"type:text" json:"description"`
 	CreatedAt   time.Time `gorm:"autoCreateTime" json:"created_at"`
+}
 
-	Companies []*Company `gorm:"many2many:company_service_types;" json:"-"`
+// GetCompanyAllowedServices returns the allowed feature codes from CompanyType.AllowedFeatures.
+// This is the replacement for the old `company_type_services` join table.
+func (ct *CompanyType) GetCompanyAllowedServices() []string {
+	if ct == nil || len(ct.AllowedFeatures) == 0 {
+		return nil
+	}
+	var features []string
+	_ = json.Unmarshal(ct.AllowedFeatures, &features)
+	return features
+}
+
+// GetFeaturesWithDefaults returns the features map with defaults for missing keys.
+func (s *SubscriptionPlan) GetEnabledServices() []string {
+	if s == nil || s.Features == nil {
+		return nil
+	}
+	var data map[string]interface{}
+	if err := json.Unmarshal(s.Features, &data); err != nil {
+		return nil
+	}
+	disabledRaw, ok := data["disabled_services"]
+	if !ok {
+		return nil
+	}
+	disabledList, ok := disabledRaw.([]interface{})
+	if !ok {
+		return nil
+	}
+	disabled := make(map[string]bool, len(disabledList))
+	for _, d := range disabledList {
+		if s, ok := d.(string); ok {
+			disabled[s] = true
+		}
+	}
+	// All services minus disabled ones
+	var result []string
+	for _, svc := range AllAvailableServices {
+		if !disabled[svc.Code] {
+			result = append(result, svc.Code)
+		}
+	}
+	return result
 }
 
 // CompanyType maps to CompanyType
@@ -24,8 +95,12 @@ type CompanyType struct {
 	Name      string    `gorm:"type:varchar(255);not null" json:"name"`
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 
+	// AllowedFeatures is a JSON array of service codes this company type can use.
+	// Example: ["store", "offers", "ads", "contacts", "accounting"]
 	AllowedFeatures datatypes.JSON `gorm:"type:json" json:"allowed_features"`
-	AllowedSubscriptionPlans []*SubscriptionPlan      `gorm:"many2many:company_type_subscription_plans;" json:"allowed_subscription_plans"`
+
+	// AllowedSubscriptionPlans are the plans available to this company type.
+	AllowedSubscriptionPlans []*SubscriptionPlan `gorm:"many2many:company_type_subscription_plans;" json:"allowed_subscription_plans"`
 }
 
 // CompanyCategory maps to CompanyCategory
@@ -62,7 +137,6 @@ type Company struct {
 	City                     *City             `gorm:"foreignKey:CityID;constraint:OnDelete:RESTRICT;" json:"city"`
 	CurrencyID               *uint             `json:"currency_id"`
 	Currency                 *Currency         `gorm:"foreignKey:CurrencyID;constraint:OnDelete:RESTRICT;" json:"currency"`
-	ServiceTypes             []*ServiceType    `gorm:"many2many:company_service_types;" json:"service_types"`
 	CreatedAt                time.Time         `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt                time.Time         `gorm:"autoUpdateTime" json:"updated_at"`
 	ExpireDate               time.Time         `gorm:"" json:"expire_date"`
@@ -79,8 +153,6 @@ type Company struct {
 	FinancialTransactions []FinancialTransaction       `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
 	Contacts              []Contact                    `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
 	PublicServices        []CompanyService             `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
-	ServiceSubscriptions  []CompanyServiceSubscription `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
-	ServiceRequests       []CompanyServiceRequest      `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
 	SubscriptionRequests  []CompanySubscriptionRequest `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
 	Works                 []CompanyWork                `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
 	Posters               []Poster                     `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
@@ -164,65 +236,67 @@ type CompanyService struct {
 	UpdatedAt   time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 }
 
-// CompanyServiceCatalog maps to CompanyServiceCatalog
+// Deprecated: CompanyServiceCatalog is no longer used.
+// Services are now defined as constants in AllAvailableServices.
+// This type is kept only to avoid breaking existing migrations.
+// It will be removed in a future cleanup.
 type CompanyServiceCatalog struct {
-	ID          uint      `gorm:"primaryKey;autoIncrement" json:"id"`
-	Code        string    `gorm:"type:varchar(100);uniqueIndex;not null" json:"code"`
-	Name        string    `gorm:"type:varchar(255);not null" json:"name"`
-	Description string    `gorm:"type:text;default:''" json:"description"`
-	Category    string    `gorm:"type:varchar(100);default:'general'" json:"category"`
-	IsActive    bool      `gorm:"default:true" json:"is_active"`
-	SortOrder   uint      `gorm:"default:0" json:"sort_order"`
-	Route       *string   `gorm:"type:varchar(255)" json:"route"`
-	Icon        *string   `gorm:"type:varchar(255)" json:"icon"`
-	CreatedAt   time.Time `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt   time.Time `gorm:"autoUpdateTime" json:"updated_at"`
-
-	CompanyTypes []*CompanyType `gorm:"many2many:company_type_services;" json:"company_types"`
+	ID          uint      `gorm:"primaryKey;autoIncrement" json:"-"`
+	Code        string    `gorm:"type:varchar(100);uniqueIndex;not null" json:"-"`
+	Name        string    `gorm:"type:varchar(255);not null" json:"-"`
+	Description string    `gorm:"type:text;default:''" json:"-"`
+	Category    string    `gorm:"type:varchar(100);default:'general'" json:"-"`
+	IsActive    bool      `gorm:"default:true" json:"-"`
+	SortOrder   uint      `gorm:"default:0" json:"-"`
+	Route       *string   `gorm:"type:varchar(255)" json:"-"`
+	Icon        *string   `gorm:"type:varchar(255)" json:"-"`
+	CreatedAt   time.Time `gorm:"autoCreateTime" json:"-"`
+	UpdatedAt   time.Time `gorm:"autoUpdateTime" json:"-"`
+	CompanyTypes []*CompanyType `gorm:"many2many:company_type_services;" json:"-"`
 }
 
-// CompanyServiceSubscription maps to CompanyServiceSubscription
+// Deprecated: CompanyServiceSubscription is no longer used.
 type CompanyServiceSubscription struct {
-	ID            uint                  `gorm:"primaryKey;autoIncrement" json:"id"`
-	CompanyID     uint                  `gorm:"uniqueIndex:idx_company_service;not null" json:"company_id"`
-	Company       Company               `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
-	ServiceID     uint                  `gorm:"uniqueIndex:idx_company_service;not null" json:"service_id"`
-	Service       CompanyServiceCatalog `gorm:"foreignKey:ServiceID;constraint:OnDelete:CASCADE;" json:"service"`
-	Status        string                `gorm:"type:varchar(20);default:'pending'" json:"status"`
-	RequestedByID *uint                 `json:"requested_by_id"`
+	ID            uint       `gorm:"primaryKey;autoIncrement" json:"-"`
+	CompanyID     uint       `gorm:"uniqueIndex:idx_company_service;not null" json:"-"`
+	Company       Company    `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
+	ServiceID     uint       `gorm:"uniqueIndex:idx_company_service;not null" json:"-"`
+	Service       CompanyServiceCatalog `gorm:"foreignKey:ServiceID;constraint:OnDelete:CASCADE;" json:"-"`
+	Status        string                `gorm:"type:varchar(20);default:'pending'" json:"-"`
+	RequestedByID *uint                 `json:"-"`
 	RequestedBy   *User                 `gorm:"foreignKey:RequestedByID;constraint:OnDelete:SET NULL;" json:"-"`
-	ApprovedByID  *uint                 `json:"approved_by_id"`
+	ApprovedByID  *uint                 `json:"-"`
 	ApprovedBy    *User                 `gorm:"foreignKey:ApprovedByID;constraint:OnDelete:SET NULL;" json:"-"`
-	RequestedAt   *time.Time            `json:"requested_at"`
-	ApprovedAt    *time.Time            `json:"approved_at"`
-	ActivatedAt   *time.Time            `json:"activated_at"`
-	StartsAt      *time.Time            `json:"starts_at"`
-	EndsAt        *time.Time            `json:"ends_at"`
-	Notes         string                `gorm:"type:text;default:''" json:"notes"`
-	Meta          datatypes.JSON        `gorm:"type:json" json:"meta"`
-	CreatedAt     time.Time             `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt     time.Time             `gorm:"autoUpdateTime" json:"updated_at"`
+	RequestedAt   *time.Time            `json:"-"`
+	ApprovedAt    *time.Time            `json:"-"`
+	ActivatedAt   *time.Time            `json:"-"`
+	StartsAt      *time.Time            `json:"-"`
+	EndsAt        *time.Time            `json:"-"`
+	Notes         string                `gorm:"type:text;default:''" json:"-"`
+	Meta          datatypes.JSON        `gorm:"type:json" json:"-"`
+	CreatedAt     time.Time             `gorm:"autoCreateTime" json:"-"`
+	UpdatedAt     time.Time             `gorm:"autoUpdateTime" json:"-"`
 }
 
-// CompanyServiceRequest maps to CompanyServiceRequest
+// Deprecated: CompanyServiceRequest is no longer used.
 type CompanyServiceRequest struct {
-	ID            uint                  `gorm:"primaryKey;autoIncrement" json:"id"`
-	CompanyID     uint                  `gorm:"not null" json:"company_id"`
-	Company       Company               `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
-	ServiceID     uint                  `gorm:"not null" json:"service_id"`
-	Service       CompanyServiceCatalog `gorm:"foreignKey:ServiceID;constraint:OnDelete:CASCADE;" json:"service"`
-	RequestedByID *uint                 `json:"requested_by_id"`
+	ID            uint       `gorm:"primaryKey;autoIncrement" json:"-"`
+	CompanyID     uint       `gorm:"not null" json:"-"`
+	Company       Company    `gorm:"foreignKey:CompanyID;constraint:OnDelete:CASCADE;" json:"-"`
+	ServiceID     uint       `gorm:"not null" json:"-"`
+	Service       CompanyServiceCatalog `gorm:"foreignKey:ServiceID;constraint:OnDelete:CASCADE;" json:"-"`
+	RequestedByID *uint                 `json:"-"`
 	RequestedBy   *User                 `gorm:"foreignKey:RequestedByID;constraint:OnDelete:SET NULL;" json:"-"`
-	ReviewedByID  *uint                 `json:"reviewed_by_id"`
+	ReviewedByID  *uint                 `json:"-"`
 	ReviewedBy    *User                 `gorm:"foreignKey:ReviewedByID;constraint:OnDelete:SET NULL;" json:"-"`
-	Status        string                `gorm:"type:varchar(20);default:'pending'" json:"status"`
-	RequestedAt   time.Time             `gorm:"autoCreateTime" json:"requested_at"`
-	ReviewedAt    *time.Time            `json:"reviewed_at"`
-	Notes         string                `gorm:"type:text;default:''" json:"notes"`
-	Image         *string               `gorm:"type:varchar(255)" json:"image"`
-	Meta          datatypes.JSON        `gorm:"type:json" json:"meta"`
-	CreatedAt     time.Time             `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt     time.Time             `gorm:"autoUpdateTime" json:"updated_at"`
+	Status        string                `gorm:"type:varchar(20);default:'pending'" json:"-"`
+	RequestedAt   time.Time             `gorm:"autoCreateTime" json:"-"`
+	ReviewedAt    *time.Time            `json:"-"`
+	Notes         string                `gorm:"type:text;default:''" json:"-"`
+	Image         *string               `gorm:"type:varchar(255)" json:"-"`
+	Meta          datatypes.JSON        `gorm:"type:json" json:"-"`
+	CreatedAt     time.Time             `gorm:"autoCreateTime" json:"-"`
+	UpdatedAt     time.Time             `gorm:"autoUpdateTime" json:"-"`
 }
 
 // CompanySubscriptionRequest maps to CompanySubscriptionRequest

@@ -59,7 +59,7 @@ func PublicListCompanies(c *gin.Context) {
 	query := database.DB.
 		Preload("CompanyType").
 		Preload("City").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed, field no longer exists.
 		Preload("SubscriptionPlan").
 		Where("status = ?", "active")
 
@@ -219,7 +219,7 @@ func PublicGetCompany(c *gin.Context) {
 		Preload("CompanyType").
 		Preload("City").
 		Preload("Currency").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed, field no longer exists.
 		Preload("Contacts").
 		Preload("DeliveryOptions").
 		Preload("PublicServices").
@@ -355,7 +355,7 @@ func PublicGetCompanyServices(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed, field no longer exists.
 		First(&comp, id).Error; err != nil {
 		msgUser := "الشركة غير موجودة"
 		response.Error(c, http.StatusNotFound, "Company not found", &msgUser)

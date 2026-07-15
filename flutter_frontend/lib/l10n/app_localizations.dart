@@ -8233,12 +8233,6 @@ abstract class AppLocalizations {
   /// **'Subscription Requests'**
   String get admin_subscription_requests;
 
-  /// No description provided for @admin_service_catalog.
-  ///
-  /// In en, this message translates to:
-  /// **'Service Catalog'**
-  String get admin_service_catalog;
-
   /// No description provided for @admin_feedbacks.
   ///
   /// In en, this message translates to:

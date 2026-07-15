@@ -10,7 +10,6 @@ import 'package:watt/src/features/admin/domain/models/admin_global_category.dart
 import 'package:watt/src/features/admin/domain/models/admin_subscription_plan.dart';
 import 'package:watt/src/features/admin/domain/models/admin_user.dart';
 import 'package:watt/src/features/admin/domain/models/company_service.dart';
-import 'package:watt/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:watt/src/features/admin/domain/repositories/admin_repository.dart';
 import 'package:watt/src/shared/domain/company/company.dart';
 
@@ -36,31 +35,6 @@ class AdminRepositoryImpl implements AdminRepository {
   @override
   Future<void> updateCompanyStatus(int companyId, String status) async {
     await _remoteDataSource.updateCompanyStatus(companyId, status);
-  }
-
-  @override
-  Future<List<ServiceCatalogItem>> listServiceCatalog() async {
-    final response = await _remoteDataSource.listServiceCatalog();
-    final body = response.body;
-    if (body is! List) throw Exception('Expected List but got ${body.runtimeType}');
-    return body.map((e) => ServiceCatalogItem.fromJson(e as Map<String, dynamic>)).toList();
-  }
-
-  @override
-  Future<ServiceCatalogItem> createServiceCatalogEntry(ServiceCatalogItem item) async {
-    final response = await _remoteDataSource.createServiceCatalogEntry(item);
-    return ServiceCatalogItem.fromJson(response.body as Map<String, dynamic>);
-  }
-
-  @override
-  Future<ServiceCatalogItem> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data) async {
-    final response = await _remoteDataSource.updateServiceCatalogEntry(serviceCode, data);
-    return ServiceCatalogItem.fromJson(response.body as Map<String, dynamic>);
-  }
-
-  @override
-  Future<void> deleteServiceCatalogEntry(String serviceCode) async {
-    await _remoteDataSource.deleteServiceCatalogEntry(serviceCode);
   }
 
   @override

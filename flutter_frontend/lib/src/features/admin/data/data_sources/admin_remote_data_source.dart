@@ -1,16 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:watt/src/core/services/dio.dart';
 import 'package:watt/src/core/models/response.dart' as api;
-import 'package:watt/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:watt/src/utils/app_urls.dart';
 
 abstract class AdminRemoteDataSource {
   Future<api.PaginationResponse> listCompanies({String? status, int page = 1, int pageSize = 12});
   Future<api.Response> updateCompanyStatus(int companyId, String status);
-  Future<api.PaginationResponse> listServiceCatalog();
-  Future<api.Response> createServiceCatalogEntry(ServiceCatalogItem item);
-  Future<api.Response> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data);
-  Future<api.Response> deleteServiceCatalogEntry(String serviceCode);
   Future<api.PaginationResponse> listCompanyServices(int companyId);
   Future<api.Response> getCompanyDetails(int companyId);
 
@@ -103,43 +98,6 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<api.Response> updateCompanyStatus(int companyId, String status) async {
     try {
       return await _dioService.post(AppUrls.updateCompanyStatus(companyId), data: {'status': status});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<api.PaginationResponse> listServiceCatalog() async {
-    try {
-      final response = await _dioService.get(AppUrls.adminServiceCatalog, isPagination: true);
-      return response as api.PaginationResponse;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<api.Response> createServiceCatalogEntry(ServiceCatalogItem item) async {
-    try {
-      return await _dioService.post(AppUrls.adminServiceCatalog, data: item.toJson(includeCode: true));
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<api.Response> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data) async {
-    try {
-      return await _dioService.put(AppUrls.adminServiceCatalogItem(serviceCode), data: data);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<api.Response> deleteServiceCatalogEntry(String serviceCode) async {
-    try {
-      return await _dioService.delete(AppUrls.adminServiceCatalogItem(serviceCode));
     } catch (e) {
       rethrow;
     }

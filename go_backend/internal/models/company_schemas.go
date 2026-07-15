@@ -174,18 +174,6 @@ type PublicCompanyOut struct {
 	ExpireDate           *time.Time             `json:"expire_date"`
 }
 
-type CompanyServiceCatalogOut struct {
-	ID          uint    `json:"id"`
-	Code        string  `json:"code"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Category    string  `json:"category"`
-	IsActive    bool    `json:"is_active"`
-	SortOrder   uint    `json:"sort_order"`
-	Route       *string `json:"route"`
-	IconURL     *string `json:"icon_url"`
-}
-
 type CompanyServiceRequestCreateSchema struct {
 	ServiceCode string  `json:"service_code" binding:"required"`
 	Notes       *string `json:"notes"`
@@ -223,27 +211,6 @@ type CompanyServiceRequestActionSchema struct {
 
 type CompanyStatusActionSchema struct {
 	Status string `json:"status" binding:"required"`
-}
-
-type CompanyServiceCatalogCreateSchema struct {
-	Code        string  `json:"code" binding:"required"`
-	Name        string  `json:"name" binding:"required"`
-	Description *string `json:"description"`
-	Category    string  `json:"category" default:"general"`
-	IsActive    bool    `json:"is_active" default:"true"`
-	SortOrder   uint    `json:"sort_order" default:"0"`
-	Route       *string `json:"route"`
-	Icon        *string `json:"icon"`
-}
-
-type CompanyServiceCatalogUpdateSchema struct {
-	Name        *string `json:"name"`
-	Description *string `json:"description"`
-	Category    *string `json:"category"`
-	IsActive    *bool   `json:"is_active"`
-	SortOrder   *uint   `json:"sort_order"`
-	Route       *string `json:"route"`
-	Icon        *string `json:"icon"`
 }
 
 type CompanyOfferInvolvesSchema struct {

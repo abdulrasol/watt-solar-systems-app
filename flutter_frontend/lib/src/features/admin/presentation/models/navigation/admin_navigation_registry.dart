@@ -127,12 +127,6 @@ class AdminNavigationRegistry {
           route: '/admin/subscription-requests',
           icon: Iconsax.ticket,
         ),
-        AdminNavigationItem(
-          id: 'service_catalog',
-          label: l10n.admin_service_catalog,
-          route: '/admin/service-catalog',
-          icon: Iconsax.category_2,
-        ),
       ],
     );
   }

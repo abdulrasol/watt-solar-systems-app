@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — Watt</title>
+<link rel="stylesheet" href="/admin/static/css/admin.css">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+<div class="admin-shell" x-data="adminShell()" x-init="init()">
+	<aside class="sidebar" :class="{'open': sidebar}" role="navigation">
+		<div class="brand">
+			<div class="brand-mark">W</div>
+			<div>
+				<p class="brand-subtitle">لوحة التحكم</p>
+				<p class="brand-title">Watt</p>
+			</div>
+		</div>
+		<nav class="nav">
+			{{range .NavGroups}}
+			<div class="nav-group">
+				<p class="nav-group-title">{{.Title}}</p>
+				{{range .Items}}
+				<button class="nav-item{{if eq $.ActiveSection .Key}} active{{end}}"
+					@click="loadSection('{{.Key}}')"
+					hx-get="/admin/config/section/{{.Key}}"
+					hx-target="#main-content"
+					hx-swap="innerHTML"
+					hx-push-url="true"
+					:class="{'active': activeSection === '{{.Key}}'}">
+					<span class="nav-icon" x-html="icon('{{.Icon}}')"></span>
+					<span>{{.Label}}</span>
+				</button>
+				{{end}}
+			</div>
+			{{end}}
+		</nav>
+	</aside>
+	<div class="overlay" @click="closeSidebar()" x-show="sidebar" x-cloak></div>
+	<main class="main">
+		<header class="header">
+			<button class="hamburger" @click="sidebar = true">☰</button>
+			<div class="header-info">
+				<p class="header-eyebrow">منطقة الإدارة</p>
+				<h2 x-text="sectionLabel(activeSection)"></h2>
+			</div>
+			<div class="header-actions">
+				<span class="header-user">{{.Username}}</span>
+				<a href="/admin/logout" class="icon-btn" title="تسجيل الخروج">🚪</a>
+				<button class="icon-btn" @click="refresh()" title="تحديث">⟳</button>
+				<button class="icon-btn" @click="toggleDark()" x-text="darkMode ? '☀' : '☾'" title="الوضع الليلي"></button>
+			</div>
+		</header>
+		<div id="main-content" class="content" hx-get="/admin/config/section/overview" hx-trigger="load" hx-swap="innerHTML">
+			{{if .SectionHTML}}
+				{{.SectionHTML}}
+			{{else}}
+			<div class="loading">جاري التحميل…</div>
+			{{end}}
+		</div>
+	</main>
+</div>
+<script src="/admin/static/js/admin.js"></script>
+</body>
+</html>

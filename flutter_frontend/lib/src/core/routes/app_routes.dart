@@ -33,7 +33,6 @@ class AppRoutes {
   static const String adminServiceTypes = '/admin/service-types';
   static const String adminInspector = '/admin/inspector';
   static const String adminSubscriptionRequests = '/admin/subscription-requests';
-  static const String adminServiceCatalog = '/admin/service-catalog';
   static const String adminSystems = '/admin/ops/systems';
   static const String adminNotifications = '/admin/ops/notifications';
   static const String adminFeedbacks = '/admin/ops/feedbacks';

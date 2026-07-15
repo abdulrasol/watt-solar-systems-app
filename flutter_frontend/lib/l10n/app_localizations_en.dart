@@ -4426,9 +4426,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get admin_subscription_requests => 'Subscription Requests';
 
   @override
-  String get admin_service_catalog => 'Service Catalog';
-
-  @override
   String get admin_feedbacks => 'Feedbacks';
 
   @override

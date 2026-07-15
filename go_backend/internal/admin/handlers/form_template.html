@@ -1,0 +1,49 @@
+<form method="POST" action="{{.Action}}"
+      hx-{{.Method}}="{{.Action}}"
+      hx-target="#main-content"
+      hx-swap="innerHTML">
+  {{if .Error}}
+  <div class="flash-error">{{.Error}}</div>
+  {{end}}
+  {{range .Fields}}
+  <div class="form-group">
+    <label for="field_{{.Key}}">{{.Label}}{{if .Required}} <span class="required">*</span>{{end}}</label>
+    {{if eq .Type "bool"}}
+    <label class="checkbox-label">
+      <input type="checkbox" id="field_{{.Key}}" name="{{.Key}}" value="true" {{if eq (index $.Data .Key) "true"}}checked{{end}}>
+      <span>{{.Label}}</span>
+    </label>
+    {{else if eq .Type "select"}}
+    <select id="field_{{.Key}}" name="{{.Key}}" {{if .Required}}required{{end}}>
+      <option value="">-- اختر --</option>
+      {{range .Options}}
+      <option value="{{.Value}}" {{if eq (index $.Data .Value) .Value}}selected{{end}}>{{.Label}}</option>
+      {{end}}
+    </select>
+    {{else if eq .Type "checkboxes"}}
+    <div class="checkbox-group">
+      {{range .Options}}
+      <label class="checkbox-label">
+        <input type="checkbox" name="{{$.Key}}" value="{{.Value}}"
+               {{if inJSON $.Data $.Key .Value}}checked{{end}}>
+        <span>{{.Label}}</span>
+      </label>
+      {{end}}
+    </div>
+    {{else if eq .Type "textarea"}}
+    <textarea id="field_{{.Key}}" name="{{.Key}}" {{if .Required}}required{{end}}>{{index $.Data .Key}}</textarea>
+    {{else if eq .Type "json"}}
+    <textarea id="field_{{.Key}}" name="{{.Key}}" dir="ltr" {{if .Required}}required{{end}}>{{index $.Data .Key}}</textarea>
+    {{else}}
+    <input type="{{or .Type "text"}}" id="field_{{.Key}}" name="{{.Key}}"
+           value="{{index $.Data .Key}}"
+           {{if .Required}}required{{end}}
+           {{if eq .Key "password"}}autocomplete="new-password"{{end}}>
+    {{end}}
+  </div>
+  {{end}}
+  <div class="form-actions">
+    <button type="button" class="btn btn-outline" @click="closeModal()">إلغاء</button>
+    <button type="submit" class="btn btn-primary">حفظ</button>
+  </div>
+</form>

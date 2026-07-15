@@ -4398,9 +4398,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get admin_subscription_requests => 'طلبات الاشتراك';
 
   @override
-  String get admin_service_catalog => 'كتالوج الخدمات';
-
-  @override
   String get admin_feedbacks => 'التقييمات';
 
   @override

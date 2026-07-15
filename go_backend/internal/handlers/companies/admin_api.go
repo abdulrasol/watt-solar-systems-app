@@ -13,28 +13,6 @@ import (
 	notifsvc "watt/internal/services/notifications"
 )
 
-// AdminListCatalogServices handles GET /api/v1/admin/companies/catalog/services
-// @Summary AdminListCatalogServices
-// @Description List all catalog services (including inactive)
-// @Tags Admin Companies API
-// @Produce json
-// @Security Bearer
-// @Success 200 {object} response.APIResponse
-// @Router /admin/companies/catalog/services [get]
-func AdminListCatalogServices(c *gin.Context) {
-	var services []models.CompanyServiceCatalog
-	if err := database.DB.Order("sort_order asc, name asc").Find(&services).Error; err != nil {
-		msgUser := "حدث خطأ أثناء جلب دليل الخدمات"
-		response.Error(c, http.StatusInternalServerError, "Failed to fetch catalog services", &msgUser)
-		return
-	}
-
-	response.Success(c, http.StatusOK, "Service catalog retrieved successfully", map[string]interface{}{
-		"items": services,
-		"count": len(services),
-	})
-}
-
 // AdminListCompanies handles GET /api/v1/admin/companies
 // @Accept json
 // @Produce json
@@ -68,8 +46,7 @@ func AdminListCompanies(c *gin.Context) {
 	query := database.DB.Model(&models.Company{}).
 		Preload("CompanyType").
 		Preload("City").
-		Preload("Currency").
-		Preload("ServiceTypes")
+		Preload("Currency")
 
 	if status != "" {
 		query = query.Where("status = ?", status)
@@ -125,7 +102,7 @@ func AdminGetCompany(c *gin.Context) {
 		Preload("CompanyType").
 		Preload("City").
 		Preload("Currency").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed.
 		Preload("Categories").
 		Preload("Contacts").
 		Preload("DeliveryOptions").
@@ -160,7 +137,7 @@ func AdminGetCompanyServices(c *gin.Context) {
 	var comp models.Company
 	if err := database.DB.
 		Preload("CompanyType").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed.
 		First(&comp, id).Error; err != nil {
 		msgUser := "الشركة غير موجودة"
 		response.Error(c, http.StatusNotFound, "Company not found", &msgUser)
@@ -193,7 +170,7 @@ func AdminGetCompanyDetails(c *gin.Context) {
 		Preload("City").
 		Preload("City.Country").
 		Preload("Currency").
-		Preload("ServiceTypes").
+		// Preload("ServiceTypes") -- removed.
 		Preload("Categories").
 		Preload("DeliveryOptions").
 		Preload("Contacts").

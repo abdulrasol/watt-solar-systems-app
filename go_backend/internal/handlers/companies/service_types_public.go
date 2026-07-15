@@ -30,7 +30,7 @@ func ListServiceTypes(c *gin.Context) {
 	if userIDVal, exists := c.Get("user_id"); exists {
 		userID := userIDVal.(uint)
 		var member models.CompanyMember
-		if err := database.DB.Where("user_id = ?", userID).Preload("Company.ServiceTypes").First(&member).Error; err == nil {
+		if err := database.DB.Where("user_id = ?", userID).Preload("Company").First(&member).Error; err == nil {
 			company = &member.Company
 		}
 	}

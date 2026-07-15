@@ -9,54 +9,6 @@ import (
 	"watt/internal/response"
 )
 
-// GetServiceCatalog handles GET /api/companies/catalog/services
-// @Security Bearer
-// @Summary GetServiceCatalog
-// @Description GetServiceCatalog
-// @Tags Companies
-// @Success 200 {object} response.APIResponse
-// @Router /companies/catalog/services [get]
-func GetServiceCatalog(c *gin.Context) {
-	var services []models.CompanyServiceCatalog
-	if err := database.DB.Where("is_active = ?", true).
-		Preload("CompanyTypes").
-		Order("sort_order asc, name asc").
-		Find(&services).Error; err != nil {
-		msgUser := "حدث خطأ أثناء جلب دليل الخدمات"
-		response.Error(c, http.StatusInternalServerError, "Failed to fetch services", &msgUser)
-		return
-	}
-
-	var data []map[string]interface{}
-	for _, item := range services {
-		var types []map[string]interface{}
-		for _, ct := range item.CompanyTypes {
-			types = append(types, map[string]interface{}{
-				"id":   ct.ID,
-				"code": ct.CType,
-				"name": ct.Name,
-			})
-		}
-
-		data = append(data, map[string]interface{}{
-			"id":          item.ID,
-			"code":        item.Code,
-			"name":        item.Name,
-			"description": item.Description,
-			"category":    item.Category,
-			"sort_order":  item.SortOrder,
-			"route":       item.Route,
-			"icon":        item.Icon,
-			"types":       types,
-		})
-	}
-
-	response.Success(c, http.StatusOK, "Service catalog retrieved successfully.", map[string]interface{}{
-		"items": data,
-		"count": len(data),
-	})
-}
-
 // GetSubscriptionPlans handles GET /api/companies/subscriptions
 // @Security Bearer
 // @Summary GetSubscriptionPlans

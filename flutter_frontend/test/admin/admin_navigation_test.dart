@@ -13,7 +13,6 @@ import 'package:watt/src/features/admin/presentation/screens/app_configs_screen.
 import 'package:watt/src/features/admin/presentation/screens/send_notification_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/companies/admin_companies_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/companies/admin_service_types_screen.dart';
-import 'package:watt/src/features/admin/presentation/screens/companies/admin_service_catalog_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/admin_currency_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/admin_categories_screen.dart';
 import 'package:watt/src/features/admin/presentation/screens/admin_address_screen.dart';
@@ -77,7 +76,6 @@ void main() {
             StatefulShellBranch(routes: [GoRoute(path: '/admin/send-notification', builder: (context, state) => const SendNotificationScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/admin/companies', builder: (context, state) => const AdminCompaniesScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/admin/service-types', builder: (context, state) => const AdminServiceTypesScreen())]),
-            StatefulShellBranch(routes: [GoRoute(path: '/admin/service-catalog', builder: (context, state) => const AdminServiceCatalogScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/admin/currencies', builder: (context, state) => const AdminCurrencyScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/admin/categories', builder: (context, state) => const AdminCategoriesScreen())]),
             StatefulShellBranch(routes: [GoRoute(path: '/admin/address', builder: (context, state) => const AdminAddressScreen())]),

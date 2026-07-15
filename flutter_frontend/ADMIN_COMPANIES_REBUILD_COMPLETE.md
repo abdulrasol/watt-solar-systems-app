@@ -1,7 +1,10 @@
 # Admin Companies & Services Catalog - Complete Rebuild
 
+> **2026-07-13: Service Catalog Removed**
+> The `ServiceCatalog` feature was removed from both the Flutter frontend and Go backend because the underlying `CompanyServiceCatalog` model is deprecated. Services are now defined statically via `AllAvailableServices` and managed through **Company Types** and **Subscription Plans**.
+
 ## Overview
-Complete rebuild of the admin company and services catalog management system with improved architecture, modular widgets, and full CRUD operations.
+Complete rebuild of the admin company management system with improved architecture, modular widgets, and full CRUD operations.
 
 ## What Was Changed
 

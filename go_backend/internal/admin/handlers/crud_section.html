@@ -1,0 +1,109 @@
+<div class="crud-section" x-data="crudSection('{{.Section}}')">
+  <div class="list-header">
+    <div>
+      <h3>{{.Title}}</h3>
+      {{if .Description}}<p class="text-muted">{{.Description}}</p>{{end}}
+    </div>
+    {{if .AllowCreate}}
+    <button class="btn btn-primary"
+            hx-get="/admin/config/{{.Section}}/create"
+            hx-target="#modal-content"
+            hx-swap="innerHTML"
+            @click="openModal('create')">+ إضافة</button>
+    {{end}}
+  </div>
+
+  <div class="table-wrapper">
+    <table class="data-table" id="crud-table-{{.Section}}">
+      <thead>
+        <tr class="filter-row">
+          {{range $i, $col := .Columns}}
+          <th>
+            <input type="text"
+                   class="filter-input"
+                   placeholder="{{$col.Label}}"
+                   hx-get="/admin/config/section/{{$.Section}}?page=1"
+                   hx-trigger="keyup changed delay:300ms"
+                   hx-target="#main-content"
+                   hx-swap="innerHTML"
+                   hx-params="*"
+                   name="q_{{$col.Key}}"
+                   value="{{index $.Filters $col.Key}}" />
+          </th>
+          {{end}}
+          {{if .HasActions}}<th></th>{{end}}
+        </tr>
+        <tr class="header-row">
+          {{range .Columns}}<th>{{.Label}}</th>{{end}}
+          {{if .HasActions}}<th></th>{{end}}
+        </tr>
+      </thead>
+      <tbody>
+        {{range .Rows}}
+        <tr id="row-{{.ID}}">
+          {{range $i, $cell := .Cells}}<td data-label="{{index $.Labels $i}}">{{$cell}}</td>{{end}}
+          {{if $.HasActions}}
+          <td class="actions">
+            {{if $.AllowEdit}}
+            <button class="btn btn-sm btn-outline"
+                    hx-get="/admin/config/{{$.Section}}/{{.ID}}/edit"
+                    hx-target="#modal-content"
+                    hx-swap="innerHTML"
+                    @click="openModal('edit')">تعديل</button>
+            {{end}}
+            {{if $.AllowDelete}}
+            <button class="btn btn-sm btn-danger"
+                    hx-delete="/admin/config/{{$.Section}}/{{.ID}}"
+                    hx-confirm="هل أنت متأكد من الحذف؟"
+                    hx-target="#row-{{.ID}}"
+                    hx-swap="outerHTML">حذف</button>
+            {{end}}
+          </td>
+          {{end}}
+        </tr>
+        {{else}}
+        <tr><td colspan="99" class="empty">لا توجد بيانات</td></tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+
+  {{if gt .TotalPages 1}}
+  <div class="pagination">
+    {{$section := .Section}}
+    <button class="btn btn-sm btn-outline"
+            hx-get="/admin/config/section/{{$section}}?page=1"
+            hx-target="#main-content" hx-swap="innerHTML"
+            hx-include="closest .crud-section"
+            {{if eq .Page 1}}disabled{{end}}>الأول</button>
+    <button class="btn btn-sm btn-outline"
+            hx-get="/admin/config/section/{{$section}}?page={{sub .Page 1}}"
+            hx-target="#main-content" hx-swap="innerHTML"
+            hx-include="closest .crud-section"
+            {{if eq .Page 1}}disabled{{end}}>السابق</button>
+    <span class="pagination-info">{{.Page}} / {{.TotalPages}} ({{.Total}})</span>
+    <button class="btn btn-sm btn-outline"
+            hx-get="/admin/config/section/{{$section}}?page={{add .Page 1}}"
+            hx-target="#main-content" hx-swap="innerHTML"
+            hx-include="closest .crud-section"
+            {{if eq .Page .TotalPages}}disabled{{end}}>التالي</button>
+    <button class="btn btn-sm btn-outline"
+            hx-get="/admin/config/section/{{$section}}?page={{.TotalPages}}"
+            hx-target="#main-content" hx-swap="innerHTML"
+            hx-include="closest .crud-section"
+            {{if eq .Page .TotalPages}}disabled{{end}}>الأخير</button>
+  </div>
+  {{end}}
+
+  <div class="modal-overlay" x-show="showModal" x-cloak @click.self="closeModal()">
+    <div class="modal" @click.stop>
+      <div class="modal-header">
+        <h3 x-text="modalTitle"></h3>
+        <button class="icon-btn" @click="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modal-content">
+        <p class="loading">جاري التحميل…</p>
+      </div>
+    </div>
+  </div>
+</div>

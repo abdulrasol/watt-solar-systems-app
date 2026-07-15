@@ -9,16 +9,11 @@ import 'package:watt/src/features/admin/domain/models/admin_global_category.dart
 import 'package:watt/src/features/admin/domain/models/admin_subscription_plan.dart';
 import 'package:watt/src/features/admin/domain/models/admin_user.dart';
 import 'package:watt/src/features/admin/domain/models/company_service.dart';
-import 'package:watt/src/features/admin/domain/models/service_catalog_item.dart';
 import 'package:watt/src/shared/domain/company/company.dart';
 
 abstract class AdminRepository {
   Future<List<Company>> listCompanies({String? status, int page = 1, int pageSize = 12});
   Future<void> updateCompanyStatus(int companyId, String status);
-  Future<List<ServiceCatalogItem>> listServiceCatalog();
-  Future<ServiceCatalogItem> createServiceCatalogEntry(ServiceCatalogItem item);
-  Future<ServiceCatalogItem> updateServiceCatalogEntry(String serviceCode, Map<String, dynamic> data);
-  Future<void> deleteServiceCatalogEntry(String serviceCode);
   Future<List<CompanyService>> listCompanyServices(int companyId);
   Future<AdminCompanyDetails> getCompanyDetails(int companyId);
 

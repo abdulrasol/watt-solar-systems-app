@@ -35,31 +35,16 @@ func AdminCreateCompanyType(c *gin.Context) {
 		CType: payload.CType,
 		Name:  payload.Name,
 	}
-	
+
 	if payload.AllowedFeatures != nil {
 		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
 		ctype.AllowedFeatures = featuresJSON
 	}
-
-	
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
-	
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
 
 	if err := database.DB.Create(&ctype).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to create company type", nil)
 		return
 	}
-
-
 
 	if payload.AllowedSubscriptionPlans != nil {
 		var plans []*models.SubscriptionPlan
@@ -108,23 +93,10 @@ func AdminUpdateCompanyType(c *gin.Context) {
 		ctype.AllowedFeatures = featuresJSON
 	}
 
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
-	if payload.AllowedFeatures != nil {
-		featuresJSON, _ := json.Marshal(payload.AllowedFeatures)
-		ctype.AllowedFeatures = featuresJSON
-	}
-
-
 	if err := database.DB.Save(&ctype).Error; err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to update company type", nil)
 		return
 	}
-
-
 
 	if payload.AllowedSubscriptionPlans != nil {
 		var plans []*models.SubscriptionPlan
@@ -289,126 +261,4 @@ func AdminDeleteServiceType(c *gin.Context) {
 	response.Success(c, http.StatusOK, "Service type deleted successfully", nil)
 }
 
-// AdminCreateCatalogService handles POST /api/v1/admin/companies/catalog/services
-// @Summary AdminCreateCatalogService
-// @Description AdminCreateCatalogService
-// @Tags Admin Companies API
-// @Accept json
-// @Produce json
-// @Param request body models.CompanyServiceCatalogCreateSchema true "Payload"
-// @Security Bearer
-// @Success 200 {object} response.APIResponse
-// @Router /admin/companies/catalog/services [post]
-func AdminCreateCatalogService(c *gin.Context) {
-	var payload models.CompanyServiceCatalogCreateSchema
-	if err := c.ShouldBindJSON(&payload); err != nil {
-		response.Error(c, http.StatusBadRequest, "Invalid JSON payload", nil)
-		return
-	}
 
-	desc := ""
-	if payload.Description != nil {
-		desc = *payload.Description
-	}
-
-	service := models.CompanyServiceCatalog{
-		Code:        payload.Code,
-		Name:        payload.Name,
-		Description: desc,
-		Category:    payload.Category,
-		IsActive:    payload.IsActive,
-		SortOrder:   payload.SortOrder,
-		Route:       payload.Route,
-		Icon:        payload.Icon,
-	}
-
-	if err := database.DB.Create(&service).Error; err != nil {
-		response.Error(c, http.StatusInternalServerError, "Failed to create catalog service", nil)
-		return
-	}
-
-	response.Success(c, http.StatusCreated, "Catalog service created successfully", service)
-}
-
-// AdminUpdateCatalogService handles PUT /api/v1/admin/companies/catalog/services/{service_code}
-// @Summary AdminUpdateCatalogService
-// @Description AdminUpdateCatalogService
-// @Tags Admin Companies API
-// @Accept json
-// @Produce json
-// @Param request body models.CompanyServiceCatalogUpdateSchema true "Payload"
-// @Param service_code path string true "service_code"
-// @Security Bearer
-// @Success 200 {object} response.APIResponse
-// @Router /admin/companies/catalog/services/{service_code} [put]
-func AdminUpdateCatalogService(c *gin.Context) {
-	code := c.Param("service_code")
-
-	var payload models.CompanyServiceCatalogUpdateSchema
-	if err := c.ShouldBindJSON(&payload); err != nil {
-		response.Error(c, http.StatusBadRequest, "Invalid JSON payload", nil)
-		return
-	}
-
-	var service models.CompanyServiceCatalog
-	if err := database.DB.Where("code = ?", code).First(&service).Error; err != nil {
-		response.Error(c, http.StatusNotFound, "Catalog service not found", nil)
-		return
-	}
-
-	if payload.Name != nil {
-		service.Name = *payload.Name
-	}
-	if payload.Description != nil {
-		service.Description = *payload.Description
-	}
-	if payload.Category != nil {
-		service.Category = *payload.Category
-	}
-	if payload.IsActive != nil {
-		service.IsActive = *payload.IsActive
-	}
-	if payload.SortOrder != nil {
-		service.SortOrder = *payload.SortOrder
-	}
-	if payload.Route != nil {
-		service.Route = payload.Route
-	}
-	if payload.Icon != nil {
-		service.Icon = payload.Icon
-	}
-
-	if err := database.DB.Save(&service).Error; err != nil {
-		response.Error(c, http.StatusInternalServerError, "Failed to update catalog service", nil)
-		return
-	}
-
-	response.Success(c, http.StatusOK, "Catalog service updated successfully", service)
-}
-
-// AdminDeleteCatalogService handles DELETE /api/v1/admin/companies/catalog/services/{service_code}
-// @Summary AdminDeleteCatalogService
-// @Description AdminDeleteCatalogService
-// @Tags Admin Companies API
-// @Accept json
-// @Produce json
-// @Param service_code path string true "service_code"
-// @Security Bearer
-// @Success 200 {object} response.APIResponse
-// @Router /admin/companies/catalog/services/{service_code} [delete]
-func AdminDeleteCatalogService(c *gin.Context) {
-	code := c.Param("service_code")
-
-	var service models.CompanyServiceCatalog
-	if err := database.DB.Where("code = ?", code).First(&service).Error; err != nil {
-		response.Error(c, http.StatusNotFound, "Catalog service not found", nil)
-		return
-	}
-
-	if err := database.DB.Delete(&service).Error; err != nil {
-		response.Error(c, http.StatusInternalServerError, "Failed to delete catalog service", nil)
-		return
-	}
-
-	response.Success(c, http.StatusOK, "Catalog service deleted successfully", nil)
-}
