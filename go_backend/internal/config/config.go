@@ -28,6 +28,7 @@ type Config struct {
 	FCMServiceAccountFile string
 	EmailHostUser         string
 	EmailHostPassword     string
+	FrontendURL           string
 	Port                  string
 	DatabaseURL           string
 	JWTSecret             string
@@ -76,11 +77,17 @@ func LoadConfig() *Config {
 		corsOrigins = []string{"http://localhost:*", "http://127.0.0.1:*"}
 	}
 
+	frontendURL := os.Getenv("FRONTEND_URL")
+	if frontendURL == "" {
+		frontendURL = "http://localhost:8080"
+	}
+
 	return &Config{
 		FCMProjectID:          os.Getenv("FCM_PROJECT_ID"),
 		FCMServiceAccountFile: os.Getenv("FCM_SERVICE_ACCOUNT_FILE"),
 		EmailHostUser:         os.Getenv("EMAIL_HOST_USER"),
 		EmailHostPassword:     os.Getenv("EMAIL_HOST_PASSWORD"),
+		FrontendURL:           frontendURL,
 		Port:                  port,
 		DatabaseURL:           dbUrl,
 		JWTSecret:             jwtSecret,

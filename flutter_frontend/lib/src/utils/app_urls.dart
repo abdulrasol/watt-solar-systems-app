@@ -4,24 +4,25 @@ class AppUrls {
   // Base URL - Automatically switches based on build mode and platform
   static String get baseUrl {
     if (kReleaseMode) {
-      return 'https://watt-mu0i.onrender.com/api/v1';
+      // return 'https://watt-mu0i.onrender.com/api/v1';
+      return 'http://191.168.1.107/api/v1';
     }
     // For Debug Mode:
     // 10.0.2.2 is the special alias to your host loopback interface in Android Emulator.
     // iOS Simulator and desktop builds use 127.0.0.1.
     try {
       if (defaultTargetPlatform == TargetPlatform.android) {
-        return 'http://10.0.2.2:8080/api/v1';
+        return 'http://191.168.1.100/api/v1';
       }
     } catch (_) {}
-    return 'http://127.0.0.1:8080/api/v1';
+    return 'http://191.168.1.100/api/v1';
   }
 
   // Resolves media path (e.g. /uploads/...) to full URL
   static String resolveMediaUrl(String path) {
     if (path.isEmpty || path == 'null') return '';
     if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    
+
     final baseServerUrl = baseUrl.replaceAll('/api/v1', '');
     if (!path.startsWith('/')) path = '/$path';
     return '$baseServerUrl$path';
@@ -196,11 +197,11 @@ class AppUrls {
 
   // ==================== COMMUNITY ====================
   static String get communityBaseUrl => '$baseUrl/community';
-  
+
   // Posts
   static String get posts => '$communityBaseUrl/posts/'; // GET, POST
   static String postById(int postId) => '$communityBaseUrl/posts/$postId'; // GET, PUT, DELETE
-  
+
   // Comments
   static String postComments(int postId) => '$communityBaseUrl/posts/$postId/comments'; // GET, POST
   static String commentById(int commentId) => '$communityBaseUrl/comments/$commentId'; // PUT, DELETE

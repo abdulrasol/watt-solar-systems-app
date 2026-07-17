@@ -87,6 +87,8 @@ func Connect(cfg *config.Config) {
 		// Notifications
 		&models.PushDevice{},
 		&models.NotificationRecord{},
+		// Password resets
+		&models.PasswordReset{},
 	); err != nil {
 		log.Fatal("Failed to auto-migrate database! \n", err)
 	}
