@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Create an admin/superuser inside the running Watt backend container
-# Usage: ./scripts/create-admin.sh
+# Usage: ./scripts/create-admin.sh -username=admin -email=admin@watt.com -password=yourpassword
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -17,5 +17,4 @@ if [ -z "${DATABASE_URL}" ]; then
     exit 1
 fi
 
-echo "Creating admin user..."
-docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -e DATABASE_URL="${DATABASE_URL}" backend ./createadmin
+docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -e DATABASE_URL="${DATABASE_URL}" backend ./createadmin "$@"
