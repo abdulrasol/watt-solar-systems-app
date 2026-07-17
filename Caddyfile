@@ -1,14 +1,15 @@
 {
-    # Production Caddyfile: listens on all interfaces.
-    # Self-signed HTTPS for local/LAN IP access; replace with a real domain
-    # and remove "tls internal" for public Let's Encrypt certificates.
+    # Production Caddyfile: HTTP on all interfaces, HTTPS on LOCAL_IP.
+    # Set LOCAL_IP in .env to the server IP or domain. Default is localhost.
+    # For public deployment with a real domain, replace "tls internal" with
+    # automatic Let's Encrypt (just remove "tls internal").
 }
 
 :80 {
     redir https://{host}{uri}
 }
 
-:443 {
+{$LOCAL_IP:localhost}:443 {
     tls internal
 
     encode gzip
