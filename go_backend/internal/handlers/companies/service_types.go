@@ -24,9 +24,10 @@ func GetServiceTypes(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	data := make([]map[string]interface{}, 0, len(serviceTypes))
 	for _, st := range serviceTypes {
-		data = append(data, SerializeServiceType(&st, nil))
+		data = append(data, SerializeServiceType(&st, nil, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Service types retrieved successfully", map[string]interface{}{
@@ -57,7 +58,8 @@ func GetServiceTypeByID(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Service type retrieved successfully", SerializeServiceType(&st, nil))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Service type retrieved successfully", SerializeServiceType(&st, nil, baseURL))
 }
 
 

@@ -1646,6 +1646,7 @@ cp .env.example .env
 | المتغير | الوصف | مثال |
 |---------|-------|------|
 | `LOCAL_IP` | IP الجهاز على الشبكة المحلية | `192.168.1.100` |
+| `BASE_URL` | الرابط العام للـ Backend (يستخدم لبناء روابط الصور) | `https://192.168.1.100` |
 | `JWT_SECRET` | مفتاح سري لتوقيع توكن JWT (32 حرف على الأقل) | `change-me-to-long-random-string` |
 | `ADMIN_COOKIE_SECRET` | مفتاح سري لجلسات الأدمن | `change-me-to-another-long-random-secret-min-32-chars` |
 | `MARIADB_ROOT_PASSWORD` | كلمة سر root لـ MariaDB | `watt_root_password` |

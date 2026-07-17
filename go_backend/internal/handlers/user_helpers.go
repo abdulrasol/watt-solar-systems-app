@@ -4,10 +4,11 @@ import (
 	"watt/internal/database"
 	"watt/internal/handlers/companies"
 	"watt/internal/models"
+	"watt/internal/utils"
 )
 
 // buildProfileOut constructs the ProfileOut response matching Django's _serialize_profile
-func buildProfileOut(user *models.User) models.ProfileOut {
+func buildProfileOut(user *models.User, baseURL string) models.ProfileOut {
 	var email *string
 	if !user.IsDeleted {
 		email = &user.Email
@@ -68,7 +69,7 @@ func buildProfileOut(user *models.User) models.ProfileOut {
 		
 	if len(members) > 0 {
 		isCompanyMember = true
-		companyPayload = companies.BuildCompanyMemberSummary(&members[0].Company, &members[0])
+		companyPayload = companies.BuildCompanyMemberSummary(&members[0].Company, &members[0], baseURL)
 	}
 
 	return models.ProfileOut{
@@ -79,7 +80,7 @@ func buildProfileOut(user *models.User) models.ProfileOut {
 		LastName:         &lastName,
 		Phone:            &user.Phone,
 		City:             cityOut,
-		ImageURL:         user.Image,
+		ImageURL:         utils.ResolveMediaPtr(baseURL, user.Image),
 		IsSuperuser:      user.IsSuperuser,
 		SecurityQuestion: user.SecurityQuestion,
 		SecurityAnswer:   user.SecurityAnswer,

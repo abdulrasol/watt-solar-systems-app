@@ -337,6 +337,7 @@ func (h *AdminHandler) GetFeedbacks(c *gin.Context) {
 	var feedbacks []models.Feedback
 	database.DB.Find(&feedbacks)
 
+	baseURL := c.GetString("baseURL")
 	var result []models.FeedbackSchema
 	for _, f := range feedbacks {
 		result = append(result, models.FeedbackSchema{
@@ -344,7 +345,7 @@ func (h *AdminHandler) GetFeedbacks(c *gin.Context) {
 			Name:        f.Name,
 			PhoneNumber: f.PhoneNumber,
 			Message:     f.Message,
-			Image:       f.Image,
+			Image:       utils.ResolveMediaPtr(baseURL, f.Image),
 			IsRead:      f.IsRead,
 			CreatedAt:   f.CreatedAt,
 		})
@@ -393,12 +394,13 @@ func (h *AdminHandler) CreateFeedback(c *gin.Context) {
 
 	database.DB.Create(&fb)
 
+	baseURL := c.GetString("baseURL")
 	response.Success(c, http.StatusOK, "Feedback created successfully.", models.FeedbackSchema{
 		ID:          fb.ID,
 		Name:        fb.Name,
 		PhoneNumber: fb.PhoneNumber,
 		Message:     fb.Message,
-		Image:       fb.Image,
+		Image:       utils.ResolveMediaPtr(baseURL, fb.Image),
 		IsRead:      fb.IsRead,
 		CreatedAt:   fb.CreatedAt,
 	})
@@ -434,12 +436,13 @@ func (h *AdminHandler) UpdateFeedback(c *gin.Context) {
 	}
 	database.DB.Save(&fb)
 
+	baseURL := c.GetString("baseURL")
 	response.Success(c, http.StatusOK, "Feedback updated successfully.", models.FeedbackSchema{
 		ID:          fb.ID,
 		Name:        fb.Name,
 		PhoneNumber: fb.PhoneNumber,
 		Message:     fb.Message,
-		Image:       fb.Image,
+		Image:       utils.ResolveMediaPtr(baseURL, fb.Image),
 		IsRead:      fb.IsRead,
 		CreatedAt:   fb.CreatedAt,
 	})

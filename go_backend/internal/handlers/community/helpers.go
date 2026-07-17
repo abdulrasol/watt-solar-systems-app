@@ -66,13 +66,13 @@ func isSuperuser(c *gin.Context) bool {
 	return ok && b
 }
 
-func serializeAuthor(user *models.User, company *models.Company, memberRole *string) models.CommunityAuthorInfo {
+func serializeAuthor(user *models.User, company *models.Company, memberRole *string, baseURL string) models.CommunityAuthorInfo {
 	if company != nil {
 		info := models.CommunityAuthorInfo{
 			ID:    strconv.Itoa(int(company.ID)),
 			Name:  company.Name,
 			Type:  "company",
-			Image: company.Logo,
+			Image: utils.ResolveMediaPtr(baseURL, company.Logo),
 			Phone: &company.Phone,
 			Role:  memberRole,
 		}
@@ -86,13 +86,13 @@ func serializeAuthor(user *models.User, company *models.Company, memberRole *str
 			ID:    strconv.Itoa(int(user.ID)),
 			Name:  user.Username,
 			Type:  "user",
-			Image: user.Image,
+			Image: utils.ResolveMediaPtr(baseURL, user.Image),
 		}
 	}
 	return models.CommunityAuthorInfo{ID: "0", Name: "System", Type: "system"}
 }
 
-func serializePost(post *models.Post) map[string]interface{} {
+func serializePost(post *models.Post, baseURL string) map[string]interface{} {
 	var role *string
 	var authorUser *models.User
 	var authorCompany *models.Company
@@ -112,21 +112,21 @@ func serializePost(post *models.Post) map[string]interface{} {
 	return map[string]interface{}{
 		"id":          post.ID,
 		"content":     post.Content,
-		"image_url":   image,
+		"image_url":   utils.ResolveMediaPtr(baseURL, image),
 		"post_type":   post.PostType,
 		"likes_count": post.LikesCount,
 		"created_at":  post.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
-		"author_info": serializeAuthor(authorUser, authorCompany, role),
+		"author_info": serializeAuthor(authorUser, authorCompany, role, baseURL),
 	}
 }
 
-func serializeComment(comment *models.Comment) map[string]interface{} {
+func serializeComment(comment *models.Comment, baseURL string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":          comment.ID,
 		"post_id":     comment.PostID,
 		"content":     comment.Content,
 		"created_at":  comment.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
-		"author_info": serializeAuthor(comment.Author, nil, nil),
+		"author_info": serializeAuthor(comment.Author, nil, nil, baseURL),
 	}
 }
 

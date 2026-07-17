@@ -29,6 +29,7 @@ type Config struct {
 	EmailHostUser         string
 	EmailHostPassword     string
 	FrontendURL           string
+	BaseURL               string
 	Port                  string
 	DatabaseURL           string
 	JWTSecret             string
@@ -82,12 +83,20 @@ func LoadConfig() *Config {
 		frontendURL = "http://localhost:8080"
 	}
 
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = frontendURL
+	}
+	// Strip trailing slash for consistent URL building.
+	baseURL = strings.TrimRight(baseURL, "/")
+
 	return &Config{
 		FCMProjectID:          os.Getenv("FCM_PROJECT_ID"),
 		FCMServiceAccountFile: os.Getenv("FCM_SERVICE_ACCOUNT_FILE"),
 		EmailHostUser:         os.Getenv("EMAIL_HOST_USER"),
 		EmailHostPassword:     os.Getenv("EMAIL_HOST_PASSWORD"),
 		FrontendURL:           frontendURL,
+		BaseURL:               baseURL,
 		Port:                  port,
 		DatabaseURL:           dbUrl,
 		JWTSecret:             jwtSecret,

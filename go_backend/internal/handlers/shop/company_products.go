@@ -78,9 +78,10 @@ func ListCompanyProducts(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(products))
 	for _, p := range products {
-		items = append(items, serializeProduct(&p, "b2c", true))
+		items = append(items, serializeProduct(&p, "b2c", true, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Company products retrieved successfully", paginationResponse(page, pageSize, total, items))
@@ -165,7 +166,8 @@ func GetCompanyProduct(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Product retrieved successfully", serializeProduct(&product, "b2c", true))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Product retrieved successfully", serializeProduct(&product, "b2c", true, baseURL))
 }
 
 // CreateCompanyProduct handles POST /api/v1/companies/:company_id/products
@@ -192,7 +194,8 @@ func CreateCompanyProduct(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Product created successfully", serializeProduct(product, "b2c", true))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Product created successfully", serializeProduct(product, "b2c", true, baseURL))
 }
 
 // UpdateCompanyProduct handles PUT /api/v1/companies/:company_id/products/:product_id
@@ -231,7 +234,8 @@ func UpdateCompanyProduct(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Product updated successfully", serializeProduct(product, "b2c", true))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Product updated successfully", serializeProduct(product, "b2c", true, baseURL))
 }
 
 // DeleteCompanyProduct handles DELETE /api/v1/companies/:company_id/products/:product_id

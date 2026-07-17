@@ -37,7 +37,7 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 	var usersOut []models.ProfileOut
 	for _, u := range users {
 		userCopy := u
-		usersOut = append(usersOut, buildProfileOut(&userCopy))
+		usersOut = append(usersOut, buildProfileOut(&userCopy, h.cfg.BaseURL))
 	}
 
 	// TODO: Add pagination

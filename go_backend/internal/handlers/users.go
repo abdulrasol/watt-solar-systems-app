@@ -66,7 +66,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 
 	response.Success(c, http.StatusOK, "Login successful", gin.H{
 		"token": access,
-		"user":  buildProfileOut(&user),
+		"user":  buildProfileOut(&user, h.cfg.BaseURL),
 	})
 }
 
@@ -138,7 +138,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 
 	response.Success(c, http.StatusCreated, "Registration successful", gin.H{
 		"token": access,
-		"user":  buildProfileOut(&user),
+		"user":  buildProfileOut(&user, h.cfg.BaseURL),
 	})
 }
 
@@ -173,7 +173,7 @@ func (h *UserHandler) GetProfile(c *gin.Context) {
 		return
 	}
 
-	profileOut := buildProfileOut(&user)
+	profileOut := buildProfileOut(&user, h.cfg.BaseURL)
 	response.Success(c, http.StatusOK, "Profile fetched successfully", profileOut)
 }
 
@@ -285,6 +285,6 @@ func (h *UserHandler) UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	profileOut := buildProfileOut(&user)
+	profileOut := buildProfileOut(&user, h.cfg.BaseURL)
 	response.Success(c, http.StatusOK, "Profile updated successfully", profileOut)
 }

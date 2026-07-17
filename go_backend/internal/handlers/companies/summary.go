@@ -43,7 +43,8 @@ func GetCompanySummary(c *gin.Context) {
 		return
 	}
 
-	payload := BuildCompanyMemberSummary(&company, member)
+	baseURL := c.GetString("baseURL")
+	payload := BuildCompanyMemberSummary(&company, member, baseURL)
 
 	response.Success(c, http.StatusOK, "Company summary retrieved successfully", payload)
 }

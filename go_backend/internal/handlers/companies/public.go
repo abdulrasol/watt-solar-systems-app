@@ -13,6 +13,7 @@ import (
 	"watt/internal/models"
 	"watt/internal/response"
 	notifsvc "watt/internal/services/notifications"
+	"watt/internal/utils"
 )
 
 // RegisterCompany handles POST /api/companies/register
@@ -137,6 +138,7 @@ func RegisterCompany(c *gin.Context) {
 		}
 	}
 
+	baseURL := c.GetString("baseURL")
 	out := models.CompanyOut{
 		ID:          company.ID,
 		Name:        company.Name,
@@ -148,7 +150,7 @@ func RegisterCompany(c *gin.Context) {
 		AllowsB2B:   company.AllowsB2B,
 		AllowsB2C:   company.AllowsB2C,
 		Status:      company.Status,
-		LogoURL:     company.Logo,
+		LogoURL:     utils.ResolveMediaPtr(baseURL, company.Logo),
 		City:        cityOut,
 		CreatedAt:   &company.CreatedAt,
 		UpdatedAt:   &company.UpdatedAt,

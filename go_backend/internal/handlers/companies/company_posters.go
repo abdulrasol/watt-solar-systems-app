@@ -93,9 +93,10 @@ func GetCompanyPosters(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(posters))
 	for _, p := range posters {
-		items = append(items, SerializePoster(&p))
+		items = append(items, SerializePoster(&p, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Posters retrieved successfully", map[string]interface{}{
@@ -134,9 +135,10 @@ func AdminGetCompanyPosters(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(posters))
 	for _, p := range posters {
-		items = append(items, SerializePoster(&p))
+		items = append(items, SerializePoster(&p, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Posters retrieved successfully", map[string]interface{}{
@@ -207,7 +209,8 @@ func AdminReviewPoster(c *gin.Context) {
 		notifsvc.SendPosterApprovedNotification(&poster)
 	}
 
-	response.Success(c, http.StatusOK, "Poster reviewed successfully", SerializePoster(&poster))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Poster reviewed successfully", SerializePoster(&poster, baseURL))
 }
 
 // AdminExtendPoster handles POST /api/v1/admin/companies/posters/:poster_id/extend
@@ -263,7 +266,8 @@ func AdminExtendPoster(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Poster extended successfully", SerializePoster(&poster))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Poster extended successfully", SerializePoster(&poster, baseURL))
 }
 
 // UpdatePoster handles PUT /api/v1/companies/:company_id/posters/:poster_id
@@ -336,7 +340,8 @@ func UpdatePoster(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Poster updated successfully", SerializePoster(&poster))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Poster updated successfully", SerializePoster(&poster, baseURL))
 }
 
 // DeletePoster handles DELETE /api/v1/companies/:company_id/posters/:poster_id
@@ -436,5 +441,6 @@ func TogglePosterActive(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, msg, SerializePoster(&poster))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, msg, SerializePoster(&poster, baseURL))
 }

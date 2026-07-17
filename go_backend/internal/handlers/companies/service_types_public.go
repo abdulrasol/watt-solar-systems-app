@@ -35,9 +35,10 @@ func ListServiceTypes(c *gin.Context) {
 		}
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(serviceTypes))
 	for _, st := range serviceTypes {
-		items = append(items, SerializeServiceType(&st, company))
+		items = append(items, SerializeServiceType(&st, company, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Service types retrieved successfully", map[string]interface{}{

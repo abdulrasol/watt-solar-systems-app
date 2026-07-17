@@ -62,9 +62,10 @@ func AdminListCompanies(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(comps))
 	for _, comp := range comps {
-		items = append(items, SerializeCompanyForAdmin(&comp))
+		items = append(items, SerializeCompanyForAdmin(&comp, baseURL))
 	}
 
 	totalPages := (int(total) + pageSize - 1) / pageSize
@@ -114,7 +115,8 @@ func AdminGetCompany(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Company fetched successfully", SerializeCompanyForAdmin(&comp))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Company fetched successfully", SerializeCompanyForAdmin(&comp, baseURL))
 }
 
 // AdminGetCompanyServices handles GET /api/v1/admin/companies/:company_id/services
@@ -220,8 +222,9 @@ func AdminGetCompanyDetails(c *gin.Context) {
 		})
 	}
 
+	baseURL := c.GetString("baseURL")
 	response.Success(c, http.StatusOK, "Company details fetched successfully", map[string]interface{}{
-		"company":          SerializeCompanyForAdmin(&comp),
+		"company":          SerializeCompanyForAdmin(&comp, baseURL),
 		"categories":       SerializeCompanyCategories(comp.Categories),
 		"delivery_options": SerializeDeliveryOptions(comp.DeliveryOptions),
 		"contacts":         SerializeContacts(comp.Contacts),
@@ -292,9 +295,10 @@ func AdminListAdminPosters(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(posters))
 	for _, p := range posters {
-		items = append(items, SerializePoster(&p))
+		items = append(items, SerializePoster(&p, baseURL))
 	}
 
 	totalPages := (int(total) + pageSize - 1) / pageSize

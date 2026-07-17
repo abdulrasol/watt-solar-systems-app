@@ -14,6 +14,7 @@ import (
 	"watt/internal/handlers/companies"
 	"watt/internal/models"
 	"watt/internal/response"
+	"watt/internal/utils"
 )
 
 func parsePagination(c *gin.Context) (page, pageSize int) {
@@ -107,7 +108,7 @@ func serializeDevice(d *models.PushDevice) map[string]interface{} {
 	}
 }
 
-func serializeNotification(n *models.NotificationRecord) map[string]interface{} {
+func serializeNotification(n *models.NotificationRecord, baseURL string) map[string]interface{} {
 	sentAt := ""
 	if n.SentAt != nil {
 		sentAt = n.SentAt.Format("2006-01-02T15:04:05Z07:00")
@@ -115,6 +116,9 @@ func serializeNotification(n *models.NotificationRecord) map[string]interface{} 
 	data := map[string]interface{}{}
 	if len(n.Data) > 0 {
 		_ = json.Unmarshal(n.Data, &data)
+	}
+	if content, ok := data["content"].(map[string]interface{}); ok {
+		utils.ResolveMediaURLsInMap(baseURL, content)
 	}
 	return map[string]interface{}{
 		"id":         n.ID,

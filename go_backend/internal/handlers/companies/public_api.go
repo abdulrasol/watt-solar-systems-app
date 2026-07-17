@@ -10,6 +10,7 @@ import (
 	"watt/internal/database"
 	"watt/internal/models"
 	"watt/internal/response"
+	"watt/internal/utils"
 )
 
 // PublicListCompanies handles GET /api/v1/public/companies/
@@ -121,12 +122,13 @@ func PublicListCompanies(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	data := make([]map[string]interface{}, 0)
 	for _, comp := range companies {
 		if !IsCompanyPubliclyVisible(&comp, channel) {
 			continue
 		}
-		data = append(data, SerializePublicCompany(&comp))
+		data = append(data, SerializePublicCompany(&comp, baseURL))
 	}
 
 	// Adjust totalItems for visibility-filtered results if needed.
@@ -159,6 +161,7 @@ func PublicListPosters(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	data := make([]map[string]interface{}, 0, len(posters))
 	for _, p := range posters {
 		var companyName string
@@ -177,7 +180,7 @@ func PublicListPosters(c *gin.Context) {
 			"id":            p.ID,
 			"company_id":    p.CompanyID,
 			"company_name":  companyName,
-			"image_url":     p.Image,
+			"image_url":     utils.ResolveMediaURL(baseURL, p.Image),
 			"text":          p.Text,
 			"action_type":   p.ActionType,
 			"action_id":     p.ActionID,
@@ -236,7 +239,8 @@ func PublicGetCompany(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Company retrieved successfully.", SerializePublicCompany(&comp))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Company retrieved successfully.", SerializePublicCompany(&comp, baseURL))
 }
 
 // PublicListCompanyWorks handles GET /api/v1/public/companies/{company_id}/works
@@ -295,13 +299,14 @@ func PublicListCompanyWorks(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(works))
 	for _, work := range works {
 		images := make([]map[string]interface{}, 0, len(work.Images))
 		for _, img := range work.Images {
 			images = append(images, map[string]interface{}{
 				"id":        img.ID,
-				"image_url": img.Image,
+				"image_url": utils.ResolveMediaURL(baseURL, img.Image),
 			})
 		}
 		items = append(items, map[string]interface{}{

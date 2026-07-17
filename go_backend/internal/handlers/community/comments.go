@@ -28,9 +28,10 @@ func ListComments(c *gin.Context) {
 	var comments []models.Comment
 	database.DB.Preload("Author").Where("post_id = ?", postID).Order("created_at desc").Limit(pageSize).Offset(offset).Find(&comments)
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(comments))
 	for _, comment := range comments {
-		items = append(items, serializeComment(&comment))
+		items = append(items, serializeComment(&comment, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Comments retrieved successfully.", paginatedResponse(page, pageSize, total, items))
@@ -64,7 +65,8 @@ func CreateComment(c *gin.Context) {
 	}
 	database.DB.Create(&comment)
 	database.DB.Preload("Author").First(&comment, comment.ID)
-	response.Success(c, http.StatusOK, "Comment added.", serializeComment(&comment))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Comment added.", serializeComment(&comment, baseURL))
 }
 
 // UpdateComment handles PUT /api/v1/community/comments/:comment_id
@@ -96,7 +98,8 @@ func UpdateComment(c *gin.Context) {
 	comment.Content = payload.Content
 	database.DB.Save(&comment)
 	database.DB.Preload("Author").First(&comment, comment.ID)
-	response.Success(c, http.StatusOK, "Comment updated.", serializeComment(&comment))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Comment updated.", serializeComment(&comment, baseURL))
 }
 
 // DeleteComment handles DELETE /api/v1/community/comments/:comment_id

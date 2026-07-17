@@ -11,6 +11,7 @@ import (
 	"watt/internal/handlers/companies"
 	"watt/internal/models"
 	"watt/internal/response"
+	"watt/internal/utils"
 )
 
 // StoreCatalogMeta handles GET /api/v1/shop/catalog/meta
@@ -78,6 +79,7 @@ func ListStoreCompanies(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	var items []map[string]interface{}
 	for _, comp := range comps {
 		if !companies.IsCompanyPubliclyVisible(&comp, channel) {
@@ -86,7 +88,7 @@ func ListStoreCompanies(c *gin.Context) {
 		items = append(items, map[string]interface{}{
 			"id":   comp.ID,
 			"name": comp.Name,
-			"logo": comp.Logo,
+			"logo": utils.ResolveMediaPtr(baseURL, comp.Logo),
 			"city": serializeCity(comp.City),
 		})
 	}
@@ -367,12 +369,13 @@ func listPublicProducts(c *gin.Context, channel string) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	var items []map[string]interface{}
 	for _, p := range products {
 		if p.Company == nil || !companies.IsCompanyPubliclyVisible(p.Company, channel) {
 			continue
 		}
-		items = append(items, serializeProduct(&p, channel, false))
+		items = append(items, serializeProduct(&p, channel, false, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Products retrieved successfully", paginationResponse(page, pageSize, total, items))
@@ -434,5 +437,6 @@ func getPublicProduct(c *gin.Context, channel string) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Product retrieved successfully", serializeProduct(&p, channel, false))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Product retrieved successfully", serializeProduct(&p, channel, false, baseURL))
 }

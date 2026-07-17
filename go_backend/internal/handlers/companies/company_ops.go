@@ -144,7 +144,8 @@ func UpdateCompany(c *gin.Context) {
 	// Notify superusers about the update
 	notifsvc.SendCompanyUpdateNotification(&company)
 	
-	response.Success(c, http.StatusOK, "Company updated successfully", SerializeCompanyForAdmin(&company))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Company updated successfully", SerializeCompanyForAdmin(&company, baseURL))
 }
 
 // RequestSubscription handles POST /api/v1/companies/:company_id/subscription-request

@@ -176,7 +176,8 @@ func AdminCreateServiceType(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusCreated, "Service type created successfully", SerializeServiceType(&stype, nil))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusCreated, "Service type created successfully", SerializeServiceType(&stype, nil, baseURL))
 }
 
 // AdminUpdateServiceType handles PUT /api/v1/admin/companies/service-types/{id}
@@ -230,7 +231,8 @@ func AdminUpdateServiceType(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Service type updated successfully", SerializeServiceType(&stype, nil))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Service type updated successfully", SerializeServiceType(&stype, nil, baseURL))
 }
 
 // AdminDeleteServiceType handles DELETE /api/v1/admin/companies/service-types/{id}

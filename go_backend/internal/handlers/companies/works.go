@@ -13,6 +13,7 @@ import (
 	"watt/internal/database"
 	"watt/internal/models"
 	"watt/internal/response"
+	"watt/internal/utils"
 )
 
 func getCompanyFromContext(c *gin.Context) (*models.CompanyMember, bool) {
@@ -67,13 +68,14 @@ func GetCompanyWorks(c *gin.Context) {
 		Limit(pageSize).
 		Find(&works)
 
+	baseURL := c.GetString("baseURL")
 	var items []map[string]interface{}
 	for _, w := range works {
 		var images []map[string]interface{}
 		for _, img := range w.Images {
 			images = append(images, map[string]interface{}{
 				"id":         img.ID,
-				"image_url":  img.Image,
+				"image_url":  utils.ResolveMediaURL(baseURL, img.Image),
 				"created_at": img.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
 			})
 		}
@@ -151,6 +153,7 @@ func CreateCompanyWork(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	form, _ := c.MultipartForm()
 	var imagesList []map[string]interface{}
 	if form != nil {
@@ -166,7 +169,7 @@ func CreateCompanyWork(c *gin.Context) {
 				tx.Create(&imgObj)
 				imagesList = append(imagesList, map[string]interface{}{
 					"id":         imgObj.ID,
-					"image_url":  imgObj.Image,
+					"image_url":  utils.ResolveMediaURL(baseURL, imgObj.Image),
 					"created_at": time.Now().Format("2006-01-02T15:04:05Z07:00"), // close enough for response
 				})
 			}
@@ -259,11 +262,12 @@ func UpdateCompanyWork(c *gin.Context) {
 	}
 	tx.Commit()
 
+	baseURL := c.GetString("baseURL")
 	var imagesList []map[string]interface{}
 	for _, img := range work.Images {
 		imagesList = append(imagesList, map[string]interface{}{
 			"id":         img.ID,
-			"image_url":  img.Image,
+			"image_url":  utils.ResolveMediaURL(baseURL, img.Image),
 			"created_at": img.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
 		})
 	}

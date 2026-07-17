@@ -9,10 +9,11 @@ import (
 	"watt/internal/database"
 	"watt/internal/models"
 	"watt/internal/response"
+	"watt/internal/utils"
 )
 
 // BuildCompanyMemberSummary builds the company summary dictionary like Django
-func BuildCompanyMemberSummary(company *models.Company, member *models.CompanyMember) map[string]interface{} {
+func BuildCompanyMemberSummary(company *models.Company, member *models.CompanyMember, baseURL string) map[string]interface{} {
 	cityOut := SerializeCity(company.City)
 	currencyOut := SerializeCurrency(company.Currency)
 
@@ -25,7 +26,7 @@ func BuildCompanyMemberSummary(company *models.Company, member *models.CompanyMe
 		AllowsB2B:   company.AllowsB2B,
 		AllowsB2C:   company.AllowsB2C,
 		Status:      company.Status,
-		LogoURL:     company.Logo,
+		LogoURL:     utils.ResolveMediaPtr(baseURL, company.Logo),
 		City:        cityOut,
 		Currency:    currencyOut,
 		CreatedAt:   &company.CreatedAt,
@@ -219,20 +220,20 @@ func SerializeCompanyType(companyType *models.CompanyType) map[string]interface{
 }
 
 // SerializeServiceType converts a ServiceType model to a map.
-func SerializeServiceType(st *models.ServiceType, company *models.Company) map[string]interface{} {
+func SerializeServiceType(st *models.ServiceType, company *models.Company, baseURL string) map[string]interface{} {
 	return map[string]interface{}{
 		"id":          st.ID,
 		"name":        st.Name,
 		"description": st.Description,
-		"image":       st.Image,
+		"image":       utils.ResolveMediaPtr(baseURL, st.Image),
 	}
 }
 
 // SerializeServiceTypes converts a slice of ServiceType models.
-func SerializeServiceTypes(serviceTypes []*models.ServiceType, company *models.Company) []map[string]interface{} {
+func SerializeServiceTypes(serviceTypes []*models.ServiceType, company *models.Company, baseURL string) []map[string]interface{} {
 	result := make([]map[string]interface{}, 0, len(serviceTypes))
 	for _, st := range serviceTypes {
-		result = append(result, SerializeServiceType(st, company))
+		result = append(result, SerializeServiceType(st, company, baseURL))
 	}
 	return result
 }
@@ -429,7 +430,7 @@ func SerializePublicServices(services []models.CompanyService) []map[string]inte
 }
 
 // SerializePoster converts a Poster model to Django-like map
-func SerializePoster(poster *models.Poster) map[string]interface{} {
+func SerializePoster(poster *models.Poster, baseURL string) map[string]interface{} {
 	companyName := ""
 	if poster.Company.Name != "" {
 		companyName = poster.Company.Name
@@ -439,7 +440,7 @@ func SerializePoster(poster *models.Poster) map[string]interface{} {
 		"id":            poster.ID,
 		"company_id":    poster.CompanyID,
 		"company_name":  companyName,
-		"image_url":     poster.Image,
+		"image_url":     utils.ResolveMediaURL(baseURL, poster.Image),
 		"text":          poster.Text,
 		"action_type":   poster.ActionType,
 		"action_id":     poster.ActionID,
@@ -454,7 +455,7 @@ func SerializePoster(poster *models.Poster) map[string]interface{} {
 }
 
 // SerializeCompanyForAdmin returns a Django-like company object for admin responses.
-func SerializeCompanyForAdmin(company *models.Company) map[string]interface{} {
+func SerializeCompanyForAdmin(company *models.Company, baseURL string) map[string]interface{} {
 	cityOut := SerializeCity(company.City)
 	currencyOut := SerializeCurrency(company.Currency)
 
@@ -489,8 +490,8 @@ func SerializeCompanyForAdmin(company *models.Company) map[string]interface{} {
 		"allows_b2b":            company.AllowsB2B,
 		"allows_b2c":            company.AllowsB2C,
 		"status":                company.Status,
-		"logo":                  company.Logo,
-		"logo_url":              company.Logo,
+		"logo":                  utils.ResolveMediaPtr(baseURL, company.Logo),
+		"logo_url":              utils.ResolveMediaPtr(baseURL, company.Logo),
 		"city":                  cityOut,
 		"currency":              currencyOut,
 		"subscription_plan":     subPlanID,
@@ -503,7 +504,7 @@ func SerializeCompanyForAdmin(company *models.Company) map[string]interface{} {
 }
 
 // SerializePublicCompany returns a Django-like public company object.
-func SerializePublicCompany(company *models.Company) map[string]interface{} {
+func SerializePublicCompany(company *models.Company, baseURL string) map[string]interface{} {
 	var contacts []map[string]interface{}
 	for _, contact := range company.Contacts {
 		contacts = append(contacts, map[string]interface{}{
@@ -557,8 +558,8 @@ func SerializePublicCompany(company *models.Company) map[string]interface{} {
 		"id":                    company.ID,
 		"name":                  company.Name,
 		"description":           company.Description,
-		"logo":                  company.Logo,
-		"logo_url":              company.Logo,
+		"logo":                  utils.ResolveMediaPtr(baseURL, company.Logo),
+		"logo_url":              utils.ResolveMediaPtr(baseURL, company.Logo),
 		"address":               company.Address,
 		"phone":                 company.Phone,
 		"allows_b2b":            company.AllowsB2B,

@@ -57,6 +57,15 @@ func securityHeadersMiddleware() gin.HandlerFunc {
 	}
 }
 
+// baseURLMiddleware injects the configured public base URL into the request
+// context so response builders can construct full media URLs.
+func baseURLMiddleware(cfg *config.Config) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("baseURL", cfg.BaseURL)
+		c.Next()
+	}
+}
+
 // healthHandler returns the service health, including a DB connectivity check.
 func healthHandler(c *gin.Context) {
 	sqlDB, err := database.DB.DB()
@@ -97,6 +106,7 @@ func main() {
 	router.RedirectTrailingSlash = false
 	router.RedirectFixedPath = false
 	router.Use(securityHeadersMiddleware())
+	router.Use(baseURLMiddleware(cfg))
 
 	// Load the reset-password HTML template.
 	router.SetHTMLTemplate(template.Must(template.New("reset-password").Parse(handlers.ResetPasswordTemplate)))

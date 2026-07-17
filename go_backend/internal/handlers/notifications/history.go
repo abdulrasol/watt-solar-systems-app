@@ -26,9 +26,10 @@ func History(c *gin.Context) {
 	var records []models.NotificationRecord
 	database.DB.Where("target_user_id = ? AND status = ?", user.ID, "sent").Order("created_at desc").Limit(pageSize).Offset(offset).Find(&records)
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(records))
 	for _, r := range records {
-		items = append(items, serializeNotification(&r))
+		items = append(items, serializeNotification(&r, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Notification history retrieved successfully", paginationResponse(page, pageSize, total, items))

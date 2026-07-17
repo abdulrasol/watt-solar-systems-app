@@ -54,9 +54,10 @@ func AdminListProducts(c *gin.Context) {
 		return
 	}
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(products))
 	for _, p := range products {
-		items = append(items, serializeProduct(&p, "b2c", true))
+		items = append(items, serializeProduct(&p, "b2c", true, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Products retrieved successfully", paginationResponse(page, pageSize, total, items))
@@ -86,7 +87,8 @@ func AdminGetProduct(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Product retrieved successfully", serializeProduct(&product, "b2c", true))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Product retrieved successfully", serializeProduct(&product, "b2c", true, baseURL))
 }
 
 // AdminCreateProduct handles POST /api/v1/admin/shop/products
@@ -115,7 +117,8 @@ func AdminCreateProduct(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Product created successfully", serializeProduct(product, "b2c", true))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Product created successfully", serializeProduct(product, "b2c", true, baseURL))
 }
 
 // AdminUpdateProduct handles PUT /api/v1/admin/shop/products/:product_id
@@ -161,7 +164,8 @@ func AdminUpdateProduct(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Product updated successfully", serializeProduct(product, "b2c", true))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Product updated successfully", serializeProduct(product, "b2c", true, baseURL))
 }
 
 // AdminDeleteProduct handles DELETE /api/v1/admin/shop/products/:product_id

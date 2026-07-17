@@ -138,6 +138,6 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 		return
 	}
 
-	profileOut := buildProfileOut(&user)
+	profileOut := buildProfileOut(&user, h.cfg.BaseURL)
 	response.Success(c, http.StatusOK, "Success", profileOut)
 }

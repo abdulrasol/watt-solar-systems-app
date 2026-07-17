@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"watt/internal/models"
 	"watt/internal/response"
+	"watt/internal/utils"
 )
 
 func getUserID(c *gin.Context) (uint, bool) {
@@ -57,19 +58,19 @@ func parseBoolQuery(c *gin.Context, key string) *bool {
 	return nil
 }
 
-func serializeMinimalCompany(company *models.Company) map[string]interface{} {
+func serializeMinimalCompany(company *models.Company, baseURL string) map[string]interface{} {
 	if company == nil {
 		return nil
 	}
 	return map[string]interface{}{
 		"id":     company.ID,
 		"name":   company.Name,
-		"logo":   company.Logo,
+		"logo":   utils.ResolveMediaPtr(baseURL, company.Logo),
 		"phone":  company.Phone,
 	}
 }
 
-func serializeFullCompany(company *models.Company) map[string]interface{} {
+func serializeFullCompany(company *models.Company, baseURL string) map[string]interface{} {
 	if company == nil {
 		return nil
 	}
@@ -79,7 +80,7 @@ func serializeFullCompany(company *models.Company) map[string]interface{} {
 		categories = append(categories, map[string]interface{}{
 			"id":      cat.ID,
 			"name":    cat.Name,
-			"company": serializeMinimalCompany(&cat.Company),
+			"company": serializeMinimalCompany(&cat.Company, baseURL),
 			"created_at": cat.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
 		})
 	}
@@ -133,7 +134,7 @@ func serializeFullCompany(company *models.Company) map[string]interface{} {
 	}
 }
 
-func serializeProduct(product *models.Product, channel string, includeCost bool) map[string]interface{} {
+func serializeProduct(product *models.Product, channel string, includeCost bool, baseURL string) map[string]interface{} {
 	if product == nil {
 		return nil
 	}
@@ -161,7 +162,7 @@ func serializeProduct(product *models.Product, channel string, includeCost bool)
 
 	var images []string
 	for _, img := range product.Images {
-		images = append(images, img.Image)
+		images = append(images, utils.ResolveMediaURL(baseURL, img.Image))
 	}
 
 	var options []map[string]interface{}
@@ -187,7 +188,7 @@ func serializeProduct(product *models.Product, channel string, includeCost bool)
 
 	result := map[string]interface{}{
 		"id":               product.ID,
-		"company":          serializeFullCompany(product.Company),
+		"company":          serializeFullCompany(product.Company, baseURL),
 		"name":             product.Name,
 		"sku":              product.SKU,
 		"description":      product.Description,

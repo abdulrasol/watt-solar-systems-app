@@ -29,9 +29,10 @@ func ListPosts(c *gin.Context) {
 	var posts []models.Post
 	query.Limit(pageSize).Offset(offset).Find(&posts)
 
+	baseURL := c.GetString("baseURL")
 	items := make([]map[string]interface{}, 0, len(posts))
 	for _, p := range posts {
-		items = append(items, serializePost(&p))
+		items = append(items, serializePost(&p, baseURL))
 	}
 
 	response.Success(c, http.StatusOK, "Posts retrieved successfully.", paginatedResponse(page, pageSize, total, items))
@@ -46,7 +47,8 @@ func GetPost(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, http.StatusOK, "Post retrieved successfully.", serializePost(&post))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Post retrieved successfully.", serializePost(&post, baseURL))
 }
 
 // CreatePost handles POST /api/v1/community/posts/
@@ -102,7 +104,8 @@ func CreatePost(c *gin.Context) {
 	}
 	database.DB.Create(&post)
 	database.DB.Preload("Author").Preload("Company").First(&post, post.ID)
-	response.Success(c, http.StatusOK, "Post created successfully.", serializePost(&post))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Post created successfully.", serializePost(&post, baseURL))
 }
 
 // UpdatePost handles PUT /api/v1/community/posts/:post_id
@@ -141,7 +144,8 @@ func UpdatePost(c *gin.Context) {
 	}
 	database.DB.Save(&post)
 	database.DB.Preload("Author").Preload("Company").First(&post, post.ID)
-	response.Success(c, http.StatusOK, "Post updated successfully.", serializePost(&post))
+	baseURL := c.GetString("baseURL")
+	response.Success(c, http.StatusOK, "Post updated successfully.", serializePost(&post, baseURL))
 }
 
 // DeletePost handles DELETE /api/v1/community/posts/:post_id

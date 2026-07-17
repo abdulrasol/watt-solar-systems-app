@@ -12,6 +12,8 @@ services:
     environment:
       # Debug-friendly logging in development
       GIN_MODE: debug
+      # Use HTTP base URL in dev mode
+      BASE_URL: http://${LOCAL_IP:localhost}
 
   caddy:
     volumes:
