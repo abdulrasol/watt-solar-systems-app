@@ -18,7 +18,9 @@ fi
 LOCAL_IP="$(grep '^LOCAL_IP=' .env | cut -d '=' -f2- | tr -d '[:space:]' || true)"
 LOCAL_IP="${LOCAL_IP:-192.168.1.107}"
 
-mkdir -p uploads data config
+mkdir -p uploads data config certs
+
+"${SCRIPT_DIR}/generate-local-cert.sh"
 
 echo "Building and starting Watt stack..."
 docker compose pull

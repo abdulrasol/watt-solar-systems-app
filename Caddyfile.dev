@@ -1,22 +1,22 @@
 {
-    # Development Caddyfile: HTTP only on all interfaces.
-    # Use this for local debugging without HTTPS certificate warnings.
+	# Development Caddyfile: HTTP only on all interfaces.
+	# Use this for local debugging without HTTPS certificate warnings.
 }
 
 :80 {
-    encode gzip
+	encode gzip
 
-    header {
-        X-Content-Type-Options nosniff
-        X-Frame-Options DENY
-        X-XSS-Protection "1; mode=block"
-        Referrer-Policy strict-origin-when-cross-origin
-        Permissions-Policy "geolocation=(self), microphone=(), camera=()"
-        -Server
-    }
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "geolocation=(self), microphone=(), camera=()"
+		-Server
+	}
 
-    reverse_proxy backend:8080 {
-        header_up Host {host}
-        header_up X-Real-IP {remote}
-    }
+	reverse_proxy backend:8080 {
+		header_up Host {host}
+		header_up X-Real-IP {remote}
+	}
 }

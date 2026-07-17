@@ -1667,10 +1667,11 @@ cp .env.example .env
 | `go_backend/Dockerfile` | يصف كيفية بناء صورة Backend Go: يثبت الاعتماديات، يبني البرنامج، وينسخ الملفات الثابتة. |
 | `docker-compose.yml` | يربط الخدمات الثلاث معًا: MariaDB وBackend وCaddy. |
 | `docker-compose.dev.yml` | ملف إضافي لوضع التطوير (HTTP فقط + منفذ Backend 8080). |
-| `Caddyfile` | إعداد Caddy للإنتاج: HTTPS ذاتي التوقيع للـ IP. |
+| `Caddyfile` | إعداد Caddy للإنتاج: HTTPS بشهادة ذاتية التوقيع مخزنة في `certs/`. |
 | `Caddyfile.dev` | إعداد Caddy للتطوير: HTTP فقط. |
-| `scripts/deploy.sh` | يشغل وضع الإنتاج (HTTPS). |
+| `scripts/deploy.sh` | يشغل وضع الإنتاج (HTTPS) ويولّد الشهادة إذا لم تكن موجودة. |
 | `scripts/deploy-dev.sh` | يشغل وضع التطوير (HTTP). |
+| `scripts/generate-local-cert.sh` | يولّد شهادة ذاتية التوقيع لـ `LOCAL_IP`. |
 | `scripts/backup-db.sh` | يأخذ نسخة احتياطية من MariaDB. |
 | `scripts/create-admin.sh` | ينشئ أدمن إضافي يدويًا. |
 
@@ -1691,11 +1692,12 @@ ls -la .env
 
 السكربت سيقوم بما يلي:
 
-1. يحمل آخر إصدار من صور MariaDB وCaddy.
-2. يبني صورة Backend من الكود الحالي.
-3. ينشئ المجلدات `uploads/`, `data/`, `config/`.
-4. يشغل الخدمات في الخلفية.
-5. يعرض حالة الحاويات.
+1. يولّد شهادة HTTPS ذاتية التوقيع لـ `LOCAL_IP` في مجلد `certs/` (إذا لم تكن موجودة).
+2. يحمل آخر إصدار من صور MariaDB وCaddy.
+3. يبني صورة Backend من الكود الحالي.
+4. ينشئ المجلدات `uploads/`, `data/`, `config/`.
+5. يشغل الخدمات في الخلفية.
+6. يعرض حالة الحاويات.
 
 **الخطوة 3:** انتظر 10-20 ثانية ثم افتح المتصفح:
 

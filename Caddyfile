@@ -1,30 +1,31 @@
 {
-    # Production Caddyfile: HTTP on all interfaces, HTTPS on LOCAL_IP.
-    # Set LOCAL_IP in .env to the server IP or domain. Default is localhost.
-    # For public deployment with a real domain, replace "tls internal" with
-    # automatic Let's Encrypt (just remove "tls internal").
+	# Production Caddyfile for Watt.
+	# Expects a self-signed certificate at ./certs/cert.pem and ./certs/key.pem.
+	# The deploy script generates these automatically for LOCAL_IP if missing.
+	# For public deployment with a real domain, replace the tls directive with
+	# automatic Let's Encrypt (remove the tls line and the cert volume mount).
 }
 
 :80 {
-    redir https://{host}{uri}
+	redir https://{host}{uri}
 }
 
-{$LOCAL_IP:localhost}:443 {
-    tls internal
+:443 {
+	tls /app/certs/cert.pem /app/certs/key.pem
 
-    encode gzip
+	encode gzip
 
-    header {
-        X-Content-Type-Options nosniff
-        X-Frame-Options DENY
-        X-XSS-Protection "1; mode=block"
-        Referrer-Policy strict-origin-when-cross-origin
-        Permissions-Policy "geolocation=(self), microphone=(), camera=()"
-        -Server
-    }
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "geolocation=(self), microphone=(), camera=()"
+		-Server
+	}
 
-    reverse_proxy backend:8080 {
-        header_up Host {host}
-        header_up X-Real-IP {remote}
-    }
+	reverse_proxy backend:8080 {
+		header_up Host {host}
+		header_up X-Real-IP {remote}
+	}
 }

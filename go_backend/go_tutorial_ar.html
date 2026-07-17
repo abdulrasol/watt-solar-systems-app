@@ -2077,11 +2077,15 @@ Docker أداة تسمح لك بتشغيل برامجك داخل "حاويات" 
 </tr>
 <tr>
   <td><code>Caddyfile</code></td>
-  <td>إعداد Caddy: يحول HTTP إلى HTTPS ويضيف Headers أمنية ويوجه الطلبات إلى Backend.</td>
+  <td>إعداد Caddy: يحول HTTP إلى HTTPS بشهادة ذاتية التوقيع من <code>certs/</code> ويوجه الطلبات إلى Backend.</td>
 </tr>
 <tr>
   <td><code>scripts/deploy.sh</code></td>
-  <td>سكربت واحد يشغل كل شيء.</td>
+  <td>سكربت واحد يشغل كل شيء ويولّد الشهادة تلقائيًا.</td>
+</tr>
+<tr>
+  <td><code>scripts/generate-local-cert.sh</code></td>
+  <td>يولّد شهادة ذاتية التوقيع لـ <code>LOCAL_IP</code>.</td>
 </tr>
 <tr>
   <td><code>scripts/backup-db.sh</code></td>
@@ -2103,6 +2107,7 @@ ls -la .env</code></pre>
 السكربت سيقوم بما يلي:
 </p>
 <ol dir="rtl">
+  <li>يولّد شهادة HTTPS ذاتية التوقيع لـ <code>LOCAL_IP</code> في مجلد <code>certs/</code> (إذا لم تكن موجودة).</li>
   <li>يحمل آخر إصدار من صور MariaDB وCaddy.</li>
   <li>يبني صورة Backend من الكود الحالي.</li>
   <li>ينشئ المجلدات <code>uploads/</code>، <code>data/</code>، <code>config/</code>.</li>
