@@ -1,9 +1,9 @@
 {
-    # Development Caddyfile: HTTP only, no HTTPS redirect.
-    # Replace LOCAL_IP in docker-compose or set before running Caddy.
+    # Development Caddyfile: HTTP only on all interfaces.
+    # Use this for local debugging without HTTPS certificate warnings.
 }
 
-{$LOCAL_IP}:80 {
+:80 {
     encode gzip
 
     header {
@@ -18,7 +18,5 @@
     reverse_proxy backend:8080 {
         header_up Host {host}
         header_up X-Real-IP {remote}
-        header_up X-Forwarded-For {remote}
-        header_up X-Forwarded-Proto {scheme}
     }
 }

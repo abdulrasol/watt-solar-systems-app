@@ -1,13 +1,14 @@
 {
-    # Replace LOCAL_IP in docker-compose or set before running Caddy.
-    # Default local IP used for self-signed HTTPS on the LAN.
+    # Production Caddyfile: listens on all interfaces.
+    # Self-signed HTTPS for local/LAN IP access; replace with a real domain
+    # and remove "tls internal" for public Let's Encrypt certificates.
 }
 
-{$LOCAL_IP}:80 {
-    redir https://{$LOCAL_IP}{uri}
+:80 {
+    redir https://{host}{uri}
 }
 
-{$LOCAL_IP}:443 {
+:443 {
     tls internal
 
     encode gzip
@@ -24,7 +25,5 @@
     reverse_proxy backend:8080 {
         header_up Host {host}
         header_up X-Real-IP {remote}
-        header_up X-Forwarded-For {remote}
-        header_up X-Forwarded-Proto {scheme}
     }
 }
