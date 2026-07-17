@@ -4,8 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"watt/internal/database"
-	"watt/internal/models"
 	"watt/internal/response"
 )
 
@@ -42,12 +40,8 @@ func (h *UserHandler) PasswordResetRequest(c *gin.Context) {
 		return
 	}
 
-	var user models.User
-	if err := database.DB.Where("email = ?", req.Email).First(&user).Error; err == nil {
-		// TODO: Generate and send password reset token via email
-		// For now we just pretend it was sent successfully
-	}
-
+	// Password reset via email is not enabled yet. Returning the same message
+	// regardless of whether the email exists prevents user enumeration.
 	response.Success(c, http.StatusOK, "If the account exists, a password reset email has been sent.", nil)
 }
 
@@ -61,17 +55,8 @@ func (h *UserHandler) PasswordResetRequest(c *gin.Context) {
 // @Success 200 {object} response.APIResponse
 // @Router /users/password-reset/validate-token [post]
 func (h *UserHandler) ValidateResetToken(c *gin.Context) {
-	var req PasswordResetTokenSchema
-	if err := c.ShouldBindJSON(&req); err != nil {
-		msgUser := "الرمز غير صالح"
-		response.Error(c, http.StatusBadRequest, "Invalid token", &msgUser)
-		return
-	}
-
-	// TODO: Validate the token from DB/Cache
-	// Placeholder: assuming token is valid
-
-	response.Success(c, http.StatusOK, "Token is valid.", gin.H{"valid": true})
+	msgUser := "إعادة تعيين كلمة المرور غير مفعّلة حالياً"
+	response.Error(c, http.StatusServiceUnavailable, "Password reset is not enabled", &msgUser)
 }
 
 // ConfirmPasswordReset confirms and resets the password
@@ -84,15 +69,6 @@ func (h *UserHandler) ValidateResetToken(c *gin.Context) {
 // @Success 200 {object} response.APIResponse
 // @Router /users/password-reset/confirm [post]
 func (h *UserHandler) ConfirmPasswordReset(c *gin.Context) {
-	var req PasswordResetConfirmSchema
-	if err := c.ShouldBindJSON(&req); err != nil {
-		msgUser := "البيانات غير صالحة"
-		response.Error(c, http.StatusBadRequest, "Invalid request", &msgUser)
-		return
-	}
-
-	// TODO: Validate token, get user, and update password
-	// Placeholder logic
-
-	response.Success(c, http.StatusOK, "Password reset successfully.", nil)
+	msgUser := "إعادة تعيين كلمة المرور غير مفعّلة حالياً"
+	response.Error(c, http.StatusServiceUnavailable, "Password reset is not enabled", &msgUser)
 }

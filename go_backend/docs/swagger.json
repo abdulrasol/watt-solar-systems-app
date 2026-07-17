@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "SolarHub Backend API in Go",
+        "description": "Watt Backend API in Go",
         "title": "Watt API",
         "contact": {},
         "version": "1.0"

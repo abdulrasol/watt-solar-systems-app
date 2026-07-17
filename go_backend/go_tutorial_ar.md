@@ -5,10 +5,9 @@
 > **الجمهور:** مطوّر يجيد Java أو Dart أو Python/Django، ولا يعرف شيئًا عن Go.
 >
 > **سياق المشروع:**
-> - جذر المشروع: `/Users/rasol/DevsTools/codes/python/solarhub`
-> - Backend Go: `/Users/rasol/DevsTools/codes/python/solarhub/go_backend`
-> - Backend Django: `/Users/rasol/DevsTools/codes/python/solar_hub`
-> - تقرير المقارنة: `/Users/rasol/DevsTools/codes/python/solarhub/api_migration_comparison.md`
+> - جذر المشروع: `/Users/rasol/DevsTools/codes/python/watt`
+> - Backend Go: `/Users/rasol/DevsTools/codes/python/watt/go_backend`
+> - تقرير المقارنة: `/Users/rasol/DevsTools/codes/python/watt/api_migration_comparison.md`
 > - مسار Go API الأساسي: `/api/v1`
 > - Swagger: `/api/v1/docs`
 > - GoAdmin Dashboard: `/dashboard`
@@ -131,7 +130,7 @@ go run main.go
 
 ### 2.4 go.mod وإدارة الاعتماديات
 
-افتح `/Users/rasol/DevsTools/codes/python/solarhub/go_backend/go.mod`:
+افتح `/Users/rasol/DevsTools/codes/python/watt/go_backend/go.mod`:
 
 ```go
 module watt
@@ -214,7 +213,7 @@ var active bool = true
 
 ```go
 const Pi = 3.14159
-const AppName = "SolarHub"
+const AppName = "Watt"
 ```
 
 **القيم الافتراضية (Zero Values):**
@@ -1609,3 +1608,195 @@ admin.Use(middleware.SuperuserMiddleware())
 <p dir="rtl">
 <b>ختامًا:</b> Go لغة بسيطة وقوية. بفهمك للبنية العامة في هذا المشروع—Models و Schemas و Handlers و Routes و Middleware و Response—يمكنك الآن قراءة أي جزء من الكود، وتعديله، وإضافة ميزات جديدة، والمساهمة في إتمام الهجرة الكاملة من Django إلى Go.
 </p>
+
+## 12. نشر المشروع باستخدام Docker
+
+في هذا القسم سنوضح كيفية تشغيل مشروع **Watt** على جهازك أو على سيرفر محلي باستخدام Docker. التشكيلة تحتوي على ثلاث خدمات:
+
+- **MariaDB**: قاعدة البيانات.
+- **Backend (Go)**: السيرفر المكتوب بـ Go.
+- **Caddy**: البروكسي العكسي (Reverse Proxy) الذي يوفر HTTPS محليًا.
+
+### 12.1 ما هو Docker؟
+
+Docker أداة تسمح لك بتشغيل برامجك داخل "حاويات" (Containers) معزولة. بدل ما تنصب Go وMariaDB وCaddy يدويًا على جهازك، نكتب ملفات توصيف وDocker ينصب ويشغل كل شيء بنقرة واحدة.
+
+> **الفائدة:** نفس البيئة تعمل على جهازك وعلى السيرفر بدون اختلاف في الإعدادات.
+
+### 12.2 متطلبات قبل النشر
+
+1. تثبيت [Docker Desktop](https://docs.docker.com/get-docker/) (Windows/Mac) أو Docker Engine (Linux).
+2. تثبيت [Docker Compose](https://docs.docker.com/compose/install/) (يأتي مدمجًا مع Docker Desktop).
+3. معرفة IP الجهاز على الشبكة المحلية (مثال: `192.168.1.107`).
+4. نسخ المشروع على الجهاز:
+   ```bash
+   cd /Users/rasol/DevsTools/codes/watt
+   ```
+
+### 12.3 تحضير ملف البيئة .env
+
+في جذر المشروع يوجد ملف `.env.example`. انسخه إلى ملف جديد باسم `.env` وعدل القيم الحساسة:
+
+```bash
+cp .env.example .env
+```
+
+أهم المتغيرات التي يجب تغييرها:
+
+| المتغير | الوصف | مثال |
+|---------|-------|------|
+| `LOCAL_IP` | IP الجهاز على الشبكة المحلية | `192.168.1.107` |
+| `JWT_SECRET` | مفتاح سري لتوقيع توكن JWT (32 حرف على الأقل) | `change-me-to-long-random-string` |
+| `ADMIN_COOKIE_SECRET` | مفتاح سري لجلسات الأدمن | `change-me-to-another-long-random-string` |
+| `MARIADB_ROOT_PASSWORD` | كلمة سر root لـ MariaDB | `watt_root_password` |
+| `MARIADB_PASSWORD` | كلمة سر مستخدم قاعدة البيانات | `watt_password` |
+| `EMAIL_HOST_PASSWORD` | كلمة سر بريد التطبيق | `your-google-app-password` |
+| `FCM_SERVICE_ACCOUNT_FILE` | مسار ملف حساب Firebase | `/app/config/fcm-service-account.json` |
+
+> **تنبيه:** ضع ملف `fcm-service-account.json` داخل مجلد `config/` في جذر المشروع. Docker يربط هذا المجلد مع الحاوية للقراءة فقط.
+
+### 12.4 شرح ملفات Docker
+
+| الملف | الوظيفة |
+|-------|---------|
+| `go_backend/Dockerfile` | يصف كيفية بناء صورة Backend Go: يثبت الاعتماديات، يبني البرنامج، وينسخ الملفات الثابتة. |
+| `docker-compose.yml` | يربط الخدمات الثلاث معًا: MariaDB وBackend وCaddy. |
+| `Caddyfile` | إعداد Caddy: يحول HTTP إلى HTTPS ويضيف Headers أمنية ويوجه الطلبات إلى Backend. |
+| `scripts/deploy.sh` | سكربت واحد يشغل كل شيء. |
+| `scripts/backup-db.sh` | يأخذ نسخة احتياطية من MariaDB. |
+
+### 12.5 خطوات التشغيل أول مرة
+
+**الخطوة 1:** تأكد من وجود ملف `.env`:
+
+```bash
+cd /Users/rasol/DevsTools/codes/watt
+ls -la .env
+```
+
+**الخطوة 2:** شغّل سكربت النشر:
+
+```bash
+./scripts/deploy.sh
+```
+
+السكربت سيقوم بما يلي:
+
+1. يحمل آخر إصدار من صور MariaDB وCaddy.
+2. يبني صورة Backend من الكود الحالي.
+3. ينشئ المجلدات `uploads/`, `data/`, `config/`.
+4. يشغل الخدمات في الخلفية.
+5. يعرض حالة الحاويات.
+
+**الخطوة 3:** انتظر 10-20 ثانية ثم افتح المتصفح:
+
+```
+https://192.168.1.107
+```
+
+> **تنبيه المتصفح:** بما أن الشهادة موقعة ذاتيًا (Self-signed)، سيطلب المتصفح تأكيدك. اضغط على "Advanced" ثم "Proceed" أو "Accept the Risk and Continue".
+
+**الخطوة 4:** تحقق من صحة الخدمات:
+
+```bash
+docker compose ps
+```
+
+يجب أن ترى ثلاث حاويات بحالة `Up (healthy)` أو `Up`.
+
+### 12.6 الأوامر المفيدة بعد التشغيل
+
+| الأمر | الوظيفة |
+|-------|---------|
+| `docker compose logs -f` | مشاهدة السجلات (Logs) لكل الخدمات. |
+| `docker compose logs -f backend` | مشاهدة سجلات Backend فقط. |
+| `docker compose down` | إيقاف وحذف الحاويات (البيانات تبقى محفوظة). |
+| `docker compose up -d` | تشغيل الحاويات من دون بناء. |
+| `docker compose up -d --build` | إعادة بناء Backend وتشغيله (بعد تعديل الكود). |
+| `docker compose exec mariadb mariadb -u root -p` | الدخول إلى قاعدة البيانات يدويًا. |
+| `docker compose exec backend /bin/sh` | فتح طرفية داخل حاوية Backend. |
+
+### 12.7 نسخ احتياطي لقاعدة البيانات
+
+لأخذ نسخة احتياطية من MariaDB:
+
+```bash
+./scripts/backup-db.sh
+```
+
+سيُنشأ ملف داخل مجلد `backups/` بصيغة:
+
+```bash
+backups/watt_db_20250716_120000.sql
+```
+
+لاستعادة نسخة احتياطية:
+
+```bash
+docker compose exec -i mariadb mariadb -u root -p'watt_root_password' watt < backups/watt_db_20250716_120000.sql
+```
+
+### 12.8 مشاكل شائعة وحلولها
+
+| المشكلة | الحل |
+|---------|------|
+| `Error: .env file not found` | تأكد من نسخ `.env.example` إلى `.env`. |
+| `Connection refused` على `/api/v1/health` | انتظر قليلًا ثم أعد التشغيل: `docker compose restart backend`. |
+| MariaDB لا تبدأ | تأكد من عدم وجود خدمة MariaDB أخرى تشغل المنفذ 3306 على الجهاز. |
+| لا يمكن الوصول من جهاز آخر على الشبكة | تأكد من أن جدار الحماية (Firewall) يسمح بالمنفذين 80 و 443. |
+| شهادة HTTPS غير موثوقة | طبيعي للـ IP المحلي؛ اضغط "Proceed" في المتصفح. |
+| تعديل الكود لم ينعكس | يجب إعادة البناء: `docker compose up -d --build`. |
+
+### 12.9 وضع التطوير HTTP فقط
+
+في بيئة التطوير قد تواجه مشكلة مع شهادة HTTPS الموقعة ذاتيًا (Self-signed) خاصةً عند الاختبار من المتصفح أو من أجهزة أخرى على الشبكة. لذلك وفرنا وضع تطوير يعمل بـ HTTP فقط ويفتح منفذ Backend مباشرة على الجهاز.
+
+**ملفات الوضع التطويري:**
+
+| الملف | الوظيفة |
+|-------|---------|
+| `docker-compose.dev.yml` | يفتح المنفذ `8080:8080` للـ Backend ويستخدم `Caddyfile.dev`. |
+| `Caddyfile.dev` | يخدم المشروع عبر HTTP فقط بدون إعادة توجيه إلى HTTPS. |
+| `scripts/deploy-dev.sh` | سكربت تشغيل وضع التطوير. |
+
+**تشغيل وضع التطوير:**
+
+```bash
+./scripts/deploy-dev.sh
+```
+
+أو يدويًا:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+```
+
+**روابط الاختبار في وضع التطوير:**
+
+| الرابط | الوصف |
+|--------|-------|
+| `http://192.168.1.100:8080/api/v1/health` | فحص صحة Backend مباشرة. |
+| `http://192.168.1.100:8080/admin/login` | صفحة تسجيل دخول الأدمن. |
+| `http://192.168.1.100/admin/login` | نفس الصفحة عبر Caddy HTTP. |
+
+> **تنبيه:** لا تستخدم وضع HTTP إلا في الشبكة المحلية أثناء التطوير. في الإنتاج استخدم `./scripts/deploy.sh` مع HTTPS.
+
+**التبديل إلى الإنتاج (HTTPS):**
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+./scripts/deploy.sh
+```
+
+**عند شراء دومين لاحقًا:**
+
+1. حدّث متغير `LOCAL_IP` أو أضف `DOMAIN=example.com` في ملف `.env`.
+2. عدّل `Caddyfile` ليستخدم الدومين بدل IP:
+   ```text
+   example.com:443 {
+       tls your-email@example.com
+       reverse_proxy backend:8080
+   }
+   ```
+3. أعد تشغيل: `./scripts/deploy.sh`.
+

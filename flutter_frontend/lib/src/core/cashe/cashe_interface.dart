@@ -10,6 +10,11 @@ abstract class CacheBox {
 
 abstract class CasheInterface {
   late final CacheBox box;
+
+  /// Loads sensitive auth data (token, user) from secure storage into memory.
+  /// Call once during app startup before using [token()] or [user()].
+  Future<void> loadAuthFromSecureStorage();
+
   Future<void> save(String key, dynamic value);
   dynamic get(String key); // Changed to synchronous
   Future<void> delete(String key);

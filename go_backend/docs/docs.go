@@ -31,7 +31,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Watt API",
-	Description:      "SolarHub Backend API in Go",
+	Description:      "Watt Backend API in Go",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -1,7 +1,7 @@
 basePath: /api/v1
 info:
   contact: {}
-  description: SolarHub Backend API in Go
+  description: Watt Backend API in Go
   title: Watt API
   version: "1.0"
 paths: {}

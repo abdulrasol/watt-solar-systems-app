@@ -3,9 +3,25 @@ package config
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
+
+func parseStringSlice(raw string) []string {
+	if raw == "" {
+		return nil
+	}
+	parts := strings.Split(raw, ",")
+	result := make([]string, 0, len(parts))
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p != "" {
+			result = append(result, p)
+		}
+	}
+	return result
+}
 
 type Config struct {
 	FCMProjectID          string
@@ -15,6 +31,8 @@ type Config struct {
 	Port                  string
 	DatabaseURL           string
 	JWTSecret             string
+	AdminCookieSecret     string
+	CORSAllowedOrigins    []string
 }
 
 func LoadConfig() *Config {
@@ -31,13 +49,31 @@ func LoadConfig() *Config {
 
 	dbUrl := os.Getenv("DATABASE_URL")
 	if dbUrl == "" {
-		dbUrl = "solarhub_go.sqlite3"
+		dbUrl = "watt.sqlite3"
 	}
 
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
-		// Default to the same fallback Django uses so JWTs are interchangeable in dev.
-		jwtSecret = "django-insecure-x)8hqn4ff$+!(z@(57be8y5t!c239=2$3i8cctpplkpiz18%d9"
+		log.Fatal("FATAL: JWT_SECRET environment variable is required. Set a strong secret (at least 32 characters) in your .env file.")
+	}
+	if len(jwtSecret) < 32 {
+		log.Fatalf("FATAL: JWT_SECRET must be at least 32 characters long, got %d characters.", len(jwtSecret))
+	}
+
+	adminCookieSecret := os.Getenv("ADMIN_COOKIE_SECRET")
+	if adminCookieSecret == "" {
+		log.Fatal("FATAL: ADMIN_COOKIE_SECRET environment variable is required. Set a strong secret (at least 32 characters) in your .env file.")
+	}
+	if len(adminCookieSecret) < 32 {
+		log.Fatalf("FATAL: ADMIN_COOKIE_SECRET must be at least 32 characters long, got %d characters.", len(adminCookieSecret))
+	}
+
+	corsOrigins := parseStringSlice(os.Getenv("CORS_ALLOWED_ORIGINS"))
+	if len(corsOrigins) == 0 {
+		if os.Getenv("GIN_MODE") == "release" {
+			log.Fatal("FATAL: CORS_ALLOWED_ORIGINS environment variable is required in release mode. Example: https://watt.example.com,https://admin.watt.example.com")
+		}
+		corsOrigins = []string{"http://localhost:*", "http://127.0.0.1:*"}
 	}
 
 	return &Config{
@@ -48,5 +84,7 @@ func LoadConfig() *Config {
 		Port:                  port,
 		DatabaseURL:           dbUrl,
 		JWTSecret:             jwtSecret,
+		AdminCookieSecret:     adminCookieSecret,
+		CORSAllowedOrigins:    corsOrigins,
 	}
 }

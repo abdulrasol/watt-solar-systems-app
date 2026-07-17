@@ -70,7 +70,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         await _hydrateCachedConfigsIfAvailable(configProviderNotifier);
       }
 
-      final bootstrap = getIt<PrepareStartupUseCase>()();
+      final bootstrap = await getIt<PrepareStartupUseCase>()();
       await _ensureMinimumSplashTime(splashStartedAt);
 
       if (!mounted) return;

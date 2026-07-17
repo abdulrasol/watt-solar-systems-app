@@ -48,11 +48,11 @@ void main() async {
   setupDependencies();
   await getIt<CasheInterface>().deleteByPrefix(legacyHttpCachePrefix);
   await getIt.allReady();
-  runApp(const ProviderScope(child: SolarHub()));
+  runApp(const ProviderScope(child: Watt()));
 }
 
-class SolarHub extends ConsumerWidget {
-  const SolarHub({super.key});
+class Watt extends ConsumerWidget {
+  const Watt({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

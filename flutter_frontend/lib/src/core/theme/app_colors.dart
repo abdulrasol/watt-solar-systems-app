@@ -5,7 +5,7 @@ import 'package:watt/src/features/settings/presentation/providers/settings_provi
 /// Centralized color palette for the Watt application.
 ///
 /// Follows the same pattern as the reference `meaad` project, adapted to
-/// SolarHub's existing teal primary color.
+/// Watt's existing teal primary color.
 @immutable
 class AppColors {
   final Color primary;

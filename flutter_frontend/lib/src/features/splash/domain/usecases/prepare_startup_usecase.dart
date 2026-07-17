@@ -10,7 +10,8 @@ class PrepareStartupUseCase {
   PrepareStartupUseCase({CasheInterface? cache})
     : _cache = cache ?? getIt<CasheInterface>();
 
-  StartupBootstrapResult call() {
+  Future<StartupBootstrapResult> call() async {
+    await _cache.loadAuthFromSecureStorage();
     final user = _cache.user();
     final hasValidSession = _cache.token() != null && user != null;
     final settings = _cache.settings();

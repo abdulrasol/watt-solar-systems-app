@@ -28,6 +28,8 @@ class _FakeCache implements CasheInterface {
   @override
   late final CacheBox box;
   @override
+  Future<void> loadAuthFromSecureStorage() async {}
+  @override
   Future<void> clear() async {}
   @override
   Future<void> delete(String key) async {}

@@ -2,7 +2,7 @@
 
 ## Summary
 
-I've successfully built a complete admin interface for sending push notifications to all users in your SolarHub Flutter app.
+I've successfully built a complete admin interface for sending push notifications to all users in your Watt Flutter app.
 
 ---
 

@@ -101,6 +101,8 @@ class _FakeCache implements CasheInterface {
   final Map<String, dynamic> _values = <String, dynamic>{};
 
   @override
+  Future<void> loadAuthFromSecureStorage() async {}
+  @override
   Future<void> clear() async => _values.clear();
 
   @override

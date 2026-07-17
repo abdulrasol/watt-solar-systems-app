@@ -286,6 +286,16 @@
 <a href="#111-قايمة-اهم-الـ-endpoints" class="toc-item level-3" data-text="11.1 قائمة أهم الـ endpoints">11.1 قائمة أهم الـ endpoints</a>
 <a href="#112-مصادر-للتعمق" class="toc-item level-3" data-text="11.2 مصادر للتعمق">11.2 مصادر للتعمق</a>
 <a href="#113-قاموس-المصطلحات" class="toc-item level-3" data-text="11.3 قاموس المصطلحات">11.3 قاموس المصطلحات</a>
+<a href="#12-نشر-المشروع-باستخدام-docker" class="toc-item level-2" data-text="12. نشر المشروع باستخدام docker">12. نشر المشروع باستخدام Docker</a>
+<a href="#121-ما-هو-docker" class="toc-item level-3" data-text="12.1 ما هو docker؟">12.1 ما هو Docker؟</a>
+<a href="#122-متطلبات-قبل-النشر" class="toc-item level-3" data-text="12.2 متطلبات قبل النشر">12.2 متطلبات قبل النشر</a>
+<a href="#123-تحضير-ملف-البيئة-env" class="toc-item level-3" data-text="12.3 تحضير ملف البيئة env">12.3 تحضير ملف البيئة .env</a>
+<a href="#124-شرح-ملفات-docker" class="toc-item level-3" data-text="12.4 شرح ملفات docker">12.4 شرح ملفات Docker</a>
+<a href="#125-خطوات-التشغيل-اول-مرة" class="toc-item level-3" data-text="12.5 خطوات التشغيل أول مرة">12.5 خطوات التشغيل أول مرة</a>
+<a href="#126-الاوامر-المفيدة-بعد-التشغيل" class="toc-item level-3" data-text="12.6 الأوامر المفيدة بعد التشغيل">12.6 الأوامر المفيدة بعد التشغيل</a>
+<a href="#127-نسخ-احتياطي-لقاعدة-البيانات" class="toc-item level-3" data-text="12.7 نسخ احتياطي لقاعدة البيانات">12.7 نسخ احتياطي لقاعدة البيانات</a>
+<a href="#128-مشاكل-شائعة-وحلولها" class="toc-item level-3" data-text="12.8 مشاكل شائعة وحلولها">12.8 مشاكل شائعة وحلولها</a>
+<a href="#129-وضع-التطوير-http-فقط" class="toc-item level-3" data-text="12.9 وضع التطوير http فقط">12.9 وضع التطوير HTTP فقط</a>
       </nav>
     </aside>
     <main class="content">
@@ -297,10 +307,10 @@
   <p><strong>الجمهور:</strong> مطوّر يجيد Java أو Dart أو Python/Django، ولا يعرف شيئًا عن Go.</p>
   
   <p><strong>سياق المشروع:</strong><br />
-  - جذر المشروع: <code>/Users/rasol/DevsTools/codes/python/solarhub</code><br />
-  - Backend Go: <code>/Users/rasol/DevsTools/codes/python/solarhub/go_backend</code><br />
+  - جذر المشروع: <code>/Users/rasol/DevsTools/codes/python/watt</code><br />
+  - Backend Go: <code>/Users/rasol/DevsTools/codes/python/watt/go_backend</code><br />
   - Backend Django: <code>/Users/rasol/DevsTools/codes/python/solar_hub</code><br />
-  - تقرير المقارنة: <code>/Users/rasol/DevsTools/codes/python/solarhub/api_migration_comparison.md</code><br />
+  - تقرير المقارنة: <code>/Users/rasol/DevsTools/codes/python/watt/api_migration_comparison.md</code><br />
   - مسار Go API الأساسي: <code>/api/v1</code><br />
   - Swagger: <code>/api/v1/docs</code><br />
   - GoAdmin Dashboard: <code>/dashboard</code><br />
@@ -457,7 +467,7 @@ func main() {
 
 <h3 id="24-gomod-وادارة-الاعتماديات">2.4 go.mod وإدارة الاعتماديات</h3>
 
-<p>افتح <code>/Users/rasol/DevsTools/codes/python/solarhub/go_backend/go.mod</code>:</p>
+<p>افتح <code>/Users/rasol/DevsTools/codes/python/watt/go_backend/go.mod</code>:</p>
 
 <pre><code class="language-go">module watt
 
@@ -563,7 +573,7 @@ var active bool = true</code></pre>
 <p>الثوابت:</p>
 
 <pre><code class="language-go">const Pi = 3.14159
-const AppName = &quot;SolarHub&quot;</code></pre>
+const AppName = &quot;Watt&quot;</code></pre>
 
 <p><strong>القيم الافتراضية (Zero Values):</strong></p>
 
@@ -1920,6 +1930,349 @@ admin.Use(middleware.SuperuserMiddleware())
 <p dir="rtl">
 <b>ختامًا:</b> Go لغة بسيطة وقوية. بفهمك للبنية العامة في هذا المشروع—Models و Schemas و Handlers و Routes و Middleware و Response—يمكنك الآن قراءة أي جزء من الكود، وتعديله، وإضافة ميزات جديدة، والمساهمة في إتمام الهجرة الكاملة من Django إلى Go.
 </p>
+
+<h2 id="12-نشر-المشروع-باستخدام-docker">12. نشر المشروع باستخدام Docker</h2>
+
+<p dir="rtl">
+في هذا القسم سنوضح كيفية تشغيل مشروع <strong>Watt</strong> على جهازك أو على سيرفر محلي باستخدام Docker. التشكيلة تحتوي على ثلاث خدمات:
+</p>
+
+<ul dir="rtl">
+  <li><strong>MariaDB</strong>: قاعدة البيانات.</li>
+  <li><strong>Backend (Go)</strong>: السيرفر المكتوب بـ Go.</li>
+  <li><strong>Caddy</strong>: البروكسي العكسي (Reverse Proxy) الذي يوفر HTTPS محليًا.</li>
+</ul>
+
+<h3 id="121-ما-هو-docker">12.1 ما هو Docker؟</h3>
+
+<p dir="rtl">
+Docker أداة تسمح لك بتشغيل برامجك داخل "حاويات" (Containers) معزولة. بدل ما تنصب Go وMariaDB وCaddy يدويًا على جهازك، نكتب ملفات توصيف وDocker ينصب ويشغل كل شيء بنقرة واحدة.
+</p>
+
+<div style="background: var(--success-bg); color: var(--success-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>الفائدة:</strong> نفس البيئة تعمل على جهازك وعلى السيرفر بدون اختلاف في الإعدادات.
+</div>
+
+<h3 id="122-متطلبات-قبل-النشر">12.2 متطلبات قبل النشر</h3>
+
+<ol dir="rtl">
+  <li>تثبيت <a href="https://docs.docker.com/get-docker/" target="_blank">Docker Desktop</a> (Windows/Mac) أو Docker Engine (Linux).</li>
+  <li>تثبيت <a href="https://docs.docker.com/compose/install/" target="_blank">Docker Compose</a> (يأتي مدمجًا مع Docker Desktop).</li>
+  <li>معرفة IP الجهاز على الشبكة المحلية (مثال: <code>192.168.1.107</code>).</li>
+  <li>نسخ المشروع على الجهاز:<br />
+    <pre><code class="language-bash">cd /Users/rasol/DevsTools/codes/watt</code></pre>
+  </li>
+</ol>
+
+<h3 id="123-تحضير-ملف-البيئة-env">12.3 تحضير ملف البيئة .env</h3>
+
+<p dir="rtl">
+في جذر المشروع يوجد ملف <code>.env.example</code>. انسخه إلى ملف جديد باسم <code>.env</code> وعدل القيم الحساسة:
+</p>
+
+<pre><code class="language-bash">cp .env.example .env</code></pre>
+
+<p dir="rtl">
+أهم المتغيرات التي يجب تغييرها:
+</p>
+
+<table>
+<thead>
+<tr>
+  <th>المتغير</th>
+  <th>الوصف</th>
+  <th>مثال</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>LOCAL_IP</code></td>
+  <td>IP الجهاز على الشبكة المحلية</td>
+  <td><code>192.168.1.107</code></td>
+</tr>
+<tr>
+  <td><code>JWT_SECRET</code></td>
+  <td>مفتاح سري لتوقيع توكن JWT (32 حرف على الأقل)</td>
+  <td><code>change-me-to-long-random-string</code></td>
+</tr>
+<tr>
+  <td><code>ADMIN_COOKIE_SECRET</code></td>
+  <td>مفتاح سري لجلسات الأدمن</td>
+  <td><code>change-me-to-another-long-random-string</code></td>
+</tr>
+<tr>
+  <td><code>MARIADB_ROOT_PASSWORD</code></td>
+  <td>كلمة سر root لـ MariaDB</td>
+  <td><code>watt_root_password</code></td>
+</tr>
+<tr>
+  <td><code>MARIADB_PASSWORD</code></td>
+  <td>كلمة سر مستخدم قاعدة البيانات</td>
+  <td><code>watt_password</code></td>
+</tr>
+<tr>
+  <td><code>EMAIL_HOST_PASSWORD</code></td>
+  <td>كلمة سر بريد التطبيق</td>
+  <td><code>your-google-app-password</code></td>
+</tr>
+<tr>
+  <td><code>FCM_SERVICE_ACCOUNT_FILE</code></td>
+  <td>مسار ملف حساب Firebase</td>
+  <td><code>/app/config/fcm-service-account.json</code></td>
+</tr>
+</tbody>
+</table>
+
+<div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>تنبيه:</strong> ضع ملف <code>fcm-service-account.json</code> داخل مجلد <code>config/</code> في جذر المشروع. Docker يربط هذا المجلد مع الحاوية للقراءة فقط.
+</div>
+
+<h3 id="124-شرح-ملفات-docker">12.4 شرح ملفات Docker</h3>
+
+<table>
+<thead>
+<tr>
+  <th>الملف</th>
+  <th>الوظيفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>go_backend/Dockerfile</code></td>
+  <td>يصف كيفية بناء صورة Backend Go: يثبت الاعتماديات، يبني البرنامج، وينسخ الملفات الثابتة.</td>
+</tr>
+<tr>
+  <td><code>docker-compose.yml</code></td>
+  <td>يربط الخدمات الثلاث معًا: MariaDB وBackend وCaddy.</td>
+</tr>
+<tr>
+  <td><code>Caddyfile</code></td>
+  <td>إعداد Caddy: يحول HTTP إلى HTTPS ويضيف Headers أمنية ويوجه الطلبات إلى Backend.</td>
+</tr>
+<tr>
+  <td><code>scripts/deploy.sh</code></td>
+  <td>سكربت واحد يشغل كل شيء.</td>
+</tr>
+<tr>
+  <td><code>scripts/backup-db.sh</code></td>
+  <td>يأخذ نسخة احتياطية من MariaDB.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="125-خطوات-التشغيل-اول-مرة">12.5 خطوات التشغيل أول مرة</h3>
+
+<p dir="rtl"><strong>الخطوة 1:</strong> تأكد من وجود ملف <code>.env</code>:</p>
+<pre><code class="language-bash">cd /Users/rasol/DevsTools/codes/watt
+ls -la .env</code></pre>
+
+<p dir="rtl"><strong>الخطوة 2:</strong> شغّل سكربت النشر:</p>
+<pre><code class="language-bash">./scripts/deploy.sh</code></pre>
+
+<p dir="rtl">
+السكربت سيقوم بما يلي:
+</p>
+<ol dir="rtl">
+  <li>يحمل آخر إصدار من صور MariaDB وCaddy.</li>
+  <li>يبني صورة Backend من الكود الحالي.</li>
+  <li>ينشئ المجلدات <code>uploads/</code>، <code>data/</code>، <code>config/</code>.</li>
+  <li>يشغل الخدمات في الخلفية.</li>
+  <li>يعرض حالة الحاويات.</li>
+</ol>
+
+<p dir="rtl"><strong>الخطوة 3:</strong> انتظر 10-20 ثانية ثم افتح المتصفح:</p>
+<pre><code class="language-bash">https://192.168.1.107</code></pre>
+
+<div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>تنبيه المتصفح:</strong> بما أن الشهادة موقعة ذاتيًا (Self-signed)، سيطلب المتصفح تأكيدك. اضغط على "Advanced" ثم "Proceed" أو "Accept the Risk and Continue".
+</div>
+
+<p dir="rtl"><strong>الخطوة 4:</strong> تحقق من صحة الخدمات:</p>
+<pre><code class="language-bash">docker compose ps</code></pre>
+
+<p dir="rtl">
+يجب أن ترى ثلاث حاويات بحالة <code>Up (healthy)</code> أو <code>Up</code>.
+</p>
+
+<h3 id="126-الاوامر-المفيدة-بعد-التشغيل">12.6 الأوامر المفيدة بعد التشغيل</h3>
+
+<table>
+<thead>
+<tr>
+  <th>الأمر</th>
+  <th>الوظيفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>docker compose logs -f</code></td>
+  <td>مشاهدة السجلات (Logs) لكل الخدمات.</td>
+</tr>
+<tr>
+  <td><code>docker compose logs -f backend</code></td>
+  <td>مشاهدة سجلات Backend فقط.</td>
+</tr>
+<tr>
+  <td><code>docker compose down</code></td>
+  <td>إيقاف وحذف الحاويات (البيانات تبقى محفوظة).</td>
+</tr>
+<tr>
+  <td><code>docker compose up -d</code></td>
+  <td>تشغيل الحاويات من دون بناء.</td>
+</tr>
+<tr>
+  <td><code>docker compose up -d --build</code></td>
+  <td>إعادة بناء Backend وتشغيله (بعد تعديل الكود).</td>
+</tr>
+<tr>
+  <td><code>docker compose exec mariadb mariadb -u root -p</code></td>
+  <td>الدخول إلى قاعدة البيانات يدويًا.</td>
+</tr>
+<tr>
+  <td><code>docker compose exec backend /bin/sh</code></td>
+  <td>فتح طرفية داخل حاوية Backend.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="127-نسخ-احتياطي-لقاعدة-البيانات">12.7 نسخ احتياطي لقاعدة البيانات</h3>
+
+<p dir="rtl">
+لأخذ نسخة احتياطية من MariaDB:
+</p>
+
+<pre><code class="language-bash">./scripts/backup-db.sh</code></pre>
+
+<p dir="rtl">
+سيُنشأ ملف داخل مجلد <code>backups/</code> بصيغة:
+</p>
+<pre><code class="language-bash">backups/watt_db_20250716_120000.sql</code></pre>
+
+<p dir="rtl">
+لاستعادة نسخة احتياطية:
+</p>
+<pre><code class="language-bash">docker compose exec -i mariadb mariadb -u root -p'watt_root_password' watt &lt; backups/watt_db_20250716_120000.sql</code></pre>
+
+<h3 id="128-مشاكل-شائعة-وحلولها">12.8 مشاكل شائعة وحلولها</h3>
+
+<table>
+<thead>
+<tr>
+  <th>المشكلة</th>
+  <th>الحل</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>Error: .env file not found</code></td>
+  <td>تأكد من نسخ <code>.env.example</code> إلى <code>.env</code>.</td>
+</tr>
+<tr>
+  <td><code>Connection refused</code> على <code>/api/v1/health</code></td>
+  <td>انتظر قليلًا ثم أعد التشغيل: <code>docker compose restart backend</code>.</td>
+</tr>
+<tr>
+  <td>MariaDB لا تبدأ</td>
+  <td>تأكد من عدم وجود خدمة MariaDB أخرى تشغل المنفذ 3306 على الجهاز.</td>
+</tr>
+<tr>
+  <td>لا يمكن الوصول من جهاز آخر على الشبكة</td>
+  <td>تأكد من أن جدار الحماية (Firewall) يسمح بالمنفذين 80 و 443.</td>
+</tr>
+<tr>
+  <td>شهادة HTTPS غير موثوقة</td>
+  <td>طبيعي للـ IP المحلي؛ اضغط "Proceed" في المتصفح.</td>
+</tr>
+<tr>
+  <td>تعديل الكود لم ينعكس</td>
+  <td>يجب إعادة البناء: <code>docker compose up -d --build</code>.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="129-وضع-التطوير-http-فقط">12.9 وضع التطوير HTTP فقط</h3>
+
+<p dir="rtl">
+في بيئة التطوير قد تواجه مشكلة مع شهادة HTTPS الموقعة ذاتيًا (Self-signed) خاصةً عند الاختبار من المتصفح أو من أجهزة أخرى على الشبكة. لذلك وفرنا وضع تطوير يعمل بـ HTTP فقط ويفتح منفذ Backend مباشرة على الجهاز.
+</p>
+
+<p dir="rtl"><strong>ملفات الوضع التطويري:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>الملف</th>
+  <th>الوظيفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>docker-compose.dev.yml</code></td>
+  <td>يفتح المنفذ <code>8080:8080</code> للـ Backend ويستخدم <code>Caddyfile.dev</code>.</td>
+</tr>
+<tr>
+  <td><code>Caddyfile.dev</code></td>
+  <td>يخدم المشروع عبر HTTP فقط بدون إعادة توجيه إلى HTTPS.</td>
+</tr>
+<tr>
+  <td><code>scripts/deploy-dev.sh</code></td>
+  <td>سكربت تشغيل وضع التطوير.</td>
+</tr>
+</tbody>
+</table>
+
+<p dir="rtl"><strong>تشغيل وضع التطوير:</strong></p>
+<pre><code class="language-bash">./scripts/deploy-dev.sh</code></pre>
+
+<p dir="rtl">
+أو يدويًا:
+</p>
+<pre><code class="language-bash">docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build</code></pre>
+
+<p dir="rtl"><strong>روابط الاختبار في وضع التطوير:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>الرابط</th>
+  <th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>http://192.168.1.100:8080/api/v1/health</code></td>
+  <td>فحص صحة Backend مباشرة.</td>
+</tr>
+<tr>
+  <td><code>http://192.168.1.100:8080/admin/login</code></td>
+  <td>صفحة تسجيل دخول الأدمن.</td>
+</tr>
+<tr>
+  <td><code>http://192.168.1.100/admin/login</code></td>
+  <td>نفس الصفحة عبر Caddy HTTP.</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>تنبيه:</strong> لا تستخدم وضع HTTP إلا في الشبكة المحلية أثناء التطوير. في الإنتاج استخدم <code>./scripts/deploy.sh</code> مع HTTPS.
+</div>
+
+<p dir="rtl"><strong>التبديل إلى الإنتاج (HTTPS):</strong></p>
+<pre><code class="language-bash">docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+./scripts/deploy.sh</code></pre>
+
+<p dir="rtl"><strong>عند شراء دومين لاحقًا:</strong></p>
+<ol dir="rtl">
+  <li>حدّث متغير <code>LOCAL_IP</code> أو أضف <code>DOMAIN=example.com</code> في ملف <code>.env</code>.</li>
+  <li>عدّل <code>Caddyfile</code> ليستخدم الدومين بدل IP:
+    <pre><code class="language-text">example.com:443 {
+    tls your-email@example.com
+    reverse_proxy backend:8080
+}</code></pre>
+  </li>
+  <li>أعد تشغيل: <code>./scripts/deploy.sh</code>.</li>
+</ol>
 
       <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); text-align: center;">
         تم إنشاء هذا الدليل تلقائيًا من <code>go_tutorial_ar.md</code>

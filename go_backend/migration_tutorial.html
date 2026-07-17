@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل هجرة SolarHub إلى NestJS</title>
+    <title>دليل هجرة Watt إلى NestJS</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts for beautiful Arabic typography -->
@@ -52,7 +52,7 @@
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div>
                 <h1 class="text-2xl font-bold flex items-center gap-2">
-                    <span class="text-primary">SolarHub</span> Migration Guide
+                    <span class="text-primary">Watt</span> Migration Guide
                 </h1>
                 <p class="text-sm text-slate-300 mt-1">من Django (Python) إلى NestJS (TypeScript)</p>
             </div>
@@ -290,7 +290,7 @@ export class UsersService {
                 </div>
                 <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
                     <p>
-                        هذا الملف يعتبر المرجع الأساسي والدليل التعليمي الخاص بك لمشروع <strong>SolarHub</strong>. سيتم تحديث هذا الملف برمجياً مع كل خطوة ننجزها، ليحتوي على شرح الأكواد، القرارات المعمارية، وكيفية توافق الكود الجديد مع كود جانغو القديم.
+                        هذا الملف يعتبر المرجع الأساسي والدليل التعليمي الخاص بك لمشروع <strong>Watt</strong>. سيتم تحديث هذا الملف برمجياً مع كل خطوة ننجزها، ليحتوي على شرح الأكواد، القرارات المعمارية، وكيفية توافق الكود الجديد مع كود جانغو القديم.
                     </p>
                     
                     <h3 class="text-lg font-bold text-slate-800 mt-6 mb-3">القواعد الصارمة التي نتبعها:</h3>
@@ -333,12 +333,12 @@ export class UsersService {
                 <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
                     <h3 class="text-lg font-bold text-slate-800 mt-4 mb-2">1. أمر إنشاء المشروع</h3>
                     <p>لإنشاء المشروع نستخدم أداة <code>@nestjs/cli</code> ونحدد <code>pnpm</code> كمدير للحزم لضمان السرعة والتنظيم:</p>
-                    <pre><code class="language-bash">npx @nestjs/cli new solarhub-nestjs --package-manager pnpm</code></pre>
+                    <pre><code class="language-bash">npx @nestjs/cli new watt-nestjs --package-manager pnpm</code></pre>
                     
                     <h3 class="text-lg font-bold text-slate-800 mt-6 mb-2">2. أوامر توليد الوحدات (Modules)</h3>
                     <p>في NestJS، لا نكتب الملفات يدوياً من الصفر. نستخدم الـ CLI لتوليد الهيكلة الصحيحة. مثلاً، لتوليد تطبيق (Module) خاص بالمستخدمين:</p>
                     <pre><code class="language-bash"># الدخول لمجلد المشروع
-cd solarhub-nestjs
+cd watt-nestjs
 
 # توليد الوحدة (Module)
 npx nest g module users
@@ -398,7 +398,7 @@ npx nest g service users</code></pre>
                     </p>
                     <h3 class="text-lg font-bold text-slate-800 mt-4 mb-2">أوامر التثبيت:</h3>
                     <pre><code class="language-bash"># تأكد أنك داخل مجلد المشروع
-cd solarhub-nestjs
+cd watt-nestjs
 
 # تثبيت Prisma
 pnpm add -D prisma
@@ -878,7 +878,7 @@ async function bootstrap() {
   // === إعدادات Swagger ===
   const config = new DocumentBuilder()
     .setTitle('Watt API') // عنوان التوثيق
-    .setDescription('The SolarHub Backend API description') // وصف بسيط
+    .setDescription('The Watt Backend API description') // وصف بسيط
     .setVersion('1.0') // الإصدار
     .addBearerAuth() // 👈 هذه مهمة جداً لكي يظهر زر إدخال التوكن (JWT) في الواجهة!
     .build();
@@ -1188,8 +1188,8 @@ async requestPasswordReset(@Body() body: PasswordResetRequestDto) {
                     <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">2. الهيكلية الجديدة للمشروع</h3>
                     <p>المشروع الآن مقسم إلى مجلدين رئيسيين جنباً إلى جنب:</p>
                     <ul class="list-none space-y-2 mb-6">
-                        <li class="flex items-center gap-2"><span class="bg-slate-800 text-white px-2 py-1 rounded font-bold text-xs">solarhub-nestjs</span> <span class="text-slate-700">هذا هو السيرفر الأساسي. يعمل كـ API لخدمة تطبيق فلاتر ولوحة التحكم.</span></li>
-                        <li class="flex items-center gap-2"><span class="bg-blue-500 text-white px-2 py-1 rounded font-bold text-xs">solarhub-admin</span> <span class="text-slate-700">هذا هو مجلد لوحة التحكم. تطبيق React مستقل يتخاطب مع الباك‌اند لجلب وعرض البيانات.</span></li>
+                        <li class="flex items-center gap-2"><span class="bg-slate-800 text-white px-2 py-1 rounded font-bold text-xs">watt-nestjs</span> <span class="text-slate-700">هذا هو السيرفر الأساسي. يعمل كـ API لخدمة تطبيق فلاتر ولوحة التحكم.</span></li>
+                        <li class="flex items-center gap-2"><span class="bg-blue-500 text-white px-2 py-1 rounded font-bold text-xs">watt-admin</span> <span class="text-slate-700">هذا هو مجلد لوحة التحكم. تطبيق React مستقل يتخاطب مع الباك‌اند لجلب وعرض البيانات.</span></li>
                     </ul>
 
                     <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">3. كيف يعملان معاً؟</h3>
@@ -1359,7 +1359,7 @@ async requestPasswordReset(@Body() body: PasswordResetRequestDto) {
 npm install -g pm2
 
 # تشغيل التطبيق
-pm2 start dist/main.js --name "solarhub-api"
+pm2 start dist/main.js --name "watt-api"
 
 # حفظ الإعدادات لتعمل مع إعادة تشغيل السيرفر
 pm2 save

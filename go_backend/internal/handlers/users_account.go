@@ -55,7 +55,7 @@ func (h *UserHandler) DeleteAccount(c *gin.Context) {
 		return
 	}
 
-	if !services.VerifyDjangoPassword(user.Password, req.Password) {
+	if !services.VerifyDjangoPassword(req.Password, user.Password) {
 		msgUser := "كلمة المرور غير صحيحة"
 		response.Error(c, http.StatusBadRequest, "Password is incorrect.", &msgUser)
 		return

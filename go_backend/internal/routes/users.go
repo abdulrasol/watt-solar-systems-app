@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"watt/internal/config"
 	"watt/internal/handlers"
@@ -13,13 +15,21 @@ func SetupUserRoutes(rg *gin.RouterGroup, cfg *config.Config) {
 
 	h := handlers.NewUserHandler(cfg)
 
+	// Rate limiter for public auth endpoints: 10 requests per minute per IP.
+	authLimiter := middleware.NewRateLimiter(10.0/60.0, 10)
+	authLimiter.Cleanup(10 * time.Minute)
+	publicAuth := usersGroup.Group("")
+	publicAuth.Use(authLimiter.Middleware())
+
 	// Public routes
-	usersGroup.POST("/login", h.Login)
-	usersGroup.POST("/register", h.Register)
+	publicAuth.POST("/login", h.Login)
+	publicAuth.POST("/register", h.Register)
+	publicAuth.POST("/password-reset", h.PasswordResetRequest)
+	publicAuth.POST("/password-reset/validate-token", h.ValidateResetToken)
+	publicAuth.POST("/password-reset/confirm", h.ConfirmPasswordReset)
+
+	// Public profile lookup (less sensitive, no strict rate limit)
 	usersGroup.GET("/:username", h.GetUser)
-	usersGroup.POST("/password-reset", h.PasswordResetRequest)
-	usersGroup.POST("/password-reset/validate-token", h.ValidateResetToken)
-	usersGroup.POST("/password-reset/confirm", h.ConfirmPasswordReset)
 
 	// Protected routes
 	authGroup := usersGroup.Group("")

@@ -25,7 +25,7 @@ open Runner.xcworkspace
 ### Step 3: Configure App ID in Apple Developer Portal
 
 1. Go to [Apple Developer Portal](https://developer.apple.com/account/resources/identifiers/list)
-2. Find your App ID (e.g., `com.yourcompany.solarhub`)
+2. Find your App ID (e.g., `com.yourcompany.watt`)
 3. Click to edit
 4. Enable **Push Notifications** capability
 5. Save changes

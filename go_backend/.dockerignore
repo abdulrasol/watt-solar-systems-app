@@ -1,0 +1,49 @@
+# Build outputs
+server
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go dependencies
+vendor/
+
+# Test files
+*.test
+*.out
+coverage.html
+coverage.out
+
+# Local data
+uploads/*
+data/*
+*.sqlite3
+*.db
+
+# Environment
+.env
+.env.local
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+*.html
+*.png
+*.jpg
+*.jpeg
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db

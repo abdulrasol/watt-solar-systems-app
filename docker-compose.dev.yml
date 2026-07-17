@@ -1,0 +1,22 @@
+# Development override for Watt
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+#
+# This exposes the backend directly on port 8080 (HTTP) and disables HTTPS
+# so you can test on the local network without certificate warnings.
+
+services:
+  backend:
+    ports:
+      - "8080:8080"
+    environment:
+      # Debug-friendly logging in development
+      GIN_MODE: debug
+
+  caddy:
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile:ro
+    ports:
+      # Only expose HTTP in development
+      - "80:80"
+      # Do not expose 443 in dev mode

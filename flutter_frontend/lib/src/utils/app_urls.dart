@@ -7,10 +7,11 @@ class AppUrls {
       return 'https://watt-mu0i.onrender.com/api/v1';
     }
     // For Debug Mode:
-    // 10.0.2.2 is the special alias to your host loopback interface in Android Emulator
+    // 10.0.2.2 is the special alias to your host loopback interface in Android Emulator.
+    // iOS Simulator and desktop builds use 127.0.0.1.
     try {
       if (defaultTargetPlatform == TargetPlatform.android) {
-        return 'http://127.0.0.1:8080/api/v1';
+        return 'http://10.0.2.2:8080/api/v1';
       }
     } catch (_) {}
     return 'http://127.0.0.1:8080/api/v1';

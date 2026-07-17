@@ -1,0 +1,30 @@
+{
+    # Replace LOCAL_IP in docker-compose or set before running Caddy.
+    # Default local IP used for self-signed HTTPS on the LAN.
+}
+
+{$LOCAL_IP}:80 {
+    redir https://{$LOCAL_IP}{uri}
+}
+
+{$LOCAL_IP}:443 {
+    tls internal
+
+    encode gzip
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy strict-origin-when-cross-origin
+        Permissions-Policy "geolocation=(self), microphone=(), camera=()"
+        -Server
+    }
+
+    reverse_proxy backend:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}

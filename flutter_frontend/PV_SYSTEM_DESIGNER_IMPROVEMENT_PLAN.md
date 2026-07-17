@@ -109,7 +109,7 @@ Surface the already-built but unwired polygon-sketch mode for irregular roofs ·
 
 ## 7. Backend cross-check (now verified — folder was connected after initial write-up)
 
-The Python backend (`/Users/rasol/DevsTools/codes/python/solarhub/`) is now reachable and was checked directly. Three things worth acting on:
+The Python backend (`/Users/rasol/DevsTools/codes/python/watt/`) is now reachable and was checked directly. Three things worth acting on:
 
 **No server-side simulation exists anywhere.** A repo-wide search for irradiance/solar-position/shading/tilt/azimuth/weather logic returned nothing. This confirms the client-side calculation engine proposed in Section 3 is not duplicating anything — the backend has zero energy-simulation capability today, so all of it (transposition, temperature derating, loss diagram, sun-position) has to be built, and building it client-side (as proposed) is the right call rather than waiting on backend work.
 

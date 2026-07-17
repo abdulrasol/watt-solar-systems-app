@@ -1,4 +1,4 @@
-# 🏢 SolarHub B2B & Company Dashboard TODO List
+# 🏢 Watt B2B & Company Dashboard TODO List
 
 This file tracks the evolution of the B2B side of the application. Mark items as `[x]` when completed.
 

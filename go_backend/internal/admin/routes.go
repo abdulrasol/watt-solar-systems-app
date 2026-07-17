@@ -5,10 +5,11 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	handlers "watt/internal/admin/handlers"
+	"watt/internal/config"
 )
 
-func RegisterRoutes(rg *gin.RouterGroup) {
-	rg.Use(sessions.Sessions("admin_session", cookie.NewStore([]byte("watt-admin-secret-key-change-in-production"))))
+func RegisterRoutes(rg *gin.RouterGroup, cfg *config.Config) {
+	rg.Use(sessions.Sessions("admin_session", cookie.NewStore([]byte(cfg.AdminCookieSecret))))
 
 	rg.GET("/admin/login", handlers.LoginHandler)
 	rg.POST("/admin/login", handlers.LoginHandler)

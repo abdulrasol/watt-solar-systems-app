@@ -94,7 +94,7 @@ class _SidebarHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'SolarHub',
+                  'Watt',
                   style: TextStyle(
                     fontFamily: AppTheme.fontFamily,
                     fontSize: 14,

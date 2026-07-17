@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مقارنة APIs - SolarHub vs Go Backend</title>
+  <title>مقارنة APIs - Watt vs Go Backend</title>
   <style>
 :root {
   --bg: #f8f9fa;
@@ -3027,7 +3027,7 @@ footer {
 <li><strong>Notification Devices (<code>GET /api/v1/notification/devices</code>):</strong> تم إرجاع كائن <code>{devices, count}</code> مباشرة بدلاً من التغليف العام.</li>
 <li><strong>Company Delivery / Contacts (<code>GET /api/v1/companies/{id}/delivery</code> و <code>/contacts</code>):</strong> تم إرجاع كائن <code>{items, count}</code> مباشرة بدلاً من التغليف العام.</li>
 <li><strong>توحيد الـ Trailing Slash:</strong> تمت إضافة middleware في Go يقبل الطلبات بشرطة نهائية أو بدونها (<code>/api/v1/users</code> = <code>/api/v1/users/</code>)، بحيث يتطابق سلوك المسارات مع Django. صفحة Swagger تُعرض عبر <code>/api/v1/docs</code> → <code>/api/v1/docs/index.html</code>.</li>
-<li><strong>ملاحظة عامة:</strong> الاختلافات المتبقية في البيانات الفعلية أو الـ permissions ترجع إلى استخدام قواعد بيانات منفصلة (Django يستخدم <code>db.sqlite3</code> و Go يستخدم <code>solarhub_go.sqlite3</code>)؛ أما أشكال المسارات والمخرجات فباتت موحدة.</li>
+<li><strong>ملاحظة عامة:</strong> الاختلافات المتبقية في البيانات الفعلية أو الـ permissions ترجع إلى استخدام قواعد بيانات منفصلة (Django يستخدم <code>db.sqlite3</code> و Go يستخدم <code>watt.sqlite3</code>)؛ أما أشكال المسارات والمخرجات فباتت موحدة.</li>
 <li><strong>نتائج الاختبار العملي:</strong> تم اختبار 53 endpoint GET (عامة + auth + company + admin). النتيجة: 27/53 تطابق كاملاً في HTTP status وشكل الـ response، والـ 26 المتبقية تختلف فقط بسبب غياب بيانات/عضوية الشركة في قاعدة بيانات Go أو أخطاء 500 في Django (مثل <code>GET /api/v1/community/posts/</code> و <code>GET /api/v1/admin/notifications</code>).</li>
 </ul>
 
