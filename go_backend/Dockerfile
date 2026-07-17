@@ -34,6 +34,7 @@ RUN adduser -D -u 1000 wattuser && \
 COPY --from=builder /app/server .
 COPY --from=builder /app/createadmin .
 COPY --from=builder /app/internal/admin/static ./internal/admin/static
+COPY --from=builder /app/internal/assets ./internal/assets
 
 # Ensure directories are writable by non-root user
 RUN chown -R wattuser:wattuser /app/uploads /app/data

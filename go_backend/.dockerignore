@@ -31,9 +31,10 @@ data/*
 # Documentation
 *.md
 *.html
-*.png
-*.jpg
-*.jpeg
+# Keep internal/assets images for emails; exclude doc images only.
+docs/*.png
+docs/*.jpg
+docs/*.jpeg
 
 # IDE
 .vscode/

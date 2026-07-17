@@ -1946,24 +1946,14 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
    }
    ```
 
-2. المستخدم يستلم إيميل يحتوي على رمز التعيين ورابط.
-
-3. للتحقق من الرمز:
+2. المستخدم يستلم إيميل يحتوي على رمز التعيين ورابط مثل:
    ```bash
-   POST /api/v1/users/password-reset/validate-token
-   {
-     "token": "..."
-   }
+   http://192.168.1.100:8080/reset-password?token=...&email=...
    ```
 
-4. لتعيين كلمة المرور الجديدة:
-   ```bash
-   POST /api/v1/users/password-reset/confirm
-   {
-     "token": "...",
-     "password": "newpassword"
-   }
-   ```
+3. عند الضغط على الرابط، تفتح صفحة ويب بسيطة لإدخال كلمة المرور الجديدة.
+
+4. إذا كنت تريد التعامل مع الرابط داخل تطبيق Flutter بدل المتصفح، اجعل `FRONTEND_URL` يشير إلى deep link خاص بالتطبيق (مثل `watt://reset-password`).
 
 > **تنبيه:** إذا لم يصل الإيميل، تأكد من أن App Password صحيح وأن Gmail يسمح بالوصول من التطبيقات الأقل أمانًا (استخدم App Password وليس كلمة سر الحساب).
 

@@ -2457,20 +2457,11 @@ go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/server/main.go --parse
   "email": "user@example.com"
 }</code></pre>
   </li>
-  <li>المستخدم يستلم إيميل يحتوي على رمز التعيين ورابط.</li>
-  <li>للتحقق من الرمز:
-    <pre><code class="language-bash">POST /api/v1/users/password-reset/validate-token
-{
-  "token": "..."
-}</code></pre>
+  <li>المستخدم يستلم إيميل يحتوي على رمز التعيين ورابط مثل:
+    <pre><code class="language-bash">http://192.168.1.100:8080/reset-password?token=...&amp;email=...</code></pre>
   </li>
-  <li>لتعيين كلمة المرور الجديدة:
-    <pre><code class="language-bash">POST /api/v1/users/password-reset/confirm
-{
-  "token": "...",
-  "password": "newpassword"
-}</code></pre>
-  </li>
+  <li>عند الضغط على الرابط، تفتح صفحة ويب بسيطة لإدخال كلمة المرور الجديدة.</li>
+  <li>إذا كنت تريد التعامل مع الرابط داخل تطبيق Flutter بدل المتصفح، اجعل <code>FRONTEND_URL</code> يشير إلى deep link خاص بالتطبيق (مثل <code>watt://reset-password</code>).</li>
 </ol>
 
 <div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"watt/internal/admin"
 	"watt/internal/config"
 	"watt/internal/database"
+	"watt/internal/handlers"
 	"watt/internal/handlers/root"
 	"watt/internal/response"
 	"watt/internal/routes"
@@ -96,6 +98,9 @@ func main() {
 	router.RedirectFixedPath = false
 	router.Use(securityHeadersMiddleware())
 
+	// Load the reset-password HTML template.
+	router.SetHTMLTemplate(template.Must(template.New("reset-password").Parse(handlers.ResetPasswordTemplate)))
+
 	// Configure CORS
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     cfg.CORSAllowedOrigins,
@@ -140,6 +145,11 @@ func main() {
 	routes.SetupAccountingRoutes(v1Group, cfg)
 	routes.SetupCommunityRoutes(v1Group, cfg)
 	routes.SetupNotificationsRoutes(v1Group, cfg)
+
+	// Web-based password reset page linked from emails.
+	userHandler := handlers.NewUserHandler(cfg)
+	router.GET("/reset-password", userHandler.ResetPasswordPage)
+	router.POST("/reset-password", userHandler.ResetPasswordPage)
 
 	// Admin dashboard routes (under /admin/config)
 	admin.RegisterRoutes(router.Group("/"), cfg)
