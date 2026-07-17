@@ -300,6 +300,7 @@
 <a href="#1211-نشر-على-vps-أو-سيرفر-محلي" class="toc-item level-3" data-text="12.11 نشر على vps أو سيرفر محلي">12.11 نشر على VPS أو سيرفر محلي</a>
 <a href="#1212-عند-شراء-دومين" class="toc-item level-3" data-text="12.12 عند شراء دومين">12.12 عند شراء دومين</a>
 <a href="#1213-توثيق-swagger" class="toc-item level-3" data-text="12.13 توثيق swagger">12.13 توثيق Swagger</a>
+<a href="#1214-اعادة-تعيين-كلمة-المرور" class="toc-item level-3" data-text="12.14 اعادة تعيين كلمة المرور">12.14 إعادة تعيين كلمة المرور</a>
       </nav>
     </aside>
     <main class="content">
@@ -1992,7 +1993,7 @@ Docker أداة تسمح لك بتشغيل برامجك داخل "حاويات" 
 <tr>
   <td><code>LOCAL_IP</code></td>
   <td>IP الجهاز على الشبكة المحلية</td>
-  <td><code>192.168.1.107</code></td>
+  <td><code>192.168.1.100</code></td>
 </tr>
 <tr>
   <td><code>JWT_SECRET</code></td>
@@ -2015,14 +2016,39 @@ Docker أداة تسمح لك بتشغيل برامجك داخل "حاويات" 
   <td><code>watt_password</code></td>
 </tr>
 <tr>
+  <td><code>EMAIL_HOST_USER</code></td>
+  <td>بريد Gmail المستخدم لإرسال الإيميلات</td>
+  <td><code>watt.solar.calculator@gmail.com</code></td>
+</tr>
+<tr>
   <td><code>EMAIL_HOST_PASSWORD</code></td>
-  <td>كلمة سر بريد التطبيق</td>
-  <td><code>your-google-app-password</code></td>
+  <td>Google App Password (يمكن أن يحتوي على مسافات)</td>
+  <td><code>mxwa rjtf yzwd slyi</code></td>
+</tr>
+<tr>
+  <td><code>FRONTEND_URL</code></td>
+  <td>الرابط الذي يظهر في إيميل إعادة التعيين</td>
+  <td><code>http://192.168.1.100:8080</code></td>
 </tr>
 <tr>
   <td><code>FCM_SERVICE_ACCOUNT_FILE</code></td>
   <td>مسار ملف حساب Firebase</td>
   <td><code>/app/config/fcm-service-account.json</code></td>
+</tr>
+<tr>
+  <td><code>DEFAULT_ADMIN_USERNAME</code></td>
+  <td>اسم المستخدم الأدمن الافتراضي</td>
+  <td><code>admin</code></td>
+</tr>
+<tr>
+  <td><code>DEFAULT_ADMIN_EMAIL</code></td>
+  <td>بريد الأدمن الافتراضي</td>
+  <td><code>admin@watt.local</code></td>
+</tr>
+<tr>
+  <td><code>DEFAULT_ADMIN_PASSWORD</code></td>
+  <td>كلمة سر الأدمن الافتراضية</td>
+  <td><code>admin123</code></td>
 </tr>
 </tbody>
 </table>
@@ -2410,8 +2436,45 @@ go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/server/main.go --parse
 
 <pre><code class="language-bash">docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build</code></pre>
 
-<div style="background: var(--success-bg); color: var(--success-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
-<strong>ملاحظة:</strong> عند استخدام دومين حقيقي، Caddy تلقائيًا تحصل على شهادة Let&apos;s Encrypt مجانية. لا تحتاج Certbot يدويًا.
+<h3 id="1214-اعادة-تعيين-كلمة-المرور">12.14 إعادة تعيين كلمة المرور</h3>
+
+<p dir="rtl">
+تم تفعيل إعادة تعيين كلمة المرور عبر البريد الإلكتروني. المتطلبات:
+</p>
+
+<ul dir="rtl">
+  <li><code>EMAIL_HOST_USER</code>: بريد Gmail صالح.</li>
+  <li><code>EMAIL_HOST_PASSWORD</code>: Google App Password (ليس كلمة سر Gmail العادية).</li>
+  <li><code>FRONTEND_URL</code>: الرابط الذي يظهر في الإيميل.</li>
+</ul>
+
+<p dir="rtl"><strong>خطوات الاستخدام من Flutter:</strong></p>
+
+<ol dir="rtl">
+  <li>أرسل طلب إلى:
+    <pre><code class="language-bash">POST /api/v1/users/password-reset
+{
+  "email": "user@example.com"
+}</code></pre>
+  </li>
+  <li>المستخدم يستلم إيميل يحتوي على رمز التعيين ورابط.</li>
+  <li>للتحقق من الرمز:
+    <pre><code class="language-bash">POST /api/v1/users/password-reset/validate-token
+{
+  "token": "..."
+}</code></pre>
+  </li>
+  <li>لتعيين كلمة المرور الجديدة:
+    <pre><code class="language-bash">POST /api/v1/users/password-reset/confirm
+{
+  "token": "...",
+  "password": "newpassword"
+}</code></pre>
+  </li>
+</ol>
+
+<div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>تنبيه:</strong> إذا لم يصل الإيميل، تأكد من أن App Password صحيح وأن Gmail يسمح بالوصول من التطبيقات الأقل أمانًا (استخدم App Password وليس كلمة سر الحساب).
 </div>
 
       <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); text-align: center;">
