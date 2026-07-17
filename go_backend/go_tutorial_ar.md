@@ -1928,3 +1928,42 @@ go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/server/main.go --parse
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 ```
 
+### 12.14 إعادة تعيين كلمة المرور
+
+تم تفعيل إعادة تعيين كلمة المرور عبر البريد الإلكتروني. المتطلبات:
+
+- `EMAIL_HOST_USER`: بريد Gmail صالح.
+- `EMAIL_HOST_PASSWORD`: Google App Password (ليس كلمة سر Gmail العادية).
+- `FRONTEND_URL`: الرابط الذي يظهر في الإيميل.
+
+**خطوات الاستخدام من Flutter:**
+
+1. أرسل طلب إلى:
+   ```bash
+   POST /api/v1/users/password-reset
+   {
+     "email": "user@example.com"
+   }
+   ```
+
+2. المستخدم يستلم إيميل يحتوي على رمز التعيين ورابط.
+
+3. للتحقق من الرمز:
+   ```bash
+   POST /api/v1/users/password-reset/validate-token
+   {
+     "token": "..."
+   }
+   ```
+
+4. لتعيين كلمة المرور الجديدة:
+   ```bash
+   POST /api/v1/users/password-reset/confirm
+   {
+     "token": "...",
+     "password": "newpassword"
+   }
+   ```
+
+> **تنبيه:** إذا لم يصل الإيميل، تأكد من أن App Password صحيح وأن Gmail يسمح بالوصول من التطبيقات الأقل أمانًا (استخدم App Password وليس كلمة سر الحساب).
+
