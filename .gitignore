@@ -82,4 +82,6 @@ go_backend/watt.sqlite3
 # Firebase FCM Service Account Secrets
 go_backend/fcm-service-account.json
 go_backend/fcm-service-account-old.json
+config/fcm-service-account.json
 config/fcm-service-account-old.json
+config/fcm-service-account.json.bak
