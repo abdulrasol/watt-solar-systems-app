@@ -2236,7 +2236,27 @@ Password: admin123</code></pre>
 </tbody>
 </table>
 
-<h3 id="129-وضع-التطوير-http-فقط">12.9 وضع التطوير HTTP فقط</h3>
+<h3 id="129-التشغيل-التلقائي-بعد-اعادة-التشغيل">12.9 التشغيل التلقائي بعد إعادة التشغيل</h3>
+
+<p dir="rtl">
+إذا كان السيرفر على جهاز محلي أو VPS، <code>scripts/deploy.sh</code> يثبّت خدمة systemd (<code>systemd/watt.service</code>) تضمن تشغيل Docker تلقائيًا بعد reboot أو انقطاع الكهرباء.
+</p>
+
+<p dir="rtl"><strong>ما يفعله السكربت:</strong></p>
+<ol dir="rtl">
+  <li>يفعّل <code>docker.service</code> ليبدأ مع النظام.</li>
+  <li>ينسخ <code>systemd/watt.service</code> إلى <code>/etc/systemd/system/</code>.</li>
+  <li>يشغّل الخدمة ويضمن بدئها مع النظام.</li>
+</ol>
+
+<p dir="rtl"><strong>للتحقق:</strong></p>
+<pre><code class="language-bash">sudo systemctl status watt.service</code></pre>
+
+<div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>ملاحظة:</strong> تأكد من أن جهاز السيرفر يحصل دائمًا على نفس IP (مثلاً 192.168.1.107) عبر DHCP reservation أو IP ثابت في الراوتر.
+</div>
+
+<h3 id="1210-وضع-التطوير-http-فقط">12.10 وضع التطوير HTTP فقط</h3>
 
 <p dir="rtl">
 في بيئة التطوير قد تواجه مشكلة مع شهادة HTTPS الموقعة ذاتيًا (Self-signed) خاصةً عند الاختبار من المتصفح أو من أجهزة أخرى على الشبكة. لذلك وفرنا وضع تطوير يعمل بـ HTTP فقط ويفتح منفذ Backend مباشرة على الجهاز.
@@ -2320,7 +2340,7 @@ Password: admin123</code></pre>
   <li>أعد تشغيل: <code>./scripts/deploy.sh</code>.</li>
 </ol>
 
-<h3 id="1210-انشاء-اول-مستخدم-ادمن">12.10 إنشاء أول مستخدم أدمن</h3>
+<h3 id="1211-انشاء-اول-مستخدم-ادمن">12.11 إنشاء أول مستخدم أدمن</h3>
 
 <p dir="rtl">
 <strong>أول ما يشتغل السيرفر، يُنشئ تلقائيًا مستخدم أدمن افتراضي</strong> إذا كانت قاعدة البيانات فارغة. بيانات الدخول الافتراضية تُقرأ من <code>.env</code>:
@@ -2346,7 +2366,7 @@ DEFAULT_ADMIN_PASSWORD=admin123</code></pre>
 
 <pre><code class="language-bash">./scripts/create-admin.sh -username=admin2 -email=admin2@watt.com -password=yourpassword</code></pre>
 
-<h3 id="1211-نشر-على-vps-أو-سيرفر-محلي">12.11 نشر على VPS أو سيرفر محلي</h3>
+<h3 id="1212-نشر-على-vps-أو-سيرفر-محلي">12.12 نشر على VPS أو سيرفر محلي</h3>
 
 <p dir="rtl">
 نفس ملفات Docker تعمل على VPS أو سيرفر محلي بدون تغييرات كبيرة. الخطوات بالتفصيل:
@@ -2380,7 +2400,7 @@ nano .env</code></pre>
   <li><strong>سجّل الدخول</strong> بالأدمن الافتراضي من <code>.env</code>.</li>
 </ol>
 
-<h3 id="1212-عند-شراء-دومين">12.12 عند شراء دومين</h3>
+<h3 id="1213-عند-شراء-دومين">12.13 عند شراء دومين</h3>
 
 <p dir="rtl">
 عند شراء دومين، لن تحتاج Certbot يدويًا. Caddy تجلب شهادة Let&apos;s Encrypt تلقائيًا:
@@ -2420,7 +2440,7 @@ CORS_ALLOWED_ORIGINS=https://yourdomain.com</code></pre>
 <strong>ملاحظة:</strong> تأكد من إعدادات DNS للدومين بحيث يشير إلى IP السيرفر قبل تشغيل Caddy.
 </div>
 
-<h3 id="1213-توثيق-swagger">12.13 توثيق Swagger</h3>
+<h3 id="1214-توثيق-swagger">12.14 توثيق Swagger</h3>
 
 <p dir="rtl">
 توثيق Swagger متاح على:
@@ -2441,7 +2461,7 @@ go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/server/main.go --parse
 
 <pre><code class="language-bash">docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build</code></pre>
 
-<h3 id="1214-اعادة-تعيين-كلمة-المرور">12.14 إعادة تعيين كلمة المرور</h3>
+<h3 id="1215-اعادة-تعيين-كلمة-المرور">12.15 إعادة تعيين كلمة المرور</h3>
 
 <p dir="rtl">
 تم تفعيل إعادة تعيين كلمة المرور عبر البريد الإلكتروني. المتطلبات:
