@@ -14,7 +14,8072 @@ const docTemplate = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {},
+    "paths": {
+        "/admin/categories": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves all global categories",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.GlobalCategoryOut"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Creates a new global category with optional icon",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Create a category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Category icon",
+                        "name": "icon",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.GlobalCategoryOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/categories/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates an existing global category by ID with optional icon",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Update a category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Category name",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Category icon",
+                        "name": "icon",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.GlobalCategoryOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Deletes an existing global category by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Delete a category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/cities": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves all cities, optionally filtered by country_id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all cities",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Filter by Country ID",
+                        "name": "country_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.CityOut"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Creates a new city",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Create a city",
+                "parameters": [
+                    {
+                        "description": "City data",
+                        "name": "city",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CitySchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.CityOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminListCompanies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminListCompanies",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 12,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Status filter",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/posters": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List all posters globally for admin moderation",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminListAdminPosters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "active|expired",
+                        "name": "validity",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/posters/{poster_id}/extend": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Extend a poster expiration",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminExtendPoster",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "poster_id",
+                        "name": "poster_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Extend payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.PosterExtendSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/posters/{poster_id}/review": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Review a poster (approved/rejected)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminReviewPoster",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "poster_id",
+                        "name": "poster_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Review Action",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.PosterReviewSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/service-types": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminCreateServiceType",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminCreateServiceType",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Description",
+                        "name": "description",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/service-types/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminUpdateServiceType",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminUpdateServiceType",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Description",
+                        "name": "description",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image",
+                        "name": "image",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminDeleteServiceType",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminDeleteServiceType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/subscription-requests": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List all subscription requests",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminListSubscriptionRequests",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page_size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "status (pending, active, rejected)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/types": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminCreateCompanyType",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminCreateCompanyType",
+                "parameters": [
+                    {
+                        "description": "Payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.AdminCompanyTypeCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/types/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminUpdateCompanyType",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminUpdateCompanyType",
+                "parameters": [
+                    {
+                        "description": "Payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.AdminCompanyTypeUpdateSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminDeleteCompanyType",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminDeleteCompanyType",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get company details for admin",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminGetCompany",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}/details": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get detailed company information for admin",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminGetCompanyDetails",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}/members": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get company members for admin",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminGetCompanyMembers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}/posters": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get posters for a company (admin)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminGetCompanyPosters",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}/services": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get service catalog status for admin",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminGetCompanyServices",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}/status": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "AdminUpdateCompanyStatus",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminUpdateCompanyStatus",
+                "parameters": [
+                    {
+                        "description": "Status Action",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CompanyStatusActionSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/companies/{company_id}/subscription-requests/{request_id}/review": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Review a company's subscription request (active/rejected)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Companies API"
+                ],
+                "summary": "AdminReviewSubscriptionRequest",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "request_id",
+                        "name": "request_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Review payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CompanySubscriptionRequestReviewSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/config": {
+            "get": {
+                "description": "Retrieves all global app configurations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all app configs",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.ConfigOut"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Creates a new global app configuration",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Create a new app config",
+                "parameters": [
+                    {
+                        "description": "Config data",
+                        "name": "config",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.ConfigCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.ConfigOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/config/{key}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates an existing global app configuration by key",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Update an app config",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Config Key",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Config update data",
+                        "name": "config",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.ConfigUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.ConfigOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/countries": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves all countries",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all countries",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.CountryOut"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Creates a new country",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Create a country",
+                "parameters": [
+                    {
+                        "description": "Country data",
+                        "name": "country",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CountryOut"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.CountryOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/countries/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates an existing country by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Update a country",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Country ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Country update data",
+                        "name": "country",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CountryOut"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.CountryOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Deletes an existing country by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Delete a country",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Country ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/currencies": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves all currencies",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all currencies",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.CurrencyOut"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Creates a new currency",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Create a currency",
+                "parameters": [
+                    {
+                        "description": "Currency data",
+                        "name": "currency",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CurrencySchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.CurrencyOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/currencies/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates an existing currency by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Update a currency",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Currency ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Currency update data",
+                        "name": "currency",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CurrencySchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.CurrencyOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/feedbacks": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves all feedbacks",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all feedbacks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.FeedbackSchema"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/notifications": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves all notifications (Admin view)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all notifications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.NotificationOut"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/shop/products": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Admin list all products",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AdminShop"
+                ],
+                "summary": "AdminListProducts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Admin create product for any company",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AdminShop"
+                ],
+                "summary": "AdminCreateProduct",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JSON payload",
+                        "name": "payload",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Product images",
+                        "name": "images",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/shop/products/{product_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Admin get product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AdminShop"
+                ],
+                "summary": "AdminGetProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Admin update product",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AdminShop"
+                ],
+                "summary": "AdminUpdateProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JSON payload",
+                        "name": "payload",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Product images",
+                        "name": "images",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Admin delete product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AdminShop"
+                ],
+                "summary": "AdminDeleteProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/subscriptions": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves all subscription plans",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Get all subscriptions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/watt_internal_models.SubscriptionPlanOut"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Creates a new subscription plan",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Create a subscription",
+                "parameters": [
+                    {
+                        "description": "Subscription data",
+                        "name": "subscription",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/subscriptions/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates an existing subscription plan by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Update a subscription",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Subscription ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Subscription update data",
+                        "name": "subscription",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.SubscriptionPlanOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Deletes an existing subscription plan by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Delete a subscription",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Subscription ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/cities/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates an existing city by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Update a city",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "City ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "City update data",
+                        "name": "city",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CityUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.CityOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deletes an existing city by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Delete a city",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "City ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/config/{key}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deletes an existing global app configuration by key",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Delete an app config",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Config Key",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/currencies/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deletes an existing currency by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Delete a currency",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Currency ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/feedback/s{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Updates an existing feedback (e.g. mark as read)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Update a feedback",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Feedback ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Feedback update data",
+                        "name": "feedback",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.FeedbackUpdateFormSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.FeedbackSchema"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/feedback/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deletes an existing feedback by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Delete a feedback",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Feedback ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/feedbacks": {
+            "post": {
+                "description": "Creates a new feedback message",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin API"
+                ],
+                "summary": "Create a feedback",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Phone Number",
+                        "name": "phone_number",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Message",
+                        "name": "message",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image file",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.FeedbackSchema"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/devices": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a list of registered push notification devices for the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "List active push devices",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-broadcast": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to all active devices (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send broadcast notification",
+                "parameters": [
+                    {
+                        "description": "Broadcast Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.BroadcastSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-group": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to a specific group of users (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send notification to a group",
+                "parameters": [
+                    {
+                        "description": "Group Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.GroupNotificationSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-topic/{topic}": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to an FCM topic (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send notification to a topic",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic Name",
+                        "name": "topic",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Topic Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.TopicNotificationSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/send-user": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Send a push notification to a single user (Superuser only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Send notification to a specific user",
+                "parameters": [
+                    {
+                        "description": "User Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.UserNotificationSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/subscribe": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Register a device token for push notifications (FCM)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Subscribe device to push notifications",
+                "parameters": [
+                    {
+                        "description": "Subscribe Payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SubscribeSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/tokens/{token_id}/deactivate": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deactivate a push notification token by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Deactivate a specific device token",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Device Token ID",
+                        "name": "token_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notification/unsubscribe": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deactivates push notification tokens for the current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Unsubscribe device from push notifications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of notifications for the current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Get user notifications",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 12,
+                        "description": "Page size",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/{id}/read": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Mark a specific notification as read by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Mark notification as read",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/register": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "RegisterCompany",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "RegisterCompany",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Company Type ID",
+                        "name": "company_type",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Description",
+                        "name": "description",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Address",
+                        "name": "address",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Phone",
+                        "name": "phone",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Allows B2B",
+                        "name": "allows_b2b",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Allows B2C",
+                        "name": "allows_b2c",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "City ID",
+                        "name": "city",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Logo",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/service-types": {
+            "get": {
+                "description": "Get all service types",
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "GetServiceTypes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/service-types/{id}": {
+            "get": {
+                "description": "Get a single service type",
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "GetServiceTypeByID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/subscriptions": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetSubscriptionPlans",
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "GetSubscriptionPlans",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/types": {
+            "get": {
+                "description": "GetCompanyTypes",
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "GetCompanyTypes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update company details (admin or owner)",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "UpdateCompany",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Company Type ID",
+                        "name": "company_type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Description",
+                        "name": "description",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Address",
+                        "name": "address",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Phone",
+                        "name": "phone",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Allows B2B",
+                        "name": "allows_b2b",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Allows B2C",
+                        "name": "allows_b2c",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "City ID",
+                        "name": "city",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Currency ID",
+                        "name": "currency",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Logo",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/activation-reminder": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Send an activation reminder for a pending company (admin/manager/superuser)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "ActivationReminder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/analytics": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get company analytics aggregate",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "GetCompanyAnalytics",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/categories": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get categories for a company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "GetCompanyCategories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a category for a company",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "CreateCompanyCategory",
+                "parameters": [
+                    {
+                        "description": "Category",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CompanyCategorySchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/categories/{category_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete a company category",
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "DeleteCompanyCategory",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "category_id",
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/contacts": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetContacts",
+                "tags": [
+                    "Companies Contacts"
+                ],
+                "summary": "GetContacts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "CreateContact",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Contacts"
+                ],
+                "summary": "CreateContact",
+                "parameters": [
+                    {
+                        "description": "Contact details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.ContactSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/contacts/{contact_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "DeleteContact",
+                "tags": [
+                    "Companies Contacts"
+                ],
+                "summary": "DeleteContact",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "contact_id",
+                        "name": "contact_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/customers": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List customers of a company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListCompanyCustomers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a customer for a company",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CreateCompanyCustomer",
+                "parameters": [
+                    {
+                        "description": "Customer",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CustomerCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/customers/{customer_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get a customer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetCompanyCustomer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "customer_id",
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update a customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "UpdateCompanyCustomer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "customer_id",
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Customer update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CustomerUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete a customer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "DeleteCompanyCustomer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "customer_id",
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/delivery": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetDeliveryOptions",
+                "tags": [
+                    "Companies Delivery"
+                ],
+                "summary": "GetDeliveryOptions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "CreateDeliveryOption",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Delivery"
+                ],
+                "summary": "CreateDeliveryOption",
+                "parameters": [
+                    {
+                        "description": "Delivery Option details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.DeliveryOptionSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/delivery/{option_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "DeleteDeliveryOption",
+                "tags": [
+                    "Companies Delivery"
+                ],
+                "summary": "DeleteDeliveryOption",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "option_id",
+                        "name": "option_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/expense": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetExpenses",
+                "tags": [
+                    "Companies Finance"
+                ],
+                "summary": "GetExpenses",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "CreateExpense",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Finance"
+                ],
+                "summary": "CreateExpense",
+                "parameters": [
+                    {
+                        "description": "Expense details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.ExpenseSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/expense/{expense_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "DeleteExpense",
+                "tags": [
+                    "Companies Finance"
+                ],
+                "summary": "DeleteExpense",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "expense_id",
+                        "name": "expense_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/finance": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetFinancialTransactions",
+                "tags": [
+                    "Companies Finance"
+                ],
+                "summary": "GetFinancialTransactions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "CreateFinancialTransaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Finance"
+                ],
+                "summary": "CreateFinancialTransaction",
+                "parameters": [
+                    {
+                        "description": "Financial Transaction details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.FinancialTransactionSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/finance/{tx_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "DeleteFinancialTransaction",
+                "tags": [
+                    "Companies Finance"
+                ],
+                "summary": "DeleteFinancialTransaction",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "tx_id",
+                        "name": "tx_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/members": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetCompanyMembers",
+                "tags": [
+                    "Companies Members"
+                ],
+                "summary": "GetCompanyMembers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/members/create": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "CreateNewMember",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Members"
+                ],
+                "summary": "CreateNewMember",
+                "parameters": [
+                    {
+                        "description": "New Member details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CreateMemberSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/members/invite": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "InviteMember",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Members"
+                ],
+                "summary": "InviteMember",
+                "parameters": [
+                    {
+                        "description": "Invite Member details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.InviteMemberSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/members/{member_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "RemoveMember",
+                "tags": [
+                    "Companies Members"
+                ],
+                "summary": "RemoveMember",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "member_id",
+                        "name": "member_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "UpdateMemberRole",
+                "tags": [
+                    "Companies Members"
+                ],
+                "summary": "UpdateMemberRole",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "member_id",
+                        "name": "member_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/orders": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List orders for a seller company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListCompanyOrders",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create an offline order for a seller company",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CreateCompanyOrder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Order",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SellerOrderCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/orders/{order_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get a company order",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetCompanyOrder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update a company order (status, shipping, payment)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "UpdateCompanyOrder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SellerOrderUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/posters": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get posters for a company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "GetCompanyPosters",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a poster for a company",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "CreatePoster",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Poster Image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Text",
+                        "name": "text",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Action Type",
+                        "name": "action_type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Action ID",
+                        "name": "action_id",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/posters/{poster_id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update a company poster (admin/manager)",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "UpdatePoster",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "poster_id",
+                        "name": "poster_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Text",
+                        "name": "text",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Action Type",
+                        "name": "action_type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Action ID",
+                        "name": "action_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Poster Image",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete a company poster (admin/manager)",
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "DeletePoster",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "poster_id",
+                        "name": "poster_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/posters/{poster_id}/toggle-active": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Toggle active state of an approved poster",
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "TogglePosterActive",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "poster_id",
+                        "name": "poster_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/products": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List products for a company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListCompanyProducts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a product for a company",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CreateCompanyProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JSON payload",
+                        "name": "payload",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Product images",
+                        "name": "images",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/products/filter-options": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get filter options for company products",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetCompanyProductFilterOptions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/products/{product_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get a single company product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetCompanyProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update a company product",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "UpdateCompanyProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JSON payload",
+                        "name": "payload",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Product images",
+                        "name": "images",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete a company product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "DeleteCompanyProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/public-services": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get public services for a company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "GetPublicServices",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a public service for a company",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "CreatePublicService",
+                "parameters": [
+                    {
+                        "description": "Service",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CompanyServiceCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/public-services/{service_id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update a public service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "UpdatePublicService",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "service_id",
+                        "name": "service_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Service",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CompanyServiceUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete a public service",
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "DeletePublicService",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "service_id",
+                        "name": "service_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/subscription-request": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a subscription request for a company (auto-approves free plans)",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "RequestSubscription",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Subscription Plan ID",
+                        "name": "subscription_plan",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Notes",
+                        "name": "notes",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Receipt / Image",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/summary": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetCompanySummary",
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "GetCompanySummary",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/suppliers": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List suppliers of a company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListCompanySuppliers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a supplier for a company",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CreateCompanySupplier",
+                "parameters": [
+                    {
+                        "description": "Supplier",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SupplierCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/suppliers/{supplier_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get a supplier",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetCompanySupplier",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "supplier_id",
+                        "name": "supplier_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update a supplier",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "UpdateCompanySupplier",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "supplier_id",
+                        "name": "supplier_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Supplier update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.SupplierUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete a supplier",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "DeleteCompanySupplier",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "supplier_id",
+                        "name": "supplier_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/systems": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get systems installed by a company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "GetCompanySystems",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/toggle-active": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Toggle company active status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company Operations"
+                ],
+                "summary": "ToggleCompanyActive",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/works": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetCompanyWorks",
+                "tags": [
+                    "Companies Works"
+                ],
+                "summary": "GetCompanyWorks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "CreateCompanyWork",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Works"
+                ],
+                "summary": "CreateCompanyWork",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Title",
+                        "name": "title",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Body",
+                        "name": "body",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Images (multiple allowed)",
+                        "name": "images",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/works/images/{image_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "DeleteCompanyWorkImage",
+                "tags": [
+                    "Companies Works"
+                ],
+                "summary": "DeleteCompanyWorkImage",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "image_id",
+                        "name": "image_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/works/{work_id}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "UpdateCompanyWork",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Companies Works"
+                ],
+                "summary": "UpdateCompanyWork",
+                "parameters": [
+                    {
+                        "description": "Work details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CompanyWorkUpdateSchema"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "work_id",
+                        "name": "work_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "DeleteCompanyWork",
+                "tags": [
+                    "Companies Works"
+                ],
+                "summary": "DeleteCompanyWork",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "work_id",
+                        "name": "work_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/currency/default": {
+            "get": {
+                "description": "Returns the default currency for the application",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Global API"
+                ],
+                "summary": "Get default currency",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/watt_internal_response.APIResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "$ref": "#/definitions/watt_internal_models.CurrencyOut"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/public/companies/": {
+            "get": {
+                "description": "PublicListCompanies",
+                "tags": [
+                    "Public Companies API"
+                ],
+                "summary": "PublicListCompanies",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Company type code",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Company type code",
+                        "name": "company_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "City ID",
+                        "name": "city",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Channel: b2b|b2c",
+                        "name": "channel",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Service type IDs",
+                        "name": "services",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Allows B2B",
+                        "name": "allows_b2b",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Allows B2C",
+                        "name": "allows_b2c",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Has active subscription",
+                        "name": "has_active_subscription",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/companies/posters": {
+            "get": {
+                "description": "PublicListPosters",
+                "tags": [
+                    "Public Companies API"
+                ],
+                "summary": "PublicListPosters",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/companies/{company_id}": {
+            "get": {
+                "description": "PublicGetCompany",
+                "tags": [
+                    "Public Companies API"
+                ],
+                "summary": "PublicGetCompany",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/companies/{company_id}/services": {
+            "get": {
+                "description": "Get services catalog for a public company",
+                "tags": [
+                    "Public Companies API"
+                ],
+                "summary": "PublicGetCompanyServices",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/companies/{company_id}/works": {
+            "get": {
+                "description": "PublicListCompanyWorks",
+                "tags": [
+                    "Public Companies API"
+                ],
+                "summary": "PublicListCompanyWorks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/service-types/": {
+            "get": {
+                "description": "Get all service types (public). If a valid Authorization header is provided,",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Service Types"
+                ],
+                "summary": "ListServiceTypes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/categories/{type}/{id}/products": {
+            "get": {
+                "description": "List B2B products by category",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListB2BCategoryProducts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "global or company",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "category_id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/companies/{id}/products": {
+            "get": {
+                "description": "List products for a specific B2B company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListB2BCompanyProducts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/my-orders": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List authenticated company's B2B orders",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListMyB2BOrders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/my-orders/{order_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get authenticated company's B2B order",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetMyB2BOrder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/my-orders/{order_id}/cancel": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Cancel company's B2B order",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CancelMyB2BOrder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/my-orders/{order_id}/confirm-receipt": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Confirm receipt of B2B order and transfer stock",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ConfirmB2BReceipt",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/orders": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a B2B order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CreateB2BOrder",
+                "parameters": [
+                    {
+                        "description": "Order",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.B2BOrderCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/products": {
+            "get": {
+                "description": "List B2B storefront products",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListB2BProducts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/products/{id}": {
+            "get": {
+                "description": "Get a B2B storefront product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetB2BProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/b2b/search": {
+            "get": {
+                "description": "Search B2B storefront products",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListB2BSearch",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/cart/validate": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Validate cart and return calculated totals",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ValidateCart",
+                "parameters": [
+                    {
+                        "description": "Cart Validation Payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.CartValidateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/catalog/meta": {
+            "get": {
+                "description": "Get global categories for storefront",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "StoreCatalogMeta",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/categories/{type}/{id}/products": {
+            "get": {
+                "description": "List products by category (B2C)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListStoreCategoryProducts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "global or company",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "category_id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/companies": {
+            "get": {
+                "description": "List companies eligible for storefront (b2c/b2b)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListStoreCompanies",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "b2c or b2b",
+                        "name": "sales_channel",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ordering",
+                        "name": "ordering",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/companies/{id}/company-categories": {
+            "get": {
+                "description": "Get company categories for a storefront company",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListStoreCompanyCategories",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/companies/{id}/products": {
+            "get": {
+                "description": "List products for a specific storefront company (B2C)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListStoreCompanyProducts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "company_id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/my-orders": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "List authenticated user's B2C orders",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListMyStoreOrders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/my-orders/{order_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get authenticated user's B2C order",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetMyStoreOrder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/my-orders/{order_id}/cancel": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Cancel user's B2C order",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CancelMyStoreOrder",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/orders": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create a B2C order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "CreateStoreOrder",
+                "parameters": [
+                    {
+                        "description": "Order",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.B2COrderCreateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/products": {
+            "get": {
+                "description": "List B2C storefront products",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListStoreProducts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Company ID",
+                        "name": "company_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Global category ID",
+                        "name": "global_category_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Company category ID",
+                        "name": "company_category_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Min price",
+                        "name": "min_price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Max price",
+                        "name": "max_price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ordering",
+                        "name": "ordering",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/products/{id}": {
+            "get": {
+                "description": "Get a storefront product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "GetStoreProduct",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product_id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/store/search": {
+            "get": {
+                "description": "Search B2C storefront products",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "ListStoreSearch",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get a paginated list of all users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users - Admin"
+                ],
+                "summary": "List all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/delete-account": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Soft deletes the user account after password verification",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete account",
+                "parameters": [
+                    {
+                        "description": "Delete Account Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers.DeleteAccountSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/language": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates the user's language setting",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update language",
+                "parameters": [
+                    {
+                        "description": "Language Update",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers.LanguageUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "description": "Authenticates a user and returns a JWT token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Login user",
+                "parameters": [
+                    {
+                        "description": "Login Credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/password-reset": {
+            "post": {
+                "description": "Sends a password reset email if account exists",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Request password reset",
+                "parameters": [
+                    {
+                        "description": "Email",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers.PasswordResetRequestSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/password-reset/confirm": {
+            "post": {
+                "description": "Resets the password using a valid token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Confirm password reset",
+                "parameters": [
+                    {
+                        "description": "Password Reset Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers.PasswordResetConfirmSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/password-reset/validate-token": {
+            "post": {
+                "description": "Validates if a password reset token is still valid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Validate reset token",
+                "parameters": [
+                    {
+                        "description": "Token",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers.PasswordResetTokenSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/profile": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieves the authenticated user's profile",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Updates the authenticated user's profile information (multipart/form-data supported)",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "First Name",
+                        "name": "first_name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Last Name",
+                        "name": "last_name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Phone",
+                        "name": "phone",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "City ID",
+                        "name": "city_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Security Question",
+                        "name": "security_question",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Security Answer",
+                        "name": "security_answer",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile Image",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/promote/{username}": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Promote or demote user to superuser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users - Admin"
+                ],
+                "summary": "Promote user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Promote request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers.PromoteUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/register": {
+            "post": {
+                "description": "Registers a new user and returns a user_id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Register a new user",
+                "parameters": [
+                    {
+                        "description": "User Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_models.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}": {
+            "get": {
+                "description": "Fetch public profile of a user by username",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user by username",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/watt_internal_response.APIResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "internal_handlers.DeleteAccountSchema": {
+            "type": "object",
+            "required": [
+                "password",
+                "reason"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers.LanguageUpdateSchema": {
+            "type": "object",
+            "required": [
+                "language"
+            ],
+            "properties": {
+                "language": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers.PasswordResetConfirmSchema": {
+            "type": "object",
+            "required": [
+                "password",
+                "token"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers.PasswordResetRequestSchema": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers.PasswordResetTokenSchema": {
+            "type": "object",
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers.PromoteUserRequest": {
+            "type": "object",
+            "properties": {
+                "promote": {
+                    "type": "boolean"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_models.AdminCompanyTypeCreateSchema": {
+            "type": "object",
+            "required": [
+                "ctype",
+                "name"
+            ],
+            "properties": {
+                "allowed_features": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allowed_subscription_plans": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "ctype": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.AdminCompanyTypeUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "allowed_features": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "allowed_subscription_plans": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "ctype": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.B2BOrderCreateSchema": {
+            "type": "object",
+            "required": [
+                "items",
+                "seller_company_id"
+            ],
+            "properties": {
+                "currency_code": {
+                    "type": "string"
+                },
+                "currency_symbol": {
+                    "type": "string"
+                },
+                "discount_amount": {
+                    "type": "number",
+                    "default": 0
+                },
+                "due_date": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
+                    }
+                },
+                "payment_method": {
+                    "type": "string",
+                    "default": "credit"
+                },
+                "seller_company_id": {
+                    "type": "integer"
+                },
+                "shipping_address": {},
+                "shipping_cost": {
+                    "type": "number",
+                    "default": 0
+                },
+                "shipping_method": {
+                    "type": "string"
+                },
+                "tax_amount": {
+                    "type": "number",
+                    "default": 0
+                }
+            }
+        },
+        "watt_internal_models.B2COrderCreateSchema": {
+            "type": "object",
+            "required": [
+                "items",
+                "seller_company_id"
+            ],
+            "properties": {
+                "currency_code": {
+                    "type": "string"
+                },
+                "currency_symbol": {
+                    "type": "string"
+                },
+                "discount_amount": {
+                    "type": "number",
+                    "default": 0
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
+                    }
+                },
+                "payment_method": {
+                    "type": "string",
+                    "default": "cash"
+                },
+                "seller_company_id": {
+                    "type": "integer"
+                },
+                "shipping_address": {},
+                "shipping_cost": {
+                    "type": "number",
+                    "default": 0
+                },
+                "shipping_method": {
+                    "type": "string"
+                },
+                "tax_amount": {
+                    "type": "number",
+                    "default": 0
+                }
+            }
+        },
+        "watt_internal_models.BroadcastSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CartValidateRequest": {
+            "type": "object",
+            "required": [
+                "items",
+                "order_type",
+                "seller_company_id"
+            ],
+            "properties": {
+                "delivery_option_id": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
+                    }
+                },
+                "order_type": {
+                    "description": "b2b or b2c",
+                    "type": "string"
+                },
+                "seller_company_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_models.CityOut": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "country": {
+                    "$ref": "#/definitions/watt_internal_models.CountryOut"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CitySchema": {
+            "type": "object",
+            "required": [
+                "code",
+                "country_id",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "country_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CityUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "country_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CompanyCategorySchema": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CompanyServiceCreateSchema": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CompanyServiceUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CompanyStatusActionSchema": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CompanySubscriptionRequestReviewSchema": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "notes": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CompanyWorkUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.ConfigCreateSchema": {
+            "type": "object",
+            "required": [
+                "key"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "watt_internal_models.ConfigOut": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "watt_internal_models.ConfigUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "watt_internal_models.ContactSchema": {
+            "type": "object",
+            "required": [
+                "name",
+                "phone"
+            ],
+            "properties": {
+                "company": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CountryOut": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CreateMemberSchema": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string",
+                    "default": "staff"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CurrencyOut": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_default": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CurrencySchema": {
+            "type": "object",
+            "required": [
+                "code",
+                "name",
+                "symbol"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "is_default": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CustomerCreateSchema": {
+            "type": "object",
+            "required": [
+                "customer_type"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "buyer_company_id": {
+                    "type": "integer"
+                },
+                "buyer_profile_id": {
+                    "type": "integer"
+                },
+                "customer_type": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.CustomerUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.DeliveryOptionSchema": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "integer"
+                },
+                "cost": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "estimated_days_max": {
+                    "type": "integer"
+                },
+                "estimated_days_min": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.ExpenseSchema": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_models.FeedbackSchema": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "is_read": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_models.FeedbackUpdateFormSchema": {
+            "type": "object",
+            "required": [
+                "is_read"
+            ],
+            "properties": {
+                "is_read": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "watt_internal_models.FinancialTransactionSchema": {
+            "type": "object",
+            "required": [
+                "amount",
+                "category",
+                "type"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "company": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "payment_method": {
+                    "type": "string",
+                    "default": "cash"
+                },
+                "type": {
+                    "description": "'income' or 'expense'",
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.GlobalCategoryOut": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.GroupNotificationSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "group_id",
+                "group_type",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "group_id": {},
+                "group_type": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.InviteMemberSchema": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string",
+                    "default": "staff"
+                }
+            }
+        },
+        "watt_internal_models.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.NotificationOut": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_read": {
+                    "type": "boolean"
+                },
+                "notification_type": {
+                    "type": "string"
+                },
+                "related_entity_id": {
+                    "type": "integer"
+                },
+                "related_entity_type": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_models.OrderItemCreateSchema": {
+            "type": "object",
+            "required": [
+                "product_id",
+                "quantity"
+            ],
+            "properties": {
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "selected_options": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "watt_internal_models.PosterExtendSchema": {
+            "type": "object",
+            "required": [
+                "expires_at"
+            ],
+            "properties": {
+                "expires_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.PosterReviewSchema": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "duration_days": {
+                    "type": "integer",
+                    "default": 7
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "password",
+                "phone",
+                "username"
+            ],
+            "properties": {
+                "city_id": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.SellerOrderCreateSchema": {
+            "type": "object",
+            "properties": {
+                "buyer_company_id": {
+                    "type": "integer"
+                },
+                "buyer_user_id": {
+                    "type": "integer"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "currency_symbol": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "discount_amount": {
+                    "type": "number",
+                    "default": 0
+                },
+                "guest_customer_name": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/watt_internal_models.OrderItemCreateSchema"
+                    }
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "order_type": {
+                    "type": "string",
+                    "default": "b2c"
+                },
+                "paid_amount": {
+                    "type": "number",
+                    "default": 0
+                },
+                "payment_method": {
+                    "type": "string",
+                    "default": "cash"
+                },
+                "payment_status": {
+                    "type": "string",
+                    "default": "unpaid"
+                },
+                "shipping_address": {},
+                "shipping_cost": {
+                    "type": "number",
+                    "default": 0
+                },
+                "shipping_method": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string",
+                    "default": "pending"
+                },
+                "supplier_id": {
+                    "type": "integer"
+                },
+                "tax_amount": {
+                    "type": "number",
+                    "default": 0
+                },
+                "total_amount": {
+                    "type": "number",
+                    "default": 0
+                }
+            }
+        },
+        "watt_internal_models.SellerOrderUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "cancellation_reason": {
+                    "type": "string"
+                },
+                "paid_amount": {
+                    "type": "number"
+                },
+                "shipping_address": {},
+                "shipping_cost": {
+                    "type": "number"
+                },
+                "shipping_method": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.SubscribeSchema": {
+            "type": "object",
+            "required": [
+                "platform",
+                "token"
+            ],
+            "properties": {
+                "app_version": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "platform": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.SubscriptionPlanOut": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "duration_days": {
+                    "type": "integer"
+                },
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "watt_internal_models.SubscriptionPlanSchema": {
+            "type": "object",
+            "required": [
+                "duration_days",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "duration_days": {
+                    "type": "integer"
+                },
+                "features": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "watt_internal_models.SupplierCreateSchema": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "contact_name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "seller_company_id": {
+                    "type": "integer"
+                },
+                "supplier_type": {
+                    "type": "string",
+                    "default": "external"
+                },
+                "tax_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.SupplierUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "contact_name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "tax_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.TopicNotificationSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "watt_internal_models.UserNotificationSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "title",
+                "user_id"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "watt_internal_response.APIResponse": {
+            "type": "object",
+            "properties": {
+                "body": {},
+                "error": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "message_user": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
     "securityDefinitions": {
         "Bearer": {
             "type": "apiKey",

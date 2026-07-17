@@ -1,6 +1,8 @@
 package admin
 
 import (
+	"os"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -9,7 +11,16 @@ import (
 )
 
 func RegisterRoutes(rg *gin.RouterGroup, cfg *config.Config) {
-	rg.Use(sessions.Sessions("admin_session", cookie.NewStore([]byte(cfg.AdminCookieSecret))))
+	store := cookie.NewStore([]byte(cfg.AdminCookieSecret))
+	store.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 30,
+		HttpOnly: true,
+		// Secure=true only in release mode so local HTTP dev works without HTTPS.
+		Secure:   os.Getenv("GIN_MODE") == "release",
+		SameSite: 0,
+	})
+	rg.Use(sessions.Sessions("admin_session", store))
 
 	rg.GET("/admin/login", handlers.LoginHandler)
 	rg.POST("/admin/login", handlers.LoginHandler)

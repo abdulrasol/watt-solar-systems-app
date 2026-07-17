@@ -1627,7 +1627,7 @@ Docker أداة تسمح لك بتشغيل برامجك داخل "حاويات" 
 
 1. تثبيت [Docker Desktop](https://docs.docker.com/get-docker/) (Windows/Mac) أو Docker Engine (Linux).
 2. تثبيت [Docker Compose](https://docs.docker.com/compose/install/) (يأتي مدمجًا مع Docker Desktop).
-3. معرفة IP الجهاز على الشبكة المحلية (مثال: `192.168.1.107`).
+3. معرفة IP الجهاز على الشبكة المحلية (مثال: `192.168.1.100`).
 4. نسخ المشروع على الجهاز:
    ```bash
    cd /Users/rasol/DevsTools/codes/watt
@@ -1645,13 +1645,16 @@ cp .env.example .env
 
 | المتغير | الوصف | مثال |
 |---------|-------|------|
-| `LOCAL_IP` | IP الجهاز على الشبكة المحلية | `192.168.1.107` |
+| `LOCAL_IP` | IP الجهاز على الشبكة المحلية | `192.168.1.100` |
 | `JWT_SECRET` | مفتاح سري لتوقيع توكن JWT (32 حرف على الأقل) | `change-me-to-long-random-string` |
-| `ADMIN_COOKIE_SECRET` | مفتاح سري لجلسات الأدمن | `change-me-to-another-long-random-string` |
+| `ADMIN_COOKIE_SECRET` | مفتاح سري لجلسات الأدمن | `change-me-to-another-long-random-secret-min-32-chars` |
 | `MARIADB_ROOT_PASSWORD` | كلمة سر root لـ MariaDB | `watt_root_password` |
 | `MARIADB_PASSWORD` | كلمة سر مستخدم قاعدة البيانات | `watt_password` |
 | `EMAIL_HOST_PASSWORD` | كلمة سر بريد التطبيق | `your-google-app-password` |
 | `FCM_SERVICE_ACCOUNT_FILE` | مسار ملف حساب Firebase | `/app/config/fcm-service-account.json` |
+| `DEFAULT_ADMIN_USERNAME` | اسم المستخدم الأدمن الافتراضي | `admin` |
+| `DEFAULT_ADMIN_EMAIL` | بريد الأدمن الافتراضي | `admin@watt.local` |
+| `DEFAULT_ADMIN_PASSWORD` | كلمة سر الأدمن الافتراضية | `admin123` |
 
 > **تنبيه:** ضع ملف `fcm-service-account.json` داخل مجلد `config/` في جذر المشروع. Docker يربط هذا المجلد مع الحاوية للقراءة فقط.
 
@@ -1661,11 +1664,15 @@ cp .env.example .env
 |-------|---------|
 | `go_backend/Dockerfile` | يصف كيفية بناء صورة Backend Go: يثبت الاعتماديات، يبني البرنامج، وينسخ الملفات الثابتة. |
 | `docker-compose.yml` | يربط الخدمات الثلاث معًا: MariaDB وBackend وCaddy. |
-| `Caddyfile` | إعداد Caddy: يحول HTTP إلى HTTPS ويضيف Headers أمنية ويوجه الطلبات إلى Backend. |
-| `scripts/deploy.sh` | سكربت واحد يشغل كل شيء. |
+| `docker-compose.dev.yml` | ملف إضافي لوضع التطوير (HTTP فقط + منفذ Backend 8080). |
+| `Caddyfile` | إعداد Caddy للإنتاج: HTTPS ذاتي التوقيع للـ IP. |
+| `Caddyfile.dev` | إعداد Caddy للتطوير: HTTP فقط. |
+| `scripts/deploy.sh` | يشغل وضع الإنتاج (HTTPS). |
+| `scripts/deploy-dev.sh` | يشغل وضع التطوير (HTTP). |
 | `scripts/backup-db.sh` | يأخذ نسخة احتياطية من MariaDB. |
+| `scripts/create-admin.sh` | ينشئ أدمن إضافي يدويًا. |
 
-### 12.5 خطوات التشغيل أول مرة
+### 12.5 خطوات التشغيل أول مرة (وضع الإنتاج)
 
 **الخطوة 1:** تأكد من وجود ملف `.env`:
 
@@ -1691,12 +1698,24 @@ ls -la .env
 **الخطوة 3:** انتظر 10-20 ثانية ثم افتح المتصفح:
 
 ```
-https://192.168.1.107
+https://192.168.1.100
 ```
 
 > **تنبيه المتصفح:** بما أن الشهادة موقعة ذاتيًا (Self-signed)، سيطلب المتصفح تأكيدك. اضغط على "Advanced" ثم "Proceed" أو "Accept the Risk and Continue".
 
-**الخطوة 4:** تحقق من صحة الخدمات:
+**الخطوة 4:** تسجيل الدخول كأدمن:
+
+أول ما يشتغل السيرفر، يُنشئ تلقائيًا مستخدم أدمن افتراضي من قيم `.env`:
+
+```text
+Username: admin
+Email: admin@watt.local
+Password: admin123
+```
+
+اذهب إلى `https://192.168.1.100/admin/login` وسجّل الدخول. **غيّر كلمة السر فورًا.**
+
+**الخطوة 5:** تحقق من صحة الخدمات:
 
 ```bash
 docker compose ps
@@ -1788,15 +1807,122 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml down
 ./scripts/deploy.sh
 ```
 
-**عند شراء دومين لاحقًا:**
+### 12.10 إنشاء أول مستخدم أدمن
 
-1. حدّث متغير `LOCAL_IP` أو أضف `DOMAIN=example.com` في ملف `.env`.
-2. عدّل `Caddyfile` ليستخدم الدومين بدل IP:
+**أول ما يشتغل السيرفر، يُنشئ تلقائيًا مستخدم أدمن افتراضي** إذا كانت قاعدة البيانات فارغة. بيانات الدخول الافتراضية تُقرأ من `.env`:
+
+```text
+DEFAULT_ADMIN_USERNAME=admin
+DEFAULT_ADMIN_EMAIL=admin@watt.local
+DEFAULT_ADMIN_PASSWORD=admin123
+```
+
+سجّل الدخول فورًا عبر:
+
+```bash
+http://192.168.1.100:8080/admin/login
+```
+
+> **تنبيه أمني:** غيّر `DEFAULT_ADMIN_PASSWORD` في ملف `.env` قبل نشر المشروع على الإنترنت، وغيّرها مرة أخرى بعد أول تسجيل دخول.
+
+إذا أردت إنشاء أدمن إضافي لاحقًا (مثلًا بعد حذف الأدمن الافتراضي)، استخدم:
+
+```bash
+./scripts/create-admin.sh -username=admin2 -email=admin2@watt.com -password=yourpassword
+```
+
+### 12.11 نشر على VPS أو سيرفر محلي
+
+نفس ملفات Docker تعمل على VPS أو سيرفر محلي بدون تغييرات كبيرة. الخطوات بالتفصيل:
+
+1. **انسخ المشروع:**
+   ```bash
+   scp -r /Users/rasol/DevsTools/codes/watt user@your-server-ip:/home/user/
+   ssh user@your-server-ip
+   cd /home/user/watt
+   ```
+
+2. **حدّث `.env`:**
+   ```bash
+   cp .env.example .env
+   nano .env
+   ```
+   غيّر على الأقل:
+   - `LOCAL_IP` = IP السيرفر العام أو المحلي.
+   - `CORS_ALLOWED_ORIGINS` = `https://YOUR_IP`.
+   - `MARIADB_ROOT_PASSWORD` و `MARIADB_PASSWORD`.
+   - `JWT_SECRET` و `ADMIN_COOKIE_SECRET` (32 حرف على الأقل).
+   - `DEFAULT_ADMIN_PASSWORD`.
+
+3. **شغّل وضع الإنتاج:**
+   ```bash
+   ./scripts/deploy.sh
+   ```
+
+4. **افتح المتصفح:**
+   ```bash
+   https://YOUR_IP/admin/login
+   ```
+   واقبل الشهادة الموقعة ذاتيًا.
+
+5. **سجّل الدخول** بالأدمن الافتراضي من `.env`.
+
+### 12.12 عند شراء دومين
+
+عند شراء دومين، لن تحتاج Certbot يدويًا. Caddy تجلب شهادة Let's Encrypt تلقائيًا:
+
+1. أضف الدومين لـ `.env`:
+   ```bash
+   DOMAIN=yourdomain.com
+   CORS_ALLOWED_ORIGINS=https://yourdomain.com
+   ```
+
+2. عدّل `Caddyfile`:
    ```text
-   example.com:443 {
+   {$DOMAIN}:443 {
        tls your-email@example.com
-       reverse_proxy backend:8080
+       encode gzip
+
+       header {
+           X-Content-Type-Options nosniff
+           X-Frame-Options DENY
+           X-XSS-Protection "1; mode=block"
+           Referrer-Policy strict-origin-when-cross-origin
+           -Server
+       }
+
+       reverse_proxy backend:8080 {
+           header_up Host {host}
+           header_up X-Real-IP {remote}
+           header_up X-Forwarded-For {remote}
+           header_up X-Forwarded-Proto {scheme}
+       }
    }
    ```
-3. أعد تشغيل: `./scripts/deploy.sh`.
+
+3. تأكد من أن المنفذين 80 و 443 مفتوحين في جدار الحماية.
+4. أعد تشغيل: `./scripts/deploy.sh`.
+
+> **ملاحظة:** تأكد من إعدادات DNS للدومين بحيث يشير إلى IP السيرفر قبل تشغيل Caddy.
+
+### 12.13 توثيق Swagger
+
+توثيق Swagger متاح على:
+
+```bash
+http://192.168.1.100:8080/api/v1/docs/index.html
+```
+
+إذا ظهرت رسالة `No operations defined in spec!`، هذا يعني ملفات Swagger لم تُحدّث. أعد توليدها من مجلد `go_backend`:
+
+```bash
+cd go_backend
+go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/server/main.go --parseDependency --parseInternal
+```
+
+ثم أعد بناء الصورة:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+```
 

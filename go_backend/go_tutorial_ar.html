@@ -296,6 +296,10 @@
 <a href="#127-نسخ-احتياطي-لقاعدة-البيانات" class="toc-item level-3" data-text="12.7 نسخ احتياطي لقاعدة البيانات">12.7 نسخ احتياطي لقاعدة البيانات</a>
 <a href="#128-مشاكل-شائعة-وحلولها" class="toc-item level-3" data-text="12.8 مشاكل شائعة وحلولها">12.8 مشاكل شائعة وحلولها</a>
 <a href="#129-وضع-التطوير-http-فقط" class="toc-item level-3" data-text="12.9 وضع التطوير http فقط">12.9 وضع التطوير HTTP فقط</a>
+<a href="#1210-انشاء-اول-مستخدم-ادمن" class="toc-item level-3" data-text="12.10 إنشاء أول مستخدم أدمن">12.10 إنشاء أول مستخدم أدمن</a>
+<a href="#1211-نشر-على-vps-أو-سيرفر-محلي" class="toc-item level-3" data-text="12.11 نشر على vps أو سيرفر محلي">12.11 نشر على VPS أو سيرفر محلي</a>
+<a href="#1212-عند-شراء-دومين" class="toc-item level-3" data-text="12.12 عند شراء دومين">12.12 عند شراء دومين</a>
+<a href="#1213-توثيق-swagger" class="toc-item level-3" data-text="12.13 توثيق swagger">12.13 توثيق Swagger</a>
       </nav>
     </aside>
     <main class="content">
@@ -2081,13 +2085,24 @@ ls -la .env</code></pre>
 </ol>
 
 <p dir="rtl"><strong>الخطوة 3:</strong> انتظر 10-20 ثانية ثم افتح المتصفح:</p>
-<pre><code class="language-bash">https://192.168.1.107</code></pre>
+<pre><code class="language-bash">https://192.168.1.100</code></pre>
 
 <div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
 <strong>تنبيه المتصفح:</strong> بما أن الشهادة موقعة ذاتيًا (Self-signed)، سيطلب المتصفح تأكيدك. اضغط على "Advanced" ثم "Proceed" أو "Accept the Risk and Continue".
 </div>
 
-<p dir="rtl"><strong>الخطوة 4:</strong> تحقق من صحة الخدمات:</p>
+<p dir="rtl"><strong>الخطوة 4:</strong> تسجيل الدخول كأدمن:</p>
+<p dir="rtl">
+أول ما يشتغل السيرفر، يُنشئ تلقائيًا مستخدم أدمن افتراضي من قيم <code>.env</code>:
+</p>
+<pre><code class="language-text">Username: admin
+Email: admin@watt.local
+Password: admin123</code></pre>
+<p dir="rtl">
+اذهب إلى <code>https://192.168.1.100/admin/login</code> وسجّل الدخول. <strong>غيّر كلمة السر فورًا.</strong>
+</p>
+
+<p dir="rtl"><strong>الخطوة 5:</strong> تحقق من صحة الخدمات:</p>
 <pre><code class="language-bash">docker compose ps</code></pre>
 
 <p dir="rtl">
@@ -2273,6 +2288,131 @@ ls -la .env</code></pre>
   </li>
   <li>أعد تشغيل: <code>./scripts/deploy.sh</code>.</li>
 </ol>
+
+<h3 id="1210-انشاء-اول-مستخدم-ادمن">12.10 إنشاء أول مستخدم أدمن</h3>
+
+<p dir="rtl">
+<strong>أول ما يشتغل السيرفر، يُنشئ تلقائيًا مستخدم أدمن افتراضي</strong> إذا كانت قاعدة البيانات فارغة. بيانات الدخول الافتراضية تُقرأ من <code>.env</code>:
+</p>
+
+<pre><code class="language-text">DEFAULT_ADMIN_USERNAME=admin
+DEFAULT_ADMIN_EMAIL=admin@watt.local
+DEFAULT_ADMIN_PASSWORD=admin123</code></pre>
+
+<p dir="rtl">
+سجّل الدخول فورًا عبر:
+</p>
+
+<pre><code class="language-bash">http://192.168.1.100:8080/admin/login</code></pre>
+
+<div style="background: var(--warn-bg); color: var(--warn-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>تنبيه أمني:</strong> غيّر <code>DEFAULT_ADMIN_PASSWORD</code> في ملف <code>.env</code> قبل نشر المشروع على الإنترنت، وغيّرها مرة أخرى بعد أول تسجيل دخول.
+</div>
+
+<p dir="rtl">
+إذا أردت إنشاء أدمن إضافي لاحقًا (مثلًا بعد حذف الأدمن الافتراضي)، استخدم:
+</p>
+
+<pre><code class="language-bash">./scripts/create-admin.sh -username=admin2 -email=admin2@watt.com -password=yourpassword</code></pre>
+
+<h3 id="1211-نشر-على-vps-أو-سيرفر-محلي">12.11 نشر على VPS أو سيرفر محلي</h3>
+
+<p dir="rtl">
+نفس ملفات Docker تعمل على VPS أو سيرفر محلي بدون تغييرات كبيرة. الخطوات بالتفصيل:
+</p>
+
+<ol dir="rtl">
+  <li><strong>انسخ المشروع:</strong>
+    <pre><code class="language-bash">scp -r /Users/rasol/DevsTools/codes/watt user@your-server-ip:/home/user/
+ssh user@your-server-ip
+cd /home/user/watt</code></pre>
+  </li>
+  <li><strong>حدّث <code>.env</code>:</strong>
+    <pre><code class="language-bash">cp .env.example .env
+nano .env</code></pre>
+    غيّر على الأقل:
+    <ul>
+      <li><code>LOCAL_IP</code> = IP السيرفر العام أو المحلي.</li>
+      <li><code>CORS_ALLOWED_ORIGINS</code> = <code>https://YOUR_IP</code>.</li>
+      <li><code>MARIADB_ROOT_PASSWORD</code> و <code>MARIADB_PASSWORD</code>.</li>
+      <li><code>JWT_SECRET</code> و <code>ADMIN_COOKIE_SECRET</code> (32 حرف على الأقل).</li>
+      <li><code>DEFAULT_ADMIN_PASSWORD</code>.</li>
+    </ul>
+  </li>
+  <li><strong>شغّل وضع الإنتاج:</strong>
+    <pre><code class="language-bash">./scripts/deploy.sh</code></pre>
+  </li>
+  <li><strong>افتح المتصفح:</strong>
+    <pre><code class="language-bash">https://YOUR_IP/admin/login</code></pre>
+    واقبل الشهادة الموقعة ذاتيًا.
+  </li>
+  <li><strong>سجّل الدخول</strong> بالأدمن الافتراضي من <code>.env</code>.</li>
+</ol>
+
+<h3 id="1212-عند-شراء-دومين">12.12 عند شراء دومين</h3>
+
+<p dir="rtl">
+عند شراء دومين، لن تحتاج Certbot يدويًا. Caddy تجلب شهادة Let&apos;s Encrypt تلقائيًا:
+</p>
+
+<ol dir="rtl">
+  <li>أضف الدومين لـ <code>.env</code>:
+    <pre><code class="language-bash">DOMAIN=yourdomain.com
+CORS_ALLOWED_ORIGINS=https://yourdomain.com</code></pre>
+  </li>
+  <li>عدّل <code>Caddyfile</code>:
+    <pre><code class="language-text">{$DOMAIN}:443 {
+    tls your-email@example.com
+    encode gzip
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy strict-origin-when-cross-origin
+        -Server
+    }
+
+    reverse_proxy backend:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}</code></pre>
+  </li>
+  <li>تأكد من أن المنفذين 80 و 443 مفتوحين في جدار الحماية.</li>
+  <li>أعد تشغيل: <code>./scripts/deploy.sh</code>.</li>
+</ol>
+
+<div style="background: var(--success-bg); color: var(--success-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>ملاحظة:</strong> تأكد من إعدادات DNS للدومين بحيث يشير إلى IP السيرفر قبل تشغيل Caddy.
+</div>
+
+<h3 id="1213-توثيق-swagger">12.13 توثيق Swagger</h3>
+
+<p dir="rtl">
+توثيق Swagger متاح على:
+</p>
+
+<pre><code class="language-bash">http://192.168.1.100:8080/api/v1/docs/index.html</code></pre>
+
+<p dir="rtl">
+إذا ظهرت رسالة <code>No operations defined in spec!</code>، هذا يعني ملفات Swagger لم تُحدّث. أعد توليدها من مجلد <code>go_backend</code>:
+</p>
+
+<pre><code class="language-bash">cd go_backend
+go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/server/main.go --parseDependency --parseInternal</code></pre>
+
+<p dir="rtl">
+ثم أعد بناء الصورة:
+</p>
+
+<pre><code class="language-bash">docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build</code></pre>
+
+<div style="background: var(--success-bg); color: var(--success-text); padding: 1rem; border-radius: 8px; margin: 1rem 0;" dir="rtl">
+<strong>ملاحظة:</strong> عند استخدام دومين حقيقي، Caddy تلقائيًا تحصل على شهادة Let&apos;s Encrypt مجانية. لا تحتاج Certbot يدويًا.
+</div>
 
       <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); text-align: center;">
         تم إنشاء هذا الدليل تلقائيًا من <code>go_tutorial_ar.md</code>

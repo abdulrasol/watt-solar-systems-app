@@ -13,6 +13,7 @@ import (
 	"watt/internal/handlers/root"
 	"watt/internal/response"
 	"watt/internal/routes"
+	"watt/internal/seed"
 	"watt/internal/services/fcm"
 
 	"github.com/gin-contrib/cors"
@@ -80,6 +81,9 @@ func main() {
 
 	// Connect to the database
 	database.Connect(cfg)
+
+	// Seed a default admin user if the database is empty (first run only).
+	seed.EnsureDefaultAdmin()
 
 	// Initialize Firebase Cloud Messaging
 	if err := fcm.Initialize(cfg); err != nil {
