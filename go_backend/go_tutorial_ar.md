@@ -1650,7 +1650,9 @@ cp .env.example .env
 | `ADMIN_COOKIE_SECRET` | مفتاح سري لجلسات الأدمن | `change-me-to-another-long-random-secret-min-32-chars` |
 | `MARIADB_ROOT_PASSWORD` | كلمة سر root لـ MariaDB | `watt_root_password` |
 | `MARIADB_PASSWORD` | كلمة سر مستخدم قاعدة البيانات | `watt_password` |
-| `EMAIL_HOST_PASSWORD` | كلمة سر بريد التطبيق | `your-google-app-password` |
+| `EMAIL_HOST_USER` | بريد Gmail المستخدم لإرسال الإيميلات | `watt.solar.calculator@gmail.com` |
+| `EMAIL_HOST_PASSWORD` | Google App Password (يمكن أن يحتوي على مسافات) | `mxwa rjtf yzwd slyi` |
+| `FRONTEND_URL` | الرابط الذي يظهر في إيميل إعادة التعيين | `http://192.168.1.100:8080` |
 | `FCM_SERVICE_ACCOUNT_FILE` | مسار ملف حساب Firebase | `/app/config/fcm-service-account.json` |
 | `DEFAULT_ADMIN_USERNAME` | اسم المستخدم الأدمن الافتراضي | `admin` |
 | `DEFAULT_ADMIN_EMAIL` | بريد الأدمن الافتراضي | `admin@watt.local` |
